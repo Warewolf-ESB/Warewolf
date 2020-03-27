@@ -1,29 +1,40 @@
 ﻿@page "/workflows"
 @inject IJSRuntime JSRuntime;
-@using Warewolf.Coverage.Reports.Data
 
 <h4>Summary - Folder 1</h4>
 <div class="count-summary row">
     <table class="row table-borderless">
         <tr>
             <td class="counts">
-                Total: @totalCount
+                Total Test Count: @totalCount
             </td>
             <td class="counts">
-                <span class="oi oi-circle-check" aria-hidden="true"></span> Passed: @passedCount
+                <span class="oi oi-beaker green" aria-hidden="true"></span> Tests Passed: @passedCount
             </td>
             <td class="counts">
-                <span class="oi oi-circle-x" aria-hidden="true"></span> Failed: @failedCount
+                <span class="oi oi-beaker red" aria-hidden="true"></span> Tests Failed: @failedCount
             </td>
         </tr>
     </table>
 </div>
 <div class="row">
-    <div class=" row col-12">
-        <div class="col-1 btn-link">
-            <a href="#" @onclick="@Toggle" class="col-12">Workflow 1</a>
+    <div class="row col-12 workflow-row">
+        <div class="col-1">
+            <a href="#" @onclick="@Toggle" class=" nav-link">Workflow 1</a>
         </div>
-        <div class="col-5">
+        <div class="progress-bars">
+            <div class="coverage-label">Coverage</div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+            </div>
+        </div>
+        <div class="progress-bars">
+            <div class="coverage-label">Branch Coverage</div>
             <div class="progress">
                 <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:50%">
                     50%
@@ -56,11 +67,23 @@
     }
 </div>
 <div class="row">
-    <div class=" row col-12">
-        <div class="col-1 btn-link">
-            <a href="#" @onclick="@Toggle" class="col-12">Workflow 2</a>
+    <div class="row col-12 workflow-row">
+        <div class="col-1">
+            <a href="#" @onclick="@Toggle" class="nav-link">Workflow 2</a>
         </div>
-        <div class="col-5">
+        <div class="progress-bars">
+            <div class="coverage-label">Coverage</div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:80%">
+                    80%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:20%">
+                    20%
+                </div>
+            </div>
+        </div>
+        <div class="progress-bars">
+            <div class="coverage-label">Branch Coverage</div>
             <div class="progress">
                 <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:80%">
                     80%
@@ -85,28 +108,17 @@
         </div>
     }
 </div>
-<ToolsComponent/>
 
 @code {
-
     private int totalCount = 4;
     private int passedCount = 2;
     private int failedCount = 2;
-
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-
+    
     [Parameter]
     public bool Collapsed { get; set; }
-
-    string ActionText
-    {
-        get => Collapsed ? "Expand" : "Collapse";
-    }
-
+    
     void Toggle()
     {
         Collapsed = !Collapsed;
     }
-
 }

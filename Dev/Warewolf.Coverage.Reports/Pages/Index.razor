@@ -1,118 +1,124 @@
 ﻿@page "/"
-@using Warewolf.Coverage.Reports.Data
+
 
 <h3>Coverage Summary</h3>
 <div class="count-summary row">
-<table class="row table-borderless">
-    <tr>
-        <td class="counts">
-            Total: @totalCount
-        </td>
-        <td class="counts">
-            <span class="oi oi-circle-check" aria-hidden="true"></span> Passed: @passedCount
-        </td>
-        <td class="counts">
-            <span class="oi oi-circle-x" aria-hidden="true"></span> Failed: @failedCount
-        </td>
-    </tr>
-</table>
+    <table class="row table-borderless">
+        <tr>
+            <td class="counts">
+                Total Test Count: @totalCount
+            </td>
+            <td class="counts">
+                <span class="oi oi-beaker green" aria-hidden="true"></span> Tests Passed: @passedCount
+            </td>
+            <td class="counts">
+                <span class="oi oi-beaker red" aria-hidden="true"></span> Tests Failed: @failedCount
+            </td>
+        </tr>
+    </table>
 </div>
-<table class="table">
-    <tr>
-        <td>
+<div class="row">
+    <div class="row col-12 workflow-row">
+        <div class="col-2">
             <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
                 Folder1
             </NavLink>
-        </td>
-        <td class="play-btn">
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
             <span class="oi oi-play-circle" aria-hidden="true"></span>
-        </td>
-        <td >
+        </div>
+        <div class="progress-bars">
             <div class="progress">
-                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:40%">
-                    40%
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
                 </div>
-                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:60%">
-                    60%
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
                 </div>
             </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <NavLink class="nav-link" href="coverage" Match="NavLinkMatch.All">
-                Rest Services
-            </NavLink>
-        </td>
-        <td class="play-btn">
-            <span class="oi oi-play-circle" aria-hidden="true"></span>
-        </td>
-        <td >
-            <div class="progress">
-                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:40%">
-                    40%
-                </div>
-                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:60%">
-                    60%
-                </div>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <NavLink class="nav-link" href="coverage" Match="NavLinkMatch.All">
-                Queue Services
-            </NavLink>
-        </td>
-        <td class="play-btn">
-            <span class="oi oi-play-circle" aria-hidden="true"></span>
-        </td>
-        <td >
-            <div class="progress">
-                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:10%">
-                    10%
-                </div>
-                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:90%">
-                    90%
-                </div>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <NavLink class="nav-link" href="coverage" Match="NavLinkMatch.All">
+        </div>
+    </div>
+    <div class="row col-12 workflow-row">
+        <div class="col-2">
+            <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
                 Data Services
             </NavLink>
-        </td>
-        <td class="play-btn hidden">
-
-        </td>
-        <td >
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
+            <span class="oi oi-play-circle" aria-hidden="true"></span>
+        </div>
+        <div class="progress-bars">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:75%">
+                    75%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:25%">
+                    25%
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-12 workflow-row">
+        <div class="col-2">
+            <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
+                Queue Services
+            </NavLink>
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
+          
+        </div>
+        <div class="progress-bars">
             <div class="progress">
                 <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%">
                     100%
                 </div>
             </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <NavLink class="nav-link" href="coverage" Match="NavLinkMatch.All">
-                UConnect Serivices
+        </div>
+    </div>
+    <div class="row col-12 workflow-row">
+       <div class="col-2">
+            <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
+                Rest Services
             </NavLink>
-        </td>
-        <td class="play-btn">
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
             <span class="oi oi-play-circle" aria-hidden="true"></span>
-        </td>
-        <td >
+        </div>
+        <div class="progress-bars">
             <div class="progress">
-                <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:100%">
-                    No Coverage
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:80%">
+                    80%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:20%">
+                    20%
                 </div>
             </div>
-        </td>
-    </tr>
-</table>
+        </div>
+    </div>
+    <div class="row col-12 workflow-row">
+      <div class="col-2">
+            <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
+                Rest APIs
+            </NavLink>
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
+            <span class="oi oi-play-circle" aria-hidden="true"></span>
+        </div>
+        <div class="progress-bars">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:20%">
+                    20%
+                </div>
+                <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:30%">
+                    30%
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     private int totalCount = 30;
@@ -123,4 +129,5 @@
     {
         totalCount++;
     }
+
 }

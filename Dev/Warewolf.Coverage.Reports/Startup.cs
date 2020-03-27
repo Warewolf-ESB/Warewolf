@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Warewolf.Coverage.Reports.Data;
-
 namespace Warewolf.Coverage.Reports
 {
     public class Startup
