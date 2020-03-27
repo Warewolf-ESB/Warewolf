@@ -5,7 +5,17 @@ html, body {
 }
 
 a, .btn-link {
-    color: #0366d6;
+    color: #f3700d;
+}
+
+.btn-link:hover,
+a:hover {
+    color: #F3AC16;
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
 }
 
 .btn-primary {
@@ -189,6 +199,10 @@ app {
 
 }
 
+.progress-bars {
+    width: 160px;
+}
+
 .progress-bar-success {
     background-color: green;
 }
@@ -219,8 +233,26 @@ app {
     color: green;
 }
 
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+.orange {
+    color: orange;
+}
+
+.workflow-row {
+    padding: 0 0 15px 0;
+}
+
 .progress {
-    width: 300px;
+    max-width: 150px;
+    height: 1.5rem;
+    font-size: .65rem;
 }
 
 .oi-circle-x {
@@ -230,6 +262,7 @@ app {
 
 .count-summary {
     padding: 10px 10px 20px 10px;
+    margin: 5px;
 }
 
 .counts {
@@ -237,3 +270,12 @@ app {
     font-size: 14px;
     width: 200px;
 }
+
+.coverage-label {
+    font-weight: bold;
+    max-width: 150px;
+    font-size: 12px;
+    text-align: center;
+
+}
+
