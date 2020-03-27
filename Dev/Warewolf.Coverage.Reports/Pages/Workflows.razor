@@ -1,0 +1,112 @@
+﻿@page "/workflows"
+@inject IJSRuntime JSRuntime;
+@using Warewolf.Coverage.Reports.Data
+
+<h4>Summary - Folder 1</h4>
+<div class="count-summary row">
+    <table class="row table-borderless">
+        <tr>
+            <td class="counts">
+                Total: @totalCount
+            </td>
+            <td class="counts">
+                <span class="oi oi-circle-check" aria-hidden="true"></span> Passed: @passedCount
+            </td>
+            <td class="counts">
+                <span class="oi oi-circle-x" aria-hidden="true"></span> Failed: @failedCount
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="row">
+    <div class=" row col-12">
+        <div class="col-1 btn-link">
+            <a href="#" @onclick="@Toggle" class="col-12">Workflow 1</a>
+        </div>
+        <div class="col-5">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!Collapsed)
+    {
+        <div class="col-12">
+            <div class="col-1"></div>
+            <div class="col-6">
+                <ul>
+                    <li><span class="oi oi-circle-check" aria-hidden="true"></span> Assign Input</li>
+                    <li>
+                        <span class="oi oi-circle-x" aria-hidden="true"></span> Decision
+                        <ul>
+                            <li><span class="oi oi-circle-check" aria-hidden="true"></span> True</li>
+                            <li><span class="oi oi-circle-x" aria-hidden="true"></span> False</li>
+                        </ul>
+                    </li>
+                    <li><span class="oi oi-circle-check" aria-hidden="true"></span> Assign (Error)</li>
+                    <li><span class="oi oi-circle-x" aria-hidden="true"></span> RabbitMQ Consume</li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+<div class="row">
+    <div class=" row col-12">
+        <div class="col-1 btn-link">
+            <a href="#" @onclick="@Toggle" class="col-12">Workflow 2</a>
+        </div>
+        <div class="col-5">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:80%">
+                    80%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:20%">
+                    20%
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!Collapsed)
+    {
+        <div class="col-12">
+            <div class="col-1"></div>
+            <div class="col-6">
+                <ul>
+                    <li><span class="oi oi-circle-check" aria-hidden="true"></span> Assign Input</li>
+                    <li><span class="oi oi-circle-check" aria-hidden="true"></span> Assign (Error)</li>
+                    <li><span class="oi oi-circle-x" aria-hidden="true"></span> RabbitMQ Consume</li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+<ToolsComponent/>
+
+@code {
+
+    private int totalCount = 4;
+    private int passedCount = 2;
+    private int failedCount = 2;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public bool Collapsed { get; set; }
+
+    string ActionText
+    {
+        get => Collapsed ? "Expand" : "Collapse";
+    }
+
+    void Toggle()
+    {
+        Collapsed = !Collapsed;
+    }
+
+}
