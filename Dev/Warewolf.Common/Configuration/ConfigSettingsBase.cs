@@ -9,17 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Threading;
 using Newtonsoft.Json;
 using Warewolf.Esb;
 using Warewolf.VirtualFileSystem;
 
 namespace Warewolf.Configuration
 {
-    public class ConfigSettingsBase<T> where T : class, new()
+    public class ConfigSettingsBase<T> where T : class, IHasChanged, new()
     {
         protected readonly string _settingsPath;
         protected readonly IDirectoryBase _directoryWrapper;
@@ -43,6 +39,7 @@ namespace Warewolf.Configuration
             {
                 var text = _fileWrapper.ReadAllText(_settingsPath);
                 _settings = JsonConvert.DeserializeObject<T>(text);
+                _settings.HasChanged = false;
             }
         }
         protected void Save()
@@ -52,9 +49,10 @@ namespace Warewolf.Configuration
             var changed = true;
             _fileWrapper.WriteAllText(_settingsPath, text);
 
-            if (changed)
+            if (_settings.HasChanged)
             {
                 _clusterDispatcher.Write(this);
+                _settings.HasChanged = false;
             }
         }
 

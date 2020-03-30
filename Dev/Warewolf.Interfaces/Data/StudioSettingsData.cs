@@ -12,7 +12,7 @@ using System;
 
 namespace Warewolf.Configuration
 {
-    public class StudioSettingsData : IEquatable<StudioSettingsData>
+    public class StudioSettingsData : IEquatable<StudioSettingsData>, IHasChanged
     {
         public int? ConnectTimeout { get; set; }
         
@@ -22,5 +22,7 @@ namespace Warewolf.Configuration
             equals &= ConnectTimeout == other.ConnectTimeout;
             return equals;
         }
+
+        public bool HasChanged { get; set; }
     }
 }

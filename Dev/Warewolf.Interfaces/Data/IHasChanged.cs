@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,17 +10,8 @@
 
 namespace Warewolf.Configuration
 {
-    public class AuditingSettingsData : IHasChanged
+    public interface IHasChanged
     {
-        public string Endpoint { get; internal set; } = "ws://127.0.0.1:5000/ws";
-
-        public bool Equals(AuditingSettingsData other)
-        {
-            var equals = Endpoint == other.Endpoint;
-
-            return equals;
-        }
-
-        public bool HasChanged { get; set; }
+        bool HasChanged { get; set; }
     }
 }

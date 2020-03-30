@@ -11,7 +11,7 @@ using System;
 
 namespace Warewolf.Configuration
 {
-    public class ServerSettingsData : IEquatable<ServerSettingsData>
+    public class ServerSettingsData : IEquatable<ServerSettingsData>, IHasChanged
     {
         public ushort? WebServerPort { get; set; }
         public ushort? WebServerSslPort { get; set; }
@@ -35,5 +35,7 @@ namespace Warewolf.Configuration
 
             return equals;
         }
+
+        public bool HasChanged { get; set; }
     }
 }

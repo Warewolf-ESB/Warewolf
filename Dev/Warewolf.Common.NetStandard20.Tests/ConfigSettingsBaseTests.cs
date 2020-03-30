@@ -127,10 +127,11 @@ namespace Warewolf.Configuration
             Assert.AreEqual(4321, config.SomeInt);
         }
 
-        class TestData
+        class TestData : IHasChanged
         {
             public int SomeInt { get; set; } = DefaultSomeInt;
             public string SomeString { get; set; } = DefaultSomeString;
+            public bool HasChanged { get; set; }
         }
 
         /// <summary>

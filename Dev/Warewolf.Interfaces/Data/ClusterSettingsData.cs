@@ -12,11 +12,16 @@ using Warewolf.Data;
 
 namespace Warewolf.Configuration
 {
-    public class ClusterSettingsData : BindableBase, IEquatable<ClusterSettingsData>
+    public class ClusterSettingsData : BindableBase, IEquatable<ClusterSettingsData>, IHasChanged
     {
         private NamedGuid _leaderServerResource = new NamedGuid();
         private string _leaderServerKey;
         private string _key;
+
+        public ClusterSettingsData()
+        {
+            PropertyChanged += (sender, args) => HasChanged = true;
+        }
 
         public string Key
         {
@@ -35,6 +40,8 @@ namespace Warewolf.Configuration
             get => _leaderServerKey;
             set => SetProperty(ref _leaderServerKey, value);
         }
+        
+        public bool HasChanged { get; set; }
 
         public bool Equals(ClusterSettingsData other)
         {
