@@ -19,6 +19,6 @@ namespace Warewolf.Driver.Serilog
         public string Message { get; set; }
         public string NewLine { get; set; }
         public string Exception { get; set; }
-        public LogEventLevel Level { get; set; }
+        public string Level { get; set; }
     }
 }
