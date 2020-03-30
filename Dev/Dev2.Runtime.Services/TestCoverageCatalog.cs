@@ -261,6 +261,7 @@ namespace Dev2.Runtime
         Guid ActivityID { get; set; }
         Guid UniqueID { get; set; }
         string StepDescription { get; set; }
+        bool MockSelected { get; set; }
     }
 
     public class WorkflowNode : IWorkflowNode
@@ -272,6 +273,7 @@ namespace Dev2.Runtime
         public Guid ActivityID { get; set; }
         public Guid UniqueID { get; set; }
         public string StepDescription { get; set; }
+        public bool MockSelected { get; set; }
     }
 
     public interface IWorkflowNodesCovered
@@ -450,12 +452,12 @@ namespace Dev2.Runtime
         {
             var workflowNodes = _workflow.GetAllWorkflowNodes();
 
-            var groupedByUniqueId = _coveredNodes.GroupBy(i => i.UniqueID).Select(o => o.FirstOrDefault());
+            var groupedByUniqueId = _coveredNodes.GroupBy(i => i.UniqueID).Select(o => o.FirstOrDefault()).Where(o => o.MockSelected is false);
             double coveredNodes = groupedByUniqueId.Select(u => u.UniqueID).Intersect(workflowNodes.Select(o => o.UniqueID)).Count();
 
             double totalNodes = workflowNodes.Count;
 
-            return coveredNodes / totalNodes * 100;
+            return Math.Round(coveredNodes / totalNodes * 100);
         }
     }
 
@@ -497,7 +499,8 @@ namespace Dev2.Runtime
                     {
                         ActivityID = step.ActivityID,
                         UniqueID = step.UniqueID,
-                        StepDescription = step.StepDescription
+                        StepDescription = step.StepDescription,
+                        MockSelected = step.MockSelected
                     });
                 }
                 return nodesCovered;
