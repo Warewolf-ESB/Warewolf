@@ -22,6 +22,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         void SendDebugState(string serializedDebugState);
         void SendWorkspaceID(Guid workspaceId);
         void SendServerID(Guid serverId);
+        void SendConfigUpdateNotification();
     }
     // Instances of the Hub class are transient, you can't use them 
     // to maintain state from one method call to the next. Each time 

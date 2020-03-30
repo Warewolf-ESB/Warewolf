@@ -13,11 +13,9 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
-using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
-using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
@@ -42,9 +40,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-using System.Windows;
-using Warewolf.Resource.Errors;
+using Warewolf.Esb;
 
 namespace Dev2.Network
 {
@@ -551,6 +547,12 @@ namespace Dev2.Network
                 Dev2Logger.Error(e, "Warewolf Error");
             }
             return result;
+        }
+
+        public async Task<StringBuilder> ExecuteCommandAsync(ICatalogRequest request, Guid workspaceId)
+        {
+            var toSend = _serializer.SerializeToBuilder(request);
+            return await ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
         }
 
         public void AddDebugWriter(Guid workspaceId)

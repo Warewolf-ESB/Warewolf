@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Warewolf.Esb;
 
 namespace Dev2.Communication
 {
@@ -19,7 +20,7 @@ namespace Dev2.Communication
     /// <summary>
     /// Internal Service Request Object - Used mainly by the studio, but server can send request if service is web based
     /// </summary>
-    public class EsbExecuteRequest
+    public class EsbExecuteRequest : IEsbRequest
     {
         public string ServiceName { get; set; }
 

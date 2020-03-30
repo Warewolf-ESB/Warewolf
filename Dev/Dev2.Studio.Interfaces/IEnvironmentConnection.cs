@@ -23,6 +23,8 @@ using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using System.Network;
 using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Communication;
+using Warewolf.Esb;
 
 
 namespace Dev2.Studio.Interfaces
@@ -44,6 +46,7 @@ namespace Dev2.Studio.Interfaces
         bool IsAuthorized { get; set; }
 
         Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId);
+        Task<StringBuilder> ExecuteCommandAsync(ICatalogRequest request, Guid workspaceId);
         StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId);
         StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, int timeout);
 

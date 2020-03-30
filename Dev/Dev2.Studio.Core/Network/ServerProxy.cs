@@ -21,12 +21,13 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
-
+using Warewolf.Esb;
 
 
 namespace Dev2.Network
@@ -106,6 +107,7 @@ namespace Dev2.Network
         public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, int timeout) => _wrappedConnection.ExecuteCommand(xmlRequest, workspaceId, timeout);
 
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId) => await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true);
+        public async Task<StringBuilder> ExecuteCommandAsync(ICatalogRequest request, Guid workspaceId) => await _wrappedConnection.ExecuteCommandAsync(request, workspaceId).ConfigureAwait(true);
 
         public IHubProxyWrapper EsbProxy => _wrappedConnection.EsbProxy;
 

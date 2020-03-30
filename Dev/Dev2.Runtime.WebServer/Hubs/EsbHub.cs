@@ -387,5 +387,10 @@ namespace Dev2.Runtime.WebServer.Hubs
         }
 
         #endregion
+
+        public void SendConfigUpdateNotification()
+        {
+            Clients.All.SendConfigUpdateNotification();
+        }
     }
 }
