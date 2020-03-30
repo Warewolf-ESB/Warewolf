@@ -99,6 +99,11 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             {
 
             }
+
+            public void SendConfigUpdateNotification()
+            {
+                
+            }
         }
     }
 

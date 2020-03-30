@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Logging;
 using Warewolf.Esb;
@@ -54,6 +55,14 @@ namespace Dev2.Runtime.Network
         public void Shutdown()
         {
             _shutdownRequested = true;
+        }
+
+        public void Write<T>(T info) where T : class
+        {
+            foreach (var writer in _writers.Values.ToList())
+            {
+                writer.SendConfigUpdateNotification();
+            }
         }
     }
 

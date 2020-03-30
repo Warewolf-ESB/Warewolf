@@ -14,6 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using Newtonsoft.Json;
+using Warewolf.Esb;
 using Warewolf.VirtualFileSystem;
 
 namespace Warewolf.Configuration
@@ -23,13 +24,15 @@ namespace Warewolf.Configuration
         protected readonly string _settingsPath;
         protected readonly IDirectoryBase _directoryWrapper;
         protected readonly IFileBase _fileWrapper;
+        protected readonly IClusterDispatcher _clusterDispatcher;
         protected T _settings { get; private set; } = new T();
 
-        protected ConfigSettingsBase(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper)
+        protected ConfigSettingsBase(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper, IClusterDispatcher clusterDispatcher)
         {
             _settingsPath = settingsPath;
             _directoryWrapper = directoryWrapper;
             _fileWrapper = file;
+            _clusterDispatcher = clusterDispatcher;
 
             Load();
         }
@@ -46,7 +49,13 @@ namespace Warewolf.Configuration
         {
             _directoryWrapper.CreateIfNotExists(System.IO.Path.GetDirectoryName(_settingsPath));
             var text = JsonConvert.SerializeObject(this);
+            var changed = true;
             _fileWrapper.WriteAllText(_settingsPath, text);
+
+            if (changed)
+            {
+                _clusterDispatcher.Write(this);
+            }
         }
 
         public void SaveIfNotExists()

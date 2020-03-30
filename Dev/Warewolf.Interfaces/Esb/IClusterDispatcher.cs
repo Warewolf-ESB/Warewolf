@@ -18,5 +18,6 @@ namespace Warewolf.Esb
         void Remove(Guid workspaceId);
         void Add(Guid workspaceId, IClusterNotificationWriter writer);
         void Shutdown();
+        void Write<T>(T info) where T : class;
     }
 }

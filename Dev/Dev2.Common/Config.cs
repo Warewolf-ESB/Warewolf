@@ -14,6 +14,7 @@ using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
+using Caliburn.Micro;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -21,6 +22,7 @@ using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Esb;
 using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common
@@ -62,10 +64,10 @@ namespace Dev2.Common
         public int LogFlushInterval => _settings.LogFlushInterval ?? 200;
 
         public ServerSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         { }
-        public ServerSettings(string settingsPath, IFile fileWrapper, IDirectory directoryWrapper)
-            : base(settingsPath, fileWrapper, directoryWrapper)
+        public ServerSettings(string settingsPath, IFile fileWrapper, IDirectory directoryWrapper, IClusterDispatcher clusterDispatcher)
+            : base(settingsPath, fileWrapper, directoryWrapper, clusterDispatcher)
         {
         }
 
@@ -152,11 +154,11 @@ namespace Dev2.Common
     public class StudioSettings : ConfigSettingsBase<StudioSettingsData>
     {
         public StudioSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         {
         }
-        protected StudioSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
-            : base(settingsPath, file, directoryWrapper)
+        protected StudioSettings(string settingsPath, IFile file, IDirectory directoryWrapper, IClusterDispatcher clusterDispatcher)
+            : base(settingsPath, file, directoryWrapper, clusterDispatcher)
         {
         }
 
@@ -183,12 +185,12 @@ namespace Dev2.Common
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "auditingSettings.json");
 
         public AuditingSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         {
         }
 
-        protected AuditingSettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper)
-            : base(settingsPath, file, directoryWrapper)
+        protected AuditingSettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper, IClusterDispatcher clusterDispatcher)
+            : base(settingsPath, file, directoryWrapper, clusterDispatcher)
         {
         }
 
@@ -199,12 +201,12 @@ namespace Dev2.Common
     {
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "clusterSettings.json");
         public ClusterSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         {
         }
 
-        public ClusterSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
-            : base(settingsPath, file, directoryWrapper)
+        public ClusterSettings(string settingsPath, IFile file, IDirectory directoryWrapper, IClusterDispatcher clusterDispatcher)
+            : base(settingsPath, file, directoryWrapper, clusterDispatcher)
         {
         }
 

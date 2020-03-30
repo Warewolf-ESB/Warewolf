@@ -20,6 +20,7 @@ using Moq;
 using Newtonsoft.Json;
 using Warewolf.Common;
 using Warewolf.Configuration;
+using Warewolf.Esb;
 using Warewolf.VirtualFileSystem;
 using Warewolf.Web;
 
@@ -39,8 +40,9 @@ namespace Warewolf.Configuration
             var path = "somepath.json";
             var mockFile = new Mock<IFileBase>();
             var mockDirectory = new Mock<IDirectoryBase>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
-            var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object);
+            var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
 
             config.SaveIfNotExists();
 
@@ -60,8 +62,9 @@ namespace Warewolf.Configuration
             var mockFile = new Mock<IFileBase>();
             mockFile.Setup(o => o.Exists(path)).Returns(false);
             var mockDirectory = new Mock<IDirectoryBase>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
-            var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object);
+            var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
 
             mockFile.Verify(o => o.Exists(path), Times.Once);
             mockFile.Verify(o => o.ReadAllText(path), Times.Never);
@@ -81,8 +84,9 @@ namespace Warewolf.Configuration
             mockFile.Setup(o => o.Exists(path)).Returns(true);
             mockFile.Setup(o => o.ReadAllText(path)).Returns("some broken data");
             var mockDirectory = new Mock<IDirectoryBase>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
-            var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object);
+            var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
 
             var expectedData = JsonConvert.SerializeObject(new TestData { SomeInt = DefaultSomeInt, SomeString = DefaultSomeString });
 
@@ -100,8 +104,9 @@ namespace Warewolf.Configuration
             var path = "somepath.json";
             var mockFile = new Mock<IFileBase>();
             var mockDirectory = new Mock<IDirectoryBase>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
-            var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object);
+            var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
 
             config.SaveIfNotExists();
 
@@ -134,7 +139,7 @@ namespace Warewolf.Configuration
         /// </summary>
         class ConfigSettingsBaseForTesting : ConfigSettingsBase<TestData>
         {
-            public ConfigSettingsBaseForTesting(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper) : base(settingsPath, file, directoryWrapper)
+            public ConfigSettingsBaseForTesting(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper, IClusterDispatcher clusterDispatcher) : base(settingsPath, file, directoryWrapper, clusterDispatcher)
             {
             }
 
