@@ -335,7 +335,7 @@ namespace Dev2.Common
         }
     }
 
-    class DefaultLogger : ILogger
+    public class DefaultLogger : ILogger
     {
         public void Debug(object message, string executionId)
         {
