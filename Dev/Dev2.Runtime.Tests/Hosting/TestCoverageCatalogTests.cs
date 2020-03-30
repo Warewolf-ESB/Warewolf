@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var coverage = sut.GenerateAllTestsCoverage(_workflowId, tests);
 
-            Assert.AreEqual(100, coverage.CoveragePercentage);
+            Assert.AreEqual(50, coverage.CoveragePercentage);
         }
 
         [TestMethod]
@@ -75,6 +75,20 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("TestCoverageCatalog_Intergration")]
+        public void TestCoverageCatalog_GenerateSingleTestCoverage_With_MockNodes_ExpectPartialCoverage()
+        {
+            var tests = GetTrueBranchTest();
+
+            var sut = new TestCoverageCatalog();
+
+            var coverage = sut.GenerateSingleTestCoverage(_workflowId, tests);
+
+            Assert.AreEqual(33, coverage.CoveragePercentage);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("TestCoverageCatalog_Intergration")]
         public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_When_FetchReport_ExpectFullCoverageReport()
         {
             var tests = GetTests();
@@ -84,7 +98,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(100, coverage.CoveragePercentage);
+            Assert.AreEqual(50, coverage.CoveragePercentage);
 
             Assert.AreEqual(_workflowName, report.ReportName);
             Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
@@ -103,7 +117,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(100, coverage.CoveragePercentage);
+            Assert.AreEqual(50, coverage.CoveragePercentage);
 
             Assert.AreEqual(_workflowName, report.ReportName);
             Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
@@ -138,6 +152,11 @@ namespace Dev2.Tests.Runtime.Hosting
             return _false_branchTest;
         }
 
+        private IServiceTestModelTO GetTrueBranchTest()
+        {
+            return _true_branchtest;
+        }
+
         private List<IWorkflowNode> GetWorkflowNodes()
         {
             return new List<IWorkflowNode>
@@ -147,6 +166,7 @@ namespace Dev2.Tests.Runtime.Hosting
                     ActivityID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                     UniqueID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                     StepDescription = "Assign(input)",
+                    MockSelected = false
                 },
 
                 new WorkflowNode
@@ -154,6 +174,7 @@ namespace Dev2.Tests.Runtime.Hosting
                     ActivityID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                     UniqueID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                     StepDescription = "If [[data_ttl_expired]] Is = false",
+                    MockSelected = false
                 },
 
                 new WorkflowNode
@@ -161,13 +182,15 @@ namespace Dev2.Tests.Runtime.Hosting
                     ActivityID = Guid.Parse("75cecc31-3ab3-4f68-8348-c30dfa3c04fc"),
                     UniqueID = Guid.Parse("75cecc31-3ab3-4f68-8348-c30dfa3c04fc"),
                     StepDescription = "Assign(error)",
+                    MockSelected = false
                 },
 
                 new WorkflowNode
                 {
                     ActivityID = Guid.Parse("d32cb8ef-cc3c-4044-a6e0-df3d16f91281"),
                     UniqueID = Guid.Parse("d32cb8ef-cc3c-4044-a6e0-df3d16f91281"),
-                    StepDescription = "SQL(get person)"
+                    StepDescription = "SQL(get person)",
+                    MockSelected = true
                 },
 
                 new WorkflowNode
@@ -175,6 +198,7 @@ namespace Dev2.Tests.Runtime.Hosting
                     ActivityID = Guid.Parse("1639df9f-0a29-4481-8295-96466693c5a8"),
                     UniqueID = Guid.Parse("1639df9f-0a29-4481-8295-96466693c5a8"),
                     StepDescription = "Assign(sql person)",
+                    MockSelected = true
                 },
 
                 new WorkflowNode
@@ -182,6 +206,7 @@ namespace Dev2.Tests.Runtime.Hosting
                     ActivityID = Guid.Parse("e886b1c0-0075-4637-9c4f-dacb366cd6fb"),
                     UniqueID = Guid.Parse("e886b1c0-0075-4637-9c4f-dacb366cd6fb"),
                     StepDescription = "Email(sql person)",
+                    MockSelected = true
                 }
             };
         }
@@ -200,6 +225,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                         UniqueID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                         StepDescription = "Assign(input)",
+                        MockSelected = false
                     },
 
                     new ServiceTestStepTO
@@ -207,6 +233,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                         UniqueID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                         StepDescription = "If [[data_ttl_expired]] Is = false",
+                        MockSelected = false
                     },
 
                     new ServiceTestStepTO
@@ -214,6 +241,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("75cecc31-3ab3-4f68-8348-c30dfa3c04fc"),
                         UniqueID = Guid.Parse("75cecc31-3ab3-4f68-8348-c30dfa3c04fc"),
                         StepDescription = "Assign(error)",
+                        MockSelected = false
                     }
                 },
         };
@@ -230,6 +258,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                         UniqueID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                         StepDescription = "Assign(input)",
+                        MockSelected = false
                     },
 
                     new ServiceTestStepTO
@@ -237,13 +266,15 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                         UniqueID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                         StepDescription = "If [[data_ttl_expired]] Is = true",
+                        MockSelected = false
                     },
 
                     new ServiceTestStepTO
                     {
                         ActivityID = Guid.Parse("d32cb8ef-cc3c-4044-a6e0-df3d16f91281"),
                         UniqueID = Guid.Parse("d32cb8ef-cc3c-4044-a6e0-df3d16f91281"),
-                        StepDescription = "SQL(get person)"
+                        StepDescription = "SQL(get person)",
+                        MockSelected = true
                     },
 
                     new ServiceTestStepTO
@@ -251,6 +282,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("1639df9f-0a29-4481-8295-96466693c5a8"),
                         UniqueID = Guid.Parse("1639df9f-0a29-4481-8295-96466693c5a8"),
                         StepDescription = "Assign(sql person)",
+                        MockSelected = true
                     },
 
                     new ServiceTestStepTO
@@ -258,6 +290,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("e886b1c0-0075-4637-9c4f-dacb366cd6fb"),
                         UniqueID = Guid.Parse("e886b1c0-0075-4637-9c4f-dacb366cd6fb"),
                         StepDescription = "Email(sql person)",
+                        MockSelected = true
                     }
                 },
         };
