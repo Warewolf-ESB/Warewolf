@@ -234,11 +234,7 @@ namespace Warewolf.Studio.ViewModels
                 IsConnected = server1.IsConnected;
                 if (args.State == ConnectionNetworkState.Connected)
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        RefreshAsync().ConfigureAwait(true);
-                    }, DispatcherPriority.Background);
-
+                    RefreshAsync().ConfigureAwait(true);
                 }
             };
 

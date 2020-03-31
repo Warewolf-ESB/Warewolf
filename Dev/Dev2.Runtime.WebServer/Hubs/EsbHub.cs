@@ -238,8 +238,12 @@ namespace Dev2.Runtime.WebServer.Hubs
                 }
             }
         }
-        
-// TODO: remove me
+
+        /// <summary>
+        /// Associate this particular hub with workspaceId so that it receives notifications
+        /// </summary>
+        /// <param name="workspaceId"></param>
+        /// <returns></returns>
         public async Task AddDebugWriter(Guid workspaceId)
         {
             
@@ -248,6 +252,12 @@ namespace Dev2.Runtime.WebServer.Hubs
             await task.ConfigureAwait(true);
         }
         
+        /// <summary>
+        /// After having requested an operation of the server that has a resulting payload
+        /// this method can be invoked to fetch that payload
+        /// </summary>
+        /// <param name="receipt"></param>
+        /// <returns></returns>
         public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
         {
             if (Context.User.Identity.Name != null)

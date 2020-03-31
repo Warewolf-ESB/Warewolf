@@ -13,10 +13,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Hubs;
-using Newtonsoft.Json;
 using Warewolf.Esb;
 
 namespace Warewolf.Common
@@ -122,7 +122,7 @@ namespace Warewolf.Common
                 });
         }
 
-        public static HubWatcher<T> Watch<T>(this IHubProxy proxy, ICatalogSubscribeRequest request)
+        public static HubWatcher<T> Watch<T>(this IHubProxyWrapper proxy, ICatalogSubscribeRequest request)
         {
             return new HubWatcher<T>(proxy);
         }
@@ -130,15 +130,22 @@ namespace Warewolf.Common
 
     public class HubWatcher<T>
     {
-        private Subscription _registeredEventWatcher;
+        private ISubscriptionWrapper _registeredEventWatcher;
 
-        public HubWatcher(IHubProxy proxy)
+        public HubWatcher(IHubProxyWrapper proxy)
         {
             _registeredEventWatcher = proxy.Subscribe(typeof(T).Name);
             _registeredEventWatcher.Received += (tokens) =>
             {
-                var o = tokens[0].Value<T>("bork");
-                OnChange?.Invoke(o);
+                if (tokens.Count > 0)
+                {
+                    var o = tokens[0].Value<T>("bork");
+                    OnChange?.Invoke(o);
+                }
+                else
+                {
+                    OnChange?.Invoke(default);
+                }
             };
         }
 

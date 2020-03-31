@@ -49,7 +49,7 @@ namespace Warewolf
         }
     }
 
-    public class LeaderNotification
+    public class ChangeNotification
     {
     }
     public class EventRequest<T> : ICatalogSubscribeRequest

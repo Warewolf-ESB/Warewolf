@@ -8,16 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
+using Dev2.SignalR.Wrappers;
+using Microsoft.AspNet.SignalR.Client;
+using Newtonsoft.Json.Linq;
 using Warewolf.Common;
 using Warewolf.Esb;
 
-namespace Warewolf.Framework48.Tests
+namespace Warewolf.Tests
 {
     [TestClass]
     public class ClusterLeaderProxyTests
@@ -25,26 +29,40 @@ namespace Warewolf.Framework48.Tests
         [TestMethod]
         public void ClusterLeaderProxy_Construct()
         {
-            var proxy = GetClusterCatalog();
+            var proxy = GetClusterLeaderProxy();
             Assert.IsNotNull(proxy);
         }
 
         [TestMethod]
-        public void ClusterLeaderProxy_GetResourceById_ReturnsResource()
+        public void ClusterLeaderProxy_()
         {
-            var environmentConnection = GetConnection();
-            var proxy = new ClusterLeaderProxy(environmentConnection);
-            var resourceId = Guid.Parse("5d82c480-505e-48e9-9915-aca0293be30c");
-            //var resource = proxy.GetResourceById<RabbitMQSource>(Guid.Empty, resourceId);
-            var req = environmentConnection.NewResourceRequest<RabbitMQSource>(Guid.Empty, resourceId);
-            var resource = req.Result;
+            var notified = false;
 
-            Assert.IsTrue(resource.IsSource);
-            Assert.AreEqual("test", resource.UserName);
-            Assert.AreEqual("test", resource.Password);
+            var mockHub = new Mock<IHubProxyWrapper>();
+            var mockSubscription = new Mock<ISubscriptionWrapper>();
+            mockHub.Setup(o => o.Subscribe(nameof(ChangeNotification))).Returns(mockSubscription.Object);
+            var hub = mockHub.Object;
+            var req = new EventRequest<ChangeNotification>(GlobalConstants.ServerWorkspaceID);
+            var watcher = hub.Watch<ChangeNotification>(req);
+            watcher.OnChange += notification =>
+            {
+                Assert.IsNotNull(notification, "cluster notifications should not be null");
+                notified = true;
+            };
+            
+            InjectNotificationIntoMock(mockSubscription);
+            
+            Assert.IsTrue(notified);
         }
 
-        private static ClusterLeaderProxy GetClusterCatalog()
+        private static void InjectNotificationIntoMock(Mock<ISubscriptionWrapper> mockSubscription)
+        {
+            mockSubscription.Raise(o => o.Received += null, new List<JToken>());
+        }
+
+        #region Setup
+
+        private static ClusterLeaderProxy GetClusterLeaderProxy()
         {
             var environmentConnection = GetConnection();
             var proxy = new ClusterLeaderProxy(environmentConnection);
@@ -65,5 +83,17 @@ namespace Warewolf.Framework48.Tests
             var environmentConnection = mockEnvironmentConnection.Object;
             return environmentConnection;
         }
+        
+        //mockProxy.Setup(o => o.Subscribe(nameof(LeaderNotification))).Returns();
+        //var proxy = mockProxy.Object;
+
+        /*  // run test
+          var resourceId = Guid.Parse("5d82c480-505e-48e9-9915-aca0293be30c");
+          var request = new EventRequest<LeaderNotification>(Guid.Empty);
+          var watcher = proxy.Watch<LeaderNotification>(request);
+          watcher.OnChange += (LeaderNotification notification) => { notified = true; };
+
+          Assert.IsTrue(notified);*/
+        #endregion
     }
 }
