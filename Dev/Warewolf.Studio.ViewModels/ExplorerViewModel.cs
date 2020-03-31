@@ -359,7 +359,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (!environmentConnection.IsConnected)
                     {
-                        environmentConnection.Connect(environmentId);
+                        await environmentConnection.ConnectAsync(environmentId);
                     }
                     else
                     {

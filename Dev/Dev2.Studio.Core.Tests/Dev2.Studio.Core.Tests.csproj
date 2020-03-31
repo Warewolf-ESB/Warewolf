@@ -134,6 +134,7 @@
     <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Network\ServerProxyWithoutChunkingTests.cs" />
     <Compile Include="Network\WebServerTests.cs" />
     <Compile Include="Settings\ClusterViewModelTests.cs" />
     <Compile Include="Triggers\ClientScheduledResourceTests.cs" />
