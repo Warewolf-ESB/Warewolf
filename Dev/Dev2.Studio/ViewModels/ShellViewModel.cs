@@ -669,6 +669,11 @@ namespace Dev2.Studio.ViewModels
 
         public void SetActiveServer(Guid environmentId)
         {
+            if (ActiveServer.EnvironmentID == environmentId)
+            {
+                return;
+            }
+
             var environmentModel = ServerRepository.Get(environmentId);
             if (environmentModel != null)
             {
