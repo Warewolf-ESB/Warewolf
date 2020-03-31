@@ -12,15 +12,17 @@
 using System;
 using System.Collections.Generic;
 
-namespace Dev2
+namespace Warewolf
 {
     public static class CustomContainer
     {
+        // TODO: make this private
         public static List<Type> LoadedTypes { get; set; }
 
         static readonly Dictionary<Type, object> RegisterdTypes = new Dictionary<Type, object>();
         static readonly Dictionary<Type, Func<object>> RegisterdPerRequestTypes = new Dictionary<Type, Func<object>>();
 
+        // TODO: remove this so that its only allowed in tests
         public static int EntiresCount => RegisterdTypes.Count;
 
     
@@ -60,6 +62,7 @@ namespace Dev2
             return null;
         }
 
+        // TODO: remove this so that its only allowed in tests
         public static void DeRegister<T>()
         {
             if(RegisterdTypes.ContainsKey(typeof(T)))
