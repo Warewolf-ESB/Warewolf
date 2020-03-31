@@ -10,6 +10,7 @@ namespace Warewolf.UI.Tests
     public class MySQLSourceTests
     {
         const string SourceName = "CodedUITestMySQLSource";
+        Depends _dependency;
 
         [TestMethod]
         [TestCategory("Database Sources")]
@@ -26,7 +27,7 @@ namespace Warewolf.UI.Tests
             DBSourceUIMap.Click_UserButton_On_DatabaseSource();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Exists);
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Exists);
-            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("RSAKLFSVRDEV");
+            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab(_dependency.Container.IP);
             DBSourceUIMap.IEnterRunAsUserRootOnDatabaseSource();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
@@ -59,7 +60,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User authentification rabio button is not enabled.");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Enabled, "Windows authentification type radio button not enabled.");
             Assert.IsFalse(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
-            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("RSAKLFSVRDEV");
+            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab(_dependency.Container.IP);
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
         }
@@ -77,7 +78,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User authentification rabio button is not enabled.");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Enabled, "Windows authentification type radio button not enabled.");
             Assert.IsFalse(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
-            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("RSAKLFSVRDEV");
+            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab(_dependency.Container.IP);
             DBSourceUIMap.Enter_Text_Into_DatabaseConnectionTimeout("0");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
@@ -91,7 +92,11 @@ namespace Warewolf.UI.Tests
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
+            _dependency = new Depends(Depends.ContainerType.MSSQL);
         }
+
+        [TestCleanup]
+        public void MyTestCleanup() => _dependency.Dispose();
         
         public UIMap UIMap
         {

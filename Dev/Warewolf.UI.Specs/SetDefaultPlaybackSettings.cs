@@ -1,9 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using System.Reflection;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using Warewolf.Test.Agent;
 using Warewolf.UI.Tests;
 
 namespace Warewolf.UISpecs
@@ -12,7 +8,7 @@ namespace Warewolf.UISpecs
     [DeploymentItem("Warewolf.UI.Tests.dll")]
     class SetDefaultPlaybackSettings
     {
-        static ContainerLauncher _containerOps;
+        static Depends _containerOps;
 
         [BeforeScenario]
         public void UseDefaultPlaybackSettings()
@@ -22,7 +18,7 @@ namespace Warewolf.UISpecs
 
         [BeforeFeature("Deploy")]
         [BeforeFeature("Explorer")]
-        public static void StartRemoteContainer() => _containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+        public static void StartRemoteContainer() => _containerOps = new Depends(Depends.ContainerType.CIRemote);
 
         [AfterFeature("Deploy")]
         [AfterFeature("Explorer")]
