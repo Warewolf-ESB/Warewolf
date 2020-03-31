@@ -157,7 +157,7 @@ namespace Dev2.Tests.Runtime.Hosting
             return _true_branchtest;
         }
 
-        private List<IWorkflowNode> GetWorkflowNodes()
+        public List<IWorkflowNode> GetWorkflowNodes()
         {
             return new List<IWorkflowNode>
             {

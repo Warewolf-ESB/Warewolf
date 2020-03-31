@@ -61,6 +61,7 @@ namespace Dev2.Runtime.WebServer
             var removeEmitionType = webServerUrl.Substring(startIndex)
                 .Replace("/.tests.trx", "")
                 .Replace("/.tests", "")
+                .Replace("/.coverage.json", "")
                 .Replace("/.coverage", "");
             var removeAccessType = removeEmitionType.Replace(lower, "").Replace(firstCap, "");
             return removeAccessType;

@@ -151,6 +151,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 _dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
                 _dataObject.SetTestResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, workspaceGuid), webRequest, serviceName, resource);
+                _dataObject.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, workspaceGuid), webRequest, serviceName, resource);
                 _dataObject.WebUrl = webRequest.WebServerUrl;
                 _dataObject.EsbChannel = new EsbServicesEndpoint();
 
@@ -177,7 +178,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _serializer = new Dev2JsonSerializer();
 
                 PrepareDataObject(webRequest, serviceName, headers, user, _workspaceGuid, out _resource);
-                var isTestCoverage = _dataObject.ReturnType == EmitionTypes.Cover;
+                var isTestCoverage = _dataObject.ReturnType == EmitionTypes.Cover || _dataObject.ReturnType == EmitionTypes.CoverJson;
                 var isTestRun = (_dataObject.ReturnType == EmitionTypes.TEST ||
                                  _dataObject.ReturnType == EmitionTypes.TRX) && _dataObject.TestName == "*";
 

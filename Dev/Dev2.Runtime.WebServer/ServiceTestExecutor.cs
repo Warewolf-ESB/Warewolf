@@ -77,9 +77,9 @@ namespace Dev2.Runtime.WebServer
         {
             if (dataObject.TestsResourceIds?.Any() ?? false)
             {
-                if (dataObject.ReturnType == Web.EmitionTypes.Cover)
+                if (dataObject.ReturnType == Web.EmitionTypes.CoverJson)
                 {
-                    formatter = dataObject.RunCoverageAndReturnJSON(formatter, testCoverageCatalog, ref executePayload);
+                    formatter = dataObject.RunCoverageAndReturnJSON(formatter, testCoverageCatalog, resourceCatalog, workspaceGuid, serializer, ref executePayload);
                 }
                 if (dataObject.ReturnType == Web.EmitionTypes.TEST)
                 {

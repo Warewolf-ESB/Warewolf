@@ -98,7 +98,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 {
                     return ExecuteFolderTests(requestUri.ToString(), false);
                 }
-                if (requestUri.ToString().EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
+                if (requestUri.ToString().EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return ExecuteFolderTests(requestUri.ToString(), false);
                 }

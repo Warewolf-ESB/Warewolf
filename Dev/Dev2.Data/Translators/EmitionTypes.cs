@@ -19,5 +19,6 @@ namespace Dev2.Web
         TEST,
         TRX,
         Cover,
+        CoverJson,
     }
 }

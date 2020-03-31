@@ -22,6 +22,8 @@ using System.Collections.Concurrent;
 using Dev2.Common.Interfaces.Enums;
 using Warewolf;
 using Warewolf.Auditing;
+using Warewolf.Services;
+using Warewolf.Data;
 
 namespace Dev2.Interfaces
 {
@@ -31,7 +33,7 @@ namespace Dev2.Interfaces
     {
         public int NumberOfRetries { get; set; }
     }
-    
+
     public interface IDSFDataObject : IExecutionContext
     {
         Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
@@ -130,5 +132,7 @@ namespace Dev2.Interfaces
         IStateNotifier StateNotifier { get; set; }
         Exception ExecutionException { get; set; }
         IDictionary<IDev2Activity, (RetryState, IEnumerator<bool>)> Gates { get; }
+        string CoverageReportName { get; set; }
+        Guid[] CoverageReportResourceIds { get; set; }
     }
 }
