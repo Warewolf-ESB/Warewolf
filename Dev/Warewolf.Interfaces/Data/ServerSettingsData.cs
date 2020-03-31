@@ -11,14 +11,25 @@ using System;
 
 namespace Warewolf.Configuration
 {
-    public class ServerSettingsData : IEquatable<ServerSettingsData>, IHasChanged
+    public class ServerSettingsData : BindableBase, IEquatable<ServerSettingsData>, IHasChanged
     {
+        public ServerSettingsData()
+        {
+            PropertyChanged += (sender, args) => HasChanged = true;
+        }
+
         public ushort? WebServerPort { get; set; }
         public ushort? WebServerSslPort { get; set; }
         public string SslCertificateName { get; set; }
         public bool? CollectUsageStats { get; set; }
         public int? DaysToKeepTempFiles { get; set; }
-        public string AuditFilePath { get; set; }
+
+        private string _auditFilePath;
+        public string AuditFilePath
+        {
+            get => _auditFilePath;
+            set => SetProperty(ref _auditFilePath, value);
+        }
         public bool? EnableDetailedLogging { get; set; }
         public int? LogFlushInterval { get; set; }
 
@@ -34,6 +45,15 @@ namespace Warewolf.Configuration
             equals &= LogFlushInterval == other.LogFlushInterval;
 
             return equals;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is ServerSettingsData settingsData)
+            {
+                return Equals(settingsData);
+            }
+            return false;
         }
 
         public bool HasChanged { get; set; }

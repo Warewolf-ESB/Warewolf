@@ -11,6 +11,7 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.SignalR.Wrappers;
@@ -139,12 +140,12 @@ namespace Warewolf.Common
             {
                 if (tokens.Count > 0)
                 {
-                    var o = tokens[0].Value<T>("bork");
+                    var o = tokens[0].ToObject<T>();
                     OnChange?.Invoke(o);
                 }
                 else
                 {
-                    OnChange?.Invoke(default);
+                    Dev2Logger.Error("watcher stream encountered empty value", GlobalConstants.WarewolfError);
                 }
             };
         }

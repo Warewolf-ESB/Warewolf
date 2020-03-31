@@ -15,10 +15,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.SignalR.Wrappers;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json.Linq;
 using Warewolf.Common;
+using Warewolf.Configuration;
 using Warewolf.Esb;
 
 namespace Warewolf.Tests
@@ -38,8 +40,14 @@ namespace Warewolf.Tests
         {
             var notified = false;
 
-            var mockHub = new Mock<IHubProxyWrapper>();
             var mockSubscription = new Mock<ISubscriptionWrapper>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
+            mockClusterDispatcher.Setup(o => o.Write(It.IsAny<Object>())).Callback<Object>((arg) =>
+            {
+                mockSubscription.Raise(o => o.Received += null, new List<JToken> {JObject.FromObject(arg)});
+            });
+
+            var mockHub = new Mock<IHubProxyWrapper>();
             mockHub.Setup(o => o.Subscribe(nameof(ChangeNotification))).Returns(mockSubscription.Object);
             var hub = mockHub.Object;
             var req = new EventRequest<ChangeNotification>(GlobalConstants.ServerWorkspaceID);
@@ -50,14 +58,17 @@ namespace Warewolf.Tests
                 notified = true;
             };
             
-            InjectNotificationIntoMock(mockSubscription);
+            InjectNotificationIntoMock(mockClusterDispatcher);
             
             Assert.IsTrue(notified);
         }
 
-        private static void InjectNotificationIntoMock(Mock<ISubscriptionWrapper> mockSubscription)
+        private static void InjectNotificationIntoMock(Mock<IClusterDispatcher> mockClusterDispatcher)
         {
-            mockSubscription.Raise(o => o.Received += null, new List<JToken>());
+            var mockFile = new Mock<IFile>();
+            var mockDir = new Mock<IDirectory>();
+            var settings = new ServerSettings("some path", mockFile.Object, mockDir.Object, mockClusterDispatcher.Object);
+            settings.AuditFilePath = "some new file path";
         }
 
         #region Setup
