@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Network;
 using Dev2.Studio;
 using Dev2.Studio.Controller;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Interfaces;
@@ -68,7 +69,7 @@ namespace Dev2
             CustomContainer.Register<IShellViewModel>(_mainViewModel);
             CustomContainer.Register<IShellViewModel>(_mainViewModel);
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
-            var conn = new ServerProxy("http://localHost:3142", CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
+            var conn = ServerRepository.Instance.Get(Guid.Empty).Connection;
             conn.Connect(Guid.NewGuid());
             CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Microsoft.Practices.Prism.PubSubEvents.EventAggregator());
 

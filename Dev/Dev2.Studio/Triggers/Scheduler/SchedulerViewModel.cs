@@ -810,6 +810,7 @@ namespace Dev2.Triggers.Scheduler
 
     public static class SchedulerServerExtensions
     {
+        // TODO: move this to use the T obj.As<T>() interface pattern
         public static IServer ToEnvironmentModel(this IServer server)
         {
             if (server is Server resource)

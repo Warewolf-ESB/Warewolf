@@ -54,6 +54,7 @@ namespace Dev2.Studio.Core.Models
 
         #region CTOR
 
+        // TODO: these two constructors should not be acting separately
         public Server(Guid id, IEnvironmentConnection environmentConnection)
         {
             Initialize(id, environmentConnection, null);

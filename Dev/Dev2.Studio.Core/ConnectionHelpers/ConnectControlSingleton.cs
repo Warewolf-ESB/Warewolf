@@ -13,6 +13,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Network;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
@@ -151,7 +152,7 @@ namespace Dev2.ConnectionHelpers
 
         ConnectControlEnvironment CreateNewRemoteServerEnvironment() => new ConnectControlEnvironment
         {
-            Server = new Server(Guid.NewGuid(), new ServerProxy(new Uri("http://localhost:3142"))) { Name = NewServerText }
+            Server = ServerRepository.Instance.Get(Guid.Empty)
         };
 
         public void ReloadServer()

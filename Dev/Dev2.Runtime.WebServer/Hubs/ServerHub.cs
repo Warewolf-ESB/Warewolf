@@ -30,11 +30,6 @@ namespace Dev2.Runtime.WebServer.Hubs
     // of your Hub class processes the message.
     public abstract class ServerHub : Hub<IWarewolfServerHub>
     {
-        protected ServerHub()
-            : this(Server.Instance)
-        {
-        }
-
         protected ServerHub(Server server)
         {
             Server = server;

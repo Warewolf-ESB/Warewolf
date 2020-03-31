@@ -332,6 +332,7 @@ namespace Dev2.Studio.Core
 
         #region LoadInternal
 #pragma warning disable S2360 // Optional parameters should not be used
+        // TODO: change force = true to use an enum, use a pair of ints, ReloadedCount vs RequestedReloadCount or something to replace IsLoaded
         protected virtual void LoadInternal(bool force = false)
 #pragma warning restore S2360 // Optional parameters should not be used
         {

@@ -50,12 +50,10 @@ namespace Dev2.Runtime.WebServer.Hubs
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         static readonly Dictionary<Guid, string>  ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
         public EsbHub()
-        {
-            DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
-            ClusterDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
-        }
+            :this(Server.Instance)
+        {}
 
-        public EsbHub(Server server)
+        private EsbHub(Server server)
             : base(server)
         {
             DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
@@ -240,9 +238,11 @@ namespace Dev2.Runtime.WebServer.Hubs
                 }
             }
         }
-
+        
+// TODO: remove me
         public async Task AddDebugWriter(Guid workspaceId)
         {
+            
             var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
             task.Start();
             await task.ConfigureAwait(true);
