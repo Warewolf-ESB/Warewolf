@@ -31,10 +31,11 @@ using Newtonsoft.Json.Linq;
 using Warewolf.Data;
 using Warewolf.Services;
 using Enum = System.Enum;
+using Dev2.Runtime;
 
 namespace Dev2.Runtime.WebServer
 {
-    static class DataObjectExtentions
+    public static class DataObjectExtentions
     {
         private static string _originalServiceName;
 
@@ -59,6 +60,10 @@ namespace Dev2.Runtime.WebServer
                 if (webRequest.WebServerUrl.EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase))
                 {
                     dataObject.ReturnType = EmitionTypes.Cover;
+                }
+                if (webRequest.WebServerUrl.EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    dataObject.ReturnType = EmitionTypes.CoverJson;
                 }
                 if (webRequest.WebServerUrl.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -208,10 +213,32 @@ namespace Dev2.Runtime.WebServer
                 }
                 var resources = catalog.GetExecutableResources(path);
                 dataObject.TestsResourceIds = resources.Select(p => p.ResourceID).ToArray();
+
             }
             else
             {
-                dataObject.TestsResourceIds = new[] { resource.ResourceID };
+                dataObject.TestsResourceIds = new[] { resource is null ? Guid.Empty : resource.ResourceID }; //when null this was throwing 
+            }
+        }
+
+
+        public static void SetTestCoverageResourceIds(this IDSFDataObject dataObject, IContextualResourceCatalog catalog, WebRequestTO webRequest, string serviceName, IWarewolfResource resource)
+        {
+            if (IsRunAllTestsRequest(dataObject.ReturnType, serviceName) || IsRunAllCoverageRequest(dataObject.ReturnType, serviceName))
+            {
+                var pathOfAllResources = webRequest.GetPathForAllResources();
+                dataObject.ResourceID = Guid.Empty;
+                var path = pathOfAllResources;
+                if (string.IsNullOrEmpty(pathOfAllResources))
+                {
+                    path = "/";
+                }
+                var resources = catalog.GetExecutableResources(path);
+                dataObject.CoverageReportResourceIds = resources.Select(p => p.ResourceID).ToArray();
+            }
+            else
+            {
+                dataObject.CoverageReportResourceIds = new[] { resource is null ? Guid.Empty : resource.ResourceID }; //when null this was throwing 
             }
         }
 
@@ -239,8 +266,8 @@ namespace Dev2.Runtime.WebServer
         private static bool IsRunAllCoverageRequest(EmitionTypes returnType, string serviceName)
         {
             var isRunAllCoverage = !string.IsNullOrEmpty(serviceName);
-            isRunAllCoverage &= serviceName == "*" || serviceName == ".coverage";
-            isRunAllCoverage &= returnType == EmitionTypes.Cover;
+            isRunAllCoverage &= serviceName == "*" || serviceName == ".coverage" || serviceName == ".coverage.json";
+            isRunAllCoverage &= returnType == EmitionTypes.Cover || returnType == EmitionTypes.CoverJson;
             return isRunAllCoverage;
         }
 
@@ -411,24 +438,110 @@ namespace Dev2.Runtime.WebServer
             return result;
         }
         
-        public static DataListFormat RunCoverageAndReturnJSON(this IDSFDataObject dataObject, DataListFormat formatter, ITestCoverageCatalog testCoverageCatalog, ref string executePayload)
+        public static DataListFormat RunCoverageAndReturnJSON(this IDSFDataObject dataObject, DataListFormat formatter, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, ref string executePayload)
         {
-            var coverageResults = RunListOfCoverage(dataObject, testCoverageCatalog);
+            var allCoverageReports = RunListOfCoverage(dataObject, testCoverageCatalog,workspaceGuid, serializer, catalog);
+
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
+            var objArray = allCoverageReports.AllCoverageReportsSummary
+                .Where(o => o.HasTestReports)
+                .Select(o =>
+                {
+                    var name = o.Resource.ResourceName;
+                    if (o.Resource is IFilePathResource filePath)
+                    {
+                        name = filePath.Path;
+                    }
+
+                    return new JObject
+                    {
+                        {"ResourceID", o.Resource.ResourceID},
+                        {"Name", name},
+                        {"Reports", new JArray(o.ReportsPerWorkflow.Select(o1 => o1.BuildTestResultJSONForWebRequest()))}
+                    };
+                });
+
+            var obj = new JObject
+            {
+                {"StartTime", allCoverageReports.StartTime},
+                {"EndTime", allCoverageReports.EndTime},
+                {"Results", new JArray(objArray)},
+            };
+            executePayload = serializer.Serialize(obj);
             return formatter;
         }
 
-        private static object RunListOfCoverage(IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog)
+        private static AllCoverageReports RunListOfCoverage(IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog)
         {
-            foreach (var testsResourceId in dataObject.TestsResourceIds)
+            var allCoverageReports = new AllCoverageReports
             {
-                //testCoverageCatalog.GetTestCoverage(testsResourceId);
-                var serviceTestModelTos = testCoverageCatalog.TestCoverageReports[testsResourceId];    
-                
+                StartTime = DateTime.Now
+            };
+
+            var selectedResources = catalog.GetResources(workspaceGuid)
+                .Where(resource => dataObject.CoverageReportResourceIds.Contains(resource.ResourceID)).ToArray();
+
+            testCoverageCatalog.ReloadAllReports();
+            var coverageReportsTemp = new List<WorkflowCoverageReports>();
+            foreach (var coverageResourceId in dataObject.CoverageReportResourceIds)
+            {
+                var res = selectedResources.FirstOrDefault(o => o.ResourceID == coverageResourceId);
+                var coverageReports = new WorkflowCoverageReports(res);
+
+                var allWorkflowReports = testCoverageCatalog.Fetch(coverageResourceId);
+                if (allWorkflowReports?.Count > 0)
+                {
+                    foreach (var workflowReport in allWorkflowReports)
+                    {
+                        coverageReports.Add(workflowReport);
+                    }
+                    coverageReportsTemp.Add(coverageReports);
+                }
             }
 
-            return null;
+            foreach (var item in coverageReportsTemp)
+            {
+                allCoverageReports.Add(item);
+            }
+
+            allCoverageReports.EndTime = DateTime.Now;
+
+            return allCoverageReports;
+        }
+    }
+
+    internal class AllCoverageReports
+    {
+        public AllCoverageReports()
+        {
+        }
+
+        public List<WorkflowCoverageReports> AllCoverageReportsSummary { get; set; } = new List<WorkflowCoverageReports>();
+        public JToken StartTime { get; internal set; }
+        public JToken EndTime { get; internal set; }
+
+        internal void Add(WorkflowCoverageReports item)
+        {
+            AllCoverageReportsSummary.Add(item);
+        }
+    }
+
+    internal class WorkflowCoverageReports
+    {
+        public WorkflowCoverageReports(IWarewolfResource resource)
+        {
+            Resource = resource;
+        }
+
+        public List<IServiceTestCoverageModelTo> ReportsPerWorkflow { get; set; } = new List<IServiceTestCoverageModelTo>();
+        public Guid WorkflowId { get; set; }
+        public bool HasTestReports => ReportsPerWorkflow.Count > 0;
+        public IWarewolfResource Resource { get; set; }
+
+        internal void Add(IServiceTestCoverageModelTo lii)
+        {
+            ReportsPerWorkflow.Add(lii);
         }
     }
 

@@ -10,6 +10,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
 
@@ -53,6 +55,35 @@ namespace Dev2.Runtime.WebServer
                     resObj.Add("Message", result.Result.Message);
                 }
             }
+            return resObj;
+        }
+
+
+        public static JObject BuildTestResultJSONForWebRequest(this IServiceTestCoverageModelTo report)
+        {
+            var resObj = new JObject { { "Report Name", report.ReportName } };
+            resObj.Add("OldReportName", report.OldReportName);
+            resObj.Add("WorkflowId", report.WorkflowId);
+            resObj.Add("CoveragePercentage", report.CoveragePercentage);
+            resObj.Add("AllTestNodesCovered", new JArray(report.AllTestNodesCovered.Select(o1 => o1.Select(oo => oo.BuildTestResultJSONForWebRequest()))));
+
+            return resObj;
+        }
+
+        public static JObject BuildTestResultJSONForWebRequest(this ISingleTestNodesCovered report)
+        {
+            var resObj = new JObject { { "Report Name", report.TestName } };
+            resObj.Add("OldReportName", new JArray(report.TestNodesCovered.Select(o => o.BuildTestResultJSONForWebRequest())));
+
+            return resObj;
+        }
+        public static JObject BuildTestResultJSONForWebRequest(this IWorkflowNode report)
+        {
+            var resObj = new JObject { { "Node Name", report.StepDescription } };
+            resObj.Add("ActivityID", report.ActivityID);
+            resObj.Add("UniqueID", report.UniqueID);
+            resObj.Add("MockSelected", report.MockSelected);
+
             return resObj;
         }
     }

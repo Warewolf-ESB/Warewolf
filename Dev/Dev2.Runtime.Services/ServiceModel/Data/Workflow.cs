@@ -34,6 +34,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         string HelpLink { get; set; }
         string IconPath { get; set; }
         string Tags { get; set; }
+        string Name { get; set; }
         List<IWorkflowNode> WorkflowNodes { get; }
         StringBuilder XamlDefinition { get; set; }
 
@@ -59,6 +60,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             IconPath = xml.ElementSafe("IconPath");
             Tags = xml.ElementSafe("Tags");
             HelpLink = xml.ElementSafe("HelpLink");
+            Name = xml.ElementSafe("DisplayName");
+            //DisplayName = xml.ElementSafe("Name");
 
             var action = xml.Descendants("Action").FirstOrDefault();
             if (action == null)
@@ -98,7 +101,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                             UniqueID = Guid.Parse(activity.UniqueID),
                             StepDescription = activity.GetDisplayName()
                         });
-                        break;
+                        break; //TODO: remember the other types to be covered here too
 
                     default:
                         break;
@@ -151,6 +154,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string HelpLink { get; set; }
         public Collection<FlowNode> FlowNodes { get; private set; }
         public List<IWorkflowNode> WorkflowNodes { get; }
+        public string Name { get; set; }
 
         #region ToXml
 

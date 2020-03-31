@@ -37,6 +37,8 @@ namespace Dev2.Runtime
         IServiceTestCoverageModelTo FetchReport(Guid workflowId, string reportName);
         void ReloadAllReports();
         void DeleteAllCoverageReports(Guid workflowId);
+        List<IServiceTestCoverageModelTo> Fetch(Guid coverageResourceId);
+        void SaveCoverage(Guid resourceId, IServiceTestCoverageModelTo serviceTestCoverageModelTo);
     }
 
     public class TestCoverageCatalog : ITestCoverageCatalog
@@ -235,6 +237,22 @@ namespace Dev2.Runtime
             }
             return serviceTestCoverageModelTos;
         }
+
+        public List<IServiceTestCoverageModelTo> Fetch(Guid coverageResourceId)
+        {
+            var result = TestCoverageReports.GetOrAdd(coverageResourceId, guid =>
+            {
+                var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
+                return GetReportList(dir);
+            });
+            // note: list is duplicated in order to avoid concurrent modifications of the list during test runs
+            return result.ToList();
+        }
+
+        public void SaveCoverage(Guid resourceId, IServiceTestCoverageModelTo serviceTestCoverageModelTo)
+        {
+            SaveCoverageReport(resourceId, serviceTestCoverageModelTo);
+        }
     }
 
     public interface IServiceTestCoverageModelToFactory
@@ -293,28 +311,37 @@ namespace Dev2.Runtime
     {
         private readonly IResourceCatalog _resourceCatalog;
         private readonly IWorkflowFactory _workflowFactory;
+        private readonly IWorkflow _workflow;
         private Guid _workflowId;
+        private string _name;
 
         public WorkflowWrapper(Guid worflowId)
         {
             _resourceCatalog = CustomContainer.Get<IResourceCatalog>() ?? ResourceCatalog.Instance;
             _workflowFactory = CustomContainer.Get<IWorkflowFactory>() ?? new WorkflowFactory();
 
+            var workflowContents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, worflowId);
+            _workflow = _workflowFactory.New(workflowContents.ToXElement());
+
             _workflowId = worflowId;
+            _name = _workflow.Name;
         }
 
-        public string Name { get; private set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
-        public Guid WorkflowId 
+        public Guid WorkflowId
         {
             get { return _workflowId; }
-            set { _workflowId = value; } 
+            set { _workflowId = value; }
         }
 
         public List<IWorkflowNode> GetAllWorkflowNodes()
         {
-            var workflow = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, WorkflowId);
-            return _workflowFactory.New(workflow.ToXElement()).WorkflowNodes; 
+            return _workflow.WorkflowNodes;
         }
     }
 
@@ -382,8 +409,8 @@ namespace Dev2.Runtime
     public interface IServiceTestCoverageModelTo
     {
         List<List<ISingleTestNodesCovered>> AllTestNodesCovered { get; }
-        string OldReportName { get; }
-        string ReportName { get; }
+        string OldReportName { get; set; }
+        string ReportName { get; set; }
         Guid WorkflowId { get; }
         double CoveragePercentage { get; }
     }
@@ -401,8 +428,8 @@ namespace Dev2.Runtime
         public ServiceTestCoverageModelTo(Guid workflowId, CoverageArgs args, List<IServiceTestModelTO> tests)
         {
             _coverArgs =  args;
-            OldReportName = args.OldReportName;
-            ReportName = args.ReportName;
+            OldReportName = args?.OldReportName;
+            ReportName = args?.ReportName;
             _tests = tests;
             _workflow = CustomContainer.Get<IWorkflowWrapper>() ?? new WorkflowWrapper(workflowId);
 
@@ -430,9 +457,9 @@ namespace Dev2.Runtime
             return testNodesCovered;
         }
 
-        public string OldReportName { get; private set; }
+        public string OldReportName { get; set; }
 
-        public string ReportName { get; private set; }
+        public string ReportName { get; set; }
 
         public Guid WorkflowId => _workflow.WorkflowId;
 
