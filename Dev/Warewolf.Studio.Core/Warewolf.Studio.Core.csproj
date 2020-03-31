@@ -122,6 +122,10 @@
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
+      <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
+      <Name>Warewolf.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>

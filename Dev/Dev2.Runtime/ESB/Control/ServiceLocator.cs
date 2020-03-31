@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Warewolf;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Control

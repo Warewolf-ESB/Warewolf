@@ -16,6 +16,7 @@ using System.IO;
 using System.Threading;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Warewolf;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Esb;

@@ -30,6 +30,7 @@ using System.Activities;
 using System.Linq;
 using System.Threading;
 using Dev2.Runtime.ESB.Management;
+using Warewolf;
 using Warewolf.Execution;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;

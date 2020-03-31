@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Dev2.Common.Interfaces.Data;
+using Warewolf;
 
 namespace Dev2.Runtime.Hosting
 {

@@ -214,6 +214,10 @@
       <Project>{2C4E3DC6-2195-4486-894D-8351B066D8CA}</Project>
       <Name>Warewolf.Auditing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
+      <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
+      <Name>Warewolf.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
