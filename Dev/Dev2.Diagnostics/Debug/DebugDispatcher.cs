@@ -136,6 +136,7 @@ namespace Dev2.Diagnostics.Debug
             writeArgs.remoteDebugItems.Clear();
         }
 
+        // TODO: fix this, we should not be storing debug items until the execution is completed before sending them to the studio
         private void DebugStateFinalStep(WriteArgs writeArgs)
         {
             if (writeArgs.debugState.IsFinalStep())
