@@ -18,6 +18,40 @@ namespace Warewolf.Client
 {
     public static class HubProxyWrapperExtensionMethods
     {
+        public static Task<T> ExecReq3<T>(this IConnectedHubProxy connectedProxy, ICatalogRequest request, int maxRetries)
+        {
+            return Task<T>.Factory.StartNew(() => {
+                int tries = 0;
+                do
+                {
+                    try
+                    {
+                        connectedProxy.Connection.EnsureConnected(TimeSpan.FromSeconds(5)).Wait();
+
+                        return connectedProxy.Proxy.ExecReq2<T>(request)
+                            .ContinueWith((resultTask) =>
+                            {
+                                if (resultTask.IsFaulted)
+                                {
+                                    throw resultTask.Exception;
+                                }
+
+                                return resultTask.Result;
+                            }).Result;
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        tries++;
+                        if (tries >= maxRetries)
+                        {
+                            throw e;
+                        }
+                    }
+                } while (tries <= maxRetries);
+
+                throw new Exception("max retries reached");
+            });
+        }
         public static Task<T> ExecReq2<T>(this IHubProxyWrapper proxy, ICatalogRequest request)
         {
             var serializer = new Dev2JsonSerializer();
