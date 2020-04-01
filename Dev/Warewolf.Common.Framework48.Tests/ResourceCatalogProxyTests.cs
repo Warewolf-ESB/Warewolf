@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Text;
-using Warewolf.Common;
+using Warewolf.Client;
 using Warewolf.Esb;
 
 namespace Warewolf.Tests

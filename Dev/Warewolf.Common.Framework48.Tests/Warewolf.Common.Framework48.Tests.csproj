@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Runtime.WebServer\Dev2.Runtime.WebServer.csproj" />
+    <ProjectReference Include="..\Warewolf.Client\Warewolf.Client.csproj" />
     <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj" />

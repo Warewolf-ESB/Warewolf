@@ -8,9 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Warewolf.Esb
+using System;
+using System.Text;
+using System.Threading.Tasks;
+using Warewolf.Esb;
+
+namespace Warewolf.EsbClient
 {
-    public class ResourceRequest
+    public interface IEnvironmentConnectionBase
     {
+        Task<StringBuilder> ExecuteCommandAsync(ICatalogRequest req, Guid workspaceId);
     }
 }

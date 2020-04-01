@@ -12,12 +12,11 @@ using System;
 using System.Threading.Tasks;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
-using Microsoft.AspNet.SignalR.Client;
+using Dev2.SignalR.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Common;
 
-namespace Warewolf.Tests
+namespace Warewolf.Client.Tests
 {
     [TestClass]
     public class ProxyTests
@@ -29,7 +28,7 @@ namespace Warewolf.Tests
                 "{\"$id\": \"1\",\"$type\": \"Dev2.Data.ServiceModel.RabbitMQSource, Dev2.Data\",\"UserName\": \"test\",\"Password\": \"test\",\"ResourceID\": \"5d82c480-505e-48e9-9915-aca0293be30c\"}";
 
             // setup mock hub proxy
-            var mockProxy = new Mock<IHubProxy>();
+            var mockProxy = new Mock<IHubProxyWrapper>();
             mockProxy.Setup(o => o.Invoke<Receipt>(It.IsAny<string>(), It.IsAny<object[]>()))
                 .Returns(Task<Receipt>.Factory.StartNew(() => new Receipt()));
             mockProxy.Setup(o => o.Invoke<string>(It.IsAny<string>(), It.IsAny<object[]>()))

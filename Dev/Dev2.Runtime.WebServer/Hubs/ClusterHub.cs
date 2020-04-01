@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -21,12 +21,12 @@ namespace Dev2.Runtime.WebServer.Hubs
     {
         bool SetFollowingAllowed();
     }
-    // Instances of the Hub class are transient, you can't use them 
-    // to maintain state from one method call to the next. Each time 
+    // Instances of the Hub class are transient, you can't use them
+    // to maintain state from one method call to the next. Each time
     // the server receives a method call from a client, a new instance
     // of your Hub class processes the message.
     [AuthorizeHub]
-    [HubName("esbpeer")]
+    [HubName("warewolf")]
     public class ClusterHub : Hub<IClusterHub>
     {
         private readonly IClusterCatalog _clusterCatalog;
@@ -46,22 +46,12 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public override Task OnConnected()
         {
-            
             return base.OnConnected().ContinueWith((task) =>
             {
                 var key = Context.QueryString["key"];
                 _clusterCatalog.AddFollower(key);
                 Clients.Caller.SetFollowingAllowed();
             });
-        }
-    }
-
-    class asdf
-    {
-        public void Tests()
-        {
-            var c = new ClusterHub();
-            
         }
     }
 }

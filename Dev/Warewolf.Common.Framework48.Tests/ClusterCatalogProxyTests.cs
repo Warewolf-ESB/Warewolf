@@ -17,10 +17,8 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.SignalR.Wrappers;
-using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json.Linq;
-using Warewolf.Common;
-using Warewolf.Configuration;
+using Warewolf.Client;
 using Warewolf.Esb;
 
 namespace Warewolf.Tests

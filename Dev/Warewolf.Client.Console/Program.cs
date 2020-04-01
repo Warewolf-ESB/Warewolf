@@ -9,24 +9,14 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Warewolf.Esb
+namespace Warewolf.ClientConsole
 {
-    public interface IEsbRequest
+    class Program
     {
-        string ServiceName { get; }
-        Dictionary<string, StringBuilder> Args { get; set; }
-        void AddArgument(string key, StringBuilder value);
-    }
-
-    public interface ICatalogRequest
-    {
-        IEsbRequest Build();
-    }
-
-    public interface ICatalogSubscribeRequest
-    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello World!");
+        }
     }
 }

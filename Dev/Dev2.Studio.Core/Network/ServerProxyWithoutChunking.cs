@@ -31,7 +31,6 @@ using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Net;
 using System.Net.Security;
 using System.Network;
@@ -42,10 +41,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Warewolf.Esb;
-using System.Timers;
-using System.Windows;
 using Warewolf;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.Network
 {
