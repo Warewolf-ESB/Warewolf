@@ -112,9 +112,14 @@ namespace Dev2.Runtime.WebServer
                 }
             }
             var isCover = typeOf.StartsWith("coverage", StringComparison.InvariantCultureIgnoreCase);
+            var isCoverJson = typeOf.StartsWith("coverage.json", StringComparison.InvariantCultureIgnoreCase);
             if (isCover)
             {
                 dataObject.ReturnType = EmitionTypes.Cover;
+            }
+            if (isCoverJson)
+            {
+                dataObject.ReturnType = EmitionTypes.CoverJson;
             }
             if (isApi)
             {
