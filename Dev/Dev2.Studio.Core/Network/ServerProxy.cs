@@ -21,7 +21,6 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -37,7 +36,7 @@ namespace Dev2.Network
         readonly IEnvironmentConnection _wrappedConnection;
         public ServerProxy(Uri serverUri)
         {
-           _wrappedConnection = new ServerProxyPersistentConnection(serverUri);
+           _wrappedConnection = new ServerProxyWithoutChunking(serverUri);
             SetupPassthroughEvents();
         }
 
@@ -52,13 +51,13 @@ namespace Dev2.Network
         
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
-            _wrappedConnection = new ServerProxyPersistentConnection(serverUri,credentials,worker);
+            _wrappedConnection = new ServerProxyWithoutChunking(serverUri,credentials,worker);
             SetupPassthroughEvents();
         }
         
         public ServerProxy(string webAddress, string userName, string password)
         {
-            _wrappedConnection = new ServerProxyPersistentConnection(webAddress, userName, password);
+            _wrappedConnection = new ServerProxyWithoutChunking(webAddress, userName, password);
             SetupPassthroughEvents();
         }
 
