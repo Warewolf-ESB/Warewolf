@@ -1539,6 +1539,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return false;
             }
+            // TODO: fix me, on connect this loads the tool list, it should not be running every time IsActiveServerConnected is called
             var isActiveServerConnected = ActiveServer != null && ActiveServer.IsConnected && ActiveServer.CanStudioExecute && ShouldUpdateActiveState;
             if (ActiveServer.IsConnected && ShouldUpdateActiveState && ToolboxViewModel?.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
             {
