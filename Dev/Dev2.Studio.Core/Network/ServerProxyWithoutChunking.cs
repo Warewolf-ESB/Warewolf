@@ -864,19 +864,27 @@ namespace Dev2.Network
                         stopped = true;
                     }
                 };
-                while (true)
+                try
                 {
-                    Thread.Sleep(delay);
-                    if (stopped)
+                    while (true)
                     {
-                        stopped = false;
-                        delay *= multiplier;
-                        if (delay > maxDelay)
+                        Thread.Sleep(delay);
+                        if (stopped)
                         {
-                            delay = initialDelay;
+                            stopped = false;
+                            delay *= multiplier;
+                            if (delay > maxDelay)
+                            {
+                                delay = initialDelay;
+                            }
+
+                            HubConnection.Start();
                         }
-                        HubConnection.Start();
                     }
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("ServerProxy monitor has died unexpectedly", GlobalConstants.WarewolfError);
                 }
             });
             t.IsBackground = true;
