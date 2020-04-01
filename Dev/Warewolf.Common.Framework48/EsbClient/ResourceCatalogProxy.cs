@@ -12,7 +12,7 @@ using System;
 using Dev2.Controller;
 using Dev2.Studio.Interfaces;
 
-namespace Warewolf
+namespace Warewolf.EsbClient
 {
     public interface IResourceCatalogProxy
     {

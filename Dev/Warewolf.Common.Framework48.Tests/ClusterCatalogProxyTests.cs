@@ -20,6 +20,7 @@ using Dev2.SignalR.Wrappers;
 using Newtonsoft.Json.Linq;
 using Warewolf.Client;
 using Warewolf.Esb;
+using Warewolf.EsbClient;
 
 namespace Warewolf.Tests
 {

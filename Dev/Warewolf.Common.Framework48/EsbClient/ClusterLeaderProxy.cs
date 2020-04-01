@@ -13,7 +13,7 @@ using Dev2.Communication;
 using Dev2.Studio.Interfaces;
 using Warewolf.Esb;
 
-namespace Warewolf
+namespace Warewolf.EsbClient
 {
     public interface IClusterLeaderProxy
     {

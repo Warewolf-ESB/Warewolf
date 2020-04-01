@@ -16,6 +16,7 @@ using System;
 using System.Text;
 using Warewolf.Client;
 using Warewolf.Esb;
+using Warewolf.EsbClient;
 
 namespace Warewolf.Tests
 {
