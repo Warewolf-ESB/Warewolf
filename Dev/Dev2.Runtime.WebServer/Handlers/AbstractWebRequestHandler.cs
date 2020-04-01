@@ -22,16 +22,19 @@ using System.Web;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data;
+using Dev2.Data.Decision;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
+using Dev2.Runtime;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
@@ -182,9 +185,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var isTestRun = (_dataObject.ReturnType == EmitionTypes.TEST ||
                                  _dataObject.ReturnType == EmitionTypes.TRX) && _dataObject.TestName == "*";
 
-                if (isTestRun || isTestCoverage)
+                if (isTestRun)
                 {
                     return ExecuteAsTest(user);
+                }
+
+                if (isTestCoverage)
+                {
+                    return ExecuteAsCoverage(user);
                 }
 
                 if (_resource is null)
@@ -237,6 +245,13 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 var xmlFormatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
                 var formatter = ServiceTestExecutor.ExecuteTests(_dataObject, xmlFormatter, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _testCoverageCatalog, _resourceCatalog, ref _executePayload);
+                return new StringResponseWriter(_executePayload, formatter.ContentType);
+            }
+
+            internal IResponseWriter ExecuteAsCoverage(IPrincipal userPrinciple)
+            {
+                var xmlFormatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(_dataObject, xmlFormatter, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _testCoverageCatalog, _resourceCatalog, ref _executePayload);
                 return new StringResponseWriter(_executePayload, formatter.ContentType);
             }
 
@@ -512,6 +527,29 @@ namespace Dev2.Runtime.WebServer.Handlers
                     WorkspaceID = workspaceGuid,
                     ExecutionID = Guid.NewGuid(),
                 };
+        }
+    }
+
+    internal class ServiceTestCoverageExecutor
+    {
+        internal static DataListFormat GetTestCoverageReports(IDSFDataObject dataObject, DataListFormat formatter, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog resourceCatalog, ref string executePayload)
+        {
+            if (dataObject.TestsResourceIds?.Any() ?? false)
+           {
+                if (dataObject.ReturnType == Web.EmitionTypes.CoverJson)
+                {
+                    formatter = dataObject.RunCoverageAndReturnJSON(formatter, testCoverageCatalog, resourceCatalog, workspaceGuid, serializer, ref executePayload);
+                }
+                dataObject.ResourceID = Guid.Empty;
+            }
+            else
+            {
+                throw new Exception("do not expect this to be executed any longer");
+            }
+
+            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
+            dataObject.Environment = null;
+            return formatter;
         }
     }
 }
