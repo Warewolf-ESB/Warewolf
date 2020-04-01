@@ -49,9 +49,9 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.Object.SetResourceNameAndId(resourceCatalog.Object, ResourceName, out var outResource);
             //---------------Test Result -----------------------
             resourceCatalog.Verify(catalog => catalog.GetResource(It.IsAny<Guid>(), objSourceResourceID));
-            dataObject.VerifySet(o => o.ResourceID = It.IsAny<Guid>(), Times.Exactly(1));
-            dataObject.VerifySet(o => o.ServiceName = It.IsAny<string>(), Times.Exactly(1));
-            dataObject.VerifySet(o => o.SourceResourceID = It.IsAny<Guid>(), Times.Exactly(1));
+            dataObject.VerifySet(o => o.ResourceID = expectedResourceId, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ServiceName = "Hello World", Times.Exactly(1));
+            dataObject.VerifySet(o => o.SourceResourceID = expectedResourceId, Times.Exactly(1));
         }
     }
 }
