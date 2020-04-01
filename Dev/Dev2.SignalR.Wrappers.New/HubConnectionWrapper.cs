@@ -10,15 +10,23 @@
 
 using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Transports;
 
 namespace Dev2.SignalR.Wrappers.New
 {
-    public class HubConnectionWrapper : IHubConnectionWrapper
+    public class ConnectedHubProxy : IConnectedHubProxy
+    {
+        public IHubConnectionWrapper Connection { get; set; }
+        public IHubProxyWrapper Proxy { get; set; }
+    }
+    
+    public class HubConnectionWrapper : IHubConnectionWrapper, IDisposable
     {
         readonly HubConnection _wrapped;
+        private readonly ManualResetEvent _connectNotify = new ManualResetEvent(false);
 
         #region Implementation of IHubConnectionWrapper
 
@@ -26,12 +34,51 @@ namespace Dev2.SignalR.Wrappers.New
         {
             _wrapped = wrapped;
             _wrapped.DeadlockErrorTimeout = TimeSpan.FromSeconds(30);
+            _wrapped.StateChanged += change =>
+            {
+                switch (change.NewState)
+                {
+                    case ConnectionState.Connected:
+                        _connectNotify.Set();
+                        break;
+                    case ConnectionState.Connecting:
+                    case ConnectionState.Reconnecting:
+                    case ConnectionState.Disconnected:
+                        _connectNotify.Reset();
+                        break;
+                    default:
+                        throw new Exception("unknown ConnectionState");
+                }
+            };
         }
 
         public HubConnectionWrapper(string uriString)
             : this(new HubConnection(uriString))
         {
         }
+
+        public Task EnsureConnected(TimeSpan timeout)
+        { /// when this function returns we should have waited for a connect or reconnect to have completed
+            var startTask = Task.Factory.StartNew(() =>
+            {
+                if (State != ConnectionStateWrapped.Connected)
+                {
+                    _connectNotify.WaitOne(timeout);
+                }
+            });
+
+            var timerTask = Task.Delay(timeout);
+            return Task.WhenAny(startTask, timerTask).ContinueWith((task) =>
+            {
+                if (task == timerTask || State != ConnectionStateWrapped.Connected)
+                {
+                    throw new Exception("unexpected timeout while connecting to warewolf server");
+                }
+
+                return task.Result;
+            });
+        }
+
 
         public IHubProxyWrapper CreateHubProxy(string hubName) => new HubProxyWrapper(_wrapped.CreateHubProxy(hubName));
 
@@ -98,5 +145,10 @@ namespace Dev2.SignalR.Wrappers.New
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            _connectNotify.Dispose();
+        }
     }
 }

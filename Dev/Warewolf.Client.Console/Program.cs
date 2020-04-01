@@ -62,7 +62,7 @@ namespace Warewolf.ClientConsole
             }
             catch (Exception e)
             {
-                
+                Console.WriteLine("error: "+ e.Message);
             }
 
             return 0;
