@@ -242,7 +242,7 @@ namespace Dev2.Runtime
         {
             var result = TestCoverageReports.GetOrAdd(coverageResourceId, guid =>
             {
-                var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
+                var dir = Path.Combine(EnvironmentVariables.TestCoveragePath, guid.ToString());
                 return GetReportList(dir);
             });
             // note: list is duplicated in order to avoid concurrent modifications of the list during test runs
