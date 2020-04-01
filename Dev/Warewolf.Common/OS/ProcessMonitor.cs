@@ -115,6 +115,7 @@ namespace Warewolf.OS
                 catch { }
             })
             {
+                Name = this.GetType().Name,
                 IsBackground = true
             };
             _thread.Start();

@@ -64,6 +64,7 @@ namespace Warewolf.OS
                 MonitorProcesses();
             })
             {
+                Name = this.GetType().Name,
                 IsBackground = true
             };
             monitor.Start();
