@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         //SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
-        public void SetResourceNameAndId_GivenResourceNameIsBad_ShouldFixAndLoadResource()
+        public void DataObjectExtentions_SetResourceNameAndId_GivenResourceNameIsBad_ShouldFixAndLoadResource()
         {
             //---------------Set up test pack-------------------
             var mockResource = new Mock<IResource>();
