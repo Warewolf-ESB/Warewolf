@@ -9,12 +9,14 @@
 */
 
 using System;
+using System.Threading;
 using CommandLine;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.SignalR.Wrappers;
 using Dev2.SignalR.Wrappers.New;
 using Warewolf.Client;
+using Warewolf.Data;
 using Warewolf.Esb;
 
 namespace Warewolf.ClientConsole
@@ -32,7 +34,8 @@ namespace Warewolf.ClientConsole
     internal class Implementation
     {
         private readonly Args _options;
-
+        private readonly ManualResetEvent _canExit = new ManualResetEvent(false);
+        
         public Implementation(Args options)
         {
             this._options = options;
@@ -44,21 +47,19 @@ namespace Warewolf.ClientConsole
                 var context = new Context(_options);
                 var esb = context.EsbProxy;
 
-                var req = context.NewResourceRequest<IResource>(GlobalConstants.ServerWorkspaceID, Guid.Empty);
-                var t = esb.ExecReq3<IResource>(req, 3);
-                t.ContinueWith(t1 =>
+                var req = context.NewWatcher<ChangeNotification>(GlobalConstants.ServerWorkspaceID);
+                var t = esb.Watch<ChangeNotification>(req);
+                t.OnChange += changeNotification =>
                 {
-                    if (t1.IsFaulted)
-                    {
-                        Console.WriteLine("Error:");
-                        WriteExceptionToConsole(t1.Exception);
-                    }
-                    else
-                    {
-                        Console.WriteLine("woot");
-                    }
-                });
-                t.Wait();
+                    Console.WriteLine("woot");
+                };
+                context.EsbProxy.Connection.Closed += () =>
+                {
+                    Console.WriteLine("connection closed");
+                    _canExit.Set();
+                };
+                context.EnsureConnected();
+                _canExit.WaitOne(-1);
             }
             catch (Exception e)
             {
@@ -102,6 +103,16 @@ namespace Warewolf.ClientConsole
                 _hubConnection.Start();
             }
             return new ResourceRequest<T>(serverWorkspaceId, resourceId);
+        }
+
+        public ICatalogSubscribeRequest NewWatcher<T>(Guid serverWorkspaceId)
+        {
+            return new EventRequest<T>(serverWorkspaceId);
+        }
+
+        public void EnsureConnected()
+        {
+            _hubConnection.EnsureConnected(-1);
         }
     }
 }

@@ -11,6 +11,7 @@
 using System;
 using Dev2.Common;
 using Dev2.SignalR.Wrappers;
+using Warewolf.Esb;
 
 namespace Warewolf.Client
 {
@@ -18,7 +19,7 @@ namespace Warewolf.Client
     {
         private ISubscriptionWrapper _registeredEventWatcher;
 
-        public HubWatcher(IHubProxyWrapper proxy)
+        public HubWatcher(IHubProxyWrapper proxy, ICatalogSubscribeRequest request)
         {
             _registeredEventWatcher = proxy.Subscribe(typeof(T).Name);
             _registeredEventWatcher.Received += (tokens) =>

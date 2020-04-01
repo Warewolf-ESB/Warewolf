@@ -11,6 +11,21 @@ namespace Dev2.SignalR.Wrappers
         IHubProxyWrapper Proxy { get; set; }
     }
 
+    
+    public enum ConnState
+    {
+        Disconnected = 0,
+        Connected = 1,
+    }
+
+    public interface IStateController
+    {
+        ConnState Current { get; }
+        Task<bool> MoveToState(ConnState state, TimeSpan timeout);
+        Task<bool> MoveToState(ConnState state, int milliSecondsTimeout);
+        
+    }
+
     public interface IHubConnectionWrapper 
     {        
         IHubProxyWrapper CreateHubProxy(string hubName);
@@ -19,6 +34,7 @@ namespace Dev2.SignalR.Wrappers
         event Action<IStateChangeWrapped> StateChanged;
         ConnectionStateWrapped State { get;  }
         ICredentials Credentials { get;  }
+        IStateController StateController { get; }
 
         Task Start();
         void Stop(TimeSpan timeSpan);

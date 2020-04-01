@@ -48,22 +48,4 @@ namespace Warewolf.EsbClient
 
         }
     }
-
-    public class ChangeNotification
-    {
-    }
-    public class EventRequest<T> : ICatalogSubscribeRequest
-    {
-        private readonly Guid _workspaceId;
-
-        public EventRequest(Guid workspaceId)
-        {
-            _workspaceId = workspaceId;
-        }
-
-        public IEsbRequest Build()
-        {
-            return new EsbExecuteRequest();
-        }
-    }
 }

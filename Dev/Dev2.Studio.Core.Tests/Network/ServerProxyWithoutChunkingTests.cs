@@ -11,6 +11,8 @@
 using Dev2.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Dev2.SignalR.Wrappers;
+using Dev2.SignalR.Wrappers.New;
 
 namespace Dev2.Core.Tests.Network
 {
@@ -21,12 +23,12 @@ namespace Dev2.Core.Tests.Network
         public void ServerProxyWithoutChunking_GivenServerAvailable_ExpectConnected()
         {
             var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));
-            Assert.AreEqual(State.Disconnected, proxy.StateController.Current);
-            Assert.AreEqual(State.Disconnected, proxy.State);
+            Assert.AreEqual(ConnState.Disconnected, proxy.StateController.Current);
+            Assert.AreEqual(ConnState.Disconnected, proxy.State);
             proxy.Connect(Guid.NewGuid());
             while (proxy.HubConnection.State != SignalR.Wrappers.ConnectionStateWrapped.Connected) { System.Threading.Thread.Sleep(1000);  }
-            Assert.AreEqual(State.Connected, proxy.StateController.Current);
-            Assert.AreEqual(State.Connected, proxy.State);
+            Assert.AreEqual(ConnState.Connected, proxy.StateController.Current);
+            Assert.AreEqual(ConnState.Connected, proxy.State);
         }
 
 
@@ -34,16 +36,16 @@ namespace Dev2.Core.Tests.Network
         public void ServerProxyWithoutChunking_GivenServerAvailable_AndConnect_WhenDisconnectRequest_ExpectDisconnect()
         {
             var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));
-            Assert.AreEqual(State.Disconnected, proxy.StateController.Current);
-            Assert.AreEqual(State.Disconnected, proxy.State);
+            Assert.AreEqual(ConnState.Disconnected, proxy.StateController.Current);
+            Assert.AreEqual(ConnState.Disconnected, proxy.State);
             proxy.Connect(Guid.NewGuid());
             while (proxy.HubConnection.State != SignalR.Wrappers.ConnectionStateWrapped.Connected) { System.Threading.Thread.Sleep(1000); }
-            Assert.AreEqual(State.Connected, proxy.StateController.Current);
-            Assert.AreEqual(State.Connected, proxy.State);
+            Assert.AreEqual(ConnState.Connected, proxy.StateController.Current);
+            Assert.AreEqual(ConnState.Connected, proxy.State);
 
             proxy.Disconnect();
-            Assert.AreEqual(State.Disconnected, proxy.StateController.Current);
-            Assert.AreEqual(State.Disconnected, proxy.State);
+            Assert.AreEqual(ConnState.Disconnected, proxy.StateController.Current);
+            Assert.AreEqual(ConnState.Disconnected, proxy.State);
         }
     }
 }

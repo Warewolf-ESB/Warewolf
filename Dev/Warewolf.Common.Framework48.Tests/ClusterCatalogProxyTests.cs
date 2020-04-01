@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.SignalR.Wrappers;
 using Newtonsoft.Json.Linq;
 using Warewolf.Client;
+using Warewolf.Data;
 using Warewolf.Esb;
 using Warewolf.EsbClient;
 

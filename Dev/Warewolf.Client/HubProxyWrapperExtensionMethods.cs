@@ -78,9 +78,13 @@ namespace Warewolf.Client
                 });
         }
 
+        public static HubWatcher<T> Watch<T>(this IConnectedHubProxy proxy, ICatalogSubscribeRequest request)
+        {
+            return proxy.Proxy.Watch<T>(request);
+        }
         public static HubWatcher<T> Watch<T>(this IHubProxyWrapper proxy, ICatalogSubscribeRequest request)
         {
-            return new HubWatcher<T>(proxy);
+            return new HubWatcher<T>(proxy, request);
         }
     }
 }
