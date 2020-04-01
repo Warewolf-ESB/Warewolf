@@ -57,7 +57,7 @@ namespace Dev2.Runtime
         {
             _directoryWrapper = new DirectoryWrapper();
             _fileWrapper = new FileWrapper();
-            _directoryWrapper.CreateIfNotExists(EnvironmentVariables.TestPath);
+            _directoryWrapper.CreateIfNotExists(EnvironmentVariables.TestCoveragePath);
             _serializer = new Dev2JsonSerializer();
             _serviceAllTestsCoverageModelToFactory = CustomContainer.Get<IServiceTestCoverageModelToFactory>() ?? new ServiceTestCoverageModelToFactory();
             TestCoverageReports = new ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>>();
