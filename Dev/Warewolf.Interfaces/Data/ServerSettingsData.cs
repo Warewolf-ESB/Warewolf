@@ -56,6 +56,20 @@ namespace Warewolf.Configuration
             return false;
         }
 
+        public override int GetHashCode()
+        {
+            var result = 0;
+            result += (result * 397) ^ (WebServerPort?.GetHashCode() ?? 0);
+            result += (result * 397) ^ (WebServerSslPort?.GetHashCode() ?? 0);
+            result += (result * 397) ^ (SslCertificateName?.GetHashCode() ?? 0);
+            result += (result * 397) ^ (CollectUsageStats?.GetHashCode() ?? 0);
+            result += (result * 397) ^ (DaysToKeepTempFiles?.GetHashCode() ?? 0);
+            result += (result * 397) ^ (AuditFilePath?.GetHashCode() ?? 0);
+            result += (result * 397) ^ (EnableDetailedLogging?.GetHashCode() ?? 0);
+            result += (result * 397) ^ (LogFlushInterval?.GetHashCode() ?? 0);
+            return result;
+        }
+
         public bool HasChanged { get; set; }
     }
 }
