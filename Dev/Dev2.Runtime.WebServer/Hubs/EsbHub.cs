@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -48,7 +47,7 @@ namespace Dev2.Runtime.WebServer.Hubs
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
-        static readonly Dictionary<Guid, string>  ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
+        static readonly Dictionary<Guid, string> ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
         public EsbHub()
             :this(Server.Instance)
         {}
@@ -107,10 +106,10 @@ namespace Dev2.Runtime.WebServer.Hubs
             {
                 return;
             }
-            var user = Context.User;
+            var contextUser = Context.User;
             var permissionsMemo = new PermissionsModifiedMemo
             {
-                ModifiedPermissions = ServerAuthorizationService.Instance.GetPermissions(user),
+                ModifiedPermissions = ServerAuthorizationService.Instance.GetPermissions(contextUser),
                 ServerID = HostSecurityProvider.Instance.ServerID
             };
             var serializedMemo = _serializer.Serialize(permissionsMemo);
@@ -122,7 +121,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             SendResourcesAffectedMemo(resourceId, compileMessageTos);
         }
 
-        protected void OnCompilerMessageReceived(IList<ICompileMessageTO> messages)
+        protected static void OnCompilerMessageReceived(IList<ICompileMessageTO> messages)
         {
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged), CoalesceMappingChangedErrors);
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
@@ -152,12 +151,11 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
         {
-            
-            var msgs = new CompileMessageList { Dependants = new List<string>() };
-            messages.ToList().ForEach(s => msgs.Dependants.Add(s.ServiceName));
-            msgs.MessageList = messages;
-            msgs.ServiceID = resourceId;
-            var serializedMemo = _serializer.Serialize(msgs);
+            var messageList = new CompileMessageList { Dependants = new List<string>() };
+            messages.ToList().ForEach(s => messageList.Dependants.Add(s.ServiceName));
+            messageList.MessageList = messages;
+            messageList.ServiceID = resourceId;
+            var serializedMemo = _serializer.Serialize(messageList);
             if (!ResourceAffectedMessagesCache.ContainsKey(resourceId))
             {
                 ResourceAffectedMessagesCache.Add(resourceId, serializedMemo);
@@ -168,7 +166,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             try
             {
-                if (ResourceAffectedMessagesCache.TryGetValue(resourceId, out string value))
+                if (ResourceAffectedMessagesCache.TryGetValue(resourceId, out var value))
                 {
                     var task = new Task<string>(() => value);
                     ResourceAffectedMessagesCache.Remove(resourceId);
@@ -186,23 +184,24 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendDebugState(DebugState debugState)
         {
-            var debugSerializated = _serializer.Serialize(debugState);
+            var contextUser = Context.User;
+            var serializedDebugState = _serializer.Serialize(debugState);
 
             var hubCallerConnectionContext = Clients;
             try
             {
-                var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
-                user.SendDebugState(debugSerializated);
+                var user = hubCallerConnectionContext.User(contextUser.Identity.Name);
+                user.SendDebugState(serializedDebugState);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 var user = hubCallerConnectionContext.Caller;
-                user.SendDebugState(debugSerializated);
+                user.SendDebugState(serializedDebugState);
             }
 
         }
 
-        void WriteEventProviderClientMessage<TMemo>(IEnumerable<ICompileMessageTO> messages, Action<TMemo, ICompileMessageTO> coalesceErrors)
+        static void WriteEventProviderClientMessage<TMemo>(IEnumerable<ICompileMessageTO> messages, Action<TMemo, ICompileMessageTO> coalesceErrors)
             where TMemo : IMemo, new()
         {
             var messageArray = messages.ToArray();
@@ -219,7 +218,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             WriteEventProviderClientMessage(instanceGroupings, coalesceErrors);
         }
 
-        void WriteEventProviderClientMessage<TMemo>(IEnumerable<IGrouping<Guid, ICompileMessageTO>> groupings, Action<TMemo, ICompileMessageTO> coalesceErrors)
+        static void WriteEventProviderClientMessage<TMemo>(IEnumerable<IGrouping<Guid, ICompileMessageTO>> groupings, Action<TMemo, ICompileMessageTO> coalesceErrors)
             where TMemo : IMemo, new()
         {
             var memo = new TMemo { ServerID = HostSecurityProvider.Instance.ServerID };
@@ -260,9 +259,10 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <returns></returns>
         public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
         {
-            if (Context.User.Identity.Name != null)
+            var contextUser = Context.User;
+            if (contextUser.Identity.Name != null)
             {
-                receipt.User = Context.User.Identity.Name;
+                receipt.User = contextUser.Identity.Name;
             }
 
             try
@@ -283,7 +283,9 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
         {
-            var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = Context.User };
+            var contextUser = Context.User;
+            
+            var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = contextUser };
             try
             {
                 var task = new Task<Receipt>(() =>
@@ -300,24 +302,24 @@ namespace Dev2.Runtime.WebServer.Hubs
                         MessageCache.TryRemove(messageId, out sb);
                         var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
 
-                        var user = string.Empty;
-                        
-                        var userPrinciple = Context.User;
-                        if (Context.User.Identity != null)
-                        
+                        var userName = string.Empty;
+                        if (contextUser.Identity != null)
                         {
-                            user = Context.User.Identity.Name;
-                            userPrinciple = Context.User;
-                            Thread.CurrentPrincipal = userPrinciple;
-                            Dev2Logger.Debug("Execute Command Invoked For [ " + user + " : "+userPrinciple?.Identity?.AuthenticationType+" : "+userPrinciple?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
+                            userName = contextUser.Identity.Name;
+                            Thread.CurrentPrincipal = contextUser;
+                            Dev2Logger.Debug("Execute Command Invoked For [ " + userName + " : "+contextUser?.Identity?.AuthenticationType+" : "+contextUser?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
+                        }
+                        else
+                        {
+                            Dev2Logger.Warn("Execute Command  Invoked For [ " + userName + " : "+contextUser?.Identity?.AuthenticationType+" : "+contextUser?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfWarn);
                         }
                         StringBuilder processRequest = null;
-                        Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId); });
+                        Common.Utilities.PerformActionInsideImpersonatedContext(contextUser, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId); });
                         var future = new FutureReceipt
                         {
                             PartID = 0,
                             RequestID = messageId,
-                            User = user
+                            User = userName
                         };
 
                         var value = processRequest?.ToString();
@@ -369,15 +371,16 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void ConnectionActions()
         {
-            
+            var contextUser = Context.User;
+
             SetupEvents();
 
             var t = new Task(() =>
             {
-                var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
+                var workspaceId = Server.GetWorkspaceID(contextUser.Identity);
                 ResourceCatalog.Instance.LoadServerActivityCache();
                 var hubCallerConnectionContext = Clients;
-                var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+                var user = hubCallerConnectionContext.User(contextUser.Identity.Name);
                 user.SendWorkspaceID(workspaceId);
                 user.SendServerID(HostSecurityProvider.Instance.ServerID);
                 PermissionsHaveBeenModified(null, null);
