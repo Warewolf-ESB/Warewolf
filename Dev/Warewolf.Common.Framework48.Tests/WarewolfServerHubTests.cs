@@ -12,12 +12,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Text;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data.Options;
+using Warewolf.Options;
+using Warewolf.Service;
 
 namespace Warewolf.Tests
 {
@@ -57,6 +64,110 @@ namespace Warewolf.Tests
 
             mockCaller.Verify(o => o.SendDebugState(It.IsAny<string>()), Times.Once);
             otherMocks.ForEach(o => o.Verify(o1 => o1.SendDebugState(It.IsAny<string>()), Times.Never));
+        }
+
+        [TestMethod]
+        public void IWarewolfServerHub_FetchResourcesAffectedMemo_ExpectNoAffectedResources()
+        {
+            var resourceId = Guid.NewGuid();
+            var expectedList = new List<ICompileMessageTO>();
+            
+            // setup mock hub proxy
+            var hub = new EsbHub();
+            var mockPrinciple = SetupPrincipleMock();
+            var mockReq = SetupMockRequest(mockPrinciple);
+            hub.Context = new HubCallerContext(mockReq.Object, "");
+            var (mockClients, mockCaller, otherMocks) = SetupClients();
+            hub.Clients = mockClients.Object;
+            
+            var result = hub.FetchResourcesAffectedMemo(resourceId);
+            
+            // TODO: this should assert no a real affected memo, but we can't call SendResourcesAffectedMemo
+            Assert.IsNull(result.Result);
+        }
+
+        [TestMethod]
+        public void IWarewolfServerHub_AddDebugWriter_ExpectTaskCompleted()
+        {
+            var workspaceId = Guid.NewGuid();
+            
+            // setup mock hub proxy
+            var hub = new EsbHub();
+            var mockPrinciple = SetupPrincipleMock();
+            var mockReq = SetupMockRequest(mockPrinciple);
+            hub.Context = new HubCallerContext(mockReq.Object, "");
+            var (mockClients, mockCaller, otherMocks) = SetupClients();
+            hub.Clients = mockClients.Object;
+            
+            var result = hub.AddDebugWriter(workspaceId); // this hub is now associated with this workspace for debug messages
+            result.Wait();
+            Assert.IsNull(result.Exception);
+            Assert.IsTrue(result.IsCompleted);
+            Assert.IsFalse(result.IsFaulted);
+        }
+
+        [TestMethod]
+        public void IWarewolfServerHub_FetchExecutePayloadFragment_()
+        {
+            // setup mock hub proxy
+            var hub = new EsbHub();
+            var mockPrinciple = SetupPrincipleMock();
+            var mockReq = SetupMockRequest(mockPrinciple);
+            hub.Context = new HubCallerContext(mockReq.Object, "");
+            var (mockClients, mockCaller, otherMocks) = SetupClients();
+            hub.Clients = mockClients.Object;
+            
+            var result = hub.FetchExecutePayloadFragment(new FutureReceipt());
+
+            Assert.IsNull(result.Exception);
+            Assert.IsTrue(result.IsCompleted);
+        }
+
+        [TestMethod]
+        public void EsbHub_ExecuteCommand_GivenAnInternalService_ShouldHaveNotEmptyResult()
+        {
+            var workspaceId = Guid.NewGuid();
+            var connectionId = Guid.NewGuid();
+
+            // setup mock hub proxy
+            var hub = new EsbHub();
+            var mockPrinciple = SetupPrincipleMock();
+            Utilities.ServerUser = mockPrinciple.Object;
+
+            var mockReq = SetupMockRequest(mockPrinciple);
+            hub.Context = new HubCallerContext(mockReq.Object, connectionId.ToString());
+            var (mockClients, mockCaller, otherMocks) = SetupClients();
+            hub.Clients = mockClients.Object;
+
+            var req = new EsbExecuteRequest
+            {
+                ServiceName = "FindOptionsBy",
+            };
+            req.AddArgument(OptionsService.ParameterName, new StringBuilder(OptionsService.GateResume));
+            var serializer = new Dev2JsonSerializer();
+            var envelope = new Envelope
+            {
+                Content = serializer.Serialize(req),
+                PartID = 0,
+                Type = typeof(Envelope),
+            };
+            var messageId = Guid.NewGuid();
+            var endOfStream = false;
+            var dataListId = Guid.Empty;
+            var resultTask = hub.ExecuteCommand(envelope, endOfStream, workspaceId, dataListId, messageId);
+            var result = resultTask.Result;
+            
+            Assert.IsNull(resultTask.Exception);
+            Assert.IsTrue(resultTask.IsCompleted);
+            
+            Assert.AreEqual(0, result.PartID);
+            Assert.AreEqual(1, result.ResultParts);
+
+            var fetchResult = ResultsCache.Instance.FetchResult(new FutureReceipt() {PartID = 0, RequestID = messageId, User = "bob"});
+
+            var options = serializer.Deserialize<IOption[]>(fetchResult);
+            Assert.IsNotNull(options, $"expected a deserializable response to be cached");
+            Assert.AreEqual(1, options.Length);
         }
 
         #region Setup
