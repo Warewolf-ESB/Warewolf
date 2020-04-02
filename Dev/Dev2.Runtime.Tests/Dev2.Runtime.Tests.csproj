@@ -153,6 +153,7 @@
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
+    <Compile Include="Services\ClusterJoinRequestTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Services\FetchTriggerQueuesTest.cs" />
@@ -395,6 +396,10 @@
     <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
       <Project>{2C4E3DC6-2195-4486-894D-8351B066D8CA}</Project>
       <Name>Warewolf.Auditing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Client\Warewolf.Client.csproj">
+      <Project>{a1fcee35-121b-4d9a-9dd3-3b52c4652e77}</Project>
+      <Name>Warewolf.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
       <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>

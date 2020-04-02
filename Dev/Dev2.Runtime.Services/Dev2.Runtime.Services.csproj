@@ -113,6 +113,7 @@
     <Compile Include="ESB\Management\DefaultEsbManagementEndpoint.cs" />
     <Compile Include="ESB\Management\EsbManagementServiceEntry.cs" />
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
+    <Compile Include="ESB\Management\Services\Esb\ClusterJoinRequestService.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
@@ -461,6 +462,10 @@
     <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
       <Project>{2c4e3dc6-2195-4486-894d-8351b066d8ca}</Project>
       <Name>Warewolf.Auditing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Client\Warewolf.Client.csproj">
+      <Project>{a1fcee35-121b-4d9a-9dd3-3b52c4652e77}</Project>
+      <Name>Warewolf.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
       <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
