@@ -14,27 +14,36 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Serializers;
 using Dev2.DynamicServices;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Warewolf.Client;
 
 namespace Dev2.Runtime.ESB.Management.Services.Esb
 {
-    public class ClusterJoinRequestService : DefaultEsbManagementEndpoint
+    public class ClusterJoinService : DefaultEsbManagementEndpoint
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var response = new ClusterJoinResponse();
+            ClusterJoinResponse response = null;
             if (values.TryGetValue(Warewolf.Service.Cluster.ClusterJoinRequest.Key, out var keySb))
             {
                 var key = keySb.ToString();
-                if (key == Config.Cluster.Key)
-                {
-                    response.Token = Guid.NewGuid();
-                }
+                response = VerifyClusterKey(key);
             }
             var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(response);
+        }
+
+        private static ClusterJoinResponse VerifyClusterKey(string key)
+        {
+            if (key == Config.Cluster.Key)
+            {
+                return new ClusterJoinResponse
+                {
+                    Token = Guid.NewGuid()
+                };
+            }
+
+            return null;
         }
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");

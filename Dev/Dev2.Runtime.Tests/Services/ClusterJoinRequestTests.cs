@@ -25,16 +25,16 @@ namespace Dev2.Tests.Runtime.Services
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(ClusterJoinRequestService))]
+        [TestCategory(nameof(ClusterJoinService))]
         public void ClusterJoinRequestService_()
         {
-            var service = new ClusterJoinRequestService();
+            var service = new ClusterJoinService();
             Assert.AreEqual(AuthorizationContext.Any, service.GetAuthorizationContextForService());
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory(nameof(ClusterJoinRequestService))]
+        [TestCategory(nameof(ClusterJoinService))]
         public void ClusterJoinRequestService__()
         {
             var serializer = new Dev2JsonSerializer();
@@ -42,7 +42,7 @@ namespace Dev2.Tests.Runtime.Services
             var values = new Dictionary<string, StringBuilder>();
             var workspace = new Workspace(workspaceId);
             
-            var service = new ClusterJoinRequestService();
+            var service = new ClusterJoinService();
             var resultString = service.Execute(values, workspace);
             
             var result = serializer.Deserialize<ClusterJoinResponse>(resultString);

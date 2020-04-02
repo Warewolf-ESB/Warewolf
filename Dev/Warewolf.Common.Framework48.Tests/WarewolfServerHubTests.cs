@@ -22,9 +22,9 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Data.Options;
+using Warewolf.Client;
 using Warewolf.Options;
-using Warewolf.Service;
+using Service = Warewolf.Service;
 
 namespace Warewolf.Tests
 {
@@ -143,7 +143,7 @@ namespace Warewolf.Tests
             {
                 ServiceName = "FindOptionsBy",
             };
-            req.AddArgument(OptionsService.ParameterName, new StringBuilder(OptionsService.GateResume));
+            req.AddArgument(Service.OptionsService.ParameterName, new StringBuilder(Service.OptionsService.GateResume));
             var serializer = new Dev2JsonSerializer();
             var envelope = new Envelope
             {
@@ -168,6 +168,62 @@ namespace Warewolf.Tests
             var options = serializer.Deserialize<IOption[]>(fetchResult);
             Assert.IsNotNull(options, $"expected a deserializable response to be cached");
             Assert.AreEqual(1, options.Length);
+
+            var allHubClients = mockClients.Object.All as AllClientsWarewolfServerHub;
+            Assert.AreEqual(0, allHubClients?.TotalMessageCount);
+        }
+        
+        
+        [TestMethod]
+        [TestCategory(nameof(Service.Cluster))]
+        public void EsbHub_ExecuteCommand_GivenValidSubscriptionRequest_ShouldNotifyOfChanges()
+        {
+            var workspaceId = Guid.NewGuid();
+            var connectionId = Guid.NewGuid();
+
+            // setup mock hub proxy
+            var hub = new EsbHub();
+            var mockPrinciple = SetupPrincipleMock();
+            Utilities.ServerUser = mockPrinciple.Object;
+
+            var mockReq = SetupMockRequest(mockPrinciple);
+            hub.Context = new HubCallerContext(mockReq.Object, connectionId.ToString());
+            var (mockClients, mockCaller, otherMocks) = SetupClients();
+            hub.Clients = mockClients.Object;
+
+            var req = new EsbExecuteRequest
+            {
+                ServiceName = nameof(Service.Cluster.ClusterJoinRequest),
+            };
+            req.AddArgument(Service.Cluster.ClusterJoinRequest.Key, new StringBuilder(Config.Cluster.Key));
+            var serializer = new Dev2JsonSerializer();
+            var envelope = new Envelope
+            {
+                Content = serializer.Serialize(req),
+                PartID = 0,
+                Type = typeof(Envelope),
+            };
+            var messageId = Guid.NewGuid();
+            var endOfStream = false;
+            var dataListId = Guid.Empty;
+            var resultTask = hub.ExecuteCommand(envelope, endOfStream, workspaceId, dataListId, messageId);
+            var result = resultTask.Result;
+            
+            Assert.IsNull(resultTask.Exception);
+            Assert.IsTrue(resultTask.IsCompleted);
+            
+            Assert.IsNotNull(result, "internal service unexpectedly returned null");
+            Assert.AreEqual(0, result.PartID);
+            Assert.AreEqual(1, result.ResultParts);
+
+            var fetchResult = ResultsCache.Instance.FetchResult(new FutureReceipt() {PartID = 0, RequestID = messageId, User = "bob"});
+
+            var response = serializer.Deserialize<ClusterJoinResponse>(fetchResult);
+            Assert.IsNotNull(response, $"expected a deserializable response to be cached");
+            Assert.AreNotEqual(Guid.Empty, response.Token);
+
+            var allHubClients = mockClients.Object.All as AllClientsWarewolfServerHub;
+            Assert.AreEqual(0, allHubClients?.TotalMessageCount);
         }
 
         #region Setup
@@ -175,51 +231,61 @@ namespace Warewolf.Tests
         {
             private readonly List<IWarewolfServerHub> _others;
             private readonly IWarewolfServerHub _caller;
+            private int _totalMessageCount = 0;
+            public int TotalMessageCount => _totalMessageCount;
 
             public AllClientsWarewolfServerHub(IWarewolfServerHub caller, List<IWarewolfServerHub> others)
             {
                 _caller = caller;
                 _others = others;
+                _totalMessageCount = 0;
             }
 
             public void ItemAddedMessage(string item)
             {
+                ++_totalMessageCount;
                 _caller.ItemAddedMessage(item);
                 _others.ForEach(o => o.ItemAddedMessage(item));
             }
 
             public void LeaderConfigChange()
             {
+                ++_totalMessageCount;
                 _caller.LeaderConfigChange();
                 _others.ForEach(o => o.LeaderConfigChange());
             }
 
             public void SendPermissionsMemo(string serializedMemo)
             {
+                ++_totalMessageCount;
                 _caller.SendPermissionsMemo(serializedMemo);
                 _others.ForEach(o => o.SendPermissionsMemo(serializedMemo));
             }
 
             public void SendDebugState(string serializedDebugState)
             {
+                ++_totalMessageCount;
                 _caller.SendDebugState(serializedDebugState);
                 _others.ForEach(o => o.SendDebugState(serializedDebugState));
             }
 
             public void SendWorkspaceID(Guid workspaceId)
             {
+                ++_totalMessageCount;
                 _caller.SendWorkspaceID(workspaceId);
                 _others.ForEach(o => o.SendWorkspaceID(workspaceId));
             }
 
             public void SendServerID(Guid serverId)
             {
+                ++_totalMessageCount;
                 _caller.SendServerID(serverId);
                 _others.ForEach(o => o.SendServerID(serverId));
             }
 
             public void SendConfigUpdateNotification()
             {
+                ++_totalMessageCount;
                 _caller.SendConfigUpdateNotification();
                 _others.ForEach(o => o.SendConfigUpdateNotification());
             }
