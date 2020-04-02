@@ -32,6 +32,7 @@ using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
+using Warewolf.Data;
 using Warewolf.Esb;
 using Warewolf.Resource.Errors;
 
@@ -405,9 +406,9 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #endregion
 
-        public void SendConfigUpdateNotification()
+        public void SendConfigUpdateNotification(ChangeNotification changeNotification)
         {
-            Clients.All.SendConfigUpdateNotification();
+            Clients.All.ChangeNotification(new ChangeNotification());
         }
     }
 }

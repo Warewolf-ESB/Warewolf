@@ -8,10 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Warewolf.Data;
+
 namespace Warewolf.Esb
 {
     public interface IClusterNotificationWriter
     {
-        void SendConfigUpdateNotification();
+        void SendConfigUpdateNotification(ChangeNotification changeNotification);
     }
 }

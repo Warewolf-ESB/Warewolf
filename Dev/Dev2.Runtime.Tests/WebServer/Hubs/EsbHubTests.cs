@@ -18,6 +18,7 @@ using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data;
 
 namespace Dev2.Tests.Runtime.WebServer.Hubs
 {
@@ -100,7 +101,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
 
             }
 
-            public void SendConfigUpdateNotification()
+            public void ChangeNotification(ChangeNotification changeNotification)
             {
                 
             }

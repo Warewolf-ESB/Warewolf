@@ -23,6 +23,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Client;
+using Warewolf.Data;
 using Warewolf.Options;
 using Service = Warewolf.Service;
 
@@ -43,10 +44,11 @@ namespace Warewolf.Tests
             var (mockClients, mockCaller, otherMocks) = SetupClients();
             hub.Clients = mockClients.Object;
 
-            hub.SendConfigUpdateNotification();
+            var changeNotification = new ChangeNotification();
+            hub.SendConfigUpdateNotification(changeNotification);
 
-            mockCaller.Verify(o => o.SendConfigUpdateNotification(), Times.Once);
-            otherMocks.ForEach(o => o.Verify(o1 => o1.SendConfigUpdateNotification(), Times.Once));
+            mockCaller.Verify(o => o.ChangeNotification(changeNotification), Times.Once);
+            otherMocks.ForEach(o => o.Verify(o1 => o1.ChangeNotification(changeNotification), Times.Once));
         }
 
         [TestMethod]
@@ -223,6 +225,8 @@ namespace Warewolf.Tests
 
             var allHubClients = mockClients.Object.All as AllClientsWarewolfServerHub;
             Assert.AreEqual(1, allHubClients?.TotalMessageCount);
+            mockCaller.Verify(o => o.ChangeNotification(It.IsAny<ChangeNotification>()), Times.Once);
+            otherMocks.ForEach(o => o.Verify(o1 => o1.ChangeNotification(It.IsAny<ChangeNotification>()), Times.Once));
         }
 
         #region Setup
@@ -282,11 +286,11 @@ namespace Warewolf.Tests
                 _others.ForEach(o => o.SendServerID(serverId));
             }
 
-            public void SendConfigUpdateNotification()
+            public void ChangeNotification(ChangeNotification changeNotification)
             {
                 ++_totalMessageCount;
-                _caller.SendConfigUpdateNotification();
-                _others.ForEach(o => o.SendConfigUpdateNotification());
+                _caller.ChangeNotification(changeNotification);
+                _others.ForEach(o => o.ChangeNotification(changeNotification));
             }
         }
 

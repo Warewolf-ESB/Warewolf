@@ -11,6 +11,7 @@
 
 using System;
 using Microsoft.AspNet.SignalR;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
@@ -22,7 +23,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         void SendDebugState(string serializedDebugState);
         void SendWorkspaceID(Guid workspaceId);
         void SendServerID(Guid serverId);
-        void SendConfigUpdateNotification();
+        void ChangeNotification(ChangeNotification changeNotification);
     }
     // Instances of the Hub class are transient, you can't use them 
     // to maintain state from one method call to the next. Each time 

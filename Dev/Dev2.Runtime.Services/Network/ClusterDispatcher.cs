@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Logging;
+using Warewolf.Data;
 using Warewolf.Esb;
 
 namespace Dev2.Runtime.Network
@@ -61,7 +62,7 @@ namespace Dev2.Runtime.Network
         {
             foreach (var writer in _writers.Values.ToList())
             {
-                writer.SendConfigUpdateNotification();
+                writer.SendConfigUpdateNotification(new ChangeNotification());
             }
         }
     }
