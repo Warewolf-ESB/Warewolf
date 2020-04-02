@@ -34,7 +34,7 @@ namespace Dev2.SignalR.Wrappers.New
 
         #region Implementation of IHubConnectionWrapper
 
-        HubConnectionWrapper(HubConnection wrapped)
+        private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
             _wrapped.DeadlockErrorTimeout = TimeSpan.FromSeconds(30);
@@ -68,28 +68,24 @@ namespace Dev2.SignalR.Wrappers.New
             return EnsureConnected((int)Math.Floor(timeout.TotalMilliseconds));
         }
 
+        /// <summary>
+        /// Returns a task that only completes once the connection is connected or milliSecondsTimeout has occurred
+        /// </summary>
+        /// <param name="milliSecondsTimeout"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public Task EnsureConnected(int milliSecondsTimeout)
         {
-            _stateController.MoveToState(ConnState.Connected, milliSecondsTimeout);
-
-            /// when this function returns we should have waited for a connect or reconnect to have completed
-            var startTask = Task.Factory.StartNew(() =>
+            return Task.Factory.StartNew(() =>
             {
-                if (State != ConnectionStateWrapped.Connected)
+                if (State == ConnectionStateWrapped.Connected)
                 {
-                    _connectNotify.WaitOne(milliSecondsTimeout);
-                }
-            });
-
-            var timerTask = Task.Delay(milliSecondsTimeout);
-            return Task.WhenAny(startTask, timerTask).ContinueWith((task) =>
-            {
-                if (task == timerTask || State != ConnectionStateWrapped.Connected)
-                {
-                    throw new Exception("unexpected timeout while connecting to warewolf server");
+                    return;
                 }
 
-                return task.Result;
+                var movedTask = _stateController.MoveToState(ConnState.Connected, milliSecondsTimeout);
+                movedTask.Wait();
+                _connectNotify.WaitOne(milliSecondsTimeout);
             });
         }
 
@@ -192,15 +188,20 @@ namespace Dev2.SignalR.Wrappers.New
             };
         }
 
-        readonly object _currentStateLock = new object();
+        readonly ReaderWriterLock _currentStateLock = new ReaderWriterLock();
         ConnState _current;
         public ConnState Current {
-            get { lock (_currentStateLock) { return _current; } }
+            get { try { _currentStateLock.AcquireReaderLock(-1); return _current; } finally{ _currentStateLock.ReleaseReaderLock(); } }
             private set
             {
-                lock (_currentStateLock)
+                try
                 {
+                    _currentStateLock.AcquireWriterLock(-1);
                     SetProperty(ref _current, value);
+                }
+                finally
+                {
+                    _currentStateLock.ReleaseWriterLock();
                 }
             }
         }
@@ -227,36 +228,35 @@ namespace Dev2.SignalR.Wrappers.New
         {
             return MoveToState(state, (int)Math.Floor(timeout.TotalMilliseconds));
         }
-        public async Task<bool> MoveToState(ConnState state, int milliSecondsTimeout)
+        public Task<bool> MoveToState(ConnState state, int milliSecondsTimeout)
         {
+            if (Current == state)
+            {
+                return Task.FromResult(true);
+            }
             ExpectedState = state;
-            //if (state == State.Connected)
-            //{
-            //    _watcher.Start();
-            //} else if (state == State.Disconnected)
-            //{
-            //    _watcher.Suspend();
-            //}
-            var t = new Task(() =>
+            var t = Task<bool>.Factory.StartNew(() =>
             {
                 while (Current != ExpectedState)
                 {
                     Task.Yield();
                     Task.Delay(TimeSpan.FromSeconds(1)).Wait();
                 }
+
+                return Current == ExpectedState;
             });
-            t.Start();
+
             var delayTask = Task.Delay(milliSecondsTimeout);
-            var result = await Task.WhenAny(delayTask, t);
-            if (result == delayTask)
-            {
-                throw new Exception("timeout");
-            }
-            if (Current != ExpectedState)
-            {
-                return false;
-            }
-            return true;
+            return Task.WhenAny(delayTask, t)
+                .ContinueWith(task =>
+                {
+                    if (task == delayTask)
+                    {
+                        throw new Exception("timeout");
+                    }
+
+                    return Current == ExpectedState;
+                });
         }
 
         class Watcher
