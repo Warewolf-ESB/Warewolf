@@ -22,7 +22,6 @@ namespace Warewolf.Driver.Serilog
     {
         static readonly Settings _staticSettings = new Settings(new SerilogElasticsearchSource());
         readonly Settings _config;
-        private readonly string _indexDecider = "warewolflogs";
         static ILogger _logger;
 
         public SeriLogElasticsearchConfig(ILoggerSource source)
@@ -33,7 +32,7 @@ namespace Warewolf.Driver.Serilog
                 .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_staticSettings.Url))
                 {
                     AutoRegisterTemplate = true,
-                    IndexDecider = (e, o) => _indexDecider,
+                    IndexDecider = (e, o) => _config.SearchIndex,
                 }))
                 .CreateLogger();
         }
@@ -50,7 +49,7 @@ namespace Warewolf.Driver.Serilog
                 .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_config.Url))
                 {
                     AutoRegisterTemplate = true,
-                    IndexDecider = (e, o) => _indexDecider,
+                    IndexDecider = (e, o) =>  _config.SearchIndex,
                 }))
                 .CreateLogger();
         }
@@ -65,7 +64,10 @@ namespace Warewolf.Driver.Serilog
                 Password = source.Password;
                 Username = source.Username;
                 AuthenticationType = source.AuthenticationType;
+                SearchIndex = source.SearchIndex;
             }
+
+            public string SearchIndex { get; set; }
 
             public string Password { get; }
             public string Username { get; }
@@ -83,7 +85,7 @@ namespace Warewolf.Driver.Serilog
         private string _password;
         private string _username;
         private AuthenticationType _authenticationType;
-
+        private string _searchIndex { get; set; }
         public SerilogElasticsearchSource()
         {
             var src = new ElasticsearchSource();
@@ -94,6 +96,7 @@ namespace Warewolf.Driver.Serilog
             _password = src.Password;
             _username = src.Username;
             _authenticationType = src.AuthenticationType;
+            _searchIndex = src.SearchIndex;
         }
 
         public Guid ResourceID
@@ -118,6 +121,11 @@ namespace Warewolf.Driver.Serilog
         {
             get => _port;
             set => _port = value;
+        }
+        public string SearchIndex
+        {
+            get => _searchIndex;
+            set => _searchIndex = value;
         }
 
         public AuthenticationType AuthenticationType

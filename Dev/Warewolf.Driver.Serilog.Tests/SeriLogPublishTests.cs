@@ -203,24 +203,26 @@ namespace Warewolf.Driver.Serilog.Tests
         public void SeriLogPublisher_NewPublisher_Reading_LogData_From_Elasticsearch_Success()
         {
             //-------------------------Arrange------------------------------
+            var loggerSource = new SerilogElasticsearchSource
+            {
+                Port = DefaultPort,
+                HostName = DefaultHostname,
+                SearchIndex =  "warewolftestlogs"
+            };
             var uri = new Uri(DefaultHostname + ":" + DefaultPort);
             var logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(uri)
                 {
                     AutoRegisterTemplate = true,
-                    IndexDecider = (e, o) => "warewolftestlogs",
+                    IndexDecider = (e, o) => loggerSource.SearchIndex,
                 }))
                 .CreateLogger();
 
             var mockSeriLogConfig = new Mock<ISeriLogConfig>();
             mockSeriLogConfig.SetupGet(o => o.Logger).Returns(logger);
 
-            var loggerSource = new SerilogElasticsearchSource
-            {
-                Port = DefaultPort,
-                HostName = DefaultHostname,
-            };
+            
             var executionID = Guid.NewGuid();
             using (var loggerConnection = loggerSource.NewConnection(mockSeriLogConfig.Object))
             {
@@ -275,7 +277,7 @@ namespace Warewolf.Driver.Serilog.Tests
                 var uri = new Uri(source.HostName + ":" + source.Port);
                 var settings = new ConnectionSettings(uri)
                     .RequestTimeout(TimeSpan.FromMinutes(2))
-                    .DefaultIndex("warewolftestlogs");
+                    .DefaultIndex(source.SearchIndex);
                 if (source.AuthenticationType == AuthenticationType.Password)
                 {
                     settings.BasicAuthentication(source.Username, source.Password);

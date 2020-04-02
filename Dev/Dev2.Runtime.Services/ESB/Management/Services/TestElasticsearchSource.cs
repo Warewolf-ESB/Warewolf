@@ -46,6 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Password = elasticsearchServiceSourceDefinition.Password,
                     Username = elasticsearchServiceSourceDefinition.Username,
                     AuthenticationType = elasticsearchServiceSourceDefinition.AuthenticationType,
+                    SearchIndex = elasticsearchServiceSourceDefinition.SearchIndex
                 });
                 msg.HasError = false;
                 msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize(result.Result) : result.ErrorMessage);

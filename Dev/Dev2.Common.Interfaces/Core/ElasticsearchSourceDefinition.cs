@@ -31,6 +31,7 @@ namespace Dev2.Common.Interfaces.Core
             Username = source.Username;
             HostName = source.HostName;
             Port = source.Port;
+            SearchIndex = source.SearchIndex;
             Path = source.GetSavePath();
         }
         public string Username { get; set; }
@@ -41,8 +42,9 @@ namespace Dev2.Common.Interfaces.Core
         public string Name { get; set; }
         public string Path { get; set; }
         public Guid Id { get; set; }
+        public string SearchIndex { get; set; }
 
-     public bool Equals(IElasticsearchSourceDefinition other)
+        public bool Equals(IElasticsearchSourceDefinition other)
         {
             if (other is null)
             {
@@ -57,6 +59,7 @@ namespace Dev2.Common.Interfaces.Core
             equals &= string.Equals(HostName, other.HostName);
             equals &= string.Equals(Password, other.Password);
             equals &= string.Equals(Username, other.Username);
+            equals &= string.Equals(SearchIndex, other.SearchIndex);
             equals &= Id == other.Id;
             equals &= string.Equals(Name, other.Name);
             equals &= AuthenticationType == other.AuthenticationType;
@@ -78,6 +81,7 @@ namespace Dev2.Common.Interfaces.Core
             equals &= string.Equals(HostName, other.HostName);
             equals &= string.Equals(Password, other.Password);
             equals &= string.Equals(Username, other.Username);
+            equals &= string.Equals(SearchIndex, other.SearchIndex);
             equals &= Id == other.Id;
             equals &= string.Equals(Name, other.Name);
             equals &= AuthenticationType == other.AuthenticationType;
