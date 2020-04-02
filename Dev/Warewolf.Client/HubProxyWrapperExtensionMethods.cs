@@ -26,7 +26,14 @@ namespace Warewolf.Client
                 {
                     try
                     {
-                        connectedProxy.Connection.EnsureConnected(TimeSpan.FromSeconds(5)).Wait();
+                        var t = connectedProxy.Connection.EnsureConnected(TimeSpan.FromSeconds(5)); 
+                        t.Wait();
+                        if (t.IsFaulted)
+                        {
+                            throw t.Exception ?? new Exception("ensure connected is faulted");
+                        }
+
+                        break;
                     }
                     catch (InvalidOperationException e)
                     {

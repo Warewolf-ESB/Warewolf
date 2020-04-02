@@ -55,6 +55,7 @@ namespace Warewolf.ClientConsole
                 t.OnChange += changeNotification =>
                 {
                     Console.WriteLine("woot");
+                    _canExit.Set();
                 };
                 context.EsbProxy.Connection.Closed += () =>
                 {
@@ -63,8 +64,8 @@ namespace Warewolf.ClientConsole
                 };
                 var connectedTask = context.EnsureConnected();
                 connectedTask.Wait();
-                var joinRequest = context.NewClusterJoinRequest("my key");
-                var joinResponse = context.EsbProxy.ExecReq3<ChangeNotification>(joinRequest, 3);
+                var joinRequest = context.NewClusterJoinRequest(Config.Cluster.Key);
+                var joinResponse = context.EsbProxy.ExecReq3<ClusterJoinResponse>(joinRequest, 3);
                 joinResponse.Wait();
                 var response = joinResponse.Result;
 
