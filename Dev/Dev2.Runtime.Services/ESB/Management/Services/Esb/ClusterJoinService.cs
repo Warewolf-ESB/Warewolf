@@ -14,6 +14,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Serializers;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Network;
 using Dev2.Workspaces;
 using Warewolf.Client;
 
@@ -33,10 +34,11 @@ namespace Dev2.Runtime.ESB.Management.Services.Esb
             return serializer.SerializeToBuilder(response);
         }
 
-        private static ClusterJoinResponse VerifyClusterKey(string key)
+        private ClusterJoinResponse VerifyClusterKey(string key)
         {
             if (key == Config.Cluster.Key)
             {
+                ClusterDispatcher.Instance.Write("woot");
                 return new ClusterJoinResponse
                 {
                     Token = Guid.NewGuid()

@@ -9,7 +9,11 @@
 */
 
 using System;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using System.Threading.Tasks;
 using CommandLine;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -47,8 +51,7 @@ namespace Warewolf.ClientConsole
                 var context = new Context(_options);
                 var esb = context.EsbProxy;
 
-                var req = context.NewWatcher<ChangeNotification>(GlobalConstants.ServerWorkspaceID);
-                var t = esb.Watch<ChangeNotification>(req);
+                var t = esb.Watch<ChangeNotification>();
                 t.OnChange += changeNotification =>
                 {
                     Console.WriteLine("woot");
@@ -58,12 +61,18 @@ namespace Warewolf.ClientConsole
                     Console.WriteLine("connection closed");
                     _canExit.Set();
                 };
-                context.EnsureConnected();
+                var connectedTask = context.EnsureConnected();
+                connectedTask.Wait();
+                var joinRequest = context.NewClusterJoinRequest("my key");
+                var joinResponse = context.EsbProxy.ExecReq3<ChangeNotification>(joinRequest, 3);
+                joinResponse.Wait();
+                var response = joinResponse.Result;
+
                 _canExit.WaitOne(-1);
             }
             catch (Exception e)
             {
-                Console.WriteLine("error: "+ e.Message);
+                WriteExceptionToConsole(e);
             }
 
             return 0;
@@ -87,8 +96,12 @@ namespace Warewolf.ClientConsole
 
         public Context(Args args)
         {
+            ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+
             _hubConnection = new HubConnectionWrapper(args.ServerEndpoint.ToString()) { Credentials = System.Net.CredentialCache.DefaultNetworkCredentials};
         }
+        static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
+
 
         public IConnectedHubProxy EsbProxy
         {
@@ -110,9 +123,14 @@ namespace Warewolf.ClientConsole
             return new EventRequest<T>(serverWorkspaceId);
         }
 
-        public void EnsureConnected()
+        public Task EnsureConnected()
         {
-            _hubConnection.EnsureConnected(-1);
+            return _hubConnection.EnsureConnected(-1);
+        }
+
+        public ICatalogRequest NewClusterJoinRequest(string myKey)
+        {
+            return new ClusterJoinRequest(myKey);
         }
     }
 }

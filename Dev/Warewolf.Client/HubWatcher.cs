@@ -19,7 +19,7 @@ namespace Warewolf.Client
     {
         private ISubscriptionWrapper _registeredEventWatcher;
 
-        public HubWatcher(IHubProxyWrapper proxy, ICatalogSubscribeRequest request)
+        public HubWatcher(IHubProxyWrapper proxy)
         {
             _registeredEventWatcher = proxy.Subscribe(typeof(T).Name);
             _registeredEventWatcher.Received += (tokens) =>

@@ -137,7 +137,6 @@
     <Compile Include="ESB\Management\Services\TaskExtentions.cs" />
     <Compile Include="ESB\Management\Services\TestSqliteService.cs" />
     <Compile Include="ESB\Management\WorkflowManagementEndpointAbstract.cs" />
-    <Compile Include="Hosting\ClusterCatalog.cs" />
     <Compile Include="Hosting\ResourceCatalogFactory.cs" />
     <Compile Include="Hosting\TriggersCatalog.cs" />
     <Compile Include="IDbSources.cs" />

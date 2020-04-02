@@ -172,8 +172,7 @@ namespace Warewolf.Tests
             var allHubClients = mockClients.Object.All as AllClientsWarewolfServerHub;
             Assert.AreEqual(0, allHubClients?.TotalMessageCount);
         }
-        
-        
+
         [TestMethod]
         [TestCategory(nameof(Service.Cluster))]
         public void EsbHub_ExecuteCommand_GivenValidSubscriptionRequest_ShouldNotifyOfChanges()

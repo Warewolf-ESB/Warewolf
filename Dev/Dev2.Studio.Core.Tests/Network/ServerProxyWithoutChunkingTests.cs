@@ -12,7 +12,6 @@ using Dev2.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Dev2.SignalR.Wrappers;
-using Dev2.SignalR.Wrappers.New;
 
 namespace Dev2.Core.Tests.Network
 {

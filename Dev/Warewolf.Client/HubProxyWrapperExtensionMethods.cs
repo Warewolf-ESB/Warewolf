@@ -18,7 +18,7 @@ namespace Warewolf.Client
 {
     public static class HubProxyWrapperExtensionMethods
     {
-        public static Task<T> ExecReq3<T>(this IConnectedHubProxy connectedProxy, ICatalogRequest request, int maxRetries)
+        public static Task<T> ExecReq3<T>(this IConnectedHubProxy connectedProxy, ICatalogRequest request, int maxRetries) where T : class, new()
         {
             return Task<T>.Factory.StartNew(() => {
                 int tries = 0;
@@ -27,32 +27,35 @@ namespace Warewolf.Client
                     try
                     {
                         connectedProxy.Connection.EnsureConnected(TimeSpan.FromSeconds(5)).Wait();
-
-                        return connectedProxy.Proxy.ExecReq2<T>(request)
-                            .ContinueWith((resultTask) =>
-                            {
-                                if (resultTask.IsFaulted)
-                                {
-                                    throw resultTask.Exception;
-                                }
-
-                                return resultTask.Result;
-                            }).Result;
                     }
                     catch (InvalidOperationException e)
                     {
                         tries++;
                         if (tries >= maxRetries)
                         {
-                            throw e;
+                            throw;
                         }
                     }
                 } while (tries <= maxRetries);
 
-                throw new Exception("max retries reached");
+                if (tries >= maxRetries)
+                {
+                    throw new Exception("max retries reached");
+                }
+                
+                return connectedProxy.Proxy.ExecReq2<T>(request)
+                    .ContinueWith((resultTask) =>
+                    {
+                        if (resultTask.IsFaulted)
+                        {
+                            throw resultTask.Exception ?? new Exception($"{nameof(ExecReq2)} is faulted");
+                        }
+
+                        return resultTask.Result;
+                    }).Result;
             });
         }
-        public static Task<T> ExecReq2<T>(this IHubProxyWrapper proxy, ICatalogRequest request)
+        public static Task<T> ExecReq2<T>(this IHubProxyWrapper proxy, ICatalogRequest request) where T : class, new()
         {
             var serializer = new Dev2JsonSerializer();
             var deployEnvelope = new Envelope
@@ -73,18 +76,24 @@ namespace Warewolf.Client
                         .ContinueWith((task1) =>
                         {
                             var payload = task1.Result;
-                            return serializer.Deserialize<T>(payload);
+                            var result = serializer.Deserialize<T>(payload);
+                            if (result is null)
+                            {
+                                throw new Exception("invalid response from server");
+                            }
+
+                            return result;
                         }).Result;
                 });
         }
 
-        public static HubWatcher<T> Watch<T>(this IConnectedHubProxy proxy, ICatalogSubscribeRequest request)
+        public static HubWatcher<T> Watch<T>(this IConnectedHubProxy proxy)
         {
-            return proxy.Proxy.Watch<T>(request);
+            return proxy.Proxy.Watch<T>();
         }
-        public static HubWatcher<T> Watch<T>(this IHubProxyWrapper proxy, ICatalogSubscribeRequest request)
+        public static HubWatcher<T> Watch<T>(this IHubProxyWrapper proxy)
         {
-            return new HubWatcher<T>(proxy, request);
+            return new HubWatcher<T>(proxy);
         }
     }
 }
