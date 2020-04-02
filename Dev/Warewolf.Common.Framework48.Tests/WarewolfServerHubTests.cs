@@ -222,7 +222,7 @@ namespace Warewolf.Tests
             Assert.AreNotEqual(Guid.Empty, response.Token);
 
             var allHubClients = mockClients.Object.All as AllClientsWarewolfServerHub;
-            Assert.AreEqual(0, allHubClients?.TotalMessageCount);
+            Assert.AreEqual(1, allHubClients?.TotalMessageCount);
         }
 
         #region Setup

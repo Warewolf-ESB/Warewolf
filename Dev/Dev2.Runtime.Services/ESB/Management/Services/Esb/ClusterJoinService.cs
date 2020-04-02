@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services.Esb
             return serializer.SerializeToBuilder(response);
         }
 
-        private ClusterJoinResponse VerifyClusterKey(string key)
+        private static ClusterJoinResponse VerifyClusterKey(string key)
         {
             if (key == Config.Cluster.Key)
             {
