@@ -299,6 +299,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
                 Name = "Test-Elasticsearch",
                 HostName = "http://rsaklfwynand",
                 Password = "pass123",
+                SearchIndex = "warewolflogs",
                 Port = "9200"
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>())).Returns(elasticsearchSourceDefinition);

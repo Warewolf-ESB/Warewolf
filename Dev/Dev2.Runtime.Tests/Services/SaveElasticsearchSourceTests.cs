@@ -126,7 +126,8 @@ namespace Dev2.Tests.Runtime.Services
                 Name = "Name",
                 HostName = "HostName",
                 Port = "3679",
-                AuthenticationType = AuthenticationType.Anonymous
+                AuthenticationType = AuthenticationType.Anonymous,
+                SearchIndex = "warewolflogs"
             };
             var compressedExecuteMessage = new CompressedExecuteMessage();
             var serializeToJsonString = source.SerializeToJsonString(new DefaultSerializationBinder());
@@ -161,7 +162,8 @@ namespace Dev2.Tests.Runtime.Services
                 Name = "Name",
                 HostName = "HostName",
                 Port = "3679",
-                AuthenticationType = AuthenticationType.Anonymous
+                AuthenticationType = AuthenticationType.Anonymous,
+                SearchIndex = "warewolflogs"
             };
             var compressedExecuteMessage = new CompressedExecuteMessage();
             var serializeToJsonString = source.SerializeToJsonString(new DefaultSerializationBinder());
@@ -197,7 +199,8 @@ namespace Dev2.Tests.Runtime.Services
                 Name = "ElasticsearchSource",
                 HostName = "testHost",
                 Password = "testPaass",
-                AuthenticationType = AuthenticationType.Password
+                AuthenticationType = AuthenticationType.Password,
+                SearchIndex = "warewolflogs"
             };
             
             mockResourceCatalog.Setup(o => o.SaveResource(It.IsAny<Guid>(), elasticsearchSourceDefinition.SerializeToJsonStringBuilder(), string.Empty));

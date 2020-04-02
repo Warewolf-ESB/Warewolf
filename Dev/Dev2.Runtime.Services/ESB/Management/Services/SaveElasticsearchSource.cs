@@ -68,6 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = elasticsearchSourceDef.Id,
                     HostName = elasticsearchSourceDef.HostName,
                     Port = elasticsearchSourceDef.Port,
+                    SearchIndex = elasticsearchSourceDef.SearchIndex,
                     AuthenticationType = elasticsearchSourceDef.AuthenticationType,
                     Password = elasticsearchSourceDef.Password, 
                     Username = elasticsearchSourceDef.Username, 

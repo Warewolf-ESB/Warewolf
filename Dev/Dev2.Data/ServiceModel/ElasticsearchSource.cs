@@ -22,16 +22,18 @@ using Warewolf.Security.Encryption;
 namespace Dev2.Data.ServiceModel
 {
     public class ElasticsearchSource : Resource, IDisposable, IResourceSource, IElasticsearchSource
-    { 
+    {
         const string DefaultPort = "9200";
+        const string DefaultSearchIndex = "warewolflogs";
         private const string DefaultHostname = "http://localhost";
         public string HostName { get; set; }
         public string Password { get; set; }
         public string Username { get; set; }
+        public string SearchIndex { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
         public string Port { get; set; }
-        
+
         public ElasticsearchSource()
         {
             ResourceID = Guid.Empty;
@@ -39,22 +41,25 @@ namespace Dev2.Data.ServiceModel
             AuthenticationType = AuthenticationType.Anonymous;
             Port = DefaultPort;
             HostName = DefaultHostname;
+            SearchIndex = DefaultSearchIndex;
         }
-        
+
         public ElasticsearchSource(XElement xml) : base(xml)
         {
             ResourceType = nameof(ElasticsearchSource);
             AuthenticationType = AuthenticationType.Anonymous;
             Port = DefaultPort;
+            SearchIndex = DefaultSearchIndex;
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                { "HostName", string.Empty },
-                { "Port", string.Empty },
-                { "AuthenticationType", string.Empty },
-                { "Password", string.Empty },
-                { "Username", string.Empty}
-            }; 
-            
+                {"HostName", string.Empty},
+                {"Port", string.Empty},
+                {"AuthenticationType", string.Empty},
+                {"Password", string.Empty},
+                {"Username", string.Empty},
+                {"SearchIndex", string.Empty}
+            };
+
             var conString = xml.AttributeSafe("ConnectionString");
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
             connectionString = connectionString.UnescapeString();
@@ -63,15 +68,17 @@ namespace Dev2.Data.ServiceModel
             Port = properties["Port"];
             Username = properties["Username"];
             Password = properties["Password"];
+            SearchIndex = properties["SearchIndex"];
             AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out AuthenticationType authType) ? authType : AuthenticationType.Windows;
         }
-        
+
         public override XElement ToXml()
         {
             var result = base.ToXml();
             var connectionString = string.Join(";",
                 $"HostName={HostName}",
                 $"Port={Port}",
+                $"SearchIndex={SearchIndex}",
                 $"AuthenticationType={AuthenticationType}"
             );
 
@@ -92,7 +99,7 @@ namespace Dev2.Data.ServiceModel
 
             return result;
         }
-        
+
         public override bool IsSource => true;
         public override bool IsService => false;
 

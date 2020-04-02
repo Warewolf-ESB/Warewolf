@@ -1344,6 +1344,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Elasticsearch server Index that will be used to Index the data..
+        /// </summary>
+        public static string ElasticsearchSearchIndexTooltip {
+            get {
+                return ResourceManager.GetString("ElasticsearchSearchIndexTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a preconfigured elasticsearch source..
         /// </summary>
         public static string ElasticsearchServersToolTip {

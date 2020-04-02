@@ -54,6 +54,7 @@ namespace Warewolf.Studio.Views
         public string GetPassword() => PasswordTextBox.Password;
         
         public string GetUsername() => UserNameTextBox.Text;
+        public string GetSearchIndex() => SearchIndexTextBox.Text;
 
         public string GetPort() => ElasticsearchPortTextbox.Text;
 
@@ -83,6 +84,10 @@ namespace Warewolf.Studio.Views
         public void EnterUsername(string username)
         {
             UserNameTextBox.Text = username;
+        }
+        public void EnterSearchIndex(string searchIndex)
+        {
+            SearchIndexTextBox.Text = searchIndex;
         }
         public void EnterHostName(string hostName)
         {

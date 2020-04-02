@@ -44,7 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Path = res.GetSavePath(),
                         Username = res.Username,
                         Password = res.Password,
-                        AuthenticationType = res.AuthenticationType                      
+                        AuthenticationType = res.AuthenticationType,
+                        SearchIndex = res.SearchIndex
                     } as IElasticsearchSourceDefinition;
                 }
                 return null;

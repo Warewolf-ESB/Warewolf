@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces
     {
         string HeaderText { get; set; }
         string HostName { get; set; }
+        string SearchIndex { get; set; }
         string Port { get; set; }
         string Password { get; set; }
         ICommand TestCommand { get; set; }
