@@ -50,7 +50,7 @@ namespace Dev2.Studio.Views
 
         public ShellView()
         {
-            //InitializeComponent();
+            InitializeComponent();
             _isLocked = true;
             HideFullScreenPanel.IsHitTestVisible = false;
             ShowFullScreenPanel.IsHitTestVisible = false;
