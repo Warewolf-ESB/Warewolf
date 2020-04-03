@@ -16,6 +16,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -26,14 +27,18 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         //SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
-        public void SetResourceNameAndId_GivenResourceNameIsBad_ShouldFixAndLoadResource()
+        public void DataObjectExtentions_SetResourceNameAndId_GivenResourceNameIsBad_ShouldFixAndLoadResource()
         {
             //---------------Set up test pack-------------------
             var mockResource = new Mock<IResource>();
+            var mockWarewolfResource = mockResource.As<IWarewolfResource>();
             var expectedResourceId = Guid.NewGuid();
             mockResource.SetupGet(o => o.ResourceID).Returns(expectedResourceId);
             mockResource.SetupGet(o => o.ResourceName).Returns("Hello World");
             mockResource.Setup(o => o.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
+            mockWarewolfResource.SetupGet(o => o.ResourceID).Returns(expectedResourceId);
+            mockWarewolfResource.SetupGet(o => o.ResourceName).Returns("Hello World");
+
             var resourceCatalog = new Mock<IResourceCatalog>();
             const string ResourceId = "acb75027-ddeb-47d7-814e-a54c37247ec1";
             var objSourceResourceID = ResourceId.ToGuid();
