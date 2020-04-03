@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Warewolf.Auditing;
+using Warewolf.Auditing.Drivers;
+using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
@@ -89,25 +91,35 @@ namespace Warewolf.Logger
 
             return Task.FromResult(ConsumerResult.Success);
         }
-        private static void QueryTriggerLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
+        private void QueryTriggerLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
         {
             var serializer = new Dev2JsonSerializer();
-            var seriLoggerSource = new SeriLoggerSource() as ISeriLogSQLiteSource;
-            var auditQueryable = new AuditQueryableSqlite(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
+            var auditQueryable = GetAuditQueryable();
             var results = auditQueryable.QueryTriggerData(query);
 
             writer.WriteLine("sending QueryTriggerLog to server: " + results + "...");
             socket.Send(serializer.Serialize(results));
         }
-        private static void ExecuteLogQuery(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
+        private void ExecuteLogQuery(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
         {
             var serializer = new Dev2JsonSerializer();
-            var seriLoggerSource = new SeriLoggerSource()as ISeriLogSQLiteSource;
-            var auditQueryable = new AuditQueryableSqlite(seriLoggerSource.ConnectionString, seriLoggerSource.TableName);
+            var auditQueryable = GetAuditQueryable();
             var results = auditQueryable.QueryLogData(query);
 
             writer.WriteLine("sending QueryLog to server: " + results + "...");
             socket.Send(serializer.Serialize(results));
+        }
+
+        private IAuditQueryable GetAuditQueryable()
+        {
+            if (Config.Server.Sink == nameof(AuditingSettingsData))
+            {
+               return new AuditQueryableElastic();
+            }
+            else
+            {
+                return new AuditQueryableSqlite();
+            }
         }
     }
 }
