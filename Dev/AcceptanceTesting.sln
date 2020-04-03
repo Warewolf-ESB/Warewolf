@@ -361,6 +361,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Client.Console", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Client.Tests", "Warewolf.Client.Tests\Warewolf.Client.Tests.csproj", "{3B579BBC-9957-45EA-8B69-7F2430740701}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{D65ED581-E8C3-4CD4-9511-D4149B2ECEC5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Warewolf", "Warewolf", "{31C0B62E-1171-4056-B39B-3840DF0DE106}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Logger", "Warewolf.Logger\Warewolf.Logger.csproj", "{AD09444D-2E82-4791-B7FD-76BFC0427187}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.QueueWorker", "Warewolf.QueueWorker\Warewolf.QueueWorker.csproj", "{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1454,11 +1466,34 @@ Global
 		{3B579BBC-9957-45EA-8B69-7F2430740701}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3B579BBC-9957-45EA-8B69-7F2430740701}.Release|x86.ActiveCfg = Release|Any CPU
 		{3B579BBC-9957-45EA-8B69-7F2430740701}.Release|x86.Build.0 = Release|Any CPU
+		{AD09444D-2E82-4791-B7FD-76BFC0427187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD09444D-2E82-4791-B7FD-76BFC0427187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD09444D-2E82-4791-B7FD-76BFC0427187}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AD09444D-2E82-4791-B7FD-76BFC0427187}.Debug|x86.Build.0 = Debug|Any CPU
+		{AD09444D-2E82-4791-B7FD-76BFC0427187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD09444D-2E82-4791-B7FD-76BFC0427187}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD09444D-2E82-4791-B7FD-76BFC0427187}.Release|x86.ActiveCfg = Release|Any CPU
+		{AD09444D-2E82-4791-B7FD-76BFC0427187}.Release|x86.Build.0 = Release|Any CPU
+		{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A}.Debug|x86.Build.0 = Debug|Any CPU
+		{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A}.Release|x86.ActiveCfg = Release|Any CPU
+		{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FAECEE6E-0442-40FF-90CC-2E44C45056D8}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F91B5177-D106-44DE-9FE9-89B7A7E3042C} = {D65ED581-E8C3-4CD4-9511-D4149B2ECEC5}
+		{62247A80-2266-4295-A8F6-A05507E2796E} = {31C0B62E-1171-4056-B39B-3840DF0DE106}
+		{87AEFD04-29F3-45B6-A7C6-4161F9190876} = {31C0B62E-1171-4056-B39B-3840DF0DE106}
+		{AD09444D-2E82-4791-B7FD-76BFC0427187} = {31C0B62E-1171-4056-B39B-3840DF0DE106}
+		{B05DB8B9-A4AB-4D53-B5D1-8012C2F67E3A} = {31C0B62E-1171-4056-B39B-3840DF0DE106}
 	EndGlobalSection
 EndGlobal

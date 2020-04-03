@@ -54,7 +54,7 @@ namespace Warewolf.ClientConsole
                 var t = esb.Watch<ChangeNotification>();
                 t.OnChange += changeNotification =>
                 {
-                    Console.WriteLine("woot");
+                    Console.WriteLine("Change notification received");
                     _canExit.Set();
                 };
                 context.EsbProxy.Connection.Closed += () =>
