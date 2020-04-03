@@ -35,7 +35,7 @@ using Dev2.Runtime;
 
 namespace Dev2.Runtime.WebServer
 {
-    public static class DataObjectExtentions
+    public static class DataObjectExtensions
     {
         private static string _originalServiceName;
 
@@ -344,12 +344,12 @@ namespace Dev2.Runtime.WebServer
         }
 
         public static DataListFormat RunMultipleTestBatchesAndReturnJSON(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
-                                                                         Dev2JsonSerializer serializer, DataListFormat formatter,
+                                                                         Dev2JsonSerializer serializer,
                                                                          IResourceCatalog catalog, ITestCatalog testCatalog,
-                                                                         ref string executePayload)
+                                                                         out string executePayload)
         {
             var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
-            formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+            var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
             var objArray = testResults.Results
                 .Where(o => o.HasTestResults)
@@ -381,12 +381,12 @@ namespace Dev2.Runtime.WebServer
         }
 
         public static DataListFormat RunMultipleTestBatchesAndReturnTRX(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
-                                                                        Dev2JsonSerializer serializer, DataListFormat formatter,
+                                                                        Dev2JsonSerializer serializer,
                                                                         IResourceCatalog catalog, ITestCatalog testCatalog,
-                                                                        ref string executePayload)
+                                                                        out string executePayload)
         {
             var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
-            formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+            var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             executePayload = ServiceTestModelTRXResultBuilder.BuildTestResultTRX(dataObject.ServiceName, testResults.Results.SelectMany(o => o.Results).ToList());
             return formatter;
         }
@@ -443,11 +443,11 @@ namespace Dev2.Runtime.WebServer
             return result;
         }
         
-        public static DataListFormat RunCoverageAndReturnJSON(this IDSFDataObject dataObject, DataListFormat formatter, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, ref string executePayload)
+        public static DataListFormat RunCoverageAndReturnJSON(this IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
             var allCoverageReports = RunListOfCoverage(dataObject, testCoverageCatalog,workspaceGuid, serializer, catalog);
 
-            formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+            var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
             var objArray = allCoverageReports.AllCoverageReportsSummary
                 .Where(o => o.HasTestReports)
