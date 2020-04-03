@@ -32,7 +32,6 @@ using Warewolf.Data;
 using Warewolf.Services;
 using Enum = System.Enum;
 using Dev2.Runtime;
-using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -279,7 +278,7 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IWarewolfResource resource)
         {
-            IResource localResource = null;
+            IWarewolfResource localResource = null;
 
             if (Guid.TryParse(serviceName, out Guid resourceID))
             {
@@ -321,7 +320,7 @@ namespace Dev2.Runtime.WebServer
             resource = localResource;
         }
 
-        static void MapServiceToDataObjects(IDSFDataObject dataObject, IResource localResource)
+        static void MapServiceToDataObjects(IDSFDataObject dataObject, IWarewolfResource localResource)
         {
             dataObject.ServiceName = localResource.ResourceName;
             dataObject.ResourceID = localResource.ResourceID;
