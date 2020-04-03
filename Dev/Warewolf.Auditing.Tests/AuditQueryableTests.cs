@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,21 +13,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net;
+using Warewolf.Auditing.Drivers;
+using Warewolf.Driver.Serilog;
 
 namespace Warewolf.Auditing.Tests
 {
     [TestClass]
     public class AuditQueryableTests
     {
+        string connstring  = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
         string sqlMessage = "SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ";
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryable))]
         public void AuditQueryable_QueryTriggerData()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var query = new Dictionary<string, StringBuilder>();
             var result = auditQueryable.QueryTriggerData(query);
             _ = result.ToArray();
@@ -39,14 +41,13 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryable))]
         public void AuditQueryable_QueryTriggerData_FilterByResourceId()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var resourceId = Guid.NewGuid();
             var query = new Dictionary<string, StringBuilder>
             {
                 {"ResourceId", resourceId.ToString().ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var result = auditQueryable.QueryTriggerData(query);
             _ = result.ToArray();
             Assert.AreEqual(connstring, auditQueryable.ConnectionString);
@@ -58,8 +59,7 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_QueryLogData_FilterBy_NoParameters()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var query = new Dictionary<string, StringBuilder>();
 
             var results = auditQueryable.QueryLogData(query);
@@ -76,13 +76,13 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryable_QueryLogData_FilterBy_ExecutionId_EventLevel()
         {
             var executionID = Guid.NewGuid();
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+          
             var query = new Dictionary<string, StringBuilder>
             {
                 {"ExecutionID", executionID.ToString().ToStringBuilder()},
-                {"EventLevel","Debug".ToStringBuilder() }
+                {"EventLevel", "Debug".ToStringBuilder()}
             };
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
@@ -95,12 +95,12 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_QueryLogData_FilterBy_EventLevel_IncorrectLevel()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
+           
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel","Wrong".ToStringBuilder() }
+                {"EventLevel", "Wrong".ToStringBuilder()}
             };
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
@@ -114,13 +114,11 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryable_QueryLogData_FilterBy_ExecutionId()
         {
             var executionID = Guid.NewGuid();
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var query = new Dictionary<string, StringBuilder>
             {
                 {"ExecutionID", executionID.ToString().ToStringBuilder()}
-
             };
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
@@ -133,14 +131,12 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Debug()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel","Debug".ToStringBuilder() }
+                {"EventLevel", "Debug".ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
-
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
@@ -153,13 +149,12 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Information()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel","Information".ToStringBuilder() }
+                {"EventLevel", "Information".ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
 
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
@@ -173,13 +168,12 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Warning()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel","Warning".ToStringBuilder() }
+                {"EventLevel", "Warning".ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
 
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
@@ -193,14 +187,12 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Error()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel","Error".ToStringBuilder() }
+                {"EventLevel", "Error".ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
-
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
@@ -213,14 +205,12 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_QueryLogData_FilterBy_EventLevel_Fatal()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel","Fatal".ToStringBuilder() }
+                {"EventLevel", "Fatal".ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
-
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
@@ -233,16 +223,15 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_QueryLogData_FilterBy_DateTime()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var StartDateTime = DateTime.Now;
             var CompletedDateTime = StartDateTime.AddMinutes(30);
             var query = new Dictionary<string, StringBuilder>
             {
-                {"StartDateTime",StartDateTime.ToString().ToStringBuilder() },
-                {"CompletedDateTime",CompletedDateTime.ToString().ToStringBuilder() }
+                {"StartDateTime", StartDateTime.ToString().ToStringBuilder()},
+                {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
@@ -256,17 +245,16 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryable_QueryLogData_DateTime_EventLevel()
         {
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var StartDateTime = DateTime.Now;
             var CompletedDateTime = StartDateTime.AddMinutes(30);
             var query = new Dictionary<string, StringBuilder>
             {
-                { "EventLevel","Debug".ToStringBuilder() },
-                {"StartDateTime",StartDateTime.ToString().ToStringBuilder() },
-                {"CompletedDateTime",CompletedDateTime.ToString().ToStringBuilder() }
+                {"EventLevel", "Debug".ToStringBuilder()},
+                {"StartDateTime", StartDateTime.ToString().ToStringBuilder()},
+                {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
@@ -281,18 +269,16 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryable_QueryLogData_FilterBy_DateTime_EventLevel_executionID()
         {
             var executionID = Guid.NewGuid();
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
             var StartDateTime = DateTime.Now;
             var CompletedDateTime = StartDateTime.AddMinutes(30);
             var query = new Dictionary<string, StringBuilder>
             {
-                { "ExecutionID", executionID.ToString().ToStringBuilder()},
-                { "EventLevel","Debug".ToStringBuilder() },
-                {"StartDateTime",StartDateTime.ToString().ToStringBuilder() },
-                {"CompletedDateTime",CompletedDateTime.ToString().ToStringBuilder() }
+                {"ExecutionID", executionID.ToString().ToStringBuilder()},
+                {"EventLevel", "Debug".ToStringBuilder()},
+                {"StartDateTime", StartDateTime.ToString().ToStringBuilder()},
+                {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
             };
-
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
+            var auditQueryable = new TestAuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
@@ -307,39 +293,42 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryable_QueryLogData_FilterBy_DateTime_On_UrlEncoded_DateTime_EventLevel_and_executionID_Should_Not_Break()
         {
             var executionID = Guid.NewGuid();
-            var connstring = @"C:\ProgramData\Warewolf\Audits\AuditDB.db";
-
             var StartDateTime = "2019%2F10%2F01+01%3A40%3A18";
             var CompletedDateTime = "2019%2F10%2F03+01%3A40%3A18";
 
             var query = new Dictionary<string, StringBuilder>
             {
-                { "ExecutionID", executionID.ToString().ToStringBuilder()},
-                { "EventLevel","Debug".ToStringBuilder() },
-                { "StartDateTime",StartDateTime.ToString().ToStringBuilder() },
-                { "CompletedDateTime",CompletedDateTime.ToString().ToStringBuilder() }
+                {"ExecutionID", executionID.ToString().ToStringBuilder()},
+                {"EventLevel", "Debug".ToStringBuilder()},
+                {"StartDateTime", StartDateTime.ToString().ToStringBuilder()},
+                {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
             };
 
-            var auditQueryable = new AuditQueryableForTesting(connstring, "Logs");
-            var results = auditQueryable.QueryLogData(query);
+            var audit = new TestAuditQueryableSqlite(connstring);
+            var results = audit.QueryLogData(query);
             _ = results.ToArray();
 
-            Assert.AreEqual(connstring, auditQueryable.ConnectionString);
-            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND json_extract(Message, '$.ExecutionID') = '" + executionID + "' AND (Timestamp >= '2019-10-01T01:40:18' AND Timestamp <= '2019-10-03T01:40:18') ORDER BY TimeStamp Desc LIMIT 20", auditQueryable.SqlString.ToString());
+            Assert.AreEqual(connstring, audit.ConnectionString);
+            Assert.AreEqual(sqlMessage + "WHERE Level = 'Debug' AND json_extract(Message, '$.ExecutionID') = '" + executionID + "' AND (Timestamp >= '2019-10-01T01:40:18' AND Timestamp <= '2019-10-03T01:40:18') ORDER BY TimeStamp Desc LIMIT 20", audit.SqlString.ToString());
         }
 
-        public class AuditQueryableForTesting : AuditQueryable
+        public class TestAuditQueryableSqlite : AuditQueryableSqlite
         {
+            private SeriLogSQLiteSource _source;
             public string ConnectionString { get; set; }
             public StringBuilder SqlString { get; private set; }
 
-            public AuditQueryableForTesting(string connectionString, string tableName) : base(connectionString, tableName)
+            public TestAuditQueryableSqlite(string connectionString)
             {
+                _source = new SeriLogSQLiteSource
+                {
+                    ConnectionString = connectionString,
+                };
             }
 
-            protected override string[] ExecuteDatabase(string connectionString, StringBuilder sql)
+            protected string[] ExecuteDatabase(StringBuilder sql)
             {
-                ConnectionString = connectionString;
+                ConnectionString = _source.ConnectionString;
                 SqlString = sql;
                 string[] v = new string[0];
                 return v;
