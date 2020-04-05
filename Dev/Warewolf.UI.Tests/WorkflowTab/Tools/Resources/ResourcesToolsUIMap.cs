@@ -5,6 +5,8 @@ using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
 using System.Windows.Input;
+using TestStack.White.InputDevices;
+using TestStack.White.UIItems.Finders;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
@@ -40,7 +42,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClass
         [When(@"I Double Click ComDLL Tool to Change View")]
         public void ComDLLTool_Collapse_Large_View_To_Small_View_With_DoubleClick()
         {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll, new Point(238, 16));
+            new TestStack.White.InputDevices.Mouse().DoubleClick(MouseButton.Left, UIMap._window.Get(SearchCriteria.ByClassName("ComDllDesigner")).Location);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.SmallView.Exists, "ComDll tool small view on the design surface does not exist");
         }
 

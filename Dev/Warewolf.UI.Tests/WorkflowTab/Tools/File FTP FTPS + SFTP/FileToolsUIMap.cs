@@ -279,6 +279,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete.DoneButton, new Point(35, 6));
         }
+        
+        [Given(@"I Click Create Done Button")]
+        [When(@"I Click Create Done Button")]
+        [Then(@"I Click Create Done Button")]
+        public void Click_Create_Done_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.DoneButton, new Point(35, 6));
+        }
 
         [Given(@"I Click Read Done Button")]
         [When(@"I Click Read Done Button")]
