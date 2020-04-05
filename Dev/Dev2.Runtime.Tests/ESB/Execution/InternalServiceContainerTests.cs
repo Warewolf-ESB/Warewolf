@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, null);
             //---------------Test Result -----------------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
             Assert.IsNotNull(internalServiceContainer, "Cannot create new InternalServiceContainer object.");
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, null);
             var privateObject = new PrivateObject(internalServiceContainer);
             //---------------Assert Precondition----------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
@@ -90,7 +90,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, null);
             //---------------Assert Precondition----------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
             //---------------Execute Test ----------------------
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var esbExecuteRequest = new EsbExecuteRequest();
             var locater = new Mock<IEsbManagementServiceLocator>();
             locater.Setup(loc => loc.LocateManagementService("Name")).Returns(new FetchPluginSources());
-            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, locater.Object);
+            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, locater.Object, null);
             //---------------Assert Precondition----------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
             //---------------Execute Test ----------------------
@@ -304,7 +304,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             locater.Setup(loc => loc.LocateManagementService("Name")).Returns(esbManagementEndpoint);
             var workSpace = mockWorkSpace.Object;
-            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace, channel.Object, esbExecuteRequest, locater.Object);
+            var internalServiceContainer = new InternalServiceContainer(serviceAction, dsfObj.Object, workSpace, channel.Object, esbExecuteRequest, locater.Object, null);
             //---------------Assert Precondition----------------
             Assert.AreEqual(4, esbExecuteRequest.Args.Count);
             //---------------Execute Test ----------------------

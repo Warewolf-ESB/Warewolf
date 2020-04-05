@@ -9,11 +9,13 @@
 */
 
 
+using Warewolf.Data;
+using Warewolf.Debugging;
+
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
-    public interface IDebugWriter
+    public interface IDebugWriter : INotificationListener<IDebugNotification>
     {
-        void Write(IDebugState debugState);
         void Write(string serializeObject);
     }
 }

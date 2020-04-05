@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = principle.Object };
             //------------Execute Test---------------------------
-            internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, "1");
+            internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, "1", null);
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = null };
             //------------Execute Test---------------------------
-            internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
+            internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString(), null);
         }
 
         [TestMethod]
@@ -142,7 +142,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var executingUser = new Mock<IPrincipal>();
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = executingUser.Object };
             //------------Execute Test---------------------------
-            internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
+            internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString(), null);
         }
 
         [TestMethod]
@@ -170,7 +170,7 @@ namespace Dev2.Tests.Runtime.WebServer
             authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString())).Returns(true);
             var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
             //------------Execute Test---------------------------
-            var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
+            var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString(), null);
             Assert.IsNotNull(processRequest);
         }
 
@@ -199,7 +199,7 @@ namespace Dev2.Tests.Runtime.WebServer
             authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString())).Returns(false);
             var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
             //------------Execute Test---------------------------
-            var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
+            var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString(), null);
             authorizationService.Verify(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString()), Times.Once);
             Assert.IsNotNull(processRequest);
         }

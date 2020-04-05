@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var request = new EsbExecuteRequest();
             var workspaceId = Guid.NewGuid();
 
-            var resultId = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors);
+            var resultId = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors, null);
 
             Assert.AreEqual(Guid.Empty, resultId);
         }

@@ -20,6 +20,16 @@ namespace Warewolf.Esb
         Dictionary<string, StringBuilder> Args { get; set; }
         void AddArgument(string key, StringBuilder value);
     }
+    public interface IContextualInternalService
+    {
+        StringBuilder Execute(IInternalExecutionContext internalExecutionContext);
+    }
+    public interface IInternalExecutionContext
+    {
+        void RegisterAsClusterEventListener();
+        IEsbRequest Request { get; }
+        object Workspace { get; set; } // this is actually supposed to be Dev2.Workspaces.IWorkspace
+    }
 
     public interface ICatalogRequest
     {

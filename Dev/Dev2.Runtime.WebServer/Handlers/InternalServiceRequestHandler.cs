@@ -21,6 +21,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
@@ -112,14 +113,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
         }
 
-        public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, Guid dataListId, string connectionId)
+        public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, Guid dataListId, string connectionId, InternalExecutionContext internalExecutionContext)
         {
             var channel = new EsbServicesEndpoint();
 
             var isManagementResource = ProcessDsfDataObject(request, workspaceId, dataListId, connectionId, channel);
             if (!DsfDataObject.Environment.HasErrors())
             {
-                return ProcessRequest(request, workspaceId, channel, DsfDataObject, isManagementResource);
+                return ProcessRequest(request, workspaceId, channel, DsfDataObject, isManagementResource, internalExecutionContext);
             }
 
             var msg = new ExecuteMessage { HasError = true };
@@ -208,7 +209,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return isDebug;
         }
 
-        private StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, EsbServicesEndpoint channel, IDSFDataObject dataObject, bool isManagementResource)
+        private StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, EsbServicesEndpoint channel, IDSFDataObject dataObject, bool isManagementResource, InternalExecutionContext internalExecutionContext)
         {
             if (ExecutingUser == null)
             {
@@ -233,7 +234,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             IsAuthorizedForServiceTestRun(dataObject);
                         }
 
-                        channel.ExecuteRequest(dataObject, request, workspaceId, out var errors);
+                        channel.ExecuteRequest(dataObject, request, workspaceId, out var errors, internalExecutionContext);
                     }
                     catch (Exception e)
                     {

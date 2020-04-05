@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using Warewolf.Data;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
@@ -19,7 +20,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
     /// </summary>
 
     
-    public interface IDebugState : IEquatable<IDebugState>
+    public interface IDebugState : IEquatable<IDebugState>, IDebugNotification
     {
         /// <summary>
         ///     Gets or sets the workspace ID.

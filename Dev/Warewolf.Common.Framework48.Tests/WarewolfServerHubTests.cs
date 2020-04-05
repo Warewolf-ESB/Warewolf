@@ -45,7 +45,7 @@ namespace Warewolf.Tests
             hub.Clients = mockClients.Object;
 
             var changeNotification = new ChangeNotification();
-            hub.SendConfigUpdateNotification(changeNotification);
+            hub.Write(changeNotification);
 
             mockCaller.Verify(o => o.ChangeNotification(changeNotification), Times.Once);
             otherMocks.ForEach(o => o.Verify(o1 => o1.ChangeNotification(changeNotification), Times.Once));

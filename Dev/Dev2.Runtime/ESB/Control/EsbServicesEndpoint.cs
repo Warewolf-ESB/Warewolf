@@ -22,6 +22,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Warewolf.Esb;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -43,7 +44,7 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
+        public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors, IInternalExecutionContext internalExecutionContext)
         {
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
@@ -52,6 +53,7 @@ namespace Dev2.Runtime.ESB.Control
             {
                 theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             });
+            internalExecutionContext.Workspace = theWorkspace;
 
             var dataListOkay = EnsureDataListIdIsSet(dataObject, workspaceId, errors);
             if (!dataListOkay)
@@ -64,7 +66,7 @@ namespace Dev2.Runtime.ESB.Control
                 Dev2Logger.Debug("Creating Invoker", dataObject.ExecutionID.ToString());
                 using (var invoker = new EsbServiceInvoker(this, theWorkspace, request))
                 {
-                    resultID = invoker.Invoke(dataObject, out var invokeErrors);
+                    resultID = invoker.Invoke(dataObject, out var invokeErrors, internalExecutionContext);
                     errors.MergeErrors(invokeErrors);
                 }
             }

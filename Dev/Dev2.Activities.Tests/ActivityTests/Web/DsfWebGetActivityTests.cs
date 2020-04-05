@@ -30,6 +30,7 @@ using Moq;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
+using Warewolf.Esb;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -162,7 +163,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     public class MockEsb : IEsbChannel
     {
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID,
-                                   out ErrorResultTO errors)
+                                   out ErrorResultTO errors, IInternalExecutionContext internalExecutionContext)
         {
             errors = new ErrorResultTO();
             return Guid.NewGuid();

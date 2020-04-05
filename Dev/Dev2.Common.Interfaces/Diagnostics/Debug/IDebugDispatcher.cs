@@ -11,6 +11,8 @@
 
 using System;
 using System.Collections.Generic;
+using Warewolf.Data;
+using Warewolf.Esb;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
@@ -26,7 +28,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         public IList<IDebugState> remoteDebugItems;
     }
 
-    public interface IDebugDispatcher
+    public interface IDebugDispatcher : IDispatcher<IDebugNotification>
     {
         int Count { get; }
         void Remove(Guid workspaceId);

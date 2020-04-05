@@ -25,6 +25,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Esb;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
@@ -550,7 +551,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
     public class MockEsb : IEsbChannel
     {
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID,
-                                   out ErrorResultTO errors)
+                                   out ErrorResultTO errors, IInternalExecutionContext internalExecutionContext)
         {
             errors = new ErrorResultTO();
             return Guid.NewGuid();

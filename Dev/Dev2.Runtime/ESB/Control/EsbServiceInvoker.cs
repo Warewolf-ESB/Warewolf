@@ -28,6 +28,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Dev2.Runtime.ESB.Management;
+using Warewolf.Esb;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB
@@ -75,7 +77,7 @@ namespace Dev2.Runtime.ESB
 
         #endregion Constructors
                 
-        public Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors)
+        public Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors, IInternalExecutionContext internalExecutionContext)
         {
             var result = GlobalConstants.NullDataListID;
             var time = new Stopwatch();
@@ -89,7 +91,7 @@ namespace Dev2.Runtime.ESB
             errors.ClearErrors();
             try
             {
-                errors = TryInvokeService(dataObject, errors);
+                errors = TryInvokeService(dataObject, errors, internalExecutionContext);
             }
             finally
             {
@@ -101,7 +103,7 @@ namespace Dev2.Runtime.ESB
             return result;
         }
 
-        ErrorResultTO TryInvokeService(IDSFDataObject dataObject, ErrorResultTO errors)
+        ErrorResultTO TryInvokeService(IDSFDataObject dataObject, ErrorResultTO errors, IInternalExecutionContext internalExecutionContext)
         {
             var serviceId = dataObject.ResourceID;
 
@@ -114,7 +116,7 @@ namespace Dev2.Runtime.ESB
             {
                 try
                 {
-                    errors = InvokeService(dataObject, errors, serviceId, serviceName);
+                    errors = InvokeService(dataObject, errors, serviceId, serviceName, internalExecutionContext);
                 }
                 catch (Exception e)
                 {
@@ -142,7 +144,7 @@ namespace Dev2.Runtime.ESB
             return errors;
         }
 
-        private ErrorResultTO InvokeService(IDSFDataObject dataObject, ErrorResultTO errors, Guid serviceId, string serviceName)
+        private ErrorResultTO InvokeService(IDSFDataObject dataObject, ErrorResultTO errors, Guid serviceId, string serviceName, IInternalExecutionContext internalExecutionContext)
         {
             Dev2Logger.Debug("Finding service", dataObject.ExecutionID.ToString());
             var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
@@ -195,7 +197,7 @@ namespace Dev2.Runtime.ESB
                     theStart.Service = theService;
                     theStart.DataListSpecification = theService.DataListSpecification;
                     Dev2Logger.Debug("Getting container", dataObject.ExecutionID.ToString());
-                    var container = GenerateContainer(theStart, dataObject, _workspace);
+                    var container = GenerateContainer(theStart, dataObject, _workspace, internalExecutionContext);
                     container.Execute(out errors, 0);
                 }
 
@@ -300,6 +302,10 @@ namespace Dev2.Runtime.ESB
 
         IEsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
         {
+            return GenerateContainer(serviceAction, dataObj, theWorkspace, null);
+        }
+        IEsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace, IInternalExecutionContext internalExecutionContext)
+        {
             // set the ID for later use ;)
             dataObj.WorkspaceID = _workspace.ID;
 
@@ -313,7 +319,7 @@ namespace Dev2.Runtime.ESB
                 switch (serviceAction.ActionType)
                 {
                     case enActionType.InvokeManagementDynamicService:
-                        result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
+                        result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request, internalExecutionContext);
                         break;
 
                     case enActionType.Workflow:

@@ -9,14 +9,14 @@
 */
 
 using System;
+using Warewolf.Data;
 
 namespace Warewolf.Esb
 {
-    public interface IClusterDispatcher
+    public interface IClusterDispatcher : IDispatcher<ChangeNotification>
     {
         int Count { get; }
         void Remove(Guid workspaceId);
-        void Add(Guid workspaceId, IClusterNotificationWriter writer);
         void Shutdown();
         void Write<T>(T info) where T : class;
     }

@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
@@ -44,7 +45,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 {
     [AuthorizeHub]
     [HubName("esb")]
-    public class EsbHub : ServerHub, IDebugWriter, IExplorerRepositorySync, IClusterNotificationWriter
+    public class EsbHub : ServerHub, IEsbHub, IDebugWriter, IExplorerRepositorySync
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
@@ -57,12 +58,12 @@ namespace Dev2.Runtime.WebServer.Hubs
             : base(server)
         {
             DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
-            ClusterDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
+            // remove because now the ClusterJoinService adds this InternalExecutionContext if join is requested, ClusterDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
         }
 
         #region Implementation of IDebugWriter
         
-        public void Write(IDebugState debugState)
+        public void Write(IDebugNotification debugState)
         {
             SendDebugState(debugState as DebugState);
         }
@@ -315,7 +316,8 @@ namespace Dev2.Runtime.WebServer.Hubs
                             Dev2Logger.Warn("Execute Command  Invoked For [ " + userName + " : "+contextUser?.Identity?.AuthenticationType+" : "+contextUser?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfWarn);
                         }
                         StringBuilder processRequest = null;
-                        Common.Utilities.PerformActionInsideImpersonatedContext(contextUser, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId); });
+                        var internalExecutionContext = new InternalExecutionContext(request, null, this);
+                        Common.Utilities.PerformActionInsideImpersonatedContext(contextUser, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId, internalExecutionContext); });
                         var future = new FutureReceipt
                         {
                             PartID = 0,
@@ -406,9 +408,9 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #endregion
 
-        public void SendConfigUpdateNotification(ChangeNotification changeNotification)
+        public void Write(ChangeNotification notification)
         {
-            Clients.All.ChangeNotification(new ChangeNotification());
+            Clients.All.ChangeNotification(notification);
         }
     }
 }

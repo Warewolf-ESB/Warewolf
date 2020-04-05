@@ -14,6 +14,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Logging;
 using Newtonsoft.Json;
+using Warewolf.Data;
+using Warewolf.Debugging;
 
 namespace Dev2.Diagnostics.Debug
 {
@@ -48,6 +50,11 @@ namespace Dev2.Diagnostics.Debug
                 return;
             }
             _writers.TryAdd(workspaceId, writer);
+        }
+
+        public void AddListener(Guid workspaceID, INotificationListener<IDebugNotification> esbHub)
+        {
+            Add(workspaceID, esbHub as IDebugWriter);
         }
 
 

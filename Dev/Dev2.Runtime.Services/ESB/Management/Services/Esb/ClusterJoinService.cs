@@ -16,29 +16,39 @@ using Dev2.Common.Serializers;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Network;
 using Dev2.Workspaces;
+using ServiceStack.Common;
 using Warewolf.Client;
+using Warewolf.Data;
+using Warewolf.Esb;
 
 namespace Dev2.Runtime.ESB.Management.Services.Esb
 {
-    public class ClusterJoinService : DefaultEsbManagementEndpoint
+    public class ClusterJoinService : DefaultEsbManagementEndpoint, IContextualInternalService
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            throw new Exception("no context provided to contextual service");
+        }
+        
+        public StringBuilder Execute(IInternalExecutionContext internalExecutionContext)
+        {
+            var values = internalExecutionContext.Request.Args;
             ClusterJoinResponse response = null;
             if (values.TryGetValue(Warewolf.Service.Cluster.ClusterJoinRequest.Key, out var keySb))
             {
                 var key = keySb.ToString();
-                response = VerifyClusterKey(key);
+                response = VerifyClusterKey(internalExecutionContext, key);
             }
             var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(response);
         }
 
-        private static ClusterJoinResponse VerifyClusterKey(string key)
+        private static ClusterJoinResponse VerifyClusterKey(IInternalExecutionContext internalExecutionContext, string key)
         {
             if (key == Config.Cluster.Key)
             {
-                ClusterDispatcher.Instance.Write("woot");
+                internalExecutionContext.RegisterAsClusterEventListener();
+                ClusterDispatcher.Instance.Write("woot"); // this should reach the client because it was registered on the line before
                 return new ClusterJoinResponse
                 {
                     Token = Guid.NewGuid()

@@ -14,6 +14,7 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Logging;
 using Warewolf.Data;
+using Warewolf.Debugging;
 using Warewolf.Esb;
 
 namespace Dev2.Runtime.Network
@@ -24,9 +25,9 @@ namespace Dev2.Runtime.Network
      */
     internal class ClusterDispatcherImplementation : IClusterDispatcher
     {
-        readonly ConcurrentDictionary<Guid, IClusterNotificationWriter> _writers = new ConcurrentDictionary<Guid, IClusterNotificationWriter>();
-        readonly ILogger _dev2Logger;
-        bool _shutdownRequested;
+        private readonly ConcurrentDictionary<Guid, INotificationListener<ChangeNotification>> _writers = new ConcurrentDictionary<Guid, INotificationListener<ChangeNotification>>();
+        private readonly ILogger _dev2Logger;
+        private bool _shutdownRequested;
 
         public ClusterDispatcherImplementation()
             : this(new DefaultLogger())
@@ -39,18 +40,18 @@ namespace Dev2.Runtime.Network
 
         public int Count => _writers.Count;
 
-        public void Add(Guid workspaceId, IClusterNotificationWriter writer)
+        public void AddListener(Guid workspaceId, INotificationListener<ChangeNotification> listener)
         {
-            if (writer == null || _shutdownRequested)
+            if (listener == null || _shutdownRequested)
             {
                 return;
             }
-            _writers.TryAdd(workspaceId, writer);
+            _writers.TryAdd(workspaceId, listener);
         }
 
         public void Remove(Guid workspaceId)
         {
-            _writers.TryRemove(workspaceId, out IClusterNotificationWriter _);
+            _writers.TryRemove(workspaceId, out _);
         }
 
         public void Shutdown()
@@ -62,7 +63,7 @@ namespace Dev2.Runtime.Network
         {
             foreach (var writer in _writers.Values.ToList())
             {
-                writer.SendConfigUpdateNotification(new ChangeNotification());
+                writer.Write(new ChangeNotification());
             }
         }
     }

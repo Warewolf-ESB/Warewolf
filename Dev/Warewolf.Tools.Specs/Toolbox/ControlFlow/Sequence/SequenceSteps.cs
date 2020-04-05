@@ -28,6 +28,7 @@ using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
 using Dev2.TO;
+using Warewolf.Data;
 
 namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 {
@@ -651,9 +652,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         /// </remarks>
         /// </summary>
         /// <param name="debugState">The state to be written.</param>
-        public void Write(IDebugState debugState)
+        public void Write(IDebugNotification debugState)
         {
-            DebugStates.Add(debugState);
+            DebugStates.Add(debugState as IDebugState);
         }
 
         public void Write(string serializeObject)

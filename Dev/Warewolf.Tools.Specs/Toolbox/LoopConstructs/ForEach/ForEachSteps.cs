@@ -26,6 +26,7 @@ using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList.Contract;
+using Warewolf.Esb;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
@@ -251,7 +252,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         #region Not Implemented
 
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID,
-                                   out ErrorResultTO errors)
+                                   out ErrorResultTO errors, IInternalExecutionContext internalExecutionContext)
         {
             errors = new ErrorResultTO();
             return Guid.NewGuid();

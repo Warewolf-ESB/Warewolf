@@ -13,6 +13,8 @@ using System;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Runtime;
+using Dev2.Runtime.ESB.Management;
+using Warewolf.Esb;
 
 
 namespace Dev2.DynamicServices
@@ -28,7 +30,7 @@ namespace Dev2.DynamicServices
         /// <param name="dataObject">The data object.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors);
+        Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors, IInternalExecutionContext internalExecutionContext);
 
         /// <summary>
         /// Generates the invoke container.
