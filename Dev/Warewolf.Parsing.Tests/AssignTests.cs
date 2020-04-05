@@ -1,6 +1,7 @@
 ﻿using System;
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Exceptions;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using static DataStorage;

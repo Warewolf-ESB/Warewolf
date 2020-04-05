@@ -347,7 +347,7 @@ namespace WarewolfParsingTest
                 DataStorage.WarewolfAtom.NewDataString("A")
             };
             //------------Execute Test---------------------------
-            Assert.ThrowsException<Dev2.Common.Common.NullValueInVariableException>(() =>
+            Assert.ThrowsException<Warewolf.Exceptions.NullValueInVariableException>(() =>
             {
                 var enumerator = PublicFunctions.EvalEnvExpressionToArrayTable("[[NotExistingRec(*)]]", 0, env, true);
                 var res = enumerator.ToArray();
