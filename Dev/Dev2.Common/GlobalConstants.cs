@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Security.Principal;
+using Warewolf.Data;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
@@ -187,12 +188,12 @@ namespace Dev2.Common
 
         public static readonly string XMLPrefix = "~XML~";
         
-        public static readonly string CalculateTextConvertPrefix = "!~calculation~!";
+        public static readonly string CalculateTextConvertPrefix = DataLayerConstants.CalculateTextConvertPrefix;
 
         public static readonly string CalculateTextConvertSuffix = "!~~calculation~!";
         public static readonly string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
 
-        public static readonly string AggregateCalculateTextConvertPrefix = "!~aggcalculation~!";
+        public static readonly string AggregateCalculateTextConvertPrefix = DataLayerConstants.AggregateCalculateTextConvertPrefix;
         public static readonly string AggregateCalculateTextConvertSuffix = "!~~aggcalculation~!";
         public static readonly string AggregateCalculateTextConvertFormat = AggregateCalculateTextConvertPrefix + "{0}" + AggregateCalculateTextConvertSuffix;
         

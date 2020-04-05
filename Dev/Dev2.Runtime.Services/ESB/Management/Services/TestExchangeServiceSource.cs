@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿using System;
+ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;

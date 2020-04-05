@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿using System;
+ using System;
 using System.Net;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;

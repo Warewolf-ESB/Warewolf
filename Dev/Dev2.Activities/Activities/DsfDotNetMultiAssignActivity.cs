@@ -31,6 +31,8 @@ using Dev2.Interfaces;
 using Dev2.MathOperations;
 using Dev2.Utilities;
 using Warewolf.Core;
+using Warewolf.Data;
+using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
