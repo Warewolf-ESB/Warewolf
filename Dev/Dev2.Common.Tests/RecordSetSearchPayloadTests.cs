@@ -9,6 +9,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Data;
 
 namespace Dev2.Common.Tests
 {

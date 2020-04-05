@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
+using Warewolf.Data;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 

@@ -36,6 +36,8 @@ using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 using Dev2.Common.State;
 using Dev2.Utilities;
+using Warewolf.Data;
+using Warewolf.Exceptions;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {

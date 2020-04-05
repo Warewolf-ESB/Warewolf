@@ -5,6 +5,7 @@ using System.Text;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Warewolf.Data;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 

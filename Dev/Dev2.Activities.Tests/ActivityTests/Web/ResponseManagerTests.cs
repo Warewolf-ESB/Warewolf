@@ -11,6 +11,7 @@ using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
+using Warewolf.Data;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 

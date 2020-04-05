@@ -44,6 +44,7 @@ using Dev2.Common.Interfaces;
 using Dev2.MathOperations;
 using System.Globalization;
 using Dev2.Data.Interfaces.Enums;
+using Warewolf.Data;
 
 namespace Dev2.Activities.RedisCache
 {

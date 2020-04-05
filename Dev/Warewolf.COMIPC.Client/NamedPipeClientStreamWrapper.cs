@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿using Dev2.Common;
+ using Dev2.Common;
 using System;
 using System.IO;
 using System.IO.Pipes;

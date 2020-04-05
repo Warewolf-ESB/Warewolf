@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,18 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-
-namespace Dev2.Common.Common
+namespace Warewolf.Data
 {
-    public class NullValueInVariableException : Exception
+    public static class DataLayerConstants
     {
-        public NullValueInVariableException(string message, string variableName)
-            : base(message)
-        {
-            VariableName = variableName;
-        }
-
-        public string VariableName { get; set; }
+        public const string CalculateTextConvertPrefix = "!~calculation~!";
+        public const string AggregateCalculateTextConvertPrefix = "!~aggcalculation~!";
     }
 }

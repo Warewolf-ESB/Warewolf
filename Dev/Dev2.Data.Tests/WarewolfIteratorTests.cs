@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Data;
 using WarewolfParserInterop;
 
 namespace Dev2.Data.Tests

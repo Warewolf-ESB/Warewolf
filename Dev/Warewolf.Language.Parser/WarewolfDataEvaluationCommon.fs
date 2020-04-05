@@ -2,13 +2,15 @@
 
 
 open LanguageAST
-open Dev2.Common.Interfaces
 open Microsoft.FSharp.Text.Lexing
 open DataStorage
 open WarewolfParserInterop
 open Newtonsoft.Json.Linq
 open CommonFunctions
 open EvaluationFunctions
+open Warewolf.Data
+open Warewolf.Exceptions
+
 // this method will given a language string return an AST based on FSLex and FSYacc
 
 let mutable ParseCache = Map.empty : Map<string,LanguageExpression>
@@ -101,7 +103,7 @@ let evalRecordSetIndex (recset:WarewolfRecordset) (identifier:RecordSetColumnIde
     let index = getRecordSetIndex recset position
     match index with 
     | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
-    | IndexDoesNotExist -> raise (new Dev2.Common.Common.NullValueInVariableException("index not found",identifier.Name))
+    | IndexDoesNotExist -> raise (new NullValueInVariableException("index not found",identifier.Name))
 
 
 let evalRecordSetStarIndex (recset:WarewolfRecordset) (identifier:RecordSetColumnIdentifier)  =
@@ -123,7 +125,7 @@ let evalRecordSetLastIndex (recset:WarewolfRecordset) (identifier:RecordSetColum
 let evalScalar (scalarName:ScalarIdentifier) (env:WarewolfEnvironment) =
     if env.Scalar.ContainsKey scalarName
     then     ( env.Scalar.[scalarName])
-    else raise (new Dev2.Common.Common.NullValueInVariableException(sprintf "Scalar value { %s } is NULL" scalarName,scalarName))
+    else raise (new NullValueInVariableException(sprintf "Scalar value { %s } is NULL" scalarName,scalarName))
              
 let rec IndexToString (x:Index) =
     match x with 
@@ -153,7 +155,7 @@ and evalIndex  ( env:WarewolfEnvironment) (update:int) (exp:string)=
 
 and evalRecordsSet (recset:RecordSetColumnIdentifier) (env: WarewolfEnvironment)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
-        raise (new Dev2.Common.Common.NullValueInVariableException((sprintf "Variable { %s } is NULL." (recset.Name) ),recset.Name))
+        raise (new NullValueInVariableException((sprintf "Variable { %s } is NULL." (recset.Name) ),recset.Name))
             
     else
             match recset.Index with
@@ -168,7 +170,7 @@ and evalRecordsSet (recset:RecordSetColumnIdentifier) (env: WarewolfEnvironment)
 
 and evalRecordsSetWithPositions (recset:RecordSetColumnIdentifier) (env: WarewolfEnvironment)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
-        raise (new Dev2.Common.Common.NullValueInVariableException(recset.Index.ToString(),recset.Name))
+        raise (new NullValueInVariableException(recset.Index.ToString(),recset.Name))
             
     else
             match recset.Index with
@@ -261,13 +263,13 @@ and evalDataSetExpression (env: WarewolfEnvironment) (update:int) (name:RecordSe
                                                     | _ -> failwith "non int index found"
                                         | _ ->   eval env update false ( sprintf "[[%s(%s)]]" name.Name res)
     else
-        raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found",name.Name))
+        raise (new NullValueInVariableException("Recordset not found",name.Name))
 
           
 and  eval  (env: WarewolfEnvironment)  (update:int) (shouldEscape:bool) (lang:string) : WarewolfEvalResult=
-    if lang.StartsWith(Dev2.Common.GlobalConstants.CalculateTextConvertPrefix) then
+    if lang.StartsWith(DataLayerConstants.CalculateTextConvertPrefix) then
         evalForCalculate env update lang
-    elif lang.StartsWith(Dev2.Common.GlobalConstants.AggregateCalculateTextConvertPrefix) then
+    elif lang.StartsWith(DataLayerConstants.AggregateCalculateTextConvertPrefix) then
        evalForCalculateAggregate env update lang
     else
         let EvalComplex (exp:LanguageExpression list) = 
@@ -322,9 +324,9 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (shouldEscape:bool) (lang:st
                                             | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))
 
 and  evalForJson  (env: WarewolfEnvironment)  (update:int) (shouldEscape:bool) (lang:string) : WarewolfEvalResult=
-    if lang.StartsWith(Dev2.Common.GlobalConstants.CalculateTextConvertPrefix) then
+    if lang.StartsWith(DataLayerConstants.CalculateTextConvertPrefix) then
         evalForCalculate env update lang
-    elif lang.StartsWith(Dev2.Common.GlobalConstants.AggregateCalculateTextConvertPrefix) then
+    elif lang.StartsWith(DataLayerConstants.AggregateCalculateTextConvertPrefix) then
        evalForCalculateAggregate env update lang
     else
         let EvalComplex (exp:LanguageExpression list) = 
