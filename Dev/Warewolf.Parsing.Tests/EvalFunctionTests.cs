@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Common.Common;
+using Warewolf.Exceptions;
 using static DataStorage;
 
 namespace WarewolfParsingTest

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Exceptions;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
