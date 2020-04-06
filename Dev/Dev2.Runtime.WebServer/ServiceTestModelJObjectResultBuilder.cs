@@ -64,7 +64,7 @@ namespace Dev2.Runtime.WebServer
             var resObj = new JObject { { "Report Name", report.ReportName } };
             resObj.Add("OldReportName", report.OldReportName);
             resObj.Add("WorkflowId", report.WorkflowId);
-            resObj.Add("CoveragePercentage", report.CoveragePercentage);
+            resObj.Add("CoveragePercentage", Math.Round(report.CoveragePercentage * 100));
             resObj.Add("AllTestNodesCovered", new JArray(report.AllTestNodesCovered.Select(o1 => o1.Select(oo => oo.BuildTestResultJSONForWebRequest()))));
 
             return resObj;

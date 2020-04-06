@@ -484,7 +484,7 @@ namespace Dev2.Runtime
 
             double totalNodes = workflowNodes.Count;
 
-            return Math.Round(coveredNodes / totalNodes * 100);
+            return coveredNodes / totalNodes;
         }
     }
 
