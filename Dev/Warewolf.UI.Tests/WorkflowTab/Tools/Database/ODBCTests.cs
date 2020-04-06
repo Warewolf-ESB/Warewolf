@@ -1,8 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using System.Management.Automation;
 
 namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
 {
@@ -13,8 +15,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
 
         [TestMethod]
         [TestCategory("Database Tools")]
+        [Ignore]//TODO: Re-introduce this when https://warewolf.atlassian.net/browse/WOLF-6350 is done.
         public void ODBCDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
+            using (var PowerShellInstance = PowerShell.Create())
+            {
+                PowerShellInstance.AddScript("Add-OdbcDsn -Name \"Excel Files\" -Platform 32-bit -DriverName \"Microsoft Excel Driver (*.xls)\" -DsnType User");
+                PowerShellInstance.Invoke();
+            }
             Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.Exists, "ODBC database tool does not exist after dragging in from the toolbox");
             // Small View
             DatabaseToolsUIMap.ODBCDatabaseTool_ChangeView_With_DoubleClick();

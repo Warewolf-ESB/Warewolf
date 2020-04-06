@@ -38,6 +38,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
 
         [TestMethod]
         [TestCategory("Sharepoint Tools")]
+        [Ignore]//TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void SharepointDeleteFileTool_LargeView_DoneButton_UITest()
         {
             SharepointToolsUIMap.Open_SharepointDeleteFileTool_LargeView();

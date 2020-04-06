@@ -1,28 +1,26 @@
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Threading;
 using Newtonsoft.Json;
 
-namespace Warewolf.UnitTestAttributes
+namespace Warewolf.UI.Tests
 {
-    public class Depends : IDisposable
+    public class Depends : Attribute, IDisposable
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
-            "T004124.premier.local",
             "RSAKLFSVRHST1.premier.local",
-            "rsaklfwynand",
+            "RSAKLFWYNAND.premier.local",
             "PIETER.premier.local",
+            "T004124.premier.local",
             "localhost"
         };
         private string SelectedHost = "";
         
-        static readonly string ElasticsearchServer = "rsaklfwynand";
         static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
@@ -40,8 +38,7 @@ namespace Warewolf.UnitTestAttributes
             CIRemote = 5,
             Redis = 6,
             AnonymousRedis = 7,
-            AnonymousWarewolf = 8,
-            Elasticsearch = 9
+            AnonymousWarewolf = 8
         }
 
         ContainerType _containerType;
@@ -68,8 +65,6 @@ namespace Warewolf.UnitTestAttributes
                     return "AnonymousRedis";
                 case ContainerType.AnonymousWarewolf:
                     return "AnonymousWarewolf";
-                case ContainerType.Elasticsearch:
-                    return "Elasticsearch";
             }
 
             throw new ArgumentOutOfRangeException();
@@ -102,15 +97,7 @@ namespace Warewolf.UnitTestAttributes
                         {
                             retryCount++;
                         }
-                        if (result == "" || result.Contains("\"IP\": \"\""))
-                        {
-                            retryCount++;
-                        }
-                        else
-                        {
-                            retryCount = RigOpsHosts.Count;
-                        }
-                    } while (retryCount < RigOpsHosts.Count);
+                    } while (result == "" && retryCount < RigOpsHosts.Count);
 
                     Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
 
@@ -145,9 +132,6 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.PostGreSQL:
                     InjectPostGreSQLContainer(EnableDocker);
                     break;
-                case ContainerType.Elasticsearch:
-                    InjectElasticContainer(EnableDocker);
-                    break;
             }
         }
 
@@ -173,8 +157,6 @@ namespace Warewolf.UnitTestAttributes
                     return "3148";
                 case ContainerType.Warewolf:
                     return "3146";
-                case ContainerType.Elasticsearch:
-                    return "9200";
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -261,7 +243,7 @@ namespace Warewolf.UnitTestAttributes
                     knownMssqlServerSources);
             }
         }
-        
+
         void InjectRabbitMQContainer(bool EnableDocker)
         {
             var knownServerSources = new List<string>()
@@ -281,25 +263,7 @@ namespace Warewolf.UnitTestAttributes
                     knownServerSources);
             }
         }
-        private void InjectElasticContainer(bool enableDocker)
-        {
-            var knownServerSources = new List<string>()
-            {
-                @"%programdata%\Warewolf\Resources\Sources\Elasticsearch\testElasticsearchSource.bite",
-                @"%programdata%\Warewolf\Resources\Sources\Elasticsearch\testElasticsearchSource.xml"
-            };
-            if (EnableDocker)
-            {
-                UpdateSourcesConnectionStrings(
-                    $"HostName=http://{Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
-                    knownServerSources);
-            }
-            else
-            {
-                UpdateSourcesConnectionStrings($"HostName=http://{ElasticsearchServer};UserName=test;Password=test;VirtualHost=/",
-                    knownServerSources);
-            }
-        }
+
         void InjectPostGreSQLContainer(bool EnableDocker)
         {
             var knownServerSources = new List<string>()
@@ -509,10 +473,10 @@ namespace Warewolf.UnitTestAttributes
 
     class WebClientWithExtendedTimeout : WebClient
     {
-        protected override WebRequest GetWebRequest(Uri uri)
+        protected override System.Net.WebRequest GetWebRequest(Uri uri)
         {
-            WebRequest w = base.GetWebRequest(uri);
-            w.Timeout = 3 * 60 * 1000;
+            System.Net.WebRequest w = base.GetWebRequest(uri);
+            w.Timeout = 10 * 1000;
             return w;
         }
     }
