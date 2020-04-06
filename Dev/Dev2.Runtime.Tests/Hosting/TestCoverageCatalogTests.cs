@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var coverage = sut.GenerateAllTestsCoverage(_workflowId, tests);
 
-            Assert.AreEqual(50, coverage.CoveragePercentage);
+            Assert.AreEqual(50, Math.Round(coverage.CoveragePercentage * 100));
         }
 
         [TestMethod]
@@ -66,10 +66,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var report = sut.FetchReport(_workflowId, _false_branchTest.TestName);
 
-            Assert.AreEqual(50, coverage.CoveragePercentage);
+            Assert.AreEqual(50, Math.Round(coverage.CoveragePercentage * 100));
 
             Assert.AreEqual(_false_branchTest.TestName, report.ReportName);
-            Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
+            Assert.AreEqual(Math.Round(coverage.CoveragePercentage * 100), Math.Round(report.CoveragePercentage * 100));
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var coverage = sut.GenerateSingleTestCoverage(_workflowId, tests);
 
-            Assert.AreEqual(33, coverage.CoveragePercentage);
+            Assert.AreEqual(33, Math.Round(coverage.CoveragePercentage * 100));
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(50, coverage.CoveragePercentage);
+            Assert.AreEqual(50, Math.Round(coverage.CoveragePercentage * 100));
 
             Assert.AreEqual(_workflowName, report.ReportName);
             Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
@@ -117,10 +117,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(50, coverage.CoveragePercentage);
+            Assert.AreEqual(50, Math.Round(coverage.CoveragePercentage * 100));
 
             Assert.AreEqual(_workflowName, report.ReportName);
-            Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
+            Assert.AreEqual(Math.Round(coverage.CoveragePercentage * 100), Math.Round(report.CoveragePercentage * 100));
 
             //Act
             sut.DeleteCoverageReport(_workflowId, _false_branchTest.TestName);
