@@ -2931,8 +2931,8 @@
                                                               <AndCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                                <PropertyCondition Name="ClassName">Uia.RabbitMQPublishDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">RabbitMQ Publish(RabbitMQPublishDesigner)</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.RabbitMQPublishDesigner2</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">RabbitMQ Publish(RabbitMQPublishDesigner2)</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
