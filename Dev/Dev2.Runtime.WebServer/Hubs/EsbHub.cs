@@ -27,7 +27,6 @@ using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
@@ -308,16 +307,15 @@ namespace Dev2.Runtime.WebServer.Hubs
                         var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
 
                         var userName = string.Empty;
-                        if (contextUser?.Identity != null)
+                        if (contextUser?.Identity is null)
                         {
+                            Dev2Logger.Warn("Execute Command  Invoked For [ null user identity ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfWarn);
+                        } else {
                             userName = contextUser.Identity.Name;
                             Thread.CurrentPrincipal = contextUser;
                             Dev2Logger.Debug("Execute Command Invoked For [ " + userName + " : "+contextUser.Identity?.AuthenticationType+" : "+contextUser.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
                         }
-                        else
-                        {
-                            Dev2Logger.Warn("Execute Command  Invoked For [ " + userName + " : "+contextUser?.Identity?.AuthenticationType+" : "+contextUser?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfWarn);
-                        }
+
                         StringBuilder processRequest = null;
                         var internalExecutionContext = _internalExecutionContext.CloneForRequest(request);
                         Common.Utilities.PerformActionInsideImpersonatedContext(contextUser, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId, internalExecutionContext); });
