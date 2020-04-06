@@ -22,6 +22,7 @@ namespace Warewolf.Auditing.Drivers
     public class AuditQueryableSqlite : AuditQueryable
     {
         private readonly SeriLogSQLiteSource _source;
+        private string _query;
 
         public AuditQueryableSqlite(string connectionString)
         {
@@ -29,6 +30,12 @@ namespace Warewolf.Auditing.Drivers
             {
                 ConnectionString = connectionString
             };
+        }
+
+        public override string Query
+        {
+            get => _query;
+            set => _query = value;
         }
 
         public AuditQueryableSqlite()
@@ -45,7 +52,7 @@ namespace Warewolf.Auditing.Drivers
             {
                 sql.Append("WHERE json_extract(Message, '$.ResourceId') = '" + resourceId + "' ");
                 sql.Append("ORDER BY TimeStamp Desc LIMIT 20");
-                var results = ExecuteDatabase(sql);
+                var results = ExecuteDatabase();
                 if (results.Length > 0)
                 {
                     foreach (var result in results)
@@ -86,14 +93,14 @@ namespace Warewolf.Auditing.Drivers
                 }
             }
 
-            var query = BuildQuery(executionId, startTime, endTime, eventLevel);
-            var results = ExecuteDatabase(query);
+            BuildQuery(executionId, startTime, endTime, eventLevel);
+            var results = ExecuteDatabase();
             if (results.Length > 0)
             {
                 foreach (var result in results)
                 {
                     var audit = JsonConvert.DeserializeObject<Audit>(result);
-                    if (audit.ExecutionID != null)
+                    if (audit != null)
                     {
                         yield return audit;
                     }
@@ -105,28 +112,28 @@ namespace Warewolf.Auditing.Drivers
             }
         }
 
-        private StringBuilder BuildQuery(string executionId, string startTime, string endTime, string eventLevel)
+        private void BuildQuery(string executionId, string startTime, string endTime, string eventLevel)
         {
-            var sql = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ");
+            var sb = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ");
 
             if (eventLevel != null)
             {
                 switch (eventLevel)
                 {
                     case "Debug":
-                        sql.Append("WHERE Level = 'Debug' ");
+                        sb.Append("WHERE Level = 'Debug' ");
                         break;
                     case "Information":
-                        sql.Append("WHERE Level = 'Information' ");
+                        sb.Append("WHERE Level = 'Information' ");
                         break;
                     case "Warning":
-                        sql.Append("WHERE Level = 'Warning' ");
+                        sb.Append("WHERE Level = 'Warning' ");
                         break;
                     case "Error":
-                        sql.Append("WHERE Level = 'Error' ");
+                        sb.Append("WHERE Level = 'Error' ");
                         break;
                     case "Fatal":
-                        sql.Append("WHERE Level = 'Fatal' ");
+                        sb.Append("WHERE Level = 'Fatal' ");
                         break;
                     default:
                         break;
@@ -135,36 +142,35 @@ namespace Warewolf.Auditing.Drivers
 
             if (!string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(executionId))
             {
-                sql.Append("AND json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
+                sb.Append("AND json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
             }
 
             if (string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(executionId))
             {
-                sql.Append("WHERE json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
+                sb.Append("WHERE json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
             }
 
             if ((!string.IsNullOrEmpty(eventLevel) || !string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
-                sql.Append("AND (Timestamp >= '" + startTime + "' ");
-                sql.Append("AND Timestamp <= '" + endTime + "') ");
+                sb.Append("AND (Timestamp >= '" + startTime + "' ");
+                sb.Append("AND Timestamp <= '" + endTime + "') ");
             }
 
             if ((string.IsNullOrEmpty(eventLevel) && string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
-                sql.Append("WHERE (Timestamp >= '" + startTime + "' ");
-                sql.Append("AND Timestamp <= '" + endTime + "') ");
+                sb.Append("WHERE (Timestamp >= '" + startTime + "' ");
+                sb.Append("AND Timestamp <= '" + endTime + "') ");
             }
 
-            sql.Append("ORDER BY TimeStamp Desc LIMIT 20");
-
-            return sql;
+            sb.Append("ORDER BY TimeStamp Desc LIMIT 20");
+            _query = sb.ToString();
         }
 
-        private String[] ExecuteDatabase(StringBuilder sql)
+        private String[] ExecuteDatabase()
         {
             using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _source.ConnectionString + ";"))
             {
-                using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
+                using (var command = new SQLiteCommand(_query.ToString(), sqlConn))
                 {
                     sqlConn.Open();
                     sqlConn.EnableExtensions(true);
