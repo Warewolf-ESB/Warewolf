@@ -25,13 +25,13 @@ namespace Warewolf.Auditing.Drivers
     public class AuditQueryableElastic : AuditQueryable
     {
         private string _query;
-        private IQueryContainer _queryContainer;
+
         public override string Query
         {
             get => _query;
             set => _query = value;
         }
-        
+
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var resourceId = GetValue<string>("ResourceId", values);
@@ -157,7 +157,6 @@ namespace Warewolf.Auditing.Drivers
 
         private void BuildJsonQuery(Dictionary<string, StringBuilder> values)
         {
-           
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
             var eventLevel = GetValue<string>("EventLevel", values);
@@ -185,6 +184,25 @@ namespace Warewolf.Auditing.Drivers
             var jArray = new JArray();
             var jsonQueryexecutionId = new JObject();
             var jsonQueryexecutionLevel = new JObject();
+            var jsonQueryDateRangeFilter = new JObject();
+
+            if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            {
+                var dateObj = new JObject()
+                {
+                    ["gt"] = startTime,
+                    ["lt"] = endTime
+                };
+                jsonQueryDateRangeFilter = new JObject
+                {
+                    ["range"] = new JObject
+                    {
+                        ["@timestamp"] = dateObj
+                    }
+                };
+                jArray.Add(jsonQueryDateRangeFilter);
+            }
+
             if (!string.IsNullOrEmpty(executionId))
             {
                 jsonQueryexecutionId = new JObject
@@ -196,6 +214,7 @@ namespace Warewolf.Auditing.Drivers
                 };
                 jArray.Add(jsonQueryexecutionId);
             }
+
             if (!string.IsNullOrEmpty(eventLevel))
             {
                 jsonQueryexecutionLevel = new JObject
@@ -210,7 +229,7 @@ namespace Warewolf.Auditing.Drivers
 
             if (jArray.Count == 0)
             {
-                var match_all  = new JObject
+                var match_all = new JObject
                 {
                     ["match_all"] = new JObject()
                 };
@@ -218,7 +237,7 @@ namespace Warewolf.Auditing.Drivers
             }
 
             var objMust = new JObject();
-            objMust.Add("must",jArray);
+            objMust.Add("must", jArray);
 
             var obj = new JObject();
             obj.Add("bool", objMust);
@@ -227,68 +246,74 @@ namespace Warewolf.Auditing.Drivers
 
         private static IEnumerable<IAudit> AuditLogs(List<object> results, List<Audit> result)
         {
-            foreach (Dictionary<string, object> item in results)
+            try
             {
-                foreach (var entry in item)
+                foreach (Dictionary<string, object> item in results)
                 {
-                    if (entry.Key == "fields")
+                    foreach (var entry in item)
                     {
-                        foreach (var fields in (Dictionary<string, object>) entry.Value)
+                        if (entry.Key == "fields")
                         {
-                            var auditHistory = new Audit();
-                            foreach (var items in (Dictionary<string, object>) fields.Value)
+                            foreach (var fields in (Dictionary<string, object>) entry.Value)
                             {
-                                if (items.Value != null)
+                                var auditHistory = new Audit();
+                                foreach (var items in (Dictionary<string, object>) fields.Value)
                                 {
-                                    switch (items.Key)
+                                    if (items.Value != null)
                                     {
-                                        case "ExecutionID":
-                                            auditHistory.ExecutionID = items.Value.ToString();
-                                            break;
-                                        case "CustomTransactionID":
-                                            auditHistory.CustomTransactionID = items.Value.ToString();
-                                            break;
-                                        case "WorkflowName":
-                                            auditHistory.WorkflowName = items.Value.ToString();
-                                            break;
-                                        case "ExecutingUser":
-                                            auditHistory.ExecutingUser = items.Value.ToString();
-                                            break;
-                                        case "Url":
-                                            auditHistory.Url = items.Value.ToString();
-                                            break;
-                                        case "Environment":
-                                            auditHistory.Environment = items.Value.ToString();
-                                            break;
-                                        case "AuditDate":
-                                            auditHistory.AuditDate = DateTime.Parse(items.Value.ToString());
-                                            break;
-                                        case "Exception":
-                                            auditHistory.Exception = items.Value as Exception;
-                                            break;
-                                        case "AuditType":
-                                            auditHistory.AuditType = items.Value.ToString();
-                                            break;
-                                        case "IsSubExecution":
-                                            auditHistory.IsSubExecution = Boolean.Parse(items.Value.ToString());
-                                            break;
-                                        case "IsRemoteWorkflow":
-                                            auditHistory.IsRemoteWorkflow = Boolean.Parse(items.Value.ToString());
-                                            break;
-                                        case "ServerID":
-                                            auditHistory.ServerID = items.Value.ToString();
-                                            break;
-                                        case "ParentID":
-                                            auditHistory.ParentID = items.Value.ToString();
-                                            break;
+                                        switch (items.Key)
+                                        {
+                                            case "ExecutionID":
+                                                auditHistory.ExecutionID = items.Value.ToString();
+                                                break;
+                                            case "CustomTransactionID":
+                                                auditHistory.CustomTransactionID = items.Value.ToString();
+                                                break;
+                                            case "WorkflowName":
+                                                auditHistory.WorkflowName = items.Value.ToString();
+                                                break;
+                                            case "ExecutingUser":
+                                                auditHistory.ExecutingUser = items.Value.ToString();
+                                                break;
+                                            case "Url":
+                                                auditHistory.Url = items.Value.ToString();
+                                                break;
+                                            case "Environment":
+                                                auditHistory.Environment = items.Value.ToString();
+                                                break;
+                                            case "AuditDate":
+                                                auditHistory.AuditDate = DateTime.Parse(items.Value.ToString());
+                                                break;
+                                            case "Exception":
+                                                auditHistory.Exception = items.Value as Exception;
+                                                break;
+                                            case "AuditType":
+                                                auditHistory.AuditType = items.Value.ToString();
+                                                break;
+                                            case "IsSubExecution":
+                                                auditHistory.IsSubExecution = Boolean.Parse(items.Value.ToString());
+                                                break;
+                                            case "IsRemoteWorkflow":
+                                                auditHistory.IsRemoteWorkflow = Boolean.Parse(items.Value.ToString());
+                                                break;
+                                            case "ServerID":
+                                                auditHistory.ServerID = items.Value.ToString();
+                                                break;
+                                            case "ParentID":
+                                                auditHistory.ParentID = items.Value.ToString();
+                                                break;
+                                        }
                                     }
                                 }
-                            }
 
-                            result.Add(auditHistory);
+                                result.Add(auditHistory);
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception)
+            {
             }
 
             return result;
@@ -315,7 +340,6 @@ namespace Warewolf.Auditing.Drivers
             }
             else
             {
-            
                 var search = new SearchDescriptor<object>()
                     .Query(q =>
                         q.Raw(_query));
