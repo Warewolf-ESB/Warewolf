@@ -16,6 +16,7 @@ namespace Warewolf.Interfaces.Auditing
 {
     public interface IAuditQueryable
     {
+        string Query { get; set; }
         IEnumerable<IAudit> QueryLogData(Dictionary<string, StringBuilder> values);
         IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values);
     }

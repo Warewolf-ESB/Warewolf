@@ -19,7 +19,8 @@ namespace Warewolf.Auditing
 {
     public abstract class AuditQueryable : IAuditQueryable
     {
-        
+        public virtual string Query { get; set; }
+       
         protected bool IsUrlEncoded(string text)
         {
             return (WebUtility.UrlDecode(text)) != text;
