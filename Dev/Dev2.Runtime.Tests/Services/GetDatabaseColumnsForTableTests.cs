@@ -194,6 +194,9 @@ namespace Dev2.Tests.Runtime.Services
                 TypeNameHandling = TypeNameHandling.Objects,
                 TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
+
+            Assert.IsFalse(result.HasErrors, $"error executing sql query: {result.Errors}");
+
             Assert.AreEqual(4, result.Items.Count);
 
             // Check Columns Returned ;)
@@ -248,6 +251,9 @@ namespace Dev2.Tests.Runtime.Services
                 TypeNameHandling = TypeNameHandling.Objects,
                 TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
+
+            Assert.IsFalse(result.HasErrors, $"error executing sql query: {result.Errors}");
+
             Assert.AreEqual(3, result.Items.Count);
 
             // Check Columns Returned ;)
@@ -296,6 +302,9 @@ namespace Dev2.Tests.Runtime.Services
                 TypeNameHandling = TypeNameHandling.Objects,
                 TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
+
+            Assert.IsFalse(result.HasErrors, $"error executing sql query: {result.Errors}");
+
             Assert.AreEqual(3, result.Items.Count);
 
             // Check Columns Returned ;)
