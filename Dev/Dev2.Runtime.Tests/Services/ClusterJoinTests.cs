@@ -17,7 +17,6 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services.Esb;
 using Dev2.Workspaces;
-using TechTalk.SpecFlow.Assist;
 using Warewolf.Client;
 
 namespace Dev2.Tests.Runtime.Services
@@ -58,8 +57,10 @@ namespace Dev2.Tests.Runtime.Services
         {
             var serializer = new Dev2JsonSerializer();
             var workspaceId = Guid.NewGuid();
-            var values = new Dictionary<string, StringBuilder>();
-            values.Add(Warewolf.Service.Cluster.ClusterJoinRequest.Key, new StringBuilder(Guid.NewGuid().ToString()));
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {Warewolf.Service.Cluster.ClusterJoinRequest.Key, new StringBuilder(Guid.NewGuid().ToString())}
+            };
             var workspace = new Workspace(workspaceId);
 
             var service = new ClusterJoinService();
@@ -76,8 +77,10 @@ namespace Dev2.Tests.Runtime.Services
         {
             var serializer = new Dev2JsonSerializer();
             var workspaceId = Guid.NewGuid();
-            var values = new Dictionary<string, StringBuilder>();
-            values.Add(Warewolf.Service.Cluster.ClusterJoinRequest.Key, new StringBuilder(Config.Cluster.Key));
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {Warewolf.Service.Cluster.ClusterJoinRequest.Key, new StringBuilder(Config.Cluster.Key)}
+            };
 
             var workspace = new Workspace(workspaceId);
 

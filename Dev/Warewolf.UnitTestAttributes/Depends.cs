@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Threading;
 using Newtonsoft.Json;
 
 namespace Warewolf.UnitTestAttributes
