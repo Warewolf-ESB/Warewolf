@@ -14,7 +14,13 @@ using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using TechTalk.SpecFlow;
+using TestStack.White;
+using TestStack.White.Factory;
+using TestStack.White.UIItems.Finders;
+using TestStack.White.UIItems.WindowItems;
+using TestStack.White.WindowsAPI;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
@@ -71,11 +77,20 @@ namespace Warewolf.UI.Tests
 
         [Given("The Warewolf Studio is running")]
         [Then("The Warewolf Studio is running")]
-        public void AssertStudioIsRunning()
+        public Window AssertStudioIsRunning()
         {
-            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
-            Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
+            if (_window == null)
+            {
+                _window = Application.Attach("Warewolf Studio").GetWindows().FirstOrDefault();
+            }
+
+            Assert.IsNotNull(_window, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
+             _window.Keyboard.HoldKey(KeyboardInput.SpecialKeys.CONTROL);
+             _window.Keyboard.HoldKey(KeyboardInput.SpecialKeys.ALT);
+             _window.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F4);
+             _window.Keyboard.LeaveAllKeys();
             Playback.Wait(1000);
+            return _window;
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
@@ -141,7 +156,7 @@ namespace Warewolf.UI.Tests
 
         public void Close_And_Lock_Side_Menu_Bar()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
+            _window.Get(SearchCriteria.ByText("Unlock Menu")).Click();
             Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer);
             Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
         }
@@ -544,7 +559,7 @@ namespace Warewolf.UI.Tests
         [Then("I Click New Workflow Ribbon Button")]
         public void Click_NewWorkflow_RibbonButton()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(6, 6));
+            _window.Get(SearchCriteria.ByText("New")).Click();
             WaitForControlVisible(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
         }
@@ -1089,6 +1104,7 @@ namespace Warewolf.UI.Tests
         }
 
         private UtilityToolsUIMap _UtilityToolsUIMap;
+        public static Window _window;
 
         #endregion
     }

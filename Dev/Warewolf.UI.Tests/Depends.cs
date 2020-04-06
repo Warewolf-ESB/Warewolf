@@ -1,23 +1,22 @@
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Threading;
 using Newtonsoft.Json;
 
-namespace Warewolf.UnitTestAttributes
+namespace Warewolf.UI.Tests
 {
     public class Depends : Attribute, IDisposable
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
-            "T004124.premier.local",
             "RSAKLFSVRHST1.premier.local",
             "RSAKLFWYNAND.premier.local",
             "PIETER.premier.local",
+            "T004124.premier.local",
             "localhost"
         };
         private string SelectedHost = "";
@@ -98,15 +97,7 @@ namespace Warewolf.UnitTestAttributes
                         {
                             retryCount++;
                         }
-                        if (result == "" || result.Contains("\"IP\": \"\""))
-                        {
-                            retryCount++;
-                        }
-                        else
-                        {
-                            retryCount = RigOpsHosts.Count;
-                        }
-                    } while (retryCount < RigOpsHosts.Count);
+                    } while (result == "" && retryCount < RigOpsHosts.Count);
 
                     Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
 
@@ -482,10 +473,10 @@ namespace Warewolf.UnitTestAttributes
 
     class WebClientWithExtendedTimeout : WebClient
     {
-        protected override WebRequest GetWebRequest(Uri uri)
+        protected override System.Net.WebRequest GetWebRequest(Uri uri)
         {
-            WebRequest w = base.GetWebRequest(uri);
-            w.Timeout = 3 * 60 * 1000;
+            System.Net.WebRequest w = base.GetWebRequest(uri);
+            w.Timeout = 10 * 1000;
             return w;
         }
     }
