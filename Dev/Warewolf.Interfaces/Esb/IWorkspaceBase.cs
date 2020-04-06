@@ -8,12 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Warewolf.Data;
-using Warewolf.Debugging;
-
 namespace Warewolf.Esb
 {
-    public interface IEsbHub : INotificationListener<ChangeNotification>, INotificationListener<IDebugNotification>
+    public interface IWorkspaceBase
     {
     }
 }

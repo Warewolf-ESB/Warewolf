@@ -27,8 +27,10 @@ namespace Warewolf.Esb
     public interface IInternalExecutionContext
     {
         void RegisterAsClusterEventListener();
+        void RegisterAsDebugEventLister();
         IEsbRequest Request { get; }
-        object Workspace { get; set; } // this is actually supposed to be Dev2.Workspaces.IWorkspace
+        IWorkspaceBase Workspace { get; set; }
+        IInternalExecutionContext CloneForRequest(IEsbRequest request);
     }
 
     public interface ICatalogRequest

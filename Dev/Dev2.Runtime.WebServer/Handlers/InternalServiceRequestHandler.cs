@@ -27,6 +27,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
+using Warewolf.Esb;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -113,7 +114,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
         }
 
-        public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, Guid dataListId, string connectionId, InternalExecutionContext internalExecutionContext)
+        public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, Guid dataListId, string connectionId, IInternalExecutionContext internalExecutionContext)
         {
             var channel = new EsbServicesEndpoint();
 
@@ -209,7 +210,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return isDebug;
         }
 
-        private StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, EsbServicesEndpoint channel, IDSFDataObject dataObject, bool isManagementResource, InternalExecutionContext internalExecutionContext)
+        private StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, EsbServicesEndpoint channel, IDSFDataObject dataObject, bool isManagementResource, IInternalExecutionContext internalExecutionContext)
         {
             if (ExecutingUser == null)
             {

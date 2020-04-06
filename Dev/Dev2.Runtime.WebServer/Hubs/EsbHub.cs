@@ -50,6 +50,8 @@ namespace Dev2.Runtime.WebServer.Hubs
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         static readonly Dictionary<Guid, string> ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
+        private readonly IInternalExecutionContext _internalExecutionContext;
+
         public EsbHub()
             :this(Server.Instance)
         {}
@@ -57,7 +59,8 @@ namespace Dev2.Runtime.WebServer.Hubs
         private EsbHub(Server server)
             : base(server)
         {
-            DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
+            _internalExecutionContext = new InternalExecutionContext(this);
+            _internalExecutionContext.RegisterAsDebugEventLister(); // DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this)
             // remove because now the ClusterJoinService adds this InternalExecutionContext if join is requested, ClusterDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
         }
 
@@ -305,18 +308,18 @@ namespace Dev2.Runtime.WebServer.Hubs
                         var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
 
                         var userName = string.Empty;
-                        if (contextUser.Identity != null)
+                        if (contextUser?.Identity != null)
                         {
                             userName = contextUser.Identity.Name;
                             Thread.CurrentPrincipal = contextUser;
-                            Dev2Logger.Debug("Execute Command Invoked For [ " + userName + " : "+contextUser?.Identity?.AuthenticationType+" : "+contextUser?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
+                            Dev2Logger.Debug("Execute Command Invoked For [ " + userName + " : "+contextUser.Identity?.AuthenticationType+" : "+contextUser.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfDebug);
                         }
                         else
                         {
                             Dev2Logger.Warn("Execute Command  Invoked For [ " + userName + " : "+contextUser?.Identity?.AuthenticationType+" : "+contextUser?.Identity?.IsAuthenticated+" ] For Service [ " + request.ServiceName + " ]", GlobalConstants.WarewolfWarn);
                         }
                         StringBuilder processRequest = null;
-                        var internalExecutionContext = new InternalExecutionContext(request, null, this);
+                        var internalExecutionContext = _internalExecutionContext.CloneForRequest(request);
                         Common.Utilities.PerformActionInsideImpersonatedContext(contextUser, () => { processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId, internalExecutionContext); });
                         var future = new FutureReceipt
                         {
