@@ -15,6 +15,8 @@ using System.Text;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Nest;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Triggers;
 
@@ -22,14 +24,30 @@ namespace Warewolf.Auditing.Drivers
 {
     public class AuditQueryableElastic : AuditQueryable
     {
+        private string _query;
+        private IQueryContainer _queryContainer;
+        public override string Query
+        {
+            get => _query;
+            set => _query = value;
+        }
+        
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var resourceId = GetValue<string>("ResourceId", values);
             var result = new List<ExecutionHistory>();
-            var query = @"{""match"":{""fields.Data.ResourceId"":""9e556ceb-ce2d-4aaa-a556-5d6e80261c96""}}";
             if (resourceId != null)
             {
-                var results = ExecuteDatabase(query).ToList();
+                var jsonQuery = new JObject
+                {
+                    ["match"] = new JObject
+                    {
+                        ["fields.Data.ResourceId"] = resourceId
+                    }
+                };
+
+                _query = jsonQuery.ToString();
+                var results = ExecuteDatabase().ToList();
                 if (results.Count > 0)
                 {
                     var queryTriggerData = ExecutionHistories(results, result);
@@ -39,7 +57,6 @@ namespace Warewolf.Auditing.Drivers
 
             return result;
         }
-
 
         private static IEnumerable<IExecutionHistory> ExecutionHistories(List<object> results, List<ExecutionHistory> result)
         {
@@ -83,6 +100,7 @@ namespace Warewolf.Auditing.Drivers
                     }
                 }
             }
+
             return result;
         }
 
@@ -125,10 +143,25 @@ namespace Warewolf.Auditing.Drivers
 
         public override IEnumerable<IAudit> QueryLogData(Dictionary<string, StringBuilder> values)
         {
+            var result = new List<Audit>();
+            BuildJsonQuery(values);
+            var results = ExecuteDatabase().ToList();
+            if (results.Count > 0)
+            {
+                var queryLogData = AuditLogs(results, result);
+                if (queryLogData != null) return queryLogData;
+            }
+
+            return result;
+        }
+
+        private void BuildJsonQuery(Dictionary<string, StringBuilder> values)
+        {
+           
             var startTime = GetValue<string>("StartDateTime", values);
             var endTime = GetValue<string>("CompletedDateTime", values);
             var eventLevel = GetValue<string>("EventLevel", values);
-            var executionID = GetValue<string>("ExecutionID", values);
+            var executionId = GetValue<string>("ExecutionID", values);
 
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
 
@@ -149,27 +182,119 @@ namespace Warewolf.Auditing.Drivers
                 }
             }
 
-            var query = @"{""match"":{""fields.Data.Audit.ExecutionID"":""920df540-5c48-4600-9a17-87a8214cde8c""}}";
-            var results = ExecuteDatabase(query);
-            if (results.Count() > 0)
+            var jArray = new JArray();
+            var jsonQueryexecutionId = new JObject();
+            var jsonQueryexecutionLevel = new JObject();
+            if (!string.IsNullOrEmpty(executionId))
             {
-                /*  foreach (var result in results)
-                  {
-                      var audit = JsonConvert.DeserializeObject<Audit>(result);
-                      if (audit.ExecutionID != null)
-                      {
-                          yield return audit;
-                      }
-                  }*/
-                yield return null;
+                jsonQueryexecutionId = new JObject
+                {
+                    ["match"] = new JObject
+                    {
+                        ["fields.Data.Audit.ExecutionID"] = executionId
+                    }
+                };
+                jArray.Add(jsonQueryexecutionId);
             }
-            else
+            if (!string.IsNullOrEmpty(eventLevel))
             {
-                yield return null;
+                jsonQueryexecutionLevel = new JObject
+                {
+                    ["match"] = new JObject
+                    {
+                        ["level"] = eventLevel
+                    }
+                };
+                jArray.Add(jsonQueryexecutionLevel);
             }
+
+            if (jArray.Count == 0)
+            {
+                var match_all  = new JObject
+                {
+                    ["match_all"] = new JObject()
+                };
+                jArray.Add(match_all);
+            }
+
+            var objMust = new JObject();
+            objMust.Add("must",jArray);
+
+            var obj = new JObject();
+            obj.Add("bool", objMust);
+            _query = obj.ToString();
         }
 
-        private IEnumerable<object> ExecuteDatabase(string query)
+        private static IEnumerable<IAudit> AuditLogs(List<object> results, List<Audit> result)
+        {
+            foreach (Dictionary<string, object> item in results)
+            {
+                foreach (var entry in item)
+                {
+                    if (entry.Key == "fields")
+                    {
+                        foreach (var fields in (Dictionary<string, object>) entry.Value)
+                        {
+                            var auditHistory = new Audit();
+                            foreach (var items in (Dictionary<string, object>) fields.Value)
+                            {
+                                if (items.Value != null)
+                                {
+                                    switch (items.Key)
+                                    {
+                                        case "ExecutionID":
+                                            auditHistory.ExecutionID = items.Value.ToString();
+                                            break;
+                                        case "CustomTransactionID":
+                                            auditHistory.CustomTransactionID = items.Value.ToString();
+                                            break;
+                                        case "WorkflowName":
+                                            auditHistory.WorkflowName = items.Value.ToString();
+                                            break;
+                                        case "ExecutingUser":
+                                            auditHistory.ExecutingUser = items.Value.ToString();
+                                            break;
+                                        case "Url":
+                                            auditHistory.Url = items.Value.ToString();
+                                            break;
+                                        case "Environment":
+                                            auditHistory.Environment = items.Value.ToString();
+                                            break;
+                                        case "AuditDate":
+                                            auditHistory.AuditDate = DateTime.Parse(items.Value.ToString());
+                                            break;
+                                        case "Exception":
+                                            auditHistory.Exception = items.Value as Exception;
+                                            break;
+                                        case "AuditType":
+                                            auditHistory.AuditType = items.Value.ToString();
+                                            break;
+                                        case "IsSubExecution":
+                                            auditHistory.IsSubExecution = Boolean.Parse(items.Value.ToString());
+                                            break;
+                                        case "IsRemoteWorkflow":
+                                            auditHistory.IsRemoteWorkflow = Boolean.Parse(items.Value.ToString());
+                                            break;
+                                        case "ServerID":
+                                            auditHistory.ServerID = items.Value.ToString();
+                                            break;
+                                        case "ParentID":
+                                            auditHistory.ParentID = items.Value.ToString();
+                                            break;
+                                    }
+                                }
+                            }
+
+                            result.Add(auditHistory);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private IEnumerable<object> ExecuteDatabase()
         {
             var src = new ElasticsearchSource();
             var uri = new Uri(src.HostName + ":" + src.Port);
@@ -190,9 +315,10 @@ namespace Warewolf.Auditing.Drivers
             }
             else
             {
+            
                 var search = new SearchDescriptor<object>()
                     .Query(q =>
-                        q.Raw(query));
+                        q.Raw(_query));
                 var logEvents = client.Search<object>(search);
                 var sources = logEvents.HitsMetadata.Hits.Select(h => h.Source);
                 return sources;
