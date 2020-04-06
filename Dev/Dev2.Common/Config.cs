@@ -16,6 +16,7 @@ using System.IO;
 using System.Threading;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Configuration;
 using Warewolf.Data;
@@ -30,10 +31,10 @@ namespace Dev2.Common
         public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
         public static readonly string UserDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
 
-        public static ServerSettings Server = new ServerSettings();
-        public static StudioSettings Studio = new StudioSettings();
-        public static ClusterSettings Cluster = new ClusterSettings();
-        public static AuditingSettings Auditing = new AuditingSettings();
+        public static readonly ServerSettings Server = new ServerSettings();
+        public static readonly StudioSettings Studio = new StudioSettings();
+        public static readonly ClusterSettings Cluster = new ClusterSettings();
+        public static readonly AuditingSettings Auditing = new AuditingSettings();
     }
 
     public class ServerSettings : ConfigSettingsBase<ServerSettingsData>
@@ -59,25 +60,12 @@ namespace Dev2.Common
         public bool CollectUsageStats => _settings.CollectUsageStats ?? false;
         public int DaysToKeepTempFiles => _settings.DaysToKeepTempFiles ?? 0;
         public int LogFlushInterval => _settings.LogFlushInterval ?? 200;
-
         public ServerSettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         { }
         public ServerSettings(string settingsPath, IFile fileWrapper, IDirectory directoryWrapper, IClusterDispatcher clusterDispatcher)
             : base(settingsPath, fileWrapper, directoryWrapper, clusterDispatcher)
         {
-        }
-
-        public ServerSettingsData Get()
-        {
-            var result = new ServerSettingsData();
-            foreach (var prop in typeof(ServerSettingsData).GetProperties())
-            {
-                var thisProp = this.GetType().GetProperty(prop.Name);
-                var value = thisProp.GetValue(this);
-                prop.SetValue(result, value);
-            }
-            return result;
         }
 
         public bool SaveLoggingPath(string auditsFilePath)

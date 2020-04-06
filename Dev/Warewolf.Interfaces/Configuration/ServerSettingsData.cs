@@ -7,7 +7,9 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 using System;
+using Newtonsoft.Json;
 
 namespace Warewolf.Configuration
 {
@@ -32,6 +34,8 @@ namespace Warewolf.Configuration
         }
         public bool? EnableDetailedLogging { get; set; }
         public int? LogFlushInterval { get; set; }
+        [JsonIgnore]
+        public bool HasChanged { get; set; }
 
         public bool Equals(ServerSettingsData other)
         {
@@ -69,7 +73,5 @@ namespace Warewolf.Configuration
             result += (result * 397) ^ (LogFlushInterval?.GetHashCode() ?? 0);
             return result;
         }
-
-        public bool HasChanged { get; set; }
     }
 }

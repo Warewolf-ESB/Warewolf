@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,21 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using Warewolf.Common;
-using Warewolf.Configuration;
 using Warewolf.Esb;
 using Warewolf.VirtualFileSystem;
-using Warewolf.Web;
 
 namespace Warewolf.Configuration
 {
@@ -127,10 +117,40 @@ namespace Warewolf.Configuration
             Assert.AreEqual(4321, config.SomeInt);
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ConfigSettingsBaseForTesting))]
+        public void ConfigSettingsBase_Get_ShouldNotCreateFile()
+        {
+            var path = "somepath.json";
+            var mockFile = new Mock<IFileBase>();
+            var mockDirectory = new Mock<IDirectoryBase>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
+
+            var config = new ConfigSettingsBaseForTesting(path, mockFile.Object, mockDirectory.Object, mockClusterDispatcher.Object)
+            {
+                SomeInt = 1134,
+                SomeString = "bob2",
+            };
+
+
+            var data = config.Get();
+
+            var expectedData = JsonConvert.SerializeObject(new TestData { SomeInt = DefaultSomeInt, SomeString = DefaultSomeString });
+
+            mockFile.Verify(o => o.Exists(path), Times.Exactly(1));
+            mockFile.Verify(o => o.WriteAllText(path, expectedData), Times.Never);
+
+            Assert.AreEqual(1134, data.SomeInt);
+            Assert.AreEqual("bob2", data.SomeString);
+        }
+
         class TestData : IHasChanged
         {
             public int SomeInt { get; set; } = DefaultSomeInt;
             public string SomeString { get; set; } = DefaultSomeString;
+            
+            [JsonIgnore]
             public bool HasChanged { get; set; }
         }
 
