@@ -335,26 +335,32 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime()
         {
-            var StartDateTime = DateTime.Now;
-            var CompletedDateTime = StartDateTime.AddMinutes(30);
-
+            var dtFormat = "yyyy-MM-ddTHH:mm:ss";
+            var StartDateTime = DateTime.Now.AddDays(-5);
+            var CompletedDateTime = DateTime.Now;
+         
             var query = new Dictionary<string, StringBuilder>
             {
-                {"StartDateTime", StartDateTime.ToString().ToStringBuilder()},
-                {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
+                {"StartDateTime", StartDateTime.ToString(dtFormat).ToStringBuilder()},
+                {"CompletedDateTime", CompletedDateTime.ToString(dtFormat).ToStringBuilder()}
             };
 
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
             var results = auditQueryable.QueryLogData(query);
             var jArray = new JArray();
-            var json = new JObject
+            var dateObj = new JObject()
+            {
+                ["gt"] = StartDateTime.ToString(dtFormat),
+                ["lt"] = CompletedDateTime.ToString(dtFormat)
+            };
+            var jsonQueryDateRangeFilter = new JObject
             {
                 ["range"] = new JObject
                 {
-                    ["level"] = "Fatal"
+                    ["@timestamp"] = dateObj
                 }
             };
-            jArray.Add(json);
+            jArray.Add(jsonQueryDateRangeFilter);
             var objMust = new JObject();
             objMust.Add("must", jArray);
 
@@ -368,31 +374,41 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_DateTime_EventLevel()
         {
+            var dtFormat = "yyyy-MM-ddTHH:mm:ss";
             var StartDateTime = DateTime.Now;
             var CompletedDateTime = StartDateTime.AddMinutes(30);
 
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Debug".ToStringBuilder()},
-                {"StartDateTime", StartDateTime.ToString().ToStringBuilder()},
-                {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
+                {"StartDateTime", StartDateTime.ToString(dtFormat).ToStringBuilder()},
+                {"CompletedDateTime", CompletedDateTime.ToString(dtFormat).ToStringBuilder()}
             };
 
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
             var results = auditQueryable.QueryLogData(query);
             var jArray = new JArray();
+            var dateObj = new JObject()
+            {
+                ["gt"] = StartDateTime.ToString(dtFormat),
+                ["lt"] = CompletedDateTime.ToString(dtFormat)
+            };
             var json = new JObject
             {
                 ["range"] = new JObject
                 {
-                    ["fields.Data.Audit.AuditDate"] = "Fatal"
-                },
+                    ["@timestamp"] = dateObj
+                }
+            };
+            jArray.Add(json);
+            var jsonMatch = new JObject
+            {
                 ["match"] = new JObject
                 {
                     ["level"] = "Debug"
                 }
             };
-            jArray.Add(json);
+            jArray.Add(jsonMatch);
             var objMust = new JObject();
             objMust.Add("must", jArray);
 
@@ -407,36 +423,52 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_EventLevel_executionID()
         {
             var executionID = Guid.NewGuid();
-            var StartDateTime = DateTime.Now;
+            var dtFormat = "yyyy-MM-ddTHH:mm:ss";
+            var StartDateTime = DateTime.Now.AddDays(-5);
             var CompletedDateTime = StartDateTime.AddMinutes(30);
 
             var query = new Dictionary<string, StringBuilder>
             {
                 {"ExecutionID", executionID.ToString().ToStringBuilder()},
                 {"EventLevel", "Debug".ToStringBuilder()},
-                {"StartDateTime", StartDateTime.ToString().ToStringBuilder()},
-                {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
+                {"StartDateTime", StartDateTime.ToString(dtFormat).ToStringBuilder()},
+                {"CompletedDateTime", CompletedDateTime.ToString(dtFormat).ToStringBuilder()}
             };
 
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
             var results = auditQueryable.QueryLogData(query);
             var jArray = new JArray();
-            var json = new JObject
+            var dateObj = new JObject()
+            {
+                ["gt"] = StartDateTime.ToString(dtFormat),
+                ["lt"] = CompletedDateTime.ToString(dtFormat)
+            };
+            var jsonExecutionId = new JObject
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionId"] = executionID.ToString()
-                },
+                    ["fields.Data.Audit.ExecutionID"] = executionID.ToString()
+                }
+            };
+            
+            var jsonLevel = new JObject
+            {
                 ["match"] = new JObject
                 {
                     ["level"] = "Debug"
-                },
-                ["range"] = new JObject
-                {
-                    ["fields.Data.Audit.AuditDate"] = "Debug"
                 }
             };
-            jArray.Add(json);
+            
+            var jsonDate = new JObject
+            {
+                ["range"] = new JObject
+                {
+                    ["@timestamp"] = dateObj
+                }
+            };
+            jArray.Add(jsonDate);
+            jArray.Add(jsonExecutionId);
+            jArray.Add(jsonLevel);
             var objMust = new JObject();
             objMust.Add("must", jArray);
 
@@ -464,24 +496,38 @@ namespace Warewolf.Auditing.Tests
 
             var audit = GetAuditQueryable("AuditingSettingsData");
             var results = audit.QueryLogData(query);
-
-            var json = new JObject
+            var jArray = new JArray();
+            var dateObj = new JObject()
+            {
+                ["gt"] = "2019-10-01T01:40:18",
+                ["lt"] = "2019-10-03T01:40:18"
+            };
+            var jsonExecutionId = new JObject
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionId"] = executionID.ToString()
-                },
+                    ["fields.Data.Audit.ExecutionID"] = executionID.ToString()
+                }
+            };
+           
+            var jsonLevel = new JObject
+            {
                 ["match"] = new JObject
                 {
                     ["level"] = "Debug"
-                },
-                ["range"] = new JObject
-                {
-                    ["fields.Data.Audit.AuditDate"] = "Debug"
                 }
             };
-            var jArray = new JArray();
-            jArray.Add(json);
+           
+            var jsonDate = new JObject
+            {
+                ["range"] = new JObject
+                {
+                    ["@timestamp"] = dateObj
+                }
+            };
+            jArray.Add(jsonDate);
+            jArray.Add(jsonExecutionId);
+            jArray.Add(jsonLevel);
             var objMust = new JObject();
             objMust.Add("must", jArray);
 
