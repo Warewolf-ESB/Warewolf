@@ -14,6 +14,7 @@ namespace Warewolf.UI.Tests.SharepointSource
 
         [TestMethod]
         [TestCategory("Source Wizards")]
+        [Ignore]//TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_SharepointSource_From_ExplorerContextMenu_UITests()
         {
