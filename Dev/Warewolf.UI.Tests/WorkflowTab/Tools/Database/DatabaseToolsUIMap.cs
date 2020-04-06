@@ -18,6 +18,8 @@ using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
 using System.Diagnostics;
 using System;
+using TestStack.White.InputDevices;
+using TestStack.White.UIItems.Finders;
 
 namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
 {
@@ -40,10 +42,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         }
 
         [When(@"I Double Click AdvancedRecordset Tool to Change View")]
-        public void AdvancedRecordsetTool_ChangeView_With_DoubleClick()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset, new Point(238, 15));
-        }
+        public void AdvancedRecordsetTool_ChangeView_With_DoubleClick() => new TestStack.White.InputDevices.Mouse().DoubleClick(MouseButton.Left, UIMap._window.Get(SearchCriteria.ByClassName("AdvancedRecordsetDesigner")).Location);
 
         [When(@"I Single Click AdvancedRecordset Tool to Change View")]
         public void AdvancedRecordsetTool_Select_With_SingleClick()

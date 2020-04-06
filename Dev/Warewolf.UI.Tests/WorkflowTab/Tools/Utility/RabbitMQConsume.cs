@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.RabbitMQSource.RabbitMQSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
-using Warewolf.Test.Agent;
 using System.IO;
 using System.Reflection;
 
@@ -19,7 +18,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
 		[TestCategory("Utility Tools")]
         public void RabbitMQConsumeTool_Small_And_LargeView_Then_NewSource_UITest()
         {
-            using (ContainerLauncher RabbitMQContainer = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults")))
+            using (Depends RabbitMQContainer = new Depends(Depends.ContainerType.RabbitMQ))
             {
                 Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.Exists, "RabbitMQ Consume Tool does not exist on the design surface.");
                 //Small View
@@ -51,7 +50,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PasswordTextBoxEdit.Enabled, "Password Textbox is not enabled");
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.VirtualHostTextBoxEdit.Enabled, "Virtual Host Textbox is not enabled");
                 Assert.IsFalse(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton.Enabled, "Test Connection button is enabled");
-                RabbitMQSourceUIMap.Enter_Text_On_RabbitMQSourceTab();
+                RabbitMQSourceUIMap.Enter_Text_On_RabbitMQSourceTab(RabbitMQContainer.Container.IP, RabbitMQContainer.Container.Port);
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton.Enabled, "Test Connection button is not enabled");
                 RabbitMQSourceUIMap.Click_RabbitMQSource_TestConnectionButton();
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.ItemImage.Exists, "Test Connection successful image does not appear.");

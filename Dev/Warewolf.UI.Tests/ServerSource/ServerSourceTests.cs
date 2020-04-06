@@ -1,9 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
-using System.Reflection;
+using System.Net.Mime;
 using System.Windows.Input;
-using Warewolf.Test.Agent;
+using TestStack.White.UIItems;
+using TestStack.White.UIItems.Finders;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
@@ -47,23 +48,31 @@ namespace Warewolf.UI.Tests.ServerSource
         [TestMethod]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
+        [Ignore] //TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void SaveNewServerSource_GivenSourceName()
         {
-            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-            //Create Source
-            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
-            Keyboard.SendKeys("{ESC}");
-            ServerSourceUIMap.Select_Server_Authentication_User();
-            ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
-            //Save Source
-            const string sourceName = "NewCodedUITestServerSource";
-            UIMap.Save_With_Ribbon_Button_And_Dialog(sourceName);
-            ExplorerUIMap.Filter_Explorer(sourceName);
-            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            using (var _containerOps = new Depends(Depends.ContainerType.CIRemote))
+            {
+                //Create Source
+                ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+                ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
+                ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote.premier.local");
+                Keyboard.SendKeys("{ESC}");
+                ServerSourceUIMap.Select_Server_Authentication_User();
+                ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
+                Assert.IsTrue(
+                    ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan
+                        .ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled,
+                    "Test Connection button not enabled");
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
+                //Save Source
+                const string sourceName = "NewCodedUITestServerSource";
+                UIMap.Save_With_Ribbon_Button_And_Dialog(sourceName);
+                ExplorerUIMap.Filter_Explorer(sourceName);
+                Assert.IsTrue(
+                    ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem
+                        .Exists, "Source did not save in the explorer UI.");
+            }
         }
 
         [TestMethod]
@@ -71,18 +80,17 @@ namespace Warewolf.UI.Tests.ServerSource
         [Owner("Nkosinathi Sangweni")]
         public void EditServerSource_LoadCorrectly()
         {
-            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             const string ExistingSourceName = "ExistingUITestServerSource";
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WaitForControlReady(60000);
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist after clicking edit on an explorer server source context menu and waiting 1 minute (60000ms).");
-            ServerSourceUIMap.Select_Server_Authentication_User();
-            ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
+            UIMap._window.Get(SearchCriteria.ByAutomationId("Text")).Enter("localhost");
+            UIMap._window.Get<RadioButton>(SearchCriteria.ByAutomationId("WindowsRadioButton")).Click();
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
-            Assert.AreEqual("WarewolfAdmin", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
+            Assert.AreEqual("localhost", UIMap._window.Get<TextBox>(SearchCriteria.ByAutomationId("Text")).Text, "The server name Texbox value is not set to localhost.");
         }
 
         [TestMethod]
@@ -157,7 +165,7 @@ namespace Warewolf.UI.Tests.ServerSource
         {
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote.premier.local");
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
@@ -172,7 +180,7 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote.premier.local");
             Keyboard.SendKeys("{ESC}");
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             DialogsUIMap.Click_MessageBox_Cancel();
@@ -186,7 +194,7 @@ namespace Warewolf.UI.Tests.ServerSource
         {
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote.premier.local");
             Keyboard.SendKeys("{ESC}");
             UIMap.Click_NewWorkflow_RibbonButton();
             WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
@@ -198,12 +206,13 @@ namespace Warewolf.UI.Tests.ServerSource
 
         [TestMethod]
         [TestCategory("Server Sources")]
+        [Ignore] //TODO: Re-introduce this test once the move to the new domain (premier.local) is done
         public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
         {
-            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = new Depends(Depends.ContainerType.CIRemote);
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote.premier.local");
             Keyboard.SendKeys("{ESC}");
             ServerSourceUIMap.Select_Server_Authentication_User();
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
@@ -241,7 +250,7 @@ namespace Warewolf.UI.Tests.ServerSource
             UIMap.AssertStudioIsRunning();
         }
 
-        static ContainerLauncher _containerOps;
+        static Depends _containerOps;
 
         [TestCleanup]
         public void CleanupContainer() => _containerOps?.Dispose();
