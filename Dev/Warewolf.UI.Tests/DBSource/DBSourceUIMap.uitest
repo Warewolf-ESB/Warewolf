@@ -1,3 +1,4 @@
+
 <?xml version="1.0"?>
 <UITest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="" Id="45640482-0581-473c-94ee-16c8c82c3b14" AssemblyVersion="12.0.40629.0" Version="1.0" xmlns="http://schemas.microsoft.com/VisualStudio/TeamTest/UITest/2010">
   <Configuration>
@@ -167,7 +168,7 @@
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
-                                            <UIObject ControlType="ListItem" Id="RSAKLFSVRDEV" FriendlyName="RSAKLFSVRDEV" SpecialControlType="None">
+                                            <UIObject ControlType="ListItem" Id="SVRDEV" FriendlyName="SVRDEV" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf</WindowTitle>
@@ -175,7 +176,20 @@
                                               <AndCondition>
                                                 <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="Name">RSAKLFSVRDEV</PropertyCondition>
+                                                <PropertyCondition Name="Name">SVRDEV</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="ListItem" Id="FirstItem" FriendlyName="First List Item" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="Instance">1</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />

@@ -1,4 +1,24 @@
 
+Thursday 12 March 2020
+======================
+
+Features
+--------
+- ExecutionId of workflows is carried across remote workflow executions
+- Warewolf-Custom-Transaction-Id, when this header is set the value will optionally be used for RabbitMQ correlation
+- Added Warewolf-Custom-Transaction-Id to the UI for RabbitMQ Publish. User can decide to use ExecutionID of the workflow, an existing Warewolf-Custom-Transaction-Id or a new Warewolf-Custom-Transaction-Id.
+- Object assign tool can now deserialize json arrays
+
+Bug Fixes
+---------
+- Numbers starting with "0." are no longer converted to strings
+- Numbers ending in 0 are no longer converted to strings
+- When assigning values in Object assign tool, do not lose type information
+- DsfNumberFormatActivity should always save strings
+- Removed a field IsGate from activities as the studio was failing to load them
+	~ Workflows created on previous versions of Warewolf after 2.3.1 and before 2.4.3 are affected.
+
+
 Tue Feb 18 2020
 ===============
 
@@ -20,12 +40,3 @@ Bug Fixes
 - Connection errors when the QueueWorker communicated with the Logger.
 - Queue Trigger View does not show scrollbars when on a smaller screen
 
-Thursday 12 March 2020
-======================
-
-Features
---------
-- Warewolf-Execution-Id can be read from headers of workflows for collating logs across servers and sub-workflows. It is written into the header of subsequent sub-workflows.
-- Warewolf-Custom-Transaction-Id can be read from headers of workflows for collating logs across servers and sub-workflows. 
-  It is written into the header of subsequent sub-workflows.
-- Added Warewolf-Custom-Transaction-Id to the UI for RabbitMQ Publish. User can decide to use ExecutionID of the workflow, an existing Warewolf-Custom-Transaction-Id or a new Warewolf-Custom-Transaction-Id .

@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestStack.White.UIItems.Finders;
+using TestStack.White.UIItems.WPFUIItems;
 using Warewolf.UI.Tests.RabbitMQSource.RabbitMQSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
@@ -13,9 +15,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
 		[TestCategory("Utility Tools")]
         public void RabbitMQPublishTool_Small_And_LargeView_Then_NewSource_UITest()
         {
-            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.Exists, "RabbitMQ Publish Tool does not exist on the design surface.");
+            Assert.IsNotNull(UIMap._window.Get(SearchCriteria.ByAutomationId("RabbitMQ Publish(RabbitMQPublishDesigner2)")));
             //Small View
-            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.SmallViewContentCustom.SourceComboBox.Exists, "Sources Combobox does not exist on the design surface.");
+            Assert.IsNotNull(UIMap._window.Get(SearchCriteria.ByAutomationId("RabbitMQ Publish(RabbitMQPublishDesigner2)")).Get(SearchCriteria.ByAutomationId("InitialFocusElement")));
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.SmallViewContentCustom.EditSourceButton.Exists, "EditSource Button does not exist on the design surface.");
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.SmallViewContentCustom.NewSourceButton.Exists, "NewSource Button does not exist on the design surface.");
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQPublish.SmallViewContentCustom.QueueNameComboBox.Exists, "QueueName Combobox does not exist on the design surface.");

@@ -61,7 +61,7 @@ namespace Dev2.Tests.Activities.TOTests
                 if (i != 0)
                 {
                     //((object[])((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)jsonMappingEvaluatedLocal.EvalResult).Item.GetValue(0))[0].Should().Be(((object[])((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.EvalForJson(scalarsSn[i])).Item.GetValue(0))[0]);
-                    jsonMappingEvaluatedLocal.EvalResult.Should().Be(dataObject.Environment.EvalForJson(scalarsSn[i]));
+                    Assert.AreEqual(dataObject.Environment.EvalForJson(scalarsSn[i]), jsonMappingEvaluatedLocal.EvalResult);
                     jsonMappingEvaluatedLocal.GetEvalResultAsObject().Should().Be(scalarsV[i]);
                 }
                 jsonMappingEvaluatedLocal.Count.Should().Be(1);
@@ -76,8 +76,7 @@ namespace Dev2.Tests.Activities.TOTests
             jsonMappingEvaluated.Simple.Should().NotBeNull();
             jsonMappingEvaluated.Simple.SourceName.Should().Be(sn);
             jsonMappingEvaluated.Simple.DestinationName.Should().Be(dn);
-            ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)jsonMappingEvaluated.EvalResult).Item.GetValue(0).Should().Be(
-                ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.Eval(sn,0)).Item.GetValue(0));
+            Assert.AreEqual(((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.Eval(sn,0)).Item.GetValue(0), ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)jsonMappingEvaluated.EvalResult).Item.GetValue(0));
             jsonMappingEvaluated.Count.Should().Be(1);
 
             // recordset name
