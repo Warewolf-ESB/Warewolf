@@ -60,14 +60,17 @@ namespace Dev2.Runtime.WebServer
                 {
                     dataObject.ReturnType = EmitionTypes.TEST;
                 }
+
                 if (webRequest.WebServerUrl.EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase))
                 {
                     dataObject.ReturnType = EmitionTypes.Cover;
                 }
+
                 if (webRequest.WebServerUrl.EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase))
                 {
                     dataObject.ReturnType = EmitionTypes.CoverJson;
                 }
+
                 if (webRequest.WebServerUrl.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     dataObject.ReturnType = EmitionTypes.TRX;
@@ -86,7 +89,7 @@ namespace Dev2.Runtime.WebServer
             }
 
             var serviceName = _originalServiceName.Substring(0, loc);
-            
+
             var isApi = typeOf.Equals("api", StringComparison.OrdinalIgnoreCase);
             var isTests = typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase);
             var isTrx = typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase);
@@ -103,30 +106,36 @@ namespace Dev2.Runtime.WebServer
                         dataObject.TestName = testName;
                     }
                 }
+
                 if (isTests)
                 {
                     dataObject.ReturnType = EmitionTypes.TEST;
                 }
+
                 if (isTrx)
                 {
                     dataObject.ReturnType = EmitionTypes.TRX;
                     serviceName = _originalServiceName.Substring(0, _originalServiceName.LastIndexOf(".", StringComparison.Ordinal));
                 }
             }
+
             var isCover = typeOf.StartsWith("coverage", StringComparison.InvariantCultureIgnoreCase);
             var isCoverJson = typeOf.StartsWith("coverage.json", StringComparison.InvariantCultureIgnoreCase);
             if (isCover)
             {
                 dataObject.ReturnType = EmitionTypes.Cover;
             }
+
             if (isCoverJson)
             {
                 dataObject.ReturnType = EmitionTypes.CoverJson;
             }
+
             if (isApi)
             {
                 dataObject.ReturnType = EmitionTypes.SWAGGER;
             }
+
             dataObject.ServiceName = serviceName;
             return serviceName;
         }
@@ -140,12 +149,14 @@ namespace Dev2.Runtime.WebServer
                 {
                     contentType = headers.Get("ContentType");
                 }
+
                 if (!string.IsNullOrEmpty(contentType) && !dataObject.IsServiceTestExecution)
                 {
                     if (contentType.ToLowerInvariant().Contains("json"))
                     {
                         dataObject.ReturnType = EmitionTypes.JSON;
                     }
+
                     if (contentType.ToLowerInvariant().Contains("xml"))
                     {
                         dataObject.ReturnType = EmitionTypes.XML;
@@ -157,6 +168,7 @@ namespace Dev2.Runtime.WebServer
                 dataObject.ReturnType = EmitionTypes.XML;
             }
         }
+
         public static void SetHeaders(this IDSFDataObject dataObject, NameValueCollection headers)
         {
             var customTransactionId = headers?.Get("Warewolf-Custom-Transaction-Id");
@@ -164,19 +176,22 @@ namespace Dev2.Runtime.WebServer
             {
                 dataObject.CustomTransactionID = customTransactionId;
             }
+
             var executionId = headers?.Get("Warewolf-Execution-Id");
             if (!string.IsNullOrEmpty(executionId))
             {
                 dataObject.ExecutionID = Guid.Parse(executionId);
                 return;
             }
+
             dataObject.ExecutionID = Guid.NewGuid();
         }
+
         public static void SetupForWebDebug(this IDSFDataObject dataObject, WebRequestTO webRequest)
         {
             var contains = webRequest?.Variables?.AllKeys.Contains("IsDebug");
             if (contains != null && contains.Value)
-            {                
+            {
                 dataObject.IsDebug = true;
                 dataObject.IsDebugFromWeb = true;
                 dataObject.ClientID = Guid.NewGuid();
@@ -199,6 +214,7 @@ namespace Dev2.Runtime.WebServer
                 // we have a remote invoke ;)
                 dataObject.RemoteInvoke = true;
             }
+
             if (isRemote.Equals(GlobalConstants.RemoteDebugServerInvoke))
             {
                 // we have a remote invoke ;)
@@ -219,13 +235,13 @@ namespace Dev2.Runtime.WebServer
                 {
                     path = "/";
                 }
+
                 var resources = catalog.GetExecutableResources(path);
                 dataObject.TestsResourceIds = resources.Select(p => p.ResourceID).ToArray();
-
             }
             else
             {
-                dataObject.TestsResourceIds = new[] { resource is null ? Guid.Empty : resource.ResourceID }; //when null this was throwing 
+                dataObject.TestsResourceIds = new[] {resource is null ? Guid.Empty : resource.ResourceID}; //when null this was throwing 
             }
         }
 
@@ -241,12 +257,13 @@ namespace Dev2.Runtime.WebServer
                 {
                     path = "/";
                 }
+
                 var resources = catalog.GetExecutableResources(path);
                 dataObject.CoverageReportResourceIds = resources.Select(p => p.ResourceID).ToArray();
             }
             else
             {
-                dataObject.CoverageReportResourceIds = new[] { resource is null ? Guid.Empty : resource.ResourceID }; //when null this was throwing 
+                dataObject.CoverageReportResourceIds = new[] {resource is null ? Guid.Empty : resource.ResourceID}; //when null this was throwing 
             }
         }
 
@@ -270,7 +287,7 @@ namespace Dev2.Runtime.WebServer
             isRunAllTests &= returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX;
             return isRunAllTests;
         }
-        
+
         private static bool IsRunAllCoverageRequest(EmitionTypes returnType, string serviceName)
         {
             var isRunAllCoverage = !string.IsNullOrEmpty(serviceName);
@@ -303,6 +320,7 @@ namespace Dev2.Runtime.WebServer
                     }
                 }
             }
+
             if (localResource == null)
             {
                 var stringDynaResourceId = serviceName.Replace(".xml", "").Replace(".bite", "").Replace(".json", "");
@@ -314,12 +332,13 @@ namespace Dev2.Runtime.WebServer
                         MapServiceToDataObjects(dataObject, localResource);
                     }
                 }
+
                 if (localResource == null)
                 {
                     dataObject.Environment.AddError($"Service {serviceName} not found.");
                 }
             }
-                
+
             resource = localResource;
         }
 
@@ -336,20 +355,22 @@ namespace Dev2.Runtime.WebServer
             {
                 return false;
             }
+
             var canExecute = true;
             if (service != null && dataObject.ReturnType != EmitionTypes.TRX)
             {
-                var hasView = service.IsAuthorized(dataObject.ExecutingUser,AuthorizationContext.View, dataObject.ResourceID.ToString());
+                var hasView = service.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.View, dataObject.ResourceID.ToString());
                 var hasExecute = service.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.ResourceID.ToString());
                 canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == "ReservedService");
             }
+
             return canExecute;
         }
 
         public static DataListFormat RunMultipleTestBatchesAndReturnJSON(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
-                                                                         Dev2JsonSerializer serializer,
-                                                                         IResourceCatalog catalog, ITestCatalog testCatalog,
-                                                                         out string executePayload)
+            Dev2JsonSerializer serializer,
+            IResourceCatalog catalog, ITestCatalog testCatalog,
+            out string executePayload)
         {
             var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
@@ -363,7 +384,7 @@ namespace Dev2.Runtime.WebServer
                     {
                         name = filePath.Path;
                     }
-                    
+
                     return new JObject
                     {
                         {"ResourceID", o.Resource.ResourceID},
@@ -384,9 +405,9 @@ namespace Dev2.Runtime.WebServer
         }
 
         public static DataListFormat RunMultipleTestBatchesAndReturnTRX(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
-                                                                        Dev2JsonSerializer serializer,
-                                                                        IResourceCatalog catalog, ITestCatalog testCatalog,
-                                                                        out string executePayload)
+            Dev2JsonSerializer serializer,
+            IResourceCatalog catalog, ITestCatalog testCatalog,
+            out string executePayload)
         {
             var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
@@ -400,7 +421,7 @@ namespace Dev2.Runtime.WebServer
 
             var selectedResources = catalog.GetResources(workspaceGuid)
                 .Where(resource => dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
-            
+
             var workflowTaskList = new List<Task<WorkflowTestResults>>();
             foreach (var testsResourceId in dataObject.TestsResourceIds)
             {
@@ -435,20 +456,22 @@ namespace Dev2.Runtime.WebServer
 
                 workflowTaskList.Add(workflowTask);
             }
+
             Task.WaitAll(workflowTaskList.ToArray());
-            
+
             foreach (var task in workflowTaskList)
             {
                 result.Add(task.Result);
             }
+
             result.EndTime = DateTime.Now;
 
             return result;
         }
-        
+
         public static DataListFormat RunCoverageAndReturnJSON(this IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
-            var allCoverageReports = RunListOfCoverage(dataObject, testCoverageCatalog,workspaceGuid, serializer, catalog);
+            var allCoverageReports = RunListOfCoverage(dataObject, testCoverageCatalog, workspaceGuid, serializer, catalog);
 
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
@@ -484,7 +507,7 @@ namespace Dev2.Runtime.WebServer
         {
             var allCoverageReports = RunListOfCoverage(dataObject, testCoverageCatalog, workspaceGuid, serializer, catalog);
             var allTests = TestCatalog.Instance.FetchAllTests();
-            
+
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
 
             StringWriter stringWriter = new StringWriter();
@@ -496,56 +519,61 @@ namespace Dev2.Runtime.WebServer
                 allTests.SetupCountSummaryHtml(writer, "count-summary row");
 
                 allCoverageReports.AllCoverageReportsSummary
-                .Where(o => o.HasTestReports)
-                .Select(o =>
-                {
-                    var name = o.Resource.ResourceName;
-                    var resourcePath = string.Empty;
-                    if (o.Resource is IFilePathResource filePath)
+                    .Where(o => o.HasTestReports)
+                    .Select(o =>
                     {
-                        resourcePath = filePath.Path;
-                    }
+                        var name = o.Resource.ResourceName;
+                        var resourcePath = string.Empty;
+                        if (o.Resource is IFilePathResource filePath)
+                        {
+                            resourcePath = filePath.Path;
+                        }
 
-                    return new ReportTempHolder
+                        return new ReportTempHolder
+                        {
+                            ResourceID = o.Resource.ResourceID,
+                            Name = name,
+                            ResourcePath = resourcePath,
+                            Reports = o.ReportsPerWorkflow
+                        };
+                    })
+                    .ToList()
+                    .ForEach(oo =>
                     {
-                        ResourceID = o.Resource.ResourceID,
-                        Name = name,
-                        ResourcePath = resourcePath,
-                        Reports = o.ReportsPerWorkflow
-                    };
-                })
-                .ToList()
-                .ForEach(oo =>
-                {
-                    var workflowReport = oo.Reports.Where(r => oo.ResourcePath.Contains(r.ReportName)).FirstOrDefault();
+                        var workflowReport = oo.Reports.Where(r => oo.ResourcePath.Contains(r.ReportName)).FirstOrDefault();
+                        if (workflowReport != null)
+                        {
+                            writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "10%");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
+                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                            writer.Write(oo.ResourcePath);
+                            writer.RenderEndTag();
+                            
+                            workflowReport.SetupWorkflowReportsHtml(writer, "SetupWorkflowReportsHtml");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
+                            writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
+                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                            var nodes = new List<IWorkflowNode>();
+                            workflowReport.AllTestNodesCovered.ForEach(c => c.ForEach(o => o.TestNodesCovered.ForEach(node => nodes.Add(node))));
 
-                    oo.ResourcePath.SetupWorkflowPathHtml(writer, "workflow-path row");
-                    allTests.SetupCountProgressSummaryHtml(writer, "count-progress-bars");
-                    if (workflowReport != null)
-                    {
-                        workflowReport.SetupWorkflowReportsHtml(writer, "workflow-report row");
+                            var coveredNodes = nodes.GroupBy(n => n.UniqueID).Select(o => o.FirstOrDefault()).ToList();
 
-                        var myRowStyle = new Style();
-                        myRowStyle.CssClass = "row";
-                        myRowStyle.Font.Underline = true;
+                            var workflow = new WorkflowWrapper(oo.ResourceID);
 
-                        writer.EnterStyle(myRowStyle);
-
-                        var nodes = new List<IWorkflowNode>();
-                        workflowReport.AllTestNodesCovered.ForEach(c => c.ForEach(o => o.TestNodesCovered.ForEach(node => nodes.Add(node))));
-
-                        var coveredNodes = nodes.GroupBy(n => n.UniqueID).Select(o => o.FirstOrDefault()).ToList();
-
-                        var workflow = new WorkflowWrapper(oo.ResourceID);
-
-                        var allWorkflowNodes = workflow.GetHTMLWorkflowNodes();
-
-                        allWorkflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, "workflow-nodes-row", coveredNodes));
-
-                        writer.ExitStyle(myRowStyle);
-
-                    }
-                });
+                            var allWorkflowNodes = workflow.GetHTMLWorkflowNodes();
+                           
+                            allWorkflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, "workflow-nodes", coveredNodes));
+                            
+                            writer.RenderEndTag();
+                        }
+                    });
             }
 
             executePayload = stringWriter.ToString();
@@ -576,6 +604,7 @@ namespace Dev2.Runtime.WebServer
                     {
                         coverageReports.Add(workflowReport);
                     }
+
                     coverageReportsTemp.Add(coverageReports);
                 }
             }
@@ -640,6 +669,7 @@ namespace Dev2.Runtime.WebServer
         {
             StartTime = DateTime.Now;
         }
+
         public DateTime StartTime { get; }
         public DateTime EndTime { get; set; }
         public List<WorkflowTestResults> Results { get; } = new List<WorkflowTestResults>();
