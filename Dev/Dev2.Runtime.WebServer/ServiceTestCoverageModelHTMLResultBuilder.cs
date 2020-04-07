@@ -77,15 +77,12 @@ namespace Dev2.Runtime.WebServer
             }
 
             writer.RenderEndTag();
-
             writer.RenderEndTag();
         }
 
        
         public static void SetupWorkflowNodeHtml(this IWorkflowNode workflowNode, HtmlTextWriter writer, string className, List<IWorkflowNode> coveredNodes)
         {
-           
-
             if (IsNodeCovered(coveredNodes, workflowNode))
             {
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
@@ -114,8 +111,6 @@ namespace Dev2.Runtime.WebServer
                 workflowNode.NextNodes.ForEach(node => SetupNextNodeHTML(writer, coveredNodes, node));
                 writer.RenderEndTag();
             }
-
-           
         }
 
         public static void SetupNextNodeHTML(HtmlTextWriter writer, List<IWorkflowNode> coveredNodes, IWorkflowNode node)
@@ -184,11 +179,6 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
             writer.RenderEndTag();
             writer.RenderEndTag();
-        }
-
-        public static void SetupWorkflowPathHtml(this object resourcePath, HtmlTextWriter writer, string classValue)
-        {
-            
         }
 
         private static bool IsNodeCovered(List<IWorkflowNode> coveredNodes, IWorkflowNode node)
