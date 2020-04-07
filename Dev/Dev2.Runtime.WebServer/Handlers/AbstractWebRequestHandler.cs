@@ -527,32 +527,4 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
     }
 
-    internal static class ServiceTestCoverageExecutor
-    {
-        internal static DataListFormat GetTestCoverageReports(IDSFDataObject dataObject, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog resourceCatalog, out string executePayload)
-        {
-            DataListFormat formatter = null;
-            if (dataObject.TestsResourceIds?.Any() ?? false)
-            {
-                if (dataObject.ReturnType == EmitionTypes.CoverJson)
-                {
-                    formatter = dataObject.RunCoverageAndReturnJSON(testCoverageCatalog, resourceCatalog, workspaceGuid, serializer, out executePayload);
-                }
-                else
-                {
-                    executePayload = null;
-                }
-                dataObject.ResourceID = Guid.Empty;
-            }
-            else
-            {
-                executePayload = null;
-                throw new Exception("do not expect this to be executed any longer");
-            }
-
-            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-            dataObject.Environment = null;
-            return formatter ?? DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-        }
-    }
 }

@@ -280,6 +280,8 @@ namespace Dev2.Runtime
         Guid UniqueID { get; set; }
         string StepDescription { get; set; }
         bool MockSelected { get; set; }
+        List<IWorkflowNode> NextNodes { get; }
+
     }
 
     public class WorkflowNode : IWorkflowNode
@@ -292,6 +294,7 @@ namespace Dev2.Runtime
         public Guid UniqueID { get; set; }
         public string StepDescription { get; set; }
         public bool MockSelected { get; set; }
+        public List<IWorkflowNode> NextNodes { get; set; }
     }
 
     public interface IWorkflowNodesCovered
@@ -341,7 +344,12 @@ namespace Dev2.Runtime
 
         public List<IWorkflowNode> GetAllWorkflowNodes()
         {
-            return _workflow.WorkflowNodes;
+            return _workflow?.WorkflowNodes;
+        }
+
+        public List<IWorkflowNode> GetHTMLWorkflowNodes()
+        {
+            return _workflow?.WorkflowNodesForHtml;
         }
     }
 

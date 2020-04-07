@@ -36,6 +36,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         string Tags { get; set; }
         string Name { get; set; }
         List<IWorkflowNode> WorkflowNodes { get; }
+        List<IWorkflowNode> WorkflowNodesForHtml { get; }
         StringBuilder XamlDefinition { get; set; }
 
         XElement ToXml();
@@ -71,7 +72,71 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             XamlDefinition = action.ElementSafeStringBuilder("XamlDefinition");
             FlowNodes = GetFlowNodes(action);
+            WorkflowNodesForHtml = GetWorkflowNodesForHtml();
             WorkflowNodes = GetWorkflowNodes();
+        }
+
+        private List<IWorkflowNode> GetWorkflowNodesForHtml()
+        {
+            var list = new List<IWorkflowNode>();
+            var childNodes = new List<IWorkflowNode>();
+            foreach (var node in FlowNodes)
+            {
+                var nodeType = node.GetType().Name;
+                IDev2Activity activity;
+                switch (node.GetType().Name)
+                {
+                    case nameof(FlowStep):
+                        activity = ((FlowStep)node).Action as IDev2Activity;
+                        var foundInChildNodes = childNodes.Find(o => o.UniqueID.ToString() == activity.UniqueID);
+                        if (childNodes.Count is 0 || foundInChildNodes is null)
+                        {
+                            list.Add(new WorkflowNode
+                            {
+                                ActivityID = activity.ActivityId,
+                                UniqueID = Guid.Parse(activity.UniqueID),
+                                StepDescription = activity.GetDisplayName()
+                            });
+                        }
+                        break;
+
+                    case nameof(FlowDecision):
+                        var flowDecision = ((FlowDecision)node);
+
+                        var falseA = (((FlowStep)flowDecision.False)?.Action as IDev2Activity);
+                        var falseArm = new WorkflowNode
+                        {
+                            ActivityID = falseA.ActivityId,
+                            UniqueID = Guid.Parse(falseA.UniqueID),
+                            StepDescription = falseA.GetDisplayName(),
+                        };
+                        childNodes.Add(falseArm);
+
+                        var trueA = ((FlowStep)flowDecision.True)?.Action as IDev2Activity;
+                        var trueArm = new WorkflowNode
+                        {
+                            ActivityID = trueA.ActivityId,
+                            UniqueID = Guid.Parse(trueA.UniqueID),
+                            StepDescription = trueA.GetDisplayName(),
+                        };
+                        childNodes.Add(trueArm);
+
+                        activity = flowDecision.Condition as IDev2Activity;
+                        list.Add(new WorkflowNode
+                        {
+                            ActivityID = activity.ActivityId,
+                            UniqueID = Guid.Parse(activity.UniqueID),
+                            StepDescription = activity.GetDisplayName(),
+                            NextNodes = new List<IWorkflowNode> { falseArm, trueArm }
+                        });
+                        break; //TODO: remember the other types to be covered here too
+
+                    default:
+                        break;
+                }
+            }
+
+            return list;
         }
 
         private List<IWorkflowNode> GetWorkflowNodes()
@@ -94,12 +159,31 @@ namespace Dev2.Runtime.ServiceModel.Data
                         break;
 
                     case nameof(FlowDecision):
-                        activity = ((FlowDecision)node).Condition as IDev2Activity;
+                        var flowDecision = ((FlowDecision)node);
+
+                        var falseA = (((FlowStep)flowDecision.False)?.Action as IDev2Activity);
+                        var falseArm = new WorkflowNode
+                        {
+                            ActivityID = falseA.ActivityId,
+                            UniqueID = Guid.Parse(falseA.UniqueID),
+                            StepDescription = falseA.GetDisplayName(),
+                        };
+
+                        var trueA = ((FlowStep)flowDecision.True)?.Action as IDev2Activity;
+                        var trueArm = new WorkflowNode
+                        {
+                            ActivityID = trueA.ActivityId,
+                            UniqueID = Guid.Parse(trueA.UniqueID),
+                            StepDescription = trueA.GetDisplayName(),
+                        };
+
+                        activity = flowDecision.Condition as IDev2Activity;
                         list.Add(new WorkflowNode
                         {
                             ActivityID = activity.ActivityId,
                             UniqueID = Guid.Parse(activity.UniqueID),
-                            StepDescription = activity.GetDisplayName()
+                            StepDescription = activity.GetDisplayName(),
+                            NextNodes = new List<IWorkflowNode> { falseArm, trueArm }
                         });
                         break; //TODO: remember the other types to be covered here too
 
@@ -153,6 +237,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string Tags { get; set; }
         public string HelpLink { get; set; }
         public Collection<FlowNode> FlowNodes { get; private set; }
+        public List<IWorkflowNode> WorkflowNodesForHtml { get; }
         public List<IWorkflowNode> WorkflowNodes { get; }
         public string Name { get; set; }
 
