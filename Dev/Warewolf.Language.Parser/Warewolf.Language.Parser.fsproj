@@ -84,7 +84,6 @@
     <Compile Include="..\AssemblyCommonInfo.fs" Condition="Exists('..\AssemblyCommonInfo.fs')">
       <Link>Properties\AssemblyCommonInfo.fs</Link>
     </Compile>
-    <None Include="Script.fsx" />
     <Compile Include="DataStorage.fs" />
     <None Include="packages.config" />
     <Compile Include="LanguageAST.fs" />

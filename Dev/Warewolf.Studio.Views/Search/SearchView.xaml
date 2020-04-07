@@ -11,6 +11,7 @@
              xmlns:converters1="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:help="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:search1="clr-namespace:Dev2.Common.Interfaces.Search;assembly=Dev2.Common.Interfaces"
              mc:Ignorable="d"
              KeyDown="Window_KeyDown"
              d:DataContext="{d:DesignInstance search:SearchViewModel}"
@@ -223,7 +224,7 @@
                                             MinWidth="0"
                                             Header="Id"
                                             HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                                            d:DataContext="{d:DesignInstance Type=search1:ISearchResult}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="5,0,0,0" Text="{Binding Path=ResourceId}" HorizontalAlignment="Left"/>
@@ -234,7 +235,7 @@
                                             MinWidth="125"
                                             Header="Name"
                                             HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                                            d:DataContext="{d:DesignInstance Type=search1:ISearchResult}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -253,7 +254,7 @@
                                             MinWidth="125"
                                             Header="Path"
                                             HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                                            d:DataContext="{d:DesignInstance Type=search1:ISearchResult}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="{Binding Path=Path}" HorizontalAlignment="Left">
@@ -269,7 +270,7 @@
                                             MinWidth="125"
                                             Header="Type"
                                             HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                                            d:DataContext="{d:DesignInstance Type=search1:ISearchResult}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="5,0,0,0" 
@@ -283,7 +284,7 @@
                                             MinWidth="125"
                                             Header="Match"
                                             HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                                            d:DataContext="{d:DesignInstance Type=search1:ISearchResult}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="5,0,0,0" ToolTip="{Binding Path=Match}" Text="{Binding Path=Match}" HorizontalAlignment="Left"/>
