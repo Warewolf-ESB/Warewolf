@@ -58,7 +58,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildConfig.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="RabbitMq Source.feature.cs">
       <AutoGen>False</AutoGen>
