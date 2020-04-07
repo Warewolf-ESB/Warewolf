@@ -51,7 +51,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BuildConfig.cs" />
     <Compile Include="Database Tools Refresh\DatabaseServiceInputChangeTests.cs" />
     <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -152,10 +151,6 @@
     <Reference Include="WPF.JoshSmith">
       <HintPath>..\Binaries\WPF.JoshSmith.dll</HintPath>
     </Reference>
-    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -230,7 +225,6 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\ServerConnection2.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\TestDecisionUnsigned.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\WorkspaceItem.xml" />
-    <None Include="app.config" />
     <None Include="Server Refresh\Resources\DeleteWorkflowTest.xml" />
     <EmbeddedResource Include="TestData\Test.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -360,6 +354,10 @@
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Name>Warewolf.Parser.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj">
+      <Project>{4a455098-ffdd-4861-b873-656f960cf0ba}</Project>
+      <Name>Warewolf.UnitTestAttributes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

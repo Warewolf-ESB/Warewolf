@@ -17,57 +17,40 @@ namespace Warewolf.UIBindingTests.ServerSource
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [NUnit.Framework.TestFixtureAttribute()]
+    [NUnit.Framework.DescriptionAttribute("NewServerSource")]
+    [NUnit.Framework.CategoryAttribute("ServerSource")]
     public partial class NewServerSourceFeature
     {
         
-        private static TechTalk.SpecFlow.ITestRunner testRunner;
-        
-        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
+        private TechTalk.SpecFlow.ITestRunner testRunner;
         
 #line 1 "NewServerSource.feature"
 #line hidden
         
-        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
+        [NUnit.Framework.OneTimeSetUpAttribute()]
+        public virtual void FeatureSetup()
         {
-            get
-            {
-                return this._testContext;
-            }
-            set
-            {
-                this._testContext = value;
-            }
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
-        public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
-        {
-            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
+            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "NewServerSource", "\tIn order to connect to other Warewolf servers\r\n\tAs a Warewolf user\r\n\tI want to b" +
                     "e able to manager connections to Warewolf servers", ProgrammingLanguage.CSharp, new string[] {
                         "ServerSource"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
-        public static void FeatureTearDown()
+        [NUnit.Framework.OneTimeTearDownAttribute()]
+        public virtual void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
+        [NUnit.Framework.SetUpAttribute()]
         public virtual void TestInitialize()
         {
-            if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "NewServerSource")))
-            {
-                global::Warewolf.UIBindingTests.ServerSource.NewServerSourceFeature.FeatureSetup(null);
-            }
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
+        [NUnit.Framework.TearDownAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
@@ -76,7 +59,6 @@ namespace Warewolf.UIBindingTests.ServerSource
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(TestContext);
         }
         
         public virtual void ScenarioCleanup()
@@ -84,11 +66,15 @@ namespace Warewolf.UIBindingTests.ServerSource
             testRunner.CollectScenarioErrors();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New Server Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Create New Server Source")]
+        [NUnit.Framework.CategoryAttribute("ServerSource")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void CreateNewServerSource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New Server Source", new string[] {
@@ -121,11 +107,15 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New Source as windows")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Creating New Source as windows")]
+        [NUnit.Framework.CategoryAttribute("ServerSource")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void CreatingNewSourceAsWindows()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New Source as windows", new string[] {
@@ -172,11 +162,15 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New Source as User And HTTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Creating New Source as User And HTTPS")]
+        [NUnit.Framework.CategoryAttribute("ServerSource")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void CreatingNewSourceAsUserAndHTTPS()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New Source as User And HTTPS", new string[] {
@@ -227,11 +221,15 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating server source Authentication error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Creating server source Authentication error")]
+        [NUnit.Framework.CategoryAttribute("ServerSource")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void CreatingServerSourceAuthenticationError()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating server source Authentication error", new string[] {
@@ -272,11 +270,15 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating server source Authentication error Shows correct error message")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Creating server source Authentication error Shows correct error message")]
+        [NUnit.Framework.CategoryAttribute("ServerSource")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void CreatingServerSourceAuthenticationErrorShowsCorrectErrorMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating server source Authentication error Shows correct error message", new string[] {
@@ -319,11 +321,15 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New Source as Public")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Creating New Source as Public")]
+        [NUnit.Framework.CategoryAttribute("ServerSource")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void CreatingNewSourceAsPublic()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New Source as Public", new string[] {
@@ -370,11 +376,15 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Saved Server Source Authentication")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Editing Saved Server Source Authentication")]
+        [NUnit.Framework.CategoryAttribute("ServerSource")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void EditingSavedServerSourceAuthentication()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Saved Server Source Authentication", new string[] {
@@ -433,11 +443,15 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New Source as windows with external server address")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Creating New Source as windows with external server address")]
+        [NUnit.Framework.CategoryAttribute("ServerSource")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void CreatingNewSourceAsWindowsWithExternalServerAddress()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New Source as windows with external server address", new string[] {
@@ -484,11 +498,15 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Saved Server Source Authentication with external server address")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "NewServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ServerSource")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Editing Saved Server Source Authentication with external server address")]
+        [NUnit.Framework.CategoryAttribute("ServerSource")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void EditingSavedServerSourceAuthenticationWithExternalServerAddress()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Saved Server Source Authentication with external server address", new string[] {

@@ -18,7 +18,6 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Data.Util;
 using Dev2.Integration.Tests.Services.Sql;
-using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
@@ -28,7 +27,6 @@ using WarewolfParserInterop;
 using Dev2.Activities.Specs.BaseTypes;
 using System.Reflection;
 using System.IO;
-using System.Net.Sockets;
 using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert

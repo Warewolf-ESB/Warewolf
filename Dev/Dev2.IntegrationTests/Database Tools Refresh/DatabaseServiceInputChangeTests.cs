@@ -19,7 +19,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Core;
-using Warewolf.Test.Agent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.UnitTestAttributes;
 
@@ -39,8 +38,8 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
-            var aggr = new Mock<IEventAggregator>();
-            DataListSingleton.SetDataList(new DataListViewModel(aggr.Object));
+            var aggregator = new Mock<IEventAggregator>();
+            DataListSingleton.SetDataList(new DataListViewModel(aggregator.Object));
             _containerOps = new Depends(Depends.ContainerType.MSSQL);
         }
 
@@ -54,11 +53,11 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
 
-            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
 
             _dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                                , _proxyLayer.QueryManagerProxy
+                                                                                                , proxyLayer.QueryManagerProxy
                                                                                                 , mock.Object
                                                                                                 , environmentModel);
         }

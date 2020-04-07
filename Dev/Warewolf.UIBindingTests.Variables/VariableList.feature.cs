@@ -17,57 +17,40 @@ namespace Warewolf.UIBindingTests.Variables
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [NUnit.Framework.TestFixtureAttribute()]
+    [NUnit.Framework.DescriptionAttribute("VariableList")]
+    [NUnit.Framework.CategoryAttribute("VariableList")]
     public partial class VariableListFeature
     {
         
-        private static TechTalk.SpecFlow.ITestRunner testRunner;
-        
-        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
+        private TechTalk.SpecFlow.ITestRunner testRunner;
         
 #line 1 "VariableList.feature"
 #line hidden
         
-        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
+        [NUnit.Framework.OneTimeSetUpAttribute()]
+        public virtual void FeatureSetup()
         {
-            get
-            {
-                return this._testContext;
-            }
-            set
-            {
-                this._testContext = value;
-            }
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
-        public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
-        {
-            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
+            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VariableList", "\tIn order to manage my variables\r\n\tAs a Warewolf user\r\n\tI want to be told shown a" +
                     "ll variables in my workflow service", ProgrammingLanguage.CSharp, new string[] {
                         "VariableList"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
-        public static void FeatureTearDown()
+        [NUnit.Framework.OneTimeTearDownAttribute()]
+        public virtual void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
+        [NUnit.Framework.SetUpAttribute()]
         public virtual void TestInitialize()
         {
-            if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "VariableList")))
-            {
-                global::Warewolf.UIBindingTests.Variables.VariableListFeature.FeatureSetup(null);
-            }
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
+        [NUnit.Framework.TearDownAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
@@ -76,7 +59,6 @@ namespace Warewolf.UIBindingTests.Variables
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(TestContext);
         }
         
         public virtual void ScenarioCleanup()
@@ -84,10 +66,14 @@ namespace Warewolf.UIBindingTests.Variables
             testRunner.CollectScenarioErrors();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Variables adding in variable list and removing unused")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Variables adding in variable list and removing unused")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void VariablesAddingInVariableListAndRemovingUnused()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variables adding in variable list and removing unused", new string[] {
@@ -268,10 +254,14 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sorting Variables in Variable list")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Sorting Variables in Variable list")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void SortingVariablesInVariableList()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sorting Variables in Variable list", new string[] {
@@ -468,10 +458,14 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Variable Errors")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Variable Errors")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void VariableErrors()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variable Errors", new string[] {
@@ -558,10 +552,14 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Variables removed from design surface and list")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Variables removed from design surface and list")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
         public virtual void VariablesRemovedFromDesignSurfaceAndList()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variables removed from design surface and list", new string[] {

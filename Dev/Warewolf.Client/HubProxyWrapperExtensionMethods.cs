@@ -35,7 +35,7 @@ namespace Warewolf.Client
 
                         break;
                     }
-                    catch (InvalidOperationException e)
+                    catch (InvalidOperationException)
                     {
                         tries++;
                         if (tries >= maxRetries)

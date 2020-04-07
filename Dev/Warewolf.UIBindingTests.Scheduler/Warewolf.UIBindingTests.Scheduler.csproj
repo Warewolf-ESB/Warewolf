@@ -50,9 +50,6 @@
     <Compile Include="Scheduler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
       <Project>{b95b724a-b052-4e18-98a4-88072c8df2c2}</Project>
       <Name>Dev2.Activities.Designers</Name>

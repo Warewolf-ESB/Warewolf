@@ -214,10 +214,6 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -296,7 +292,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="BrowserDebug\BrowserDebug.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BrowserDebug.feature.cs</LastGenOutput>
@@ -562,6 +557,10 @@
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
       <Name>Warewolf.Parser.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj">
+      <Project>{4a455098-ffdd-4861-b873-656f960cf0ba}</Project>
+      <Name>Warewolf.UnitTestAttributes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -17,33 +17,31 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [NUnit.Framework.TestFixtureAttribute()]
+    [NUnit.Framework.DescriptionAttribute("RabbitMq Source")]
+    [NUnit.Framework.CategoryAttribute("RabbitMqSource")]
+    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+        "1.dll")]
+    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll")]
+    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
+    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
+    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
+    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
+    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll")]
+    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:EnableDocker.txt")]
     public partial class RabbitMqSourceFeature
     {
         
-        private static TechTalk.SpecFlow.ITestRunner testRunner;
-        
-        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
+        private TechTalk.SpecFlow.ITestRunner testRunner;
         
 #line 1 "RabbitMq Source.feature"
 #line hidden
         
-        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
+        [NUnit.Framework.OneTimeSetUpAttribute()]
+        public virtual void FeatureSetup()
         {
-            get
-            {
-                return this._testContext;
-            }
-            set
-            {
-                this._testContext = value;
-            }
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
-        public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
-        {
-            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
+            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "RabbitMq Source", "\tIn order to share settings\r\n\tI want to save my RabbitMq source Settings\r\n\tSo tha" +
                     "t I can reuse them", ProgrammingLanguage.CSharp, new string[] {
                         "RabbitMqSource",
@@ -60,24 +58,19 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
             testRunner.OnFeatureStart(featureInfo);
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
-        public static void FeatureTearDown()
+        [NUnit.Framework.OneTimeTearDownAttribute()]
+        public virtual void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
+        [NUnit.Framework.SetUpAttribute()]
         public virtual void TestInitialize()
         {
-            if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "RabbitMq Source")))
-            {
-                global::Warewolf.UIBindingTests.RabbitMqSource.RabbitMqSourceFeature.FeatureSetup(null);
-            }
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
+        [NUnit.Framework.TearDownAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
@@ -86,7 +79,6 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(TestContext);
         }
         
         public virtual void ScenarioCleanup()
@@ -94,19 +86,8 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
             testRunner.CollectScenarioErrors();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create New RabbitMq source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RabbitMq Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RabbitMqSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf_Studio.exe")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Create New RabbitMq source")]
         public virtual void CreateNewRabbitMqSource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create New RabbitMq source", ((string[])(null)));
@@ -136,19 +117,8 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enable Send and Enable Save")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RabbitMq Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RabbitMqSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf_Studio.exe")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Enable Send and Enable Save")]
         public virtual void EnableSendAndEnableSave()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enable Send and Enable Save", ((string[])(null)));
@@ -182,19 +152,8 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Fail Send Rabbit Mq Message Shows correct error message")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RabbitMq Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RabbitMqSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf_Studio.exe")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Fail Send Rabbit Mq Message Shows correct error message")]
         public virtual void FailSendRabbitMqMessageShowsCorrectErrorMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fail Send Rabbit Mq Message Shows correct error message", ((string[])(null)));

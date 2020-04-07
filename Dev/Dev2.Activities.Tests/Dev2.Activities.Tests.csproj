@@ -52,10 +52,6 @@
       <HintPath>..\Binaries\Microsoft.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -499,6 +495,10 @@
     <ProjectReference Include="..\Warewolf.TestingDotnetDllCascading\Warewolf.TestingDotnetDllCascading.csproj">
       <Project>{7925b0c6-88dc-49a4-bbe1-c0550987f63a}</Project>
       <Name>Warewolf.TestingDotnetDllCascading</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj">
+      <Project>{4a455098-ffdd-4861-b873-656f960cf0ba}</Project>
+      <Name>Warewolf.UnitTestAttributes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

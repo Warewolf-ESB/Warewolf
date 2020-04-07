@@ -17,7 +17,6 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Infrastructure.Tests
 {

@@ -46,7 +46,6 @@
     </AdditionalFiles>
     <Compile Include="IpcClientTests.cs" />
     <Compile Include="WarewolfComIpcTests.cs" />
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj">

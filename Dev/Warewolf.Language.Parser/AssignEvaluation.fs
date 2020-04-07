@@ -305,15 +305,15 @@ and assignGivenAValueForJson (env : WarewolfEnvironment) (res : WarewolfEvalResu
             env
     | NestedNameExpression a ->
         let actualRes = match res with
-            | WarewolfEvalResult.WarewolfAtomResult atomResult -> match atomResult with
-                                                                      | WarewolfAtom.DataString ds ->
-                                                                        if (isJsonString evalResult) then
-                                                                            let actualValue = JContainer.Parse evalResult
-                                                                            WarewolfAtomResult(JsonObject(actualValue))
-                                                                        else
-                                                                            res
-                                                                      | _ -> res
-            | _ -> res
+                        | WarewolfEvalResult.WarewolfAtomResult atomResult -> match atomResult with
+                                                                              | WarewolfAtom.DataString ds ->
+                                                                                if (isJsonString evalResult) then
+                                                                                    let actualValue = JContainer.Parse evalResult
+                                                                                    WarewolfAtomResult(JsonObject(actualValue))
+                                                                                else
+                                                                                    res
+                                                                              | _ -> res
+                        | _ -> res
         let addedenv = addOrReturnJsonObjects env a.ObjectName (new JObject())
         let obj = addedenv.JsonObjects.[a.ObjectName]
         expressionToObjectForJson obj a.Next actualRes |> ignore

@@ -62,7 +62,6 @@
     <Compile Include="IntellisenseSpecs\IntellisenseProviderSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Default.srprofile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

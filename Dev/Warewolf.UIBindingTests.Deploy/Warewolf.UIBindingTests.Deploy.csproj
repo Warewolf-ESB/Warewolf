@@ -67,7 +67,6 @@
     </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="DeployTab.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeployTab.feature.cs</LastGenOutput>
@@ -171,6 +170,9 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="NUnit">
+      <Version>3.12.0</Version>
     </PackageReference>
     <PackageReference Include="Prism">
       <Version>5.0.0</Version>

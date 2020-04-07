@@ -178,7 +178,6 @@
     <EmbeddedResource Include="Json\NestedForEachWorkFlow.json" />
     <EmbeddedResource Include="Json\ForEachWithHelloWorldTest.json" />
     <EmbeddedResource Include="Json\AllTools.json" />
-    <None Include="App.config" />
     <EmbeddedResource Include="Json\Test.json" />
   </ItemGroup>
   <ItemGroup>

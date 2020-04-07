@@ -20,7 +20,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
-using Warewolf.Security.Encryption;
 using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
 using System.Security;
