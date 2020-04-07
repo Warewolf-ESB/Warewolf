@@ -28,7 +28,7 @@ namespace Warewolf.Auditing.Tests
         {
             if (sink == "AuditingSettingsData")
             {
-                return new AuditQueryableElastic();
+                return new AuditQueryableElastic("http://rsaklfwynand");
             }
             else
             {

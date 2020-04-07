@@ -25,6 +25,7 @@ namespace Warewolf.Auditing.Drivers
     public class AuditQueryableElastic : AuditQueryable
     {
         private string _query;
+        private ElasticsearchSource _elasticsearchSource;
 
         public override string Query
         {
@@ -32,6 +33,15 @@ namespace Warewolf.Auditing.Drivers
             set => _query = value;
         }
 
+        public AuditQueryableElastic()
+        {
+            
+        }
+        public AuditQueryableElastic(string hostname)
+        {
+            _elasticsearchSource = new ElasticsearchSource();
+            _elasticsearchSource.HostName = hostname;
+        }
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var resourceId = GetValue<string>("ResourceId", values);
@@ -321,14 +331,13 @@ namespace Warewolf.Auditing.Drivers
 
         private IEnumerable<object> ExecuteDatabase()
         {
-            var src = new ElasticsearchSource();
-            var uri = new Uri(src.HostName + ":" + src.Port);
+            var uri = new Uri(_elasticsearchSource.HostName + ":" + _elasticsearchSource.Port);
             var settings = new ConnectionSettings(uri)
                 .RequestTimeout(TimeSpan.FromMinutes(2))
-                .DefaultIndex(src.SearchIndex);
-            if (src.AuthenticationType == AuthenticationType.Password)
+                .DefaultIndex(_elasticsearchSource.SearchIndex);
+            if (_elasticsearchSource.AuthenticationType == AuthenticationType.Password)
             {
-                settings.BasicAuthentication(src.Username, src.Password);
+                settings.BasicAuthentication(_elasticsearchSource.Username, _elasticsearchSource.Password);
             }
 
             var client = new ElasticClient(settings);
@@ -348,5 +357,6 @@ namespace Warewolf.Auditing.Drivers
                 return sources;
             }
         }
+        
     }
 }
