@@ -21,18 +21,14 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetupNavBarHtml(this HtmlTextWriter writer, string classValue, string resourcePath)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, classValue);
-
-            writer.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "#F7F7F7");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "65");
-
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-            writer.RenderBeginTag(HtmlTextWriterTag.H2);
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "Roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "28px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, classValue);
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.Write(resourcePath);
-            writer.RenderEndTag();
-
             writer.RenderEndTag();
         }
 
@@ -94,46 +90,99 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
 
         }
+        
+        public static void SetupCountProgressSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, string className)
+        {
+            var total = allTests.Count();
+            var testFailing = 0;
+            var testPassed = 0;
+            if (allTests.Count(o => o.TestFailing) > 0)
+            {
+                testFailing = (total / allTests.Count(o => o.TestFailing)) * 100;
+            }
+            if (allTests.Count(o => o.TestPassed) > 0)
+            {
+                testPassed = (total / allTests.Count(o => o.TestPassed)) * 100;
+            }
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "progress-bar-width");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "150px");
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+            if (allTests.Count(o => o.TestPassed) > 0)
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, "progress-bar-passed");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "green");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "white");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.TextAlign, "center");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "5px 3px");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Width, testPassed + "%");
+                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.Write(testPassed + "%");
+                writer.RenderEndTag();
+               
+            }
+
+            if (allTests.Count(o => o.TestFailing) > 0)
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, "progress-bar-failed");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "red");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.TextAlign, "center");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "white");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "5px 3px");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Width, testFailing + "%");
+                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.Write(testFailing + "%");
+                writer.RenderEndTag();
+            }
+            writer.RenderEndTag();
+        }
 
         public static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, string className)
         {
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, className);
-
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
             writer.RenderBeginTag(HtmlTextWriterTag.Table);
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "row table-borderless");
-
-            writer.RenderBeginTag(HtmlTextWriterTag.Span);
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "200px");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "counts");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-
             writer.Write("Total Test Count: " + allTests.Count.ToString());
+            writer.RenderEndTag();
 
-            writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "200px");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "counts");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "green");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-green");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-
-            writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "oi oi-beaker green");
-            writer.RenderEndTag();
             writer.Write("Tests Passed: " + allTests.Count(o => o.TestPassed));
-
-            writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "oi oi-beaker green");
             writer.RenderEndTag();
+
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
             writer.Write("Tests Failed: " + allTests.Count(o => o.TestFailing));
-
             writer.RenderEndTag();
-            writer.RenderEndTag();
-            writer.RenderEndTag();
+            
             writer.RenderEndTag();
             writer.RenderEndTag();
             writer.RenderEndTag();
@@ -143,11 +192,13 @@ namespace Dev2.Runtime.WebServer
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, classValue);
             writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#F36F21");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "5px 0 15px 0");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "16%");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-            writer.Write("Summary path - " + resourcePath);
-
+            writer.Write(resourcePath);
             writer.RenderEndTag();
         }
 

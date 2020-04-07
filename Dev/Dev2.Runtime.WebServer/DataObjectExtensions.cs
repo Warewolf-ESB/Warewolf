@@ -34,6 +34,7 @@ using Enum = System.Enum;
 using Dev2.Runtime;
 using System.IO;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -519,10 +520,16 @@ namespace Dev2.Runtime.WebServer
                     var workflowReport = oo.Reports.Where(r => oo.ResourcePath.Contains(r.ReportName)).FirstOrDefault();
 
                     oo.ResourcePath.SetupWorkflowPathHtml(writer, "workflow-path row");
-                    
+                    allTests.SetupCountProgressSummaryHtml(writer, "count-progress-bars");
                     if (workflowReport != null)
                     {
                         workflowReport.SetupWorkflowReportsHtml(writer, "workflow-report row");
+
+                        var myRowStyle = new Style();
+                        myRowStyle.CssClass = "row";
+                        myRowStyle.Font.Underline = true;
+
+                        writer.EnterStyle(myRowStyle);
 
                         var nodes = new List<IWorkflowNode>();
                         workflowReport.AllTestNodesCovered.ForEach(c => c.ForEach(o => o.TestNodesCovered.ForEach(node => nodes.Add(node))));
@@ -534,6 +541,8 @@ namespace Dev2.Runtime.WebServer
                         var allWorkflowNodes = workflow.GetHTMLWorkflowNodes();
 
                         allWorkflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, "workflow-nodes-row", coveredNodes));
+
+                        writer.ExitStyle(myRowStyle);
 
                     }
                 });
