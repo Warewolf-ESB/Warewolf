@@ -12,19 +12,34 @@ using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using Serilog;
 using Warewolf.Auditing.Drivers;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Driver.Serilog;
 
 namespace Warewolf.Auditing.Tests
 {
+   
     [TestClass]
     public class AuditQueryableSqliteTests
     {
         string connstring = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
         string sqlMessage = "SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ";
+        [ClassInitialize]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public static void TestFixtureSetup(TestContext context)
+        {
+            var testDBPath = @"C:\ProgramData\Warewolf\Audits\AuditTestDB.db";
+            if (File.Exists(testDBPath))
+                File.Delete(testDBPath);
+
+            var testTableName = "Logs";
+            var logger = new LoggerConfiguration().WriteTo.SQLite(testDBPath, testTableName).CreateLogger();
+        }
+        
         private IAuditQueryable GetAuditQueryable(string sink,string connectionString)
         {
             if (sink == "AuditingSettingsData")
