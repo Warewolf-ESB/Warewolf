@@ -32,6 +32,8 @@ using Warewolf.Data;
 using Warewolf.Services;
 using Enum = System.Enum;
 using Dev2.Runtime;
+using System.IO;
+using System.Web.UI;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -477,6 +479,70 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
+        public static DataListFormat RunCoverageAndReturnHTML(this IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
+        {
+            var allCoverageReports = RunListOfCoverage(dataObject, testCoverageCatalog, workspaceGuid, serializer, catalog);
+            var allTests = TestCatalog.Instance.FetchAllTests();
+            
+            var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
+
+            StringWriter stringWriter = new StringWriter();
+
+            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            {
+                writer.SetupNavBarHtml("nav-bar-row", "Coverage Summary");
+
+                allTests.SetupCountSummaryHtml(writer, "count-summary row");
+
+                allCoverageReports.AllCoverageReportsSummary
+                .Where(o => o.HasTestReports)
+                .Select(o =>
+                {
+                    var name = o.Resource.ResourceName;
+                    var resourcePath = string.Empty;
+                    if (o.Resource is IFilePathResource filePath)
+                    {
+                        resourcePath = filePath.Path;
+                    }
+
+                    return new ReportTempHolder
+                    {
+                        ResourceID = o.Resource.ResourceID,
+                        Name = name,
+                        ResourcePath = resourcePath,
+                        Reports = o.ReportsPerWorkflow
+                    };
+                })
+                .ToList()
+                .ForEach(oo =>
+                {
+                    var workflowReport = oo.Reports.Where(r => oo.ResourcePath.Contains(r.ReportName)).FirstOrDefault();
+
+                    oo.ResourcePath.SetupWorkflowPathHtml(writer, "workflow-path row");
+                    
+                    if (workflowReport != null)
+                    {
+                        workflowReport.SetupWorkflowReportsHtml(writer, "workflow-report row");
+
+                        var nodes = new List<IWorkflowNode>();
+                        workflowReport.AllTestNodesCovered.ForEach(c => c.ForEach(o => o.TestNodesCovered.ForEach(node => nodes.Add(node))));
+
+                        var coveredNodes = nodes.GroupBy(n => n.UniqueID).Select(o => o.FirstOrDefault()).ToList();
+
+                        var workflow = new WorkflowWrapper(oo.ResourceID);
+
+                        var allWorkflowNodes = workflow.GetHTMLWorkflowNodes();
+
+                        allWorkflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, "workflow-nodes-row", coveredNodes));
+
+                    }
+                });
+            }
+
+            executePayload = stringWriter.ToString();
+            return formatter;
+        }
+
         private static AllCoverageReports RunListOfCoverage(IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog)
         {
             var allCoverageReports = new AllCoverageReports
@@ -514,6 +580,15 @@ namespace Dev2.Runtime.WebServer
 
             return allCoverageReports;
         }
+    }
+
+    internal class ReportTempHolder
+    {
+        public Guid ResourceID { get; internal set; }
+        public string Name { get; internal set; }
+
+        public List<IServiceTestCoverageModelTo> Reports { get; set; }
+        public string ResourcePath { get; internal set; }
     }
 
     internal class AllCoverageReports
