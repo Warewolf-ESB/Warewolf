@@ -96,10 +96,6 @@
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
-    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
