@@ -10,7 +10,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using System.Linq;
-using Warewolf.Test.Agent;
 using System.Threading;
 using Dev2.Activities.Specs.Composition;
 using Warewolf.UnitTestAttributes;
