@@ -197,7 +197,23 @@ namespace Dev2.Studio.ViewModels.Workflow
             _firstWorkflowChange = true;
             _workflowDesignerHelper = new WorkflowDesignerWrapper();
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            _shellViewModel = Application.Current?.MainWindow?.DataContext as ShellViewModel;
+            _shellViewModel = GetShellViewModel();
+        }
+
+        private static IShellViewModel GetShellViewModel()
+        {
+            IShellViewModel shellViewModel;
+            try
+            {
+                if (Application.Current?.MainWindow?.DataContext is IShellViewModel tmpShellViewModel)
+                {
+                    return tmpShellViewModel;
+                }
+            }
+            catch
+            {
+            }
+            return CustomContainer.Get<IShellViewModel>();
         }
 
         public void SetPermission(Permissions permission)
