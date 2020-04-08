@@ -38,25 +38,33 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory(nameof(TestClusterConnection))]
         public void TestClusterConnection_Expect_Success()
         {
+            var serializer = new Dev2JsonSerializer();
             var leaderServerResource = new NamedGuid {Name = "testServer", Value = Guid.NewGuid()};
 
             var clusterSettingsData = new ClusterSettingsData
             {
-                Key = "asdf", LeaderServerKey = "asdf", LeaderServerResource = leaderServerResource
+                LeaderServerKey = "asdf",
+                LeaderServerResource = leaderServerResource,
             };
 
             var serializeObject = JsonConvert.SerializeObject(clusterSettingsData);
+
+            var fetchExecutePayloadFragmentResult = serializer.Serialize(new TestClusterResult
+                {
+                    Message = new StringBuilder("ok"),
+                    Success = true,
+                    HasError = false,
+                });
             
             var mockConnections = new Mock<IConnections>();
             var validationResult = new ValidationResult {IsValid = true};
             mockConnections.Setup(o => o.CanConnectToServer(It.IsAny<Connection>())).Returns(validationResult);
             var mockHubProxy = new Mock<IHubProxy>();
             var testClusterResult = new TestClusterResult { HasError = false, Success = true };
-            mockHubProxy.Setup(o => o.Invoke<TestClusterResult>("ExecuteCommand", It.IsAny<Envelope>(),
-                    It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(Task.FromResult(testClusterResult));
-            mockHubProxy.Setup(o => o.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>()))
-                .Returns(Task.FromResult("").ContinueWith(task => task.Result));
+            mockHubProxy.Setup(o => o.Invoke<Receipt>("ExecuteCommand", It.IsAny<object[]>()))
+                .Returns(() => Task.FromResult(new Receipt() { ResultParts = 1, PartID = 0}));
+            mockHubProxy.Setup(o => o.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<object[]>()))
+                .Returns(() => Task.FromResult(fetchExecutePayloadFragmentResult));
             
             mockConnections.Setup(o => o.CreateHubProxy(It.IsAny<Connection>())).Returns(mockHubProxy.Object);
             
@@ -69,12 +77,13 @@ namespace Dev2.Tests.Runtime.Services
             var testClusterConnection = new TestClusterConnection(mockConnections.Object, mockResourceCatalog.Object);
             var mockWorkspace = new Mock<IWorkspace>();
             var values = new Dictionary<string, StringBuilder> {{ "ClusterSettingsData", new StringBuilder(serializeObject) }};
+
             var result = testClusterConnection.Execute(values, mockWorkspace.Object);
+
             Assert.IsInstanceOfType(result, typeof(StringBuilder));
-            
-            mockHubProxy.Verify(o => o.Invoke<TestClusterResult>("ExecuteCommand", It.IsAny<Envelope>(),
-                    It.IsAny<bool>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
-            mockHubProxy.Verify(o => o.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<FutureReceipt>()), Times.Once);
+
+            mockHubProxy.Verify(o => o.Invoke<Receipt>("ExecuteCommand", It.IsAny<object[]>()), Times.Once);
+            mockHubProxy.Verify(o => o.Invoke<string>("FetchExecutePayloadFragment", It.IsAny<object[]>()), Times.Once);
 
             var expected = "{\"$id\":\"1\",\"$type\":\"Dev2.Communication.ExecuteMessage, Dev2.Infrastructure\",\"HasError\":false,\"Message\":{\"$id\":\"2\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":16,\"m_StringValue\":\"\",\"m_currentThread\":0}}";
             Assert.AreEqual(expected, result.ToString());

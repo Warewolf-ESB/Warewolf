@@ -106,12 +106,22 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var proxy = _connections.CreateHubProxy(destination);
                     var messageId = Guid.NewGuid();
 
-                    await proxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId)
+                    var result = await proxy
+                        .Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId)
                         .ConfigureAwait(false);
-                    return proxy.Invoke<string>("FetchExecutePayloadFragment",
-                            new FutureReceipt {PartID = 0, RequestID = messageId})
-                        .ContinueWith((fragmentInvokeResult) =>
-                            _serializer.Deserialize<TestClusterResult>(fragmentInvokeResult.Result)).Result;
+
+                    if (result.ResultParts == 1 && result.PartID == 0)
+                    {
+                        var payloadTask = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt {PartID = 0, RequestID = messageId});
+                        return _serializer.Deserialize<TestClusterResult>(payloadTask);
+                    }
+
+                    return new TestClusterResult
+                    {
+                        Message = new StringBuilder("test cluster request failed"),
+                        Success = false,
+                        HasError = true,
+                    };
                 }
                 catch (Exception e)
                 {
