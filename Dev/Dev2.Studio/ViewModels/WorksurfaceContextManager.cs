@@ -163,6 +163,8 @@ namespace Dev2.Studio.ViewModels
         void ViewSelectedTestForService(IContextualResourceModel resourceModel, IServiceTestModel selectedServiceTest, ServiceTestViewModel testViewModel, IWorkSurfaceKey workSurfaceKey);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
         void RunAllTestsForFolder(string ResourcePath, IExternalProcessExecutor ProcessExecutor);
+        void RunAllTestCoverageForService(IContextualResourceModel contextualResourceModel);
+        void RunAllTestCoverageForFolder(string secureResourcePath, IExternalProcessExecutor processExecutor);
         WorkSurfaceContextViewModel EditResource<T>(IWorkSurfaceKey workSurfaceKey, SourceViewModel<T> viewModel) where T : IEquatable<T>;
 
         IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID);
@@ -394,11 +396,27 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void RunAllTestCoverageForService(IContextualResourceModel resourceModel)
+        {
+            var workflow = new WorkflowDesignerViewModel(resourceModel);
+            using (var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow))
+            {
+                testViewModel.RunAllTestCoverageInBrowserCommand.Execute(null);
+            }
+        }
+
         public void RunAllTestsForFolder(string ResourcePath, IExternalProcessExecutor ProcessExecutor)
         {
             var ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
             var resourceTestsPath = ResourcePath + "/.tests";
             ServiceTestCommandHandler.RunAllTestsInBrowser(false, resourceTestsPath, ProcessExecutor);
+        }
+
+        public void RunAllTestCoverageForFolder(string ResourcePath, IExternalProcessExecutor ProcessExecutor)
+        {
+            var ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var resourceTestsPath = ResourcePath + "/.coverage";
+            ServiceTestCommandHandler.RunAllTestCoverageInBrowser(false, resourceTestsPath, ProcessExecutor);
         }
 
         public void EditResource(IPluginSource selectedSource, IView view) => EditResource(selectedSource, view, null);
