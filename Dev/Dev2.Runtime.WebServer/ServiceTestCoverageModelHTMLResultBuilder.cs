@@ -54,6 +54,7 @@ namespace Dev2.Runtime.WebServer
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "white");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.TextAlign, "center");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "5px 0px");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "12px");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Width, testPassed.ToString("0%"));
                 writer.RenderBeginTag(HtmlTextWriterTag.Div);
                 writer.Write(testPassed.ToString("0%"));
@@ -63,24 +64,24 @@ namespace Dev2.Runtime.WebServer
             if (testFailing > 0)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "progress-bar-failed");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, testFailing.ToString("0%") == "100%" ? "white" : "red");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "red");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.TextAlign, "center");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "10px");
-                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "white");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "5px 0px");
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "12px");
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Width, testFailing.ToString("0%"));
                 writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                writer.Write(testFailing.ToString("0%"));
+                writer.Write(testFailing.ToString("0%") == "100%" ? "0%" : "-");
                 writer.RenderEndTag();
             }
-
             writer.RenderEndTag();
             writer.RenderEndTag();
         }
 
-       
+
         public static void SetupWorkflowNodeHtml(this IWorkflowNode workflowNode, HtmlTextWriter writer, string className, List<IWorkflowNode> coveredNodes)
         {
             if (IsNodeCovered(coveredNodes, workflowNode))
@@ -101,7 +102,7 @@ namespace Dev2.Runtime.WebServer
                 writer.Write(workflowNode.StepDescription);
                 writer.RenderEndTag();
             }
-           
+
             if (workflowNode.NextNodes?.Count > 0)
             {
                 writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");

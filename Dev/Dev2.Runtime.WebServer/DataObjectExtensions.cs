@@ -41,10 +41,12 @@ namespace Dev2.Runtime.WebServer
     public static class DataObjectExtensions
     {
         private static string _originalServiceName;
+        private static string _originalWebServerUrl;
 
         public static string SetEmitionType(this IDSFDataObject dataObject, WebRequestTO webRequest, string serviceName, NameValueCollection headers)
         {
             _originalServiceName = serviceName;
+            _originalWebServerUrl = webRequest.WebServerUrl;
             var startLocation = serviceName.LastIndexOf(".", StringComparison.Ordinal);
             if (!string.IsNullOrEmpty(serviceName) && startLocation > 0)
             {
@@ -547,11 +549,25 @@ namespace Dev2.Runtime.WebServer
                             writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
                             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
                             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "10%");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "20%");
                             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
                             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
                             writer.RenderBeginTag(HtmlTextWriterTag.Div);
                             writer.Write(oo.ResourcePath);
+                            writer.RenderEndTag();
+                            
+                            writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml-link");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100px");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
+                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                            writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
+                            var hostname = GetTestUrl(oo);
+                            writer.AddAttribute(HtmlTextWriterAttribute.Href, hostname);
+                            writer.RenderBeginTag(HtmlTextWriterTag.A);
+                            writer.Write("Run Tests");
+                            writer.RenderEndTag();
                             writer.RenderEndTag();
                             
                             workflowReport.SetupWorkflowReportsHtml(writer, "SetupWorkflowReportsHtml");
@@ -578,6 +594,23 @@ namespace Dev2.Runtime.WebServer
 
             executePayload = stringWriter.ToString();
             return formatter;
+        }
+
+        private static string GetTestUrl(ReportTempHolder oo)
+        {
+            Uri myUri = new Uri(_originalWebServerUrl);
+            var security = "";
+            foreach (var segment in myUri.Segments)
+            {
+                if (segment.Contains("public"))
+                    security = segment;
+                if (segment.Contains("secure"))
+                    security = segment;
+            }
+
+            var filepath = oo.ResourcePath.Replace("\\", "/");
+            var hostname = myUri.Scheme + "://" + myUri.Authority + "/" + security + filepath + ".tests";
+            return hostname;
         }
 
         private static AllCoverageReports RunListOfCoverage(IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog)
