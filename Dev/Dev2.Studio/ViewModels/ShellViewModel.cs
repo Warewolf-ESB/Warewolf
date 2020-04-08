@@ -1256,14 +1256,14 @@ namespace Dev2.Studio.ViewModels
             
             if (contextualResourceModel != null)
             {
-                //TODO: Replace with RunCoverage
-                _worksurfaceContextManager.RunAllTestsForService(contextualResourceModel);
+                //TODO: Replace with RunCoverage, add tests for these changes
+                _worksurfaceContextManager.RunAllTestCoverageForService(contextualResourceModel);
             }
             else
             {
-                //TODO: Replace with RunCoverage
+                //TODO: Replace with RunCoverage, add tests for these changes
                 var secureResourcePath = environmentModel?.Connection.WebServerUri + "secure/" + resourcePath;
-                _worksurfaceContextManager.RunAllTestsForFolder(secureResourcePath, processExecutor);
+                _worksurfaceContextManager.RunAllTestCoverageForFolder(secureResourcePath, processExecutor);
             }
         }
 

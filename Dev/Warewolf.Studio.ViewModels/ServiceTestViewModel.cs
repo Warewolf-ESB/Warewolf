@@ -2636,6 +2636,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand DeleteTestStepCommand { get; set; }
         public ICommand DuplicateTestCommand { get; set; }
         public ICommand RunAllTestsInBrowserCommand { get; set; }
+        public ICommand RunAllTestCoverageInBrowserCommand { get; set; }
         public ICommand RunAllTestsCommand { get; set; }
         public ICommand RunSelectedTestInBrowserCommand { get; set; }
         public ICommand RunSelectedTestCommand { get; set; }
