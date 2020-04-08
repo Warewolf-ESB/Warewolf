@@ -53,7 +53,11 @@ namespace Dev2.Runtime.ESB.Control
             {
                 theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             });
-            internalExecutionContext.Workspace = theWorkspace;
+            if (internalExecutionContext != null)
+            {
+                // internalExecutionContext is null when the request did not come from an internal source, such as from AbstractWebRequestHandler.CreateForm
+                internalExecutionContext.Workspace = theWorkspace;
+            }
 
             var dataListOkay = EnsureDataListIdIsSet(dataObject, workspaceId, errors);
             if (!dataListOkay)
