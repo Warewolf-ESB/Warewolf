@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Communication;
 using Dev2.Settings.Clusters;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -104,9 +105,18 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(ClusterViewModel))]
         public void ClusterViewModel_CopyKeyCommand()
         {
+            var expected = new ClusterSettingsData
+            {
+                Key = "mykey",
+                LeaderServerKey = "leaderkey",
+                LeaderServerResource = new NamedGuid("some resource", Guid.NewGuid()),
+            };
+
             //------------Setup for test--------------------------
             var mockPopupController = new Mock<IPopupController>();
-            var viewModel = new ClusterViewModel(new Mock<IResourceRepository>().Object, new Mock<IServer>().Object, mockPopupController.Object);
+            var resourceRepository = new Mock<IResourceRepository>();
+            resourceRepository.Setup(o => o.GetClusterSettings(It.IsAny<IServer>())).Returns(expected);
+            var viewModel = new ClusterViewModel(resourceRepository.Object, new Mock<IServer>().Object, mockPopupController.Object);
             //------------Execute Test---------------------------
             var canExecute = viewModel.CopyKeyCommand.CanExecute(null);
             //------------Assert Results-------------------------
@@ -148,14 +158,29 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(ClusterViewModel))]
         public void ClusterViewModel_TestClusterKey()
         {
+            var expected = new ClusterSettingsData
+            {
+                Key = "mykey",
+                LeaderServerKey = "leaderkey",
+                LeaderServerResource = new NamedGuid("some resource", Guid.NewGuid()),
+            };
+
             //------------Setup for test--------------------------
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.GetClusterSettings(It.IsAny<IServer>())).Returns(expected);
+            mockResourceRepository
+                .Setup(o => o.TestClusterSettings(It.IsAny<IServer>(), It.IsAny<ClusterSettingsData>())).Returns(
+                    new ExecuteMessage
+                    {
+                        HasError = false,
+                    });
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(model => model.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(),
                     It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
             
             CustomContainer.Register(mockPopupController.Object);
             
-            var viewModel = new ClusterViewModel(new Mock<IResourceRepository>().Object, new Mock<IServer>().Object, mockPopupController.Object);
+            var viewModel = new ClusterViewModel(mockResourceRepository.Object, new Mock<IServer>().Object, mockPopupController.Object);
             
             Assert.IsFalse(viewModel.IsValidKey);
             
