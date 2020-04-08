@@ -325,8 +325,6 @@ namespace Dev2.DynamicServices
         public ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool> AuthCache { get; set; }
         public Exception ExecutionException { get; set; }
         public IDictionary<IDev2Activity, (RetryState, IEnumerator<bool>)> Gates { get; } = new Dictionary<IDev2Activity, (RetryState, IEnumerator<bool>)>();
-        public string CoverageReportName { get; set; }
-        public Guid[] CoverageReportResourceIds { get; set; } = new Guid[] { };
 
 
         #endregion Properties
@@ -395,7 +393,6 @@ namespace Dev2.DynamicServices
             result.ExecutionToken = ExecutionToken;
             result.ForEachUpdateValue = ForEachUpdateValue;
             result.TestName = TestName;
-            result.CoverageReportName = CoverageReportName;
             result.SourceResourceID = SourceResourceID;
             result.IsServiceTestExecution = IsServiceTestExecution;
             result.IsDebugFromWeb = IsDebugFromWeb;

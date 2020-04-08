@@ -149,7 +149,6 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 _dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
                 _dataObject.SetTestResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, workspaceGuid), webRequest, serviceName, resource);
-                _dataObject.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, workspaceGuid), webRequest, serviceName, resource);
                 _dataObject.WebUrl = webRequest.WebServerUrl;
                 _dataObject.EsbChannel = new EsbServicesEndpoint();
 
@@ -168,8 +167,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _dataObject.StateNotifier = stateNotifier;
             }
 
-            internal IResponseWriter TryExecute(WebRequestTO webRequest, string serviceName, string workspaceId,
-                NameValueCollection headers, IPrincipal user)
+            internal IResponseWriter TryExecute(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
             {
                 _workspaceGuid = EnsureWorkspaceIdValid(workspaceId);
                 _serializer = new Dev2JsonSerializer();
@@ -186,7 +184,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 if (isTestCoverage)
                 {
-                    return ExecuteAsCoverage();
+                    return ExecuteAsCoverage(webRequest, serviceName, _resource);
                 }
 
                 if (_resource is null)
@@ -241,10 +239,20 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
             }
 
-            private IResponseWriter ExecuteAsCoverage()
+            private IResponseWriter ExecuteAsCoverage(WebRequestTO webRequest, string serviceName, IWarewolfResource resource)
             {
-                var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(_dataObject, _workspaceGuid, _serializer, _testCoverageCatalog, _resourceCatalog, out _executePayload);
-                return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
+                try
+                {
+                    var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType);
+                    coverageDataContext.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, _workspaceGuid), webRequest, serviceName, resource);
+                    var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _resourceCatalog, out _executePayload);
+                    return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
+                }
+                finally
+                {
+                    Dev2DataListDecisionHandler.Instance.RemoveEnvironment(_dataObject.DataListID);
+                    _dataObject.Environment = null;
+                }
             }
 
             internal IResponseWriter BuildResponse(WebRequestTO webRequest, string serviceName)

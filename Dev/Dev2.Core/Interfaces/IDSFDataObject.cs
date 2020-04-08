@@ -27,7 +27,12 @@ using Warewolf.Data;
 
 namespace Dev2.Interfaces
 {
-
+    public interface ICoverageDataObject
+    {
+        EmitionTypes ReturnType { get; }
+        Guid ResourceID { get; }
+        Guid[] CoverageReportResourceIds { get; set; }
+    }
 
     public class RetryState
     {
@@ -132,7 +137,5 @@ namespace Dev2.Interfaces
         IStateNotifier StateNotifier { get; set; }
         Exception ExecutionException { get; set; }
         IDictionary<IDev2Activity, (RetryState, IEnumerator<bool>)> Gates { get; }
-        string CoverageReportName { get; set; }
-        Guid[] CoverageReportResourceIds { get; set; }
     }
 }

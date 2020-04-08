@@ -241,19 +241,19 @@ namespace Dev2.Runtime.WebServer
                 var resources = catalog.GetExecutableResources(path);
                 dataObject.TestsResourceIds = resources.Select(p => p.ResourceID).ToArray();
             }
-            else
+            else if (resource != null)
             {
-                dataObject.TestsResourceIds = new[] {resource is null ? Guid.Empty : resource.ResourceID}; //when null this was throwing 
+                dataObject.TestsResourceIds = new[] { resource.ResourceID };
             }
         }
 
 
-        public static void SetTestCoverageResourceIds(this IDSFDataObject dataObject, IContextualResourceCatalog catalog, WebRequestTO webRequest, string serviceName, IWarewolfResource resource)
+        public static void SetTestCoverageResourceIds(this ICoverageDataObject coverageData, IContextualResourceCatalog catalog, WebRequestTO webRequest, string serviceName, IWarewolfResource resource)
         {
-            if (IsRunAllTestsRequest(dataObject.ReturnType, serviceName) || IsRunAllCoverageRequest(dataObject.ReturnType, serviceName))
+            if (IsRunAllTestsRequest(coverageData.ReturnType, serviceName) || IsRunAllCoverageRequest(coverageData.ReturnType, serviceName))
             {
                 var pathOfAllResources = webRequest.GetPathForAllResources();
-                dataObject.ResourceID = Guid.Empty;
+                //dataObject.ResourceID = Guid.Empty;
                 var path = pathOfAllResources;
                 if (string.IsNullOrEmpty(pathOfAllResources))
                 {
@@ -261,11 +261,11 @@ namespace Dev2.Runtime.WebServer
                 }
 
                 var resources = catalog.GetExecutableResources(path);
-                dataObject.CoverageReportResourceIds = resources.Select(p => p.ResourceID).ToArray();
+                coverageData.CoverageReportResourceIds = resources.Select(p => p.ResourceID).ToArray();
             }
-            else
+            else if (resource != null)
             {
-                dataObject.CoverageReportResourceIds = new[] {resource is null ? Guid.Empty : resource.ResourceID}; //when null this was throwing 
+                coverageData.CoverageReportResourceIds = new[] { resource.ResourceID }; 
             }
         }
 
@@ -471,9 +471,9 @@ namespace Dev2.Runtime.WebServer
             return result;
         }
 
-        public static DataListFormat RunCoverageAndReturnJSON(this IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
+        public static DataListFormat RunCoverageAndReturnJSON(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
-            var allCoverageReports = RunListOfCoverage(dataObject, testCoverageCatalog, workspaceGuid, serializer, catalog);
+            var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, serializer, catalog);
 
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
@@ -505,9 +505,9 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        public static DataListFormat RunCoverageAndReturnHTML(this IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
+        public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
-            var allCoverageReports = RunListOfCoverage(dataObject, testCoverageCatalog, workspaceGuid, serializer, catalog);
+            var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, serializer, catalog);
             var allTests = TestCatalog.Instance.FetchAllTests();
 
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
@@ -546,7 +546,7 @@ namespace Dev2.Runtime.WebServer
                         if (workflowReport != null)
                         {
                             writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#333");
                             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
                             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
                             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "20%");
@@ -613,7 +613,7 @@ namespace Dev2.Runtime.WebServer
             return hostname;
         }
 
-        private static AllCoverageReports RunListOfCoverage(IDSFDataObject dataObject, ITestCoverageCatalog testCoverageCatalog, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog)
+        private static AllCoverageReports RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog)
         {
             var allCoverageReports = new AllCoverageReports
             {
@@ -621,11 +621,11 @@ namespace Dev2.Runtime.WebServer
             };
 
             var selectedResources = catalog.GetResources(workspaceGuid)
-                .Where(resource => dataObject.CoverageReportResourceIds.Contains(resource.ResourceID)).ToArray();
+                .Where(resource => coverageData.CoverageReportResourceIds.Contains(resource.ResourceID)).ToArray();
 
             testCoverageCatalog.ReloadAllReports();
             var coverageReportsTemp = new List<WorkflowCoverageReports>();
-            foreach (var coverageResourceId in dataObject.CoverageReportResourceIds)
+            foreach (var coverageResourceId in coverageData.CoverageReportResourceIds)
             {
                 var res = selectedResources.FirstOrDefault(o => o.ResourceID == coverageResourceId);
                 var coverageReports = new WorkflowCoverageReports(res);
