@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Newtonsoft.Json;
+
 namespace Warewolf.Configuration
 {
     public class AuditingSettingsData : IHasChanged
@@ -21,6 +23,7 @@ namespace Warewolf.Configuration
             return equals;
         }
 
+        [JsonIgnore]
         public bool HasChanged { get; set; }
     }
 }

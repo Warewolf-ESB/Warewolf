@@ -34,11 +34,16 @@ namespace Warewolf.Configuration
         }
         public bool? EnableDetailedLogging { get; set; }
         public int? LogFlushInterval { get; set; }
+
         [JsonIgnore]
         public bool HasChanged { get; set; }
 
         public bool Equals(ServerSettingsData other)
         {
+            if (other is null)
+            {
+                return false;
+            }
             var equals = WebServerPort == other.WebServerPort;
             equals &= WebServerSslPort == other.WebServerSslPort;
             equals &= string.Equals(SslCertificateName, other.SslCertificateName, StringComparison.InvariantCultureIgnoreCase);

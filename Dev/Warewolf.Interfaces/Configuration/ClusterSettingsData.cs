@@ -9,6 +9,7 @@
 */
 
 using System;
+using Newtonsoft.Json;
 using Warewolf.Data;
 
 namespace Warewolf.Configuration
@@ -41,7 +42,8 @@ namespace Warewolf.Configuration
             get => _leaderServerKey;
             set => SetProperty(ref _leaderServerKey, value);
         }
-        
+
+        [JsonIgnore]
         public bool HasChanged { get; set; }
 
         public bool Equals(ClusterSettingsData other)

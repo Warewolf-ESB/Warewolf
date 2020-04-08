@@ -150,18 +150,6 @@ namespace Dev2.Common
         public static string SettingsPath => Path.Combine(Config.UserDataPath, "Studio", "studio_settings.json");
 
         public int ConnectTimeout => _settings.ConnectTimeout ?? 10000;
-
-        public StudioSettingsData Get()
-        {
-            var result = new StudioSettingsData();
-            foreach (var prop in typeof(StudioSettingsData).GetProperties())
-            {
-                var thisProp = this.GetType().GetProperty(prop.Name);
-                var value = thisProp.GetValue(this);
-                prop.SetValue(result, value);
-            }
-            return result;
-        }
     }
 
 
@@ -227,19 +215,6 @@ namespace Dev2.Common
                 _settings.LeaderServerResource = value;
                 Save();
             }
-        }
-
-
-        public ClusterSettingsData Get()
-        {
-            var result = new ClusterSettingsData();
-            foreach (var prop in typeof(ClusterSettingsData).GetProperties())
-            {
-                var thisProp = this.GetType().GetProperty(prop.Name);
-                var value = thisProp.GetValue(this);
-                prop.SetValue(result, value);
-            }
-            return result;
         }
     }
 }

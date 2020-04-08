@@ -77,7 +77,7 @@ namespace Warewolf.Configuration
                 var thisProp = this.GetType().GetProperty(prop.Name);
                 if (thisProp is null)
                 {
-                    throw new Exception($"config field {prop.Name} missing {result.GetType().Name} vs {this._settings.GetType().Name}");
+                    throw new Exception($"config field {this._settings.GetType().Name}.{prop.Name} missing from {GetType().Name}");
                 }
                 var value = thisProp.GetValue(this);
                 prop.SetValue(result, value);
