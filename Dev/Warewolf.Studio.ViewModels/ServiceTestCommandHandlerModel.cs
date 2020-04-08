@@ -345,5 +345,15 @@ namespace Warewolf.Studio.ViewModels
             }
             processExecutor?.OpenInBrowser(new Uri(runAllTestUrl));
         }
+
+        public void RunAllTestCoverageInBrowser(bool isDirty, string runAllTestUrl, IExternalProcessExecutor processExecutor)
+        {
+            if (isDirty)
+            {
+                ShowRunAllUnsavedError();
+                return;
+            }
+            processExecutor?.OpenInBrowser(new Uri(runAllTestUrl));
+        }
     }
 }
