@@ -12,7 +12,7 @@
                 <span class="oi oi-beaker green" aria-hidden="true"></span> Tests Passed: @passedCount
             </td>
             <td class="counts">
-                <span class="oi oi-beaker red" aria-hidden="true"></span> Tests Failed: @failedCount
+                <span @Html.Raw(failedCount>0?"class=\"oi oi-beaker red\"":"class=\"oi oi-beaker\"") aria-hidden="true"></span> Tests Failed: @failedCount
             </td>
         </tr>
     </table>

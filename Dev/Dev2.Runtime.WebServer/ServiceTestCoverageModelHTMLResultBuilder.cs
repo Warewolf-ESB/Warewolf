@@ -167,14 +167,22 @@ namespace Dev2.Runtime.WebServer
             writer.Write("Tests Passed: " + allTests.Count(o => o.TestPassed));
             writer.RenderEndTag();
 
+            var failedCount = allTests.Count(o => o.TestFailing);
             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+            if (failedCount > 0)
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "red");
+            }
+            else
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+            }
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            writer.Write("Tests Failed: " + allTests.Count(o => o.TestFailing));
+            writer.Write("Tests Failed: " + failedCount);
             writer.RenderEndTag();
 
             writer.RenderEndTag();
