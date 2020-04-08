@@ -15,9 +15,12 @@ using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services.Esb;
 using Dev2.Workspaces;
+using Moq;
 using Warewolf.Client;
+using Warewolf.Esb;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -44,7 +47,13 @@ namespace Dev2.Tests.Runtime.Services
             var workspace = new Workspace(workspaceId);
 
             var service = new ClusterJoinService();
-            var resultString = service.Execute(values, workspace);
+            var context = new InternalExecutionContext(new Mock<IEsbHub>().Object)
+            {
+                Workspace = workspace,
+            };
+            var mockReq = new Mock<IEsbRequest>();
+            mockReq.Setup(o => o.Args).Returns(values);
+            var resultString = service.Execute(context.CloneForRequest(mockReq.Object));
 
             var result = serializer.Deserialize<ClusterJoinResponse>(resultString);
             Assert.IsNull(result);
@@ -64,7 +73,13 @@ namespace Dev2.Tests.Runtime.Services
             var workspace = new Workspace(workspaceId);
 
             var service = new ClusterJoinService();
-            var resultString = service.Execute(values, workspace);
+            var context = new InternalExecutionContext(new Mock<IEsbHub>().Object)
+            {
+                Workspace = workspace,
+            };
+            var mockReq = new Mock<IEsbRequest>();
+            mockReq.Setup(o => o.Args).Returns(values);
+            var resultString = service.Execute(context.CloneForRequest(mockReq.Object));
 
             var result = serializer.Deserialize<ClusterJoinResponse>(resultString);
             Assert.IsNull(result);
@@ -85,7 +100,13 @@ namespace Dev2.Tests.Runtime.Services
             var workspace = new Workspace(workspaceId);
 
             var service = new ClusterJoinService();
-            var resultString = service.Execute(values, workspace);
+            var context = new InternalExecutionContext(new Mock<IEsbHub>().Object)
+            {
+                Workspace = workspace,
+            };
+            var mockReq = new Mock<IEsbRequest>();
+            mockReq.Setup(o => o.Args).Returns(values);
+            var resultString = service.Execute(context.CloneForRequest(mockReq.Object));
 
             var result = serializer.Deserialize<ClusterJoinResponse>(resultString);
             Assert.IsNotNull(result);
