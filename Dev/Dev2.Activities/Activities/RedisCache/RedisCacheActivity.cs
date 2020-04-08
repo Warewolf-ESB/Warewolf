@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,13 +16,10 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.Diagnostics;
 using Dev2.Util;
-using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -38,10 +35,7 @@ using Dev2.Common.Serializers;
 using Warewolf.Storage;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Data.TO;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using WarewolfParserInterop;
-using Dev2.Common.Interfaces;
-using Dev2.MathOperations;
 using System.Globalization;
 using Dev2.Data.Interfaces.Enums;
 using Warewolf.Data;
