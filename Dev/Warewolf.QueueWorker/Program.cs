@@ -84,6 +84,7 @@ namespace QueueWorker
             public void Run()
             {
                 var logger = new ExecutionLogger(new JsonSerializer(), new WebSocketPool());
+                logger.Info("Starting queue worker", _config.QueueName);
                 try
                 {
                     if (_config.Source != null)
