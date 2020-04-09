@@ -33,6 +33,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
+using Warewolf;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl

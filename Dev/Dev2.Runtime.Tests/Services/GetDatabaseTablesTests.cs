@@ -11,8 +11,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -24,8 +22,6 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using Warewolf.Test.Agent;
-using System.Linq;
 using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Tests.Runtime.Services

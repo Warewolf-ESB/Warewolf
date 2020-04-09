@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -24,6 +24,7 @@ using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Warewolf.Esb;
 using Warewolf.Execution;
 using Warewolf.Resource.Errors;
 
@@ -35,13 +36,14 @@ namespace Dev2.Runtime.ESB.Execution
     public class InternalServiceContainer : EsbExecutionContainer
     {
         readonly IEsbManagementServiceLocator _managementServiceLocator;
+        private IInternalExecutionContext _internalExecutionContext;
 
-        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
-            : this(sa, dataObj, theWorkspace, esbChannel, request, null)
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IInternalExecutionContext internalExecutionContext)
+            : this(sa, dataObj, theWorkspace, esbChannel, request, null, internalExecutionContext)
         {
         }
 
-        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IEsbManagementServiceLocator managementServiceLocator)
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, IEsbManagementServiceLocator managementServiceLocator, IInternalExecutionContext internalExecutionContext)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
             if (request.Args == null)
@@ -64,6 +66,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             _managementServiceLocator = managementServiceLocator ?? new EsbManagementServiceLocator();
+            _internalExecutionContext = internalExecutionContext;
         }
 
         public override Guid Execute(out ErrorResultTO errors, int update)
@@ -89,7 +92,7 @@ namespace Dev2.Runtime.ESB.Execution
                     {
                         Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () =>
                         {
-                            ExecuteService(eme);
+                            ExecuteService(eme, _internalExecutionContext);
                             result = DataObject.DataListID;
                         });
                         errors.MergeErrors(invokeErrors);
@@ -118,15 +121,30 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        private void ExecuteService(IEsbManagementEndpoint eme)
+        private void ExecuteService(IEsbManagementEndpoint eme, IInternalExecutionContext internalExecutionContext)
         {
-            var res = eme.Execute(Request.Args, TheWorkspace);
-            if (res == null)
+            if (eme is IContextualInternalService contextualInternalService)
             {
-                Dev2Logger.Error($"Null result return from internal service:{ServiceAction.Name}", GlobalConstants.WarewolfError);
-            }
+                var res = contextualInternalService.Execute(internalExecutionContext);
+                if (res == null)
+                {
+                    Dev2Logger.Error($"Null result return from internal service:{ServiceAction.Name}",
+                        GlobalConstants.WarewolfError);
+                }
 
-            Request.ExecuteResult = res;
+                Request.ExecuteResult = res;
+            }
+            else
+            {
+                var res = eme.Execute(Request.Args, TheWorkspace);
+                if (res == null)
+                {
+                    Dev2Logger.Error($"Null result return from internal service:{ServiceAction.Name}",
+                        GlobalConstants.WarewolfError);
+                }
+
+                Request.ExecuteResult = res;
+            }
         }
 
         private string GetAuthorizationErrorMessage(IEsbManagementEndpoint eme)

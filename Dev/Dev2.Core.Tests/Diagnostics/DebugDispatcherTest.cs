@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using Dev2.Diagnostics.Debug;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using Warewolf.Data;
 
 namespace Dev2.Tests.Diagnostics
 {
@@ -154,7 +155,7 @@ namespace Dev2.Tests.Diagnostics
             var debugDispatcher = new DebugDispatcherImplementation();
             var workspaceID = Guid.NewGuid();
             var writer = new Mock<IDebugWriter>();
-            writer.Setup(s => s.Write(It.IsAny<IDebugState>())).Verifiable();
+            writer.Setup(s => s.Write(It.IsAny<IDebugNotification>())).Verifiable();
             debugDispatcher.Add(workspaceID, writer.Object);
 
             var mockState = new Mock<IDebugState>();
@@ -193,7 +194,7 @@ namespace Dev2.Tests.Diagnostics
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
             var writer = new Mock<IDebugWriter>();
-            writer.Setup(s => s.Write(It.IsAny<IDebugState>())).Verifiable();
+            writer.Setup(s => s.Write(It.IsAny<IDebugNotification>())).Verifiable();
 
             debugDispatcher.Add(workspaceID, writer.Object);
 
@@ -216,7 +217,7 @@ namespace Dev2.Tests.Diagnostics
 
             // Write happens asynchronously on a separate thread
             Thread.Sleep(50);
-            writer.Verify(s => s.Write(It.IsAny<IDebugState>()), Times.Exactly(0));
+            writer.Verify(s => s.Write(It.IsAny<IDebugNotification>()), Times.Exactly(0));
             var items = RemoteDebugMessageRepo.Instance.FetchDebugItems(remoteID);
             Assert.AreEqual(1, items.Count);
             Assert.IsNotNull(items[0]);

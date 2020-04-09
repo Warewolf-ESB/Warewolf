@@ -19,6 +19,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 using Dev2.Common.Interfaces.Enums;
+using Warewolf;
 
 namespace Dev2.Runtime.Security
 {

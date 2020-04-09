@@ -48,14 +48,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
-    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Redis Source.feature.cs">
       <AutoGen>True</AutoGen>
@@ -65,7 +60,6 @@
     <Compile Include="RedisSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Redis Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Redis Source.feature.cs</LastGenOutput>
@@ -164,6 +158,10 @@
       <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
       <Name>Warewolf.UIBindingTests.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj">
+      <Project>{4a455098-ffdd-4861-b873-656f960cf0ba}</Project>
+      <Name>Warewolf.UnitTestAttributes</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.13.1" />
@@ -174,18 +172,15 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
+    <PackageReference Include="NUnit">
+      <Version>3.12.0</Version>
+    </PackageReference>
     <PackageReference Include="SpecFlow" Version="2.3.2" />
     <PackageReference Include="SpecFlow.MsTest">
       <Version>2.3.2</Version>
     </PackageReference>
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
       <Version>2.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.3</Version>
-    </PackageReference>
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

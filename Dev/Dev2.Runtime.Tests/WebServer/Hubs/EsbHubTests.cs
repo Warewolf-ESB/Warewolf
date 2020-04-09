@@ -18,6 +18,7 @@ using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data;
 
 namespace Dev2.Tests.Runtime.WebServer.Hubs
 {
@@ -33,15 +34,11 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         {
             //------------Setup for test--------------------------
             var hub = new MockEsbHub();
-            var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
+            var mockClients = new Mock<IHubCallerConnectionContext<IWarewolfServerHub>>();
             hub.Clients = mockClients.Object;
-            dynamic all = new ExpandoObject();
-            var messagePublished = false;
-            all.ItemAddedMessage = new Action<string>(serialisedItem =>
-            {
-                messagePublished = true;
-            });
-            mockClients.Setup(m => m.All).Returns((ExpandoObject)all);
+            var all = new TestWarewolfServerHub();
+
+            mockClients.Setup(m => m.All).Returns(all);
             //------------Execute Test---------------------------
             hub.AddItemMessage(new ServerExplorerItem
                 {
@@ -50,7 +47,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
                     WebserverUri = "http://localhost"
                 });
             //------------Assert Results-------------------------
-            Assert.IsTrue(messagePublished);
+            Assert.IsTrue(all.messagePublished);
         }
 
         [TestMethod]
@@ -60,19 +57,54 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         {
             //------------Setup for test--------------------------
             var hub = new MockEsbHub();
-            var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
+            var mockClients = new Mock<IHubCallerConnectionContext<IWarewolfServerHub>>();
             hub.Clients = mockClients.Object;
-            dynamic all = new ExpandoObject();
-            var messagePublished = false;
-            all.ItemAddedMessage = new Action<string>(serialisedItem =>
-            {
-                messagePublished = true;
-            });
-            mockClients.Setup(m => m.All).Returns((ExpandoObject)all);
+            var all = new TestWarewolfServerHub();
+            mockClients.Setup(m => m.All).Returns(all);
             //------------Execute Test---------------------------
             hub.AddItemMessage(null);
             //------------Assert Results-------------------------
-            Assert.IsFalse(messagePublished);
+            Assert.IsFalse(all.messagePublished);
+        }
+
+        class TestWarewolfServerHub : IWarewolfServerHub
+        {
+            public bool messagePublished = false;
+
+            public void ItemAddedMessage(string item)
+            {
+                messagePublished = true;
+            }
+
+            public void LeaderConfigChange()
+            {
+
+            }
+
+            public void SendPermissionsMemo(string serializedMemo)
+            {
+
+            }
+
+            public void SendDebugState(string serializedDebugState)
+            {
+
+            }
+
+            public void SendWorkspaceID(Guid workspaceId)
+            {
+
+            }
+
+            public void SendServerID(Guid serverId)
+            {
+
+            }
+
+            public void ChangeNotification(ChangeNotification changeNotification)
+            {
+                
+            }
         }
     }
 

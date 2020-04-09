@@ -14,13 +14,13 @@ using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Esb;
 using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common
@@ -31,10 +31,10 @@ namespace Dev2.Common
         public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
         public static readonly string UserDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
 
-        public static ServerSettings Server = new ServerSettings();
-        public static StudioSettings Studio = new StudioSettings();
-        public static ClusterSettings Cluster = new ClusterSettings();
-        public static AuditingSettings Auditing = new AuditingSettings();
+        public static readonly ServerSettings Server = new ServerSettings();
+        public static readonly StudioSettings Studio = new StudioSettings();
+        public static readonly ClusterSettings Cluster = new ClusterSettings();
+        public static readonly AuditingSettings Auditing = new AuditingSettings();
     }
 
     public class ServerSettings : ConfigSettingsBase<ServerSettingsData>
@@ -60,25 +60,12 @@ namespace Dev2.Common
         public bool CollectUsageStats => _settings.CollectUsageStats ?? false;
         public int DaysToKeepTempFiles => _settings.DaysToKeepTempFiles ?? 0;
         public int LogFlushInterval => _settings.LogFlushInterval ?? 200;
-
         public ServerSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         { }
-        public ServerSettings(string settingsPath, IFile fileWrapper, IDirectory directoryWrapper)
-            : base(settingsPath, fileWrapper, directoryWrapper)
+        public ServerSettings(string settingsPath, IFile fileWrapper, IDirectory directoryWrapper, IClusterDispatcher clusterDispatcher)
+            : base(settingsPath, fileWrapper, directoryWrapper, clusterDispatcher)
         {
-        }
-
-        public ServerSettingsData Get()
-        {
-            var result = new ServerSettingsData();
-            foreach (var prop in typeof(ServerSettingsData).GetProperties())
-            {
-                var thisProp = this.GetType().GetProperty(prop.Name);
-                var value = thisProp.GetValue(this);
-                prop.SetValue(result, value);
-            }
-            return result;
         }
 
         public bool SaveLoggingPath(string auditsFilePath)
@@ -152,29 +139,17 @@ namespace Dev2.Common
     public class StudioSettings : ConfigSettingsBase<StudioSettingsData>
     {
         public StudioSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         {
         }
-        protected StudioSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
-            : base(settingsPath, file, directoryWrapper)
+        protected StudioSettings(string settingsPath, IFile file, IDirectory directoryWrapper, IClusterDispatcher clusterDispatcher)
+            : base(settingsPath, file, directoryWrapper, clusterDispatcher)
         {
         }
 
         public static string SettingsPath => Path.Combine(Config.UserDataPath, "Studio", "studio_settings.json");
 
         public int ConnectTimeout => _settings.ConnectTimeout ?? 10000;
-
-        public StudioSettingsData Get()
-        {
-            var result = new StudioSettingsData();
-            foreach (var prop in typeof(StudioSettingsData).GetProperties())
-            {
-                var thisProp = this.GetType().GetProperty(prop.Name);
-                var value = thisProp.GetValue(this);
-                prop.SetValue(result, value);
-            }
-            return result;
-        }
     }
 
 
@@ -183,12 +158,12 @@ namespace Dev2.Common
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "auditingSettings.json");
 
         public AuditingSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         {
         }
 
-        protected AuditingSettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper)
-            : base(settingsPath, file, directoryWrapper)
+        protected AuditingSettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper, IClusterDispatcher clusterDispatcher)
+            : base(settingsPath, file, directoryWrapper, clusterDispatcher)
         {
         }
 
@@ -199,12 +174,12 @@ namespace Dev2.Common
     {
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "clusterSettings.json");
         public ClusterSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         {
         }
 
-        public ClusterSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
-            : base(settingsPath, file, directoryWrapper)
+        public ClusterSettings(string settingsPath, IFile file, IDirectory directoryWrapper, IClusterDispatcher clusterDispatcher)
+            : base(settingsPath, file, directoryWrapper, clusterDispatcher)
         {
         }
 
@@ -240,19 +215,6 @@ namespace Dev2.Common
                 _settings.LeaderServerResource = value;
                 Save();
             }
-        }
-
-
-        public ClusterSettingsData Get()
-        {
-            var result = new ClusterSettingsData();
-            foreach (var prop in typeof(ClusterSettingsData).GetProperties())
-            {
-                var thisProp = this.GetType().GetProperty(prop.Name);
-                var value = thisProp.GetValue(this);
-                prop.SetValue(result, value);
-            }
-            return result;
         }
     }
 }

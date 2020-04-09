@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Esb;
 
 namespace Dev2.Common.Tests
 {
@@ -50,8 +51,9 @@ namespace Dev2.Common.Tests
             mockFileWrapper.Setup(o => o.Exists("fakeClusterSettings.json")).Returns(true);
             mockFileWrapper.Setup(o => o.ReadAllText("fakeClusterSettings.json")).Returns("{\"Key\":\"" + expectedClusterKey + "\"}");
             var mockDirectoryWrapper = new Mock<IDirectory>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
-            var settings = new ClusterSettings("fakeClusterSettings.json", mockFileWrapper.Object, mockDirectoryWrapper.Object);
+            var settings = new ClusterSettings("fakeClusterSettings.json", mockFileWrapper.Object, mockDirectoryWrapper.Object, mockClusterDispatcher.Object);
             Assert.AreEqual(3, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual(expectedClusterKey, settings.Key);
@@ -73,9 +75,10 @@ namespace Dev2.Common.Tests
             mockIFile.Setup(o => o.WriteAllText(ClusterSettings.SettingsPath, It.IsAny<string>()));
             var mockDirectory = new Mock<IDirectory>();
             mockDirectory.Setup(o => o.CreateIfNotExists(Path.GetDirectoryName(ClusterSettings.SettingsPath))).Returns(ClusterSettings.SettingsPath);
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
             //act
-            var serverSettings = new ClusterSettings("some path", mockIFile.Object, mockDirectory.Object);
+            var serverSettings = new ClusterSettings("some path", mockIFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
             serverSettings.SaveIfNotExists();
 
             //assert

@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -25,6 +25,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Esb;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
@@ -550,7 +551,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
     public class MockEsb : IEsbChannel
     {
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID,
-                                   out ErrorResultTO errors)
+                                   out ErrorResultTO errors, IInternalExecutionContext internalExecutionContext)
         {
             errors = new ErrorResultTO();
             return Guid.NewGuid();

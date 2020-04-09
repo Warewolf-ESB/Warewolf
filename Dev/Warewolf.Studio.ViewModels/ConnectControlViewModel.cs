@@ -203,7 +203,7 @@ namespace Warewolf.Studio.ViewModels
                         ServerHasDisconnected?.Invoke(this, server1);
                     }
                     IsConnected = false;
-                    ServerDisconnected?.Invoke(this, SelectedConnection);
+                    Application.Current.Dispatcher.Invoke(() => ServerDisconnected?.Invoke(this, SelectedConnection));
                     try
                     {
                         PopupController?.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking

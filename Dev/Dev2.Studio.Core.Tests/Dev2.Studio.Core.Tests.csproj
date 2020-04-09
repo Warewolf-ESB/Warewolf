@@ -65,10 +65,6 @@
     </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Web" />
-    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="ReachFramework" />
@@ -134,6 +130,7 @@
     <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Network\ServerProxyWithoutChunkingTests.cs" />
     <Compile Include="Network\WebServerTests.cs" />
     <Compile Include="Settings\ClusterViewModelTests.cs" />
     <Compile Include="Triggers\ClientScheduledResourceTests.cs" />

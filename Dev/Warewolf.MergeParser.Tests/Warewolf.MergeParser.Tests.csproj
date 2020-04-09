@@ -81,6 +81,10 @@
       <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
       <Name>Warewolf.Language.Parser</Name>
@@ -115,9 +119,6 @@
     <PackageReference Include="MSTest.TestFramework">
       <Version>2.0.0</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

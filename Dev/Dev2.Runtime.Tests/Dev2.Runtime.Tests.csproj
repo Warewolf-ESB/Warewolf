@@ -46,7 +46,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BuildConfig.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
@@ -96,10 +95,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
-    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +148,7 @@
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
+    <Compile Include="Services\ClusterJoinTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Services\FetchTriggerQueuesTest.cs" />
@@ -229,10 +225,6 @@
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
-    <None Include="..\Dev2.Server\app.config">
-      <Link>app.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="DynamicServicesHostTests.cs" />
     <Compile Include="Services\HostSecureConfigTests.cs" />
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
@@ -396,6 +388,10 @@
       <Project>{2C4E3DC6-2195-4486-894D-8351B066D8CA}</Project>
       <Name>Warewolf.Auditing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Client\Warewolf.Client.csproj">
+      <Project>{a1fcee35-121b-4d9a-9dd3-3b52c4652e77}</Project>
+      <Name>Warewolf.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
       <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
       <Name>Warewolf.COMIPC.Client</Name>
@@ -455,6 +451,10 @@
     <ProjectReference Include="..\Warewolf.Trigger.Queue\Warewolf.Trigger.Queue.csproj">
       <Project>{542F1212-AED0-4537-94AA-6D6442ACDED5}</Project>
       <Name>Warewolf.Trigger.Queue</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj">
+      <Project>{4a455098-ffdd-4861-b873-656f960cf0ba}</Project>
+      <Name>Warewolf.UnitTestAttributes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -690,9 +690,6 @@
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>
-    </PackageReference>
-    <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.3</Version>
     </PackageReference>
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.5.20</Version>

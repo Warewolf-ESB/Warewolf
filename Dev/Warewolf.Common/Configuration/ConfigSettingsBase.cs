@@ -10,43 +10,79 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Threading;
+using System.Linq;
 using Newtonsoft.Json;
+using Warewolf.Esb;
 using Warewolf.VirtualFileSystem;
 
 namespace Warewolf.Configuration
 {
-    public class ConfigSettingsBase<T> where T : class, new()
+    public class ConfigSettingsBase<T> where T : class, IHasChanged, new()
     {
-        protected readonly string _settingsPath;
+        private readonly string _settingsPath;
         protected readonly IDirectoryBase _directoryWrapper;
         protected readonly IFileBase _fileWrapper;
+        private readonly IClusterDispatcher _clusterDispatcher;
         protected T _settings { get; private set; } = new T();
 
-        protected ConfigSettingsBase(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper)
+        protected ConfigSettingsBase(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper, IClusterDispatcher clusterDispatcher)
         {
             _settingsPath = settingsPath;
             _directoryWrapper = directoryWrapper;
             _fileWrapper = file;
+            _clusterDispatcher = clusterDispatcher;
 
             Load();
         }
 
-        protected void Load()
+        private void Load()
         {
-            if (_fileWrapper.Exists(_settingsPath))
+            if (!_fileWrapper.Exists(_settingsPath))
             {
-                var text = _fileWrapper.ReadAllText(_settingsPath);
-                _settings = JsonConvert.DeserializeObject<T>(text);
+                return;
             }
+            var text = _fileWrapper.ReadAllText(_settingsPath);
+            _settings = JsonConvert.DeserializeObject<T>(text);
+            _settings.HasChanged = false;
         }
         protected void Save()
         {
             _directoryWrapper.CreateIfNotExists(System.IO.Path.GetDirectoryName(_settingsPath));
             var text = JsonConvert.SerializeObject(this);
+            var changed = true;
             _fileWrapper.WriteAllText(_settingsPath, text);
+
+            if (_settings.HasChanged)
+            {
+                _clusterDispatcher.Write(this._settings);
+                _settings.HasChanged = false;
+            }
+        }
+        
+        /// <summary>
+        /// Gets a copy of the data in this instance as a T
+        /// without saving changes
+        /// </summary>
+        /// <returns></returns>
+        public T Get()
+        {
+            var result = new T();
+            foreach (var prop in typeof(T).GetProperties())
+            {
+                if (prop.CustomAttributes.FirstOrDefault()?.AttributeType == typeof(JsonIgnoreAttribute))
+                {
+                    continue;
+                }
+
+                var thisProp = this.GetType().GetProperty(prop.Name);
+                if (thisProp is null)
+                {
+                    throw new Exception($"config field {this._settings.GetType().Name}.{prop.Name} missing from {GetType().Name}");
+                }
+                var value = thisProp.GetValue(this);
+                prop.SetValue(result, value);
+            }
+            return result;
         }
 
         public void SaveIfNotExists()

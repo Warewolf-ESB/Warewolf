@@ -13,11 +13,9 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
-using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
-using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
@@ -42,9 +40,8 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-using System.Windows;
-using Warewolf.Resource.Errors;
+using Warewolf.Esb;
+using Warewolf;
 
 namespace Dev2.Network
 {
@@ -240,7 +237,14 @@ namespace Dev2.Network
             {
                 if (!IsConnecting)
                 {
-                    ConnectAsync(id);
+                    var t = ConnectAsync(id);
+                    t.ContinueWith((result) =>
+                    {
+                        if (result.IsFaulted)
+                        {
+
+                        }
+                    });
                 }
                 //ensureConnectedWaitTask.Wait(Config.Studio.ConnectTimeout);
             }
@@ -264,10 +268,18 @@ namespace Dev2.Network
             }
         }
 
-        public Task<bool> ConnectAsync(Guid id)
+        public Task<bool> ConnectAsync(Guid id, TimeSpan timeout)
         {
             ID = id;
-            var ensureConnectedWaitTask = new Task<bool>(() =>
+            return HubConnection.EnsureConnected(timeout).ContinueWith((task) =>
+            {
+                return !task.IsFaulted && task.IsCompleted;
+            });
+        }
+        public Task<bool> ConnectAsync(Guid id)
+        {
+            return ConnectAsync(id, Timeout.InfiniteTimeSpan);
+            /*var ensureConnectedWaitTask = new Task<bool>(() =>
             {
                 while (IsConnected == false)
                 {
@@ -277,7 +289,7 @@ namespace Dev2.Network
                 return true;
             });
             ensureConnectedWaitTask.Start();
-            return ensureConnectedWaitTask;
+            return ensureConnectedWaitTask;*/
         }
 
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
@@ -293,6 +305,7 @@ namespace Dev2.Network
             // Give 5 seconds, then force a dispose ;)
             try
             {
+                var timeout = TimeSpan.FromMilliseconds(MillisecondsTimeout);
                 IsShuttingDown = true;
                 HubConnection.Stop(new TimeSpan(0, 0, 0, 5));
             }
@@ -553,6 +566,12 @@ namespace Dev2.Network
             return result;
         }
 
+        public async Task<StringBuilder> ExecuteCommandAsync(ICatalogRequest request, Guid workspaceId)
+        {
+            var toSend = _serializer.SerializeToBuilder(request);
+            return await ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
+        }
+
         public void AddDebugWriter(Guid workspaceId)
         {
             var t = EsbProxy.Invoke("AddDebugWriter", workspaceId);
@@ -565,6 +584,9 @@ namespace Dev2.Network
         }
 
         public Guid ID { get; private set; }
+
+        public IStateController StateController => HubConnection.StateController;
+        public ConnState State => HubConnection.StateController.Current;
 
         bool _disposedValue;
 
@@ -579,74 +601,6 @@ namespace Dev2.Network
         public void Dispose()
         {
             Dispose(true);
-        }
-    }
-
-    class ServerProxyPersistentConnection : ServerProxyWithoutChunking
-    {
-        public ServerProxyPersistentConnection(Uri serverUri)
-            : base(serverUri)
-        {
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
-        }
-
-        public ServerProxyPersistentConnection(string webAddress, string userName, string password)
-            : base(webAddress, userName, password)
-        {
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
-        }
-
-        public ServerProxyPersistentConnection(string serverUri, ICredentials credentials, IAsyncWorker worker) 
-            : base(serverUri, credentials, worker)
-        {
-            HubConnection.Start();
-            StartHubConnectionWatchdogThread();
-        }
-
-        private void StartHubConnectionWatchdogThread()
-        {
-            var t = new Thread(() =>
-            {
-                const int initialDelay = 1;
-                const int multiplier = 2;
-                const int maxDelay = 60;
-                var delay = initialDelay;
-                bool stopped = false;
-
-                HubConnection.StateChanged += (stateChange) =>
-                {
-                    if (stateChange.NewState == ConnectionStateWrapped.Disconnected)
-                    {
-                        stopped = true;
-                    }
-                };
-                try
-                {
-                    while (true)
-                    {
-                        Thread.Sleep(delay);
-                        if (stopped)
-                        {
-                            stopped = false;
-                            delay *= multiplier;
-                            if (delay > maxDelay)
-                            {
-                                delay = initialDelay;
-                            }
-
-                            HubConnection.Start();
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error("ServerProxy monitor has died unexpectedly", GlobalConstants.WarewolfError);
-                }
-            });
-            t.IsBackground = true;
-            t.Start();
         }
     }
 

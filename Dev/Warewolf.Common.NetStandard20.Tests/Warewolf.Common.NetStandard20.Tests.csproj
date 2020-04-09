@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <RootNamespace>Warewolf</RootNamespace>
+
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <PropertyGroup>

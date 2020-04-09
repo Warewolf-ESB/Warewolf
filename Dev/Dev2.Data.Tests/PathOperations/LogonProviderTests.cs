@@ -14,7 +14,6 @@ using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.IO;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Tests.PathOperations

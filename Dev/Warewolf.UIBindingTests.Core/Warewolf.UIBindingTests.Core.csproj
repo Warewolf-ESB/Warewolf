@@ -113,9 +113,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Expression.Blend.Sdk">
       <Version>1.0.2</Version>
     </PackageReference>

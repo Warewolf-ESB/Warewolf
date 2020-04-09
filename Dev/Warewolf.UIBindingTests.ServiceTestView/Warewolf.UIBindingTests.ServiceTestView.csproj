@@ -59,7 +59,6 @@
     <Compile Include="ServiceTestViewSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Service Test View.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Service Test View.feature.cs</LastGenOutput>
@@ -71,6 +70,7 @@
       <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="SpecFlow" Version="2.3.2" />
     <PackageReference Include="SpecFlow.MsTest" Version="2.3.2" />
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
@@ -105,6 +105,10 @@
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>

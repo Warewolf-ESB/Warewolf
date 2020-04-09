@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -14,6 +14,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Logging;
 using Newtonsoft.Json;
+using Warewolf.Data;
+using Warewolf.Debugging;
 
 namespace Dev2.Diagnostics.Debug
 {
@@ -48,6 +50,11 @@ namespace Dev2.Diagnostics.Debug
                 return;
             }
             _writers.TryAdd(workspaceId, writer);
+        }
+
+        public void AddListener(Guid workspaceID, INotificationListener<IDebugNotification> esbHub)
+        {
+            Add(workspaceID, esbHub as IDebugWriter);
         }
 
 
@@ -136,6 +143,7 @@ namespace Dev2.Diagnostics.Debug
             writeArgs.remoteDebugItems.Clear();
         }
 
+        // TODO: fix this, we should not be storing debug items until the execution is completed before sending them to the studio
         private void DebugStateFinalStep(WriteArgs writeArgs)
         {
             if (writeArgs.debugState.IsFinalStep())

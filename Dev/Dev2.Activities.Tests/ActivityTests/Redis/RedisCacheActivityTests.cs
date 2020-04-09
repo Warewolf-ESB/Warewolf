@@ -21,11 +21,9 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using RabbitMQ.Client.Exceptions;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Driver.Redis;
 using Warewolf.Storage;
-using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
 using Activity = System.Activities.Activity;
 
@@ -67,7 +65,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
@@ -120,7 +117,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisActivity_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
@@ -230,7 +226,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        [Depends(Depends.ContainerType.AnonymousRedis)]
         public void RedisActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs_TTLReached()
         {
             //----------------------Arrange----------------------

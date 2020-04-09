@@ -775,33 +775,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod,Timeout(60000)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
-        public void ConnectControlViewModel_OnServerOnNetworkStateChanged_GivenLocalhostAndIsNotConnecting_ResultServerDisconnected()
-        {
-            //------------Setup for test--------------------------
-            _serverMock.Setup(server => server.IsConnected).Returns(false);
-            var args = new Mock<INetworkStateChangedEventArgs>();
-            args.Setup(eventArgs => eventArgs.State).Returns(ConnectionNetworkState.Disconnected);
-            var localhost = new Mock<IServer>();
-            localhost.Setup(server => server.IsConnected).Returns(false);
-            localhost.Setup(server => server.DisplayName).Returns("localhost (Connected)");
-            var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator());
-            //------------Execute Test---------------------------
-            var popupController = new Mock<IPopupController>();
-            popupController.Setup(
-                controller =>
-                    controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning,
-                        It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(),
-                        It.IsAny<bool>(), It.IsAny<bool>()));
-            var privateObject = new PrivateObject(connectControlViewModel);
-            privateObject.SetProperty("IsConnecting", false);
-            privateObject.Invoke("OnServerOnNetworkStateChanged", args.Object, _serverMock.Object);
-            //------------Assert Results-------------------------
-            Assert.IsFalse(connectControlViewModel.IsConnected);
-        }
-
-        [TestMethod,Timeout(60000)]
-        [TestCategory(nameof(ConnectControlViewModel))]
-        [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_UpdateRepositoryOnServerSaved_GivenEmptyGuid_Result()
         {
             //------------Setup for test--------------------------

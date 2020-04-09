@@ -150,6 +150,10 @@ namespace Dev2.Settings.Clusters
 
         private void UpdateIsDirty()
         {
+            if (Item is null)
+            {
+                return;
+            }
             var isDirty = !ClusterSettings.LeaderServerKey.Equals(Item.ClusterSettings.LeaderServerKey);
             isDirty |= !LeaderServerOptions.Leader.Value.Equals(Item.LeaderServerOptions.Leader.Value);
             IsDirty = isDirty;

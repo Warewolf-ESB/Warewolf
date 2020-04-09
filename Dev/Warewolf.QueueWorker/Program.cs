@@ -9,14 +9,13 @@
 */
 
 using CommandLine;
-using Dev2.Common;
 using Dev2.Common.Wrappers;
 using Dev2.Network;
 using Dev2.Runtime.Hosting;
 using System;
 using Warewolf.Auditing;
 using Warewolf.Common;
-using Warewolf.Data;
+using Warewolf.EsbClient;
 using Warewolf.Streams;
 
 namespace QueueWorker

@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -10,8 +10,6 @@
 */
 
 using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -20,6 +18,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Warewolf.Data;
+using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;

@@ -74,9 +74,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Warewolf.UnitTestAttributes\Depends.cs">
-      <Link>Depends.cs</Link>
-    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfNumberOfErrorsByResourceTests.cs" />
@@ -184,9 +181,6 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

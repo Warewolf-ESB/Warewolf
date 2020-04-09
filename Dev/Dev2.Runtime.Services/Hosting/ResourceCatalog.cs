@@ -33,6 +33,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 using Dev2.Common.Interfaces.Wrappers;
+using Warewolf;
 
 namespace Dev2.Runtime.Hosting
 {

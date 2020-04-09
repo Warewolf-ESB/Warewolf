@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var request = new EsbExecuteRequest();
             var workspaceId = Guid.NewGuid();
 
-            var resultId = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors);
+            var resultId = esbServicesEndpoint.ExecuteRequest(dataObject, request, workspaceId, out var errors, null);
 
             Assert.AreEqual(Guid.Empty, resultId);
         }

@@ -27,9 +27,8 @@ namespace Dev2.Activities.Designers2.RedisCounter
 {
     public class RedisCounterDesignerViewModel : ActivityDesignerViewModel
     {
-        readonly IServer _server;
-        IShellViewModel _shellViewModel;
-        bool _addType;
+        private readonly IServer _server;
+        private readonly IShellViewModel _shellViewModel;
 
         [ExcludeFromCodeCoverage]
         public RedisCounterDesignerViewModel(ModelItem modelItem)
@@ -231,7 +230,7 @@ namespace Dev2.Activities.Designers2.RedisCounter
             SetSelectedRedisServer();
         }
 
-        void SetSelectedRedisServer()
+        private void SetSelectedRedisServer()
         {
             var sourceId = Guid.Parse(ModelItem.Properties["SourceId"].ComputedValue.ToString());
             var selectedRedisServer = RedisServers.FirstOrDefault(redisServer => redisServer.ResourceID == sourceId);

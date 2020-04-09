@@ -5,7 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
-using Warewolf.Studio.Core;
+ using Warewolf;
+ using Warewolf.Studio.Core;
 
 
 namespace Dev2.Studio.Core.Views

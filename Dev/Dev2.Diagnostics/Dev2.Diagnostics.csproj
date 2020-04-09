@@ -95,13 +95,14 @@
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Dev2.Diagnostics.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="State\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">

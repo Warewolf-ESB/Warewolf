@@ -31,7 +31,6 @@ using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.PathOperations;
-using Dev2.Runtime.ServiceModel.Data;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -40,7 +39,6 @@ using Warewolf.Storage.Interfaces;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using System.Reflection;
 using Dev2.Activities.Designers2.AdvancedRecordset;
-using Warewolf.Test.Agent;
 using System.Threading;
 using Warewolf.UnitTestAttributes;
 

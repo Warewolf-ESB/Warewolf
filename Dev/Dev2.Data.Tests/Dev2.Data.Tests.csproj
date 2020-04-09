@@ -45,7 +45,7 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.17.20151.2055, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
     </Reference>
@@ -154,7 +154,6 @@
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTests.cs" />
     <Compile Include="ServiceModel\RedisSourceTests.cs" />
-    <Compile Include="SetingTest.cs" />
     <Compile Include="ListIndexIteratorTests.cs" />
     <Compile Include="LoopedIndexIteratorTests.cs" />
     <Compile Include="MathOperations\EvaluationFunctionTOTests.cs" />
@@ -214,7 +213,7 @@
       <Name>Dev2.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Core.Tests\Dev2.Core.Tests.csproj">
-      <Project>{6A65D99B-61C5-4376-B4F7-71A503F9351F}</Project>
+      <Project>{6a65d99b-61c5-4376-b4f7-71a503f9351f}</Project>
       <Name>Dev2.Core.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
@@ -230,7 +229,7 @@
       <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
-      <Project>{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}</Project>
+      <Project>{d754b817-a714-4e6e-bd46-8c4ffffbdacb}</Project>
       <Name>Dev2.Infrastructure.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
@@ -242,7 +241,7 @@
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj">
-      <Project>{85617545-2121-4683-9828-DAEDB5878CE9}</Project>
+      <Project>{85617545-2121-4683-9828-daedb5878ce9}</Project>
       <Name>Dev2.Runtime.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
@@ -277,13 +276,14 @@
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
       <Name>Warewolf.Storage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj">
+      <Project>{4a455098-ffdd-4861-b873-656f960cf0ba}</Project>
+      <Name>Warewolf.UnitTestAttributes</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestingResources\SampleTFS.trx" />
     <EmbeddedResource Include="TestingResources\SampleTFSNoNamespace.trx" />
-    <None Include="..\Dev2.Studio\App.config">
-      <Link>App.config</Link>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core.3">
@@ -301,6 +301,14 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.4</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dev2.Server\app.config">
+      <Link>app.config</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

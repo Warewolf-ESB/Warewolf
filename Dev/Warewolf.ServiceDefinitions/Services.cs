@@ -37,9 +37,14 @@ namespace Warewolf.Service
     public static class Cluster
     {
         public const string GetClusterSettings = nameof(GetClusterSettings);
-        public static string SaveClusterSettings = nameof(SaveClusterSettings);
-        public static string TestClusterLeaderConnection = nameof(TestClusterLeaderConnection);
-        public static string TestClusterConnection = nameof(TestClusterConnection);
+        public const string SaveClusterSettings = nameof(SaveClusterSettings);
+        public const string TestClusterLeaderConnection = nameof(TestClusterLeaderConnection);
+        public const string TestClusterConnection = nameof(TestClusterConnection);
+
+        public static class ClusterJoinRequest
+        {
+            public const string Key = nameof(Key);
+        }
     }
 
 }

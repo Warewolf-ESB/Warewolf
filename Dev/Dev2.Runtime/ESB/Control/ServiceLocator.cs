@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Warewolf;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Control
@@ -25,7 +26,7 @@ namespace Dev2.Runtime.ESB.Control
     /// </summary>
     public class ServiceLocator : IServiceLocator
     {
-        readonly IPerformanceCounter _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
+        readonly IPerformanceCounter _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>()?.GetCounter("Count of requests for workflows which don't exist");
         readonly IResourceCatalog _resourceCatalog = ResourceCatalog.Instance;
         #region New Mgt Methods
 
@@ -54,7 +55,7 @@ namespace Dev2.Runtime.ESB.Control
                 ret = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, serviceName).FirstOrDefault();                
                 if (ret == null)
                 {
-                    _perfCounter.Increment();
+                    _perfCounter?.Increment();
                 }
             }
             return ret;
@@ -89,7 +90,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 if (firstOrDefault == null)
                 {
-                    _perfCounter.Increment();
+                    _perfCounter?.Increment();
                 }
             }
 

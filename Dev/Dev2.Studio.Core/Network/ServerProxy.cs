@@ -26,7 +26,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
-
+using Warewolf.Esb;
 
 
 namespace Dev2.Network
@@ -36,7 +36,7 @@ namespace Dev2.Network
         readonly IEnvironmentConnection _wrappedConnection;
         public ServerProxy(Uri serverUri)
         {
-           _wrappedConnection = new ServerProxyPersistentConnection(serverUri);
+           _wrappedConnection = new ServerProxyWithoutChunking(serverUri);
             SetupPassthroughEvents();
         }
 
@@ -51,13 +51,13 @@ namespace Dev2.Network
         
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
-            _wrappedConnection = new ServerProxyPersistentConnection(serverUri,credentials,worker);
+            _wrappedConnection = new ServerProxyWithoutChunking(serverUri,credentials,worker);
             SetupPassthroughEvents();
         }
         
         public ServerProxy(string webAddress, string userName, string password)
         {
-            _wrappedConnection = new ServerProxyPersistentConnection(webAddress, userName, password);
+            _wrappedConnection = new ServerProxyWithoutChunking(webAddress, userName, password);
             SetupPassthroughEvents();
         }
 
@@ -106,6 +106,7 @@ namespace Dev2.Network
         public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, int timeout) => _wrappedConnection.ExecuteCommand(xmlRequest, workspaceId, timeout);
 
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId) => await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true);
+        public async Task<StringBuilder> ExecuteCommandAsync(ICatalogRequest request, Guid workspaceId) => await _wrappedConnection.ExecuteCommandAsync(request, workspaceId).ConfigureAwait(true);
 
         public IHubProxyWrapper EsbProxy => _wrappedConnection.EsbProxy;
 

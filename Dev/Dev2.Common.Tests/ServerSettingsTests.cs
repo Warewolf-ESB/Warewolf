@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
 using Warewolf.Configuration;
+using Warewolf.Esb;
 
 namespace Dev2.Common.Tests
 {
@@ -52,8 +53,9 @@ namespace Dev2.Common.Tests
 
             var mockFileWrapper = new Mock<IFile>();
             var mockDirectoryWrapper = new Mock<IDirectory>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
-            var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
+            var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object, mockClusterDispatcher.Object);
             Assert.AreEqual(8, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual((ushort)0, settings.WebServerPort);
@@ -82,9 +84,10 @@ namespace Dev2.Common.Tests
             mockIFile.Setup(o => o.WriteAllText(ServerSettings.SettingsPath, It.IsAny<string>()));
             var mockDirectory = new Mock<IDirectory>();
             mockDirectory.Setup(o => o.CreateIfNotExists(Path.GetDirectoryName(ServerSettings.SettingsPath))).Returns(ServerSettings.SettingsPath);
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
             //act
-            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
+            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
             serverSettings.SaveIfNotExists();
 
             //assert
@@ -110,8 +113,9 @@ namespace Dev2.Common.Tests
             mockIFile.Setup(o => o.ReadAllText("some path")).Returns("{}");
             var mockDirectory = new Mock<IDirectory>();
             mockDirectory.Setup(d => d.CreateIfNotExists(It.IsAny<string>())).Returns(newAuditsFilePath).Verifiable();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
-            serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
+            serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
 
             //act
             var actual = serverSettings.SaveLoggingPath(sourceFilePath);
@@ -137,8 +141,9 @@ namespace Dev2.Common.Tests
             var mockIFile = new Mock<IFile>();
             mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
             var mockDirectory = new Mock<IDirectory>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
-            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
+            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
 
             //act
             var actual = serverSettings.SaveLoggingPath(sourceFilePath);
@@ -158,8 +163,9 @@ namespace Dev2.Common.Tests
             var mockIFile = new Mock<IFile>();
             mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
             var mockDirectory = new Mock<IDirectory>();
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
-            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
+            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
 
             var result = serverSettings.Get();
 

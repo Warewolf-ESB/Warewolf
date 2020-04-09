@@ -24,14 +24,9 @@ namespace Warewolf.Driver.RabbitMQ.Tests
     [TestClass]
     public class RabbitMQDriverTests
     {
-        private class TestQueueNameGenerator
+        private static class TestQueueNameGenerator
         {
-            private static readonly string _instance = Guid.NewGuid().ToString();
-
-            public static string GetName
-            {
-                get { return _instance; }
-            }
+            public static string GetName { get; } = Guid.NewGuid().ToString();
         }
 
         [TestMethod]
@@ -168,10 +163,6 @@ namespace Warewolf.Driver.RabbitMQ.Tests
 
         public class TestConsumer : IConsumer
         {
-            public TestConsumer()
-            {
-            }
-
             public bool IsDataReceived { get; internal set; }
 
             public Task<ConsumerResult> Consume(byte[] body, object parameters)

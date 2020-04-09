@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -28,6 +28,7 @@ using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
 using Dev2.TO;
+using Warewolf.Data;
 
 namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 {
@@ -651,9 +652,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         /// </remarks>
         /// </summary>
         /// <param name="debugState">The state to be written.</param>
-        public void Write(IDebugState debugState)
+        public void Write(IDebugNotification debugState)
         {
-            DebugStates.Add(debugState);
+            DebugStates.Add(debugState as IDebugState);
         }
 
         public void Write(string serializeObject)

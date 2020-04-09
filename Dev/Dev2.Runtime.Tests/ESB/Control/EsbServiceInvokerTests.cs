@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -455,7 +465,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO, null);
             //---------------Test Result -----------------------
             Assert.IsNotNull(errorResultTO);
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -490,7 +500,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO, null);
             //---------------Test Result -----------------------
             Assert.IsNotNull(errorResultTO);
             Assert.AreEqual(0, errorResultTO.FetchErrors().Count);
@@ -528,7 +538,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO, null);
             //---------------Test Result -----------------------
             Assert.IsNotNull(errorResultTO);
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -593,7 +603,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO, null);
             //---------------Test Result -----------------------
             Assert.AreEqual(enActionType.Workflow, serviceAction.ActionType);
         }
@@ -640,7 +650,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
 
-            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO, null);
 
             //---------------Test Result -----------------------
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -689,7 +699,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
 
-            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO, null);
 
             //---------------Test Result -----------------------
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -967,7 +977,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.Environment.HasErrors()).Returns(true).Verifiable(); ;
             obj.Setup(o => o.RemoteInvoke).Verifiable();
             obj.Setup(o => o.Environment.FetchErrors()).Returns("Error").Verifiable();
-            invoker.Invoke(obj.Object, out ErrorResultTO errors);
+            invoker.Invoke(obj.Object, out ErrorResultTO errors, null);
             //---------------Test Result -----------------------
             obj.Verify(o => o.Environment.FetchErrors());
             obj.VerifyGet(o => o.ResourceID);
