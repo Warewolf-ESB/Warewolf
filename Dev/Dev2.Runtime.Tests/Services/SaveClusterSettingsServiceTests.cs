@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SaveClusterSettingsService))]
-        public void GetClusterSettings_Expect_NoError()
+        public void SaveClusterSettingsService_Expect_NoError()
         {
             var n = new SaveClusterSettingsService();
             var ws = new Mock<IWorkspace>();
@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SaveClusterSettingsService))]
-        public void GetClusterSettings_Expect_Error()
+        public void SaveClusterSettingsService_Expect_Error()
         {
             var n = new SaveClusterSettingsService();
             var ws = new Mock<IWorkspace>();

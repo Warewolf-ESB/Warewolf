@@ -167,6 +167,7 @@ namespace Warewolf.Tests
 
             var fetchResult = ResultsCache.Instance.FetchResult(new FutureReceipt() {PartID = 0, RequestID = messageId, User = "bob"});
 
+            Assert.IsTrue(fetchResult.Contains("IOption[]"), $"expected IOption[] in {fetchResult}");
             var options = serializer.Deserialize<IOption[]>(fetchResult);
             Assert.IsNotNull(options, $"expected a deserializable response to be cached");
             Assert.AreEqual(1, options.Length);
@@ -219,6 +220,7 @@ namespace Warewolf.Tests
 
             var fetchResult = ResultsCache.Instance.FetchResult(new FutureReceipt() {PartID = 0, RequestID = messageId, User = "bob"});
 
+            Assert.IsTrue(fetchResult.Contains("ClusterJoinResponse"), $"expected IOption[] in {fetchResult}");
             var response = serializer.Deserialize<ClusterJoinResponse>(fetchResult);
             Assert.IsNotNull(response, $"expected a deserializable response to be cached");
             Assert.AreNotEqual(Guid.Empty, response.Token);
