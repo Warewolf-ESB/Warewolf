@@ -1825,6 +1825,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auditing Data Source.
+        /// </summary>
+        public static string LoggingViewAuditsDataSourceToolTip {
+            get {
+                return ResourceManager.GetString("LoggingViewAuditsDataSourceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Audits Folder Path.
         /// </summary>
         public static string LoggingViewAuditsFilePathToolTip {

@@ -2461,6 +2461,10 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewAuditsFilePathToolTip" xml:space="preserve">
     <value>Audits Folder Path</value>
   </data>
+  <data name="LoggingViewAuditsDataSourceToolTip" xml:space="preserve">
+    <value>Auditing Data Source</value>
+  </data>
+
   <data name="RedisTTLToolTip" xml:space="preserve">
     <value>Time in seconds before the key expires. Default is 5 Seconds.</value>
   </data>
