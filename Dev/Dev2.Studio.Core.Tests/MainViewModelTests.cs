@@ -4296,7 +4296,7 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(mockServerRepository.Object);
 
             var mockWorksurfaceContext = new Mock<IWorksurfaceContextManager>();
-            mockWorksurfaceContext.Setup(o => o.RunAllTestsForService(mockResourceModel.Object)).Verifiable();
+            mockWorksurfaceContext.Setup(o => o.RunAllTestCoverageForService(mockResourceModel.Object)).Verifiable();
             
             var shellViewModel = new ShellViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, mockServerRepository.Object, mockVersionChecker.Object, mockViewFactory.Object, false, mockBrowserPopupController.Object, new Mock<IPopupController>().Object, null, mockResourcePicker.Object);
 
@@ -4310,7 +4310,7 @@ namespace Dev2.Core.Tests
             shellViewModel.RunCoverageCommand.Execute(explorerItemViewModel);
             
             mockResourceRepository.Verify(o => o.LoadContextualResourceModel(resourceId), Times.Once());
-            mockWorksurfaceContext.Verify(o => o.RunAllTestsForService(mockResourceModel.Object), Times.Once());
+            mockWorksurfaceContext.Verify(o => o.RunAllTestCoverageForService(mockResourceModel.Object), Times.Once());
         }
         
         [TestMethod]
@@ -4360,7 +4360,7 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(mockServerRepository.Object);
 
             var mockWorksurfaceContext = new Mock<IWorksurfaceContextManager>();
-            mockWorksurfaceContext.Setup(o => o.RunAllTestsForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>())).Verifiable();
+            mockWorksurfaceContext.Setup(o => o.RunAllTestCoverageForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>())).Verifiable();
             
             var shellViewModel = new ShellViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, mockServerRepository.Object, mockVersionChecker.Object, mockViewFactory.Object, false, mockBrowserPopupController.Object, new Mock<IPopupController>().Object, null, mockResourcePicker.Object);
 
@@ -4374,7 +4374,7 @@ namespace Dev2.Core.Tests
             shellViewModel.RunCoverageCommand.Execute(environmentViewModel);
             
             mockResourceRepository.Verify(o => o.LoadContextualResourceModel(resourceId), Times.Once());
-            mockWorksurfaceContext.Verify(o => o.RunAllTestsForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>()), Times.Once());
+            mockWorksurfaceContext.Verify(o => o.RunAllTestCoverageForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>()), Times.Once());
         }
         
         [TestMethod]
@@ -4429,7 +4429,7 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(mockServerRepository.Object);
 
             var mockWorksurfaceContext = new Mock<IWorksurfaceContextManager>();
-            mockWorksurfaceContext.Setup(o => o.RunAllTestsForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>())).Verifiable();
+            mockWorksurfaceContext.Setup(o => o.RunAllTestCoverageForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>())).Verifiable();
 
             var mockAsyncWorker = new Mock<IAsyncWorker>();
 
@@ -4446,7 +4446,7 @@ namespace Dev2.Core.Tests
             shellViewModel.RunCoverageCommand.Execute(workflowDesignerViewModel);
             
             mockResourceRepository.Verify(o => o.LoadContextualResourceModel(resourceId), Times.Once());
-            mockWorksurfaceContext.Verify(o => o.RunAllTestsForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>()), Times.Once());
+            mockWorksurfaceContext.Verify(o => o.RunAllTestCoverageForFolder(It.IsAny<string>(), It.IsAny<IExternalProcessExecutor>()), Times.Once());
         }
         
         [TestMethod]
