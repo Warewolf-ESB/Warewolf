@@ -110,38 +110,54 @@ namespace Dev2.Runtime.ServiceModel.Data
                     case nameof(FlowDecision):
                         var flowDecision = ((FlowDecision)node);
 
-                        var falseA = (((FlowStep)flowDecision.False)?.Action as IDev2Activity);
-                        if (falseA.GetType().Name is "DsfCommentActivity")
+                        var nodes = GetFlowStepFromFlowNode(flowDecision.False);
+                        if (nodes.Count > 0)
                         {
-                            //Do nothing. DsfCommentActivity should not be part of coverage
+                            childNodes.AddRange(nodes);
                         }
                         else
                         {
-                            var falseArm = new WorkflowNode
+                            var falseA = (((FlowStep)flowDecision.False)?.Action as IDev2Activity);
+                            if (falseA.GetType().Name is "DsfCommentActivity")
                             {
-                                ActivityID = falseA.ActivityId,
-                                UniqueID = Guid.Parse(falseA.UniqueID),
-                                StepDescription = falseA.GetDisplayName(),
-                            };
-                            childNodes.Add(falseArm);
+                                //Do nothing. DsfCommentActivity should not be part of coverage
+                            }
+                            else
+                            {
+                                var falseArm = new WorkflowNode
+                                {
+                                    ActivityID = falseA.ActivityId,
+                                    UniqueID = Guid.Parse(falseA.UniqueID),
+                                    StepDescription = falseA.GetDisplayName(),
+                                };
+                                childNodes.Add(falseArm);
+                            }
                         }
 
-                        var trueA = ((FlowStep)flowDecision.True)?.Action as IDev2Activity;
-                        if (trueA.GetType().Name is "DsfCommentActivity")
+                        nodes = GetFlowStepFromFlowNode(flowDecision.True);
+                        if (nodes.Count > 0)
                         {
-                            //Do nothing. DsfCommentActivity should not be part of coverage
+                            childNodes.AddRange(nodes);
                         }
                         else
                         {
-                            var trueArm = new WorkflowNode
+                            var trueA = ((FlowStep)flowDecision.True)?.Action as IDev2Activity;
+                            if (trueA.GetType().Name is "DsfCommentActivity")
                             {
-                                ActivityID = trueA.ActivityId,
-                                UniqueID = Guid.Parse(trueA.UniqueID),
-                                StepDescription = trueA.GetDisplayName(),
-                            };
-                            childNodes.Add(trueArm);
+                                //Do nothing. DsfCommentActivity should not be part of coverage
+                            }
+                            else
+                            {
+                                var trueArm = new WorkflowNode
+                                {
+                                    ActivityID = trueA.ActivityId,
+                                    UniqueID = Guid.Parse(trueA.UniqueID),
+                                    StepDescription = trueA.GetDisplayName(),
+                                };
+                                childNodes.Add(trueArm);
+                            }
                         }
-
+                        
                         activity = flowDecision.Condition as IDev2Activity;
                         list.Add(new WorkflowNode
                         {
@@ -151,7 +167,22 @@ namespace Dev2.Runtime.ServiceModel.Data
                             NextNodes = childNodes
                         });
 
-                        break; //TODO: remember the other types to be covered here too
+                        break;
+                    case nameof(FlowSwitch<FlowNode>):
+                        nodes = new List<IWorkflowNode>();
+
+                        foreach (var item in ((FlowSwitch<string>)node).Cases.Values)
+                        {
+                            var from = ((FlowStep)item).Action as IDev2Activity;
+                            nodes.Add(new WorkflowNode
+                            {
+                                ActivityID = from.ActivityId,
+                                UniqueID = Guid.Parse(from.UniqueID),
+                                StepDescription = from.GetDisplayName()
+                            });
+                        }
+                        list.AddRange(nodes);
+                        break;
 
                     default:
                         break;
@@ -159,6 +190,29 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             return list;
+        }
+
+        private List<IWorkflowNode> GetFlowStepFromFlowNode(FlowNode flowNode)
+        {
+            var sdfsf = flowNode.GetType().Name;
+            var nodes = new List<IWorkflowNode>(); 
+            if (flowNode.GetType().Name == "FlowSwitch`1")
+            {
+                foreach (var item in ((FlowSwitch<string>)flowNode).Cases.Values)
+                {
+                    var from = ((FlowStep)item).Action as IDev2Activity;
+                    nodes.Add(new WorkflowNode
+                    {
+                        ActivityID = from.ActivityId,
+                        UniqueID = Guid.Parse(from.UniqueID),
+                        StepDescription = from.GetDisplayName()
+                    });
+
+                }
+                return nodes;
+            }
+            return nodes;
+
         }
 
         private List<IWorkflowNode> GetWorkflowNodes()
@@ -189,52 +243,32 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     case nameof(FlowDecision):
                         var flowDecision = ((FlowDecision)node);
-
-                        var falseA = (((FlowStep)flowDecision.False)?.Action as IDev2Activity);
-                        if (falseA.GetType().Name is "DsfCommentActivity")
-                        {
-                            //Do nothing. DsfCommentActivity should not be part of coverage
-                        }
-                        else
-                        {
-                            var falseArm = new WorkflowNode
-                            {
-                                ActivityID = falseA.ActivityId,
-                                UniqueID = Guid.Parse(falseA.UniqueID),
-                                StepDescription = falseA.GetDisplayName(),
-                            };
-                        }
-
-                        var trueA = ((FlowStep)flowDecision.True)?.Action as IDev2Activity;
-                        if (trueA.GetType().Name is "DsfCommentActivity")
-                        {
-                            //Do nothing. DsfCommentActivity should not be part of coverage                        
-                        }
-                        else
-                        {
-                            var trueArm = new WorkflowNode
-                            {
-                                ActivityID = trueA.ActivityId,
-                                UniqueID = Guid.Parse(trueA.UniqueID),
-                                StepDescription = trueA.GetDisplayName(),
-                            };
-                        }
-
+                        
                         activity = flowDecision.Condition as IDev2Activity;
-                        if (activity.GetType().Name == "DsfCommentActivity")
+                       
+                        list.Add(new WorkflowNode
                         {
-                            //Do nothing. DsfCommentActivity should not be part of coverage
-                        }
-                        else
+                            ActivityID = activity.ActivityId,
+                            UniqueID = Guid.Parse(activity.UniqueID),
+                            StepDescription = activity.GetDisplayName()
+                        });
+                        break;
+
+                    case nameof(FlowSwitch<FlowNode>):
+                        var nodes = new List<IWorkflowNode>();
+
+                        foreach (var item in ((FlowSwitch<string>)node).Cases.Values)
                         {
-                            list.Add(new WorkflowNode
+                            var from = ((FlowStep)item).Action as IDev2Activity;
+                            nodes.Add(new WorkflowNode
                             {
-                                ActivityID = activity.ActivityId,
-                                UniqueID = Guid.Parse(activity.UniqueID),
-                                StepDescription = activity.GetDisplayName()
+                                ActivityID = from.ActivityId,
+                                UniqueID = Guid.Parse(from.UniqueID),
+                                StepDescription = from.GetDisplayName()
                             });
                         }
-                        break; //TODO: remember the other types to be covered here too
+                        list.AddRange(nodes);
+                        break;
 
                     default:
                         break;
