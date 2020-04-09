@@ -17,6 +17,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
+using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -134,6 +135,7 @@ namespace Warewolf.Tests
             // setup mock hub proxy
             var hub = new EsbHub();
             var mockPrinciple = SetupPrincipleMock();
+            mockPrinciple.Setup(o => o.IsInRole("Warewolf Administrators")).Returns(true);
             Utilities.ServerUser = mockPrinciple.Object;
 
             var mockReq = SetupMockRequest(mockPrinciple);
@@ -167,7 +169,9 @@ namespace Warewolf.Tests
 
             var fetchResult = ResultsCache.Instance.FetchResult(new FutureReceipt() {PartID = 0, RequestID = messageId, User = "bob"});
 
-            Assert.IsTrue(fetchResult.Contains("IOption[]"), $"expected IOption[] in {fetchResult}");
+            mockPrinciple.Verify(o => o.IsInRole("Warewolf Administrators"), Times.AtLeastOnce);
+
+            Assert.IsTrue(fetchResult.Contains(typeof(OptionRadioButtons).FullName), $"expected {(typeof(OptionRadioButtons).FullName)} in {fetchResult}");
             var options = serializer.Deserialize<IOption[]>(fetchResult);
             Assert.IsNotNull(options, $"expected a deserializable response to be cached");
             Assert.AreEqual(1, options.Length);
@@ -186,6 +190,7 @@ namespace Warewolf.Tests
             // setup mock hub proxy
             var hub = new EsbHub();
             var mockPrinciple = SetupPrincipleMock();
+            mockPrinciple.Setup(o => o.IsInRole("Warewolf Administrators")).Returns(true);
             Utilities.ServerUser = mockPrinciple.Object;
 
             var mockReq = SetupMockRequest(mockPrinciple);
@@ -220,7 +225,7 @@ namespace Warewolf.Tests
 
             var fetchResult = ResultsCache.Instance.FetchResult(new FutureReceipt() {PartID = 0, RequestID = messageId, User = "bob"});
 
-            Assert.IsTrue(fetchResult.Contains("ClusterJoinResponse"), $"expected IOption[] in {fetchResult}");
+            Assert.IsTrue(fetchResult.Contains((typeof(ClusterJoinResponse).FullName)), $"expected {(typeof(ClusterJoinResponse).FullName)} in {fetchResult}");
             var response = serializer.Deserialize<ClusterJoinResponse>(fetchResult);
             Assert.IsNotNull(response, $"expected a deserializable response to be cached");
             Assert.AreNotEqual(Guid.Empty, response.Token);
@@ -322,6 +327,7 @@ namespace Warewolf.Tests
         {
             var mockPrinciple = new Mock<IPrincipal>();
             mockPrinciple.Setup(o => o.Identity.Name).Returns("bob");
+            mockPrinciple.Setup(o => o.Identity.IsAuthenticated).Returns(true);
             return mockPrinciple;
         }
         protected static Mock<IRequest> SetupMockRequest(Mock<IPrincipal> mockPrinciple)
