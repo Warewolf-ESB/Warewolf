@@ -178,14 +178,9 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string GetResourceFromUnknownWorkspacePath()
         {
-            if (FilePath is null && IsReservedService)
+            if (FilePath is null || IsReservedService)
             {
                 return ResourceName;
-            }
-
-            if (FilePath is null)
-            {
-                return "";
             }
 
             var removeWorkspacePath = FilePath.Replace(EnvironmentVariables.WorkspacePath + "\\", "");
