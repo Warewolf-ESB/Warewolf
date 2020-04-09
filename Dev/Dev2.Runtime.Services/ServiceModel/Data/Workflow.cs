@@ -88,15 +88,22 @@ namespace Dev2.Runtime.ServiceModel.Data
                 {
                     case nameof(FlowStep):
                         activity = ((FlowStep)node).Action as IDev2Activity;
-                        var foundInChildNodes = childNodes.Find(o => o.UniqueID.ToString() == activity.UniqueID);
-                        if (childNodes.Count is 0 || foundInChildNodes is null)
+                        if (activity.GetType().Name is "DsfCommentActivity")
                         {
-                            list.Add(new WorkflowNode
+                            //Do nothing. DsfCommentActivity should not be part of coverage
+                        }
+                        else
+                        {
+                            var foundInChildNodes = childNodes.Find(o => o.UniqueID.ToString() == activity.UniqueID);
+                            if (childNodes.Count is 0 || foundInChildNodes is null)
                             {
-                                ActivityID = activity.ActivityId,
-                                UniqueID = Guid.Parse(activity.UniqueID),
-                                StepDescription = activity.GetDisplayName()
-                            });
+                                list.Add(new WorkflowNode
+                                {
+                                    ActivityID = activity.ActivityId,
+                                    UniqueID = Guid.Parse(activity.UniqueID),
+                                    StepDescription = activity.GetDisplayName()
+                                });
+                            }
                         }
                         break;
 
@@ -104,22 +111,36 @@ namespace Dev2.Runtime.ServiceModel.Data
                         var flowDecision = ((FlowDecision)node);
 
                         var falseA = (((FlowStep)flowDecision.False)?.Action as IDev2Activity);
-                        var falseArm = new WorkflowNode
+                        if (falseA.GetType().Name is "DsfCommentActivity")
                         {
-                            ActivityID = falseA.ActivityId,
-                            UniqueID = Guid.Parse(falseA.UniqueID),
-                            StepDescription = falseA.GetDisplayName(),
-                        };
-                        childNodes.Add(falseArm);
+                            //Do nothing. DsfCommentActivity should not be part of coverage
+                        }
+                        else
+                        {
+                            var falseArm = new WorkflowNode
+                            {
+                                ActivityID = falseA.ActivityId,
+                                UniqueID = Guid.Parse(falseA.UniqueID),
+                                StepDescription = falseA.GetDisplayName(),
+                            };
+                            childNodes.Add(falseArm);
+                        }
 
                         var trueA = ((FlowStep)flowDecision.True)?.Action as IDev2Activity;
-                        var trueArm = new WorkflowNode
+                        if (trueA.GetType().Name is "DsfCommentActivity")
                         {
-                            ActivityID = trueA.ActivityId,
-                            UniqueID = Guid.Parse(trueA.UniqueID),
-                            StepDescription = trueA.GetDisplayName(),
-                        };
-                        childNodes.Add(trueArm);
+                            //Do nothing. DsfCommentActivity should not be part of coverage
+                        }
+                        else
+                        {
+                            var trueArm = new WorkflowNode
+                            {
+                                ActivityID = trueA.ActivityId,
+                                UniqueID = Guid.Parse(trueA.UniqueID),
+                                StepDescription = trueA.GetDisplayName(),
+                            };
+                            childNodes.Add(trueArm);
+                        }
 
                         activity = flowDecision.Condition as IDev2Activity;
                         list.Add(new WorkflowNode
@@ -127,8 +148,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                             ActivityID = activity.ActivityId,
                             UniqueID = Guid.Parse(activity.UniqueID),
                             StepDescription = activity.GetDisplayName(),
-                            NextNodes = new List<IWorkflowNode> { falseArm, trueArm }
+                            NextNodes = childNodes
                         });
+
                         break; //TODO: remember the other types to be covered here too
 
                     default:
@@ -150,41 +172,68 @@ namespace Dev2.Runtime.ServiceModel.Data
                 {
                     case nameof(FlowStep):
                         activity = ((FlowStep)node).Action as IDev2Activity;
-                        list.Add(new WorkflowNode
+                        if (activity.GetType().Name is "DsfCommentActivity")
                         {
-                            ActivityID = activity.ActivityId,
-                            UniqueID = Guid.Parse(activity.UniqueID),
-                            StepDescription = activity.GetDisplayName()
-                        });
+                            //Do nothing. DsfCommentActivity should not be part of coverage
+                        }
+                        else
+                        {
+                            list.Add(new WorkflowNode
+                            {
+                                ActivityID = activity.ActivityId,
+                                UniqueID = Guid.Parse(activity.UniqueID),
+                                StepDescription = activity.GetDisplayName()
+                            });
+                        }
                         break;
 
                     case nameof(FlowDecision):
                         var flowDecision = ((FlowDecision)node);
 
                         var falseA = (((FlowStep)flowDecision.False)?.Action as IDev2Activity);
-                        var falseArm = new WorkflowNode
+                        if (falseA.GetType().Name is "DsfCommentActivity")
                         {
-                            ActivityID = falseA.ActivityId,
-                            UniqueID = Guid.Parse(falseA.UniqueID),
-                            StepDescription = falseA.GetDisplayName(),
-                        };
+                            //Do nothing. DsfCommentActivity should not be part of coverage
+                        }
+                        else
+                        {
+                            var falseArm = new WorkflowNode
+                            {
+                                ActivityID = falseA.ActivityId,
+                                UniqueID = Guid.Parse(falseA.UniqueID),
+                                StepDescription = falseA.GetDisplayName(),
+                            };
+                        }
 
                         var trueA = ((FlowStep)flowDecision.True)?.Action as IDev2Activity;
-                        var trueArm = new WorkflowNode
+                        if (trueA.GetType().Name is "DsfCommentActivity")
                         {
-                            ActivityID = trueA.ActivityId,
-                            UniqueID = Guid.Parse(trueA.UniqueID),
-                            StepDescription = trueA.GetDisplayName(),
-                        };
+                            //Do nothing. DsfCommentActivity should not be part of coverage                        
+                        }
+                        else
+                        {
+                            var trueArm = new WorkflowNode
+                            {
+                                ActivityID = trueA.ActivityId,
+                                UniqueID = Guid.Parse(trueA.UniqueID),
+                                StepDescription = trueA.GetDisplayName(),
+                            };
+                        }
 
                         activity = flowDecision.Condition as IDev2Activity;
-                        list.Add(new WorkflowNode
+                        if (activity.GetType().Name == "DsfCommentActivity")
                         {
-                            ActivityID = activity.ActivityId,
-                            UniqueID = Guid.Parse(activity.UniqueID),
-                            StepDescription = activity.GetDisplayName(),
-                            NextNodes = new List<IWorkflowNode> { falseArm, trueArm }
-                        });
+                            //Do nothing. DsfCommentActivity should not be part of coverage
+                        }
+                        else
+                        {
+                            list.Add(new WorkflowNode
+                            {
+                                ActivityID = activity.ActivityId,
+                                UniqueID = Guid.Parse(activity.UniqueID),
+                                StepDescription = activity.GetDisplayName()
+                            });
+                        }
                         break; //TODO: remember the other types to be covered here too
 
                     default:
