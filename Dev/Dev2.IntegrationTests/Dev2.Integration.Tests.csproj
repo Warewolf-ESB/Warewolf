@@ -371,9 +371,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="VersionStrategy\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>

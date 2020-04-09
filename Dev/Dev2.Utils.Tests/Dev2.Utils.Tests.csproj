@@ -61,7 +61,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

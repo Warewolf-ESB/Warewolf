@@ -105,9 +105,6 @@
     <None Include="Dev2.Diagnostics.ruleset" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="State\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
