@@ -13,10 +13,10 @@ namespace Warewolf.UnitTestAttributes
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
+            "T004124.premier.local",
             "RSAKLFSVRHST1.premier.local",
             "RSAKLFWYNAND.premier.local",
             "PIETER.premier.local",
-            "T004124.premier.local",
             "localhost"
         };
         private string SelectedHost = "";
@@ -97,7 +97,15 @@ namespace Warewolf.UnitTestAttributes
                         {
                             retryCount++;
                         }
-                    } while (result == "" && retryCount < RigOpsHosts.Count);
+                        if (result == "" || result.Contains("\"IP\": \"\""))
+                        {
+                            retryCount++;
+                        }
+                        else
+                        {
+                            retryCount = RigOpsHosts.Count;
+                        }
+                    } while (retryCount < RigOpsHosts.Count);
 
                     Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
 

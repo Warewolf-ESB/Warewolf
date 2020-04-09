@@ -119,7 +119,6 @@
     <Compile Include="Common\DeleteHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
-    <Compile Include="Common\NullValueInVariableException.cs" />
     <Compile Include="DateAndTime\AssignManager.cs" />
     <Compile Include="DateAndTime\CompareTextValueToDateTimePart.cs" />
     <Compile Include="DateAndTime\DateTimeComparer.cs" />
@@ -180,7 +179,6 @@
     <Compile Include="PluginAction.cs" />
     <Compile Include="PluginConstructor.cs" />
     <Compile Include="PropertyApi.cs" />
-    <Compile Include="RecordSetSearchPayload.cs" />
     <Compile Include="SaveResult.cs" />
     <Compile Include="ServiceNotAuthorizedException.cs" />
     <Compile Include="SharepointSourceTo.cs" />

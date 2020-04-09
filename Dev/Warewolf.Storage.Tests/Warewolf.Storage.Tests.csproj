@@ -83,6 +83,10 @@
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
       <Name>Warewolf.Language.Parser</Name>

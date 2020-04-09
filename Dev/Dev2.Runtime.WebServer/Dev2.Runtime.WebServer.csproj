@@ -87,7 +87,7 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="ApisJsonBuilder.cs" />
-    <Compile Include="CommunicationContextExtenstions.cs" />
+    <Compile Include="CommunicationContextExtensions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="DataObjectExtentions.cs" />
     <Compile Include="ExecutionDto.cs" />
