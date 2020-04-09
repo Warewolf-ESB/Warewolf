@@ -20,6 +20,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
@@ -29,6 +30,7 @@ using Newtonsoft.Json.Linq;
 using Serilog.Sinks.Elasticsearch;
 using Warewolf.Auditing;
 using Warewolf.Storage;
+using Warewolf.UnitTestAttributes;
 using Audit = Warewolf.Auditing.Audit;
 using File = System.IO.File;
 
@@ -38,7 +40,6 @@ namespace Warewolf.Driver.Serilog.Tests
     public class SeriLogPublishTests
     {
         const string DefaultPort = "9200";
-        private const string DefaultHostname = "http://localhost";
 
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -156,10 +157,12 @@ namespace Warewolf.Driver.Serilog.Tests
             //-------------------------Arrange------------------------------
             var testEventSink = new TestLogEventSink();
             var seriConfig = new TestSeriLogSinkConfig(testEventSink);
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
             var loggerSource = new SerilogElasticsearchSource
             {
                 Port = DefaultPort,
-                HostName = DefaultHostname,
+                HostName = hostName,
             };
 
             var loggerConnection = loggerSource.NewConnection(seriConfig);
@@ -203,13 +206,15 @@ namespace Warewolf.Driver.Serilog.Tests
         public void SeriLogPublisher_NewPublisher_Reading_LogData_From_Elasticsearch_Success()
         {
             //-------------------------Arrange------------------------------
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
             var loggerSource = new SerilogElasticsearchSource
             {
                 Port = DefaultPort,
-                HostName = DefaultHostname,
+                HostName = hostName,
                 SearchIndex =  "warewolftestlogs"
             };
-            var uri = new Uri(DefaultHostname + ":" + DefaultPort);
+            var uri = new Uri(hostName + ":" + DefaultPort);
             var logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(uri)
@@ -237,10 +242,12 @@ namespace Warewolf.Driver.Serilog.Tests
                 //-------------------------Act----------------------------------
                 loggerPublisher.Info(GlobalConstants.WarewolfLogsTemplate, logEntryCommand);
             }
-
+            Task.Delay(225).Wait();
             //-------------------------Assert------------------------------------
             var dataFromDb = new TestElasticsearchDatabase();
+
             var dataList = dataFromDb.GetPublishedData(loggerSource, executionID.ToString()).ToList();
+
             Assert.AreEqual(1,dataList.Count);
 
             foreach (Dictionary<string, object> fields in dataList)
@@ -261,8 +268,8 @@ namespace Warewolf.Driver.Serilog.Tests
             var mockedDataObject = new Mock<IDSFDataObject>();
             mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Test-Workflow");
-            mockedDataObject.Setup(o => o.ResourceID).Returns(() => executionId);
-            mockedDataObject.Setup(o => o.ExecutionID).Returns(() => Guid.NewGuid());
+            mockedDataObject.Setup(o => o.ResourceID).Returns(() => Guid.NewGuid());
+            mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId );
             var principal = new Mock<IPrincipal>();
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
@@ -292,7 +299,21 @@ namespace Warewolf.Driver.Serilog.Tests
                 }
                 else
                 {
-                    var query = @"{""match"":{""fields.Data.Audit.ExecutionID"":""920df540-5c48-4600-9a17-87a8214cde8c""}}";
+                    var jArray = new JArray();
+                    var jsonQueryexecutionId = new JObject
+                    {
+                        ["match"] = new JObject
+                        {
+                            ["fields.Data.Audit.ExecutionID"] = executionID
+                        }
+                    };
+                    jArray.Add(jsonQueryexecutionId);
+                    var objMust = new JObject();
+                    objMust.Add("must", jArray);
+
+                    var obj = new JObject();
+                    obj.Add("bool", objMust);
+                    var query = obj.ToString();
                     var search = new SearchDescriptor<object>()
                         .Query(q =>
                             q.Raw(query));

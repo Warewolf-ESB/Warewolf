@@ -37,10 +37,11 @@ namespace Warewolf.Auditing.Drivers
         {
             _elasticsearchSource = new ElasticsearchSource();
         }
-        public AuditQueryableElastic(string hostname)
+        public AuditQueryableElastic(string hostname,string searchIndex)
         {
             _elasticsearchSource = new ElasticsearchSource();
             _elasticsearchSource.HostName = hostname;
+            _elasticsearchSource.SearchIndex = searchIndex;
         }
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {

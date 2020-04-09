@@ -31,7 +31,7 @@ namespace Warewolf.Auditing.Tests
             {
                 var dependency = new Depends(Depends.ContainerType.Elasticsearch);
                 var hostName = "http://" + dependency.Container.IP;
-                return new AuditQueryableElastic(hostName);
+                return new AuditQueryableElastic(hostName,"warewolftestlogs");
             }
             else
             {
@@ -74,15 +74,8 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match_all"] = new JObject()
             };
-            var jArray = new JArray();
-            jArray.Add(match_all);
 
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
+            Assert.AreEqual(match_all.ToString(), auditQueryable.Query);
         }
 
         [TestMethod]
