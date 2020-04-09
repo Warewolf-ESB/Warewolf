@@ -18,6 +18,7 @@ using Newtonsoft.Json.Linq;
 using Warewolf.Auditing.Drivers;
 using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
+using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Auditing.Tests
 {
@@ -28,7 +29,9 @@ namespace Warewolf.Auditing.Tests
         {
             if (sink == "AuditingSettingsData")
             {
-                return new AuditQueryableElastic("http://t004124.premier.local");
+                var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+                var hostName = "http://" + dependency.Container.IP;
+                return new AuditQueryableElastic(hostName);
             }
             else
             {

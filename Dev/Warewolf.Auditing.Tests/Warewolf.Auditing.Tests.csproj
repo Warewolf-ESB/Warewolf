@@ -19,6 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
+    <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj" />
     <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj" />
   </ItemGroup>
 </Project>
