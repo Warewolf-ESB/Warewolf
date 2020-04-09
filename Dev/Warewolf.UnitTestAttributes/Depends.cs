@@ -14,7 +14,7 @@ namespace Warewolf.UnitTestAttributes
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
-            "T004124.premier.local",
+            "t004124.premier.local",
             "RSAKLFSVRHST1.premier.local",
             "rsaklfwynand",
             "PIETER.premier.local",
@@ -22,7 +22,7 @@ namespace Warewolf.UnitTestAttributes
         };
         private string SelectedHost = "";
         
-        static readonly string ElasticsearchServer = "rsaklfwynand";
+        static readonly string ElasticsearchServer = "t004124.premier.local";
         static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
