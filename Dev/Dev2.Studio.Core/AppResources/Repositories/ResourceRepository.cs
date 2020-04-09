@@ -1016,7 +1016,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             var comController = new CommunicationController {ServiceName = nameof(Warewolf.Service.SaveAuditingSettings)};
             comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.AuditingSettings, _serializer.Serialize(auditingSettingsData));
-            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.SinkType, _serializer.Serialize(auditingSettingsData.GetType().Name));
+            comController.AddPayloadArgument(Warewolf.Service.SaveAuditingSettings.SinkType,new StringBuilder(auditingSettingsData.GetType().Name));
             
             var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
             if (output == null)

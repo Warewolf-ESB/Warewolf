@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,6 +7,7 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,23 +21,28 @@ using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
 using Dev2.Utils;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
+using Warewolf.Data;
+using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Settings.Logging
 {
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
+        private readonly IResourceRepository _resourceRepository;
+
         public IServer CurrentEnvironment
         {
             private get => _currentEnvironment;
@@ -45,11 +50,12 @@ namespace Dev2.Settings.Logging
             {
                 _currentEnvironment = value;
 
-                OnPropertyChanged("CanEditStudioLogSettings");
+                OnPropertyChanged(nameof(CanEditStudioLogSettings));
 
-                OnPropertyChanged("CanEditLogSettings");
+                OnPropertyChanged(nameof(CanEditLogSettings));
             }
         }
+
         string _serverLogMaxSize;
         string _studioLogMaxSize;
         string _selectedLoggingType;
@@ -62,10 +68,12 @@ namespace Dev2.Settings.Logging
         LogLevel _studioFileLogLevel;
         LogSettingsViewModel _item;
         string _auditFilePath;
+        private Guid _resourceSourceId;
+        private IResource _selectedAuditingSource;
+        private List<IResource> _auditingSources;
 
         public LogSettingsViewModel()
         {
-
         }
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IServer currentEnvironment)
@@ -76,48 +84,58 @@ namespace Dev2.Settings.Logging
             }
 
             CurrentEnvironment = currentEnvironment ?? throw new ArgumentNullException(nameof(currentEnvironment));
+            _resourceRepository = CurrentEnvironment.ResourceRepository;
             GetServerLogFileCommand = new DelegateCommand(OpenServerLogFile);
             GetStudioLogFileCommand = new DelegateCommand(OpenStudioLogFile);
             if (Enum.TryParse(logging.FileLoggerLogLevel, out LogLevel serverFileLogLevel))
             {
                 _serverFileLogLevel = serverFileLogLevel;
             }
+
             if (Enum.TryParse(logging.EventLogLoggerLogLevel, out LogLevel serverEventLogLevel))
             {
                 _serverEventLogLevel = serverEventLogLevel;
             }
+
             _serverLogMaxSize = logging.FileLoggerLogSize.ToString(CultureInfo.InvariantCulture);
             if (Enum.TryParse(Dev2Logger.GetFileLogLevel(), out LogLevel studioFileLogLevel))
             {
                 _studioFileLogLevel = studioFileLogLevel;
             }
+
             if (Enum.TryParse(Dev2Logger.GetEventLogLevel(), out LogLevel studioEventLogLevel))
             {
                 _studioEventLogLevel = studioEventLogLevel;
             }
-            _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
 
-            var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
-            if (auditingSettingsData is LegacySettingsData)
+            _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
+            var severSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+
+            if (severSettingsData.Sink == "LegacySettingsData")
             {
-                AuditFilePath = auditingSettingsData.AuditFilePath;
+                var legacySettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
+                AuditFilePath = legacySettingsData.AuditFilePath;
+                var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceName == "Default");
+                SelectedAuditingSource = selectedAuditingSource;
             }
+
+            if (severSettingsData.Sink == "AuditingSettingsData")
+            {
+                var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
+                var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == auditingSettingsData.LoggingDataSource.Value);
+                SelectedAuditingSource = selectedAuditingSource;
+            }
+
             IsDirty = false;
         }
 
         [ExcludeFromCodeCoverage]
         void OpenServerLogFile(object o)
         {
-            using (WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials })
+            using (WebClient client = new WebClient {Credentials = CurrentEnvironment.Connection.HubConnection.Credentials})
             {
                 var dialog = new ProgressDialog();
-                _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate
-                {
-                    dialog.Show();
-                }, delegate
-                {
-                    dialog.Close();
-                });
+                _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate { dialog.Show(); }, delegate { dialog.Close(); });
                 _progressDialogViewModel.StatusChanged("Server Log File", 0, 0);
                 _progressDialogViewModel.SubLabel = "Preparing to download Warewolf Server log file.";
                 dialog.DataContext = _progressDialogViewModel;
@@ -145,7 +163,7 @@ namespace Dev2.Settings.Logging
         }
 
         [ExcludeFromCodeCoverage]
-        void OpenStudioLogFile(object o)
+        static void OpenStudioLogFile(object o)
         {
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var logFile = Path.Combine(localAppDataFolder, "Warewolf", "Studio Logs", "Warewolf Studio.log");
@@ -171,8 +189,26 @@ namespace Dev2.Settings.Logging
 
             try
             {
-                var data = new LegacySettingsData() { AuditFilePath = AuditFilePath };
-                CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
+                if (_selectedAuditingSource.ResourceName == "Default")
+                {
+                    var data = new LegacySettingsData
+                    {
+                        AuditFilePath = AuditFilePath
+                    };
+                    CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
+                }
+                else
+                {
+                    var data = new AuditingSettingsData
+                    {
+                        LoggingDataSource = new NamedGuid
+                        {
+                            Name = _selectedAuditingSource.ResourceName,
+                            Value = _selectedAuditingSource.ResourceID
+                        }
+                    };
+                    CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
+                }
             }
             catch (Exception ex)
             {
@@ -186,6 +222,7 @@ namespace Dev2.Settings.Logging
 
             HasAuditFilePathMoved = true;
         }
+
         public bool HasAuditFilePathMoved { get; set; }
 
         [JsonIgnore]
@@ -204,16 +241,17 @@ namespace Dev2.Settings.Logging
             Item = Clone(model);
         }
 
-        public LogSettingsViewModel Clone(LogSettingsViewModel model)
+        private static LogSettingsViewModel Clone(LogSettingsViewModel model)
         {
             var resolver = new ShouldSerializeContractResolver();
-            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
+            var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings {ContractResolver = resolver});
             var clone = JsonConvert.DeserializeObject<LogSettingsViewModel>(ser);
             return clone;
         }
 
         public ICommand GetServerLogFileCommand { get; }
         public ICommand GetStudioLogFileCommand { get; }
+
         public LogLevel ServerEventLogLevel
         {
             get => _serverEventLogLevel;
@@ -224,6 +262,7 @@ namespace Dev2.Settings.Logging
                 OnPropertyChanged();
             }
         }
+
         public LogLevel StudioEventLogLevel
         {
             get => _studioEventLogLevel;
@@ -234,6 +273,7 @@ namespace Dev2.Settings.Logging
                 OnPropertyChanged();
             }
         }
+
         public LogLevel StudioFileLogLevel
         {
             get => _studioFileLogLevel;
@@ -276,7 +316,7 @@ namespace Dev2.Settings.Logging
                 }
                 else
                 {
-                    if (value.IsWholeNumber(out int val))
+                    if (StringExtension.IsWholeNumber(value, out int val))
                     {
                         IsDirty = !Equals(Item);
                         _serverLogMaxSize = value;
@@ -297,7 +337,7 @@ namespace Dev2.Settings.Logging
                 }
                 else
                 {
-                    if (value.IsWholeNumber(out int val))
+                    if (StringExtension.IsWholeNumber(value, out int val))
                     {
                         IsDirty = !Equals(Item);
                         _studioLogMaxSize = value;
@@ -316,6 +356,50 @@ namespace Dev2.Settings.Logging
                 _auditFilePath = value;
                 OnPropertyChanged();
             }
+        }
+
+        [JsonIgnore]
+        public IResource SelectedAuditingSource
+        {
+            get => _selectedAuditingSource;
+            set
+            {
+                IsDirty = !Equals(Item);
+                _selectedAuditingSource = value;
+                if (_selectedAuditingSource != null)
+                {
+                    ResourceSourceId = _selectedAuditingSource.ResourceID;
+                }
+
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public Guid ResourceSourceId
+        {
+            get => _resourceSourceId;
+            set
+            {
+                IsDirty = !Equals(Item);
+                _resourceSourceId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore] public List<IResource> AuditingSources => LoadAuditingSources();
+
+        private List<IResource> LoadAuditingSources()
+        {
+            var auditingSources = _resourceRepository.FindResourcesByType<IAuditingSource>(_currentEnvironment);
+            IResource defaultSource = new SqliteDBSource
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "Default"
+            };
+            auditingSources.Add(defaultSource);
+            _auditingSources = auditingSources;
+            return auditingSources;
         }
 
         public void UpdateHelpDescriptor(string helpText)
@@ -343,6 +427,7 @@ namespace Dev2.Settings.Logging
             equalsSeq &= int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize);
             equalsSeq &= int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
             equalsSeq &= Equals(_auditFilePath, other._auditFilePath);
+            equalsSeq &= Equals(_resourceSourceId, other._resourceSourceId);
             return equalsSeq;
         }
 

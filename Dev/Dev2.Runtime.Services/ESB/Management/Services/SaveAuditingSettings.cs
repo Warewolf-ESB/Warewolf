@@ -30,18 +30,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Save Auditing Settings Service", GlobalConstants.WarewolfInfo);
-                values.TryGetValue(Warewolf.Service.SaveAuditingSettings.AuditingSettings, out StringBuilder resourceDefinition);
+                values.TryGetValue(Warewolf.Service.SaveAuditingSettings.AuditingSettings, out StringBuilder settings);
                 values.TryGetValue(Warewolf.Service.SaveAuditingSettings.SinkType, out StringBuilder sinkType);
-                
-                if (sinkType.ToString() == typeof(AuditingSettingsData).Name.ToString())
+
+                if (sinkType.ToString() == "AuditingSettingsData")
                 {
-                    var updatedAuditingSettings = serializer.Deserialize<AuditingSettingsData>(resourceDefinition);
-                    //TODO: when the UI is developed this will be extended
+                    var updatedAuditingSettings = serializer.Deserialize<AuditingSettingsData>(settings);
+                    Config.Auditing.LoggingDataSource = updatedAuditingSettings.LoggingDataSource;
                     Config.Server.Sink = nameof(AuditingSettingsData);
                 }
                 else
                 {
-                    var updatedLegacySettings = serializer.Deserialize<LegacySettingsData>(resourceDefinition);
+                    var updatedLegacySettings = serializer.Deserialize<LegacySettingsData>(settings);
                     var auditsFilePath = updatedLegacySettings.AuditFilePath;
                     Config.Legacy.SaveLoggingPath(auditsFilePath);
                     Config.Server.Sink = nameof(LegacySettingsData);

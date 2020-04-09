@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
@@ -21,7 +22,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class ElasticsearchSource : Resource, IDisposable, IResourceSource, IElasticsearchSource
+    public class ElasticsearchSource : Resource, IDisposable, IResourceSource, IElasticsearchSource,IAuditingSource
     {
         const string DefaultPort = "9200";
         const string DefaultSearchIndex = "warewolflogs";
@@ -112,6 +113,7 @@ namespace Dev2.Data.ServiceModel
         public override bool IsResourceVersion => false;
 
         bool _disposed;
+        private IElasticsearchSource _elasticsearchSourceImplementation;
 
         public void Dispose()
         {

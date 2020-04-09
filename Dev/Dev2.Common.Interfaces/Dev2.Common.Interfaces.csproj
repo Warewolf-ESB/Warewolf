@@ -324,6 +324,7 @@
     <Compile Include="PluginServiceDefinition.cs" />
     <Compile Include="PopupController\IMessage.cs" />
     <Compile Include="RabbitMQ\IRabbitMQSourceModel.cs" />
+    <Compile Include="Resources\IAuditingSource.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
     <Compile Include="Scheduler\Interfaces\IClientSchedulerFactory.cs" />

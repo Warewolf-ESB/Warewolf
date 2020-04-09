@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
 
-            if (Config.Server.Sink == nameof(AuditingSettingsData))
+            if (Config.Server.Sink == "AuditingSettingsData")
             {
                 var settings = Config.Auditing.Get();
                 return serializer.SerializeToBuilder(settings);
