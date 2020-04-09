@@ -6,7 +6,8 @@ open Microsoft.FSharp.Text.Lexing
 open DataStorage
 open WarewolfParserInterop
 open CommonFunctions
-open System.Diagnostics.CodeAnalysis
+open Warewolf.Data
+open Warewolf.Exceptions
 
 // this method will given a language string return an AST based on FSLex and FSYacc
 let mutable ParseCache : Map<string, LanguageExpression> = Map.empty
@@ -44,7 +45,7 @@ let evalScalar (scalarName : ScalarIdentifier) (env : WarewolfEnvironment) =
     if env.Scalar.ContainsKey scalarName then (env.Scalar.[scalarName])
     else 
         raise 
-            (new Dev2.Common.Common.NullValueInVariableException(sprintf "Scalar value { %s } is NULL" scalarName, 
+            (new NullValueInVariableException(sprintf "Scalar value { %s } is NULL" scalarName, 
                                                                  scalarName))
 
 /// convert hte index type to a string
@@ -134,7 +135,7 @@ and jsonExpressionToString a acc =
 and evalRecordsSet (recset : RecordSetColumnIdentifier) (env : WarewolfEnvironment) = 
     if not (env.RecordSets.ContainsKey recset.Name) then 
         raise 
-            (new Dev2.Common.Common.NullValueInVariableException((sprintf "Variable { %s } is NULL." (recset.Name)), 
+            (new NullValueInVariableException((sprintf "Variable { %s } is NULL." (recset.Name)), 
                                                                  recset.Name))
     else 
         match recset.Index with
@@ -160,7 +161,7 @@ and evalRecordsSet (recset : RecordSetColumnIdentifier) (env : WarewolfEnvironme
 ///eval a recordset and also return the positions
 and evalRecordsSetWithPositions (recset : RecordSetColumnIdentifier) (env : WarewolfEnvironment) = 
     if not (env.RecordSets.ContainsKey recset.Name) then 
-        raise (new Dev2.Common.Common.NullValueInVariableException(recset.Index.ToString(), recset.Name))
+        raise (new NullValueInVariableException(recset.Index.ToString(), recset.Name))
     else 
         match recset.Index with
         | IntIndex a -> 
@@ -340,15 +341,15 @@ and evalDataSetExpression (env : WarewolfEnvironment) (update : int) (name : Rec
             let res = eval env update false (languageExpressionToString b) |> evalResultToString
             match b with
             | _ -> eval env update false (sprintf "[[%s(%s)]]" name.Name res)
-    else raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found", name.Name))
+    else raise (new NullValueInVariableException("Recordset not found", name.Name))
 
 ///overiding eval functions
 /// take a string then pasre it and call one of the child functions
 
 and eval (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : string) : WarewolfEvalResult = 
-    if lang.StartsWith(Dev2.Common.GlobalConstants.CalculateTextConvertPrefix) then
+    if lang.StartsWith(DataLayerConstants.CalculateTextConvertPrefix) then
         evalForCalculate env update lang
-    elif lang.StartsWith(Dev2.Common.GlobalConstants.AggregateCalculateTextConvertPrefix) then
+    elif lang.StartsWith(DataLayerConstants.AggregateCalculateTextConvertPrefix) then
        evalForCalculateAggregate env update lang
     else
         let EvalComplex (exp:LanguageExpression list) = 
@@ -414,7 +415,7 @@ and eval (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lang : 
         | ComplexExpression a -> EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a)
         | RecordSetNameExpression a when env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
         | JsonIdentifierExpression a -> evalJson env update shouldEscape buffer
-        | _ -> raise (new Dev2.Common.Common.NullValueInVariableException("variable not found",languageExpressionToString buffer))
+        | _ -> raise (new NullValueInVariableException("variable not found",languageExpressionToString buffer))
 ///convert a warewolf language expressiom to JsonPath
 and languageExpressionToJPath (lang : LanguageExpression) = 
     match lang with

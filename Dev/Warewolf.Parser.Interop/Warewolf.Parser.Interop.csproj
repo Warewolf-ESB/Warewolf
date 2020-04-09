@@ -40,32 +40,10 @@
     <CodeAnalysisRuleSet>WarewolfParserInterop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AssignValue.cs" />
     <Compile Include="WarewolfList.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
-      <Name>Dev2.Common.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
-      <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
-      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
-      <Name>Warewolf.Resource</Name>
-    </ProjectReference>
-  </ItemGroup>
+  
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
@@ -76,19 +54,18 @@
     <None Include="app.config" />
     <None Include="WarewolfParserInterop.ruleset" />
   </ItemGroup>
+  
   <ItemGroup>
-    <PackageReference Include="codecracker.CSharp">
-      <Version>1.1.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Google.Protobuf">
-      <Version>3.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
-    </PackageReference>
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+      <Name>Warewolf.Resource</Name>
+    </ProjectReference>
   </ItemGroup>
+  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
