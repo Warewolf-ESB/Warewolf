@@ -25,7 +25,7 @@ namespace Warewolf.Auditing.Drivers
     public class AuditQueryableElastic : AuditQueryable
     {
         private string _query;
-        private ElasticsearchSource _elasticsearchSource;
+        private readonly ElasticsearchSource _elasticsearchSource;
 
         public override string Query
         {
@@ -35,7 +35,7 @@ namespace Warewolf.Auditing.Drivers
 
         public AuditQueryableElastic()
         {
-            
+            _elasticsearchSource = new ElasticsearchSource();
         }
         public AuditQueryableElastic(string hostname)
         {
@@ -243,15 +243,17 @@ namespace Warewolf.Auditing.Drivers
                 {
                     ["match_all"] = new JObject()
                 };
-                jArray.Add(match_all);
+                _query = match_all.ToString();
             }
+            else
+            {
+                var objMust = new JObject();
+                objMust.Add("must", jArray);
 
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            _query = obj.ToString();
+                var obj = new JObject();
+                obj.Add("bool", objMust);
+                _query = obj.ToString();
+            }
         }
 
         private static IEnumerable<IAudit> AuditLogs(List<object> results, List<Audit> result)
