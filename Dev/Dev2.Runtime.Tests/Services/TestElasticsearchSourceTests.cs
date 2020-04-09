@@ -124,6 +124,7 @@ namespace Dev2.Tests.Runtime.Services
                 Name = "Name",
                 HostName = hostName,
                 Port = dependency.Container.Port,
+                SearchIndex =  "warewolftestlogs",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
             var testElasticsearchSource = new TestElasticsearchSource();
@@ -170,6 +171,7 @@ namespace Dev2.Tests.Runtime.Services
                 Port = dependency.Container.Port,
                 Username = "test",
                 Password =  "test",
+                SearchIndex =  "warewolftestlogs",
                 AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password
             };
             var testElasticsearchSource = new TestElasticsearchSource();
