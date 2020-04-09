@@ -136,8 +136,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// </summary>   
         [JsonIgnore]
         public string FilePath { get; set; }
-        [JsonIgnore]
-        public string Path => GetResourcePath(GlobalConstants.ServerWorkspaceID);
+
+        [JsonIgnore] public string Path => GetResourceFromUnknownWorkspacePath(); //GetResourcePath(GlobalConstants.ServerWorkspaceID);
         /// <summary>
         /// Gets or sets the author roles.
         /// </summary>
@@ -174,6 +174,31 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return ResourceName;
             }
             return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\", "").Replace(".xml", "").Replace(".bite", "") ?? "";
+        }
+
+        public string GetResourceFromUnknownWorkspacePath()
+        {
+            if (FilePath is null && IsReservedService)
+            {
+                return ResourceName;
+            }
+
+            if (FilePath is null)
+            {
+                return "";
+            }
+
+            var removeWorkspacePath = FilePath.Replace(EnvironmentVariables.WorkspacePath + "\\", "");
+            var workspaceIdEnd = removeWorkspacePath.IndexOf("\\", StringComparison.Ordinal);
+            var workspaceId = removeWorkspacePath.Substring(0, workspaceIdEnd);
+
+            var resources = removeWorkspacePath.Replace(workspaceId, "");
+            var resourceFile = resources.Replace("\\Resources\\", "");
+
+            var removeXml = resourceFile.Replace(".xml", "");
+            var removeBite = removeXml.Replace(".bite", "");
+
+            return removeBite;
         }
 
         public string GetSavePath()
