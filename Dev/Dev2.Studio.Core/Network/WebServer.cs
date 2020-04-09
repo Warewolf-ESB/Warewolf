@@ -30,7 +30,8 @@ namespace Dev2.Studio.Core.Network
         Xml,
         Json,
         API,
-        Tests
+        Tests,
+        Coverage,
     }
 
     public static class WebServer
@@ -168,8 +169,11 @@ namespace Dev2.Studio.Core.Network
                 case UrlType.Tests:
                     urlExtension = "tests";
                     break;
+                case UrlType.Coverage:
+                    urlExtension = "coverage";
+                    break;
                 default:
-                    throw new ArgumentOutOfRangeException("urlType");
+                    throw new ArgumentOutOfRangeException(nameof(urlType));
             }
 
             return urlExtension;

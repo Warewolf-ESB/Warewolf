@@ -46,6 +46,7 @@ namespace Warewolf.Studio.ViewModels
         readonly IExternalProcessExecutor _processExecutor;
         IServiceTestModel _selectedServiceTest;
         string _runAllTestsUrl;
+        string _runAllCoverageUrl;
         string _testPassingResult;
         ObservableCollection<IServiceTestModel> _tests;
         string _displayName;
@@ -83,6 +84,7 @@ namespace Warewolf.Studio.ViewModels
             PopupController = CustomContainer.Get<IPopupController>();
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
             RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowser, IsServerConnected);
+            RunAllTestCoverageInBrowserCommand = new DelegateCommand(RunAllCoverageInBrowser, IsServerConnected);
             RunAllTestsCommand = new DelegateCommand(RunAllTests, IsServerConnected);
             RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
             RunSelectedTestCommand = new DelegateCommand(RunSelectedTest, () => CanRunSelectedTest);
@@ -92,6 +94,7 @@ namespace Warewolf.Studio.ViewModels
             DeleteTestStepCommand = new DelegateCommand<IServiceTestStep>(DeleteTestStep);
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
             RunAllTestsUrl = resourceModel.GetWorkflowUri("", UrlType.Tests)?.ToString();
+            RunAllCoverageUrl = resourceModel.GetWorkflowUri("", UrlType.Coverage)?.ToString();
 
             UpdateHelpDescriptor(Resources.Languages.HelpText.ServiceTestGenericHelpText);
 
@@ -1834,6 +1837,11 @@ namespace Warewolf.Studio.ViewModels
             ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty, RunAllTestsUrl, _processExecutor);
         }
 
+        private void RunAllCoverageInBrowser()
+        {
+            ServiceTestCommandHandler.RunAllTestCoverageInBrowser(IsDirty, RunAllCoverageUrl, _processExecutor);
+        }
+
         void RunAllTests()
         {
             ServiceTestCommandHandler.RunAllTestsCommand(IsDirty, RealTests().Where(model => model.Enabled), ResourceModel, AsyncWorker);
@@ -2428,6 +2436,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _runAllTestsUrl = value;
                 OnPropertyChanged(() => RunAllTestsUrl);
+            }
+        }
+
+        public string RunAllCoverageUrl
+        {
+            get => _runAllCoverageUrl;
+            set
+            {
+                _runAllCoverageUrl = value;
+                OnPropertyChanged(() => RunAllCoverageUrl);
             }
         }
 
