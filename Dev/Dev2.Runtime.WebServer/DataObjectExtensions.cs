@@ -421,6 +421,9 @@ namespace Dev2.Runtime.WebServer
         {
             var result = new TestResults();
 
+            var _testCoverageCatalog = TestCoverageCatalog.Instance;
+            _testCoverageCatalog.ReloadAllReports();
+
             var selectedResources = catalog.GetResources(workspaceGuid)
                 .Where(resource => dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
 
@@ -445,12 +448,27 @@ namespace Dev2.Runtime.WebServer
                         var lastTask = ServiceTestExecutor.ExecuteTestAsync(resourcePath, userPrinciple, workspaceGuid,
                             serializer, dataObjectClone);
                         workflowTestTaskList.Add(lastTask);
+
+                        var report = _testCoverageCatalog.FetchReport(res.ResourceID, test.TestName);
+                        var lastTestCoverageRun = report?.LastRunDate;
+                        if (report is null || test.LastRunDate > lastTestCoverageRun)
+                        {
+                            _testCoverageCatalog.GenerateSingleTestCoverage(res.ResourceID, lastTask.Result);
+                        }
                     }
 
                     Task.WaitAll(workflowTestTaskList.ToArray());
                     foreach (var task in workflowTestTaskList)
                     {
                         workflowTestResults.Add(task.Result);
+                    }
+
+                    var workflowCoverageReport = _testCoverageCatalog.FetchReport(res.ResourceID, res.ResourceName);
+                    var lastWorkflowCoverageRun = workflowCoverageReport?.LastRunDate;
+                    var lastModifiedDate = System.IO.File.GetLastWriteTime(res.FilePath); //TODO: can we add LastRunDate to workflow set on save()? 
+                    if (workflowCoverageReport is null || lastModifiedDate > lastWorkflowCoverageRun)
+                    {
+                        _testCoverageCatalog.GenerateAllTestsCoverage(res.ResourceID, workflowTestResults.Results);
                     }
 
                     return workflowTestResults;

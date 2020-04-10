@@ -421,6 +421,7 @@ namespace Dev2.Runtime
         string ReportName { get; set; }
         Guid WorkflowId { get; }
         double CoveragePercentage { get; }
+        DateTime LastRunDate { get; set; }
     }
 
     public class ServiceTestCoverageModelTo : IServiceTestCoverageModelTo
@@ -438,6 +439,7 @@ namespace Dev2.Runtime
             _coverArgs =  args;
             OldReportName = args?.OldReportName;
             ReportName = args?.ReportName;
+            LastRunDate = DateTime.Now;
             _tests = tests;
             _workflow = CustomContainer.Get<IWorkflowWrapper>() ?? new WorkflowWrapper(workflowId);
 
@@ -470,6 +472,8 @@ namespace Dev2.Runtime
         public string ReportName { get; set; }
 
         public Guid WorkflowId => _workflow.WorkflowId;
+        
+        public DateTime LastRunDate { get; set; }
 
         public double CoveragePercentage
         {
