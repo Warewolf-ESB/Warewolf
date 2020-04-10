@@ -22,7 +22,6 @@ namespace Warewolf.UnitTestAttributes
         };
         private string SelectedHost = "";
         
-        static readonly string ElasticsearchServer = "t004124.premier.local";
         static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
@@ -296,8 +295,7 @@ namespace Warewolf.UnitTestAttributes
             }
             else
             {
-                UpdateSourcesConnectionStrings($"HostName=http://{ElasticsearchServer};UserName=test;Password=test;VirtualHost=/",
-                    knownServerSources);
+                throw new Exception("No fallback server exists for Elastic Search in a Docker container.");
             }
         }
         void InjectPostGreSQLContainer(bool EnableDocker)
