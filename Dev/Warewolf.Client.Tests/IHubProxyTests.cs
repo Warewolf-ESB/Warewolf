@@ -38,7 +38,8 @@ namespace Warewolf.Client.Tests
             // run test
             var resourceId = Guid.Parse("5d82c480-505e-48e9-9915-aca0293be30c");
             var request = new ResourceRequest<RabbitMQSource>(Guid.Empty, resourceId);
-            var task = proxy.ExecReq2<RabbitMQSource>(request);
+            // var task = proxy.ExecReq2<RabbitMQSource>(request);
+            var task = request.Execute(proxy);
             var resource = task.Result;
 
             Assert.IsTrue(resource.IsSource);

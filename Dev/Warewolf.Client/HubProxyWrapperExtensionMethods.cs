@@ -18,10 +18,10 @@ namespace Warewolf.Client
 {
     public static class HubProxyWrapperExtensionMethods
     {
-        public static Task<T> ExecReq3<T>(this IConnectedHubProxy connectedProxy, ICatalogRequest request, int maxRetries) where T : class, new()
+        public static Task<T> ExecReq3<T>(this IConnectedHubProxyWrapper connectedProxy, ICatalogRequest request, int maxRetries) where T : class, new()
         {
             return Task<T>.Factory.StartNew(() => {
-                int tries = 0;
+                var tries = 0;
                 do
                 {
                     try
@@ -94,7 +94,7 @@ namespace Warewolf.Client
                 });
         }
 
-        public static HubWatcher<T> Watch<T>(this IConnectedHubProxy proxy)
+        public static HubWatcher<T> Watch<T>(this IConnectedHubProxyWrapper proxy)
         {
             return proxy.Proxy.Watch<T>();
         }

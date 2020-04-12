@@ -13,4 +13,9 @@ namespace Warewolf.Data
     public class ChangeNotification : INotification
     {
     }
+
+    public class InitialChangeNotification : ChangeNotification
+    {
+
+    }
 }

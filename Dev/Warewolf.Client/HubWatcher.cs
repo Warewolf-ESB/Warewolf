@@ -27,7 +27,7 @@ namespace Warewolf.Client
                 if (tokens.Count > 0)
                 {
                     var o = tokens[0].ToObject<T>();
-                    OnChange?.Invoke(o);
+                    Received?.Invoke(o);
                 }
                 else
                 {
@@ -36,6 +36,6 @@ namespace Warewolf.Client
             };
         }
 
-        public event Action<T> OnChange;
+        public event Action<T> Received;
     }
 }

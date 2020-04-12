@@ -16,7 +16,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.SignalR.Wrappers;
 using Dev2.SignalR.Wrappers.New;
 using Warewolf.Client;
@@ -25,7 +24,7 @@ using Warewolf.Esb;
 
 namespace Warewolf.ClientConsole
 {
-    class Program
+    public static class Program
     {
         public static int Main(string[] args)
         {
@@ -49,23 +48,14 @@ namespace Warewolf.ClientConsole
             try
             {
                 var context = new Context(_options);
-                var esb = context.EsbProxy;
-
-                var t = esb.Watch<ChangeNotification>();
-                t.OnChange += changeNotification =>
-                {
-                    Console.WriteLine("Change notification received");
-                    _canExit.Set();
-                };
-                context.EsbProxy.Connection.Closed += () =>
-                {
-                    Console.WriteLine("connection closed");
-                    _canExit.Set();
-                };
+                var esbProxy = context.EsbProxy;
+                RegisterForEventsOnServerConnection(esbProxy, _canExit);
                 var connectedTask = context.EnsureConnected();
                 connectedTask.Wait();
-                var joinRequest = context.NewClusterJoinRequest(Config.Cluster.Key);
-                var joinResponse = context.EsbProxy.ExecReq3<ClusterJoinResponse>(joinRequest, 3);
+
+                esbProxy.Connection.Closed += () => { Console.WriteLine("connection closed"); _canExit.Set(); };
+
+                var joinResponse = RequestRegistrationForChangeNotifications(esbProxy);
                 joinResponse.Wait();
                 var response = joinResponse.Result;
 
@@ -79,7 +69,7 @@ namespace Warewolf.ClientConsole
             return 0;
         }
 
-        private void WriteExceptionToConsole(Exception t1Exception)
+        private static void WriteExceptionToConsole(Exception t1Exception)
         {
             if (t1Exception is null)
             {
@@ -88,29 +78,48 @@ namespace Warewolf.ClientConsole
             WriteExceptionToConsole(t1Exception.InnerException);
             Console.WriteLine(t1Exception.Message);
         }
+
+
+        private static Task<ClusterJoinResponse> RequestRegistrationForChangeNotifications(IConnectedHubProxyWrapper esbProxy)
+        {
+            var joinRequest = new ClusterJoinRequest(Config.Cluster.Key);
+            return esbProxy.ExecReq3<ClusterJoinResponse>(joinRequest, 3);
+        }
+        private static void RegisterForEventsOnServerConnection(IConnectedHubProxyWrapper esbProxy, ManualResetEvent canExit)
+        {
+            var t = esbProxy.Watch<ChangeNotification>();
+            t.Received += changeNotification =>
+            {
+                // expect an InitialChangeNotification to confirm that we are now following the leader
+                // should timeout
+
+                Console.WriteLine("Change notification received");
+                // TODO: trigger a git sync in c:\ProgramData\Warewolf if there is an active git source
+                // or?
+                // alternatively we could let this program exit and then use the process monitor in warewolf server
+                // start the sync, that way we could use a singleton inside the server to ensure no other processes try to
+                // do the same thing. This would need some way to know that there was in fact a change notification
+                canExit.Set();
+            };
+        }
     }
 
     internal class Context
     {
-        private IConnectedHubProxy _hubProxy;
-        private HubConnectionWrapper _hubConnection;
+        private IConnectedHubProxyWrapper _hubProxy;
+        private readonly HubConnectionWrapper _hubConnection;
 
-        public Context(Args args)
+        public Context(IArgs args)
         {
             ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
 
             _hubConnection = new HubConnectionWrapper(args.ServerEndpoint.ToString()) { Credentials = System.Net.CredentialCache.DefaultNetworkCredentials};
         }
-        static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
+        private static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
 
+        public IConnectedHubProxyWrapper EsbProxy => _hubProxy ?? (_hubProxy = new ConnectedHubProxy { Connection = _hubConnection, Proxy = _hubConnection.CreateHubProxy("esb") });
 
-        public IConnectedHubProxy EsbProxy
-        {
-            get => _hubProxy ?? (_hubProxy = new ConnectedHubProxy { Connection = _hubConnection, Proxy = _hubConnection.CreateHubProxy("esb") });
-            set => _hubProxy = value;
-        }
-
-        public ICatalogRequest NewResourceRequest<T>(Guid serverWorkspaceId, Guid resourceId)
+        public ICatalogRequest NewResourceRequest<T>(Guid serverWorkspaceId, Guid resourceId) where T : class, new()
         {
             if (_hubConnection.State == ConnectionStateWrapped.Disconnected)
             {
@@ -127,11 +136,6 @@ namespace Warewolf.ClientConsole
         public Task EnsureConnected()
         {
             return _hubConnection.EnsureConnected(-1);
-        }
-
-        public ICatalogRequest NewClusterJoinRequest(string myKey)
-        {
-            return new ClusterJoinRequest(myKey);
         }
     }
 }

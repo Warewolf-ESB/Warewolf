@@ -10,12 +10,14 @@
 
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Communication;
+using Dev2.SignalR.Wrappers;
 using Warewolf.Esb;
 
 namespace Warewolf.Client
 {
-    public class ResourceRequest<T> : ICatalogRequest
+    public class ResourceRequest<T> : IExecutableRequest<T>, ICatalogRequest where T : class, new()
     {
         private readonly Guid _workspaceId;
         private readonly Guid _resourceId;
@@ -35,6 +37,16 @@ namespace Warewolf.Client
             servicePayload.AddArgument(Service.GetResourceById.WorkspaceId, new StringBuilder(_workspaceId.ToString()));
             servicePayload.AddArgument(Service.GetResourceById.ResourceId, new StringBuilder(_resourceId.ToString()));
             return servicePayload;
+        }
+
+        public Task<T> Execute(IHubProxyWrapper hubProxy)
+        {
+            return hubProxy.ExecReq2<T>(this);
+        }
+
+        public Task<T> Execute(IConnectedHubProxyWrapper hubProxy, int maxRetries)
+        {
+            return hubProxy.ExecReq3<T>(this, maxRetries);
         }
     }
 }

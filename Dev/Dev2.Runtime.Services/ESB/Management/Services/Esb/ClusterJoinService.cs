@@ -16,7 +16,6 @@ using Dev2.Common.Serializers;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Network;
 using Dev2.Workspaces;
-using ServiceStack.Common;
 using Warewolf.Client;
 using Warewolf.Data;
 using Warewolf.Esb;
@@ -48,7 +47,8 @@ namespace Dev2.Runtime.ESB.Management.Services.Esb
             if (key == Config.Cluster.Key)
             {
                 internalExecutionContext.RegisterAsClusterEventListener();
-                ClusterDispatcher.Instance.Write("woot"); // this should reach the client because it was registered on the line before
+                // this should reach the client because it was registered on the line before
+                ClusterDispatcher.Instance.Write(new InitialChangeNotification());
                 return new ClusterJoinResponse
                 {
                     Token = Guid.NewGuid()

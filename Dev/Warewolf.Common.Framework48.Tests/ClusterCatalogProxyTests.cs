@@ -50,9 +50,8 @@ namespace Warewolf.Tests
             var mockHub = new Mock<IHubProxyWrapper>();
             mockHub.Setup(o => o.Subscribe(nameof(ChangeNotification))).Returns(mockSubscription.Object);
             var hub = mockHub.Object;
-            var req = new EventRequest<ChangeNotification>(GlobalConstants.ServerWorkspaceID);
             var watcher = hub.Watch<ChangeNotification>();
-            watcher.OnChange += notification =>
+            watcher.Received += notification =>
             {
                 Assert.IsNotNull(notification, "cluster notifications should not be null");
                 notified = true;

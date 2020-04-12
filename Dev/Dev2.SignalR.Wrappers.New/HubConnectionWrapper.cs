@@ -18,7 +18,7 @@ using Warewolf;
 
 namespace Dev2.SignalR.Wrappers.New
 {
-    public class ConnectedHubProxy : IConnectedHubProxy
+    public class ConnectedHubProxy : IConnectedHubProxyWrapper
     {
         public IHubConnectionWrapper Connection { get; set; }
         public IHubProxyWrapper Proxy { get; set; }

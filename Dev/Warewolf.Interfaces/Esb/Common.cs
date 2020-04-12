@@ -8,9 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Dev2.SignalR.Wrappers;
 
 namespace Warewolf.Esb
 {
@@ -40,5 +41,11 @@ namespace Warewolf.Esb
 
     public interface ICatalogSubscribeRequest
     {
+    }
+
+    public interface IExecutableRequest<T> where T : class, new()
+    {
+        Task<T> Execute(IHubProxyWrapper hubProxy);
+        Task<T> Execute(IConnectedHubProxyWrapper hubProxy, int maxRetries);
     }
 }
