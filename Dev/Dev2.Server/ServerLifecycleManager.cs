@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,7 +22,6 @@ using Dev2.Data;
 using Dev2.Diagnostics.Debug;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
-using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
@@ -37,7 +35,6 @@ using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using System.Reflection;
-using Dev2;
 using System.Threading.Tasks;
 using Warewolf.Trigger.Queue;
 using Warewolf.OS;
@@ -65,8 +62,9 @@ namespace Dev2
         public IStartWebServer StartWebServer { get; set; }
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
         public IProcessMonitor QueueWorkerMonitor { get; set; } = new NullProcessMonitor();
-        public IClusterMonitor ClusterMonitor { get; set; } = new ClusterMonitor();
+        public IClusterMonitor ClusterMonitor { get; } = new ClusterMonitor();
         public IProcessMonitor LoggingServiceMonitor { get; set; } = new NullProcessMonitor();
+        public IPauseHelper PauseHelper { get; } = new PauseHelper();
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -94,16 +92,16 @@ namespace Dev2
     public sealed class ServerLifecycleManager : IServerLifecycleManager
     {
         public bool InteractiveMode { get; set; } = true;
-        IServerEnvironmentPreparer _serverEnvironmentPreparer;
-        private IDirectory _startUpDirectory;
-        private IResourceCatalogFactory _startupResourceCatalogFactory;
-        bool _isDisposed;
+        private IServerEnvironmentPreparer _serverEnvironmentPreparer;
+        private readonly IDirectory _startUpDirectory;
+        private readonly IResourceCatalogFactory _startupResourceCatalogFactory;
+        private bool _isDisposed;
 
-        Timer _timer;
-        IStartWebServer _startWebServer;
-        readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
-        readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
-        IIpcClient _ipcClient;
+        private Timer _timer;
+        private IStartWebServer _startWebServer;
+        private readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
+        private readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
+        private IIpcClient _ipcClient;
         
         private ILoadResources _loadResources;
         private readonly IAssemblyLoader _assemblyLoader;
@@ -116,7 +114,6 @@ namespace Dev2
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
         {
-            
         }
 
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
@@ -125,6 +122,7 @@ namespace Dev2
             _writer = startupConfiguration.Writer;
             StartLoggingService(startupConfiguration);
 
+            _pauseHelper = startupConfiguration.PauseHelper;
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
             _startUpDirectory = startupConfiguration.Directory;
             _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
@@ -173,15 +171,12 @@ namespace Dev2
         /// NOTE: This must return a task as in Windows Server 2008 and Windows Server 2012 there is an issue
         /// with the WMI Performance Adapter that causes it to prevent the Warewolf Server Service to need a double restart.
         /// </summary>
-        /// <param name="initWorkers">Initilization Workers</param>
+        /// <param name="initWorkers">Initialization Workers</param>
         /// <returns>A Task that starts up the Warewolf Server.</returns>
         public Task Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
-            return Task.Run(() =>
-            {
-                LoadPerformanceCounters();
-
-            }).ContinueWith((t) =>
+            return Task.Run(LoadPerformanceCounters)
+                       .ContinueWith((t) =>
             {
                 void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
                 {
@@ -267,10 +262,10 @@ namespace Dev2
                 Dispose();
             }
 
-            _writer.Write($"Exiting with exitcode {result}");
+            _writer.Write($"Exiting with exit code {result}");
         }
 
-        internal void CleanupServer()
+        private void CleanupServer()
         {
             try
             {
@@ -310,7 +305,7 @@ namespace Dev2
             GC.SuppressFinalize(this);
         }
 
-        void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
 
             if (disposing)
@@ -324,14 +319,8 @@ namespace Dev2
                 _timer = null;
             }
 
-            if (_pulseLogger != null)
-            {
-                _pulseLogger.Dispose();
-            }
-            if (_pulseTracker != null)
-            {
-                _pulseTracker.Dispose();
-            }
+            _pulseLogger?.Dispose();
+            _pulseTracker?.Dispose();
 
             if (_serverEnvironmentPreparer != null)
             {
@@ -342,21 +331,21 @@ namespace Dev2
             _startWebServer = null;
         }
 
-        static void LoadPerformanceCounters()
+        private static void LoadPerformanceCounters()
         {
             try
             {
                 var perf = new PerformanceCounterPersistence(new FileWrapper());
                 var register = new WarewolfPerformanceCounterRegister(perf.LoadOrCreate(), perf.LoadOrCreateResourcesCounters(perf.DefaultResourceCounters));
-                var locater = new WarewolfPerformanceCounterManager(register.Counters, register.ResourceCounters, register, perf);
-                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ExecutionErrors, "workflow1");
-                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.AverageExecutionTime, "workflow1");
-                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
-                locater.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.RequestsPerSecond, "workflow1");
+                var locator = new WarewolfPerformanceCounterManager(register.Counters, register.ResourceCounters, register, perf);
+                locator.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ExecutionErrors, "workflow1");
+                locator.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.AverageExecutionTime, "workflow1");
+                locator.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.ConcurrentRequests, "workflow1");
+                locator.CreateCounter(Guid.Parse("a64fc548-3045-407d-8603-2a7337d874a6"), WarewolfPerfCounterType.RequestsPerSecond, "workflow1");
 
 
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(locater);
-                CustomContainer.Register<IPerformanceCounterRepository>(locater);
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(locator);
+                CustomContainer.Register<IPerformanceCounterRepository>(locator);
             }
             catch (Exception err)
             {
