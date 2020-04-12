@@ -83,7 +83,8 @@ namespace Warewolf.ClientConsole
         private static Task<ClusterJoinResponse> RequestRegistrationForChangeNotifications(IConnectedHubProxyWrapper esbProxy)
         {
             var joinRequest = new ClusterJoinRequest(Config.Cluster.Key);
-            return esbProxy.ExecReq3<ClusterJoinResponse>(joinRequest, 3);
+            //return esbProxy.ExecReq3<ClusterJoinResponse>(joinRequest, 3);
+            return joinRequest.Execute(esbProxy, 3);
         }
         private static void RegisterForEventsOnServerConnection(IConnectedHubProxyWrapper esbProxy, ManualResetEvent canExit)
         {
