@@ -45,7 +45,7 @@ namespace Dev2.Runtime.WebServer
                 }
                 else if (coverageObject.ReturnType == EmitionTypes.Cover)
                 {
-                    formatter = coverageObject.RunCoverageAndReturnHTML(testCoverageCatalog, resourceCatalog, workspaceGuid, serializer, out executePayload);
+                    formatter = coverageObject.RunCoverageAndReturnHTML(testCoverageCatalog, resourceCatalog, workspaceGuid, out executePayload);
                 }
                 else
                 {

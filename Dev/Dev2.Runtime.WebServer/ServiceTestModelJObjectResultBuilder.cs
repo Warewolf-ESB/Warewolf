@@ -1,8 +1,7 @@
-#pragma warning disable
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -10,14 +9,13 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.WebServer
 {
-    static class ServiceTestModelJObjectResultBuilder
+    internal static class ServiceTestModelJObjectResultBuilder
     {
         public static JObject BuildTestResultJSONForWebRequest(this IServiceTestModelTO result)
         {
@@ -61,31 +59,37 @@ namespace Dev2.Runtime.WebServer
 
         public static JObject BuildTestResultJSONForWebRequest(this IServiceTestCoverageModelTo report)
         {
-            var flattenedNodes = new List<ISingleTestNodesCovered>(); 
-            report.AllTestNodesCovered.ForEach(o => o.ForEach(oo => flattenedNodes.Add(oo)));
-
-            var resObj = new JObject { { "Report Name", report.ReportName } };
-            resObj.Add("OldReportName", report.OldReportName);
-            resObj.Add("WorkflowId", report.WorkflowId);
-            resObj.Add("CoveragePercentage", Math.Round(report.CoveragePercentage * 100));
-            resObj.Add("AllTestNodesCovered", new JArray(flattenedNodes.Select(node => node.BuildTestResultJSONForWebRequest())));
+            var resObj = new JObject
+            {
+                {"Report Name", report.ReportName},
+                {"OldReportName", report.OldReportName},
+                {"WorkflowId", report.WorkflowId},
+                {"CoveragePercentage", Math.Round(report.CoveragePercentage * 100)},
+                {
+                    "AllTestNodesCovered",
+                    new JArray(report.AllTestNodesCovered.Select(node => node.BuildTestResultJSONForWebRequest()))
+                }
+            };
 
             return resObj;
         }
 
-        public static JObject BuildTestResultJSONForWebRequest(this ISingleTestNodesCovered report)
+        private static JObject BuildTestResultJSONForWebRequest(this ISingleTestNodesCovered report)
         {
             var resObj = new JObject { { "TestNodesCovered", new JArray(report.TestNodesCovered.Select(o => o.BuildTestResultJSONForWebRequest())) } };
 
             return resObj;
         }
 
-        public static JObject BuildTestResultJSONForWebRequest(this IWorkflowNode report)
+        private static JObject BuildTestResultJSONForWebRequest(this IWorkflowNode report)
         {
-            var resObj = new JObject { { "Node Name", report.StepDescription } };
-            resObj.Add("ActivityID", report.ActivityID);
-            resObj.Add("UniqueID", report.UniqueID);
-            resObj.Add("MockSelected", report.MockSelected);
+            var resObj = new JObject
+            {
+                {"Node Name", report.StepDescription},
+                {"ActivityID", report.ActivityID},
+                {"UniqueID", report.UniqueID},
+                {"MockSelected", report.MockSelected}
+            };
 
             return resObj;
         }
