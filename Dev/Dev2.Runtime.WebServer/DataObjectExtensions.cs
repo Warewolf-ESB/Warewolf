@@ -122,15 +122,19 @@ namespace Dev2.Runtime.WebServer
             }
 
             var isCover = typeOf.StartsWith("coverage", StringComparison.InvariantCultureIgnoreCase);
-            var isCoverJson = typeOf.StartsWith("coverage.json", StringComparison.InvariantCultureIgnoreCase);
-            if (isCover)
+            var isCoverJson = typeOf.StartsWith("json", StringComparison.InvariantCultureIgnoreCase);
+            if (isCoverJson || isCover)
             {
-                dataObject.ReturnType = EmitionTypes.Cover;
-            }
+                if (isCover)
+                {
+                    dataObject.ReturnType = EmitionTypes.Cover;
+                }
 
-            if (isCoverJson)
-            {
-                dataObject.ReturnType = EmitionTypes.CoverJson;
+                if (isCoverJson)
+                {
+                    dataObject.ReturnType = EmitionTypes.CoverJson;
+                    serviceName = _originalServiceName.Substring(0, _originalServiceName.LastIndexOf(".coverage.json", StringComparison.Ordinal));
+                }
             }
 
             if (isApi)
@@ -463,10 +467,10 @@ namespace Dev2.Runtime.WebServer
                         workflowTestResults.Add(task.Result);
                     }
 
-                    var workflowCoverageReport = _testCoverageCatalog.FetchReport(res.ResourceID, res.ResourceName);
+                    /*var workflowCoverageReport = _testCoverageCatalog.FetchReport(res.ResourceID, res.ResourceName);
                     var lastWorkflowCoverageRun = workflowCoverageReport?.LastRunDate;
                     var lastModifiedDate = System.IO.File.GetLastWriteTime(res.FilePath); //TODO: can we add LastRunDate to workflow set on save()? 
-                    if (workflowCoverageReport is null || lastModifiedDate > lastWorkflowCoverageRun)
+                    if (workflowCoverageReport is null || lastModifiedDate > lastWorkflowCoverageRun)*/
                     {
                         _testCoverageCatalog.GenerateAllTestsCoverage(res.ResourceID, workflowTestResults.Results);
                     }
@@ -597,7 +601,7 @@ namespace Dev2.Runtime.WebServer
                             var nodes = new List<IWorkflowNode>();
                             workflowReport.AllTestNodesCovered.ForEach(c => c.ForEach(o => o.TestNodesCovered.ForEach(node => nodes.Add(node))));
 
-                            var coveredNodes = nodes.GroupBy(n => n.UniqueID).Select(o => o.FirstOrDefault()).ToList();
+                            var coveredNodes = nodes.GroupBy(n => n.ActivityID).Select(o => o.FirstOrDefault()).ToList();
 
                             var workflow = new WorkflowWrapper(oo.ResourceID);
 
