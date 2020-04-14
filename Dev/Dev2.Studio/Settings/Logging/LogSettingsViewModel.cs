@@ -70,12 +70,8 @@ namespace Dev2.Settings.Logging
         string _auditFilePath;
         private Guid _resourceSourceId;
         private IResource _selectedAuditingSource;
-        private List<IResource> _auditingSources;
         private bool _isLegacy;
 
-        public LogSettingsViewModel()
-        {
-        }
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IServer currentEnvironment)
         {
@@ -409,7 +405,6 @@ namespace Dev2.Settings.Logging
                 ResourceName = "Default"
             };
             auditingSources.Add(defaultSource);
-            _auditingSources = auditingSources;
             return auditingSources;
         }
 

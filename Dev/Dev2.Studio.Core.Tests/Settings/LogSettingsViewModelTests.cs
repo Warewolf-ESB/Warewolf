@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Data.ServiceModel;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
 using Dev2.Studio.Interfaces;
@@ -32,6 +33,34 @@ namespace Dev2.Core.Tests.Settings
     [TestCategory("Studio Settings Core")]
     public class LogSettingsViewModelTests
     {
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(LogSettingsViewModel))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void LogSettingsViewModel_Constructor_Equals_Null_ReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = CreateLogSettingViewModel("AuditingSettingsData");
+            var logSettingsViewModel2 = CreateLogSettingViewModel("AuditingSettingsData");
+
+            //------------Execute Test---------------------------
+            Assert.IsFalse(viewModel.Equals(logSettingsViewModel2));
+            //------------Assert Results-------------------------
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(LogSettingsViewModel))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void LogSettingsViewModel_Constructor_Equals_NotNull_ReturnTrue()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = CreateLogSettingViewModel("AuditingSettingsData");
+            var logSettingsViewModel2 = CreateLogSettingViewModel("AuditingSettingsData");
+
+            //------------Execute Test---------------------------
+            Assert.IsTrue(viewModel.Equals(logSettingsViewModel2));
+            //------------Assert Results-------------------------
+        }
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogSettingsViewModel))]
@@ -288,7 +317,32 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsFalse(logSettingsViewModel.CanEditLogSettings);
             Assert.IsFalse(logSettingsViewModel.CanEditStudioLogSettings);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(LogSettingsViewModel))]
+        public void LogSettingsViewModel_IsLegacy_Construct_IsTrue()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel("LegacySettingsData");
 
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(logSettingsViewModel.IsLegacy);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(LogSettingsViewModel))]
+        public void LogSettingsViewModel_IsLegacy_Construct_IsFalse()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
+
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(logSettingsViewModel.IsLegacy);
+        }
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
@@ -356,11 +410,23 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
-
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(LogSettingsViewModel))]
+        public void LogSettingsViewModel_Save()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel("LegacySettingsData");
+            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE", EventLogLoggerLogLevel = "DEBUG" };
+            //------------Execute Test---------------------------
+            logSettingsViewModel.AuditFilePath = @"C:\ProgramData\Warewolf\Audits";
+            //------------Assert Results-------------------------
+            logSettingsViewModel.Save(loggingSettingsTo);
+        }
         static LogSettingsViewModel CreateLogSettingViewModel(string sink)
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
-            var loggingSettingsTo = new LoggingSettingsTo {FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE"};
+            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE", EventLogLoggerLogLevel = "DEBUG" };
 
             var _resourceRepo = new Mock<IResourceRepository>();
             var env = new Mock<IServer>();
@@ -370,9 +436,10 @@ namespace Dev2.Core.Tests.Settings
                 Sink = sink
             };
             _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
+            var selectedAuditingSourceId = Guid.NewGuid();
             if (sink == "LegacySettingsData")
             {
-                var legacySettingsData = new LegacySettingsData() {AuditFilePath = "somePath"};
+                var legacySettingsData = new LegacySettingsData() { AuditFilePath = "somePath" };
                 _resourceRepo.Setup(res => res.GetAuditingSettings<LegacySettingsData>(env.Object)).Returns(legacySettingsData);
             }
             else
@@ -380,19 +447,18 @@ namespace Dev2.Core.Tests.Settings
                 var auditingSettingsData = new AuditingSettingsData
                 {
                     Endpoint = "ws://127.0.0.1:5000/ws",
-                    LoggingDataSource = new NamedGuid {Name = "Auditing Data Source", Value = Guid.Empty,},
+                    LoggingDataSource = new NamedGuid { Name = "Auditing Data Source", Value = selectedAuditingSourceId },
                 };
                 _resourceRepo.Setup(res => res.GetAuditingSettings<AuditingSettingsData>(env.Object)).Returns(auditingSettingsData);
-            }
-
-            var selectedAuditingSourceId = Guid.NewGuid();
-            var mockAuditingSource = new Mock<IResource>();
-            mockAuditingSource.Setup(source => source.ResourceID).Returns(selectedAuditingSourceId);
-            var auditingSources = new Mock<IResource>();
-            var expectedList = new List<IResource>
+            }           
+            IResource mockAuditingSource = new ElasticsearchSource
             {
-                mockAuditingSource.Object, auditingSources.Object
+                ResourceID = selectedAuditingSourceId,
+                ResourceName = "Auditing Data Source"
             };
+            var expectedList = new List<IResource>();
+            expectedList.Add(mockAuditingSource);
+
             _resourceRepo.Setup(resourceRepository => resourceRepository.FindResourcesByType<IAuditingSource>(env.Object)).Returns(expectedList);
 
             env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
