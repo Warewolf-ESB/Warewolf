@@ -491,8 +491,8 @@ namespace Dev2.Runtime
         {
             var workflowNodes = _workflow.GetAllWorkflowNodes();
 
-            var groupedByUniqueId = _coveredNodes.GroupBy(i => i.UniqueID).Select(o => o.FirstOrDefault()).Where(o => o.MockSelected is false);
-            double coveredNodes = groupedByUniqueId.Select(u => u.UniqueID).Intersect(workflowNodes.Select(o => o.UniqueID)).Count();
+            var groupedByUniqueId = _coveredNodes.GroupBy(i => i.ActivityID).Select(o => o.FirstOrDefault()).Where(o => o.MockSelected is false);
+            double coveredNodes = groupedByUniqueId.Select(u => u.ActivityID).Intersect(workflowNodes.Select(o => o.UniqueID)).Count();
 
             double totalNodes = workflowNodes.Count;
 
