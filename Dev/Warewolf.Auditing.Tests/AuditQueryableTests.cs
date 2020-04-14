@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Warewolf.Auditing.Drivers;
 using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
@@ -51,6 +52,7 @@ namespace Warewolf.Auditing.Tests
             };
 
             var auditQueryable = GetAuditQueryable("AuditingSettingsData",connstring);
+            Task.Delay(500).Wait();
             var results = auditQueryable.QueryLogData(query).ToList();
             Assert.IsNotNull(results);
             Assert.IsTrue(auditQueryable is AuditQueryableElastic);
