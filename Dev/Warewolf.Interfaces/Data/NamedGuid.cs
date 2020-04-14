@@ -92,15 +92,6 @@ namespace Warewolf.Data
             }
             return Equals((NamedGuid)obj);
         }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((_name?.GetHashCode() ?? 0) * 397) ^ (_value.GetHashCode());
-            }
-        }
-
         public NamedGuid Clone()
         {
             return new NamedGuid
