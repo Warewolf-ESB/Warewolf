@@ -22,7 +22,7 @@ using Warewolf.Triggers;
 
 namespace Warewolf.Auditing.Drivers
 {
-    public class AuditQueryableElastic : AuditQueryable
+    public class AuditQueryableElastic : AuditQueryable, IDisposable
     {
         private string _query;
         private readonly ElasticsearchSource _elasticsearchSource;
@@ -37,7 +37,7 @@ namespace Warewolf.Auditing.Drivers
         {
             _elasticsearchSource = new ElasticsearchSource();
         }
-        public AuditQueryableElastic(string hostname,string searchIndex)
+        public AuditQueryableElastic(string hostname, string searchIndex)
         {
             _elasticsearchSource = new ElasticsearchSource();
             _elasticsearchSource.HostName = hostname;
@@ -77,10 +77,10 @@ namespace Warewolf.Auditing.Drivers
                 {
                     if (entry.Key == "fields")
                     {
-                        foreach (var fields in (Dictionary<string, object>) entry.Value)
+                        foreach (var fields in (Dictionary<string, object>)entry.Value)
                         {
                             var executionHistory = new ExecutionHistory();
-                            foreach (var items in (Dictionary<string, object>) fields.Value)
+                            foreach (var items in (Dictionary<string, object>)fields.Value)
                             {
                                 if (items.Value != null)
                                 {
@@ -118,7 +118,7 @@ namespace Warewolf.Auditing.Drivers
         private static ExecutionInfo ExecutionInfo(KeyValuePair<string, object> items)
         {
             var executionInfo = new ExecutionInfo();
-            foreach (var infoItem in (Dictionary<string, object>) items.Value)
+            foreach (var infoItem in (Dictionary<string, object>)items.Value)
             {
                 if (infoItem.Value != null)
                 {
@@ -131,7 +131,7 @@ namespace Warewolf.Auditing.Drivers
                             executionInfo.CustomTransactionID = infoItem.Value.ToString();
                             break;
                         case "Success":
-                            executionInfo.Success = items.Value is QueueRunStatus ? (QueueRunStatus) items.Value : QueueRunStatus.Success;
+                            executionInfo.Success = items.Value is QueueRunStatus ? (QueueRunStatus)items.Value : QueueRunStatus.Success;
                             break;
                         case "EndDate":
                             executionInfo.EndDate = DateTime.Parse(infoItem.Value.ToString());
@@ -267,10 +267,10 @@ namespace Warewolf.Auditing.Drivers
                     {
                         if (entry.Key == "fields")
                         {
-                            foreach (var fields in (Dictionary<string, object>) entry.Value)
+                            foreach (var fields in (Dictionary<string, object>)entry.Value)
                             {
                                 var auditHistory = new Audit();
-                                foreach (var items in (Dictionary<string, object>) fields.Value)
+                                foreach (var items in (Dictionary<string, object>)fields.Value)
                                 {
                                     if (items.Value != null)
                                     {
@@ -327,6 +327,7 @@ namespace Warewolf.Auditing.Drivers
             }
             catch (Exception)
             {
+                throw new Exception("Invalid Data Returned");
             }
 
             return result;
@@ -360,6 +361,10 @@ namespace Warewolf.Auditing.Drivers
                 return sources;
             }
         }
-        
+
+        public void Dispose()
+        {
+            _elasticsearchSource.Dispose();
+        }
     }
 }
