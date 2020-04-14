@@ -192,7 +192,7 @@ namespace Dev2.Runtime.WebServer
 
         private static bool IsNodeCovered(List<IWorkflowNode> coveredNodes, IWorkflowNode node)
         {
-            return coveredNodes.Any(o => o.UniqueID == node.UniqueID);
+            return coveredNodes.Any(o => o.ActivityID == node.UniqueID);
         }
     }
 }

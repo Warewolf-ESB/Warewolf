@@ -61,22 +61,25 @@ namespace Dev2.Runtime.WebServer
 
         public static JObject BuildTestResultJSONForWebRequest(this IServiceTestCoverageModelTo report)
         {
+            var flattenedNodes = new List<ISingleTestNodesCovered>(); 
+            report.AllTestNodesCovered.ForEach(o => o.ForEach(oo => flattenedNodes.Add(oo)));
+
             var resObj = new JObject { { "Report Name", report.ReportName } };
             resObj.Add("OldReportName", report.OldReportName);
             resObj.Add("WorkflowId", report.WorkflowId);
             resObj.Add("CoveragePercentage", Math.Round(report.CoveragePercentage * 100));
-            resObj.Add("AllTestNodesCovered", new JArray(report.AllTestNodesCovered.Select(o1 => o1.Select(oo => oo.BuildTestResultJSONForWebRequest()))));
+            resObj.Add("AllTestNodesCovered", new JArray(flattenedNodes.Select(node => node.BuildTestResultJSONForWebRequest())));
 
             return resObj;
         }
 
         public static JObject BuildTestResultJSONForWebRequest(this ISingleTestNodesCovered report)
         {
-            var resObj = new JObject { { "Report Name", report.TestName } };
-            resObj.Add("OldReportName", new JArray(report.TestNodesCovered.Select(o => o.BuildTestResultJSONForWebRequest())));
+            var resObj = new JObject { { "TestNodesCovered", new JArray(report.TestNodesCovered.Select(o => o.BuildTestResultJSONForWebRequest())) } };
 
             return resObj;
         }
+
         public static JObject BuildTestResultJSONForWebRequest(this IWorkflowNode report)
         {
             var resObj = new JObject { { "Node Name", report.StepDescription } };
