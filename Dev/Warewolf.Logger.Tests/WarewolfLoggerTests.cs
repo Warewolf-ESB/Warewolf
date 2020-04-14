@@ -19,6 +19,7 @@ using Moq;
 using Warewolf.Common;
 using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
+using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Logger.Tests
 {
@@ -54,7 +55,7 @@ namespace Warewolf.Logger.Tests
                 ServerEndpoint = new Uri("http://somehost:1234")
             };
             var context = ConstructLoggerContext(args, out var source);
-            Assert.AreEqual(source, context.Source);
+            Assert.IsNotNull(source);
             Assert.IsFalse(context.Verbose);
         }
 
@@ -63,13 +64,15 @@ namespace Warewolf.Logger.Tests
             var mockArgs = new Mock<IArgs>();
             mockArgs.Setup(o => o.ServerEndpoint).Returns(args.ServerEndpoint);
             mockArgs.Setup(o => o.Verbose).Returns(args.Verbose);
-
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
             elasticsearchSource = new SerilogElasticsearchSource
             {
                 ResourceID = _sourceId,
-                HostName = "localhost",
-                Port = "9200",
-                ResourceName = "TestSource"
+                HostName = hostName,
+                Port = dependency.Container.Port,
+                ResourceName = "TestSource",
+                SearchIndex = "warewolftestlogs"
             };
             var mockResourceCatalogProxy = new Mock<IResourceCatalogProxy>();
             mockResourceCatalogProxy.Setup(o => o.GetResourceById<SerilogElasticsearchSource>(GlobalConstants.ServerWorkspaceID, _sourceId)).Returns(elasticsearchSource);
