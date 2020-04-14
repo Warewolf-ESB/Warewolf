@@ -31,10 +31,8 @@ using Newtonsoft.Json.Linq;
 using Warewolf.Data;
 using Warewolf.Services;
 using Enum = System.Enum;
-using Dev2.Runtime;
 using System.IO;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -43,7 +41,7 @@ namespace Dev2.Runtime.WebServer
         private static string _originalServiceName;
         private static string _originalWebServerUrl;
 
-        public static string SetEmitionType(this IDSFDataObject dataObject, WebRequestTO webRequest, string serviceName, NameValueCollection headers)
+        public static string SetEmissionType(this IDSFDataObject dataObject, WebRequestTO webRequest, string serviceName, NameValueCollection headers)
         {
             _originalServiceName = serviceName;
             _originalWebServerUrl = webRequest.WebServerUrl;
@@ -367,7 +365,7 @@ namespace Dev2.Runtime.WebServer
             {
                 var hasView = service.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.View, dataObject.ResourceID.ToString());
                 var hasExecute = service.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-                canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == "ReservedService");
+                canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource.ResourceType == "ReservedService");
             }
 
             return canExecute;
@@ -425,8 +423,8 @@ namespace Dev2.Runtime.WebServer
         {
             var result = new TestResults();
 
-            var _testCoverageCatalog = TestCoverageCatalog.Instance;
-            _testCoverageCatalog.ReloadAllReports();
+            var testCoverageCatalog = TestCoverageCatalog.Instance;
+            testCoverageCatalog.ReloadAllReports();
 
             var selectedResources = catalog.GetResources(workspaceGuid)
                 .Where(resource => dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
@@ -437,7 +435,7 @@ namespace Dev2.Runtime.WebServer
                 var workflowTask = Task<WorkflowTestResults>.Factory.StartNew(() =>
                 {
                     var workflowTestTaskList = new List<Task<IServiceTestModelTO>>();
-                    var res = selectedResources.FirstOrDefault(o => o.ResourceID == testsResourceId);
+                    var res = selectedResources.First(o => o.ResourceID == testsResourceId);
                     var resourcePath = res.GetResourcePath(workspaceGuid).Replace("\\", "/");
                     var workflowTestResults = new WorkflowTestResults(res);
 
@@ -453,27 +451,20 @@ namespace Dev2.Runtime.WebServer
                             serializer, dataObjectClone);
                         workflowTestTaskList.Add(lastTask);
 
-                        var report = _testCoverageCatalog.FetchReport(res.ResourceID, test.TestName);
+                        var report = testCoverageCatalog.FetchReport(res.ResourceID, test.TestName);
                         var lastTestCoverageRun = report?.LastRunDate;
                         if (report is null || test.LastRunDate > lastTestCoverageRun)
                         {
-                            _testCoverageCatalog.GenerateSingleTestCoverage(res.ResourceID, lastTask.Result);
+                            testCoverageCatalog.GenerateSingleTestCoverage(res.ResourceID, lastTask.Result);
                         }
                     }
 
-                    Task.WaitAll(workflowTestTaskList.ToArray());
+                    Task.WaitAll(workflowTestTaskList.Cast<Task>().ToArray());
                     foreach (var task in workflowTestTaskList)
                     {
                         workflowTestResults.Add(task.Result);
                     }
-
-                    /*var workflowCoverageReport = _testCoverageCatalog.FetchReport(res.ResourceID, res.ResourceName);
-                    var lastWorkflowCoverageRun = workflowCoverageReport?.LastRunDate;
-                    var lastModifiedDate = System.IO.File.GetLastWriteTime(res.FilePath); //TODO: can we add LastRunDate to workflow set on save()? 
-                    if (workflowCoverageReport is null || lastModifiedDate > lastWorkflowCoverageRun)*/
-                    {
-                        _testCoverageCatalog.GenerateAllTestsCoverage(res.ResourceID, workflowTestResults.Results);
-                    }
+                    testCoverageCatalog.GenerateAllTestsCoverage(res.ResourceName, res.ResourceID, workflowTestResults.Results);
 
                     return workflowTestResults;
                 });
@@ -481,7 +472,7 @@ namespace Dev2.Runtime.WebServer
                 workflowTaskList.Add(workflowTask);
             }
 
-            Task.WaitAll(workflowTaskList.ToArray());
+            Task.WaitAll(workflowTaskList.Cast<Task>().ToArray());
 
             foreach (var task in workflowTaskList)
             {
@@ -495,7 +486,7 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunCoverageAndReturnJSON(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
-            var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, serializer, catalog);
+            var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, catalog);
 
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
@@ -513,7 +504,7 @@ namespace Dev2.Runtime.WebServer
                     {
                         {"ResourceID", o.Resource.ResourceID},
                         {"Name", name},
-                        {"Reports", new JArray(o.ReportsPerWorkflow.Select(o1 => o1.BuildTestResultJSONForWebRequest()))}
+                        {"Reports", new JArray(o.Reports.Select(o1 => o1.BuildTestResultJSONForWebRequest()))}
                     };
                 });
 
@@ -527,16 +518,16 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
+        public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
         {
-            var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, serializer, catalog);
+            var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, catalog);
             var allTests = TestCatalog.Instance.FetchAllTests();
 
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
 
-            StringWriter stringWriter = new StringWriter();
+            var stringWriter = new StringWriter();
 
-            using (HtmlTextWriter writer = new HtmlTextWriter(stringWriter))
+            using (var writer = new HtmlTextWriter(stringWriter))
             {
                 writer.SetupNavBarHtml("nav-bar-row", "Coverage Summary");
 
@@ -544,73 +535,54 @@ namespace Dev2.Runtime.WebServer
 
                 allCoverageReports.AllCoverageReportsSummary
                     .Where(o => o.HasTestReports)
-                    .Select(o =>
+                    .ToList()
+                    .ForEach(oo =>
                     {
-                        var name = o.Resource.ResourceName;
                         var resourcePath = string.Empty;
-                        if (o.Resource is IFilePathResource filePath)
+                        if (oo.Resource is IFilePathResource filePath)
                         {
                             resourcePath = filePath.Path;
                         }
 
-                        return new ReportTempHolder
-                        {
-                            ResourceID = o.Resource.ResourceID,
-                            Name = name,
-                            ResourcePath = resourcePath,
-                            Reports = o.ReportsPerWorkflow
-                        };
-                    })
-                    .ToList()
-                    .ForEach(oo =>
-                    {
-                        var workflowReport = oo.Reports.Where(r => oo.ResourcePath.Contains(r.ReportName)).FirstOrDefault();
-                        if (workflowReport != null)
-                        {
-                            writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#333");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "20%");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                            writer.Write(oo.ResourcePath);
-                            writer.RenderEndTag();
-                            
-                            writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml-link");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100px");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                            writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
-                            var hostname = GetTestUrl(oo);
-                            writer.AddAttribute(HtmlTextWriterAttribute.Href, hostname);
-                            writer.RenderBeginTag(HtmlTextWriterTag.A);
-                            writer.Write("Run Tests");
-                            writer.RenderEndTag();
-                            writer.RenderEndTag();
-                            
-                            workflowReport.SetupWorkflowReportsHtml(writer, "SetupWorkflowReportsHtml");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
-                            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
-                            writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
-                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                            var nodes = new List<IWorkflowNode>();
-                            workflowReport.AllTestNodesCovered.ForEach(c => c.ForEach(o => o.TestNodesCovered.ForEach(node => nodes.Add(node))));
+                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#333");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "20%");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
+                        writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                        writer.Write(resourcePath);
+                        writer.RenderEndTag();
 
-                            var coveredNodes = nodes.GroupBy(n => n.ActivityID).Select(o => o.FirstOrDefault()).ToList();
+                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml-link");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100px");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
+                        writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                        writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
+                        var hostname = GetTestUrl(resourcePath);
+                        writer.AddAttribute(HtmlTextWriterAttribute.Href, hostname);
+                        writer.RenderBeginTag(HtmlTextWriterTag.A);
+                        writer.Write("Run Tests");
+                        writer.RenderEndTag();
+                        writer.RenderEndTag();
 
-                            var workflow = new WorkflowWrapper(oo.ResourceID);
+                        var (totalCoverage, workflowNodes, coveredNodes) = oo.GetTotalCoverage();
 
-                            var allWorkflowNodes = workflow.GetHTMLWorkflowNodes();
-                           
-                            allWorkflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, "workflow-nodes", coveredNodes));
-                            
-                            writer.RenderEndTag();
-                        }
+                        writer.SetupWorkflowReportsHtml(totalCoverage, "SetupWorkflowReportsHtml");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
+                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
+                        writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+
+
+                        workflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, "workflow-nodes", coveredNodes));
+
+                        writer.RenderEndTag();
                     });
             }
 
@@ -618,7 +590,7 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        private static string GetTestUrl(ReportTempHolder oo)
+        private static string GetTestUrl(string resourcePath)
         {
             Uri myUri = new Uri(_originalWebServerUrl);
             var security = "";
@@ -630,12 +602,12 @@ namespace Dev2.Runtime.WebServer
                     security = segment;
             }
 
-            var filepath = oo.ResourcePath.Replace("\\", "/");
+            var filepath = resourcePath.Replace("\\", "/");
             var hostname = myUri.Scheme + "://" + myUri.Authority + "/" + security + filepath + ".tests";
             return hostname;
         }
 
-        private static AllCoverageReports RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog)
+        private static AllCoverageReports RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, Guid workspaceGuid, IResourceCatalog catalog)
         {
             var allCoverageReports = new AllCoverageReports
             {
@@ -675,22 +647,9 @@ namespace Dev2.Runtime.WebServer
         }
     }
 
-    internal class ReportTempHolder
-    {
-        public Guid ResourceID { get; internal set; }
-        public string Name { get; internal set; }
-
-        public List<IServiceTestCoverageModelTo> Reports { get; set; }
-        public string ResourcePath { get; internal set; }
-    }
-
     internal class AllCoverageReports
     {
-        public AllCoverageReports()
-        {
-        }
-
-        public List<WorkflowCoverageReports> AllCoverageReportsSummary { get; set; } = new List<WorkflowCoverageReports>();
+        public List<WorkflowCoverageReports> AllCoverageReportsSummary { get; } = new List<WorkflowCoverageReports>();
         public JToken StartTime { get; internal set; }
         public JToken EndTime { get; internal set; }
 
@@ -707,14 +666,32 @@ namespace Dev2.Runtime.WebServer
             Resource = resource;
         }
 
-        public List<IServiceTestCoverageModelTo> ReportsPerWorkflow { get; set; } = new List<IServiceTestCoverageModelTo>();
-        public Guid WorkflowId { get; set; }
-        public bool HasTestReports => ReportsPerWorkflow.Count > 0;
-        public IWarewolfResource Resource { get; set; }
+        public List<IServiceTestCoverageModelTo> Reports { get; } = new List<IServiceTestCoverageModelTo>();
+        public bool HasTestReports => Reports.Count > 0;
+        public IWarewolfResource Resource { get; }
 
-        internal void Add(IServiceTestCoverageModelTo lii)
+        internal void Add(IServiceTestCoverageModelTo coverage)
         {
-            ReportsPerWorkflow.Add(lii);
+            Reports.Add(coverage);
+        }
+
+        public (double TotalCoverage, List<IWorkflowNode> AllWorkflowNodes, IWorkflowNode[] CoveredNodes) GetTotalCoverage()
+        {
+            var workflow = new WorkflowWrapper(Resource.ResourceID);
+            var coveredNodes = Reports
+                .SelectMany(o => o.AllTestNodesCovered)
+                .SelectMany(o => o.TestNodesCovered)
+                .GroupBy(n => n.ActivityID)
+                .Select(o => o.First()).ToArray();
+
+            var accum = coveredNodes
+                .Select(o => o.ActivityID)
+                .Distinct().ToList();
+            var allWorkflowNodes = workflow.GetHTMLWorkflowNodes();
+            var accum2 = allWorkflowNodes.Select(o=> o.UniqueID).ToList();
+            var activitiesExistingInTests = accum2.Intersect(accum).ToList();
+            var total = Math.Round(activitiesExistingInTests.Count / (double)accum2.Count, 2);
+            return (total, allWorkflowNodes, coveredNodes);
         }
     }
 

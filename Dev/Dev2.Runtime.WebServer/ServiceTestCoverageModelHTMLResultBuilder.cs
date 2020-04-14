@@ -30,14 +30,14 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
-        public static void SetupWorkflowReportsHtml(this IServiceTestCoverageModelTo coverageModelTo, HtmlTextWriter writer, string classValue)
+        public static void SetupWorkflowReportsHtml(this HtmlTextWriter writer, double CoveragePercentage , string classValue)
         {
             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, classValue);
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            double testFailing = (100 - (coverageModelTo.CoveragePercentage * 100)) / 100;
-            double testPassed = coverageModelTo.CoveragePercentage;
+            double testFailing = (1 - (CoveragePercentage));
+            double testPassed = CoveragePercentage;
 
             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "progress-bar-width");
@@ -82,7 +82,7 @@ namespace Dev2.Runtime.WebServer
         }
 
 
-        public static void SetupWorkflowNodeHtml(this IWorkflowNode workflowNode, HtmlTextWriter writer, string className, List<IWorkflowNode> coveredNodes)
+        public static void SetupWorkflowNodeHtml(this IWorkflowNode workflowNode, HtmlTextWriter writer, string className, IWorkflowNode[] coveredNodes)
         {
             if (IsNodeCovered(coveredNodes, workflowNode))
             {
@@ -114,7 +114,7 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        public static void SetupNextNodeHTML(HtmlTextWriter writer, List<IWorkflowNode> coveredNodes, IWorkflowNode node)
+        public static void SetupNextNodeHTML(HtmlTextWriter writer, IWorkflowNode[] coveredNodes, IWorkflowNode node)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "next-node");
 
@@ -190,7 +190,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
-        private static bool IsNodeCovered(List<IWorkflowNode> coveredNodes, IWorkflowNode node)
+        private static bool IsNodeCovered(IWorkflowNode[] coveredNodes, IWorkflowNode node)
         {
             return coveredNodes.Any(o => o.ActivityID == node.UniqueID);
         }

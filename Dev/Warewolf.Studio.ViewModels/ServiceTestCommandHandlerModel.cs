@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -20,7 +20,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
-using Dev2.Runtime;
 using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
@@ -28,14 +27,10 @@ namespace Warewolf.Studio.ViewModels
     public sealed class ServiceTestCommandHandlerModel : IServiceTestCommandHandler
     {
         readonly DataListConversionUtils _dataListConversionUtils;
-        readonly ITestCoverageCatalog _testCoverageCatalog;
-
         public ServiceTestCommandHandlerModel()
         {
             DataList = new DataListModel();
             _dataListConversionUtils = new DataListConversionUtils();
-
-            _testCoverageCatalog = TestCoverageCatalog.Instance;
         }
 
         DataListModel DataList { get; set; }
@@ -126,16 +121,6 @@ namespace Warewolf.Studio.ViewModels
                     Enabled = o.Enabled,
                 });
             });
-
-            //TODO: can resourceModel.GetSavePath() be like GetResourcePath in IResource this was easy to implement within RunListOfTests
-            //and this is just a temporal, we need to save this data with each ResourceCatalog.SaveResource.
-            //var workflowCoverageReport = _testCoverageCatalog.FetchReport(resourceModel.ID, resourceModel.ResourceName);
-            //var lastWorkflowCoverageRun = workflowCoverageReport?.LastRunDate;
-            //var lastModifiedDate = System.IO.File.GetLastWriteTime(resourceModel.GetSavePath()); //TODO: can we add LastRunDate to workflow set on save()? 
-            //if (workflowCoverageReport is null || lastModifiedDate > lastWorkflowCoverageRun)
-            {
-                _testCoverageCatalog.GenerateAllTestsCoverage(resourceModel.ID, testsTos);
-            }
         }
 
         static void ShowRunAllUnsavedError()
@@ -194,12 +179,6 @@ namespace Warewolf.Studio.ViewModels
                 NoErrorExpected = selectedServiceTest.NoErrorExpected,
                 Enabled = selectedServiceTest.Enabled,
             };
-            var report = _testCoverageCatalog.FetchReport(resourceModel.ID, selectedServiceTest.TestName);
-            var lastTestCoverageRun = report?.LastRunDate;
-            if (report is null || selectedServiceTest.LastRunDate > lastTestCoverageRun)
-            {
-                _testCoverageCatalog.GenerateSingleTestCoverage(resourceModel.ID, testTo);
-            }
         }
 
         private static IServiceTestModelTO BackgroundAction(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel)
@@ -214,7 +193,7 @@ namespace Warewolf.Studio.ViewModels
                 ShowResourceDeleted(selectedServiceTest, resourceModel);
                 return;
             }
-            if (res?.Result != null)
+            if (res.Result != null)
             {
                 if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
                 {

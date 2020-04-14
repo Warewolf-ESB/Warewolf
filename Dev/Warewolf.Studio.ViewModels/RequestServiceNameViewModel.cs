@@ -15,7 +15,6 @@ using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.SaveDialog;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Controller;
-using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
@@ -25,6 +24,7 @@ using Warewolf.Resource.Errors;
 using Dev2.ConnectionHelpers;
 using System.Text;
 using Dev2.Instrumentation;
+ using Dev2.Runtime.Hosting;
 
 namespace Warewolf.Studio.ViewModels
 {

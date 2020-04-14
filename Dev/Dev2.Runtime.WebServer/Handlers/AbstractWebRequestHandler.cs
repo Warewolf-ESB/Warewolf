@@ -139,7 +139,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _dataObject.SetupForWebDebug(webRequest);
                 webRequest.BindRequestVariablesToDataObject(ref _dataObject);
                 _dataObject.SetupForRemoteInvoke(headers);
-                _dataObject.SetEmitionType(webRequest, serviceName, headers);
+                _dataObject.SetEmissionType(webRequest, serviceName, headers);
                 _dataObject.SetupForTestExecution(serviceName, headers);
                 _dataObject.SetHeaders(headers);
                 if (_dataObject.ServiceName == null)
