@@ -188,7 +188,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             var workspaceId = removeWorkspacePath.Substring(0, workspaceIdEnd);
 
             var resources = removeWorkspacePath.Replace(workspaceId, "");
-            var resourceFile = resources.Replace("\\Resources\\", "");
+            var programData = resources.Replace("\\ProgramData\\", "");
+            var resourceFile = programData.Replace("\\Resources\\", "");
 
             var removeXml = resourceFile.Replace(".xml", "");
             var removeBite = removeXml.Replace(".bite", "");
