@@ -8,11 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Dialogs;
@@ -25,6 +29,7 @@ using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Moq;
 using Warewolf.Configuration;
+using Warewolf.Data;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -96,10 +101,28 @@ namespace Dev2.Core.Tests.Settings
 
             var _resourceRepo = new Mock<IResourceRepository>();
             var env = new Mock<IServer>();
-            var auditingSettingsData = new LegacySettingsData() { AuditFilePath = "somePath" };
-            _resourceRepo.Setup(res => res.GetAuditingSettings<LegacySettingsData>(env.Object)).Returns(auditingSettingsData);
-            env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
+            var expectedServerSettingsData = new ServerSettingsData
+            {
+                Sink = "AuditingSettingsData"
+            };
+            _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
+            var auditingSettingsData = new AuditingSettingsData
+            {
+                Endpoint = "ws://127.0.0.1:5000/ws",
+                LoggingDataSource = new NamedGuid {Name = "Auditing Data Source", Value = Guid.Empty,},
+            };
+            _resourceRepo.Setup(res => res.GetAuditingSettings<AuditingSettingsData>(env.Object)).Returns(auditingSettingsData);
+            var selectedAuditingSourceId = Guid.NewGuid();
+            var mockAuditingSource = new Mock<IResource>();
+            mockAuditingSource.Setup(source => source.ResourceID).Returns(selectedAuditingSourceId);
+            var auditingSources = new Mock<IResource>();
+            var expectedList = new List<IResource>
+            {
+                mockAuditingSource.Object, auditingSources.Object
+            };
+            _resourceRepo.Setup(resourceRepository => resourceRepository.FindResourcesByType<IAuditingSource>(env.Object)).Returns(expectedList);
 
+            env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
             var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, env.Object);
             return logSettingsViewModel;
         }
