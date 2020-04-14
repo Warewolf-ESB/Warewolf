@@ -7,10 +7,16 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 using System;
+using System.Collections.Generic;
 using System.IO;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
 using Dev2.Studio.Interfaces;
@@ -18,6 +24,7 @@ using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Configuration;
+using Warewolf.Data;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -59,7 +66,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_ServerLogLevel_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
             var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
@@ -88,7 +95,7 @@ namespace Dev2.Core.Tests.Settings
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = CreateLogSettingViewModel();
+            var viewModel = CreateLogSettingViewModel("AuditingSettingsData");
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
@@ -104,7 +111,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = CreateLogSettingViewModel();
+            var viewModel = CreateLogSettingViewModel("AuditingSettingsData");
             //------------Execute Test---------------------------
             viewModel.SelectedLoggingType = "Fatal: Only log events that are fatal";
             //------------Assert Results-------------------------
@@ -120,7 +127,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = CreateLogSettingViewModel();
+            var viewModel = CreateLogSettingViewModel("AuditingSettingsData");
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             var canExecute = viewModel.GetServerLogFileCommand.CanExecute(null);
@@ -135,7 +142,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = CreateLogSettingViewModel();
+            var viewModel = CreateLogSettingViewModel("AuditingSettingsData");
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             var canExecute = viewModel.GetStudioLogFileCommand.CanExecute(null);
@@ -148,7 +155,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_StudioLogLevel_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
             var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
@@ -172,7 +179,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_ServerLogMaxSize_SetInt_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
             var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
@@ -196,7 +203,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_ServerLogMaxSize_SetNonInt_PropertyChangeNotFired()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
             var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
@@ -220,7 +227,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_StudioLogMaxSize_SetInt_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
             var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
@@ -244,7 +251,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_StudioFileLogLevel_Construct_IsDebug()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
 
             //------------Execute Test---------------------------
 
@@ -258,7 +265,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_StudioFileLogLevel_SetLevel_IsInfo()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
 
             //------------Execute Test---------------------------
             logSettingsViewModel.StudioFileLogLevel = LogLevel.INFO;
@@ -273,7 +280,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_CanEdit_Construct_IsFalse()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
 
             //------------Execute Test---------------------------
 
@@ -288,7 +295,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_CanEdit_Construct_IsTrue()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData");
 
             //------------Execute Test---------------------------
             var env = new Mock<IServer>();
@@ -307,7 +314,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_StudioLogMaxSize_SetNonInt_PropertyChangeNotFired()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("LegacySettingsData");
             var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
@@ -331,7 +338,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_AuditsFilePath_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
+            var logSettingsViewModel = CreateLogSettingViewModel("LegacySettingsData");
             var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
@@ -350,17 +357,45 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
 
-        static LogSettingsViewModel CreateLogSettingViewModel()
+        static LogSettingsViewModel CreateLogSettingViewModel(string sink)
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
-            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE" };
+            var loggingSettingsTo = new LoggingSettingsTo {FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE"};
 
             var _resourceRepo = new Mock<IResourceRepository>();
             var env = new Mock<IServer>();
-            var auditingSettingsData = new LegacySettingsData() { AuditFilePath = "somePath" };
-            _resourceRepo.Setup(res => res.GetAuditingSettings<LegacySettingsData>(env.Object)).Returns(auditingSettingsData);
-            env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
 
+            var expectedServerSettingsData = new ServerSettingsData
+            {
+                Sink = sink
+            };
+            _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
+            if (sink == "LegacySettingsData")
+            {
+                var legacySettingsData = new LegacySettingsData() {AuditFilePath = "somePath"};
+                _resourceRepo.Setup(res => res.GetAuditingSettings<LegacySettingsData>(env.Object)).Returns(legacySettingsData);
+            }
+            else
+            {
+                var auditingSettingsData = new AuditingSettingsData
+                {
+                    Endpoint = "ws://127.0.0.1:5000/ws",
+                    LoggingDataSource = new NamedGuid {Name = "Auditing Data Source", Value = Guid.Empty,},
+                };
+                _resourceRepo.Setup(res => res.GetAuditingSettings<AuditingSettingsData>(env.Object)).Returns(auditingSettingsData);
+            }
+
+            var selectedAuditingSourceId = Guid.NewGuid();
+            var mockAuditingSource = new Mock<IResource>();
+            mockAuditingSource.Setup(source => source.ResourceID).Returns(selectedAuditingSourceId);
+            var auditingSources = new Mock<IResource>();
+            var expectedList = new List<IResource>
+            {
+                mockAuditingSource.Object, auditingSources.Object
+            };
+            _resourceRepo.Setup(resourceRepository => resourceRepository.FindResourcesByType<IAuditingSource>(env.Object)).Returns(expectedList);
+
+            env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
             var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, env.Object);
             return logSettingsViewModel;
         }
