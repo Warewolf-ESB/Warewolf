@@ -54,61 +54,35 @@
                                 Orientation="Horizontal">
                         <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Audits</TextBlock>
                     </StackPanel>
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="5" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Logging Data Source" Grid.Row="1" Grid.Column="0" Margin="{StaticResource ControlBorderTop}" />
+                        <TextBlock x:Name="LoggingDataSourceTextBlock" Text="Logging Data Source" Grid.Column="0" />
                         <ComboBox x:Name="AuditingSourcesComboBox"
                                   Grid.Column="1"
-                                  Grid.Row="1"
                                   DisplayMemberPath="ResourceName"
                                   SelectedItem="{Binding SelectedAuditingSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  Margin="{StaticResource ControlBorderTop}"
                                   ToolTip="{x:Static languages:Tooltips.LoggingViewAuditsDataSourceToolTip}"
                                   ItemsSource="{Binding AuditingSources}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter
-                                    Text="{x:Static languages:HelpText.LoggingViewAuditsDataSourceHelpText}"
-                                    DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewAuditsDataSourceHelpText}"
+                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                             </i:Interaction.Behaviors>
                         </ComboBox>
-                        <TextBlock Text="*" Grid.Row="1" Grid.Column="2" Margin="{StaticResource ControlBorderTop}">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}">
-                                    <Setter Property="Foreground" Value="Black" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding SelectedAuditingSource}" Value="{x:Null}" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Foreground" Value="Red" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
                     </Grid>
-                    <Grid Grid.Row="2">
+                    <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}"
+                          Visibility="{Binding IsLegacy, Converter={StaticResource BoolToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="5" />
-                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="1">Folder Path</TextBlock>
+                        <TextBlock Width="{Binding ElementName=LoggingDataSourceTextBlock, Path=ActualWidth}" >Folder Path</TextBlock>
                         <ui:IntellisenseTextBox x:Name="AuditsFilePathTextBox"
-                                                Grid.Row="1"
                                                 Grid.Column="1"
                                                 FilterType="All"
                                                 DefaultText="Folder Path"

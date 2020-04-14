@@ -28,5 +28,6 @@ namespace Dev2.Settings.Logging
         string AuditFilePath { get; set; }
         IResource SelectedAuditingSource { get; }
         List<IResource> AuditingSources { get; }
+        bool IsLegacy { get; set; }
     }
 }

@@ -71,6 +71,7 @@ namespace Dev2.Settings.Logging
         private Guid _resourceSourceId;
         private IResource _selectedAuditingSource;
         private List<IResource> _auditingSources;
+        private bool _isLegacy;
 
         public LogSettingsViewModel()
         {
@@ -115,7 +116,7 @@ namespace Dev2.Settings.Logging
             {
                 var legacySettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
                 AuditFilePath = legacySettingsData.AuditFilePath;
-                var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceName == "Default");
+                var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == Guid.Empty);
                 SelectedAuditingSource = selectedAuditingSource;
             }
 
@@ -180,6 +181,16 @@ namespace Dev2.Settings.Logging
         public bool CanEditLogSettings => CurrentEnvironment.IsConnected;
 
         public bool CanEditStudioLogSettings => CurrentEnvironment.IsLocalHost;
+
+        public bool IsLegacy
+        {
+            get => _isLegacy;
+            set
+            {
+                _isLegacy = value;
+                OnPropertyChanged();
+            }
+        }
 
         public virtual void Save(LoggingSettingsTo logSettings)
         {
@@ -370,8 +381,8 @@ namespace Dev2.Settings.Logging
                 {
                     ResourceSourceId = _selectedAuditingSource.ResourceID;
                 }
-
                 OnPropertyChanged();
+                IsLegacy = SelectedAuditingSource?.ResourceID == Guid.Empty;
             }
         }
 
@@ -394,7 +405,7 @@ namespace Dev2.Settings.Logging
             var auditingSources = _resourceRepository.FindResourcesByType<IAuditingSource>(_currentEnvironment);
             IResource defaultSource = new SqliteDBSource
             {
-                ResourceID = Guid.NewGuid(),
+                ResourceID = Guid.Empty,
                 ResourceName = "Default"
             };
             auditingSources.Add(defaultSource);
