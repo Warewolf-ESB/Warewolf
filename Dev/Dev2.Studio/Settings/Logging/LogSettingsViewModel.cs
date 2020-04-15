@@ -201,7 +201,7 @@ namespace Dev2.Settings.Logging
 
             try
             {
-                if (_selectedAuditingSource.ResourceName == "Default")
+                if (_selectedAuditingSource.ResourceID == Guid.Empty)
                 {
                     var data = new LegacySettingsData
                     {
@@ -418,7 +418,7 @@ namespace Dev2.Settings.Logging
             HelpText = helpText;
         }
 
-        bool Equals(LogSettingsViewModel other)
+        public bool Equals(LogSettingsViewModel other)
         {
             if (ReferenceEquals(null, other))
             {

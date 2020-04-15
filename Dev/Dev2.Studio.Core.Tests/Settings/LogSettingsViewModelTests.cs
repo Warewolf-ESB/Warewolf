@@ -11,12 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Resources;
-using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.ServiceModel;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
@@ -36,30 +33,34 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void LogSettingsViewModel_Constructor_Equals_Null_ReturnFalse()
         {
             //------------Setup for test--------------------------
             var viewModel = CreateLogSettingViewModel("AuditingSettingsData");
             var logSettingsViewModel2 = CreateLogSettingViewModel("AuditingSettingsData");
+            logSettingsViewModel2.SetItem(viewModel);
 
             //------------Execute Test---------------------------
-            Assert.IsFalse(viewModel.Equals(logSettingsViewModel2));
+            var expected = viewModel.Equals(logSettingsViewModel2);
             //------------Assert Results-------------------------
+            Assert.IsFalse(expected);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void LogSettingsViewModel_Constructor_Equals_NotNull_ReturnTrue()
         {
             //------------Setup for test--------------------------
             var viewModel = CreateLogSettingViewModel("AuditingSettingsData");
             var logSettingsViewModel2 = CreateLogSettingViewModel("AuditingSettingsData");
+            logSettingsViewModel2.SetItem(viewModel);
+            logSettingsViewModel2.ResourceSourceId = viewModel.ResourceSourceId;
 
             //------------Execute Test---------------------------
-            Assert.IsTrue(viewModel.Equals(logSettingsViewModel2));
+            var expected = viewModel.Equals(logSettingsViewModel2);
             //------------Assert Results-------------------------
+            Assert.IsTrue(expected);
         }
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -410,27 +411,58 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
-        public void LogSettingsViewModel_Save()
+        public void LogSettingsViewModel_Save_LegacySettingsData()
         {
+            var _resourceRepo = new Mock<IResourceRepository>();
             //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel("LegacySettingsData");
+            var logSettingsViewModel = CreateLogSettingViewModel("LegacySettingsData", _resourceRepo);
             var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE", EventLogLoggerLogLevel = "DEBUG" };
             //------------Execute Test---------------------------
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceName).Returns("Default");
+            mockResource.Setup(o => o.ResourceID).Returns(Guid.Empty);
+            logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
+
             logSettingsViewModel.AuditFilePath = @"C:\ProgramData\Warewolf\Audits";
             //------------Assert Results-------------------------
             logSettingsViewModel.Save(loggingSettingsTo);
+            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<LegacySettingsData>()), Times.Once);
         }
-        static LogSettingsViewModel CreateLogSettingViewModel(string sink)
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(LogSettingsViewModel))]
+        public void LogSettingsViewModel_Save_AuditingSettingsData()
+        {
+            var _resourceRepo = new Mock<IResourceRepository>();
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel("AuditingSettingsData", _resourceRepo);
+            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE", EventLogLoggerLogLevel = "DEBUG" };
+            //------------Execute Test---------------------------
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceName).Returns("Default");
+            mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
+
+            //------------Assert Results-------------------------
+            logSettingsViewModel.Save(loggingSettingsTo);
+            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<AuditingSettingsData>()), Times.Once);
+        }
+
+        static LogSettingsViewModel CreateLogSettingViewModel(string sink, Mock<IResourceRepository> _resourceRepo = null)
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
             var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE", EventLogLoggerLogLevel = "DEBUG" };
 
-            var _resourceRepo = new Mock<IResourceRepository>();
             var env = new Mock<IServer>();
-
+            if (_resourceRepo is null)
+            {
+                _resourceRepo = new Mock<IResourceRepository>();
+            }
             var expectedServerSettingsData = new ServerSettingsData
             {
                 Sink = sink
@@ -441,6 +473,7 @@ namespace Dev2.Core.Tests.Settings
             {
                 var legacySettingsData = new LegacySettingsData() { AuditFilePath = "somePath" };
                 _resourceRepo.Setup(res => res.GetAuditingSettings<LegacySettingsData>(env.Object)).Returns(legacySettingsData);
+                _resourceRepo.Setup(res => res.SaveAuditingSettings(env.Object, legacySettingsData)).Verifiable();
             }
             else
             {
@@ -450,6 +483,7 @@ namespace Dev2.Core.Tests.Settings
                     LoggingDataSource = new NamedGuid { Name = "Auditing Data Source", Value = selectedAuditingSourceId },
                 };
                 _resourceRepo.Setup(res => res.GetAuditingSettings<AuditingSettingsData>(env.Object)).Returns(auditingSettingsData);
+                _resourceRepo.Setup(res => res.SaveAuditingSettings(env.Object, auditingSettingsData)).Verifiable();
             }           
             IResource mockAuditingSource = new ElasticsearchSource
             {
