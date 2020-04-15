@@ -161,7 +161,8 @@ namespace Dev2.Server.Tests
                 Writer = mockWriter.Object,
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
-                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
+                ClusterSettings = new ClusterSettings(),
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -177,7 +178,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
+            mockWriter.Verify(o => o.Write("Exiting with exit code 0"), Times.Once);
             mockSerLifeCycleWorker.Verify();
         }
 
@@ -223,7 +224,8 @@ namespace Dev2.Server.Tests
                 StartWebServer = mockStartWebServer.Object,
                 SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
                 QueueWorkerMonitor = mockQueueProcessMonitor.Object,
-                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
+                ClusterSettings = new ClusterSettings(),
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -238,7 +240,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
+            mockWriter.Verify(o => o.Write("Exiting with exit code 0"), Times.Once);
 
             mockQueueProcessMonitor.Verify(o => o.Start(), Times.Once);
             mockSerLifeCycleWorker.Verify();

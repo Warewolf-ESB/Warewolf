@@ -65,6 +65,7 @@ namespace Dev2
         public IClusterMonitor ClusterMonitor { get; } = new ClusterMonitor();
         public IProcessMonitor LoggingServiceMonitor { get; set; } = new NullProcessMonitor();
         public IPauseHelper PauseHelper { get; } = new PauseHelper();
+        public ClusterSettings ClusterSettings { get; set; } = Config.Cluster;
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -110,6 +111,7 @@ namespace Dev2
         private readonly IPauseHelper _pauseHelper;
         private readonly IProcessMonitor _queueProcessMonitor;
         private readonly IClusterMonitor _clusterMonitor;
+        private readonly ClusterSettings _clusterSettings;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
@@ -137,6 +139,7 @@ namespace Dev2
             _queueProcessMonitor = startupConfiguration.QueueWorkerMonitor;
             _queueProcessMonitor.OnProcessDied += (config) => _writer.WriteLine($"queue process died: {config.Name}({config.Id})");
 
+            _clusterSettings = startupConfiguration.ClusterSettings;
             _clusterMonitor = startupConfiguration.ClusterMonitor;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
@@ -222,7 +225,7 @@ namespace Dev2
                     StartTrackingUsage();
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
                     _queueProcessMonitor.Start();
-                    _clusterMonitor.Start(Config.Cluster, ResourceCatalog.Instance, _writer);
+                    _clusterMonitor.Start(_clusterSettings, ResourceCatalog.Instance, _writer);
 #if DEBUG
                     SetAsStarted();
 #endif

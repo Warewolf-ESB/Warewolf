@@ -25,6 +25,10 @@ namespace Dev2
     {
         public void Start(ClusterSettings clusterSettings, IResourceCatalog resourceCatalog, IWriter writer)
         {
+            if (clusterSettings.LeaderServerResource?.Value == Guid.Empty)
+            {
+                return;
+            }
             var resource = resourceCatalog.GetResource<Data.ServiceModel.Connection>(GlobalConstants.ServerWorkspaceID,
                 clusterSettings.LeaderServerResource.Value);
 
