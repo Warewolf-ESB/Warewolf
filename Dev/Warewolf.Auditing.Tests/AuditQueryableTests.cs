@@ -38,26 +38,7 @@ namespace Warewolf.Auditing.Tests
             Assert.IsNotNull(results);
             Assert.AreEqual(null, auditQueryable.Query);
         }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryable))]
-        public void AuditQueryable_AuditQueryableElastic_QueryLogData()
-        {
-            var executionID = Guid.NewGuid();
 
-            var query = new Dictionary<string, StringBuilder>
-            {
-                {"ExecutionID", executionID.ToString().ToStringBuilder()},
-                {"EventLevel", "Debug".ToStringBuilder()}
-            };
-
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData",connstring);
-            Task.Delay(500).Wait();
-            var results = auditQueryable.QueryLogData(query).ToList();
-            Assert.IsNotNull(results);
-            Assert.IsTrue(auditQueryable is AuditQueryableElastic);
-            
-        }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryable))]
