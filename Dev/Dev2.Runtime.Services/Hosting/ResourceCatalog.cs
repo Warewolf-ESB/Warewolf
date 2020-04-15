@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -34,6 +35,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Services.Security;
+using Warewolf.Data;
 using Warewolf.Services;
 
 namespace Dev2.Runtime.Hosting
@@ -74,6 +76,13 @@ namespace Dev2.Runtime.Hosting
         {
             var catalog = new ContextualResourceCatalog(this, authService, workspaceId);
             return catalog;
+        }
+
+        public IWarewolfWorkflow GetWorkflow(Guid workflowId)
+        {
+            var workflowContents = GetResourceContents(GlobalConstants.ServerWorkspaceID, workflowId);
+            var result = new Workflow(workflowContents.ToXElement());
+            return result;
         }
 
         readonly IServerVersionRepository _serverVersionRepository;
@@ -133,6 +142,7 @@ namespace Dev2.Runtime.Hosting
             => _catalogPluginContainer.LoadProvider.GetDynamicObjects<TServiceType>(workspaceID, resourceID);
         public List<DynamicServiceObjectBase> GetDynamicObjects(IResource resource) => _catalogPluginContainer.LoadProvider.GetDynamicObjects(resource);
         public List<IResource> GetResources(Guid workspaceID) => _catalogPluginContainer.LoadProvider.GetResources(workspaceID);
+        public IEnumerable<T> GetResources<T>(Guid workspaceId) where T : IWarewolfResource => _catalogPluginContainer.LoadProvider.GetResources<T>(workspaceId);
         public virtual IResource GetResource(Guid workspaceID, Guid resourceID) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceID);
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResource<T>(workspaceID, serviceID);
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResource<T>(workspaceID, resourceName);

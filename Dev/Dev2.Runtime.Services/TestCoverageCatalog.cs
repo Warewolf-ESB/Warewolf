@@ -14,7 +14,6 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Serializers;
 using Dev2.Common.Wrappers;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using System;
@@ -23,9 +22,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Xml.Linq;
-using Newtonsoft.Json;
-using Warewolf;
+using Dev2.Runtime.Hosting;
+using Warewolf.Data;
 
 namespace Dev2.Runtime
 {
@@ -44,7 +42,7 @@ namespace Dev2.Runtime
     {
         static readonly Lazy<ITestCoverageCatalog> LazyCat = new Lazy<ITestCoverageCatalog>(() =>
         {
-            var catalog = new TestCoverageCatalog();
+            var catalog = new TestCoverageCatalog(ResourceCatalog.Instance);
             return catalog;
         }, LazyThreadSafetyMode.PublicationOnly);
 
@@ -52,14 +50,13 @@ namespace Dev2.Runtime
         private readonly DirectoryWrapper _directoryWrapper;
         private readonly FileWrapper _fileWrapper;
 
-        public TestCoverageCatalog()
+        public TestCoverageCatalog(IResourceCatalog resourceCatalog)
         {
             _directoryWrapper = new DirectoryWrapper();
             _fileWrapper = new FileWrapper();
             _directoryWrapper.CreateIfNotExists(EnvironmentVariables.TestCoveragePath);
             _serializer = new Dev2JsonSerializer();
-            _serviceAllTestsCoverageModelToFactory = CustomContainer.Get<IServiceTestCoverageModelToFactory>() ?? new ServiceTestCoverageModelToFactory();
-            TestCoverageReports = new ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>>();
+            _serviceAllTestsCoverageModelToFactory = CustomContainer.Get<IServiceTestCoverageModelToFactory>() ?? new ServiceTestCoverageModelToFactory(resourceCatalog);
         }
 
         public static ITestCoverageCatalog Instance => LazyCat.Value;
@@ -67,7 +64,7 @@ namespace Dev2.Runtime
         private readonly Dev2JsonSerializer _serializer;
         private readonly IServiceTestCoverageModelToFactory _serviceAllTestsCoverageModelToFactory;
 
-        public ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>> TestCoverageReports { get; private set; }
+        public ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>> TestCoverageReports { get; } = new ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>>();
 
         public IServiceTestCoverageModelTo GenerateSingleTestCoverage(Guid resourceID, IServiceTestModelTO test)
         {
@@ -184,7 +181,7 @@ namespace Dev2.Runtime
 
         private void Load()
         {
-            TestCoverageReports = new ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>>();
+            TestCoverageReports.Clear();
             var resourceTestCoverageDirectories = _directoryWrapper.GetDirectories(EnvironmentVariables.TestCoveragePath);
             foreach (var resourceTestCoverageDirectory in resourceTestCoverageDirectories)
             {
@@ -247,21 +244,40 @@ namespace Dev2.Runtime
 
     internal class ServiceTestCoverageModelToFactory : IServiceTestCoverageModelToFactory
     {
+        private readonly IResourceCatalog _resourceCatalog;
+
+        public ServiceTestCoverageModelToFactory(IResourceCatalog resourceCatalog)
+        {
+            _resourceCatalog = resourceCatalog;
+        }
         public IServiceTestCoverageModelTo New(Guid workflowId, CoverageArgs args, List<IServiceTestModelTO> serviceTestModelTos)
         {
-            return new ServiceTestCoverageModelTo(workflowId, args, serviceTestModelTos);
+            var allTestNodesCovered = serviceTestModelTos.Select(test => new SingleTestNodesCovered(test.TestName, test.TestSteps)).ToArray();
+
+            var result = new ServiceTestCoverageModelTo
+            {
+                WorkflowId = workflowId,
+                OldReportName = args?.OldReportName,
+                ReportName = args?.ReportName,
+                LastRunDate = DateTime.Now,
+                AllTestNodesCovered = allTestNodesCovered,
+            };
+            var coveredNodes = allTestNodesCovered.SelectMany(o => o.TestNodesCovered);
+
+            var workflow = _resourceCatalog.GetWorkflow(workflowId);
+            var workflowNodes = workflow.WorkflowNodesForHtml;
+            var testedNodes = coveredNodes.GroupBy(i => i.ActivityID).Select(o => o.First())
+                .Where(o => o.MockSelected is false)
+                .Select(u => u.ActivityID);
+            var n = testedNodes.Intersect(workflowNodes.Select(o => o.UniqueID)).Count();
+            double totalNodes = workflowNodes.Count;
+            result.CoveragePercentage = n / totalNodes;
+            result.TotalCoverage = n / totalNodes;
+
+            return result;
         }
     }
 
-    public interface IWorkflowNode 
-    {
-        Guid ActivityID { get; }
-        Guid UniqueID { get; }
-        string StepDescription { get; }
-        bool MockSelected { get; }
-        List<IWorkflowNode> NextNodes { get; }
-
-    }
 
     public class WorkflowNode : IWorkflowNode
     {
@@ -271,68 +287,6 @@ namespace Dev2.Runtime
         public bool MockSelected { get; set; }
         public List<IWorkflowNode> NextNodes { get; set; }
     }
-
-    public interface IWorkflowWrapper
-    {
-        string Name { get; }
-        Guid WorkflowId { get; }
-        List<IWorkflowNode> GetAllWorkflowNodes();
-    }
-
-    //Just think this class should implement the IResourceModel or be similarly structured as IResourceModel
-    //this is so that this class can now hold all that is used and needed be a workflow
-    public class WorkflowWrapper : IWorkflowWrapper
-    {
-        private readonly IWorkflow _workflow;
-
-        public WorkflowWrapper(Guid workflowId)
-        {
-            var resourceCatalog = CustomContainer.Get<IResourceCatalog>() ?? ResourceCatalog.Instance;
-            var workflowFactory = CustomContainer.Get<IWorkflowFactory>() ?? new WorkflowFactory();
-
-            var workflowContents = resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, workflowId);
-            _workflow = workflowFactory.New(workflowContents.ToXElement());
-
-            WorkflowId = workflowId;
-            Name = _workflow.Name;
-        }
-
-        public string Name { get; }
-
-        public Guid WorkflowId { get; }
-
-        public List<IWorkflowNode> GetAllWorkflowNodes()
-        {
-            return _workflow?.WorkflowNodes;
-        }
-
-        public List<IWorkflowNode> GetHTMLWorkflowNodes()
-        {
-            return _workflow?.WorkflowNodesForHtml;
-        }
-    }
-
-    public class WorkflowFactory : IWorkflowFactory
-    {
-        public IWorkflow New(XElement xElement)
-        {
-            return new Workflow(xElement);
-        }
-    }
-
-    public interface IWorkflowFactory
-    {
-        IWorkflow New(XElement xElement);
-    }
-
-    // internal interface IServiceSingleTestCoverageModelTo
-    // {
-    //     // Guid WorkflowId { get; }
-    //     // string OldTestName { get; }
-    //     // string TestName { get; }
-    //     // string Password { get; }
-    //     // ISingleTestNodesCovered SingleTestNodesCovered { get; }
-    // }
 
     public interface IServiceTestCoverageModelTo
     {
@@ -350,29 +304,6 @@ namespace Dev2.Runtime
         public ServiceTestCoverageModelTo()
         {
             // Used during json deserialization
-        }
-
-        public ServiceTestCoverageModelTo(Guid workflowId, CoverageArgs args, List<IServiceTestModelTO> tests)
-        {
-            OldReportName = args?.OldReportName;
-            ReportName = args?.ReportName;
-            LastRunDate = DateTime.Now;
-
-
-            AllTestNodesCovered = tests.Select(test => new SingleTestNodesCovered(test.TestName, test.TestSteps)).ToArray();
-            var coveredNodes = AllTestNodesCovered.SelectMany(o => o.TestNodesCovered);
-
-            WorkflowId = workflowId;
-
-            var workflow = new WorkflowWrapper(workflowId);
-            var workflowNodes = workflow.GetAllWorkflowNodes();
-            var testedNodes = coveredNodes.GroupBy(i => i.ActivityID).Select(o => o.First())
-                .Where(o => o.MockSelected is false)
-                .Select(u => u.ActivityID);
-            var n = testedNodes.Intersect(workflowNodes.Select(o => o.UniqueID)).Count();
-            double totalNodes = workflowNodes.Count;
-            CoveragePercentage = n / totalNodes;
-            TotalCoverage = n / totalNodes;
         }
 
         public SingleTestNodesCovered[] AllTestNodesCovered { get; set; }

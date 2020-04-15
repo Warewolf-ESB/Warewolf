@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer
 {

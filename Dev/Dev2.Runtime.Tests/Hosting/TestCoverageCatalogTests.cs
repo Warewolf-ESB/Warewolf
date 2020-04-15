@@ -16,6 +16,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Data;
 
 namespace Dev2.Tests.Runtime.Hosting
@@ -23,16 +25,19 @@ namespace Dev2.Tests.Runtime.Hosting
     [TestClass]
     public class TestCoverageCatalogTests
     {
-        [TestInitialize]
-        public void Setup()
+        public Mock<IResourceCatalog> GetMockResourceCatalog()
         {
             var workflowNodes = GetWorkflowNodes();
 
-            var mockWorkflowBuilder = new Mock<IWorkflowWrapper>();
-            mockWorkflowBuilder.Setup(o => o.WorkflowId).Returns(_workflowId);
+            var mockWorkflowBuilder = new Mock<IWarewolfWorkflow>();
+            mockWorkflowBuilder.Setup(o => o.ResourceID).Returns(_workflowId);
             mockWorkflowBuilder.Setup(o => o.Name).Returns(_workflowName);
-            mockWorkflowBuilder.Setup(o => o.GetAllWorkflowNodes()).Returns(workflowNodes);
+            mockWorkflowBuilder.Setup(o => o.WorkflowNodesForHtml).Returns(workflowNodes);
 
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(o => o.GetWorkflow(_workflowId)).Returns(mockWorkflowBuilder.Object);
+
+            return mockResourceCatalog;
         }
 
         private static readonly Guid _workflowId = Guid.Parse("99c23a82-aaf8-46a5-8746-4ff2d251daf2");
@@ -44,9 +49,10 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_ExpectPartialCoverageReport()
         {
+            var mockResourceCatalog = GetMockResourceCatalog();
             var test = GetFalseBranchTest();
 
-            var sut = new TestCoverageCatalog();
+            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
 
             var coverage = sut.GenerateSingleTestCoverage(_workflowId, test);
 
@@ -63,9 +69,10 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GenerateSingleTestCoverage_With_MockNodes_ExpectPartialCoverage()
         {
+            var mockResourceCatalog = GetMockResourceCatalog();
             var tests = GetTrueBranchTest();
 
-            var sut = new TestCoverageCatalog();
+            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
 
             var coverage = sut.GenerateSingleTestCoverage(_workflowId, tests);
 
@@ -77,9 +84,10 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_When_FetchReport_ExpectFullCoverageReport()
         {
+            var mockResourceCatalog = GetMockResourceCatalog();
             var tests = GetTests();
 
-            var sut = new TestCoverageCatalog();
+            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
             var coverage = sut.GenerateAllTestsCoverage(_workflowName, _workflowId, tests);
 
             var report = sut.FetchReport(_workflowId, _workflowName);
@@ -95,10 +103,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_When_DeleteCoverageReport_ExpectFullCoverageRemoved()
         {
+            var mockResourceCatalog = GetMockResourceCatalog();
             //Arrange
             var tests = GetTests();
 
-            var sut = new TestCoverageCatalog();
+            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
             var coverage = sut.GenerateAllTestsCoverage(_workflowName, _workflowId, tests);
 
             var report = sut.FetchReport(_workflowId, _workflowName);
@@ -121,8 +130,10 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GivenTestCoverage_When_ReloadAllReports_ExpectFullCoverageRemoved()
         {
+            var mockResourceCatalog = GetMockResourceCatalog();
+
             //Arrange
-            var sut = new TestCoverageCatalog();
+            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
             Assert.AreEqual(0, sut.TestCoverageReports.Count);
 
             _ = sut.GenerateSingleTestCoverage(_workflowId, _falseBranchTest);

@@ -94,7 +94,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             private string _executePayload;
             private Guid _workspaceGuid;
-            private Guid _executionDlid;
+            private Guid _executionDataListId;
             private IDSFDataObject _dataObject;
             private IWarewolfResource _resource;
             private Dev2JsonSerializer _serializer;
@@ -123,23 +123,21 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     return _repository.ServerWorkspace.ID;
                 }
-                else
-                {
-                    if (!Guid.TryParse(workspaceId, out var workspaceGuid))
-                    {
-                        return _repository.ServerWorkspace.ID;
-                    }
-                    return workspaceGuid;
-                }
+
+                return !Guid.TryParse(workspaceId, out var workspaceGuid)
+                    ? _repository.ServerWorkspace.ID
+                    : workspaceGuid;
             }
 
             private void PrepareDataObject(WebRequestTO webRequest, string serviceName, NameValueCollection headers, IPrincipal user, Guid workspaceGuid, out IWarewolfResource resource)
             {
+                var uri = string.IsNullOrWhiteSpace(webRequest.WebServerUrl) ? new Uri("https://test/") : new Uri(webRequest.WebServerUrl);
                 _dataObject = _dataObjectFactory.New(workspaceGuid, user, serviceName, webRequest);
+                _dataObject.OriginalServiceName = serviceName;
                 _dataObject.SetupForWebDebug(webRequest);
                 webRequest.BindRequestVariablesToDataObject(ref _dataObject);
                 _dataObject.SetupForRemoteInvoke(headers);
-                _dataObject.SetEmissionType(webRequest, serviceName, headers);
+                _dataObject.SetEmissionType(uri, serviceName, headers);
                 _dataObject.SetupForTestExecution(serviceName, headers);
                 _dataObject.SetHeaders(headers);
                 if (_dataObject.ServiceName == null)
@@ -192,7 +190,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var msg = string.Format(Warewolf.Resource.Errors.ErrorResource.ServiceNotFound, serviceName);
                     _dataObject.Environment.AddError(msg);
                     _dataObject.ExecutionException = new Exception(msg);
-                    _executionDlid = GlobalConstants.NullDataListID;
+                    _executionDataListId = GlobalConstants.NullDataListID;
                     return null;
                 }
 
@@ -207,13 +205,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                     _dataObject.ExecutionException = new Exception(errorMessage);
                 }
 
-                _executionDlid = GlobalConstants.NullDataListID;
+                _executionDataListId = GlobalConstants.NullDataListID;
 
                 if (_canExecute && _dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
                     Thread.CurrentPrincipal = user;
 
-                    _executionDlid = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, user);
+                    _executionDataListId = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, user);
                 }
 
                 return null;
@@ -222,20 +220,20 @@ namespace Dev2.Runtime.WebServer.Handlers
             private Guid DoExecution(WebRequestTO webRequest, string serviceName, Guid workspaceGuid, IDSFDataObject dataObject, IPrincipal userPrinciple)
             {
                 _esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
-                var executionDlid = Guid.Empty;
+                var executionDataListId = Guid.Empty;
 
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
                 {
-                    executionDlid = dataObject.EsbChannel.ExecuteRequest(dataObject, _esbExecuteRequest, workspaceGuid, out _);
+                    executionDataListId = dataObject.EsbChannel.ExecuteRequest(dataObject, _esbExecuteRequest, workspaceGuid, out _);
                     _executePayload = _esbExecuteRequest.ExecuteResult.ToString();
                 });
 
-                return executionDlid;
+                return executionDataListId;
             }
 
             private IResponseWriter ExecuteAsTest(IPrincipal userPrinciple)
             {
-                var formatter = ServiceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload);
+                var formatter = ServiceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload, _testCoverageCatalog);
                 return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
             }
 
@@ -243,7 +241,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 try
                 {
-                    var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType);
+                    var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType, webRequest.WebServerUrl);
                     coverageDataContext.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, _workspaceGuid), webRequest, serviceName, resource);
                     var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _resourceCatalog, out _executePayload);
                     return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
@@ -282,7 +280,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     WebRequestTO = webRequest,
                     ServiceName = serviceName,
                     DataObject = _dataObject,
-                    DataListIdGuid = _executionDlid,
+                    DataListIdGuid = _executionDataListId,
                     WorkspaceID = _workspaceGuid,
                     Resource = _resource,
                     DataListFormat = formatter,

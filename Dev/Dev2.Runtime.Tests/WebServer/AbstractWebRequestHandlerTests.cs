@@ -1582,7 +1582,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var invoke = dataObject.Object.SetEmissionType(new WebRequestTO(), ServiceName, collection);
+            var invoke = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Exactly(1));
             Assert.AreEqual(ServiceName, invoke);
@@ -1603,7 +1603,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmissionType(new WebRequestTO(), ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual(ServiceName, emitionType);
@@ -1620,7 +1620,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmissionType(new WebRequestTO(), ServiceName, null);
+            var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, null);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual(ServiceName, emitionType);
@@ -1638,9 +1638,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
             dataObject.SetupProperty(o => o.ServiceName);
+            dataObject.Setup(o => o.OriginalServiceName).Returns(ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmissionType(new WebRequestTO(), ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1660,9 +1661,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
             dataObject.SetupProperty(o => o.ServiceName);
+            dataObject.Setup(o => o.OriginalServiceName).Returns(ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmissionType(new WebRequestTO(), ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1682,9 +1684,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
             dataObject.SetupProperty(o => o.ServiceName);
+            dataObject.Setup(o => o.OriginalServiceName).Returns(ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmissionType(new WebRequestTO(), ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             Assert.AreEqual("hello World", emitionType);
@@ -1703,9 +1706,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
             dataObject.SetupProperty(o => o.ServiceName);
+            dataObject.Setup(o => o.OriginalServiceName).Returns(ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmissionType(new WebRequestTO(), ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1726,9 +1730,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             dataObject.SetupProperty(o => o.ServiceName);
             dataObject.SetupProperty(o => o.TestName);
+            dataObject.Setup(o => o.OriginalServiceName).Returns(ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmissionType(new WebRequestTO(), ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1750,9 +1755,10 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             dataObject.SetupProperty(o => o.IsServiceTestExecution);
             dataObject.SetupProperty(o => o.ServiceName);
+            dataObject.Setup(o => o.OriginalServiceName).Returns(ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmissionType(new WebRequestTO(), ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Exactly(1));

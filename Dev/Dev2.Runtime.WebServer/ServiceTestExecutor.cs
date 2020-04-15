@@ -71,7 +71,7 @@ namespace Dev2.Runtime.WebServer
             return executePayload;
         }
 
-        public static DataListFormat ExecuteTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, out string executePayload)
+        public static DataListFormat ExecuteTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, out string executePayload, ITestCoverageCatalog testCoverageCatalog)
         {
             executePayload = null;
 
@@ -80,11 +80,11 @@ namespace Dev2.Runtime.WebServer
             {
                 if (dataObject.ReturnType == EmitionTypes.TEST)
                 {
-                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload);
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload, testCoverageCatalog);
                 }
                 if (dataObject.ReturnType == EmitionTypes.TRX)
                 {
-                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload);
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload, testCoverageCatalog);
                 }
                 dataObject.ResourceID = Guid.Empty;
             }
