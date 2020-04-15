@@ -72,6 +72,11 @@ namespace Dev2.Settings.Logging
         private IResource _selectedAuditingSource;
         private bool _isLegacy;
 
+        //this is here to clone the viewmodel
+        [ExcludeFromCodeCoverage]
+        public LogSettingsViewModel()
+        {
+        }
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IServer currentEnvironment)
         {
