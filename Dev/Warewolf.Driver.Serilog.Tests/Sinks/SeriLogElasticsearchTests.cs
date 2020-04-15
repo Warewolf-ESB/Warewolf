@@ -23,12 +23,14 @@ namespace Warewolf.Driver.Serilog.Tests
         [TestCategory(nameof(SeriLogElasticsearchConfig))]
         public void SeriLogELasticsearchConfig_NoParamConstructor_Returns_Default()
         {
+
             var source = new SerilogElasticsearchSource
             {
                 ResourceID = Guid.Parse("24e12ae4-58b6-4fec-b521-48493230fef7"),
                 HostName = "localhost",
                 Port = "9200",
-                ResourceName = "TestSource"
+                ResourceName = "TestSource",
+                SearchIndex = "warewolftestlogs"
             };
             var config = new SeriLogElasticsearchConfig(source);
             Assert.IsNotNull(config.Logger);
