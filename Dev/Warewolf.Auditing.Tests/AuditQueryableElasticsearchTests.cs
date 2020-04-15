@@ -13,11 +13,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
+using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Interfaces;
+using Moq;
 using Newtonsoft.Json.Linq;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using Warewolf.Auditing.Drivers;
 using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
+using Warewolf.Storage;
 using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Auditing.Tests
@@ -31,7 +40,7 @@ namespace Warewolf.Auditing.Tests
             {
                 var dependency = new Depends(Depends.ContainerType.Elasticsearch);
                 var hostName = "http://" + dependency.Container.IP;
-                return new AuditQueryableElastic(hostName,"warewolftestlogs");
+                return new AuditQueryableElastic(hostName, "warewolftestlogs");
             }
             else
             {
@@ -39,13 +48,79 @@ namespace Warewolf.Auditing.Tests
             }
         }
 
+        private void LoadLogsintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, string eventLevel)
+        {
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            var port = dependency.Container.Port;
+            var loggerSource = new SerilogElasticsearchSource
+            {
+                Port = port,
+                HostName = hostName,
+                SearchIndex = "warewolftestlogs"
+            };
+            var uri = new Uri(hostName + ":" + port);
+            var logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(uri)
+                {
+                    AutoRegisterTemplate = true,
+                    IndexDecider = (e, o) => loggerSource.SearchIndex,
+                }))
+                .CreateLogger();
+
+            var mockSeriLogConfig = new Mock<ISeriLogConfig>();
+            mockSeriLogConfig.SetupGet(o => o.Logger).Returns(logger);
+
+            using (var loggerConnection = loggerSource.NewConnection(mockSeriLogConfig.Object))
+            {
+                var loggerPublisher = loggerConnection.NewPublisher();
+                var mockDataObject = SetupDataObjectWithAssignedInputs(executionId, resourceId);
+                var auditLog = new Audit(mockDataObject.Object, auditType, detail, null, null);
+                var logEntryCommand = new AuditCommand
+                {
+                    Audit = auditLog,
+                    Type = "LogEntry",
+                };
+                //-------------------------Act----------------------------------
+                if (eventLevel == "Debug")
+                {
+                    loggerPublisher.Info(GlobalConstants.WarewolfLogsTemplate, logEntryCommand);
+                }
+                else
+                {
+                    loggerPublisher.Debug(GlobalConstants.WarewolfLogsTemplate, logEntryCommand);
+                }
+            }
+
+            Task.Delay(225).Wait();
+        }
+
+        Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId, Guid resourceId)
+        {
+            var mockedDataObject = new Mock<IDSFDataObject>();
+            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
+            mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Test-Workflow");
+            mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);
+            mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId);
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
+            mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
+            return mockedDataObject;
+        }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryTriggerData_FilterBy_ResourceId()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "QueryTriggerData", "details","Info");
+            //
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var resourceId = Guid.Parse("9e556ceb-ce2d-4aaa-a556-5d6e80261c96"); // Guid.NewGuid();
             var query = new Dictionary<string, StringBuilder>
             {
                 {"ResourceId", resourceId.ToString().ToStringBuilder()}
@@ -66,6 +141,11 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_NoParameters()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", "Info");
+            //
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
             var query = new Dictionary<string, StringBuilder>();
 
@@ -81,20 +161,24 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId_EventLevel()
+        public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId_EventLevel_Debug()
         {
-            var executionID = Guid.NewGuid();
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", "Debug");
+            //
 
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ExecutionID", executionID.ToString().ToStringBuilder()},
+                {"ExecutionID", executionId.ToString().ToStringBuilder()},
                 {"EventLevel", "Debug".ToStringBuilder()}
             };
             var jsonQueryexecutionId = new JObject
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionID"] = executionID.ToString()
+                    ["fields.Data.Audit.ExecutionID"] = executionId.ToString()
                 }
             };
             var jsonLevel = new JObject
@@ -125,6 +209,11 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_IncorrectLevel()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Wrong");
+            //
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Wrong".ToStringBuilder()}
@@ -154,11 +243,15 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId()
         {
-            var executionID = Guid.NewGuid();
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Info");
+            //
 
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ExecutionID", executionID.ToString().ToStringBuilder()}
+                {"ExecutionID", executionId.ToString().ToStringBuilder()}
             };
 
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
@@ -168,7 +261,7 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionID"] = executionID.ToString()
+                    ["fields.Data.Audit.ExecutionID"] = executionId.ToString()
                 }
             };
             jArray.Add(json);
@@ -185,6 +278,12 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Debug()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Debug");
+            //
+
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Debug".ToStringBuilder()}
@@ -215,6 +314,11 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Information()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Information");
+            //
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Information".ToStringBuilder()}
@@ -244,6 +348,11 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Warning()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Warning");
+            //
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Warning".ToStringBuilder()}
@@ -273,6 +382,11 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Error()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Error");
+            //
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Error".ToStringBuilder()}
@@ -302,6 +416,11 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Fatal()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Fatal");
+            //
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Fatal".ToStringBuilder()}
@@ -331,10 +450,15 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Info");
+            //
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
-            var StartDateTime = DateTime.Now.AddDays(-5);
+            var StartDateTime = DateTime.Now.AddDays(-1);
             var CompletedDateTime = DateTime.Now;
-         
+
             var query = new Dictionary<string, StringBuilder>
             {
                 {"StartDateTime", StartDateTime.ToString(dtFormat).ToStringBuilder()},
@@ -370,6 +494,11 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_DateTime_EventLevel()
         {
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Debug");
+            //
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
             var StartDateTime = DateTime.Now;
             var CompletedDateTime = StartDateTime.AddMinutes(30);
@@ -418,14 +547,20 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_EventLevel_executionID()
         {
-            var executionID = Guid.NewGuid();
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Debug");
+            //
+
+
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
             var StartDateTime = DateTime.Now.AddDays(-5);
             var CompletedDateTime = StartDateTime.AddMinutes(30);
 
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ExecutionID", executionID.ToString().ToStringBuilder()},
+                {"ExecutionID", executionId.ToString().ToStringBuilder()},
                 {"EventLevel", "Debug".ToStringBuilder()},
                 {"StartDateTime", StartDateTime.ToString(dtFormat).ToStringBuilder()},
                 {"CompletedDateTime", CompletedDateTime.ToString(dtFormat).ToStringBuilder()}
@@ -443,10 +578,10 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionID"] = executionID.ToString()
+                    ["fields.Data.Audit.ExecutionID"] = executionId.ToString()
                 }
             };
-            
+
             var jsonLevel = new JObject
             {
                 ["match"] = new JObject
@@ -454,7 +589,7 @@ namespace Warewolf.Auditing.Tests
                     ["level"] = "Debug"
                 }
             };
-            
+
             var jsonDate = new JObject
             {
                 ["range"] = new JObject
@@ -478,13 +613,17 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryableElastic))]
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_On_UrlEncoded_DateTime_EventLevel_and_executionID_Should_Not_Break()
         {
-            var executionID = Guid.NewGuid();
+            //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details","Debug");
+            //
             var StartDateTime = "2019%2F10%2F01+01%3A40%3A18";
             var CompletedDateTime = "2019%2F10%2F03+01%3A40%3A18";
 
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ExecutionID", executionID.ToString().ToStringBuilder()},
+                {"ExecutionID", executionId.ToString().ToStringBuilder()},
                 {"EventLevel", "Debug".ToStringBuilder()},
                 {"StartDateTime", StartDateTime.ToStringBuilder()},
                 {"CompletedDateTime", CompletedDateTime.ToStringBuilder()}
@@ -502,10 +641,10 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionID"] = executionID.ToString()
+                    ["fields.Data.Audit.ExecutionID"] = executionId.ToString()
                 }
             };
-           
+
             var jsonLevel = new JObject
             {
                 ["match"] = new JObject
@@ -513,7 +652,7 @@ namespace Warewolf.Auditing.Tests
                     ["level"] = "Debug"
                 }
             };
-           
+
             var jsonDate = new JObject
             {
                 ["range"] = new JObject
