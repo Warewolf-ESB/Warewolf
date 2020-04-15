@@ -46,7 +46,6 @@ namespace Dev2.Runtime
 
         private readonly DirectoryWrapper _directoryWrapper;
         private readonly FileWrapper _fileWrapper;
-        private readonly FileSystemWatcher _watcher;
 
         public TestCoverageCatalog(IResourceCatalog resourceCatalog)
         {
@@ -226,11 +225,6 @@ namespace Dev2.Runtime
             // note: list is duplicated in order to avoid concurrent modifications of the list during test runs
             return result.ToList();
         }
-
-        // public void SaveCoverage(Guid resourceId, IServiceTestCoverageModelTo serviceTestCoverageModelTo)
-        // {
-        //     SaveCoverageReport(resourceId, serviceTestCoverageModelTo);
-        // }
     }
 
     public interface IServiceTestCoverageModelToFactory

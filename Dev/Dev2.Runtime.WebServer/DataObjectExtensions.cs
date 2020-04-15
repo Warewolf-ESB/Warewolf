@@ -49,7 +49,7 @@ namespace Dev2.Runtime.WebServer
                 return SetReturnTypeForExtension(dataObject, startLocation, extension);
             }
 
-            if (serviceName == "*")
+            if (serviceName == "*" || serviceName == ".coverage")
             {
                 var path = uri.AbsolutePath;
                 if (path.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase))
@@ -239,7 +239,7 @@ namespace Dev2.Runtime.WebServer
                 }
 
                 var resources = catalog.GetExecutableResources(path);
-                dataObject.TestsResourceIds = resources.Select(p => p.ResourceID).ToArray();
+                dataObject.TestsResourceIds = resources.Where(o => o is IWarewolfWorkflow).Select(p => p.ResourceID).GroupBy(o => o).Select(o => o.Key).ToArray();
             }
             else if (resource != null)
             {
@@ -261,7 +261,7 @@ namespace Dev2.Runtime.WebServer
                 }
 
                 var resources = catalog.GetExecutableResources(path);
-                coverageData.CoverageReportResourceIds = resources.Select(p => p.ResourceID).ToArray();
+                coverageData.CoverageReportResourceIds = resources.Where(o => o is IWarewolfWorkflow).Select(p => p.ResourceID).GroupBy(o => o).Select(o => o.Key).ToArray();
             }
             else if (resource != null)
             {
@@ -465,7 +465,12 @@ namespace Dev2.Runtime.WebServer
                     {
                         workflowTestResults.Add(task.Result);
                     }
-                    testCoverageCatalog.GenerateAllTestsCoverage(res.ResourceName, res.ResourceID, workflowTestResults.Results);
+
+                    var testResults = workflowTestResults.Results;
+                    if (testResults.Count > 0)
+                    {
+                        testCoverageCatalog.GenerateAllTestsCoverage(res.ResourceName, res.ResourceID, testResults);
+                    }
 
                     return workflowTestResults;
                 });
@@ -605,7 +610,11 @@ namespace Dev2.Runtime.WebServer
             var coverageReportsTemp = new List<WorkflowCoverageReports>();
             foreach (var coverageResourceId in coverageData.CoverageReportResourceIds)
             {
-                var res = selectedResources.First(o => o.ResourceID == coverageResourceId);
+                var res = selectedResources.FirstOrDefault(o => o.ResourceID == coverageResourceId);
+                if (res is null)
+                {
+                    continue;
+                }
                 var coverageReports = new WorkflowCoverageReports(res);
 
                 var allWorkflowReports = testCoverageCatalog.Fetch(coverageResourceId);
