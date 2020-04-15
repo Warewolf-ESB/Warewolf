@@ -60,8 +60,6 @@ namespace Dev2.Runtime.WebServer
                 return path;
             }
 
-            var publicValue = webRequest.Variables["isPublic"];
-            var isPublic = bool.Parse(publicValue ?? "False");
             var firstForwardSlash = path.IndexOf('/', 1);
             if (firstForwardSlash > 0)
             {
@@ -74,6 +72,10 @@ namespace Dev2.Runtime.WebServer
                 path = path.Substring(0, lastForwardSlash);
             }
 
+            if (path == ".coverage" || path == ".tests")
+            {
+                return "/";
+            }
             //var path = isPublic ? RemoveAccessType(webServerUrl, "public", "Public") : RemoveAccessType(webServerUrl, "secure", "Secure");
             //path = path.TrimStart('/').TrimEnd('/');
             return path.Replace("/", "\\");
