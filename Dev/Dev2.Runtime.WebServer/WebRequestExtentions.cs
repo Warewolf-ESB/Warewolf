@@ -47,11 +47,35 @@ namespace Dev2.Runtime.WebServer
 
         public static string GetPathForAllResources(this WebRequestTO webRequest)
         {
+            var uri = new Uri(webRequest.WebServerUrl);
+            if (!uri.IsAbsoluteUri)
+            {
+                throw new Exception("expected absolute uri");
+            }
+            var path = uri.AbsolutePath;
+            var isCoverageReport = path.EndsWith(".coverage") || path.EndsWith(".coverage.json");
+            var isTestReport = path.EndsWith(".tests") || path.EndsWith(".tests.trx");
+            if (!isCoverageReport && !isTestReport)
+            {
+                return path;
+            }
+
             var publicValue = webRequest.Variables["isPublic"];
             var isPublic = bool.Parse(publicValue ?? "False");
-            var webServerUrl = webRequest.WebServerUrl;
-            var path = isPublic ? RemoveAccessType(webServerUrl, "public", "Public") : RemoveAccessType(webServerUrl, "secure", "Secure");
-            path = path.TrimStart('/').TrimEnd('/');
+            var firstForwardSlash = path.IndexOf('/', 1);
+            if (firstForwardSlash > 0)
+            {
+                path = path.Substring(firstForwardSlash + 1);
+            }
+
+            var lastForwardSlash = path.LastIndexOf('/');
+            if (lastForwardSlash > 0)
+            {
+                path = path.Substring(0, lastForwardSlash);
+            }
+
+            //var path = isPublic ? RemoveAccessType(webServerUrl, "public", "Public") : RemoveAccessType(webServerUrl, "secure", "Secure");
+            //path = path.TrimStart('/').TrimEnd('/');
             return path.Replace("/", "\\");
         }
 

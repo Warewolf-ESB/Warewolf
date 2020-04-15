@@ -24,26 +24,12 @@ using System.Xml.Linq;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public interface IWorkflow
-    {
-        string Comment { get; set; }
-        XElement DataList { get; set; }
-        Collection<FlowNode> FlowNodes { get; }
-        string HelpLink { get; set; }
-        string IconPath { get; set; }
-        string Tags { get; set; }
-        string Name { get; set; }
-        List<IWorkflowNode> WorkflowNodes { get; }
-        List<IWorkflowNode> WorkflowNodesForHtml { get; }
-        StringBuilder XamlDefinition { get; set; }
-
-        XElement ToXml();
-    }
-
-    public class Workflow : Resource, IWorkflow
+    public class Workflow : Resource, IWarewolfWorkflow
     {
         #region CTOR
 

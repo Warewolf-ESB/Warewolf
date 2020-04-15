@@ -10,7 +10,6 @@
 
 
 using Dev2.Communication;
-using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -22,22 +21,42 @@ namespace Dev2.Runtime.WebServer
 {
     internal class CoverageDataContext : ICoverageDataObject
     {
+        private readonly string _originalWebServerUrl;
         public EmitionTypes ReturnType { get; }
         public Guid ResourceID { get; }
         public Guid[] CoverageReportResourceIds { get; set; }
 
-        public CoverageDataContext(Guid resourceID, EmitionTypes emitionType)
+        public CoverageDataContext(Guid resourceID, EmitionTypes emissionType, string originalWebServerUrl)
         {
             ResourceID = resourceID;
-            ReturnType = emitionType;
+            ReturnType = emissionType;
+            _originalWebServerUrl = originalWebServerUrl;
+        }
+
+        public string GetTestUrl(string resourcePath)
+        {
+            var myUri = new Uri(_originalWebServerUrl);
+            var security = "";
+            foreach (var segment in myUri.Segments)
+            {
+                if (segment.Contains("public"))
+                    security = segment;
+                if (segment.Contains("secure"))
+                    security = segment;
+            }
+
+            var filepath = resourcePath.Replace("\\", "/");
+            var hostname = myUri.Scheme + "://" + myUri.Authority + "/" + security + filepath + ".tests";
+            return hostname;
         }
     }
+
     public static class ServiceTestCoverageExecutor
     {
         public static DataListFormat GetTestCoverageReports(ICoverageDataObject coverageObject, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog resourceCatalog, out string executePayload)
         {
             DataListFormat formatter = null;
-            if (coverageObject.CoverageReportResourceIds?.Any() ?? false)
+            if (coverageObject.CoverageReportResourceIds.Any())
             {
                 if (coverageObject.ReturnType == EmitionTypes.CoverJson)
                 {

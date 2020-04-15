@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Services.Security;
+using Warewolf.Data;
 using Warewolf.ResourceManagement;
 using Warewolf.Services;
 
@@ -40,6 +41,7 @@ namespace Dev2.Runtime.Interfaces
         DynamicService GetService(Guid workspaceID, Guid resourceID, string resourceName);
         int GetLatestVersionNumberForResource(Guid resourceId);
         IContextualResourceCatalog NewContextualResourceCatalog(IAuthorizationService authService, Guid workspaceId);
+        IWarewolfWorkflow GetWorkflow(Guid resourceId);
     }
 
     public interface IResourceCatalogFactory
