@@ -27,7 +27,6 @@ namespace Warewolf.Data
     public interface IWarewolfWorkflow : IWarewolfResource
     {
         string Name { get; }
-        List<IWorkflowNode> WorkflowNodes { get; }
         List<IWorkflowNode> WorkflowNodesForHtml { get; }
         StringBuilder XamlDefinition { get; set; }
 

@@ -61,6 +61,7 @@
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>

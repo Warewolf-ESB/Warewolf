@@ -21,16 +21,18 @@ using System.Linq;
 using System.Text;
 using System.Xaml;
 using System.Xml.Linq;
-using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
 using Warewolf.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     public class Workflow : Resource, IWarewolfWorkflow
     {
+        private List<IWorkflowNode> _workflowNodes;
+        private List<IWorkflowNode> _workflowNodesForHtml;
+        private Collection<FlowNode> _flowNodes;
+
         #region CTOR
 
         public Workflow()
@@ -58,9 +60,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             XamlDefinition = action.ElementSafeStringBuilder("XamlDefinition");
-            FlowNodes = GetFlowNodes(action);
-            WorkflowNodesForHtml = GetWorkflowNodesForHtml();
-            WorkflowNodes = GetWorkflowNodes();
         }
 
         private List<IWorkflowNode> GetWorkflowNodesForHtml()
@@ -236,96 +235,21 @@ namespace Dev2.Runtime.ServiceModel.Data
             return nodes;
         }
 
-        private List<IWorkflowNode> GetWorkflowNodes()
+        private Collection<FlowNode> GetFlowNodes()
         {
-            var list = new List<IWorkflowNode>();
-            foreach (var node in FlowNodes)
-            {
-                var nodeType = node.GetType().Name;
-                IDev2Activity activity;
-                switch (node.GetType().Name)
-                {
-                    case nameof(FlowStep):
-                        activity = ((FlowStep)node).Action as IDev2Activity;
-                        if (activity.GetType().Name is "DsfCommentActivity")
-                        {
-                            //Do nothing. DsfCommentActivity should not be part of coverage
-                        }
-                        else
-                        {
-                            list.Add(new WorkflowNode
-                            {
-                                ActivityID = activity.ActivityId,
-                                UniqueID = Guid.Parse(activity.UniqueID),
-                                StepDescription = activity.GetDisplayName()
-                            });
-                        }
-                        break;
-
-                    case nameof(FlowDecision):
-                        var flowDecision = ((FlowDecision)node);
-
-                        activity = flowDecision.Condition as IDev2Activity;
-                        if (activity.GetType().Name is "DsfCommentActivity")
-                        {
-                            //Do nothing. DsfCommentActivity should not be part of coverage
-                        }
-                        else
-                        {
-                            list.Add(new WorkflowNode
-                            {
-                                ActivityID = activity.ActivityId,
-                                UniqueID = Guid.Parse(activity.UniqueID),
-                                StepDescription = activity.GetDisplayName()
-                            });
-                        }
-                        break;
-
-                    case nameof(FlowSwitch<FlowNode>):
-                        var nodes = new List<IWorkflowNode>();
-
-                        foreach (var item in ((FlowSwitch<string>)node).Cases.Values)
-                        {
-                            var from = ((FlowStep)item).Action as IDev2Activity;
-                            if (from.GetType().Name is "DsfCommentActivity")
-                            {
-                                //Do nothing. DsfCommentActivity should not be part of coverage
-                            }
-                            else
-                            {
-                                nodes.Add(new WorkflowNode
-                                {
-                                    ActivityID = from.ActivityId,
-                                    UniqueID = Guid.Parse(from.UniqueID),
-                                    StepDescription = from.GetDisplayName()
-                                });
-                            }
-                        }
-                        list.AddRange(nodes);
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            return list;
-        }
-
-        private Collection<FlowNode> GetFlowNodes(XElement action)
-        {
-            var builder = ReadXamlDefinition(action.ElementSafe("XamlDefinition").ToStringBuilder());
+            var builder = ReadXamlDefinition();
 
             return ((Flowchart)builder.Implementation).Nodes;
         }
 
-        private ActivityBuilder ReadXamlDefinition(StringBuilder xaml)
+        private ActivityBuilder ReadXamlDefinition()
         {
+            var xamlStr = RootActivity.ToString();
             try
             {
-                if (xaml != null && xaml.Length != 0)
+                if (xamlStr.Length != 0)
                 {
-                    using (var sw = new StringReader(xaml.ToString()))
+                    using (var sw = new StringReader(xamlStr))
                     {
                         var xamlXmlWriterSettings = new XamlXmlReaderSettings
                         {
@@ -353,9 +277,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string IconPath { get; set; }
         public string Tags { get; set; }
         public string HelpLink { get; set; }
-        public Collection<FlowNode> FlowNodes { get; private set; }
-        public List<IWorkflowNode> WorkflowNodesForHtml { get; }
-        public List<IWorkflowNode> WorkflowNodes { get; }
+        public Collection<FlowNode> FlowNodes => _flowNodes ?? (_flowNodes = GetFlowNodes());
+        public List<IWorkflowNode> WorkflowNodesForHtml => _workflowNodesForHtml ?? (_workflowNodesForHtml = GetWorkflowNodesForHtml());
         public string Name { get; set; }
 
         #region ToXml

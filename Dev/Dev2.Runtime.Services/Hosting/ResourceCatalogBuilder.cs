@@ -240,137 +240,159 @@ namespace Dev2.Runtime.Hosting
             }
             streams.ForEach(currentItem =>
             {
-                XElement xml = null;
                 try
                 {
-                    xml = XElement.Load(currentItem._fileStream);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error("Resource [ " + currentItem._filePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
-                }
-
-                var result = xml?.ToStringBuilder();
-
-                var isValid = result != null && HostSecurityProvider.Instance.VerifyXml(result);
-                var typeName = xml?.AttributeSafe("Type");
-                if (isValid)
-                {
-                    //TODO: Remove this after V1 is released. All will be updated.
-                    if (!IsWarewolfResource(xml))
+                    XElement xml = null;
+                    try
                     {
-                        return;
+                        xml = XElement.Load(currentItem._fileStream);
                     }
-                    if (typeName == "Unknown")
+                    catch (Exception e)
                     {
-                        var servertype = xml.AttributeSafe("ResourceType");
-                        if (servertype != null && servertype == dbType)
+                        Dev2Logger.Error("Resource [ " + currentItem._filePath + " ] caused " + e.Message,
+                            GlobalConstants.WarewolfError);
+                    }
+
+                    var result = xml?.ToStringBuilder();
+
+                    var isValid = result != null && HostSecurityProvider.Instance.VerifyXml(result);
+                    var typeName = xml?.AttributeSafe("Type");
+                    if (isValid)
+                    {
+                        //TODO: Remove this after V1 is released. All will be updated.
+                        if (!IsWarewolfResource(xml))
                         {
-                            xml.SetAttributeValue("Type", dbType);
-                            typeName = dbType;
+                            return;
                         }
-                    }
 
-                    if (typeName == "Dev2Server" || typeName == "Server" || typeName == "ServerSource")
-                    {
-                        xml.SetAttributeValue("Type", connectionTypeName);
-                        typeName = connectionTypeName;
-                    }
-
-                    if (typeName == "OauthSource")
-                    {
-                        xml.SetAttributeValue("Type", dropBoxSourceName);
-                        typeName = dropBoxSourceName;
-                    }
-                    if (typeName == "SharepointServerSource")
-                    {
-                        xml.SetAttributeValue("Type", sharepointSourceName);
-                        typeName = sharepointSourceName;
-                    }
-                    Type type = null;
-                    if (allTypes.Count != 0)
-                    {
-                        type = allTypes.FirstOrDefault(type1 => type1.Name == typeName);
-                    }
-                    Resource resource;
-                    if (type != null)
-                    {
-                        resource = (Resource)Activator.CreateInstance(type, xml);
-                    }
-                    else
-                    {
-                        resource = new Resource(xml);
-                    }
-                    if (currentItem._filePath.EndsWith(".xml"))
-                    {
-                        _convertToBiteExtension.Add(currentItem._filePath);
-                        resource.FilePath = currentItem._filePath.Replace(".xml", ".bite");
-                    }
-                    else
-                    {
-                        resource.FilePath = currentItem._filePath;
-                    }
-                    xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
-                    {
-                        var fileManager = new TxFileManager();
-                        using (TransactionScope tx = new TransactionScope())
+                        if (typeName == "Unknown")
                         {
-                            try
+                            var servertype = xml.AttributeSafe("ResourceType");
+                            if (servertype != null && servertype == dbType)
                             {
-                                var updateXml = a.ToStringBuilder();
-                                var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-                                signedXml.WriteToFile(currentItem._filePath, Encoding.UTF8, fileManager);
-                                tx.Complete();
+                                xml.SetAttributeValue("Type", dbType);
+                                typeName = dbType;
                             }
-                            catch
+                        }
+
+                        if (typeName == "Dev2Server" || typeName == "Server" || typeName == "ServerSource")
+                        {
+                            xml.SetAttributeValue("Type", connectionTypeName);
+                            typeName = connectionTypeName;
+                        }
+
+                        if (typeName == "OauthSource")
+                        {
+                            xml.SetAttributeValue("Type", dropBoxSourceName);
+                            typeName = dropBoxSourceName;
+                        }
+
+                        if (typeName == "SharepointServerSource")
+                        {
+                            xml.SetAttributeValue("Type", sharepointSourceName);
+                            typeName = sharepointSourceName;
+                        }
+
+                        Type type = null;
+                        if (allTypes.Count != 0)
+                        {
+                            type = allTypes.FirstOrDefault(type1 => type1.Name == typeName);
+                        }
+
+                        var resourceType = xml.AttributeSafe("ResourceType");
+                        if (type is null && typeName == "" && resourceType == "WorkflowService")
+                        {
+                            type = typeof(Workflow);
+                        }
+
+                        Resource resource;
+                        if (type != null)
+                        {
+                            resource = (Resource) Activator.CreateInstance(type, xml);
+                        }
+                        else
+                        {
+                            resource = new Resource(xml);
+                        }
+
+                        if (currentItem._filePath.EndsWith(".xml"))
+                        {
+                            _convertToBiteExtension.Add(currentItem._filePath);
+                            resource.FilePath = currentItem._filePath.Replace(".xml", ".bite");
+                        }
+                        else
+                        {
+                            resource.FilePath = currentItem._filePath;
+                        }
+
+                        xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version,
+                            a =>
+                            {
+                                var fileManager = new TxFileManager();
+                                using (TransactionScope tx = new TransactionScope())
+                                {
+                                    try
+                                    {
+                                        var updateXml = a.ToStringBuilder();
+                                        var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
+                                        signedXml.WriteToFile(currentItem._filePath, Encoding.UTF8, fileManager);
+                                        tx.Complete();
+                                    }
+                                    catch
+                                    {
+                                        try
+                                        {
+                                            Transaction.Current.Rollback();
+                                        }
+                                        catch (Exception err)
+                                        {
+                                            Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                                        }
+
+                                        throw;
+                                    }
+                                }
+
+                            });
+                        if (resource.IsUpgraded)
+                        {
+                            // Must close the source stream first and then add a new target stream
+                            // otherwise the file will be remain locked
+                            currentItem._fileStream.Close();
+
+                            xml = resource.UpgradeXml(xml, resource);
+
+                            var updateXml = xml.ToStringBuilder();
+                            var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
+                            var fileManager = new TxFileManager();
+                            using (TransactionScope tx = new TransactionScope())
                             {
                                 try
                                 {
-                                    Transaction.Current.Rollback();
+                                    signedXml.WriteToFile(currentItem._filePath, Encoding.UTF8, fileManager);
+                                    tx.Complete();
                                 }
-                                catch (Exception err)
+                                catch
                                 {
-                                    Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                                    Transaction.Current.Rollback();
+                                    throw;
                                 }
-                                throw;
                             }
                         }
 
-                    });
-                    if (resource.IsUpgraded)
-                    {
-                        // Must close the source stream first and then add a new target stream 
-                        // otherwise the file will be remain locked
-                        currentItem._fileStream.Close();
-
-                        xml = resource.UpgradeXml(xml, resource);
-
-                        var updateXml = xml.ToStringBuilder();
-                        var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-                        var fileManager = new TxFileManager();
-                        using (TransactionScope tx = new TransactionScope())
+                        lock (_addLock)
                         {
-                            try
-                            {
-                                signedXml.WriteToFile(currentItem._filePath, Encoding.UTF8, fileManager);
-                                tx.Complete();
-                            }
-                            catch
-                            {
-                                Transaction.Current.Rollback();
-                                throw;
-                            }
+                            AddResource(resource, currentItem._filePath);
                         }
                     }
-
-                    lock (_addLock)
+                    else
                     {
-                        AddResource(resource, currentItem._filePath);
+                        Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem._filePath), GlobalConstants.WarewolfDebug);
                     }
                 }
-                else
+                catch
                 {
-                    Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem._filePath), GlobalConstants.WarewolfDebug);
+                    Dev2Logger.Warn($"Exception loading resource {currentItem._filePath}", GlobalConstants.WarewolfWarn);
                 }
             });
         }

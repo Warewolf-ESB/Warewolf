@@ -599,8 +599,8 @@ namespace Dev2.Runtime.WebServer
                 StartTime = DateTime.Now
             };
 
-            var selectedResources = catalog.GetResources<IWarewolfWorkflow>(workspaceGuid)
-                .Where(resource => coverageData.CoverageReportResourceIds.Contains(resource.ResourceID)).ToArray();
+            var resources = catalog.GetResources<IWarewolfWorkflow>(workspaceGuid);
+            var selectedResources = resources.Where(resource => coverageData.CoverageReportResourceIds.Contains(resource.ResourceID)).ToArray();
 
             testCoverageCatalog.ReloadAllReports();
             var coverageReportsTemp = new List<WorkflowCoverageReports>();
