@@ -223,7 +223,7 @@ namespace Warewolf.Auditing.Drivers
                 {
                     ["match"] = new JObject
                     {
-                        ["fields.Data.Audit.ExecutionID"] = executionId
+                        ["fields.Data.ExecutionID"] = executionId
                     }
                 };
                 jArray.Add(jsonQueryexecutionId);

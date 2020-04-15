@@ -168,6 +168,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [ExpectedException(typeof(Exception))]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
             var auditQueryable = GetAuditQueryable();
@@ -263,7 +264,7 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionID"] = executionId.ToString()
+                    ["fields.Data.ExecutionID"] = executionId.ToString()
                 }
             };
             var jsonLevel = new JObject
@@ -287,8 +288,7 @@ namespace Warewolf.Auditing.Tests
             var results = auditQueryable.QueryLogData(query);
 
             Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            //TODO: checklevels are saving
-            Assert.IsFalse(results.Any());
+            Assert.IsTrue(results.Any());
         }
 
         [TestMethod]
@@ -349,7 +349,7 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionID"] = executionId.ToString()
+                    ["fields.Data.ExecutionID"] = executionId.ToString()
                 }
             };
             jArray.Add(json);
@@ -359,8 +359,7 @@ namespace Warewolf.Auditing.Tests
             var obj = new JObject();
             obj.Add("bool", objMust);
             Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            //TODO: checklevels are saving
-            Assert.IsFalse(results.Any());
+            Assert.IsTrue(results.Any());
         }
 
         [TestMethod]
@@ -467,8 +466,7 @@ namespace Warewolf.Auditing.Tests
             var obj = new JObject();
             obj.Add("bool", objMust);
             Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            //TODO: checklevels are saving
-            Assert.IsFalse(results.Any());
+            Assert.IsTrue(results.Any());
         }
 
         [TestMethod]
@@ -503,7 +501,6 @@ namespace Warewolf.Auditing.Tests
             var obj = new JObject();
             obj.Add("bool", objMust);
             Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            //TODO: checklevels are saving
             Assert.IsFalse(results.Any());
         }
 
@@ -539,8 +536,7 @@ namespace Warewolf.Auditing.Tests
             var obj = new JObject();
             obj.Add("bool", objMust);
             Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            //TODO: checklevels are saving
-            Assert.IsFalse(results.Any());
+            Assert.IsTrue(results.Any());
         }
 
         [TestMethod]
@@ -639,8 +635,7 @@ namespace Warewolf.Auditing.Tests
             var obj = new JObject();
             obj.Add("bool", objMust);
             Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            //TODO: checklevels are saving
-            Assert.IsFalse(results.Any());
+            Assert.IsTrue(results.Any());
         }
 
         [TestMethod]
@@ -652,8 +647,6 @@ namespace Warewolf.Auditing.Tests
             var resourceId = Guid.NewGuid();
             var executionId = Guid.NewGuid();
             LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", "Debug");
-            //
-
 
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
             var StartDateTime = DateTime.Now.AddDays(-5);
@@ -679,7 +672,7 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionID"] = executionId.ToString()
+                    ["fields.Data.ExecutionID"] = executionId.ToString()
                 }
             };
 
@@ -707,8 +700,8 @@ namespace Warewolf.Auditing.Tests
             var obj = new JObject();
             obj.Add("bool", objMust);
             Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            //TODO: checklevels are saving
-            Assert.IsFalse(results.Any());
+
+            Assert.IsTrue(results.Any());
         }
 
         [TestMethod]
@@ -744,7 +737,7 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.Audit.ExecutionID"] = executionId.ToString()
+                    ["fields.Data.ExecutionID"] = executionId.ToString()
                 }
             };
 
@@ -772,8 +765,7 @@ namespace Warewolf.Auditing.Tests
             var obj = new JObject();
             obj.Add("bool", objMust);
             Assert.AreEqual(obj.ToString(), audit.Query);
-            //TODO: checklevels are saving
-            Assert.IsFalse(results.Any());
+            Assert.IsTrue(results.Any());
         }
     }
 }
