@@ -467,12 +467,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return;
             }
 
-            using (var textReader = new StringReader(loadXml[0].Value))
+            var el = loadXml[0];
+
+            using (var textReader = new StringReader(el.Value))
             {
                 var errors = new StringBuilder();
                 try
                 {
-                    GetDependenciesForWorkflowService(loadXml, textReader);
+                    GetDependenciesForWorkflowService(el, textReader);
                 }
                 catch (Exception e)
                 {
@@ -483,9 +485,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         // TODO: this method should not hard code the loaders for various Sources.
-        private void GetDependenciesForWorkflowService(List<XElement> loadXml, StringReader textReader)
+        private void GetDependenciesForWorkflowService(XElement el, StringReader textReader)
         {
-            var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
+            var elementToUse = el.HasElements ? el : XElement.Load(textReader, LoadOptions.None);
+            RootActivity = elementToUse;
             var dependenciesFromXml = from desc in elementToUse.Descendants()
                                       where
                                           IsDependency(desc.Name.LocalName) &&
@@ -528,6 +531,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             AddRabbitMqSources(elementToUse);
             AddDatabaseSourcesForSqlBulkInsertTool(elementToUse);
         }
+
+        protected XElement RootActivity { get; set; }
 
 #pragma warning disable S1067 // Expressions should not be too complex
         private static bool IsDependency(string localName) => localName.Contains("DsfMySqlDatabaseActivity") ||

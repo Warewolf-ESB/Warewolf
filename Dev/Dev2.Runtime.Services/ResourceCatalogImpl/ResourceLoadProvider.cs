@@ -158,7 +158,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public IEnumerable<T> GetResources<T>(Guid workspaceId) where T : IWarewolfResource
         {
-            return GetResources(workspaceId).Cast<T>();
+            return GetResources(workspaceId).Where(o => o is T).Cast<T>();
         }
 
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType)
