@@ -98,8 +98,6 @@ namespace Dev2.Common.Tests
             var newAuditsFilePath = "falsepath7";
 
             //arrange
-            LegacySettings auditSettings;
-
             var sourceFilePath = Config.Legacy.AuditFilePath;
 
             var mockIFile = new Mock<IFile>();
@@ -109,15 +107,15 @@ namespace Dev2.Common.Tests
             var mockDirectory = new Mock<IDirectory>();
             mockDirectory.Setup(d => d.CreateIfNotExists(It.IsAny<string>())).Returns(newAuditsFilePath).Verifiable();
 
-            auditSettings = new LegacySettings("some path", mockIFile.Object, mockDirectory.Object);
+            var auditSettings = new LegacySettings("some path", mockIFile.Object, mockDirectory.Object);
 
+            auditSettings.AuditFilePath = "Audits File Path";
             //act
             var actual = auditSettings.SaveLoggingPath(sourceFilePath);
             Assert.IsTrue(actual);
             actual = auditSettings.SaveLoggingPath(newAuditsFilePath);
-
-            //assert
             Assert.IsTrue(actual);
+
             mockIFile.Verify();
             mockDirectory.Verify();
         }
