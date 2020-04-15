@@ -10,12 +10,10 @@
 
 
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Serializers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -35,7 +33,6 @@ namespace Dev2.Runtime
         void ReloadAllReports();
         void DeleteAllCoverageReports(Guid workflowId);
         List<IServiceTestCoverageModelTo> Fetch(Guid coverageResourceId);
-        // void SaveCoverage(Guid resourceId, IServiceTestCoverageModelTo serviceTestCoverageModelTo);
     }
 
     public class TestCoverageCatalog : ITestCoverageCatalog
@@ -49,6 +46,7 @@ namespace Dev2.Runtime
 
         private readonly DirectoryWrapper _directoryWrapper;
         private readonly FileWrapper _fileWrapper;
+        private readonly FileSystemWatcher _watcher;
 
         public TestCoverageCatalog(IResourceCatalog resourceCatalog)
         {
@@ -162,15 +160,13 @@ namespace Dev2.Runtime
 
         public IServiceTestCoverageModelTo FetchReport(Guid workflowId, string reportName)
         {
-            if (TestCoverageReports.TryGetValue(workflowId, out List<IServiceTestCoverageModelTo> testList))
+            if (!TestCoverageReports.TryGetValue(workflowId, out List<IServiceTestCoverageModelTo> testList))
             {
-                var result = testList?.FirstOrDefault(to => to.ReportName.Equals(reportName, StringComparison.InvariantCultureIgnoreCase));
-                if (result != null)
-                {
-                    return result;
-                }
+                return null;
             }
-            return null;
+
+            var result = testList?.FirstOrDefault(to => to.ReportName.Equals(reportName, StringComparison.InvariantCultureIgnoreCase));
+            return result;
         }
 
         public void ReloadAllReports()
@@ -200,6 +196,12 @@ namespace Dev2.Runtime
             var files = _directoryWrapper.GetFiles(resourceTestDirectory);
             foreach (var file in files)
             {
+                var exists = _fileWrapper.Exists(file.Replace(EnvironmentVariables.TestCoveragePath, EnvironmentVariables.TestPath).Replace(".coverage", ".test"));
+                if (!exists)
+                {
+                    _fileWrapper.Delete(file);
+                    continue;
+                }
                 try
                 {
                     var reader = new StreamReader(file);

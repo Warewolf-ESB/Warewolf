@@ -183,18 +183,23 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return ResourceName;
             }
 
-            var removeWorkspacePath = FilePath.Replace(EnvironmentVariables.WorkspacePath + "\\", "");
-            var workspaceIdEnd = removeWorkspacePath.IndexOf("\\", StringComparison.Ordinal);
-            var workspaceId = removeWorkspacePath.Substring(0, workspaceIdEnd);
+            var filePath = FilePath;
+            var workspacePath = EnvironmentVariables.WorkspacePath;
+            if (filePath.StartsWith(workspacePath))
+            {
+                var removeWorkspacePath = FilePath.Replace(workspacePath + "\\", "");
+                var workspaceIdEnd = removeWorkspacePath.IndexOf("\\", StringComparison.Ordinal);
+                var workspaceId = removeWorkspacePath.Substring(0, workspaceIdEnd);
+                var resourcesDir = removeWorkspacePath.Replace(workspaceId, "");
+                var programData = resourcesDir.Replace("\\ProgramData\\", "");
+                var resourceFile = programData.Replace("\\Resources\\", "");
 
-            var resources = removeWorkspacePath.Replace(workspaceId, "");
-            var programData = resources.Replace("\\ProgramData\\", "");
-            var resourceFile = programData.Replace("\\Resources\\", "");
+                var removeXml = resourceFile.Replace(".xml", "");
+                var removeBite = removeXml.Replace(".bite", "");
+                return removeBite;
+            }
 
-            var removeXml = resourceFile.Replace(".xml", "");
-            var removeBite = removeXml.Replace(".bite", "");
-
-            return removeBite;
+            return filePath.Replace(EnvironmentVariables.ResourcePath, "").Replace(".bite", "");
         }
 
         public string GetSavePath()
