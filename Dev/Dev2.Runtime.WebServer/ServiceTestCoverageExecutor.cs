@@ -36,17 +36,14 @@ namespace Dev2.Runtime.WebServer
         public string GetTestUrl(string resourcePath)
         {
             var myUri = new Uri(_originalWebServerUrl);
-            var security = "";
-            foreach (var segment in myUri.Segments)
+            var segments = myUri.Segments;
+            if (segments.Length <= 1)
             {
-                if (segment.Contains("public"))
-                    security = segment;
-                if (segment.Contains("secure"))
-                    security = segment;
+                throw new Exception("unable to generate test uri: unexpected uri");
             }
 
             var filepath = resourcePath.Replace("\\", "/");
-            var hostname = myUri.Scheme + "://" + myUri.Authority + "/" + security + filepath + ".tests";
+            var hostname = myUri.Scheme + "://" + myUri.Authority + "/" + segments[1] + filepath + ".tests";
             return hostname;
         }
     }
