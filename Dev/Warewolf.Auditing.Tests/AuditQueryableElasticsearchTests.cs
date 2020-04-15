@@ -39,7 +39,7 @@ namespace Warewolf.Auditing.Tests
             if (sink == "AuditingSettingsData")
             {
                 var dependency = new Depends(Depends.ContainerType.Elasticsearch);
-                var hostName = "http://localhost";// + dependency.Container.IP;
+                var hostName = "http://" + dependency.Container.IP;
                 return new AuditQueryableElastic(hostName, "warewolftestlogs",Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,"","");
             }
             else
@@ -112,7 +112,7 @@ namespace Warewolf.Auditing.Tests
         private void LoadExecutionHistoryintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, string eventLevel)
         {
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
-            var hostName = "http://localhost";// + dependency.Container.IP;
+            var hostName = "http://" + dependency.Container.IP;
             var port = dependency.Container.Port;
             var loggerSource = new SerilogElasticsearchSource
             {
