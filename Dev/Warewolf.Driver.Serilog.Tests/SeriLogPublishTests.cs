@@ -242,7 +242,7 @@ namespace Warewolf.Driver.Serilog.Tests
                 //-------------------------Act----------------------------------
                 loggerPublisher.Info(GlobalConstants.WarewolfLogsTemplate, logEntryCommand);
             }
-            Task.Delay(225).Wait();
+            Task.Delay(500).Wait();
             //-------------------------Assert------------------------------------
             var dataFromDb = new TestElasticsearchDatabase();
 
