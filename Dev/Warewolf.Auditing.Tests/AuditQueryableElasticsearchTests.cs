@@ -551,7 +551,7 @@ namespace Warewolf.Auditing.Tests
             //
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
             var StartDateTime = DateTime.Now.AddDays(-1);
-            var CompletedDateTime = DateTime.Now;
+            var CompletedDateTime = DateTime.Now.AddMinutes(10);
 
             var query = new Dictionary<string, StringBuilder>
             {
@@ -595,8 +595,8 @@ namespace Warewolf.Auditing.Tests
             LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", "Debug");
             //
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
-            var StartDateTime = DateTime.Now;
-            var CompletedDateTime = StartDateTime.AddMinutes(30);
+            var StartDateTime = DateTime.Now.AddDays(-1);
+            var CompletedDateTime = DateTime.Now.AddMinutes(10);
 
             var query = new Dictionary<string, StringBuilder>
             {
@@ -649,8 +649,8 @@ namespace Warewolf.Auditing.Tests
             LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", "Debug");
 
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
-            var StartDateTime = DateTime.Now.AddDays(-5);
-            var CompletedDateTime = StartDateTime.AddMinutes(30);
+            var StartDateTime = DateTime.Now.AddDays(-1);
+            var CompletedDateTime = DateTime.Now.AddMinutes(10);
 
             var query = new Dictionary<string, StringBuilder>
             {
@@ -714,8 +714,8 @@ namespace Warewolf.Auditing.Tests
             var executionId = Guid.NewGuid();
             LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", "Debug");
             //
-            var StartDateTime = "2019%2F10%2F01+01%3A40%3A18";
-            var CompletedDateTime = "2019%2F10%2F03+01%3A40%3A18";
+            var StartDateTime = "2020%2F01%2F01+01%3A40%3A18";
+            var CompletedDateTime = "2028%2F10%2F03+01%3A40%3A18";
 
             var query = new Dictionary<string, StringBuilder>
             {
@@ -730,8 +730,8 @@ namespace Warewolf.Auditing.Tests
             var jArray = new JArray();
             var dateObj = new JObject()
             {
-                ["gt"] = "2019-10-01T01:40:18",
-                ["lt"] = "2019-10-03T01:40:18"
+                ["gt"] = "2020-01-01T01:40:18",
+                ["lt"] = "2028-10-03T01:40:18"
             };
             var jsonExecutionId = new JObject
             {
