@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
+using Dev2.Interfaces;
 using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer
@@ -137,7 +138,7 @@ namespace Dev2.Runtime.WebServer
         }
 
 
-        public static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, string className)
+        internal static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, string className, AllCoverageReports allCoverageReports, ICoverageDataObject coverageData)
         {
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
@@ -184,6 +185,17 @@ namespace Dev2.Runtime.WebServer
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             writer.Write("Tests Failed: " + failedCount);
+            writer.RenderEndTag();
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            if (coverageData.IsMultipleWorkflowReport)
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
+                writer.AddAttribute(HtmlTextWriterAttribute.Href, coverageData.GetAllTestsUrl());
+                writer.RenderBeginTag(HtmlTextWriterTag.A);
+                writer.Write("Run All Tests");
+                writer.RenderEndTag();
+            }
             writer.RenderEndTag();
 
             writer.RenderEndTag();
