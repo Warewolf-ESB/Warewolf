@@ -55,9 +55,33 @@ namespace Dev2.Integration.Tests.Server_Refresh
             var failRequest1 = ExecuteRequest(new Uri(url1));
             var failRequest2 = ExecuteRequest(new Uri(url1));
             var failRequest3 = ExecuteRequest(new Uri(url1));
-            var failRequest1Result = failRequest1.Result;
-            var failRequest2Result = failRequest2.Result;
-            var failRequest3Result = failRequest3.Result;
+            string failRequest1Result;
+            string failRequest2Result;
+            string failRequest3Result;
+            try
+            {
+                failRequest1Result = failRequest1.Result;
+            }
+            catch (AggregateException e)
+            {
+                failRequest1Result = new StreamReader((e.InnerExceptions[0] as WebException)?.Response.GetResponseStream()).ReadToEnd();
+            }
+            try
+            {
+                failRequest2Result = failRequest2.Result;
+            }
+            catch (AggregateException e)
+            {
+                failRequest2Result = new StreamReader((e.InnerExceptions[0] as WebException)?.Response.GetResponseStream()).ReadToEnd();
+            }
+            try
+            {
+                failRequest3Result = failRequest3.Result;
+            }
+            catch (AggregateException e)
+            {
+                failRequest3Result =new StreamReader((e.InnerExceptions[0] as WebException)?.Response.GetResponseStream()).ReadToEnd();
+            }
             var passRequest1Result = passRequest1.Result;
             var passRequest2Result = passRequest2.Result;
             var passRequest3Result = passRequest3.Result;
@@ -97,19 +121,10 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
         public Task<string> ExecuteRequest(Uri url)
         {
-            try
+            var client = new PatientWebClient { Credentials = CredentialCache.DefaultNetworkCredentials };
+            using (client)
             {
-                var client = new PatientWebClient { Credentials = CredentialCache.DefaultNetworkCredentials };
-                using (client)
-                {
-                    return Task.Run(() => client.DownloadString(url));
-                }
-
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e, "Warewolf Error");
-                return new Task<string>((() => e.Message));
+                return Task.Run(() => client.DownloadString(url));
             }
         }
 
