@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,16 +38,17 @@ namespace Warewolf.Logger
             {
                 _options = options;
             }
+
             public int Run()
             {
                 var serverEndpoint = _options.ServerEndpoint;
                 var environmentConnection = new ServerProxy(serverEndpoint);
                 Console.Write("connecting to server: " + serverEndpoint + "...");
-                environmentConnection.Connect(Guid.Empty);
+                environmentConnection.ConnectAsync(Guid.Empty).Wait(80000);
                 Console.WriteLine("done.");
                 var resourceCatalogProxy = new ResourceCatalogProxy(environmentConnection);
-                
-                var context = new LoggerContext(_options,resourceCatalogProxy);
+
+                var context = new LoggerContext(_options, resourceCatalogProxy);
 
                 var implementation = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer(), new PauseHelper());
                 implementation.Run();
@@ -69,7 +70,6 @@ namespace Warewolf.Logger
             public Implementation(ILoggerContext context, IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, ILogServerFactory logServerFactory, IWriter writer, IPauseHelper pause)
             {
                 _consoleWindowFactory = consoleWindowFactory;
-
                 _context = context;
                 _webSocketServerFactory = webSocketServerFactory;
                 _writer = writer;
@@ -85,7 +85,7 @@ namespace Warewolf.Logger
                 }
 
                 var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
-                logServer.Start(new List<IWebSocketConnection>()); 
+                logServer.Start(new List<IWebSocketConnection>());
             }
 
             public void WaitForExit()
