@@ -24,7 +24,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
-using Warewolf.Test.Agent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.Toolbox.Database;
 using Dev2.Common;
