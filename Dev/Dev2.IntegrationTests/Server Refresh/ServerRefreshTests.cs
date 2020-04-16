@@ -33,12 +33,10 @@ namespace Dev2.Integration.Tests.Server_Refresh
             Assert.IsFalse(File.Exists(PassResultOld));
 
             SetupPermissions();
-            var explorerRefresh = ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
-            explorerRefresh.Wait();
+            ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
 
             var url1 = $"http://localhost:3142/secure/RefreshWorkflow1.json";
             var passRequest1 = ExecuteRequest(new Uri(url1));
-            passRequest1.Wait();
             //Delete this workflow and continue making requests to it
             MoveFileTemporarily(PassResult);
             // Execute workflow from the resource cache
@@ -46,54 +44,20 @@ namespace Dev2.Integration.Tests.Server_Refresh
             var passRequest3 = ExecuteRequest(new Uri(url1));
             var passRequest4 = ExecuteRequest(new Uri(url1));
 
-            Task.WaitAll(passRequest2, passRequest3, passRequest4);
-
             //refresh the server and wait fot it to finish
-            explorerRefresh = ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
-            explorerRefresh.Wait();
+            ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
             //execute this workflow after the refresh, we should get failures based on the fact that the refresh has finish executing
             var failRequest1 = ExecuteRequest(new Uri(url1));
             var failRequest2 = ExecuteRequest(new Uri(url1));
             var failRequest3 = ExecuteRequest(new Uri(url1));
-            string failRequest1Result;
-            string failRequest2Result;
-            string failRequest3Result;
-            try
-            {
-                failRequest1Result = failRequest1.Result;
-            }
-            catch (AggregateException e)
-            {
-                failRequest1Result = new StreamReader((e.InnerExceptions[0] as WebException)?.Response.GetResponseStream()).ReadToEnd();
-            }
-            try
-            {
-                failRequest2Result = failRequest2.Result;
-            }
-            catch (AggregateException e)
-            {
-                failRequest2Result = new StreamReader((e.InnerExceptions[0] as WebException)?.Response.GetResponseStream()).ReadToEnd();
-            }
-            try
-            {
-                failRequest3Result = failRequest3.Result;
-            }
-            catch (AggregateException e)
-            {
-                failRequest3Result =new StreamReader((e.InnerExceptions[0] as WebException)?.Response.GetResponseStream()).ReadToEnd();
-            }
-            var passRequest1Result = passRequest1.Result;
-            var passRequest2Result = passRequest2.Result;
-            var passRequest3Result = passRequest3.Result;
-            var passRequest4Result = passRequest4.Result;
-            StringAssert.Contains(failRequest1Result, "Resource RefreshTest not found");
-            StringAssert.Contains(failRequest2Result, "Resource RefreshTest not found");
-            StringAssert.Contains(failRequest3Result, "Resource RefreshTest not found");
-            StringAssert.Contains(passRequest1Result, "Pass");
-            StringAssert.Contains(passRequest2Result, "Pass");
-            StringAssert.Contains(passRequest3Result, "Pass");
-            StringAssert.Contains(passRequest4Result, "Pass");
-            explorerRefresh = ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
+            StringAssert.Contains(failRequest1, "Resource RefreshTest not found");
+            StringAssert.Contains(failRequest2, "Resource RefreshTest not found");
+            StringAssert.Contains(failRequest3, "Resource RefreshTest not found");
+            StringAssert.Contains(passRequest1, "Pass");
+            StringAssert.Contains(passRequest2, "Pass");
+            StringAssert.Contains(passRequest3, "Pass");
+            StringAssert.Contains(passRequest4, "Pass");
+            ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
         }
 
         class PatientWebClient : WebClient
@@ -119,13 +83,25 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        public Task<string> ExecuteRequest(Uri url)
+        string ExecuteRequest(Uri url)
         {
+            Task<string> failRequest;
             var client = new PatientWebClient { Credentials = CredentialCache.DefaultNetworkCredentials };
             using (client)
             {
-                return Task.Run(() => client.DownloadString(url));
+                failRequest = Task.Run(() => client.DownloadString(url));
             }
+            string failRequestResult;
+            try
+            {
+                failRequestResult = failRequest.Result;
+            }
+            catch (AggregateException e)
+            {
+                return new StreamReader((e.InnerExceptions[0] as WebException)?.Response.GetResponseStream()).ReadToEnd();
+            }
+
+            return failRequestResult;
         }
 
         static void SetupPermissions()
