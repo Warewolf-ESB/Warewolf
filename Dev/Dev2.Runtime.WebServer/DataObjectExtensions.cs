@@ -536,8 +536,7 @@ namespace Dev2.Runtime.WebServer
             using (var writer = new HtmlTextWriter(stringWriter))
             {
                 writer.SetupNavBarHtml("nav-bar-row", "Coverage Summary");
-
-                allTests.SetupCountSummaryHtml(writer, "count-summary row");
+                allTests.SetupCountSummaryHtml(writer, "count-summary row", allCoverageReports, coverageData);
 
                 allCoverageReports.AllCoverageReportsSummary
                     .Where(o => o.HasTestReports)
@@ -568,8 +567,8 @@ namespace Dev2.Runtime.WebServer
                         writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
                         writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
-                        var hostname = coverageData.GetTestUrl(resourcePath);
-                        writer.AddAttribute(HtmlTextWriterAttribute.Href, hostname);
+                        var testUrl = coverageData.GetTestUrl(resourcePath);
+                        writer.AddAttribute(HtmlTextWriterAttribute.Href, testUrl);
                         writer.RenderBeginTag(HtmlTextWriterTag.A);
                         writer.Write("Run Tests");
                         writer.RenderEndTag();
