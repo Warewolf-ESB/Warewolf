@@ -92,15 +92,7 @@ namespace Warewolf.Driver.Serilog
 
         public SerilogElasticsearchSource()
         {
-            var src = new ElasticsearchSource();
-            _resourceId = src.ResourceID;
-            _resourceName = src.ResourceName;
-            _hostName = src.HostName;
-            _port = src.Port;
-            _password = src.Password;
-            _username = src.Username;
-            _authenticationType = src.AuthenticationType;
-            _searchIndex = src.SearchIndex;
+
         }
 
         public Guid ResourceID

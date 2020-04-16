@@ -41,14 +41,8 @@ namespace Warewolf.Logger
 
             public int Run()
             {
-                var serverEndpoint = _options.ServerEndpoint;
-                var environmentConnection = new ServerProxy(serverEndpoint);
-                Console.Write("connecting to server: " + serverEndpoint + "...");
-                environmentConnection.ConnectAsync(Guid.Empty).Wait(80000);
-                Console.WriteLine("done.");
-                var resourceCatalogProxy = new ResourceCatalogProxy(environmentConnection);
 
-                var context = new LoggerContext(_options, resourceCatalogProxy);
+                var context = new LoggerContext(_options);
 
                 var implementation = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer(), new PauseHelper());
                 implementation.Run();

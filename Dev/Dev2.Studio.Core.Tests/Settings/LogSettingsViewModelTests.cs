@@ -14,6 +14,7 @@ using System.IO;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -494,7 +495,8 @@ namespace Dev2.Core.Tests.Settings
                     HostName = hostName,
                     SearchIndex = "warewolflogstests"
                 };
-                var jsonSource = JsonConvert.SerializeObject(elasticsearchSource);
+                var serializer = new Dev2JsonSerializer();
+                var payload = serializer.Serialize(elasticsearchSource);
                 var auditingSettingsData = new AuditingSettingsData
                 {
                     Endpoint = "ws://127.0.0.1:5000/ws",
@@ -502,7 +504,7 @@ namespace Dev2.Core.Tests.Settings
                     {
                         Name = "Auditing Data Source",
                         Value = selectedAuditingSourceId,
-                        Payload = jsonSource
+                        Payload = payload
                     },
                 };
                 _resourceRepo.Setup(res => res.GetAuditingSettings<AuditingSettingsData>(env.Object)).Returns(auditingSettingsData);

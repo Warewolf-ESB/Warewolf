@@ -12,7 +12,7 @@ using System;
 using CommandLine;
 using Dev2.Common;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Communication;
 using Warewolf.Common;
 using Warewolf.Configuration;
 using Warewolf.Driver.Serilog;
@@ -28,11 +28,10 @@ namespace Warewolf.Logger
 
         private IArgs _options;
         private ILoggerConfig _loggerConfig;
-        private IResourceCatalogProxy _resourceCatalogProxy;
         private ILoggerSource _source;
 
         public bool Verbose => _options.Verbose;
-        public Uri ServerEndPoint  => _options.ServerEndpoint;
+        public Uri ServerEndPoint => _options.ServerEndpoint;
 
         public ILoggerSource Source
         {
@@ -49,33 +48,15 @@ namespace Warewolf.Logger
         public ISourceConnectionFactory LeaderSource { get; set; }
         public IStreamConfig LeaderConfig { get; set; }
 
-        public LoggerContext(IArgs args, IResourceCatalogProxy resourceCatalogProxy)
+        public LoggerContext(IArgs args)
         {
             _options = args;
-            _resourceCatalogProxy = resourceCatalogProxy;
 
             if (Config.Server.Sink == nameof(AuditingSettingsData))
             {
-                var id = Config.Auditing.LoggingDataSource.Value;
-                var elasticsearchSource = _resourceCatalogProxy.GetResourceById<ElasticsearchSource>(GlobalConstants.ServerWorkspaceID, id);
-                if (elasticsearchSource == null)
-                {
-                    //Sets a logger with null source
-                    _loggerConfig = new SeriLogElasticsearchConfig();
-                }
-                else
-                {
-                    _source = new SerilogElasticsearchSource
-                    {
-                        HostName = elasticsearchSource.HostName,
-                        Port = elasticsearchSource.Port,
-                        Password = elasticsearchSource.Password,
-                        Username = elasticsearchSource.Username,
-                        AuthenticationType = elasticsearchSource.AuthenticationType,
-                        SearchIndex = elasticsearchSource.SearchIndex
-                    };
-                    _loggerConfig = new SeriLogElasticsearchConfig(_source);
-                }
+                var payload = Config.Auditing.LoggingDataSource.Payload;
+                _source = new Dev2JsonSerializer().Deserialize<SerilogElasticsearchSource>(payload);
+                _loggerConfig = new SeriLogElasticsearchConfig(_source);
             }
             else
             {
