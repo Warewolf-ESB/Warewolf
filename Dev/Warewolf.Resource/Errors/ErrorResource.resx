@@ -922,7 +922,7 @@
     <value>No username and password provided,</value>
   </data>
   <data name="NoValueProvided" xml:space="preserve">
-    <value>Novalue Provided for: {0}</value>
+    <value>No value Provided for: {0}</value>
   </data>
   <data name="NoValueProvidedForParameter" xml:space="preserve">
     <value>No value provided for {0} parameter.</value>

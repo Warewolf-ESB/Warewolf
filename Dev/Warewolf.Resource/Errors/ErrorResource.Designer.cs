@@ -2437,7 +2437,7 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Novalue Provided for: {0}.
+        ///   Looks up a localized string similar to No value Provided for: {0}.
         /// </summary>
         public static string NoValueProvided {
             get {
