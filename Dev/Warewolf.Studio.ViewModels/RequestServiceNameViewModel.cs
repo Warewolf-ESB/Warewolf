@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
- using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -40,24 +39,24 @@ namespace Warewolf.Studio.ViewModels
 {
     public class RequestServiceNameViewModel : BindableBase, IRequestServiceNameViewModel
     {
-        string _name;
-        string _errorMessage;
-        ResourceName _resourceName;
-        IRequestServiceNameView _view;
+        private string _name;
+        private string _errorMessage;
+        private ResourceName _resourceName;
+        private IRequestServiceNameView _view;
 
-        string _selectedPath;
-        bool _hasLoaded;
-        string _header;
-        IEnvironmentViewModel _environmentViewModel;
-        IExplorerItemViewModel _explorerItemViewModel;
-        bool _isDuplicate;
-        bool _fixReferences;
-        MessageBoxResult ViewResult { get; set; }
-        IServerRepository _serverRepository;
+        private string _selectedPath;
+        private bool _hasLoaded;
+        private string _header;
+        private IEnvironmentViewModel _environmentViewModel;
+        private IExplorerItemViewModel _explorerItemViewModel;
+        private bool _isDuplicate;
+        private bool _fixReferences;
+        private MessageBoxResult ViewResult { get; set; }
+        private IServerRepository _serverRepository;
 
 #pragma warning disable 1998
 #pragma warning disable 1998
-        async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
+        private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
 #pragma warning restore 1998
 #pragma warning restore 1998
         {
@@ -67,7 +66,7 @@ namespace Warewolf.Studio.ViewModels
             _header = header;
             _explorerItemViewModel = explorerItemViewModel;
             OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => CanDuplicate());
+            DuplicateCommand = new DelegateCommand(CallDuplicateService, CanDuplicate);
             CancelCommand = new DelegateCommand(CloseView, CanClose);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
@@ -82,13 +81,13 @@ namespace Warewolf.Studio.ViewModels
             return this;
         }
 
-        bool CanDuplicate()
+        private bool CanDuplicate()
         {
             var b = _explorerItemViewModel != null && string.IsNullOrEmpty(ErrorMessage) && HasLoaded && !IsDuplicating;
             return b;
         }
 
-        bool CanClose()
+        private bool CanClose()
         {
             if (IsDuplicate)
             {
@@ -97,10 +96,10 @@ namespace Warewolf.Studio.ViewModels
             return true;
         }
 
-        readonly IEnvironmentConnection _lazyCon = CustomContainer.Get<IServerRepository>()?.ActiveServer?.Connection ?? ServerRepository.Instance.ActiveServer?.Connection;
-        ICommunicationController _lazyComs = new CommunicationController { ServiceName = "DuplicateResourceService" };
+        private readonly IEnvironmentConnection _lazyCon = CustomContainer.Get<IServerRepository>()?.ActiveServer?.Connection ?? ServerRepository.Instance.ActiveServer?.Connection;
+        private ICommunicationController _communicationController = new CommunicationController { ServiceName = "DuplicateResourceService" };
 
-        void CallDuplicateService()
+        private void CallDuplicateService()
         {
             if (ExplorerItemViewModelRename() != null)
             {
@@ -110,9 +109,9 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 IsDuplicating = true;
-                SetupLazyComs();
+                SetupLazyCommunicationController();
 
-                var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? _serverRepository.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
+                var executeCommand = _communicationController.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? _serverRepository.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
                 var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                 if (executeCommand == null)
                 {
@@ -149,7 +148,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void ReloadServerEvents(ObservableCollection<IExplorerItemViewModel> childItems)
+        private void ReloadServerEvents(ObservableCollection<IExplorerItemViewModel> childItems)
         {
             ConnectControlSingleton.Instance.ReloadServer();
             if (childItems != null)
@@ -161,25 +160,25 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void SetupLazyComs()
+        private void SetupLazyCommunicationController()
         {
             if (_explorerItemViewModel.IsFolder)
             {
-                _lazyComs = new CommunicationController { ServiceName = "DuplicateFolderService" };
-                _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
+                _communicationController = new CommunicationController { ServiceName = "DuplicateFolderService" };
+                _communicationController.AddPayloadArgument("FixRefs", FixReferences.ToString());
             }
-            _lazyComs.AddPayloadArgument("NewResourceName", Name);
+            _communicationController.AddPayloadArgument("NewResourceName", Name);
 
             if (!_explorerItemViewModel.IsFolder)
             {
-                _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
+                _communicationController.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
             }
 
-            _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
-            _lazyComs.AddPayloadArgument("destinationPath", Path);
+            _communicationController.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
+            _communicationController.AddPayloadArgument("destinationPath", Path);
         }
 
-        void FireServerSaved(Guid savedServerId, bool isDeleted = false)
+        private void FireServerSaved(Guid savedServerId, bool isDeleted = false)
         {
             if (_environmentViewModel.Server.UpdateRepository.ServerSaved != null)
             {
@@ -190,11 +189,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool FixReferences
         {
-            get
-            {
-                return _fixReferences;
-            }
-
+            get => _fixReferences;
             set
             {
                 _fixReferences = value;
@@ -202,7 +197,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void SingleEnvironmentExplorerViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void SingleEnvironmentExplorerViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "SelectedItem")
             {
@@ -229,12 +224,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        bool HasLoaded
+        private bool HasLoaded
         {
-            get
-            {
-                return _hasLoaded;
-            }
+            get => _hasLoaded;
             set
             {
                 _hasLoaded = value;
@@ -253,14 +245,14 @@ namespace Warewolf.Studio.ViewModels
             return ret.InitializeAsync(environmentViewModel, selectedPath, header, explorerItemViewModel);
         }
 
-        void CloseView()
+        private void CloseView()
         {
             _view.RequestClose();
             ViewResult = MessageBoxResult.Cancel;
             SingleEnvironmentExplorerViewModel = null;
         }
 
-        void SetServiceName()
+        private void SetServiceName()
         {          
             if (ExplorerItemViewModelRename() != null)
             {
@@ -274,17 +266,12 @@ namespace Warewolf.Studio.ViewModels
             _resourceName = new ResourceName(path, Name);
             ViewResult = MessageBoxResult.OK;
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            if (applicationTracker != null)
-            {
-                applicationTracker.TrackCustomEvent(Resources.Languages.TrackEventWorkflowTabs.EventCategory,
-                                                               Resources.Languages.TrackEventWorkflowTabs.TabsOpened, "Path:" + path + " Name: " + Name);
-
-            }
+            applicationTracker?.TrackCustomEvent(Resources.Languages.TrackEventWorkflowTabs.EventCategory, Resources.Languages.TrackEventWorkflowTabs.TabsOpened, "Path:" + path + " Name: " + Name);
 
             _view.RequestClose();
         }
 
-        string Path
+        private string Path
         {
             get
             {
@@ -319,15 +306,20 @@ namespace Warewolf.Studio.ViewModels
                 return "";
             }
         }
-        bool _isDuplicating;
-        IExplorerTreeItem SelectedItem => SingleEnvironmentExplorerViewModel?.SelectedItem;
 
-        void RaiseCanExecuteChanged()
+        private bool _isDuplicating;
+        private IExplorerTreeItem SelectedItem => SingleEnvironmentExplorerViewModel?.SelectedItem;
+
+        private void RaiseCanExecuteChanged()
         {
-            var command = OkCommand as DelegateCommand;
-            command?.RaiseCanExecuteChanged();
-            var dupCommad = DuplicateCommand as DelegateCommand;
-            dupCommad?.RaiseCanExecuteChanged();
+            if (OkCommand is DelegateCommand command)
+            {
+                command.RaiseCanExecuteChanged();
+            }
+            if (DuplicateCommand is DelegateCommand dupCommand)
+            {
+                dupCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public MessageBoxResult ShowSaveDialog()
@@ -366,7 +358,7 @@ namespace Warewolf.Studio.ViewModels
             return ViewResult;
         }
 
-        void UpdateEnvironment()
+        private void UpdateEnvironment()
         {
             _environmentViewModel.Filter(string.Empty);
             _environmentViewModel.IsSaveDialog = false;
@@ -395,7 +387,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 _name = value;
@@ -406,7 +398,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string Header
         {
-            get { return _header; }
+            get => _header;
             set
             {
                 _header = value;
@@ -415,10 +407,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsDuplicate
         {
-            get
-            {
-                return _isDuplicate;
-            }
+            get => _isDuplicate;
             set
             {
                 _isDuplicate = value;
@@ -426,7 +415,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void ValidateName()
+        private void ValidateName()
         {
             if (string.IsNullOrEmpty(Name))
             {
@@ -450,7 +439,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        bool HasDuplicateName(string requestedServiceName)
+        private bool HasDuplicateName(string requestedServiceName)
         {
             if (SingleEnvironmentExplorerViewModel != null)
             {
@@ -476,11 +465,11 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        bool NameHasInvalidCharacters(string name) => Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
+        private static bool NameHasInvalidCharacters(string name) => Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
 
         public string ErrorMessage
         {
-            get { return _errorMessage; }
+            get => _errorMessage;
             set
             {
                 _errorMessage = value;
@@ -497,10 +486,7 @@ namespace Warewolf.Studio.ViewModels
         public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; set; }
         public bool IsDuplicating
         {
-            get
-            {
-                return _isDuplicating;
-            }
+            get => _isDuplicating;
             set
             {
                 _isDuplicating = value;
