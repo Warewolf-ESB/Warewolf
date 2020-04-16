@@ -308,8 +308,7 @@ namespace Dev2.Activities.Specs.Composition
             Add("debugStates", new List<IDebugState>());
         }
 
-        [BeforeFeature]
-        [Scope(Feature = "WorkflowExecution")]
+        [BeforeFeature()]
         static void SetUpLocalHost()
         {
             LocalEnvModel = ServerRepository.Instance.Source;
