@@ -121,12 +121,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Search.feature</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Cluster\WarewolfLoggingFollower.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WarewolfLoggingFollower.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\Cluster\WarewolfLoggingFollowerSteps.cs" />
     <Compile Include="Sources\ServerSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -353,10 +347,6 @@
     <None Include="Search\Search.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Search.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Settings\Cluster\WarewolfLoggingFollower.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WarewolfLoggingFollower.feature.cs</LastGenOutput>
     </None>
     <None Include="Sources\ServerSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -593,7 +583,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Settings\Cluster\" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
