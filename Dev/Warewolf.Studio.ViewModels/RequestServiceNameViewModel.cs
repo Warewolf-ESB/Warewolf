@@ -199,7 +199,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SingleEnvironmentExplorerViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "SelectedItem")
+            if (e.PropertyName == nameof(SelectedItem))
             {
                 ValidateName();
 
