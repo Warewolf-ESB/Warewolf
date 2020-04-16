@@ -1779,12 +1779,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 Variables = new NameValueCollection() { { "isPublic", "true" } },
                 WebServerUrl = "http://rsaklfnkosinath:3142/public/Home/HelloWorld/.tests"
             };
-            var resource = new Mock<IWarewolfResource>();
+            var resource = new Mock<IWarewolfWorkflow>();
             var resourceId = Guid.NewGuid();
             resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             //resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
-            var resourceCatalog = new Mock<IContextualResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.GetExecutableResources(It.IsAny<string>()))
+            var mockResourceCatalog = new Mock<IContextualResourceCatalog>();
+            mockResourceCatalog.Setup(o => o.GetExecutableResources(It.IsAny<string>()))
                 .Returns(new List<IWarewolfResource>()
                 {
                    resource.Object
@@ -1797,7 +1797,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*", resource.Object);
+            dataObject.Object.SetTestResourceIds(mockResourceCatalog.Object, webRequestTO, "*", resource.Object);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ResourceID = Guid.Empty, Times.Exactly(1));
             dataObject.VerifySet(o => o.TestsResourceIds = It.IsAny<Guid[]>(), Times.Exactly(1));
