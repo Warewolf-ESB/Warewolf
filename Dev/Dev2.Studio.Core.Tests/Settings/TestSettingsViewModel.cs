@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
@@ -19,7 +20,9 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Data.ServiceModel;
 using Dev2.Dialogs;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Logging;
@@ -28,8 +31,10 @@ using Dev2.Settings.Security;
 using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Moq;
+using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -42,13 +47,13 @@ namespace Dev2.Core.Tests.Settings
         {
         }
 
-        public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow,Mock<IServer> env)
+        public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow, Mock<IServer> env)
             : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IServer>().Object, a => env.Object)
         {
-            
         }
 
         public int ShowErrorHitCount { get; private set; }
+
         protected override void ShowError(string header, string description)
         {
             ShowErrorHitCount++;
@@ -57,19 +62,15 @@ namespace Dev2.Core.Tests.Settings
 
         public SecurityViewModel TheSecurityViewModel
         {
-            get
-            {
-                return _theSecurityViewModel;
-            }
-            set
-            {
-                _theSecurityViewModel = value;
-            }
+            get { return _theSecurityViewModel; }
+            set { _theSecurityViewModel = value; }
         }
+
         public LogSettingsViewModel TheLogSettingsViewModel { get; set; }
+
         protected override SecurityViewModel CreateSecurityViewModel()
         {
-            return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, ()=> new Mock<IResourcePickerDialog>().Object);
+            return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
         }
 
         protected override PerfcounterViewModel CreatePerfmonViewModel()
@@ -79,14 +80,8 @@ namespace Dev2.Core.Tests.Settings
 
         public PerfcounterViewModel ThePerfcounterViewModel
         {
-            get
-            {
-                return _thePerfcounterViewModel;
-            }
-            set
-            {
-                _thePerfcounterViewModel = value;
-            }
+            get { return _thePerfcounterViewModel; }
+            set { _thePerfcounterViewModel = value; }
         }
 
         protected override LogSettingsViewModel CreateLoggingViewModel()
@@ -97,7 +92,7 @@ namespace Dev2.Core.Tests.Settings
         static LogSettingsViewModel CreateLogSettingViewModel()
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
-            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE" };
+            var loggingSettingsTo = new LoggingSettingsTo {FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE"};
 
             var _resourceRepo = new Mock<IResourceRepository>();
             var env = new Mock<IServer>();
@@ -106,10 +101,25 @@ namespace Dev2.Core.Tests.Settings
                 Sink = "AuditingSettingsData"
             };
             _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            var elasticsearchSource = new ElasticsearchSource
+            {
+                AuthenticationType = AuthenticationType.Anonymous,
+                Port = dependency.Container.Port,
+                HostName = hostName,
+                SearchIndex = "warewolflogstests"
+            };
+            var jsonSource = JsonConvert.SerializeObject(elasticsearchSource);
             var auditingSettingsData = new AuditingSettingsData
             {
                 Endpoint = "ws://127.0.0.1:5000/ws",
-                LoggingDataSource = new NamedGuid {Name = "Auditing Data Source", Value = Guid.Empty,},
+                LoggingDataSource = new NamedGuidWithEncryptedPayload
+                {
+                    Name = "Auditing Data Source",
+                    Value = Guid.Empty,
+                    Payload = jsonSource
+                },
             };
             _resourceRepo.Setup(res => res.GetAuditingSettings<AuditingSettingsData>(env.Object)).Returns(auditingSettingsData);
             var selectedAuditingSourceId = Guid.NewGuid();

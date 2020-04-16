@@ -15,8 +15,8 @@ namespace Warewolf.Configuration
 {
     public class AuditingSettingsData : AuditSettingsDataBase, IEquatable<AuditingSettingsData>
     {
-        private NamedGuid _loggingDataSource = new NamedGuid();
-        public NamedGuid LoggingDataSource
+        private NamedGuidWithEncryptedPayload _loggingDataSource = new NamedGuidWithEncryptedPayload();
+        public NamedGuidWithEncryptedPayload LoggingDataSource
         {
             get => _loggingDataSource;
             set => SetProperty(ref _loggingDataSource, value);
