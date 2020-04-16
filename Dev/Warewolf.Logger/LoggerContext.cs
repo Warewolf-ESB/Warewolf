@@ -55,10 +55,22 @@ namespace Warewolf.Logger
             if (Config.Server.Sink == nameof(AuditingSettingsData))
             {
                 var id = Config.Auditing.LoggingDataSource.Value;
-                _source = _resourceCatalogProxy.GetResourceById<SerilogElasticsearchSource>(GlobalConstants.ServerWorkspaceID, id);
-                if (_source == null)
+                var elasticsearchSource = _resourceCatalogProxy.GetResourceById<ElasticsearchSource>(GlobalConstants.ServerWorkspaceID, id);
+                if (elasticsearchSource == null)
                 {
                     _source = new SerilogElasticsearchSource();
+                }
+                else
+                {
+                    _source = new SerilogElasticsearchSource
+                    {
+                        HostName = elasticsearchSource.HostName,
+                        Port = elasticsearchSource.Port,
+                        Password = elasticsearchSource.Password,
+                        Username = elasticsearchSource.Username,
+                        AuthenticationType = elasticsearchSource.AuthenticationType,
+                        SearchIndex = elasticsearchSource.SearchIndex
+                    };
                 }
                 _loggerConfig = new SeriLogElasticsearchConfig(_source);
             }
