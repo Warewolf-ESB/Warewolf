@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Client;
 using Warewolf.Data;
+using Warewolf.Esb;
 using Warewolf.Options;
 using Service = Warewolf.Service;
 
@@ -184,6 +185,9 @@ namespace Warewolf.Tests
         [TestCategory(nameof(Service.Cluster))]
         public void EsbHub_ExecuteCommand_GivenValidSubscriptionRequest_ShouldNotifyOfChanges()
         {
+            var mockClusterDispatcher = new Mock<IClusterDispatcher>();
+            CustomContainer.Register<IClusterDispatcher>(mockClusterDispatcher.Object);
+
             var workspaceId = Guid.NewGuid();
             var connectionId = Guid.NewGuid();
 
