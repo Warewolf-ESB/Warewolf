@@ -10,7 +10,6 @@
 
 using System;
 using Dev2.Common;
-using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
@@ -20,13 +19,8 @@ namespace Warewolf.Driver.Serilog
 {
     public class SeriLogElasticsearchConfig : ISeriLogConfig
     {
-        static readonly Settings _staticSettings = new Settings();
         readonly Settings _config;
         static ILogger _logger;
-
-        public SeriLogElasticsearchConfig()
-        {
-        }
 
         public SeriLogElasticsearchConfig(ILoggerSource source)
         {

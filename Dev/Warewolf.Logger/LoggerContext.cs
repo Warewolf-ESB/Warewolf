@@ -13,7 +13,6 @@ using CommandLine;
 using Dev2.Common;
 using System.Collections.Generic;
 using Dev2.Communication;
-using Warewolf.Common;
 using Warewolf.Configuration;
 using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
@@ -55,7 +54,16 @@ namespace Warewolf.Logger
             if (Config.Server.Sink == nameof(AuditingSettingsData))
             {
                 var payload = Config.Auditing.LoggingDataSource.Payload;
-                _source = new Dev2JsonSerializer().Deserialize<SerilogElasticsearchSource>(payload);
+                var elasticsearchSource = new Dev2JsonSerializer().Deserialize<ElasticsearchSource>(payload);
+                _source = new SerilogElasticsearchSource
+                {
+                    HostName = elasticsearchSource.HostName,
+                    Port = elasticsearchSource.Port,
+                    Username = elasticsearchSource.Username,
+                    Password = elasticsearchSource.Password,
+                    SearchIndex = elasticsearchSource.SearchIndex,
+                    AuthenticationType = elasticsearchSource.AuthenticationType
+                };
                 _loggerConfig = new SeriLogElasticsearchConfig(_source);
             }
             else
