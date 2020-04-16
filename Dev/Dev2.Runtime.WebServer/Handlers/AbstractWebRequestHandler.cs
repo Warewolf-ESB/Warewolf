@@ -330,7 +330,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 executionDto.ErrorResultTO = allErrors;
 
-                var executionDtoExtensions = new ExecutionDtoExtentions(executionDto);
+                var executionDtoExtensions = new ExecutionDtoExtensions(executionDto);
                 return executionDtoExtensions.CreateResponseWriter(new StringResponseWriterFactory());
             }
 
