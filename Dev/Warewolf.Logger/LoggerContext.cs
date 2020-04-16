@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using CommandLine;
 using Dev2.Common;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace Warewolf.Logger
         private ILoggerSource _source;
 
         public bool Verbose => _options.Verbose;
+        public Uri ServerEndPoint  => _options.ServerEndpoint;
 
         public ILoggerSource Source
         {
@@ -58,7 +60,8 @@ namespace Warewolf.Logger
                 var elasticsearchSource = _resourceCatalogProxy.GetResourceById<ElasticsearchSource>(GlobalConstants.ServerWorkspaceID, id);
                 if (elasticsearchSource == null)
                 {
-                    _source = new SerilogElasticsearchSource();
+                    //Sets a logger with null source
+                    _loggerConfig = new SeriLogElasticsearchConfig();
                 }
                 else
                 {
@@ -71,8 +74,8 @@ namespace Warewolf.Logger
                         AuthenticationType = elasticsearchSource.AuthenticationType,
                         SearchIndex = elasticsearchSource.SearchIndex
                     };
+                    _loggerConfig = new SeriLogElasticsearchConfig(_source);
                 }
-                _loggerConfig = new SeriLogElasticsearchConfig(_source);
             }
             else
             {

@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -110,6 +110,7 @@ namespace Dev2
         private readonly IWriter _writer;
         private readonly IPauseHelper _pauseHelper;
         private readonly IProcessMonitor _queueProcessMonitor;
+        private readonly IProcessMonitor _loggingProcessMonitor;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
@@ -121,8 +122,6 @@ namespace Dev2
         {
             SetApplicationDirectory();
             _writer = startupConfiguration.Writer;
-            StartLoggingService(startupConfiguration);
-
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
             _startUpDirectory = startupConfiguration.Directory;
             _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
@@ -133,6 +132,9 @@ namespace Dev2
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = startupConfiguration.StartWebServer;
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
+
+            _loggingProcessMonitor = startupConfiguration.LoggingServiceMonitor;
+            _loggingProcessMonitor.OnProcessDied += (e) => _writer.WriteLine("logging service exited");
 
             _queueProcessMonitor = startupConfiguration.QueueWorkerMonitor;
             _queueProcessMonitor.OnProcessDied += (config) => _writer.WriteLine($"queue process died: {config.Name}({config.Id})");
@@ -153,15 +155,6 @@ namespace Dev2
                 Dev2Logger.Info("ApplicationPath Error -> " + e.Message, GlobalConstants.WarewolfInfo);
                 EnvironmentVariables.ApplicationPath = Directory.GetCurrentDirectory();
             }
-        }
-
-        private void StartLoggingService(StartupConfiguration startupConfiguration)
-        {
-            _writer.Write("Starting logging service...  ");
-            var monitor = startupConfiguration.LoggingServiceMonitor;
-            monitor.OnProcessDied += (e) => _writer.WriteLine("logging service exited");
-            monitor.Start();
-            _writer.WriteLine("done.");
         }
 
         /// <summary>
@@ -219,8 +212,14 @@ namespace Dev2
                     _loadResources.LoadActivityCache(_assemblyLoader);
                     LoadTestCatalog();
                     LoadTriggersCatalog();
+
                     StartTrackingUsage();
+
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
+                    _writer.Write("Start Logging Server...  ");
+                    _loggingProcessMonitor.Start();
+
+                    _writer.Write("Start Queue Process Server...  ");
                     _queueProcessMonitor.Start();
 #if DEBUG
                     SetAsStarted();
