@@ -88,7 +88,6 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
-using Warewolf.Test.Agent;
 using System.Reflection;
 using Warewolf.Storage;
 using WarewolfParserInterop;
@@ -309,8 +308,7 @@ namespace Dev2.Activities.Specs.Composition
             Add("debugStates", new List<IDebugState>());
         }
 
-        [BeforeFeature]
-        [Scope(Feature = "WorkflowExecution")]
+        [BeforeFeature()]
         static void SetUpLocalHost()
         {
             LocalEnvModel = ServerRepository.Instance.Source;

@@ -36,13 +36,14 @@ namespace Warewolf.Auditing.Drivers
         {
             _elasticsearchSource = new ElasticsearchSource();
         }
-        public AuditQueryableElastic(string hostname, string searchIndex)
+        public AuditQueryableElastic(string hostname, string searchIndex, AuthenticationType authenticationType, string username,string password)
         {
-            _elasticsearchSource = new ElasticsearchSource
-            {
-                HostName = hostname,
-                SearchIndex = searchIndex,
-            };
+            _elasticsearchSource = new ElasticsearchSource();
+            _elasticsearchSource.HostName = hostname;
+            _elasticsearchSource.SearchIndex = searchIndex;
+            _elasticsearchSource.Username = username;
+            _elasticsearchSource.Password = password;
+            _elasticsearchSource.AuthenticationType = authenticationType;
         }
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
@@ -218,7 +219,7 @@ namespace Warewolf.Auditing.Drivers
                 {
                     ["match"] = new JObject
                     {
-                        ["fields.Data.Audit.ExecutionID"] = executionId
+                        ["fields.Data.ExecutionID"] = executionId
                     }
                 };
                 jArray.Add(jsonQueryexecutionId);
@@ -270,7 +271,7 @@ namespace Warewolf.Auditing.Drivers
                                 var auditHistory = new Audit();
                                 foreach (var items in (Dictionary<string, object>)fields.Value)
                                 {
-                                    if (items.Value != null)
+                                if (items.Value != null)
                                     {
                                         switch (items.Key)
                                         {
@@ -359,7 +360,7 @@ namespace Warewolf.Auditing.Drivers
                 return sources;
             }
         }
-
+     
         public void Dispose()
         {
             _elasticsearchSource.Dispose();
