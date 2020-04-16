@@ -76,21 +76,8 @@ namespace Dev2.Runtime.WebServer
             {
                 return "/";
             }
-            //var path = isPublic ? RemoveAccessType(webServerUrl, "public", "Public") : RemoveAccessType(webServerUrl, "secure", "Secure");
-            //path = path.TrimStart('/').TrimEnd('/');
-            return path.Replace("/", "\\");
-        }
 
-        private static string RemoveAccessType(string webServerUrl, string lower, string firstCap)
-        {
-            var startIndex = webServerUrl.IndexOf(lower + "/", StringComparison.InvariantCultureIgnoreCase);
-            var removeEmitionType = webServerUrl.Substring(startIndex)
-                .Replace("/.tests.trx", "")
-                .Replace("/.tests", "")
-                .Replace("/.coverage.json", "")
-                .Replace("/.coverage", "");
-            var removeAccessType = removeEmitionType.Replace(lower, "").Replace(firstCap, "");
-            return removeAccessType;
+            return path.Replace("/", "\\");
         }
     }
 }
