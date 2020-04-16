@@ -59,11 +59,11 @@ namespace Dev2.Runtime.WebServer
 
     }
 
-    public class ExecutionDtoExtentions
+    public class ExecutionDtoExtensions
     {
         readonly IExecutionDto _executionDto;
 
-        public ExecutionDtoExtentions(IExecutionDto executionDto)
+        public ExecutionDtoExtensions(IExecutionDto executionDto)
         {
             _executionDto = executionDto;
         }
