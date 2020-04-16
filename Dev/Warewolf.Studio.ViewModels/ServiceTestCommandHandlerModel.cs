@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,14 +25,14 @@ namespace Warewolf.Studio.ViewModels
 {
     public sealed class ServiceTestCommandHandlerModel : IServiceTestCommandHandler
     {
-        readonly DataListConversionUtils _dataListConversionUtils;
+        private readonly DataListConversionUtils _dataListConversionUtils;
         public ServiceTestCommandHandlerModel()
         {
             DataList = new DataListModel();
             _dataListConversionUtils = new DataListConversionUtils();
         }
 
-        DataListModel DataList { get; set; }
+        private DataListModel DataList { get; set; }
 
         public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber) => CreateTest(resourceModel, testNumber, false);
 
@@ -93,37 +92,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 RunSelectedTest(serviceTestModel, resourceModel, asyncWorker);
             }
-
-            List<IServiceTestModelTO> testsTos = new List<IServiceTestModelTO>();
-            
-            tests.ToList().ForEach(o =>
-            {
-                testsTos.Add(new ServiceTestModelTO
-                {
-                    ResourceId = o.ParentId,
-                    LastRunDate = o.LastRunDate,
-                    UserName = o.UserName,
-                    Password = o.Password,
-                    AuthenticationType = o.AuthenticationType,
-                    TestName = o.TestName,
-                    OldTestName = o.OldTestName,
-                    TestFailing = o.TestFailing,
-                    TestPassed = o.TestPassed,
-                    TestInvalid = o.TestInvalid,
-                    TestPending = o.TestPending,
-                    TestSteps = o.TestSteps.ToList(),
-                    IsDirty = o.IsDirty,
-                    ErrorExpected = o.ErrorExpected,
-                    Inputs = o.Inputs.ToList(),
-                    Outputs = o.Outputs.ToList(),
-                    ErrorContainsText = o.ErrorContainsText,
-                    NoErrorExpected = o.NoErrorExpected,
-                    Enabled = o.Enabled,
-                });
-            });
         }
 
-        static void ShowRunAllUnsavedError()
+        private static void ShowRunAllUnsavedError()
         {
             var popupController = CustomContainer.Get<IPopupController>();
             popupController?.Show(Resources.Languages.Core.ServiceTestRunAllUnsavedTestsMessage,
@@ -156,29 +127,6 @@ namespace Warewolf.Studio.ViewModels
             model.IsTestRunning = true;
 
             asyncWorker.Start(() => BackgroundAction(model, resourceModel), res => UiAction(model, resourceModel, res));
-
-            var testTo = new ServiceTestModelTO
-            {
-                ResourceId = selectedServiceTest.ParentId,
-                LastRunDate = selectedServiceTest.LastRunDate,
-                UserName = selectedServiceTest.UserName,
-                Password = selectedServiceTest.Password,
-                AuthenticationType = selectedServiceTest.AuthenticationType,
-                TestName = selectedServiceTest.TestName,
-                OldTestName = selectedServiceTest.OldTestName,
-                TestFailing = selectedServiceTest.TestFailing,
-                TestPassed = selectedServiceTest.TestPassed,
-                TestInvalid = selectedServiceTest.TestInvalid,
-                TestPending = selectedServiceTest.TestPending,
-                TestSteps = selectedServiceTest.TestSteps.ToList(),
-                IsDirty = selectedServiceTest.IsDirty,
-                ErrorExpected = selectedServiceTest.ErrorExpected,
-                Inputs = selectedServiceTest.Inputs.ToList(),
-                Outputs = selectedServiceTest.Outputs.ToList(),
-                ErrorContainsText = selectedServiceTest.ErrorContainsText,
-                NoErrorExpected = selectedServiceTest.NoErrorExpected,
-                Enabled = selectedServiceTest.Enabled,
-            };
         }
 
         private static IServiceTestModelTO BackgroundAction(IServiceTestModel selectedServiceTest, IContextualResourceModel resourceModel)
@@ -259,15 +207,13 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunTestStep(IServiceTestModel selectedServiceTest, IServiceTestStep resTestStep)
         {
-            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.ActivityID == resTestStep.ActivityID).ToList();
-            foreach (var serviceTestStep in serviceTestSteps)
+            var serviceTestSteps = selectedServiceTest
+                .TestSteps
+                .Select(o => o.As<ServiceTestStep>())
+                .Where(testStep => testStep != null && testStep.ActivityID == resTestStep.ActivityID)
+                .ToList();
+            foreach (var resServiceTestStep in serviceTestSteps)
             {
-                var resServiceTestStep = serviceTestStep.As<ServiceTestStep>();
-                if (resServiceTestStep == null)
-                {
-                    continue;
-                }
-
                 UpdateTestStepResult(resServiceTestStep, resTestStep);
 
                 var serviceTestOutputs = resTestStep.StepOutputs;
@@ -283,7 +229,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static void UpdateTestStepResult(ServiceTestStep resServiceTestStep, IServiceTestStep resTestStep)
+        private static void UpdateTestStepResult(ServiceTestStep resServiceTestStep, IServiceTestStep resTestStep)
         {
             resServiceTestStep.Result = resTestStep.Result;
 
@@ -296,7 +242,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static void UpdateTestStatus(IServiceTestModel selectedServiceTest, IServiceTestModelTO res)
+        private static void UpdateTestStatus(IServiceTestModel selectedServiceTest, IServiceTestModelTO res)
         {
             selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
             selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
@@ -312,7 +258,7 @@ namespace Warewolf.Studio.ViewModels
             selectedServiceTest.TestPending = testPending;
         }
 
-        void SetChildrenTestResult(ObservableCollection<IServiceTestStep> resTestStepchildren, ObservableCollection<IServiceTestStep> serviceTestStepChildren)
+        private void SetChildrenTestResult(IEnumerable<IServiceTestStep> resTestStepchildren, IReadOnlyCollection<IServiceTestStep> serviceTestStepChildren)
         {
             foreach (var child in resTestStepchildren)
             {
@@ -331,7 +277,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
+        private static ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(IEnumerable<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
         {
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
             foreach (var serviceTestOutput in stepStepOutputs)
