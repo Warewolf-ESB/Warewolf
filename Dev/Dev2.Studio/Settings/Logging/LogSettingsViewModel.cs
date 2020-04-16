@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -25,6 +24,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Communication;
 using Dev2.CustomControls.Progress;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -212,25 +212,20 @@ namespace Dev2.Settings.Logging
                 }
                 else
                 {
-                    var source = new ElasticsearchSource
-                    {
-                        AuthenticationType = AuthenticationType.Anonymous,
-                        SearchIndex = "warewolflogstests",
-                        HostName = "",
-                        Port = "",
-                        Username = "",
-                        Password = ""
-                    };
-                    var jsonSource = JsonConvert.SerializeObject(source);
+                    var source = _selectedAuditingSource as ElasticsearchSource;
+                    var serializer = new Dev2JsonSerializer();
+                    var payload = serializer.Serialize(source);
+
                     var data = new AuditingSettingsData
                     {
                         LoggingDataSource = new NamedGuidWithEncryptedPayload
                         {
                             Name = _selectedAuditingSource.ResourceName,
                             Value = _selectedAuditingSource.ResourceID,
-                            Payload = jsonSource
+                            Payload = payload
                         }
                     };
+
                     CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
                 }
             }
@@ -394,6 +389,7 @@ namespace Dev2.Settings.Logging
                 {
                     ResourceSourceId = _selectedAuditingSource.ResourceID;
                 }
+
                 OnPropertyChanged();
                 IsLegacy = SelectedAuditingSource?.ResourceID == Guid.Empty;
             }

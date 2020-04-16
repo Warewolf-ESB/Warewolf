@@ -88,7 +88,6 @@ namespace Warewolf.Logger
                     _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}");
                 };
 
-
                 var innerConsumer = new SeriLogConsumer(_loggerContext);
                 var defaultConsumer = _auditCommandConsumerFactory?.New(innerConsumer, socket, _writer) ?? new AuditCommandConsumerFactory().New(innerConsumer, socket, _writer);
                 socket.StartConsuming(new ForwardingConsumer(defaultConsumer, _loggerContext));

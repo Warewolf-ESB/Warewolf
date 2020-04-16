@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
 using System.Text;
+using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Configuration;
@@ -108,7 +109,7 @@ namespace Dev2.Common.Tests
                 HostName = hostName,
                 SearchIndex = "warewolflogstests"
             };
-            var serializer = new JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var jsonSource = serializer.Serialize(source);
             var expectedAuditingSettingsData = new AuditingSettingsData
             {
@@ -117,7 +118,7 @@ namespace Dev2.Common.Tests
                 {
                     Name = "Data Source",
                     Value = Guid.Empty,
-                    Payload = UTF8Encoding.UTF8.GetString(jsonSource)
+                    Payload = jsonSource
                 },
             };
             IDeserializer deserializer = new JsonSerializer();

@@ -216,10 +216,8 @@ namespace Dev2
                     StartTrackingUsage();
 
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
-                    _writer.Write("Start Logging Server...  ");
-                    _loggingProcessMonitor.Start();
 
-                    _writer.Write("Start Queue Process Server...  ");
+                    _loggingProcessMonitor.Start();
                     _queueProcessMonitor.Start();
 #if DEBUG
                     SetAsStarted();
