@@ -405,18 +405,18 @@ namespace Dev2.DynamicServices
             result.StateNotifier = StateNotifier;
             result.AuthCache = new ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool>(AuthCache);
             result.ExecutionException = ExecutionException;
+            result.OriginalServiceName = OriginalServiceName;
 
+            var serializer = new Dev2JsonSerializer();
             if (ServiceTest != null)
             {
-                var serializer = new Dev2JsonSerializer();
-                var testString = serializer.Serialize(ServiceTest);
-                result.ServiceTest = serializer.Deserialize<IServiceTestModelTO>(testString);
+                var json = serializer.Serialize(ServiceTest);
+                result.ServiceTest = serializer.Deserialize<IServiceTestModelTO>(json);
             }
             if (Settings != null)
             {
-                var serializer = new Dev2JsonSerializer();
-                var testString = serializer.Serialize(Settings);
-                result.Settings = serializer.Deserialize<IDev2WorkflowSettings>(testString);
+                var json = serializer.Serialize(Settings);
+                result.Settings = serializer.Deserialize<IDev2WorkflowSettings>(json);
             }
             return result;
         }
