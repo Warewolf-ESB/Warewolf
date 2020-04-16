@@ -26,6 +26,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Progress;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -211,12 +212,23 @@ namespace Dev2.Settings.Logging
                 }
                 else
                 {
+                    var source = new ElasticsearchSource
+                    {
+                        AuthenticationType = AuthenticationType.Anonymous,
+                        SearchIndex = "warewolflogstests",
+                        HostName = "",
+                        Port = "",
+                        Username = "",
+                        Password = ""
+                    };
+                    var jsonSource = JsonConvert.SerializeObject(source);
                     var data = new AuditingSettingsData
                     {
-                        LoggingDataSource = new NamedGuid
+                        LoggingDataSource = new NamedGuidWithEncryptedPayload
                         {
                             Name = _selectedAuditingSource.ResourceName,
-                            Value = _selectedAuditingSource.ResourceID
+                            Value = _selectedAuditingSource.ResourceID,
+                            Payload = jsonSource
                         }
                     };
                     CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
