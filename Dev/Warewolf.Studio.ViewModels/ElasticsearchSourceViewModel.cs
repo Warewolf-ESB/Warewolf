@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels
             Port = "9200";
             Username = string.Empty;
             Password = string.Empty;
-            SearchIndex = String.Empty;
+            SearchIndex = string.Empty;
         }
 
         public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker)

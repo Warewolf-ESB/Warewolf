@@ -1184,7 +1184,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>The Elasticsearch server username</value>
   </data>
   <data name="ElasticsearchSearchIndexTooltip" xml:space="preserve">
-    <value>The Elasticsearch server Index that will be used to Index the data.</value>
+    <value>The Elasticsearch server index that will be used to index the data.</value>
   </data>
   
   <data name="ElasticsearchPasswordTooltip" xml:space="preserve">

@@ -3563,7 +3563,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The search index that will be used to index the data...
+        ///   Looks up a localized string similar to The search index that will be used to index the data..
         /// </summary>
         public static string SearchIndexHelp {
             get {

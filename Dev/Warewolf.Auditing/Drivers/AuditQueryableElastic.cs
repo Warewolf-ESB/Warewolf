@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -15,7 +15,6 @@ using System.Text;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Nest;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Triggers;
@@ -39,9 +38,11 @@ namespace Warewolf.Auditing.Drivers
         }
         public AuditQueryableElastic(string hostname, string searchIndex)
         {
-            _elasticsearchSource = new ElasticsearchSource();
-            _elasticsearchSource.HostName = hostname;
-            _elasticsearchSource.SearchIndex = searchIndex;
+            _elasticsearchSource = new ElasticsearchSource
+            {
+                HostName = hostname,
+                SearchIndex = searchIndex,
+            };
         }
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
@@ -193,9 +194,6 @@ namespace Warewolf.Auditing.Drivers
             }
 
             var jArray = new JArray();
-            var jsonQueryexecutionId = new JObject();
-            var jsonQueryexecutionLevel = new JObject();
-            var jsonQueryDateRangeFilter = new JObject();
 
             if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
@@ -204,7 +202,7 @@ namespace Warewolf.Auditing.Drivers
                     ["gt"] = startTime,
                     ["lt"] = endTime
                 };
-                jsonQueryDateRangeFilter = new JObject
+                var jsonQueryDateRangeFilter = new JObject
                 {
                     ["range"] = new JObject
                     {
@@ -216,7 +214,7 @@ namespace Warewolf.Auditing.Drivers
 
             if (!string.IsNullOrEmpty(executionId))
             {
-                jsonQueryexecutionId = new JObject
+                var jsonQueryexecutionId = new JObject
                 {
                     ["match"] = new JObject
                     {
@@ -228,7 +226,7 @@ namespace Warewolf.Auditing.Drivers
 
             if (!string.IsNullOrEmpty(eventLevel))
             {
-                jsonQueryexecutionLevel = new JObject
+                var jsonQueryexecutionLevel = new JObject
                 {
                     ["match"] = new JObject
                     {

@@ -1344,7 +1344,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Elasticsearch server Index that will be used to Index the data..
+        ///   Looks up a localized string similar to The Elasticsearch server index that will be used to index the data..
         /// </summary>
         public static string ElasticsearchSearchIndexTooltip {
             get {
