@@ -21,6 +21,7 @@ using Dev2.Common.Wrappers;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Streams;
 using Warewolf.VirtualFileSystem;
 
 namespace Dev2.Common
@@ -311,4 +312,18 @@ namespace Dev2.Common
             get => _settings.Endpoint ?? DefaultEndpoint;
         }
     }
+
+    public interface IEncryptedPayload
+    {
+        string Payload { get; }
+    }
+    public class NamedGuidWithEncryptedPayload : NamedGuid, IEncryptedPayload
+    {
+        public string Payload { get; }
+        public T LoadPayload<T>(IDeserializer deserializer) where T : class, new()
+        {
+            return default;
+        }
+    }
+
 }
