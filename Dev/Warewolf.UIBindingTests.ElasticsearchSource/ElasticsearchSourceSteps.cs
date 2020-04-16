@@ -26,7 +26,6 @@ using TechTalk.SpecFlow;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-using Warewolf.Test.Agent;
 using Warewolf.UIBindingTests.Core;
 using Warewolf.UnitTestAttributes;
 
