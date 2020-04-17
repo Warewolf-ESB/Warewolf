@@ -3,6 +3,7 @@
 	As a warewolf user
 	I want to be able to generate test coverage results
 
+@ignore
 @StudioTestFrameworkWorkflowCoverage
 Scenario: Run an individual test to show partial coverage of nodes
 		Given a workflow "wf-one" with below nodes
@@ -24,6 +25,7 @@ Scenario: Run an individual test to show partial coverage of nodes
 		| Assign(error) |
 		And the test coverage is "35%"
 
+@ignore
 Scenario: Run all tests to generate total nodes covered in workflow
 		Given "wf-one" saved test(s) below
 		| name						 |
@@ -47,6 +49,7 @@ Scenario: Run all tests to generate total nodes covered in workflow
 		| True branch   |
 		| SQL			|
 
+@ignore
 Scenario: Run all tests should show which nodes have no coverage reports
 		Given "wf-one" saved test(s) below
 		| name						 |
@@ -58,6 +61,7 @@ Scenario: Run all tests should show which nodes have no coverage reports
 		| Assign(person)	|
 		| SMTP Send			|
 
+@ignore
 Scenario: Test coverage summary view folders should have coverage of all workflows it contains
 		Given a test coverage summary view is opened
 		When a folder containing test coverage reports is loaded
@@ -69,6 +73,7 @@ Scenario: Test coverage summary view folders should have coverage of all workflo
 		| Folder-one | 70 %								 |
 		| Folder-two | warning: no coverage report found |
 
+@ignore
 Scenario: Test coverage summary view workflows should have per workflow coverage
 		Given a test coverage summary view is opened 
 		And a folder containing test coverage reports is loaded

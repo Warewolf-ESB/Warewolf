@@ -4,7 +4,8 @@ Feature: WarewolfLoggingFollower
     As a warewolf user
     I want to be able to store logs to a leader server
 
- Scenario: No leader server discovered on log
+@ignore
+Scenario: No leader server discovered on log
     Given a valid follower server resource
     And log service have received logs
     When the follower server tries to log and connection to leader not live
@@ -13,6 +14,7 @@ Feature: WarewolfLoggingFollower
     | one     | two     | three   |
     | value 1 | value 2 | value 3 |
 
+@ignore
 Scenario: Leader server discovered on log
     Given a valid follower server resource
     And log service have received logs
