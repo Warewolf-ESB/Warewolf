@@ -164,7 +164,6 @@
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
     <Compile Include="IAdminManager.cs" />
-    <Compile Include="IAssignValue.cs" />
     <Compile Include="ICheckControlEnabledView.cs" />
     <Compile Include="IChooseDLLView.cs" />
     <Compile Include="ICircularDependency.cs" />
