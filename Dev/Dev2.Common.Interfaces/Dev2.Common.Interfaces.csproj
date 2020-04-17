@@ -302,7 +302,6 @@
     <Compile Include="IWcfServiceModel.cs" />
     <Compile Include="IWcfSource.cs" />
     <Compile Include="IWebSource.cs" />
-    <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\IWarewolfLogWriter.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />

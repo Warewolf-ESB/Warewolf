@@ -19,6 +19,7 @@ using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
 using Dev2.Common.Interfaces.Logging;
+using Warewolf.Logging;
 
 namespace Dev2.Common
 {
@@ -335,7 +336,7 @@ namespace Dev2.Common
         }
     }
 
-    public class DefaultLogger : ILogger
+    public class DefaultLogger : IWarewolfLogger
     {
         public void Debug(object message, string executionId)
         {

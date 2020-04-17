@@ -1,8 +1,8 @@
 using Dev2.Common;
-using Dev2.Runtime.Network;
 using Dev2.Workspaces;
 using Warewolf.Esb;
 using Dev2.Diagnostics.Debug;
+using Warewolf.Cluster;
 
 namespace Dev2.Runtime.ESB.Management
 {
@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management
             return new InternalExecutionContext(request, _workspace, _esbHub);
         }
 
-        public IEsbRequest Request { get; private set; }
+        public IEsbRequest Request { get; }
 
         public IWorkspaceBase Workspace
         {

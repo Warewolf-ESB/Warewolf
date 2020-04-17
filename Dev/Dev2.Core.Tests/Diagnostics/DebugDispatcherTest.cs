@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Warewolf.Data;
+using Warewolf.Logging;
 
 namespace Dev2.Tests.Diagnostics
 {
@@ -277,7 +278,7 @@ namespace Dev2.Tests.Diagnostics
         [TestCategory(nameof(DebugDispatcher))]
         public void DebugDispatcher_Write_RemoteInvokeDebugItems()
         {
-            var mockLogger = new Mock<ILogger>();
+            var mockLogger = new Mock<IWarewolfLogger>();
             var debugDispatcher = new DebugDispatcherImplementation(mockLogger.Object);
 
             var workspaceID = Guid.NewGuid();

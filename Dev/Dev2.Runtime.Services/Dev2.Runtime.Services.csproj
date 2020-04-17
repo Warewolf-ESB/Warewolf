@@ -311,7 +311,6 @@
     <Compile Include="Hosting\ManagementServiceResource.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
     <Compile Include="Isolated.cs" />
-    <Compile Include="Network\ClusterDispatcher.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="ResourceCatalogImpl\Common.cs" />

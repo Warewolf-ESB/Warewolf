@@ -54,7 +54,12 @@ namespace Warewolf.Configuration
 
             if (_settings.HasChanged)
             {
-                _clusterDispatcher.Write(this._settings);
+                var clusterDispatcher = _clusterDispatcher;
+                if (clusterDispatcher is null)
+                {
+                    clusterDispatcher = CustomContainer.Get<IClusterDispatcher>();
+                }
+                clusterDispatcher.Write(this._settings);
                 _settings.HasChanged = false;
             }
         }

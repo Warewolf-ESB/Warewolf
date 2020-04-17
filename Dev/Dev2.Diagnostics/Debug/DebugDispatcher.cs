@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Logging;
 using Newtonsoft.Json;
 using Warewolf.Data;
 using Warewolf.Debugging;
+using Warewolf.Logging;
 
 namespace Dev2.Diagnostics.Debug
 {
@@ -25,11 +26,11 @@ namespace Dev2.Diagnostics.Debug
      */
     internal class DebugDispatcherImplementation : IDebugDispatcher
     {
-        readonly ILogger _dev2Logger;
+        readonly IWarewolfLogger _dev2Logger;
         public DebugDispatcherImplementation()
             : this(new DefaultLogger())
         { }
-        public DebugDispatcherImplementation(ILogger logger)
+        public DebugDispatcherImplementation(IWarewolfLogger logger)
         {
             _dev2Logger = logger;
         }

@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -16,18 +16,22 @@ using System.IO;
 using System.Threading;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
-using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Esb;
 using Warewolf.VirtualFileSystem;
+using Warewolf.Cluster;
 
 namespace Dev2.Common
 {
     [ExcludeFromCodeCoverage]
-    public class Config
+    public static class Config
     {
+        static Config()
+        {
+            CustomContainer.Register<IClusterDispatcher>(ClusterDispatcher.Instance);
+        }
         public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
         public static readonly string UserDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
 

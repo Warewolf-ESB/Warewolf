@@ -11,13 +11,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Logging;
 using Warewolf.Data;
 using Warewolf.Debugging;
 using Warewolf.Esb;
 
-namespace Dev2.Runtime.Network
+namespace Warewolf.Cluster
 {
     /**
      * Uses EsbHub to write DebugState data from Warewolf Server to the Studio. This state data
@@ -26,17 +24,7 @@ namespace Dev2.Runtime.Network
     internal class ClusterDispatcherImplementation : IClusterDispatcher
     {
         private readonly ConcurrentDictionary<Guid, INotificationListener<ChangeNotification>> _writers = new ConcurrentDictionary<Guid, INotificationListener<ChangeNotification>>();
-        private readonly ILogger _dev2Logger;
         private bool _shutdownRequested;
-
-        public ClusterDispatcherImplementation()
-            : this(new DefaultLogger())
-        { }
-
-        internal ClusterDispatcherImplementation(ILogger logger)
-        {
-            _dev2Logger = logger;
-        }
 
         public int Count => _writers.Count;
 

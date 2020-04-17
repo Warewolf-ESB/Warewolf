@@ -10,9 +10,9 @@
 
 using System;
 
-namespace Dev2.Common.Interfaces.Logging
+namespace Warewolf.Logging
 {
-    public interface ILogger
+    public interface IWarewolfLogger
     {
         void Debug(object message, string executionId);
         void Debug(object message, Exception exception, string executionId);
