@@ -50,28 +50,35 @@ namespace Warewolf.Logger
 
         public LoggerContext(IArgs args)
         {
-            _options = args;
+            try
+            {
+                _options = args;
 
-            if (Config.Server.Sink == nameof(AuditingSettingsData))
-            {
-                var payload = Config.Auditing.LoggingDataSource.Payload;
-                var decryptedPayload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
-                var elasticsearchSource = new Dev2JsonSerializer().Deserialize<ElasticsearchSource>(decryptedPayload);
-                _source = new SerilogElasticsearchSource
+                if (Config.Server.Sink == nameof(AuditingSettingsData))
                 {
-                    HostName = elasticsearchSource.HostName,
-                    Port = elasticsearchSource.Port,
-                    Username = elasticsearchSource.Username,
-                    Password = elasticsearchSource.Password,
-                    SearchIndex = elasticsearchSource.SearchIndex,
-                    AuthenticationType = elasticsearchSource.AuthenticationType
-                };
-                _loggerConfig = new SeriLogElasticsearchConfig(_source);
+                    var payload = Config.Auditing.LoggingDataSource.Payload;
+                    var decryptedPayload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
+                    var elasticsearchSource = new Dev2JsonSerializer().Deserialize<ElasticsearchSource>(decryptedPayload);
+                    _source = new SerilogElasticsearchSource
+                    {
+                        HostName = elasticsearchSource.HostName,
+                        Port = elasticsearchSource.Port,
+                        Username = elasticsearchSource.Username,
+                        Password = elasticsearchSource.Password,
+                        SearchIndex = elasticsearchSource.SearchIndex,
+                        AuthenticationType = elasticsearchSource.AuthenticationType
+                    };
+                    _loggerConfig = new SeriLogElasticsearchConfig(_source);
+                }
+                else
+                {
+                    _source = new SeriLoggerSource();
+                    _loggerConfig = new SeriLogSQLiteConfig();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _source = new SeriLoggerSource();
-                _loggerConfig = new SeriLogSQLiteConfig();
+                _source = null;
             }
         }
     }
