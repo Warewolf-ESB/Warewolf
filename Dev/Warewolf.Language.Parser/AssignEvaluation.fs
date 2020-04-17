@@ -2,10 +2,11 @@
 
 open DataStorage
 open EvaluationFunctions
-open Dev2.Common.Interfaces
 open LanguageAST
 open Newtonsoft.Json.Linq
 open CommonFunctions
+open Warewolf.Data
+open Warewolf.Exceptions
 open WarewolfDataEvaluationCommon
 
 let toJObject (obj : JContainer) = 
@@ -305,15 +306,15 @@ and assignGivenAValueForJson (env : WarewolfEnvironment) (res : WarewolfEvalResu
             env
     | NestedNameExpression a ->
         let actualRes = match res with
-            | WarewolfEvalResult.WarewolfAtomResult atomResult -> match atomResult with
-                                                                      | WarewolfAtom.DataString ds ->
-                                                                        if (isJsonString evalResult) then
-                                                                            let actualValue = JContainer.Parse evalResult
-                                                                            WarewolfAtomResult(JsonObject(actualValue))
-                                                                        else
-                                                                            res
-                                                                      | _ -> res
-            | _ -> res
+                        | WarewolfEvalResult.WarewolfAtomResult atomResult -> match atomResult with
+                                                                              | WarewolfAtom.DataString ds ->
+                                                                                if (isJsonString evalResult) then
+                                                                                    let actualValue = JContainer.Parse evalResult
+                                                                                    WarewolfAtomResult(JsonObject(actualValue))
+                                                                                else
+                                                                                    res
+                                                                              | _ -> res
+                        | _ -> res
         let addedenv = addOrReturnJsonObjects env a.ObjectName (new JObject())
         let obj = addedenv.JsonObjects.[a.ObjectName]
         expressionToObjectForJson obj a.Next actualRes |> ignore
@@ -440,9 +441,9 @@ and evalMultiAssignOpStrict (env : WarewolfEnvironment) (update : int) (value : 
                             | _ -> 
                                 try 
                                     addToRecordSetFramed env b x.[0]
-                                with :? Dev2.Common.Common.NullValueInVariableException as ex -> 
+                                with :? NullValueInVariableException as ex -> 
                                     raise 
-                                        (new Dev2.Common.Common.NullValueInVariableException("The expression result is  null", 
+                                        (new NullValueInVariableException("The expression result is  null", 
                                                                                              value.Value))
                         | WarewolfAtomExpression _ -> failwith "invalid variable assigned to"
                         | _ -> 
@@ -517,9 +518,9 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                             | _ -> 
                                 try 
                                     addToRecordSetFramed env b x.[0]
-                                with :? Dev2.Common.Common.NullValueInVariableException as ex -> 
+                                with :? NullValueInVariableException as ex -> 
                                     raise 
-                                        (new Dev2.Common.Common.NullValueInVariableException("The expression result is  null", 
+                                        (new NullValueInVariableException("The expression result is  null", 
                                                                                                 value.Value))
                         | WarewolfAtomExpression _ -> failwith "invalid variable assigned to"
                         | _ -> 

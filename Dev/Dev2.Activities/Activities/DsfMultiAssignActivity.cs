@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -18,10 +18,7 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.Interfaces.Enums;
@@ -31,6 +28,8 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.MathOperations;
 using Dev2.Utilities;
+using Warewolf.Data;
+using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
