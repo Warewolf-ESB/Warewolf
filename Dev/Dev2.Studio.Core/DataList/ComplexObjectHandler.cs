@@ -1,5 +1,14 @@
-#pragma warning disable
-﻿using System.Collections.Generic;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -14,7 +23,6 @@ using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Dev2.Studio.Interfaces.DataList;
-using ServiceStack.Common.Extensions;
 using Dev2.Common.ExtMethods;
 
 namespace Dev2.Studio.Core.DataList
@@ -182,12 +190,12 @@ namespace Dev2.Studio.Core.DataList
             var properties = objToProcess.Properties();
             foreach (var property in properties)
             {
-                var displayname = property.Name;
-                displayname = JPropertyExtensionMethods.IsEnumerable(property) ? displayname + "()" : displayname;
-                var childObj = parentObj.Children.FirstOrDefault(model => model.DisplayName == displayname);
+                var displayName = property.Name;
+                displayName = JPropertyExtensionMethods.IsEnumerable(property) ? displayName + "()" : displayName;
+                var childObj = parentObj.Children.FirstOrDefault(model => model.DisplayName == displayName);
                 if (childObj == null)
                 {
-                    childObj = new ComplexObjectItemModel(displayname, parentObj) { IsArray = JPropertyExtensionMethods.IsEnumerable(property) };
+                    childObj = new ComplexObjectItemModel(displayName, parentObj) { IsArray = JPropertyExtensionMethods.IsEnumerable(property) };
                     parentObj.Children.Add(childObj);
                 }
                 if (property.Value.IsObject())
@@ -215,7 +223,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
+        private static string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
         {
             var name = isArray ? xmlNode.Name + "()" : xmlNode.Name;
             return name;
@@ -331,24 +339,25 @@ namespace Dev2.Studio.Core.DataList
         public void RemoveUnusedComplexObjects()
         {
             var unusedComplexObjects = _vm.ComplexObjectCollection.Where(c => !c.IsUsed).ToList();
-            if (unusedComplexObjects.Any())
+            if (!unusedComplexObjects.Any())
             {
-                foreach (var dataListItemModel in unusedComplexObjects)
-                {
-                    _vm.RemoveDataListItem(dataListItemModel);
-                }
+                return;
+            }
+            foreach (var dataListItemModel in unusedComplexObjects)
+            {
+                _vm.RemoveDataListItem(dataListItemModel);
             }
         }
     }
 
-    class StringCompexObjectEqualityComparer : IEqualityComparer<string>
+    internal class StringComplexObjectEqualityComparer : IEqualityComparer<string>
     {
         #region Implementation of IEqualityComparer<in string>
 
         public bool Equals(string x, string y)
         {
-            var cleanX = x.Replace("()", "");
-            var cleanY = y.Replace("()", "");
+            var cleanX = x?.Replace("()", "");
+            var cleanY = y?.Replace("()", "");
             var equals = string.Equals(cleanX, cleanY);
             return equals;
         }
