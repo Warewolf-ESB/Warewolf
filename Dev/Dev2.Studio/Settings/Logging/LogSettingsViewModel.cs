@@ -36,6 +36,7 @@ using Dev2.Utils;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Security.Encryption;
 using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Settings.Logging
@@ -215,17 +216,16 @@ namespace Dev2.Settings.Logging
                     var source = _selectedAuditingSource as ElasticsearchSource;
                     var serializer = new Dev2JsonSerializer();
                     var payload = serializer.Serialize(source);
-
+                    var encryptedPayload = DpapiWrapper.Encrypt(payload);
                     var data = new AuditingSettingsData
                     {
                         LoggingDataSource = new NamedGuidWithEncryptedPayload
                         {
                             Name = _selectedAuditingSource.ResourceName,
                             Value = _selectedAuditingSource.ResourceID,
-                            Payload = payload
+                            Payload = encryptedPayload
                         }
                     };
-
                     CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
                 }
             }

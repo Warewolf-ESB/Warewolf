@@ -12,13 +12,18 @@ using System;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Communication;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Common;
+using Warewolf.Configuration;
+using Warewolf.Data;
 using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
+using Warewolf.Security.Encryption;
 using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Logger.Tests
@@ -26,8 +31,6 @@ namespace Warewolf.Logger.Tests
     [TestClass]
     public class WarewolfLoggerTests
     {
-        private static readonly Guid _sourceId = Guid.Parse("24e12ae4-58b6-4fec-b521-48493230fef7");
-
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WarewolfLogger))]
@@ -39,10 +42,9 @@ namespace Warewolf.Logger.Tests
                 ServerEndpoint = new Uri("http://somehost:1234")
             };
             var context = ConstructLoggerContext(args, out var source);
-            Assert.AreEqual(source, context.Source);
+            Assert.IsNotNull(context.Source);
             Assert.IsTrue(context.Verbose);
         }
-
 
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -59,21 +61,38 @@ namespace Warewolf.Logger.Tests
             Assert.IsFalse(context.Verbose);
         }
 
-        private static ILoggerContext ConstructLoggerContext(IArgs args, out SerilogElasticsearchSource elasticsearchSource)
+        private static ILoggerContext ConstructLoggerContext(IArgs args, out ElasticsearchSource elasticsearchSource)
         {
             var mockArgs = new Mock<IArgs>();
             mockArgs.Setup(o => o.ServerEndpoint).Returns(args.ServerEndpoint);
             mockArgs.Setup(o => o.Verbose).Returns(args.Verbose);
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
             var hostName = "http://" + dependency.Container.IP;
-            elasticsearchSource = new SerilogElasticsearchSource
+
+            elasticsearchSource = new ElasticsearchSource
             {
-                ResourceID = _sourceId,
-                HostName = hostName,
+                ResourceID = Guid.Empty,
+                ResourceType = "ElasticsearchSource",
+                AuthenticationType = AuthenticationType.Anonymous,
                 Port = dependency.Container.Port,
-                ResourceName = "TestSource",
-                SearchIndex = "warewolftestlogs"
+                HostName = hostName,
+                SearchIndex = "warewolflogstests"
             };
+
+            var serializer = new Dev2JsonSerializer();
+            var payload = serializer.Serialize(elasticsearchSource );
+            var encryptedPayload = DpapiWrapper.Encrypt(payload);
+            var data = new AuditingSettingsData
+            {
+                LoggingDataSource = new NamedGuidWithEncryptedPayload
+                {
+                    Name = "Testing Elastic Data Source",
+                    Value = Guid.Empty,
+                    Payload = encryptedPayload
+                }
+            };
+            Config.Auditing.LoggingDataSource = data.LoggingDataSource;
+            Config.Server.Sink = nameof(AuditingSettingsData);
             return new LoggerContext(mockArgs.Object);
         }
     }
