@@ -348,7 +348,7 @@ namespace Warewolf.Auditing.Drivers
             var isValid = result.IsValid;
             if (!isValid)
             {
-                throw new Exception("Invalid Data Source");
+                throw new Exception($"Invalid Data Source: {uri}");
             }
             else
             {
