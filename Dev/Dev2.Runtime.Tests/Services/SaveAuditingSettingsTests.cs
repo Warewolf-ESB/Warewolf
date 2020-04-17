@@ -115,7 +115,7 @@ namespace Dev2.Tests.Runtime.Services
             var workspaceMock = new Mock<IWorkspace>();
             var settingsData = new AuditingSettingsData()
             {
-                LoggingDataSource = new NamedGuid(),
+                LoggingDataSource = new NamedGuidWithEncryptedPayload(),
             };
             var requestArgs = new Dictionary<string, StringBuilder>();
             requestArgs.Add("AuditingSettings", new StringBuilder(serializer.SerializeToBuilder(settingsData).ToString()));

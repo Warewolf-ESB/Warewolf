@@ -14,11 +14,8 @@ using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
-using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
-using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.VirtualFileSystem;
@@ -296,9 +293,9 @@ namespace Dev2.Common
             return result;
         }
 
-        public NamedGuid LoggingDataSource
+        public NamedGuidWithEncryptedPayload LoggingDataSource
         {
-            get => _settings.LoggingDataSource ?? new NamedGuid();
+            get => _settings.LoggingDataSource ?? new NamedGuidWithEncryptedPayload();
             set
             {
                 _settings.LoggingDataSource = value;
