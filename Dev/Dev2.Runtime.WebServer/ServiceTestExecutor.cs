@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
- using System;
+using System;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -90,7 +90,7 @@ namespace Dev2.Runtime.WebServer
             }
             else
             {
-                throw new Exception("do not expect this to be executed any longer");
+                Dev2.Common.Dev2Logger.Warn("No tests found to execute for requested resource", Dev2.Common.GlobalConstants.WarewolfWarn);
             }
 
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
