@@ -41,7 +41,6 @@ namespace Warewolf.Logger
 
             public int Run()
             {
-
                 var context = new LoggerContext(_options);
 
                 var implementation = new Implementation(context, new WebSocketServerFactory(), new ConsoleWindowFactory(), new LogServerFactory(), new Writer(), new PauseHelper());
@@ -73,13 +72,29 @@ namespace Warewolf.Logger
 
             public void Run()
             {
-                if (_context.Verbose)
+                try
                 {
-                    _ = _consoleWindowFactory.New();
-                }
+                    if (_context.Verbose)
+                    {
+                        _ = _consoleWindowFactory.New();
+                    }
 
-                var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
-                logServer.Start(new List<IWebSocketConnection>());
+                    if (_context.Source != null)
+                    {
+                        _writer.WriteLine("Connecting to logging server.. ");
+                        var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
+                        logServer.Start(new List<IWebSocketConnection>());
+                        _writer.WriteLine("Logging Server Started.");
+                    }
+                    else
+                    {
+                        _writer.WriteLine("Failed to start logging server: Invalid or missing Logging Data Source.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _writer.WriteLine($"Logging Server OnError, Error details:{ex.Message}");
+                }
             }
 
             public void WaitForExit()

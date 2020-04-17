@@ -42,6 +42,8 @@ using System.Threading.Tasks;
 using Warewolf.Trigger.Queue;
 using Warewolf.OS;
 using Warewolf;
+using Warewolf.Auditing;
+using Warewolf.Interfaces.Auditing;
 
 namespace Dev2
 {
@@ -103,7 +105,7 @@ namespace Dev2
         readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
         readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
         IIpcClient _ipcClient;
-        
+
         private ILoadResources _loadResources;
         private readonly IAssemblyLoader _assemblyLoader;
         private readonly IWebServerConfiguration _webServerConfiguration;
@@ -113,9 +115,8 @@ namespace Dev2
         private readonly IProcessMonitor _loggingProcessMonitor;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
-            :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
+            : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
         {
-            
         }
 
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
@@ -166,11 +167,7 @@ namespace Dev2
         /// <returns>A Task that starts up the Warewolf Server.</returns>
         public Task Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
-            return Task.Run(() =>
-            {
-                LoadPerformanceCounters();
-
-            }).ContinueWith((t) =>
+            return Task.Run(() => { LoadPerformanceCounters(); }).ContinueWith((t) =>
             {
                 void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
                 {
@@ -198,6 +195,8 @@ namespace Dev2
                     {
                         worker.Execute();
                     }
+
+                    _loggingProcessMonitor.Start();
                     _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
                     LoadHostSecurityProvider();
                     _loadResources.CheckExampleResources();
@@ -216,9 +215,10 @@ namespace Dev2
                     StartTrackingUsage();
 
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
-
-                    _loggingProcessMonitor.Start();
                     _queueProcessMonitor.Start();
+
+                    CheckLogServerConnection();
+
 #if DEBUG
                     SetAsStarted();
 #endif
@@ -232,6 +232,24 @@ namespace Dev2
                     Stop(true, 0);
                 }
             });
+        }
+
+        public void CheckLogServerConnection()
+        {
+            try
+            {
+                var _webSocketPool = new WebSocketPool();
+                var _ws = _webSocketPool.Acquire(Config.Auditing.Endpoint);
+                if (!_ws.IsOpen())
+                {
+                    Stop(false, 0);
+                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error Starting Server: Failed to start logging server: Invalid or missing Logging Data Source.", GlobalConstants.WarewolfError);
+                Stop(false, 0);
+            }
         }
 
         private void LoadTriggersCatalog()
@@ -271,11 +289,13 @@ namespace Dev2
                     _startWebServer.Dispose();
                     _startWebServer = null;
                 }
+
                 if (_ipcClient != null)
                 {
                     _ipcClient.Dispose();
                     _ipcClient = null;
                 }
+
                 DebugDispatcher.Instance.Shutdown();
             }
             catch (Exception ex)
@@ -283,7 +303,7 @@ namespace Dev2
                 Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
             }
         }
-        
+
         ~ServerLifecycleManager()
         {
             Dispose(false);
@@ -303,7 +323,6 @@ namespace Dev2
 
         void Dispose(bool disposing)
         {
-
             if (disposing)
             {
                 CleanupServer();
@@ -319,6 +338,7 @@ namespace Dev2
             {
                 _pulseLogger.Dispose();
             }
+
             if (_pulseTracker != null)
             {
                 _pulseTracker.Dispose();
@@ -355,15 +375,14 @@ namespace Dev2
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
-        
+
         void LoadTestCatalog()
         {
-
             _writer.Write("Loading test catalog...  ");
             TestCatalog.Instance.Load();
             _writer.WriteLine("done.");
         }
-        
+
 
         void LoadHostSecurityProvider()
         {
@@ -373,7 +392,6 @@ namespace Dev2
             {
                 _writer.WriteLine("done.");
             }
-
         }
 
 #if DEBUG
@@ -386,6 +404,7 @@ namespace Dev2
                 {
                     File.Delete(".\\ServerStarted");
                 }
+
                 File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
             }
             catch (Exception err)
@@ -409,7 +428,6 @@ namespace Dev2
             {
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
-
         }
 
         public void Write(string message)
@@ -424,6 +442,7 @@ namespace Dev2
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
         }
+
 
         public void Fail(string message, Exception e)
         {
@@ -443,4 +462,3 @@ namespace Dev2
         }
     }
 }
-
