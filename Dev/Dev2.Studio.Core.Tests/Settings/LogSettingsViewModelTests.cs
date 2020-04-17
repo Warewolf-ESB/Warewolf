@@ -26,6 +26,7 @@ using Moq;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Security.Encryption;
 using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Core.Tests.Settings
@@ -497,6 +498,7 @@ namespace Dev2.Core.Tests.Settings
                 };
                 var serializer = new Dev2JsonSerializer();
                 var payload = serializer.Serialize(elasticsearchSource);
+                var encryptedPayload = DpapiWrapper.Encrypt(payload);
                 var auditingSettingsData = new AuditingSettingsData
                 {
                     Endpoint = "ws://127.0.0.1:5000/ws",
@@ -504,7 +506,7 @@ namespace Dev2.Core.Tests.Settings
                     {
                         Name = "Auditing Data Source",
                         Value = selectedAuditingSourceId,
-                        Payload = payload
+                        Payload = encryptedPayload
                     },
                 };
                 _resourceRepo.Setup(res => res.GetAuditingSettings<AuditingSettingsData>(env.Object)).Returns(auditingSettingsData);

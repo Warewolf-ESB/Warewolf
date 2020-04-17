@@ -16,6 +16,7 @@ using Dev2.Communication;
 using Warewolf.Configuration;
 using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
+using Warewolf.Security.Encryption;
 using Warewolf.Streams;
 using ElasticsearchSource = Dev2.Data.ServiceModel.ElasticsearchSource;
 
@@ -54,7 +55,8 @@ namespace Warewolf.Logger
             if (Config.Server.Sink == nameof(AuditingSettingsData))
             {
                 var payload = Config.Auditing.LoggingDataSource.Payload;
-                var elasticsearchSource = new Dev2JsonSerializer().Deserialize<ElasticsearchSource>(payload);
+                var decryptedPayload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
+                var elasticsearchSource = new Dev2JsonSerializer().Deserialize<ElasticsearchSource>(decryptedPayload);
                 _source = new SerilogElasticsearchSource
                 {
                     HostName = elasticsearchSource.HostName,
