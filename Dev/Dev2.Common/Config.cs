@@ -178,7 +178,7 @@ namespace Dev2.Common
     {
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "clusterSettings.json");
         public ClusterSettings()
-            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), new NullClusterDispatcher())
         {
         }
 

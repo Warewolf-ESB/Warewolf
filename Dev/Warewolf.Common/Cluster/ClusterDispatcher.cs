@@ -17,6 +17,26 @@ using Warewolf.Esb;
 
 namespace Warewolf.Cluster
 {
+    public class NullClusterDispatcher : IClusterDispatcher
+    {
+        public void AddListener(Guid workspaceID, INotificationListener<ChangeNotification> listener)
+        {
+        }
+
+        public int Count => 0;
+        public void Remove(Guid workspaceId)
+        {
+        }
+
+        public void Shutdown()
+        {
+        }
+
+        public void Write<T>(T info) where T : class
+        {
+        }
+    }
+
     /**
      * Uses EsbHub to write DebugState data from Warewolf Server to the Studio. This state data
      * is received by the Studio as events in ServerProxyWithoutChunking as a SendDebugState event
