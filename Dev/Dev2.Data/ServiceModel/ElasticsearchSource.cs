@@ -94,7 +94,7 @@ namespace Dev2.Data.ServiceModel
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString.EscapeString())),
-                new XAttribute("Type", GetType().Name),
+                new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
             );
 

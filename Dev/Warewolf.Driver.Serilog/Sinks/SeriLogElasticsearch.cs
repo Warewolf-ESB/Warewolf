@@ -10,7 +10,6 @@
 
 using System;
 using Dev2.Common;
-using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
@@ -20,21 +19,27 @@ namespace Warewolf.Driver.Serilog
 {
     public class SeriLogElasticsearchConfig : ISeriLogConfig
     {
-        static readonly Settings _staticSettings = new Settings(new SerilogElasticsearchSource());
         readonly Settings _config;
         static ILogger _logger;
 
         public SeriLogElasticsearchConfig(ILoggerSource source)
         {
-            _config = source == null ? new Settings(new SerilogElasticsearchSource()) : new Settings(source as SerilogElasticsearchSource);
-            _logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_staticSettings.Url))
-                {
-                    AutoRegisterTemplate = true,
-                    IndexDecider = (e, o) => _config.SearchIndex,
-                }))
-                .CreateLogger();
+            if (source != null)
+            {
+                _config = new Settings(source as SerilogElasticsearchSource);
+                _logger = new LoggerConfiguration()
+                    .MinimumLevel.Verbose()
+                    .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_config.Url))
+                    {
+                        AutoRegisterTemplate = true,
+                        IndexDecider = (e, o) => _config.SearchIndex,
+                    }))
+                    .CreateLogger();
+            }
+            else
+            {
+                _logger = new LoggerConfiguration().CreateLogger();
+            }
         }
 
         public ILogger Logger
@@ -42,22 +47,14 @@ namespace Warewolf.Driver.Serilog
             get => _logger;
         }
 
-        private ILogger CreateLogger()
-        {
-            return new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_config.Url))
-                {
-                    AutoRegisterTemplate = true,
-                    IndexDecider = (e, o) =>  _config.SearchIndex,
-                }))
-                .CreateLogger();
-        }
-
         public string Endpoint { get; set; } = Config.Auditing.Endpoint;
 
         private class Settings
         {
+            public Settings()
+            {
+            }
+
             public Settings(SerilogElasticsearchSource source)
             {
                 Url = source.HostName + ":" + source.Port;
@@ -86,17 +83,10 @@ namespace Warewolf.Driver.Serilog
         private string _username;
         private AuthenticationType _authenticationType;
         private string _searchIndex { get; set; }
+
         public SerilogElasticsearchSource()
         {
-            var src = new ElasticsearchSource();
-            _resourceId = src.ResourceID;
-            _resourceName = src.ResourceName;
-            _hostName = src.HostName;
-            _port = src.Port;
-            _password = src.Password;
-            _username = src.Username;
-            _authenticationType = src.AuthenticationType;
-            _searchIndex = src.SearchIndex;
+
         }
 
         public Guid ResourceID
@@ -122,6 +112,7 @@ namespace Warewolf.Driver.Serilog
             get => _port;
             set => _port = value;
         }
+
         public string SearchIndex
         {
             get => _searchIndex;

@@ -74,9 +74,7 @@ namespace Warewolf.Logger.Tests
                 ResourceName = "TestSource",
                 SearchIndex = "warewolftestlogs"
             };
-            var mockResourceCatalogProxy = new Mock<IResourceCatalogProxy>();
-            mockResourceCatalogProxy.Setup(o => o.GetResourceById<SerilogElasticsearchSource>(GlobalConstants.ServerWorkspaceID, _sourceId)).Returns(elasticsearchSource);
-            return new LoggerContext(mockArgs.Object, mockResourceCatalogProxy.Object);
+            return new LoggerContext(mockArgs.Object);
         }
     }
 }

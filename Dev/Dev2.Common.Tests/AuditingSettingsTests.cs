@@ -13,9 +13,14 @@ using Dev2.Common.Interfaces.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
-using Dev2.Common.Interfaces.Enums;
+using System.Text;
+using Dev2.Communication;
+using Dev2.Data.ServiceModel;
+using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Configuration;
 using Warewolf.Data;
+using Warewolf.Streams;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Common.Tests
 {
@@ -28,6 +33,7 @@ namespace Dev2.Common.Tests
         {
             Assert.AreEqual(@"ws://127.0.0.1:5000/ws", AuditingSettings.DefaultEndpoint);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditingSettings))]
@@ -93,13 +99,35 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(AuditingSettings))]
         public void AuditingSettingsData_Set_Get_LoggingDataSource()
         {
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+
+            var source = new ElasticsearchSource
+            {
+                AuthenticationType = AuthenticationType.Anonymous,
+                Port = dependency.Container.Port,
+                HostName = hostName,
+                SearchIndex = "warewolflogstests"
+            };
+            var serializer = new Dev2JsonSerializer();
+            var jsonSource = serializer.Serialize(source);
             var expectedAuditingSettingsData = new AuditingSettingsData
             {
                 Endpoint = "ws://127.0.0.1:5000/ws",
-                LoggingDataSource = new NamedGuid {Name = "Data Source", Value = Guid.Empty,},
+                LoggingDataSource = new NamedGuidWithEncryptedPayload
+                {
+                    Name = "Data Source",
+                    Value = Guid.Empty,
+                    Payload = jsonSource
+                },
             };
+            IDeserializer deserializer = new JsonSerializer();
+            var bytes = UTF8Encoding.UTF8.GetBytes(expectedAuditingSettingsData.LoggingDataSource.Payload);
+            var result = deserializer.Deserialize<ElasticsearchSource>(bytes);
+
             Assert.AreEqual(expectedAuditingSettingsData.LoggingDataSource.Value, Guid.Empty);
             Assert.AreEqual(expectedAuditingSettingsData.LoggingDataSource.Name, "Data Source");
+            Assert.AreEqual(source, result);
         }
     }
 }
