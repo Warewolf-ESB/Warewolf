@@ -5,6 +5,7 @@ open DataStorage
 open System.Diagnostics.CodeAnalysis
 open System
 open Newtonsoft.Json.Linq
+open Warewolf.Exceptions
 
 [<ExcludeFromCodeCoverage>]
 type WarewolfEvalResult = 
@@ -170,7 +171,7 @@ let evalRecordSetIndex (recset : WarewolfRecordset) (identifier : RecordSetColum
     match index with
     | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
     | IndexDoesNotExist -> 
-        raise (new Dev2.Common.Common.NullValueInVariableException("index not found", identifier.Name))
+        raise (new NullValueInVariableException("index not found", identifier.Name))
 
 let LanguageExpressionToStringWithoutStuff(x : LanguageExpression) = 
     match x with

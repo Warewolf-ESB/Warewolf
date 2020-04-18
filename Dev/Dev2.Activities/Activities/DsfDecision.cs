@@ -1,7 +1,7 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,7 +16,6 @@ using System.ComponentModel;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
@@ -32,6 +31,7 @@ using System.Activities.Statements;
 using Dev2.Common.State;
 using Dev2.Communication;
 using Dev2.Utilities;
+using Warewolf.Exceptions;
 
 namespace Dev2.Activities
 {

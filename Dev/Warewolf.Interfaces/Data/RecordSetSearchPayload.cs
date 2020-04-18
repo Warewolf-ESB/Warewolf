@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,18 +8,22 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-
-namespace Dev2.Common.Common
+namespace Warewolf.Data
 {
-    public class NullValueInVariableException : Exception
+    public class RecordSetSearchPayload
     {
-        public NullValueInVariableException(string message, string variableName)
-            : base(message)
+        public RecordSetSearchPayload(int index, string payload)
         {
-            VariableName = variableName;
+            Index = index;
+            Payload = payload;
         }
 
-        public string VariableName { get; set; }
+        public RecordSetSearchPayload()
+        {
+        }
+
+        public int Index { get; set; }
+
+        public string Payload { get; set; }
     }
 }
