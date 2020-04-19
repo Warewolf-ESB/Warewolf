@@ -354,6 +354,15 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var src = ToSource();
+                if (src.Id == Dev2.Common.Config.Auditing.LoggingDataSource.Value)
+                {
+                    var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+                    var result = popupController.ShowLoggerSourceChange(src.Name);
+                    if (result == MessageBoxResult.No || result == MessageBoxResult.Cancel)
+                    {
+                        return;
+                    }
+                }
                 Save(src);
                 Item = src;
                 _elasticsearchServiceSource = src;
