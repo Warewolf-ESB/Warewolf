@@ -68,6 +68,7 @@ namespace Dev2
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
         public IProcessMonitor QueueWorkerMonitor { get; set; } = new NullProcessMonitor();
         public IProcessMonitor LoggingServiceMonitor { get; set; } = new NullProcessMonitor();
+        public IWebSocketPool WebSocketPool { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -87,7 +88,8 @@ namespace Dev2
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
                 QueueWorkerMonitor = new QueueWorkerMonitor(processFactory, new QueueWorkerConfigLoader(), TriggersCatalog.Instance, childProcessTracker),
-                LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory)
+                LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory),
+                WebSocketPool = new WebSocketPool(),
             };
         }
     }
@@ -113,6 +115,7 @@ namespace Dev2
         private readonly IPauseHelper _pauseHelper;
         private readonly IProcessMonitor _queueProcessMonitor;
         private readonly IProcessMonitor _loggingProcessMonitor;
+        private readonly IWebSocketPool _webSocketPool;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
@@ -139,6 +142,8 @@ namespace Dev2
 
             _queueProcessMonitor = startupConfiguration.QueueWorkerMonitor;
             _queueProcessMonitor.OnProcessDied += (config) => _writer.WriteLine($"queue process died: {config.Name}({config.Id})");
+
+            _webSocketPool = startupConfiguration.WebSocketPool;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }
@@ -238,9 +243,8 @@ namespace Dev2
         {
             try
             {
-                var _webSocketPool = new WebSocketPool();
-                var _ws = _webSocketPool.Acquire(Config.Auditing.Endpoint);
-                if (!_ws.IsOpen())
+                var webSocketWrapper = _webSocketPool.Acquire(Config.Auditing.Endpoint);
+                if (!webSocketWrapper.IsOpen())
                 {
                     Stop(false, 0);
                 }
