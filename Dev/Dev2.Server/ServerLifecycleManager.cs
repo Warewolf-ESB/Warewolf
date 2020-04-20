@@ -200,8 +200,9 @@ namespace Dev2
                     {
                         worker.Execute();
                     }
-
                     _loggingProcessMonitor.Start();
+                    var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(30));
+
                     _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
                     LoadHostSecurityProvider();
                     _loadResources.CheckExampleResources();
@@ -222,7 +223,11 @@ namespace Dev2
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
                     _queueProcessMonitor.Start();
 
-                    CheckLogServerConnection();
+                    loggingServerCheckDelay.Wait();
+                    if (!loggingServerCheckDelay.IsCanceled && !loggingServerCheckDelay.IsFaulted)
+                    {
+                        CheckLogServerConnection();
+                    }
 
 #if DEBUG
                     SetAsStarted();
