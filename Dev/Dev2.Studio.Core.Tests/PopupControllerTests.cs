@@ -1011,7 +1011,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.YesNoCancel, buttons);
-            Assert.AreEqual("Rename Conflicts", header);
+            Assert.AreEqual("testName Has Changes", header);
             Assert.AreEqual(expectedDescription, description);
             Assert.AreEqual(MessageBoxImage.Information, imageType);
         }
