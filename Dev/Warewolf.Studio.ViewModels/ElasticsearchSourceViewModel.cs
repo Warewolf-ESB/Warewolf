@@ -17,6 +17,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -141,6 +142,7 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
+        [ExcludeFromCodeCoverage]
         public ElasticsearchSourceViewModel()
             : base("ElasticsearchSource")
         {
