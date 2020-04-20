@@ -239,7 +239,7 @@ namespace Dev2
             });
         }
 
-        public void CheckLogServerConnection()
+        private void CheckLogServerConnection()
         {
             try
             {
@@ -252,7 +252,7 @@ namespace Dev2
             catch (Exception e)
             {
                 Dev2Logger.Error("Error Starting Server: Failed to start logging server: Invalid or missing Logging Data Source.", GlobalConstants.WarewolfError);
-                Stop(false, 0);
+                throw;
             }
         }
 

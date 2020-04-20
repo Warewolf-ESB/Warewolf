@@ -303,9 +303,6 @@ namespace Dev2.Common
             }
         }
 
-        public string Endpoint
-        {
-            get => _settings.Endpoint ?? DefaultEndpoint;
-        }
+        public string Endpoint => _settings.Endpoint ?? DefaultEndpoint;
     }
 }
