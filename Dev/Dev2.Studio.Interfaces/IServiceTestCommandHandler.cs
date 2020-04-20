@@ -18,5 +18,6 @@ namespace Dev2.Studio.Interfaces
         void RunSelectedTestInBrowser(string runSelectedTestUrl, IExternalProcessExecutor processExecutor);
 
         void RunAllTestsInBrowser(bool isDirty, string runAllTestUrl, IExternalProcessExecutor processExecutor);
+        void RunAllTestCoverageInBrowser(bool isDirty, string runAllCoverageUrl, IExternalProcessExecutor processExecutor);
     }
 }

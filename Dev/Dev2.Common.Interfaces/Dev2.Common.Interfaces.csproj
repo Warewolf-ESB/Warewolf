@@ -416,7 +416,6 @@
     <Compile Include="WindowsTaskScheduler\Wrappers\IWrappedObject.cs" />
     <Compile Include="Versioning\IRollbackResult.cs" />
     <Compile Include="Versioning\IServerVersionRepository.cs" />
-    <Compile Include="Versioning\IVersionInfo.cs" />
     <Compile Include="Versioning\IVersionRepository.cs" />
     <Compile Include="Wrappers\IDirectory.cs" />
     <Compile Include="Wrappers\IDirectoryEntry.cs" />

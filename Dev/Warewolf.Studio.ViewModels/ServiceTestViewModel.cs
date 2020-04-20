@@ -46,6 +46,7 @@ namespace Warewolf.Studio.ViewModels
         readonly IExternalProcessExecutor _processExecutor;
         IServiceTestModel _selectedServiceTest;
         string _runAllTestsUrl;
+        string _runAllCoverageUrl;
         string _testPassingResult;
         ObservableCollection<IServiceTestModel> _tests;
         string _displayName;
@@ -83,6 +84,7 @@ namespace Warewolf.Studio.ViewModels
             PopupController = CustomContainer.Get<IPopupController>();
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
             RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowser, IsServerConnected);
+            RunAllTestCoverageInBrowserCommand = new DelegateCommand(RunAllCoverageInBrowser, IsServerConnected);
             RunAllTestsCommand = new DelegateCommand(RunAllTests, IsServerConnected);
             RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
             RunSelectedTestCommand = new DelegateCommand(RunSelectedTest, () => CanRunSelectedTest);
@@ -92,6 +94,7 @@ namespace Warewolf.Studio.ViewModels
             DeleteTestStepCommand = new DelegateCommand<IServiceTestStep>(DeleteTestStep);
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
             RunAllTestsUrl = resourceModel.GetWorkflowUri("", UrlType.Tests)?.ToString();
+            RunAllCoverageUrl = resourceModel.GetWorkflowUri("", UrlType.Coverage)?.ToString();
 
             UpdateHelpDescriptor(Resources.Languages.HelpText.ServiceTestGenericHelpText);
 
@@ -371,7 +374,7 @@ namespace Warewolf.Studio.ViewModels
                 var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
                 if (model?.GetCurrentValue() is DsfSequenceActivity sequence)
                 {
-                    parent.UniqueId = Guid.Parse(sequence.UniqueID);
+                    parent.ActivityID = Guid.Parse(sequence.UniqueID);
                     AddChildren(debugState, parent);
                 }
             }
@@ -384,7 +387,7 @@ namespace Warewolf.Studio.ViewModels
                 var child = parent;
                 if (child.Parent == null)
                 {
-                    var exists = FindExistingStep(child.UniqueId.ToString());
+                    var exists = FindExistingStep(child.ActivityID.ToString());
                     if (exists == null)
                     {
                         SelectedServiceTest.TestSteps.Add(child);
@@ -427,7 +430,7 @@ namespace Warewolf.Studio.ViewModels
                 var childItemContent = childItem.Content;
                 var outputs = childItemContent.Outputs;
 
-                var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                var exists = parent.Children.FirstOrDefault(a => a.ActivityID == childItemContent.ID);
                 if (exists == null)
                 {
                     AddGateChildStep(parent, childItem, act, childItemContent, outputs);
@@ -469,7 +472,7 @@ namespace Warewolf.Studio.ViewModels
                 var childItemContent = childItem.Content;
                 var outputs = childItemContent.Outputs;
 
-                var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                var exists = parent.Children.FirstOrDefault(a => a.ActivityID == childItemContent.ID);
                 if (exists == null)
                 {
                     AddForEachChildStep(parent, childItem, act, childItemContent, outputs);
@@ -527,7 +530,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     SetStepIcon(typeof(DsfSequenceActivity), testStep);
                     testStep.ActivityType = seqTypeName;
-                    testStep.UniqueId = debugItemContent.WorkSurfaceMappingId;
+                    testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
                     parent = testStep;
                 }
 
@@ -535,14 +538,14 @@ namespace Warewolf.Studio.ViewModels
                 {
                     SetStepIcon(typeof(DsfForEachActivity), testStep);
                     testStep.ActivityType = forEachTypeName;
-                    testStep.UniqueId = debugItemContent.WorkSurfaceMappingId;
+                    testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
                     parent = testStep;
                 }
                 else if (actualType == selectApplyTypeName)
                 {
                     SetStepIcon(typeof(DsfSelectAndApplyActivity), testStep);
                     testStep.ActivityType = selectApplyTypeName;
-                    testStep.UniqueId = debugItemContent.WorkSurfaceMappingId;
+                    testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
                     parent = testStep;
                 }
                 else if (actualType == serviceName)
@@ -574,7 +577,7 @@ namespace Warewolf.Studio.ViewModels
                         contentId = childItemContent.WorkSurfaceMappingId;
                     }
 
-                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == contentId);
+                    var exists = parent.Children.FirstOrDefault(a => a.ActivityID == contentId);
                     if (exists == null)
                     {
                         AddNewDebugStateChild(parent, childItem, childItemContent, outputs, contentId);
@@ -829,7 +832,7 @@ namespace Warewolf.Studio.ViewModels
             if (testStep != null)
             {
                 AddSequence(sequence, testStep, testStep.Children);
-                if (FindExistingStep(testStep.UniqueId.ToString()) == null)
+                if (FindExistingStep(testStep.ActivityID.ToString()) == null)
                 {
                     SelectedServiceTest.TestSteps.Add(testStep);
                 }
@@ -853,7 +856,7 @@ namespace Warewolf.Studio.ViewModels
             if (buildParentsFromModelItem != null)
             {
                 AddEnhancedDotNetDll(dotNetDllActivity, buildParentsFromModelItem, buildParentsFromModelItem.Children);
-                if (FindExistingStep(buildParentsFromModelItem.UniqueId.ToString()) == null)
+                if (FindExistingStep(buildParentsFromModelItem.ActivityID.ToString()) == null)
                 {
                     SelectedServiceTest.TestSteps.Add(buildParentsFromModelItem);
                 }
@@ -887,7 +890,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = forEachActivity.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
             var type = typeof(DsfForEachActivity);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, forEachActivity.DisplayName);
@@ -950,7 +953,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = selectApplyActivity.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
             var type = typeof(DsfSelectAndApplyActivity);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, selectApplyActivity.DisplayName);
@@ -1004,7 +1007,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = sequence.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
             var type = typeof(DsfSequenceActivity);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, sequence.DisplayName);
@@ -1063,7 +1066,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = gateActivity.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
             var type = typeof(GateActivity);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, gateActivity.DisplayName);
@@ -1114,7 +1117,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var uniqueId = dotNetDllActivity.UniqueID;
-            var exists = serviceTestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
             var type = typeof(DsfEnhancedDotNetDllActivity);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, dotNetDllActivity.DisplayName);
@@ -1134,7 +1137,7 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 AddMissingChild(serviceTestSteps, exists);
-                var constructorStepExists = exists.Children.FirstOrDefault(step => step.UniqueId == dotNetDllActivity.Constructor.ID);
+                var constructorStepExists = exists.Children.FirstOrDefault(step => step.ActivityID == dotNetDllActivity.Constructor.ID);
                 if (constructorStepExists == null)
                 {
                     AddEnhancedDotNetDllConstructor(dotNetDllActivity, exists);
@@ -1150,7 +1153,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (!pluginAction.IsVoid)
             {
-                var actionExists = exists.Children.FirstOrDefault(step => step.UniqueId == pluginAction.ID);
+                var actionExists = exists.Children.FirstOrDefault(step => step.ActivityID == pluginAction.ID);
                 if (actionExists != null)
                 {
                     AddEnhancedDotNetDllMethod(pluginAction, exists);
@@ -1166,7 +1169,7 @@ namespace Warewolf.Studio.ViewModels
             }
             foreach (var serviceTestStep in serviceTestSteps)
             {
-                if (serviceTestStep.UniqueId != testStep.UniqueId)
+                if (serviceTestStep.ActivityID != testStep.ActivityID)
                 {
                     continue;
                 }
@@ -1194,7 +1197,7 @@ namespace Warewolf.Studio.ViewModels
 
         static void AddMissingChild(IServiceTestStep serviceTestStep, IServiceTestStep testStep, IServiceTestStep child)
         {
-            var testSteps = serviceTestStep.Children.Where(a => a.UniqueId == child.UniqueId);
+            var testSteps = serviceTestStep.Children.Where(a => a.ActivityID == child.ActivityID);
             if (!testSteps.Any())
             {
                 var indexOf = testStep.Children.IndexOf(child);
@@ -1249,7 +1252,7 @@ namespace Warewolf.Studio.ViewModels
             var cases = modelItem.GetProperty("Switches") as Dictionary<string, IDev2Activity>;
             var defaultCase = modelItem.GetProperty("Default") as List<IDev2Activity>;
             var uniqueId = modelItem.GetProperty("UniqueID").ToString();
-            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
             if (exists == null && SelectedServiceTest != null)
             {
@@ -1294,7 +1297,7 @@ namespace Warewolf.Studio.ViewModels
             if (flowSwitch != null)
             {
                 var uniqueId = activity.UniqueID;
-                var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+                var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
                 if (exists == null && SelectedServiceTest != null)
                 {
@@ -1368,7 +1371,7 @@ namespace Warewolf.Studio.ViewModels
 
         void ProcessStepActivity(IServiceTestStep step)
         {
-            var exists = FindExistingStep(step.UniqueId.ToString());
+            var exists = FindExistingStep(step.ActivityID.ToString());
             if (exists == null)
             {
                 SelectedServiceTest.TestSteps.Add(step);
@@ -1383,7 +1386,7 @@ namespace Warewolf.Studio.ViewModels
                 var child = parent;
                 if (child.Parent == null)
                 {
-                    var exists = FindExistingStep(step.UniqueId.ToString());
+                    var exists = FindExistingStep(step.ActivityID.ToString());
                     if (exists == null)
                     {
                         SelectedServiceTest.TestSteps.Add(child);
@@ -1551,7 +1554,7 @@ namespace Warewolf.Studio.ViewModels
 
         IServiceTestStep FindExistingStep(string uniqueId)
         {
-            var exists = SelectedServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+            var exists = SelectedServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
             return exists;
         }
 
@@ -1599,7 +1602,7 @@ namespace Warewolf.Studio.ViewModels
                         return true;
                     }
                 }
-                serviceTestStep = SelectedServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+                serviceTestStep = SelectedServiceTest.TestSteps.Flatten(step => step.Children).FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
                 return true;
             }
             serviceTestStep = null;
@@ -1679,7 +1682,7 @@ namespace Warewolf.Studio.ViewModels
             }
             var dds = modelItem.GetProperty("Conditions") as Dev2DecisionStack;
             var uniqueId = modelItem.GetProperty("UniqueID").ToString();
-            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+            var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
             if (exists == null && SelectedServiceTest != null)
             {
@@ -1729,7 +1732,7 @@ namespace Warewolf.Studio.ViewModels
                     var ser = new Dev2JsonSerializer();
                     var dds = ser.Deserialize<Dev2DecisionStack>(eval);
 
-                    var exists = SelectedServiceTest.TestSteps?.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
+                    var exists = SelectedServiceTest.TestSteps?.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
                     if (exists == null && SelectedServiceTest != null)
                     {
@@ -1832,6 +1835,11 @@ namespace Warewolf.Studio.ViewModels
         void RunAllTestsInBrowser()
         {
             ServiceTestCommandHandler.RunAllTestsInBrowser(IsDirty, RunAllTestsUrl, _processExecutor);
+        }
+
+        private void RunAllCoverageInBrowser()
+        {
+            ServiceTestCommandHandler.RunAllTestCoverageInBrowser(IsDirty, RunAllCoverageUrl, _processExecutor);
         }
 
         void RunAllTests()
@@ -2215,7 +2223,7 @@ namespace Warewolf.Studio.ViewModels
 
         static IServiceTestStep CreateServiceTestStepTo(IServiceTestStep step, IServiceTestStep parent)
         {
-            var serviceTestStepTo = new ServiceTestStepTO(step.UniqueId, step.ActivityType, step.StepOutputs.Select(CreateServiceTestStepOutputsTo).ToObservableCollection(), step.Type)
+            var serviceTestStepTo = new ServiceTestStepTO(step.ActivityID, step.ActivityType, step.StepOutputs.Select(CreateServiceTestStepOutputsTo).ToObservableCollection(), step.Type)
             {
                 Children = new ObservableCollection<IServiceTestStep>(),
                 Parent = parent,
@@ -2431,6 +2439,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string RunAllCoverageUrl
+        {
+            get => _runAllCoverageUrl;
+            set
+            {
+                _runAllCoverageUrl = value;
+                OnPropertyChanged(() => RunAllCoverageUrl);
+            }
+        }
+
         public string TestPassingResult
         {
             get => _testPassingResult;
@@ -2506,7 +2524,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                var foundParentStep = serviceTestSteps.FirstOrDefault(step => step.UniqueId == testStep.Parent?.UniqueId);
+                var foundParentStep = serviceTestSteps.FirstOrDefault(step => step.ActivityID == testStep.Parent?.ActivityID);
                 foundParentStep?.Children?.Remove(testStep);
             }
         }
@@ -2579,7 +2597,7 @@ namespace Warewolf.Studio.ViewModels
 
         IServiceTestStep CreateServiceTestStep(IServiceTestStep step)
         {
-            var testStep = new ServiceTestStep(step.UniqueId, step.ActivityType, new ObservableCollection<IServiceTestOutput>(), step.Type)
+            var testStep = new ServiceTestStep(step.ActivityID, step.ActivityType, new ObservableCollection<IServiceTestOutput>(), step.Type)
             {
                 Children = new ObservableCollection<IServiceTestStep>(),
                 Parent = step.Parent,
@@ -2636,6 +2654,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand DeleteTestStepCommand { get; set; }
         public ICommand DuplicateTestCommand { get; set; }
         public ICommand RunAllTestsInBrowserCommand { get; set; }
+        public ICommand RunAllTestCoverageInBrowserCommand { get; set; }
         public ICommand RunAllTestsCommand { get; set; }
         public ICommand RunSelectedTestInBrowserCommand { get; set; }
         public ICommand RunSelectedTestCommand { get; set; }

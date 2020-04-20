@@ -298,7 +298,7 @@ namespace Dev2.Activities.SelectAndApply
 
         void GetTestOutputForBrowserExecution(IDSFDataObject dataObject)
         {
-            var serviceTestStep = dataObject.ServiceTest?.TestSteps?.FirstOrDefault(step => step.UniqueId == Guid.Parse(UniqueID));
+            var serviceTestStep = dataObject.ServiceTest?.TestSteps?.FirstOrDefault(step => step.ActivityID == Guid.Parse(UniqueID));
             if (serviceTestStep != null)
             {
                 var testRunResult = new TestRunResult();
@@ -309,7 +309,7 @@ namespace Dev2.Activities.SelectAndApply
 
         void GetTestOurputResultForDebug(IDSFDataObject dataObject)
         {
-            var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
+            var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == _originalUniqueID);
             var serviceTestSteps = serviceTestStep?.Children;
             UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
             if (serviceTestStep != null)
@@ -319,7 +319,7 @@ namespace Dev2.Activities.SelectAndApply
                 serviceTestStep.Result = testRunResult;
 
                 var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
-                debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.UniqueId).ToList();
+                debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.ActivityID).ToList();
                 var debugStates = debugItems.LastOrDefault();
 
                 var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);

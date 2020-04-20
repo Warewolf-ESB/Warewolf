@@ -1,0 +1,28 @@
+﻿@page "/tools"
+
+<h3>Coverage Summary</h3>
+
+<table class="row table-borderless">
+    <tr>
+        <td class="counts">
+            Total: @totalCount
+        </td>
+        <td class="counts">
+            <span class="oi oi-circle-check" aria-hidden="true"></span> Passed: @passedCount
+        </td>
+        <td class="counts">
+            <span class="oi oi-circle-x" aria-hidden="true"></span> Failed: @failedCount
+        </td>
+    </tr>
+</table>
+@code {
+    private int totalCount = 10;
+    private int passedCount = 8;
+    private int failedCount = 2;
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

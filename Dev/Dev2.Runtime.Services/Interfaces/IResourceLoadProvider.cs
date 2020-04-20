@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.Interfaces
 {
@@ -52,6 +53,7 @@ namespace Dev2.Runtime.Interfaces
         StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID);
         StringBuilder GetResourceContents(IResource resource);
         List<IResource> GetResources(Guid workspaceID);
+        IEnumerable<T> GetResources<T>(Guid workspaceId) where T : IWarewolfResource;
         IEnumerable GetModels(Guid workspaceID, enSourceType sourceType);
         T[] FindByType<T>();
         object[] FindByType(string typeName);

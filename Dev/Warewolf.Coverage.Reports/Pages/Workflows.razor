@@ -1,0 +1,124 @@
+﻿@page "/workflows"
+@inject IJSRuntime JSRuntime;
+
+<h4>Summary - Folder 1</h4>
+<div class="count-summary row">
+    <table class="row table-borderless">
+        <tr>
+            <td class="counts">
+                Total Test Count: @totalCount
+            </td>
+            <td class="counts">
+                <span class="oi oi-beaker green" aria-hidden="true"></span> Tests Passed: @passedCount
+            </td>
+            <td class="counts">
+                <span @Html.Raw(failedCount>0?"class=\"oi oi-beaker red\"":"class=\"oi oi-beaker\"") aria-hidden="true"></span> Tests Failed: @failedCount
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="row">
+    <div class="row col-12 workflow-row">
+        <div class="col-1">
+            <a href="#" @onclick="@Toggle" class=" nav-link">Workflow 1</a>
+        </div>
+        <div class="progress-bars">
+            <div class="coverage-label">Coverage</div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+            </div>
+        </div>
+        <div class="progress-bars">
+            <div class="coverage-label">Branch Coverage</div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!Collapsed)
+    {
+        <div class="col-12">
+            <div class="col-1"></div>
+            <div class="col-6">
+                <ul>
+                    <li><span class="oi oi-circle-check" aria-hidden="true"></span> Assign Input</li>
+                    <li>
+                        <span class="oi oi-circle-x" aria-hidden="true"></span> Decision
+                        <ul>
+                            <li><span class="oi oi-circle-check" aria-hidden="true"></span> True</li>
+                            <li><span class="oi oi-circle-x" aria-hidden="true"></span> False</li>
+                        </ul>
+                    </li>
+                    <li><span class="oi oi-circle-check" aria-hidden="true"></span> Assign (Error)</li>
+                    <li><span class="oi oi-circle-x" aria-hidden="true"></span> RabbitMQ Consume</li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+<div class="row">
+    <div class="row col-12 workflow-row">
+        <div class="col-1">
+            <a href="#" @onclick="@Toggle" class="nav-link">Workflow 2</a>
+        </div>
+        <div class="progress-bars">
+            <div class="coverage-label">Coverage</div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:80%">
+                    80%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:20%">
+                    20%
+                </div>
+            </div>
+        </div>
+        <div class="progress-bars">
+            <div class="coverage-label">Branch Coverage</div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:80%">
+                    80%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:20%">
+                    20%
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!Collapsed)
+    {
+        <div class="col-12">
+            <div class="col-1"></div>
+            <div class="col-6">
+                <ul>
+                    <li><span class="oi oi-circle-check" aria-hidden="true"></span> Assign Input</li>
+                    <li><span class="oi oi-circle-check" aria-hidden="true"></span> Assign (Error)</li>
+                    <li><span class="oi oi-circle-x" aria-hidden="true"></span> RabbitMQ Consume</li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private int totalCount = 4;
+    private int passedCount = 2;
+    private int failedCount = 2;
+    
+    [Parameter]
+    public bool Collapsed { get; set; }
+    
+    void Toggle()
+    {
+        Collapsed = !Collapsed;
+    }
+}

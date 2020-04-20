@@ -7,7 +7,8 @@ namespace Dev2.Common.Interfaces
     [JsonObject(IsReference = true)]
     public interface IServiceTestStep
     {
-        Guid UniqueId { get; set; }
+        Guid ActivityID { get; set; }
+        Guid UniqueID { get; set; }
         string ActivityType { get; set; }
         bool MockSelected { get; set; }
         bool AssertSelected { get; set; }

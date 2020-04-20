@@ -1,4 +1,4 @@
-#pragma warning disable
+    #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>

@@ -198,7 +198,7 @@ namespace Dev2.DynamicServices
         public int VersionNumber { get; set; }
         public bool RunWorkflowAsync { get; set; }
         public bool IsDebugNested { get; set; }
-        public List<Guid> TestsResourceIds { get; set; }
+        public Guid[] TestsResourceIds { get; set; } = new Guid[] { };
         public bool IsSubExecution { get; set; }
         public string QueryString { get; set; }
         public bool IsRemoteInvoke => EnvironmentID != Guid.Empty;
@@ -325,7 +325,7 @@ namespace Dev2.DynamicServices
         public ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool> AuthCache { get; set; }
         public Exception ExecutionException { get; set; }
         public IDictionary<IDev2Activity, (RetryState, IEnumerator<bool>)> Gates { get; } = new Dictionary<IDev2Activity, (RetryState, IEnumerator<bool>)>();
-
+        public string OriginalServiceName { get; set; }
 
         #endregion Properties
 
@@ -405,18 +405,18 @@ namespace Dev2.DynamicServices
             result.StateNotifier = StateNotifier;
             result.AuthCache = new ConcurrentDictionary<(IPrincipal, AuthorizationContext, string), bool>(AuthCache);
             result.ExecutionException = ExecutionException;
+            result.OriginalServiceName = OriginalServiceName;
 
+            var serializer = new Dev2JsonSerializer();
             if (ServiceTest != null)
             {
-                var serializer = new Dev2JsonSerializer();
-                var testString = serializer.Serialize(ServiceTest);
-                result.ServiceTest = serializer.Deserialize<IServiceTestModelTO>(testString);
-            }            
+                var json = serializer.Serialize(ServiceTest);
+                result.ServiceTest = serializer.Deserialize<IServiceTestModelTO>(json);
+            }
             if (Settings != null)
             {
-                var serializer = new Dev2JsonSerializer();
-                var testString = serializer.Serialize(Settings);
-                result.Settings = serializer.Deserialize<IDev2WorkflowSettings>(testString);
+                var json = serializer.Serialize(Settings);
+                result.Settings = serializer.Deserialize<IDev2WorkflowSettings>(json);
             }
             return result;
         }

@@ -1,0 +1,133 @@
+﻿@page "/"
+
+
+<h3>Coverage Summary</h3>
+<div class="count-summary row">
+    <table class="row table-borderless">
+        <tr>
+            <td class="counts">
+                Total Test Count: @totalCount
+            </td>
+            <td class="counts">
+                <span class="oi oi-beaker green" aria-hidden="true"></span> Tests Passed: @passedCount
+            </td>
+            <td class="counts">
+                <span @Html.Raw(failedCount>0?"class=\"oi oi-beaker red\"":"class=\"oi oi-beaker\"") aria-hidden="true"></span> Tests Failed: @failedCount
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="row">
+    <div class="row col-12 workflow-row">
+        <div class="col-2">
+            <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
+                Folder1
+            </NavLink>
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
+            <span class="oi oi-play-circle" aria-hidden="true"></span>
+        </div>
+        <div class="progress-bars">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-12 workflow-row">
+        <div class="col-2">
+            <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
+                Data Services
+            </NavLink>
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
+            <span class="oi oi-play-circle" aria-hidden="true"></span>
+        </div>
+        <div class="progress-bars">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:75%">
+                    75%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:25%">
+                    25%
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-12 workflow-row">
+        <div class="col-2">
+            <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
+                Queue Services
+            </NavLink>
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
+          
+        </div>
+        <div class="progress-bars">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:100%">
+                    100%
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-12 workflow-row">
+       <div class="col-2">
+            <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
+                Rest Services
+            </NavLink>
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
+            <span class="oi oi-play-circle" aria-hidden="true"></span>
+        </div>
+        <div class="progress-bars">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:80%">
+                    80%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:20%">
+                    20%
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-12 workflow-row">
+      <div class="col-2">
+            <NavLink class="nav-link" href="workflows" Match="NavLinkMatch.All">
+                Rest APIs
+            </NavLink>
+        </div>
+        <div class="play-btn" data-toggle="tooltip" title="Rerun Coverage">
+            <span class="oi oi-play-circle" aria-hidden="true"></span>
+        </div>
+        <div class="progress-bars">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:20%">
+                    20%
+                </div>
+                <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
+                    50%
+                </div>
+                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:30%">
+                    30%
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int totalCount = 30;
+    private int passedCount = 22;
+    private int failedCount = 8;
+
+    private void IncrementCount()
+    {
+        totalCount++;
+    }
+
+}

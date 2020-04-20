@@ -29,6 +29,114 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestCategory("Runtime Hosting")]
     public class ResourceTests
     {
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Resource))]
+        public void Resource_LevelOne_Path_File_Remove_Excess_Information_bite()
+        {
+            //------------Setup for test--------------------------
+            var validXml = GetValidXMLString();
+            var textReader = new StringReader(validXml);
+            var element = XElement.Load(textReader, LoadOptions.None);
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            resource.FilePath =
+                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\{resource.ResourceName}.bite";
+
+            var path = resource.Path;
+            Assert.AreEqual("Bug6619", path);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Resource))]
+        public void Resource_LevelOne_Path_File_Remove_Excess_Information_xml()
+        {
+            //------------Setup for test--------------------------
+            var validXml = GetValidXMLString();
+            var textReader = new StringReader(validXml);
+            var element = XElement.Load(textReader, LoadOptions.None);
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            resource.FilePath =
+                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\{resource.ResourceName}.xml";
+
+            var path = resource.Path;
+            Assert.AreEqual("Bug6619", path);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Resource))]
+        public void Resource_LevelTwo_Path_File_Remove_Excess_Information_bite()
+        {
+            //------------Setup for test--------------------------
+            var validXml = GetValidXMLString();
+            var textReader = new StringReader(validXml);
+            var element = XElement.Load(textReader, LoadOptions.None);
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            resource.FilePath =
+                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\LevelTwo\{resource.ResourceName}.bite";
+
+            var path = resource.Path;
+            Assert.AreEqual(@"LevelTwo\Bug6619", path);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Resource))]
+        public void Resource_LevelTwo_Path_File_Remove_Excess_Information_xml()
+        {
+            //------------Setup for test--------------------------
+            var validXml = GetValidXMLString();
+            var textReader = new StringReader(validXml);
+            var element = XElement.Load(textReader, LoadOptions.None);
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            resource.FilePath =
+                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\LevelTwo\{resource.ResourceName}.xml";
+
+            var path = resource.Path;
+            Assert.AreEqual(@"LevelTwo\Bug6619", path);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Resource))]
+        public void Resource_LevelThree_Path_File_Remove_Excess_Information_bite()
+        {
+            //------------Setup for test--------------------------
+            var validXml = GetValidXMLString();
+            var textReader = new StringReader(validXml);
+            var element = XElement.Load(textReader, LoadOptions.None);
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            resource.FilePath =
+                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\LevelTwo\LevelThree\{resource.ResourceName}.bite";
+
+            var path = resource.Path;
+            Assert.AreEqual(@"LevelTwo\LevelThree\Bug6619", path);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Resource))]
+        public void Resource_LevelThree_Path_File_Remove_Excess_Information_xml()
+        {
+            //------------Setup for test--------------------------
+            var validXml = GetValidXMLString();
+            var textReader = new StringReader(validXml);
+            var element = XElement.Load(textReader, LoadOptions.None);
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            resource.FilePath =
+                $@"C:\ProgramData\Warewolf\Workspaces\55583fe9-7fec-4efa-a2d4-cbb69ff167dc\Resources\LevelTwo\LevelThree\{resource.ResourceName}.xml";
+
+            var path = resource.Path;
+            Assert.AreEqual(@"LevelTwo\LevelThree\Bug6619", path);
+        }
+
         #region Equals
 
         [TestMethod]
