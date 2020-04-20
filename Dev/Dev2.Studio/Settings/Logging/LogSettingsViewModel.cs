@@ -203,6 +203,34 @@ namespace Dev2.Settings.Logging
 
             try
             {
+                var changed = false;
+                var severSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+                var savedResourceId = Guid.Empty;
+                var savedSink = severSettingsData.Sink;
+
+                if (savedSink == "AuditingSettingsData")
+                {
+                    var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
+                    savedResourceId = auditingSettingsData.LoggingDataSource.Value;
+                }
+                if (savedSink == "LegacySettingsData" && _selectedAuditingSource.ResourceID != Guid.Empty)
+                {
+                    changed = true;
+                }
+                if (_selectedAuditingSource.ResourceID != savedResourceId)
+                {
+                    changed = true;
+                }
+                if (changed)
+                {
+                    var popupController = CustomContainer.Get<IPopupController>();
+                    var result = popupController.ShowLoggerSourceChange(_selectedAuditingSource.ResourceName);
+                    if (result == MessageBoxResult.No || result == MessageBoxResult.Cancel)
+                    {
+                        return;
+                    }
+                }
+
                 if (_selectedAuditingSource.ResourceID == Guid.Empty)
                 {
                     var data = new LegacySettingsData
@@ -241,6 +269,7 @@ namespace Dev2.Settings.Logging
 
             HasAuditFilePathMoved = true;
         }
+
 
         public bool HasAuditFilePathMoved { get; set; }
 

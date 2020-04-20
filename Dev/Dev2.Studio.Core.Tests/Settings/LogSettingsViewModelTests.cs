@@ -14,6 +14,7 @@ using System.IO;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Resources;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -131,6 +132,7 @@ namespace Dev2.Core.Tests.Settings
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
+            CustomContainer.Register(new Mock<IPopupController>().Object);
             var viewModel = CreateLogSettingViewModel("AuditingSettingsData");
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
@@ -431,6 +433,7 @@ namespace Dev2.Core.Tests.Settings
             var logSettingsViewModel = CreateLogSettingViewModel("LegacySettingsData", _resourceRepo);
             var loggingSettingsTo = new LoggingSettingsTo {FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE", EventLogLoggerLogLevel = "DEBUG"};
             //------------Execute Test---------------------------
+            CustomContainer.Register(new Mock<IPopupController>().Object);
             var mockResource = new Mock<IResource>();
             mockResource.Setup(o => o.ResourceName).Returns("Default");
             mockResource.Setup(o => o.ResourceID).Returns(Guid.Empty);
@@ -456,7 +459,7 @@ namespace Dev2.Core.Tests.Settings
             mockResource.Setup(o => o.ResourceName).Returns("Default");
             mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
             logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
-
+            CustomContainer.Register(new Mock<IPopupController>().Object);
             //------------Assert Results-------------------------
             logSettingsViewModel.Save(loggingSettingsTo);
             _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<AuditingSettingsData>()), Times.Once);
