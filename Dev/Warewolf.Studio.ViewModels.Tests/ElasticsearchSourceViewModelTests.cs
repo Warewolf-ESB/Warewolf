@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
+using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -81,11 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_IRequestServiceNameViewModelTask_ThrowsException()
         {
-            //arrange
-            _requestServiceNameViewModelTask = null;
-
-            //act
-            new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask);
+            new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, null);
         }
 
         [TestMethod, Timeout(60000)]
@@ -94,30 +91,152 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_ElasticsearchSourceDefinition_ThrowsException()
         {
-            ElasticsearchSourceDefinition elasticsearchSourceDefinition = null;
-
-            new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker());
+            new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, null, new SynchronousAsyncWorker());
         }
 
         [TestMethod, Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
-        public void
-            ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_IRequestServiceNameViewModel_IsNotNull()
+        public void ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_IRequestServiceNameViewModel_IsNotNull()
         {
-            var source =
-                new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask);
+            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask);
             Assert.IsNotNull(source);
         }
 
         [TestMethod, Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
-        public void
-            ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_ElasticsearchSourceDefinition_IAsyncWorker_IsNotNull()
+        public void ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_ElasticsearchSourceDefinition_IAsyncWorker_IsNotNull()
         {
             var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _elasticsearchSourceDefinition.Object, new SynchronousAsyncWorker());
             Assert.IsNotNull(source);
+        }
+
+        [TestMethod, Timeout(60000)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        public void ElasticsearchSourceViewModel_Constructor_OnNew()
+        {
+            var mockElasticSourceModel = new Mock<IElasticsearchSourceModel>();
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            var viewModel = new ElasticsearchSourceViewModel(mockElasticSourceModel.Object, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExternalExecutor.Object);
+
+            Assert.AreEqual("", viewModel.HostName);
+            Assert.AreEqual("9200", viewModel.Port);
+            Assert.AreEqual("", viewModel.Password);
+            Assert.AreEqual("", viewModel.SearchIndex);
+            Assert.AreEqual("", viewModel.Username);
+            Assert.AreEqual(Resources.Languages.Core.ElasticsearchNewHeaderLabel, viewModel.HeaderText);
+            Assert.AreEqual(Resources.Languages.Core.ElasticsearchNewHeaderLabel, viewModel.Header);
+            Assert.IsFalse(viewModel.PasswordSelected);
+        }
+
+        [TestMethod, Timeout(60000)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        public void ElasticsearchSourceViewModel_Constructor_OnExisting()
+        {
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            var id = Guid.NewGuid();
+            var elasticsearchSourceDefinition = new ElasticsearchSourceDefinition
+            {
+                Id = id,
+                Name = "ResourceName",
+                HostName = "localhost",
+                Port = "9200",
+                SearchIndex = "warewolf",
+                AuthenticationType = AuthenticationType.Password,
+                Username = "testUser",
+                Password = "123456",
+            };
+
+            _elasticsearchSourceModel.Setup(model => model.FetchSource(id)).Returns(elasticsearchSourceDefinition);
+
+            var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object);
+
+            Assert.AreEqual("ResourceName", viewModel.Name);
+            Assert.AreEqual("localhost", viewModel.HostName);
+            Assert.AreEqual("9200", viewModel.Port);
+            Assert.AreEqual(AuthenticationType.Password, viewModel.AuthenticationType);
+            Assert.AreEqual("123456", viewModel.Password);
+            Assert.AreEqual("warewolf", viewModel.SearchIndex);
+            Assert.AreEqual("testUser", viewModel.Username);
+            Assert.AreEqual("ResourceName", viewModel.HeaderText);
+            Assert.IsTrue(viewModel.PasswordSelected);
+        }
+
+        [TestMethod, Timeout(60000)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        public void ElasticsearchSourceViewModel_TestCommand()
+        {
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            var id = Guid.NewGuid();
+            var elasticsearchSourceDefinition = new ElasticsearchSourceDefinition
+            {
+                Id = id,
+                Name = "ResourceName",
+                HostName = "localhost",
+                Port = "9200",
+                SearchIndex = "warewolf",
+                AuthenticationType = AuthenticationType.Password,
+                Username = "testUser",
+                Password = "123456",
+            };
+
+            _elasticsearchSourceModel.Setup(model => model.FetchSource(id)).Returns(elasticsearchSourceDefinition);
+
+            var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object);
+
+            Assert.IsTrue(viewModel.CanTest());
+            viewModel.TestCommand.Execute(null);
+
+            Assert.IsFalse(viewModel.TestFailed);
+            Assert.IsFalse(viewModel.Testing);
+            Assert.IsTrue(viewModel.TestPassed);
+            Assert.AreEqual("Passed", viewModel.TestMessage);
+        }
+
+        [TestMethod, Timeout(60000)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        public void ElasticsearchSourceViewModel_CanTest()
+        {
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            var id = Guid.NewGuid();
+            var elasticsearchSourceDefinition = new ElasticsearchSourceDefinition
+            {
+                Id = id,
+                Name = "ResourceName",
+                HostName = "localhost",
+                Port = "9200",
+                SearchIndex = "warewolf",
+                AuthenticationType = AuthenticationType.Password,
+                Username = "testUser",
+                Password = "123456",
+            };
+
+            _elasticsearchSourceModel.Setup(model => model.FetchSource(id)).Returns(elasticsearchSourceDefinition);
+
+            var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object);
+
+            viewModel.Testing = true;
+            Assert.IsFalse(viewModel.CanTest());
+
+            viewModel.Testing = false;
+            viewModel.HostName = "";
+            Assert.IsFalse(viewModel.CanTest());
+
+            viewModel.HostName = "localhost";
+            viewModel.Port = "";
+            Assert.IsFalse(viewModel.CanTest());
+
+            viewModel.Port = "9200";
+            Assert.IsTrue(viewModel.CanTest());
         }
 
         [TestMethod, Timeout(60000)]
@@ -370,13 +489,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestTestPassed()
         {
-            var expectedValue = true;
             _changedProperties.Clear();
 
-            _elasticsearchourceViewModelWithTask.TestPassed = expectedValue;
+            _elasticsearchourceViewModelWithTask.TestPassed = true;
             var value = _elasticsearchourceViewModelWithTask.TestPassed;
 
-            Assert.AreEqual(expectedValue, value);
+            Assert.IsTrue(value);
             Assert.IsTrue(_changedProperties.Contains("TestPassed"));
         }
 
@@ -401,13 +519,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestTestFailed()
         {
-            var expectedValue = true;
             _changedProperties.Clear();
 
-            _elasticsearchourceViewModelWithTask.TestFailed = expectedValue;
+            _elasticsearchourceViewModelWithTask.TestFailed = true;
             var value = _elasticsearchourceViewModelWithTask.TestFailed;
 
-            Assert.AreEqual(expectedValue, value);
+            Assert.IsTrue(value);
             Assert.IsTrue(_changedProperties.Contains("TestFailed"));
         }
 
