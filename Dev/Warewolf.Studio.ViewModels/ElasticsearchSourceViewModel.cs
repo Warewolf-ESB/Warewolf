@@ -55,8 +55,8 @@ namespace Warewolf.Studio.ViewModels
             _elasticsearchSourceModel = elasticsearchSourceModel;
             RequestServiceNameViewModel = requestServiceNameViewModel;
 
-            HeaderText = Resources.Languages.Core.RabbitMQSourceNewHeaderLabel;
-            Header = Resources.Languages.Core.RabbitMQSourceNewHeaderLabel;
+            HeaderText = Resources.Languages.Core.ElasticsearchNewHeaderLabel;
+            Header = Resources.Languages.Core.ElasticsearchNewHeaderLabel;
             HostName = string.Empty;
             Port = "9200";
             Username = string.Empty;
