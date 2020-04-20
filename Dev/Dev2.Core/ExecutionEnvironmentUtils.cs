@@ -435,7 +435,7 @@ namespace Dev2
             return xml.ToString();
         }
 
-        public static string GetSwaggerOutputForService(IResource resource, string dataList, string webServerUrl)
+        public static string GetSwaggerOutputForService(IWarewolfResource resource, string dataList, string webServerUrl)
         {
             if (resource == null)
             {
@@ -562,7 +562,7 @@ namespace Dev2
             return jsonSwaggerPathObject;
         }
 
-        static JObject BuildJsonSwaggerInfoObject(IResource resource)
+        static JObject BuildJsonSwaggerInfoObject(IWarewolfResource resource)
         {
             var versionValue = resource.VersionInfo != null ? new JValue(resource.VersionInfo.VersionNumber) : new JValue("1.0.0");
             var jsonSwaggerInfoObject = new JObject

@@ -249,6 +249,7 @@ namespace Dev2.Tests
             dataObject.ServiceTest = new ServiceTestModelTO { TestName = "Test Mock" };
             dataObject.StateNotifier = new Mock<IStateNotifier>().Object;
             dataObject.Settings = new Dev2WorkflowSettingsTO { KeepLogsForDays = 999 };
+            dataObject.OriginalServiceName = "some service name";
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             var guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
@@ -262,9 +263,9 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(74, properties.Length);
+            Assert.AreEqual(75, properties.Length);
 
-            // now check each value to ensure it transfered
+            // now check each value to ensure it was cloned
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
             Assert.AreEqual(dataObject.CurrentBookmarkName, clonedObject.CurrentBookmarkName);
             Assert.AreEqual(dataObject.DataList, clonedObject.DataList);
@@ -335,6 +336,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.Gates, dataObject.Gates);
             Assert.AreEqual(dataObject.Environment, clonedObject.Environment);
             Assert.AreEqual(dataObject.CustomTransactionID, clonedObject.CustomTransactionID);
+            Assert.AreEqual(dataObject.OriginalServiceName, clonedObject.OriginalServiceName);
         }
 
         #region Debug Mode Test

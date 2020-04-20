@@ -22,8 +22,7 @@ using Dev2.Data;
 using Dev2.DataList.Contract;
 using Dev2.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-
+using Moq;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -42,6 +41,12 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 DirectoryWrapperInstance().CleanUp(EnvironmentVariables.TestPath);
             }
+
+            var mockTestCovedrageCatalog = new Mock<ITestCoverageCatalog>();
+            mockTestCovedrageCatalog.Setup(o => o.GenerateSingleTestCoverage(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
+            mockTestCovedrageCatalog.Setup(o => o.GenerateSingleTestCoverage(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
+
+            CustomContainer.Register<ITestCoverageCatalog>(mockTestCovedrageCatalog.Object);
         }
 
         [TestMethod]

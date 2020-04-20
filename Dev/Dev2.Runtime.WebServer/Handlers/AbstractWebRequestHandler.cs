@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,11 +21,11 @@ using System.Web;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data;
+using Dev2.Data.Decision;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -43,6 +42,7 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 using Warewolf.Auditing;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -50,6 +50,7 @@ namespace Dev2.Runtime.WebServer.Handlers
     {
         readonly IResourceCatalog _resourceCatalog;
         readonly ITestCatalog _testCatalog;
+        readonly ITestCoverageCatalog _testCoverageCatalog;
         readonly IDataObjectFactory _dataObjectFactory;
         readonly IAuthorizationService _authorizationService;
         readonly IWorkspaceRepository _workspaceRepository;
@@ -59,86 +60,85 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
         protected AbstractWebRequestHandler()
-            : this(ResourceCatalog.Instance, TestCatalog.Instance)
+            : this(ResourceCatalog.Instance, TestCatalog.Instance, TestCoverageCatalog.Instance)
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog)
-            : this(resourceCatalog, testCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory())
+        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog)
+            : this(resourceCatalog, testCatalog, testCoverageCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory())
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
+        protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
         {
             _resourceCatalog = resourceCatalog;
             _testCatalog = testCatalog;
+            _testCoverageCatalog = testCoverageCatalog;
             _workspaceRepository = workspaceRepository;
             _authorizationService = authorizationService;
             _dataObjectFactory = dataObjectFactory;
         }
 
+#pragma warning disable CC0044
         protected IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers) => CreateForm(webRequest, serviceName, workspaceId, headers, null);
+#pragma warning restore CC0044
 
         protected IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
         {
-            var a = new Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _authorizationService, _dataObjectFactory);
+            var a = new Executor(_workspaceRepository, _resourceCatalog, _testCatalog, _testCoverageCatalog, _authorizationService, _dataObjectFactory);
             var response = a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
-            if (response is null)
-            {
-                return a.BuildResponse(webRequest, serviceName);
-            }
-            return response;
+            return response ?? a.BuildResponse(webRequest, serviceName);
         }
 
-        class Executor
+        private class Executor
         {
-            string _executePayload;
-            Guid _workspaceGuid;
-            Guid _executionDlid;
-            IDSFDataObject _dataObject;
-            IResource _resource;
-            Dev2JsonSerializer _serializer;
-            bool _canExecute;
+            private string _executePayload;
+            private Guid _workspaceGuid;
+            private Guid _executionDataListId;
+            private IDSFDataObject _dataObject;
+            private IWarewolfResource _resource;
+            private Dev2JsonSerializer _serializer;
+            private bool _canExecute;
             private EsbExecuteRequest _esbExecuteRequest;
             readonly IAuthorizationService _authorizationService;
             readonly IDataObjectFactory _dataObjectFactory;
             readonly IResourceCatalog _resourceCatalog;
             readonly IWorkspaceRepository _repository;
             readonly ITestCatalog _testCatalog;
+            readonly ITestCoverageCatalog _testCoverageCatalog;
 
-            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
+            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
             {
                 _repository = workspaceRepository;
                 _resourceCatalog = resourceCatalog;
                 _testCatalog = testCatalog;
+                _testCoverageCatalog = testCoverageCatalog;
                 _authorizationService = authorizationService;
                 _dataObjectFactory = dataObjectFactory;
             }
 
-            internal Guid EnsureWorkspaceIdValid(string workspaceId)
+            private Guid EnsureWorkspaceIdValid(string workspaceId)
             {
                 if (workspaceId is null)
                 {
                     return _repository.ServerWorkspace.ID;
                 }
-                else
-                {
-                    if (!Guid.TryParse(workspaceId, out var workspaceGuid))
-                    {
-                        return _repository.ServerWorkspace.ID;
-                    }
-                    return workspaceGuid;
-                }
+
+                return !Guid.TryParse(workspaceId, out var workspaceGuid)
+                    ? _repository.ServerWorkspace.ID
+                    : workspaceGuid;
             }
 
-            internal void PrepareDataObject(WebRequestTO webRequest, string serviceName, NameValueCollection headers, IPrincipal user, Guid workspaceGuid, out IResource resource)
+            private void PrepareDataObject(WebRequestTO webRequest, string serviceName, NameValueCollection headers, IPrincipal user, Guid workspaceGuid, out IWarewolfResource resource)
             {
+                var uri = string.IsNullOrWhiteSpace(webRequest.WebServerUrl) ? new Uri("https://test/") : new Uri(webRequest.WebServerUrl);
                 _dataObject = _dataObjectFactory.New(workspaceGuid, user, serviceName, webRequest);
+                _dataObject.OriginalServiceName = serviceName;
                 _dataObject.SetHeaders(headers);
                 _dataObject.SetupForWebDebug(webRequest);
                 webRequest.BindRequestVariablesToDataObject(ref _dataObject);
                 _dataObject.SetupForRemoteInvoke(headers);
-                _dataObject.SetEmitionType(webRequest, serviceName, headers);
+                _dataObject.SetEmissionType(uri, serviceName, headers);
                 _dataObject.SetupForTestExecution(serviceName, headers);
                 if (_dataObject.ServiceName == null)
                 {
@@ -146,7 +146,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 _dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
-                _dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
+                _dataObject.SetTestResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, workspaceGuid), webRequest, serviceName, resource);
                 _dataObject.WebUrl = webRequest.WebServerUrl;
                 _dataObject.EsbChannel = new EsbServicesEndpoint();
 
@@ -167,69 +167,97 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             internal IResponseWriter TryExecute(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
             {
-                _executePayload = "";
                 _workspaceGuid = EnsureWorkspaceIdValid(workspaceId);
                 _serializer = new Dev2JsonSerializer();
 
                 PrepareDataObject(webRequest, serviceName, headers, user, _workspaceGuid, out _resource);
+                var isTestCoverage = _dataObject.ReturnType == EmitionTypes.Cover || _dataObject.ReturnType == EmitionTypes.CoverJson;
+                var isTestRun = (_dataObject.ReturnType == EmitionTypes.TEST ||
+                                 _dataObject.ReturnType == EmitionTypes.TRX) && _dataObject.TestName == "*";
+
+                if (isTestRun)
+                {
+                    return ExecuteAsTest(user);
+                }
+
+                if (isTestCoverage)
+                {
+                    return ExecuteAsCoverage(webRequest, serviceName, _resource);
+                }
+
                 if (_resource is null)
                 {
                     var msg = string.Format(Warewolf.Resource.Errors.ErrorResource.ServiceNotFound, serviceName);
                     _dataObject.Environment.AddError(msg);
                     _dataObject.ExecutionException = new Exception(msg);
-                    _executionDlid = GlobalConstants.NullDataListID;
+                    _executionDataListId = GlobalConstants.NullDataListID;
                     return null;
                 }
+
                 _canExecute = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
                 if (!_canExecute)
                 {
-                    var errorMessage = string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, _dataObject.ExecutingUser.Identity.Name, _dataObject.ServiceName);
+                    var errorMessage =
+                        string.Format(
+                            Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException,
+                            _dataObject.ExecutingUser.Identity.Name, _dataObject.ServiceName);
                     _dataObject.Environment.AddError(errorMessage);
                     _dataObject.ExecutionException = new Exception(errorMessage);
                 }
 
-                _executionDlid = GlobalConstants.NullDataListID;
+                _executionDataListId = GlobalConstants.NullDataListID;
 
                 if (_canExecute && _dataObject.ReturnType != EmitionTypes.SWAGGER)
                 {
                     Thread.CurrentPrincipal = user;
-                    var userPrinciple = user;
-                    if ((_dataObject.ReturnType == EmitionTypes.TEST || _dataObject.ReturnType == EmitionTypes.TRX) && _dataObject.TestName == "*")
-                    {
-                        return ExecuteAsTest(serviceName, _executePayload, _workspaceGuid, _dataObject, _serializer, userPrinciple);
-                    }
 
-                    _executionDlid = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, userPrinciple);
+                    _executionDataListId = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, user);
                 }
+
                 return null;
             }
 
-            internal Guid DoExecution(WebRequestTO webRequest, string serviceName, Guid workspaceGuid, IDSFDataObject dataObject, IPrincipal userPrinciple)
+            private Guid DoExecution(WebRequestTO webRequest, string serviceName, Guid workspaceGuid, IDSFDataObject dataObject, IPrincipal userPrinciple)
             {
                 _esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
-                var executionDlid = Guid.Empty;
+                var executionDataListId = Guid.Empty;
 
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
                 {
-                    executionDlid = dataObject.EsbChannel.ExecuteRequest(dataObject, _esbExecuteRequest, workspaceGuid, out var errors);
+                    executionDataListId = dataObject.EsbChannel.ExecuteRequest(dataObject, _esbExecuteRequest, workspaceGuid, out _);
                     _executePayload = _esbExecuteRequest.ExecuteResult.ToString();
                 });
 
-                return executionDlid;
+                return executionDataListId;
             }
 
-            internal IResponseWriter ExecuteAsTest(string serviceName, string executePayload, Guid workspaceGuid, IDSFDataObject dataObject, Dev2JsonSerializer serializer, IPrincipal userPrinciple)
+            private IResponseWriter ExecuteAsTest(IPrincipal userPrinciple)
             {
-                var xmlFormatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                var formatter = ServiceTestExecutor.ExecuteTests(serviceName, dataObject, xmlFormatter, userPrinciple, workspaceGuid, serializer, _testCatalog, _resourceCatalog, ref executePayload);
-                return new StringResponseWriter(executePayload, formatter.ContentType);
+                var formatter = ServiceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload, _testCoverageCatalog);
+                return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
+            }
+
+            private IResponseWriter ExecuteAsCoverage(WebRequestTO webRequest, string serviceName, IWarewolfResource resource)
+            {
+                try
+                {
+                    var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType, webRequest.WebServerUrl);
+                    coverageDataContext.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, _workspaceGuid), webRequest, serviceName, resource);
+                    var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _resourceCatalog, out _executePayload);
+                    return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
+                }
+                finally
+                {
+                    Dev2DataListDecisionHandler.Instance.RemoveEnvironment(_dataObject.DataListID);
+                    _dataObject.Environment = null;
+                }
             }
 
             internal IResponseWriter BuildResponse(WebRequestTO webRequest, string serviceName)
             {
                 if (_dataObject.IsServiceTestExecution)
                 {
-                    return ServiceTestExecutionResponse(webRequest, serviceName, ref _executePayload, _dataObject, _serializer, _canExecute);
+                    return ServiceTestExecutionResponse(out _executePayload, _dataObject, _serializer, _canExecute);
                 }
 
                 if (_dataObject.IsDebugFromWeb)
@@ -251,25 +279,24 @@ namespace Dev2.Runtime.WebServer.Handlers
                     WebRequestTO = webRequest,
                     ServiceName = serviceName,
                     DataObject = _dataObject,
-                    DataListIdGuid = _executionDlid,
+                    DataListIdGuid = _executionDataListId,
                     WorkspaceID = _workspaceGuid,
                     Resource = _resource,
                     DataListFormat = formatter,
-                    PayLoad = _executePayload,
+                    PayLoad = _executePayload ?? string.Empty,
                     Serializer = _serializer,
                 };
-                return DefaultExecutionResponse(webRequest, serviceName, executionDto);
+                return DefaultExecutionResponse(executionDto);
             }
 
-            private IResponseWriter ServiceTestExecutionResponse(WebRequestTO webRequest, string serviceName, ref string executePayload, IDSFDataObject dataObject, Dev2JsonSerializer serializer, bool canExecute)
+            private IResponseWriter ServiceTestExecutionResponse(out string executePayload, IDSFDataObject dataObject, Dev2JsonSerializer serializer, bool canExecute)
             {
                 var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 if (!canExecute)
                 {
+                    executePayload = string.Empty;
                     return new StringResponseWriter(dataObject.Environment.FetchErrors(), formatter.ContentType);
                 }
-
-                //var esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
 
                 executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, _esbExecuteRequest, dataObject);
                 return new StringResponseWriter(executePayload, formatter.ContentType);
@@ -282,7 +309,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return new StringResponseWriter(serialize, formatter.ContentType);
             }
 
-            private IResponseWriter DefaultExecutionResponse(WebRequestTO webRequest, string serviceName, ExecutionDto executionDto)
+            private IResponseWriter DefaultExecutionResponse(ExecutionDto executionDto)
             {
                 var allErrors = new ErrorResultTO();
 
@@ -302,8 +329,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 executionDto.ErrorResultTO = allErrors;
 
-                var executionDtoExtentions = new ExecutionDtoExtentions(executionDto);
-                return executionDtoExtentions.CreateResponseWriter(new StringResponseWriterFactory());
+                var executionDtoExtensions = new ExecutionDtoExtensions(executionDto);
+                return executionDtoExtensions.CreateResponseWriter(new StringResponseWriterFactory());
             }
 
             private static EsbExecuteRequest CreateEsbExecuteRequestFromWebRequest(WebRequestTO webRequest, string serviceName)
@@ -368,7 +395,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
                         catch (Exception ex)
                         {
-                            Dev2Logger.Error("AbstractWebRequestHandler", ex, GlobalConstants.WarewolfError);
+                            Dev2Logger.Error(nameof(AbstractWebRequestHandler), ex, GlobalConstants.WarewolfError);
                         }
                     }
                 }
@@ -484,12 +511,16 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public interface IDataObjectFactory
         {
+#pragma warning disable CC0044
             IDSFDataObject New(Guid workspaceGuid, IPrincipal user, string serviceName, WebRequestTO webRequest);
+#pragma warning restore CC0044
         }
 
-        public class DataObjectFactory : IDataObjectFactory
+        private class DataObjectFactory : IDataObjectFactory
         {
+#pragma warning disable CC0044
             public IDSFDataObject New(Guid workspaceGuid, IPrincipal user, string serviceName, WebRequestTO webRequest) =>
+#pragma warning restore CC0044
                 new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
                 {
                     IsFromWebServer = true,
@@ -499,4 +530,5 @@ namespace Dev2.Runtime.WebServer.Handlers
                 };
         }
     }
+
 }

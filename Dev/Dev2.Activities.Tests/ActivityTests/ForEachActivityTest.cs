@@ -328,7 +328,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var serviceTestMock = new Mock<IServiceTestModelTO>();
             var step = new ServiceTestStepTO();
             var step_child = new ServiceTestStepTO {
-                UniqueId = uniqueId
+                ActivityID = uniqueId
             };
             step.Children = new ObservableCollection<IServiceTestStep>() { step_child };
             var testSteps = new List<IServiceTestStep>

@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.WebServer
             executionDto.Request = new Communication.EsbExecuteRequest();
             executionDto.Request.WasInternalService = false;
 
-            var executionDtoExtentions = new ExecutionDtoExtentions(executionDto);
+            var executionDtoExtentions = new ExecutionDtoExtensions(executionDto);
             executionDtoExtentions.CreateResponseWriter(new StringResponseWriterFactory());
         }
 

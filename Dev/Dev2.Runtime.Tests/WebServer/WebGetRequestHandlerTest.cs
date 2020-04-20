@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
+using Dev2.Runtime;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
@@ -53,6 +54,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var resource = mockResource.Object;
             resourceCatalog.Setup(o => o.GetResource(Guid.Empty, "ping")).Returns(resource);
             var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
@@ -74,7 +76,7 @@ namespace Dev2.Tests.Runtime.WebServer
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
             ctx.Setup(c => c.Request.User).Returns(principle.Object);
 
-            var webGetRequestHandler = new WebGetRequestHandler(resourceCatalog.Object, testCatalog.Object);
+            var webGetRequestHandler = new WebGetRequestHandler(resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object);
 
             //------------Execute Test---------------------------
             webGetRequestHandler.ProcessRequest(ctx.Object);

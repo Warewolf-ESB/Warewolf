@@ -89,7 +89,7 @@
     <Compile Include="ApisJsonBuilder.cs" />
     <Compile Include="CommunicationContextExtensions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
-    <Compile Include="DataObjectExtentions.cs" />
+    <Compile Include="DataObjectExtensions.cs" />
     <Compile Include="ExecutionDto.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
@@ -113,6 +113,8 @@
     <Compile Include="Security\AuthorizeHubAttribute.cs" />
     <Compile Include="Security\AuthorizeWebAttribute.cs" />
     <Compile Include="Security\QueryString.cs" />
+    <Compile Include="ServiceTestCoverageExecutor.cs" />
+    <Compile Include="ServiceTestCoverageModelHTMLResultBuilder.cs" />
     <Compile Include="ServiceTestExecutor.cs" />
     <Compile Include="ServiceTestModelTRXResultBuilder.cs" />
     <Compile Include="ServiceTestModelJObjectResultBuilder.cs" />

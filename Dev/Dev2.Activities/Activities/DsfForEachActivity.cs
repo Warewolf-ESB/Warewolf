@@ -392,7 +392,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private IServiceTestStep HandleServiceTestExecution(IDSFDataObject dataObject)
         {
-            var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
+            var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == _originalUniqueID);
             if (dataObject.IsServiceTestExecution)
             {
                 var serviceTestSteps = serviceTestStep?.Children;
@@ -415,7 +415,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (dataObject.IsServiceTestExecution && serviceTestStep != null)
                 {
                     var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
-                    debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.UniqueId).ToList();
+                    debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.ActivityID).ToList();
                     var debugStates = debugItems.LastOrDefault();
 
                     var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);

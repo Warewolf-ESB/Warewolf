@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,6 +27,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
+using Warewolf.Data;
 using Warewolf.Resource.Errors;
 
 
@@ -34,7 +35,7 @@ using Warewolf.Resource.Errors;
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
-    public abstract class ResourceBase : IResource
+    public abstract class ResourceBase : IResource, IFilePathResource
     {
         IVersionInfo _versionInfo;
 
@@ -135,6 +136,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// </summary>   
         [JsonIgnore]
         public string FilePath { get; set; }
+
+        [JsonIgnore] public string Path => GetResourceFromUnknownWorkspacePath(); //GetResourcePath(GlobalConstants.ServerWorkspaceID);
         /// <summary>
         /// Gets or sets the author roles.
         /// </summary>
@@ -171,6 +174,32 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return ResourceName;
             }
             return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\", "").Replace(".xml", "").Replace(".bite", "") ?? "";
+        }
+
+        public string GetResourceFromUnknownWorkspacePath()
+        {
+            if (FilePath is null || IsReservedService)
+            {
+                return ResourceName;
+            }
+
+            var filePath = FilePath;
+            var workspacePath = EnvironmentVariables.WorkspacePath;
+            if (filePath.StartsWith(workspacePath))
+            {
+                var removeWorkspacePath = FilePath.Replace(workspacePath + "\\", "");
+                var workspaceIdEnd = removeWorkspacePath.IndexOf("\\", StringComparison.Ordinal);
+                var workspaceId = removeWorkspacePath.Substring(0, workspaceIdEnd);
+                var resourcesDir = removeWorkspacePath.Replace(workspaceId, "");
+                var programData = resourcesDir.Replace("\\ProgramData\\", "");
+                var resourceFile = programData.Replace("\\Resources\\", "");
+
+                var removeXml = resourceFile.Replace(".xml", "");
+                var removeBite = removeXml.Replace(".bite", "");
+                return removeBite;
+            }
+
+            return filePath.Replace(EnvironmentVariables.ResourcePath, "").Replace(".bite", "");
         }
 
         public string GetSavePath()
@@ -443,12 +472,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return;
             }
 
-            using (var textReader = new StringReader(loadXml[0].Value))
+            var el = loadXml[0];
+
+            using (var textReader = new StringReader(el.Value))
             {
                 var errors = new StringBuilder();
                 try
                 {
-                    GetDependenciesForWorkflowService(loadXml, textReader);
+                    GetDependenciesForWorkflowService(el, textReader);
                 }
                 catch (Exception e)
                 {
@@ -459,9 +490,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         // TODO: this method should not hard code the loaders for various Sources.
-        private void GetDependenciesForWorkflowService(List<XElement> loadXml, StringReader textReader)
+        private void GetDependenciesForWorkflowService(XElement el, StringReader textReader)
         {
-            var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
+            var elementToUse = el.HasElements ? el : XElement.Load(textReader, LoadOptions.None);
+            RootActivity = elementToUse;
             var dependenciesFromXml = from desc in elementToUse.Descendants()
                                       where
                                           IsDependency(desc.Name.LocalName) &&
@@ -504,6 +536,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             AddRabbitMqSources(elementToUse);
             AddDatabaseSourcesForSqlBulkInsertTool(elementToUse);
         }
+
+        protected XElement RootActivity { get; set; }
 
 #pragma warning disable S1067 // Expressions should not be too complex
         private static bool IsDependency(string localName) => localName.Contains("DsfMySqlDatabaseActivity") ||

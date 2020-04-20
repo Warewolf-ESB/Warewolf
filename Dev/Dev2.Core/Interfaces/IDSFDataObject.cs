@@ -25,13 +25,21 @@ using Warewolf.Auditing;
 
 namespace Dev2.Interfaces
 {
-
+    public interface ICoverageDataObject
+    {
+        EmitionTypes ReturnType { get; }
+        Guid ResourceID { get; }
+        Guid[] CoverageReportResourceIds { get; set; }
+        bool IsMultipleWorkflowReport { get; }
+        string GetTestUrl(string resourcePath);
+        string GetAllTestsUrl();
+    }
 
     public class RetryState
     {
         public int NumberOfRetries { get; set; }
     }
-    
+
     public interface IDSFDataObject : IExecutionContext
     {
         Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
@@ -119,7 +127,7 @@ namespace Dev2.Interfaces
         bool RemoteNonDebugInvoke { get; set; }
         bool StopExecution { get; set; }
         IServiceTestModelTO ServiceTest { get; set; }
-        List<Guid> TestsResourceIds { get; set; }
+        Guid[] TestsResourceIds { get; set; }
         Guid? ExecutionID { get; set; }
         string CustomTransactionID { get; set; }
         string WebUrl { get; set; }
@@ -130,5 +138,6 @@ namespace Dev2.Interfaces
         IStateNotifier StateNotifier { get; set; }
         Exception ExecutionException { get; set; }
         IDictionary<IDev2Activity, (RetryState, IEnumerator<bool>)> Gates { get; }
+        string OriginalServiceName { get; set; }
     }
 }

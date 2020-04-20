@@ -366,7 +366,7 @@ namespace Dev2.Activities
                 {
                     UpdateWithAssertions(data);
                 }
-                var serviceTestStep = _dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueId);
+                var serviceTestStep = _dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == _originalUniqueId);
 
                 if (_dataObject.IsServiceTestExecution && serviceTestStep != null)
                 {

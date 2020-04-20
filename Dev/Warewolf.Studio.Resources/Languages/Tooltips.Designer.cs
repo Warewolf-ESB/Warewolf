@@ -4305,11 +4305,56 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run all tests in browser for all resources in this folder.
+        /// </summary>
+        public static string RunAllFolderTestsToolTip {
+            get {
+                return ResourceManager.GetString("RunAllFolderTestsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run all tests in browser for all resources.
+        /// </summary>
+        public static string RunAllServerTestsToolTip {
+            get {
+                return ResourceManager.GetString("RunAllServerTestsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run all tests in browser for this resource.
         /// </summary>
         public static string RunAllTestsToolTip {
             get {
                 return ResourceManager.GetString("RunAllTestsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run coverage in browser for this resource.
+        /// </summary>
+        public static string RunCoverageToolTip {
+            get {
+                return ResourceManager.GetString("RunCoverageToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run coverage in browser for all resources in this folder.
+        /// </summary>
+        public static string RunFolderCoverageToolTip {
+            get {
+                return ResourceManager.GetString("RunFolderCoverageToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run coverage in browser for all resources.
+        /// </summary>
+        public static string RunServerCoverageToolTip {
+            get {
+                return ResourceManager.GetString("RunServerCoverageToolTip", resourceCulture);
             }
         }
         

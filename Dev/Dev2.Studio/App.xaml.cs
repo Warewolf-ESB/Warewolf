@@ -191,6 +191,7 @@ namespace Dev2.Studio
                 CheckForDuplicateResources();
                 _appExceptionHandler = new AppExceptionHandler(this, _shellViewModel);
                 CustomContainer.Register<IApplicationAdaptor>(new ApplicationAdaptor(Current));
+                CustomContainer.Register<IShellViewModel>(_shellViewModel);
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
