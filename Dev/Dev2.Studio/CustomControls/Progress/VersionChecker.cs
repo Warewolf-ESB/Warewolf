@@ -52,7 +52,7 @@ namespace Dev2.Studio.Core.Helpers
                 }
                 catch (Exception ex)
                 {
-                    return null;
+                    return new Version(0, 0, 0, 0);
                 }
             });
             t.Start();
