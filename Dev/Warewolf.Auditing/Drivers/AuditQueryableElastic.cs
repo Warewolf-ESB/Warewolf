@@ -36,10 +36,11 @@ namespace Warewolf.Auditing.Drivers
         {
             _elasticsearchSource = new ElasticsearchSource();
         }
-        public AuditQueryableElastic(string hostname, string searchIndex, AuthenticationType authenticationType, string username,string password)
+        public AuditQueryableElastic(string hostname,string port, string searchIndex, AuthenticationType authenticationType, string username,string password)
         {
             _elasticsearchSource = new ElasticsearchSource();
             _elasticsearchSource.HostName = hostname;
+            _elasticsearchSource.Port = port;
             _elasticsearchSource.SearchIndex = searchIndex;
             _elasticsearchSource.Username = username;
             _elasticsearchSource.Password = password;

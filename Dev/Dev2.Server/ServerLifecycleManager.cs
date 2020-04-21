@@ -221,14 +221,13 @@ namespace Dev2
                     StartTrackingUsage();
 
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
-                    _queueProcessMonitor.Start();
-
                     _writer.Write("Starting Logging Server...");
                     loggingServerCheckDelay.Wait();
                     if (!loggingServerCheckDelay.IsCanceled && !loggingServerCheckDelay.IsFaulted)
                     {
                         CheckLogServerConnection();
                     }
+                    _queueProcessMonitor.Start();
 #if DEBUG
                     SetAsStarted();
 #endif
