@@ -223,12 +223,12 @@ namespace Dev2
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
                     _queueProcessMonitor.Start();
 
+                    _writer.Write("Starting Logging Server...");
                     loggingServerCheckDelay.Wait();
                     if (!loggingServerCheckDelay.IsCanceled && !loggingServerCheckDelay.IsFaulted)
                     {
                         CheckLogServerConnection();
                     }
-
 #if DEBUG
                     SetAsStarted();
 #endif
@@ -252,6 +252,10 @@ namespace Dev2
                 if (!webSocketWrapper.IsOpen())
                 {
                     Stop(false, 0);
+                }
+                else
+                {
+                    _writer.Write("Done.");
                 }
             }
             catch (Exception e)
