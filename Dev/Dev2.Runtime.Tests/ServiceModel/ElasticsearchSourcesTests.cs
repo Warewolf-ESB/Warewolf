@@ -32,7 +32,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var handler = new ElasticsearchSources();
             var elasticsearchSource = new ElasticsearchSource();
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             elasticsearchSource.HostName = hostName;
             var result = handler.Test(elasticsearchSource);
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             try
             { 
-                var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+                var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
                 var hostName = "http://" + dependency.Container.IP;
                 var source = new ElasticsearchSource
                 {
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory(nameof(ElasticsearchSources))]
         public void ElasticsearchSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             var source = new ElasticsearchSource
             {
