@@ -204,6 +204,7 @@ namespace Dev2.Server.Tests
             var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
+            mockStartWebServer.Setup(o => o.Dispose()).Callback(() => { EnvironmentVariables.IsServerOnline = false; });
             var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
             var mockLoggingServiceMonitorWithRestart = new LoggingServiceMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
             var mockWebSocketPool = new Mock<IWebSocketPool>();
@@ -249,8 +250,10 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("unable to connect to logging server"), Times.Once);
             mockSerLifeCycleWorker.Verify();
+
+            Assert.IsFalse(EnvironmentVariables.IsServerOnline, "when server fails to start expect IsServerOnline to be false");
         }
 
         [TestMethod]
