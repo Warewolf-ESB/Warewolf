@@ -41,7 +41,17 @@ namespace Warewolf.Driver.Serilog
                 _logger = new LoggerConfiguration().CreateLogger();
             }
         }
-
+        private ILogger CreateLogger()
+        {
+            return new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(new Uri(_config.Url))
+                {
+                    AutoRegisterTemplate = true,
+                    IndexDecider = (e, o) => _config.SearchIndex,
+                }))
+                .CreateLogger();
+        }
         public ILogger Logger
         {
             get => _logger;

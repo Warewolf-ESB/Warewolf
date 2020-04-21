@@ -44,7 +44,7 @@ namespace Dev2
         protected override void OnStop()
         {
             Dev2Logger.Info("** Service Stopped **", GlobalConstants.WarewolfInfo);
-            _serverLifecycleManager.Stop(false, 0);
+            _serverLifecycleManager.Stop(false, 0, false);
         }
 
         public new void Dispose()
