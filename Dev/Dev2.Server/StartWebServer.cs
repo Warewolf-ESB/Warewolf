@@ -80,6 +80,10 @@ namespace Dev2
             {
                 Dev2Logger.Error(nameof(StartWebServer), ex, GlobalConstants.WarewolfError);
             }
+            finally
+            {
+                EnvironmentVariables.IsServerOnline = false;
+            }
         }
     }
 }
