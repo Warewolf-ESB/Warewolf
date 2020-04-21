@@ -99,7 +99,7 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(AuditingSettings))]
         public void AuditingSettingsData_Set_Get_LoggingDataSource()
         {
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
 
             var source = new ElasticsearchSource

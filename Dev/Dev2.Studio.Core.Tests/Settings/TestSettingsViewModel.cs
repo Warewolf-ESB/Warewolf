@@ -101,7 +101,7 @@ namespace Dev2.Core.Tests.Settings
                 Sink = "AuditingSettingsData"
             };
             _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             var elasticsearchSource = new ElasticsearchSource
             {

@@ -157,7 +157,7 @@ namespace Warewolf.Driver.Serilog.Tests
             //-------------------------Arrange------------------------------
             var testEventSink = new TestLogEventSink();
             var seriConfig = new TestSeriLogSinkConfig(testEventSink);
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             var loggerSource = new SerilogElasticsearchSource
             {
@@ -206,7 +206,7 @@ namespace Warewolf.Driver.Serilog.Tests
         public void SeriLogPublisher_NewPublisher_Reading_LogData_From_Elasticsearch_Success()
         {
             //-------------------------Arrange------------------------------
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             var loggerSource = new SerilogElasticsearchSource
             {

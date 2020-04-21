@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //---------------Set up test pack-------------------
             var serializer = new Dev2JsonSerializer();
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             var source = new ElasticsearchSourceDefinition()
             {
@@ -161,7 +161,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //---------------Set up test pack-------------------
             var serializer = new Dev2JsonSerializer();
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             var source = new ElasticsearchSourceDefinition()
             {

@@ -66,7 +66,7 @@ namespace Warewolf.Logger.Tests
             var mockArgs = new Mock<IArgs>();
             mockArgs.Setup(o => o.ServerEndpoint).Returns(args.ServerEndpoint);
             mockArgs.Setup(o => o.Verbose).Returns(args.Verbose);
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
 
             elasticsearchSource = new ElasticsearchSource
