@@ -79,16 +79,16 @@ namespace Dev2
         static void WaitForUserExit(ServerLifecycleManager manager)
         {
             Console.WriteLine();
-            Console.WriteLine("Press <ENTER> to terminate service and/or web server if started");
             if (EnvironmentVariables.IsServerOnline)
             {
+                Console.WriteLine("Press <ENTER> to terminate service and/or web server if started");
                 Pause();
             }
             else
             {
-                Console.Write("Failed to start Server");
+                Console.WriteLine("Failed to start Server");
             }
-            manager.Stop(false, 0);
+            manager.Stop(false, 0, false);
         }
 
         private static void Pause() => Console.ReadLine();

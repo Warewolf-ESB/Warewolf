@@ -113,7 +113,6 @@ namespace Dev2.Data.ServiceModel
         public override bool IsResourceVersion => false;
 
         bool _disposed;
-        private IElasticsearchSource _elasticsearchSourceImplementation;
 
         public void Dispose()
         {

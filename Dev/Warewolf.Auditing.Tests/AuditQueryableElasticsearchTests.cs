@@ -40,7 +40,7 @@ namespace Warewolf.Auditing.Tests
             {
                 var dependency = new Depends(Depends.ContainerType.Elasticsearch);
                 var hostName = "http://" + dependency.Container.IP;
-                return new AuditQueryableElastic(hostName, "warewolftestlogs",Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,"","");
+                return new AuditQueryableElastic(hostName, dependency.Container.Port, "warewolftestlogs",Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,"","");
             }
             else
             {
@@ -52,11 +52,12 @@ namespace Warewolf.Auditing.Tests
         {
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
             var hostName = "http://" + dependency.Container.IP;
-            return new AuditQueryableElastic(hostName, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "user", "password");
+            return new AuditQueryableElastic(hostName,dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "user", "password");
         }
 
         private IAuditQueryable GetAuditQueryable()
         {
+
             return new AuditQueryableElastic();
         }
 

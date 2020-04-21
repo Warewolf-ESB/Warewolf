@@ -81,7 +81,7 @@ namespace Dev2.Server.Tests
 
                 serverLifecycleManagerServiceTest.TestStop();
 
-                mockServerLifeManager.Verify(o => o.Stop(false, 0), Times.Once);
+                mockServerLifeManager.Verify(o => o.Stop(false, 0, false), Times.Once);
             }
         }
 
@@ -97,7 +97,7 @@ namespace Dev2.Server.Tests
 
                 serverLifecycleManagerServiceTest.TestStop();
 
-                mockServerLifeManager.Verify(o => o.Stop(false, 0), Times.Once);
+                mockServerLifeManager.Verify(o => o.Stop(false, 0, false), Times.Once);
             }
             mockServerLifeManager.Verify(o => o.Dispose(), Times.Once);
         }
@@ -173,7 +173,7 @@ namespace Dev2.Server.Tests
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
                 serverLifeCycleManager.Run(items).Wait();
-                serverLifeCycleManager.Stop(false, 0);
+                serverLifeCycleManager.Stop(false, 0, false);
             }
 
             //------------------------Assert-------------------------
@@ -306,7 +306,7 @@ namespace Dev2.Server.Tests
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
                 serverLifeCycleManager.Run(items).Wait();
-                serverLifeCycleManager.Stop(false, 0);
+                serverLifeCycleManager.Stop(false, 0, false);
             }
             //------------------------Assert-------------------------
             mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
