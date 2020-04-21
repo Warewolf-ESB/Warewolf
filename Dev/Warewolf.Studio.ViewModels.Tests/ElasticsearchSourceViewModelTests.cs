@@ -20,10 +20,16 @@ using System.Windows;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Communication;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
+using Warewolf.Configuration;
+using Warewolf.Data;
+using Warewolf.Security.Encryption;
+using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -34,20 +40,48 @@ namespace Warewolf.Studio.ViewModels.Tests
         Mock<IRequestServiceNameViewModel> _requestServiceNameViewModel;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
         Mock<IElasticsearchSourceDefinition> _elasticsearchSourceDefinition;
+
         List<string> _changedProperties;
         ElasticsearchSourceViewModel _elasticsearchourceViewModelWithTask;
         ElasticsearchSourceViewModel _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition;
         Mock<IAsyncWorker> _asyncWorkerMock;
-
+        Mock<IServer> _server;
+        Mock<IResourceRepository> _resourceRepo;
         [TestInitialize]
         public void TestInitialize()
         {
             _elasticsearchSourceModel = new Mock<IElasticsearchSourceModel>();
             _requestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             _elasticsearchSourceDefinition = new Mock<IElasticsearchSourceDefinition>();
+            _resourceRepo = new Mock<IResourceRepository>();
+            _server = new Mock<IServer>();
+            var serializer = new Dev2JsonSerializer();
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            var elasticsearchSource = new ElasticsearchSource
+            {
+                AuthenticationType = AuthenticationType.Anonymous,
+                Port = dependency.Container.Port,
+                HostName = hostName,
+                SearchIndex = "warewolflogstests"
+            };
+            var payload = serializer.Serialize(elasticsearchSource);
+            var encryptedPayload = DpapiWrapper.Encrypt(payload);
+            var auditingSettingsData = new AuditingSettingsData
+            {
+                Endpoint = "ws://127.0.0.1:5000/ws",
+                LoggingDataSource = new NamedGuidWithEncryptedPayload
+                {
+                    Name = "Auditing Data Source",
+                    Value = Guid.NewGuid(),
+                    Payload = encryptedPayload
+                },
+            };
+            _resourceRepo.Setup(res => res.GetAuditingSettings<AuditingSettingsData>(_server.Object)).Returns(auditingSettingsData);
+            _server.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
             _requestServiceNameViewModelTask = Task.FromResult(_requestServiceNameViewModel.Object);
             _changedProperties = new List<string>();
-            _elasticsearchourceViewModelWithTask = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask);
+            _elasticsearchourceViewModelWithTask = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask,_server.Object);
             _elasticsearchourceViewModelWithTask.PropertyChanged += (sender, e) => { _changedProperties.Add(e.PropertyName); };
             _asyncWorkerMock = new Mock<IAsyncWorker>();
             _elasticsearchSourceModel.Setup(model => model.FetchSource(It.IsAny<Guid>())).Returns(_elasticsearchSourceDefinition.Object);
@@ -72,7 +106,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_IElasticsearchSourceModel_ThrowsException()
         {
-            new ElasticsearchSourceViewModel(null, _requestServiceNameViewModelTask);
+            new ElasticsearchSourceViewModel(null, _requestServiceNameViewModelTask, new Mock<IServer>().Object);
         }
 
 
@@ -82,7 +116,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_IRequestServiceNameViewModelTask_ThrowsException()
         {
-            new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, null);
+            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask,new Mock<IServer>().Object);
+            Assert.IsNotNull(source);
         }
 
         [TestMethod, Timeout(60000)]
@@ -99,7 +134,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_IRequestServiceNameViewModel_IsNotNull()
         {
-            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask);
+            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask, new Mock<IServer>().Object);
             Assert.IsNotNull(source);
         }
 
@@ -120,7 +155,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockElasticSourceModel = new Mock<IElasticsearchSourceModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
-            var viewModel = new ElasticsearchSourceViewModel(mockElasticSourceModel.Object, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExternalExecutor.Object);
+            var mockServer = new Mock<IServer>();
+            var viewModel = new ElasticsearchSourceViewModel(mockElasticSourceModel.Object, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExternalExecutor.Object,mockServer.Object);
 
             Assert.AreEqual("", viewModel.HostName);
             Assert.AreEqual("9200", viewModel.Port);
@@ -139,6 +175,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            var mockServer = new Mock<IServer>();
             var id = Guid.NewGuid();
             var elasticsearchSourceDefinition = new ElasticsearchSourceDefinition
             {
@@ -154,7 +191,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             _elasticsearchSourceModel.Setup(model => model.FetchSource(id)).Returns(elasticsearchSourceDefinition);
 
-            var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object);
+            var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object,mockServer.Object);
+
 
             Assert.AreEqual("ResourceName", viewModel.Name);
             Assert.AreEqual("localhost", viewModel.HostName);
@@ -174,6 +212,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            var mockServer = new Mock<IServer>();
             var id = Guid.NewGuid();
             var elasticsearchSourceDefinition = new ElasticsearchSourceDefinition
             {
@@ -189,7 +228,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             _elasticsearchSourceModel.Setup(model => model.FetchSource(id)).Returns(elasticsearchSourceDefinition);
 
-            var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object);
+            var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object,mockServer.Object);
 
             Assert.IsTrue(viewModel.CanTest());
             viewModel.TestCommand.Execute(null);
@@ -207,6 +246,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
+            var mockServer = new Mock<IServer>();
             var id = Guid.NewGuid();
             var elasticsearchSourceDefinition = new ElasticsearchSourceDefinition
             {
@@ -222,7 +262,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             _elasticsearchSourceModel.Setup(model => model.FetchSource(id)).Returns(elasticsearchSourceDefinition);
 
-            var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object);
+            var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object,mockServer.Object);
 
             viewModel.Testing = true;
             Assert.IsFalse(viewModel.CanTest());

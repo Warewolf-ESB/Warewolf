@@ -79,7 +79,7 @@ namespace Dev2.Studio.ViewModels
         void EditOracleResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditOdbcResource(IDbSource selectedSource, IView view);
         void EditOdbcResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
-		void EditResource(IPluginSource selectedSource, IView view);
+        void EditResource(IPluginSource selectedSource, IView view);
         void EditResource(IPluginSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditResource(IComPluginSource selectedSource, IView view);
         void EditResource(IComPluginSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
@@ -100,7 +100,7 @@ namespace Dev2.Studio.ViewModels
         void NewPostgreSqlSource(string resourcePath);
         void NewOracleSource(string resourcePath);
         void NewOdbcSource(string resourcePath);
-		bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
+        bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
         void NewWebSource(string resourcePath);
         void NewRedisSource(string resourcePath);
         void NewElasticsearchSource(string resourcePath);
@@ -124,7 +124,7 @@ namespace Dev2.Studio.ViewModels
         void EditPostgreSqlSource(IContextualResourceModel resourceModel, IView view);
         void EditOracleSource(IContextualResourceModel resourceModel, IView view);
         void EditOdbcSource(IContextualResourceModel resourceModel, IView view);
-		void EditPluginSource(IContextualResourceModel resourceModel, IView view);
+        void EditPluginSource(IContextualResourceModel resourceModel, IView view);
         void EditComPluginSource(IContextualResourceModel resourceModel, IView view);
         void EditWebSource(IContextualResourceModel resourceModel, IView view);
         void EditSharePointSource(IContextualResourceModel resourceModel, IView view);
@@ -183,6 +183,7 @@ namespace Dev2.Studio.ViewModels
         private readonly bool _createDesigners;
         private readonly Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = (resourceModel, createDesigner) => WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
         private readonly IApplicationTracker _applicationTracker;
+
         public WorksurfaceContextManager(bool createDesigners, ShellViewModel shellViewModel)
         {
             _createDesigners = createDesigners;
@@ -197,7 +198,6 @@ namespace Dev2.Studio.ViewModels
             _repository = repository;
             _factory = factory;
         }
-
 
 
         public void Handle(RemoveResourceAndCloseTabMessage message)
@@ -219,10 +219,10 @@ namespace Dev2.Studio.ViewModels
             }
 
             _shellViewModel.PreviousActive = null;
-
         }
 
         public void Handle(NewTestFromDebugMessage message) => Handle(message, null);
+
         public void Handle(NewTestFromDebugMessage message, IWorkSurfaceKey workSurfaceKey)
         {
             Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
@@ -236,6 +236,7 @@ namespace Dev2.Studio.ViewModels
                     var serviceTestViewModel = testVm?.ViewModel;
                     serviceTestViewModel?.PrepopulateTestsUsingDebug(message.RootItems);
                 }
+
                 AddAndActivateWorkSurface(found);
             }
             else
@@ -272,11 +273,12 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditSqlServerResource(IDbSource selectedSource, IView view) => EditSqlServerResource(selectedSource, view, null);
+
         public void EditSqlServerResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var dbSourceViewModel = new ManageSqlServerSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name)
-                    , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
-                    , selectedSource, _shellViewModel.AsyncWorker);
+                , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
+                , selectedSource, _shellViewModel.AsyncWorker);
             var vm = new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, dbSourceViewModel, _shellViewModel.PopupProvider, view, ActiveServer);
 
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.SqlServerSource, selectedSource.Id);
@@ -286,6 +288,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditMySqlResource(IDbSource selectedSource, IView view) => EditMySqlResource(selectedSource, view, null);
+
         public void EditMySqlResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var dbSourceViewModel = new ManageMySqlSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, "")
@@ -300,6 +303,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditPostgreSqlResource(IDbSource selectedSource, IView view) => EditPostgreSqlResource(selectedSource, view, null);
+
         public void EditPostgreSqlResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var dbSourceViewModel = new ManagePostgreSqlSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
@@ -312,32 +316,34 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditOracleResource(IDbSource selectedSource, IView view) => EditOracleResource(selectedSource, view, null);
+
         public void EditOracleResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var dbSourceViewModel = new ManageOracleSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, "Oracle"), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
             var vm = new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, dbSourceViewModel, _shellViewModel.PopupProvider, view, ActiveServer);
 
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OracleSource, selectedSource.Id);
-            
+
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         public void EditOdbcResource(IDbSource selectedSource, IView view) => EditOdbcResource(selectedSource, view, null);
+
         public void EditOdbcResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var dbSourceViewModel = new ManageOdbcSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
             var vm = new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, dbSourceViewModel, _shellViewModel.PopupProvider, view, ActiveServer);
 
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OdbcSource, selectedSource.Id);
-            
+
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-		public IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID)
+        public IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID)
         {
             if (workSurfaceKey == null)
             {
@@ -346,6 +352,7 @@ namespace Dev2.Studio.ViewModels
                 workSurfaceKey.ResourceID = resourceID;
                 workSurfaceKey.ServerID = ActiveServer.ServerID;
             }
+
             return workSurfaceKey;
         }
 
@@ -353,7 +360,7 @@ namespace Dev2.Studio.ViewModels
 
         public void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer, IWorkSurfaceKey workSurfaceKey)
         {
-            var mergeViewModel = new MergeWorkflowViewModel(currentResourceModel, differenceResourceModel, loadFromServer);//if this is merge between two server versions then we pass false
+            var mergeViewModel = new MergeWorkflowViewModel(currentResourceModel, differenceResourceModel, loadFromServer); //if this is merge between two server versions then we pass false
             var vm = new MergeViewModel(_shellViewModel.EventPublisher, mergeViewModel, _shellViewModel.PopupProvider, new MergeWorkflowView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.MergeConflicts, currentResourceModel.ID);
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
@@ -369,6 +376,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void ViewTestsForService(IContextualResourceModel resourceModel) => ViewTestsForService(resourceModel, null);
+
         public void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey)
         {
             var workflow = new WorkflowDesignerViewModel(resourceModel);
@@ -422,6 +430,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IPluginSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(IPluginSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var pluginSourceViewModel = new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
@@ -434,6 +443,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IComPluginSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(IComPluginSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var wcfSourceViewModel = new ManageComPluginSourceViewModel(new ManageComPluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
@@ -445,6 +455,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IWebServiceSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(IWebServiceSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var viewModel = new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker, new ExternalProcessExecutor());
@@ -457,6 +468,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IRedisServiceSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(IRedisServiceSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var viewModel = new RedisSourceViewModel(new RedisSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker, new ExternalProcessExecutor());
@@ -469,6 +481,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IEmailServiceSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(IEmailServiceSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var emailSourceViewModel = new ManageEmailSourceViewModel(new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
@@ -482,6 +495,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IExchangeSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(IExchangeSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var emailSourceViewModel = new ManageExchangeSourceViewModel(new ManageExchangeSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
@@ -495,6 +509,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var viewModel = new ManageRabbitMQSourceViewModel(new ManageRabbitMQSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, _shellViewModel), selectedSource, _shellViewModel.AsyncWorker);
@@ -518,6 +533,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IWcfServerSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(IWcfServerSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var wcfSourceViewModel = new ManageWcfSourceViewModel(new ManageWcfSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker, ActiveServer);
@@ -528,7 +544,6 @@ namespace Dev2.Studio.ViewModels
             OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-
 
 
         IServer ActiveServer => _shellViewModel.ActiveServer;
@@ -545,10 +560,10 @@ namespace Dev2.Studio.ViewModels
             key.ServerID = ActiveServer.ServerID;
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManageSqlServerSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker)
-            {
-                SelectedGuid = key.ResourceID.Value
-            }
-            , _shellViewModel.PopupProvider
+                {
+                    SelectedGuid = key.ResourceID.Value
+                }
+                , _shellViewModel.PopupProvider
                 , new ManageDatabaseSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
@@ -574,14 +589,14 @@ namespace Dev2.Studio.ViewModels
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key,
                 new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManagePostgreSqlSourceViewModel(
-                                                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name)
-                                                , saveViewModel
-                                                , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
-                                                , _shellViewModel.AsyncWorker)
-                {
-                    SelectedGuid = key.ResourceID.Value
-                }
-                , _shellViewModel.PopupProvider, new ManageDatabaseSourceControl(), ActiveServer));
+                        new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name)
+                        , saveViewModel
+                        , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
+                        , _shellViewModel.AsyncWorker)
+                    {
+                        SelectedGuid = key.ResourceID.Value
+                    }
+                    , _shellViewModel.PopupProvider, new ManageDatabaseSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
@@ -608,13 +623,14 @@ namespace Dev2.Studio.ViewModels
             key.ServerID = ActiveServer.ServerID;
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManageOdbcSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name)
-                , saveViewModel
-                , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
-                , _shellViewModel.AsyncWorker)
-            { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageDatabaseSourceControl(), ActiveServer));
+                    , saveViewModel
+                    , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
+                    , _shellViewModel.AsyncWorker)
+                {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ManageDatabaseSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-		public bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
+
+        public bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
         {
             var saveViewModel = GetSaveViewModel(string.Empty, explorerItemViewModel.ResourceName, explorerItemViewModel);
             var messageBoxResult = saveViewModel.Result.ShowSaveDialog();
@@ -627,7 +643,7 @@ namespace Dev2.Studio.ViewModels
             var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WebSource);
             key.ServerID = ActiveServer.ServerID;
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IWebServiceSource>(_shellViewModel.EventPublisher, new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageWebserviceSourceControl(), ActiveServer));
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IWebServiceSource>(_shellViewModel.EventPublisher, new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, new ExternalProcessExecutor()) {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ManageWebserviceSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
@@ -637,7 +653,7 @@ namespace Dev2.Studio.ViewModels
             var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.RedisSource);
             key.ServerID = ActiveServer.ServerID;
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IRedisServiceSource>(_shellViewModel.EventPublisher, new RedisSourceViewModel(new RedisSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new RedisSourceControl(), ActiveServer));
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IRedisServiceSource>(_shellViewModel.EventPublisher, new RedisSourceViewModel(new RedisSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, new ExternalProcessExecutor()) {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new RedisSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
@@ -647,7 +663,7 @@ namespace Dev2.Studio.ViewModels
             var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ElasticsearchSource);
             key.ServerID = ActiveServer.ServerID;
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IElasticsearchSourceDefinition>(_shellViewModel.EventPublisher, new ElasticsearchSourceViewModel(new ElasticsearchSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ElasticsearchSourceControl(), ActiveServer));
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IElasticsearchSourceDefinition>(_shellViewModel.EventPublisher, new ElasticsearchSourceViewModel(new ElasticsearchSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker, new ExternalProcessExecutor(), ActiveServer) {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ElasticsearchSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
@@ -658,8 +674,8 @@ namespace Dev2.Studio.ViewModels
             key.ServerID = ActiveServer.ServerID;
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IPluginSource>(_shellViewModel.EventPublisher, new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name),
-                saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker)
-            { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManagePluginSourceControl(), ActiveServer));
+                    saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker)
+                {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ManagePluginSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
@@ -670,8 +686,8 @@ namespace Dev2.Studio.ViewModels
             key.ServerID = ActiveServer.ServerID;
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IComPluginSource>(_shellViewModel.EventPublisher, new ManageComPluginSourceViewModel(new ManageComPluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name),
-                saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker)
-            { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageComPluginSourceControl(), ActiveServer));
+                    saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _shellViewModel.AsyncWorker)
+                {SelectedGuid = key.ResourceID.Value}, _shellViewModel.PopupProvider, new ManageComPluginSourceControl(), ActiveServer));
 
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
@@ -712,9 +728,7 @@ namespace Dev2.Studio.ViewModels
             var dep = ActivateOrCreateUniqueWorkSurface<DeployWorksurfaceViewModel>(WorkSurfaceContext.DeployViewer);
             if (dep != null)
             {
-
                 dep.ViewModel.Source.Preselected = new ObservableCollection<IExplorerTreeItem>(items);
-
             }
         }
 
@@ -733,6 +747,7 @@ namespace Dev2.Studio.ViewModels
                 {
                     dataListString = dataList.ToString();
                 }
+
                 var action = xamlElement.Element(@"Action");
                 var xamlString = string.Empty;
                 var xaml = action?.Element(@"XamlDefinition");
@@ -768,7 +783,6 @@ namespace Dev2.Studio.ViewModels
             var saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.EmailSourceNewHeaderLabel);
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.EmailSource), new SourceViewModel<IEmailServiceSource>(_shellViewModel.EventPublisher, new ManageEmailSourceViewModel(new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()), _shellViewModel.PopupProvider, new ManageEmailSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
-
         }
 
         public void NewExchangeSource(string resourcePath)
@@ -811,6 +825,7 @@ namespace Dev2.Studio.ViewModels
             {
                 tempResource.Category = string.IsNullOrEmpty(resourcePath) ? @"Unassigned\" + newWorflowName : resourcePath + @"\" + newWorflowName;
             }
+
             tempResource.ResourceName = newWorflowName;
             tempResource.DisplayName = newWorflowName;
             tempResource.IsNewWorkflow = true;
@@ -839,7 +854,7 @@ namespace Dev2.Studio.ViewModels
                     {
                         if (workflowVm.Server.ResourceRepository.DoesResourceExistInRepo(model) && workflowVm.ResourceModel.IsNewWorkflow)
                         {
-                            _shellViewModel.DeleteResources(new List<IContextualResourceModel> { model }, @"", false);
+                            _shellViewModel.DeleteResources(new List<IContextualResourceModel> {model}, @"", false);
                         }
                         else
                         {
@@ -890,6 +905,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         readonly ConcurrentDictionary<string, Action<IContextualResourceModel, IView>> _editHandler = new ConcurrentDictionary<string, Action<IContextualResourceModel, IView>>();
+
         void SetUpEditHandlers()
         {
             _editHandler.TryAdd("Server", EditServer);
@@ -910,9 +926,9 @@ namespace Dev2.Studio.ViewModels
             _editHandler.TryAdd("Oracle", EditOracleSource);
             _editHandler.TryAdd("ODBC", EditOdbcSource);
             _editHandler.TryAdd("SqlDatabase", EditSqlServerSource);
+        }
 
-		}
-		public void EditSqlServerSource(IContextualResourceModel resourceModel, IView view)
+        public void EditSqlServerSource(IContextualResourceModel resourceModel, IView view)
         {
             var def = new DbSourceDefinition
             {
@@ -1020,7 +1036,7 @@ namespace Dev2.Studio.ViewModels
             var db = new PluginSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new PluginSourceDefinition
             {
-                SelectedDll = new DllListing { FullName = db.AssemblyLocation, Name = db.AssemblyName, Children = new Collection<IFileListing>(), IsDirectory = false },
+                SelectedDll = new DllListing {FullName = db.AssemblyLocation, Name = db.AssemblyName, Children = new Collection<IFileListing>(), IsDirectory = false},
                 Id = db.ResourceID,
                 Path = resourceModel.GetSavePath(),
                 Name = db.ResourceName,
@@ -1039,6 +1055,7 @@ namespace Dev2.Studio.ViewModels
                     def.FileSystemAssemblyName = string.Empty;
                 }
             }
+
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
@@ -1051,7 +1068,7 @@ namespace Dev2.Studio.ViewModels
             var db = new ComPluginSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new ComPluginSourceDefinition
             {
-                SelectedDll = new DllListing { Name = db.ComName, ClsId = db.ClsId, Is32Bit = db.Is32Bit, Children = new Collection<IFileListing>(), IsDirectory = false },
+                SelectedDll = new DllListing {Name = db.ComName, ClsId = db.ClsId, Is32Bit = db.Is32Bit, Children = new Collection<IFileListing>(), IsDirectory = false},
                 Id = db.ResourceID,
                 ResourcePath = resourceModel.GetSavePath(),
                 ClsId = db.ClsId,
@@ -1233,6 +1250,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(IOAuthSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(IOAuthSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var oauthSourceViewModel = new ManageOAuthSourceViewModel(new ManageOAuthSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), selectedSource, _shellViewModel.AsyncWorker);
@@ -1245,6 +1263,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void EditResource(ISharepointServerSource selectedSource, IView view) => EditResource(selectedSource, view, null);
+
         public void EditResource(ISharepointServerSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
             var viewModel = new SharepointServerSourceViewModel(new SharepointServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker, null);
@@ -1257,6 +1276,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public async Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header) => await GetSaveViewModel(resourcePath, header, null);
+
         public async Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel)
         {
             var environmentViewModel = _shellViewModel.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == ActiveServer.EnvironmentID);
@@ -1268,8 +1288,9 @@ namespace Dev2.Studio.ViewModels
             if (_applicationTracker != null)
             {
                 _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.Settings);
+                    Warewolf.Studio.Resources.Languages.TrackEventMenu.Settings);
             }
+
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
         }
 
@@ -1278,8 +1299,9 @@ namespace Dev2.Studio.ViewModels
             if (_applicationTracker != null)
             {
                 _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
+                    Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
             }
+
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
@@ -1288,13 +1310,15 @@ namespace Dev2.Studio.ViewModels
             var vm = AddTriggersWorkSurface();
             vm.IsEventsSelected = true;
         }
+
         public TriggersViewModel AddTriggersWorkSurface()
         {
             if (_applicationTracker != null)
             {
                 _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
-                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
+                    Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
             }
+
             return ActivateOrCreateUniqueWorkSurface<TriggersViewModel>(WorkSurfaceContext.Triggers);
         }
 
@@ -1305,6 +1329,7 @@ namespace Dev2.Studio.ViewModels
                 ShowDependencies(true, resource, ActiveServer);
             }
         }
+
         public void TryCreateNewQueueEventWorkSurface(IContextualResourceModel resourceModel)
         {
             if (resourceModel != null)
@@ -1322,6 +1347,7 @@ namespace Dev2.Studio.ViewModels
                 CreateNewScheduleWorkSurface(resourceModel);
             }
         }
+
         //TODO: Remove or update?
         void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
@@ -1392,12 +1418,13 @@ namespace Dev2.Studio.ViewModels
             var exists = ActivateAndReturnWorkSurfaceIfPresent(key);
 
             if (exists == null)
-            {   
+            {
                 return CreateAndActivateUniqueWorkSurface<T>(context);
             }
+
             try
             {
-                return (T)exists.WorkSurfaceViewModel;
+                return (T) exists.WorkSurfaceViewModel;
             }
             catch (Exception ex)
             {
@@ -1415,6 +1442,7 @@ namespace Dev2.Studio.ViewModels
                 _shellViewModel.ActivateItem(currentContext);
                 return true;
             }
+
             return false;
         }
 
@@ -1427,6 +1455,7 @@ namespace Dev2.Studio.ViewModels
                 _shellViewModel.ActivateItem(currentContext);
                 return currentContext;
             }
+
             return null;
         }
 
@@ -1491,6 +1520,7 @@ namespace Dev2.Studio.ViewModels
                     found = context;
                     _shellViewModel.Items.Add(context);
                 }
+
                 _shellViewModel.ActivateItem(found);
             }
         }
@@ -1501,6 +1531,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public bool CloseWorkSurfaceContext(IWorkSurfaceContextViewModel context, PaneClosingEventArgs e) => CloseWorkSurfaceContext(context, e, false);
+
         public bool CloseWorkSurfaceContext(IWorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt)
         {
             var remove = true;
@@ -1513,15 +1544,18 @@ namespace Dev2.Studio.ViewModels
                     {
                         return CloseWorkflow(context, e, dontPrompt, vm, ref remove) && remove;
                     }
+
                     if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
                     {
                         return CloseSettings(vm, true);
                     }
+
                     if (vm.WorkSurfaceContext == WorkSurfaceContext.Triggers)
                     {
                         return CloseTriggers(vm, true);
                     }
                 }
+
                 if (vm is IStudioTab tab)
                 {
                     remove = tab.DoDeactivate(true);
@@ -1547,6 +1581,7 @@ namespace Dev2.Studio.ViewModels
                     tasksViewModel.Dispose();
                 }
             }
+
             return remove;
         }
 
@@ -1560,6 +1595,7 @@ namespace Dev2.Studio.ViewModels
                     settingsViewModel.Dispose();
                 }
             }
+
             return remove;
         }
 
@@ -1588,6 +1624,7 @@ namespace Dev2.Studio.ViewModels
                             return false;
                     }
                 }
+
                 if (dontPrompt)
                 {
                     remove = true;
@@ -1604,6 +1641,7 @@ namespace Dev2.Studio.ViewModels
                     {
                         NewWorkflowNames.Instance.Remove(resource.ResourceName);
                     }
+
                     RemoveWorkspaceItem(workflowVm);
                     _shellViewModel.Items.Remove(context);
                     workflowVm.Dispose();
@@ -1626,6 +1664,7 @@ namespace Dev2.Studio.ViewModels
                     }
                 }
             }
+
             return true;
         }
     }

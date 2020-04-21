@@ -1092,7 +1092,7 @@ namespace Dev2.Studio.ViewModels
 
             var viewModel = new ElasticsearchSourceViewModel(
                 new ElasticsearchSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
-                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, new ExternalProcessExecutor());
+               new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, new ExternalProcessExecutor(),ActiveServer);
             var vm = new SourceViewModel<IElasticsearchSourceDefinition>(EventPublisher, viewModel, PopupProvider, new ElasticsearchSourceControl(), ActiveServer);
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
