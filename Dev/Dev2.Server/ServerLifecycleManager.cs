@@ -52,7 +52,7 @@ namespace Dev2
         bool InteractiveMode { get; set; }
 
         Task Run(IEnumerable<IServerLifecycleWorker> initWorkers);
-        void Stop(bool didBreak, int result);
+        void Stop(bool didBreak, int result, bool mute);
     }
 
     public class StartupConfiguration
@@ -172,14 +172,16 @@ namespace Dev2
         /// <returns>A Task that starts up the Warewolf Server.</returns>
         public Task Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
-            return Task.Run(() => { LoadPerformanceCounters(); }).ContinueWith((t) =>
+            void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
             {
-                void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
-                {
-                    _writer.Write("Opening named pipe client stream for COM IPC... ");
-                    _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
-                    _writer.WriteLine("done.");
-                }
+                _writer.Write("Opening named pipe client stream for COM IPC... ");
+                _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
+                _writer.WriteLine("done.");
+            }
+
+            return Task.Run(LoadPerformanceCounters)
+                .ContinueWith((t) =>
+            {
 //
 //                 // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 // #if DEBUG
@@ -221,15 +223,25 @@ namespace Dev2
                     StartTrackingUsage();
 
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
-                    _writer.Write("Starting Logging Server...");
-                    loggingServerCheckDelay.Wait();
-                    if (!loggingServerCheckDelay.IsCanceled && !loggingServerCheckDelay.IsFaulted)
-                    {
-                        CheckLogServerConnection();
-                    }
                     _queueProcessMonitor.Start();
+
+                    var checkLogServerConnectionTask = CheckLogServerConnection();
+                    var result = Task.WaitAny(new [] { checkLogServerConnectionTask, loggingServerCheckDelay });
+                    var logServerConnectedOkay = result == 0 && !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted;
+                    if (!logServerConnectedOkay)
+                    {
+                        _writer.WriteLine("unable to connect to logging server");
+                        if (checkLogServerConnectionTask.IsFaulted)
+                        {
+                            _writer.WriteLine("error: "+ checkLogServerConnectionTask.Exception?.Message);
+                        }
+                        Stop(false, 0, true);
+                    }
 #if DEBUG
-                    SetAsStarted();
+                    if (EnvironmentVariables.IsServerOnline)
+                    {
+                        SetAsStarted();
+                    }
 #endif
                 }
                 catch (Exception e)
@@ -238,30 +250,18 @@ namespace Dev2
                     Console.WriteLine(e);
 #pragma warning restore S2228 // Console logging should not be used
                     Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
-                    Stop(true, 0);
+                    Stop(true, 0, false);
                 }
             });
         }
 
-        private void CheckLogServerConnection()
+        private Task<bool> CheckLogServerConnection()
         {
-            try
+            return Task.Run(() =>
             {
                 var webSocketWrapper = _webSocketPool.Acquire(Config.Auditing.Endpoint);
-                if (!webSocketWrapper.IsOpen())
-                {
-                    Stop(false, 0);
-                }
-                else
-                {
-                    _writer.Write("done.");
-                }
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("Error Starting Server: Failed to start logging server: Invalid or missing Logging Data Source.", GlobalConstants.WarewolfError);
-                throw;
-            }
+                return webSocketWrapper.IsOpen();
+            });
         }
 
         private void LoadTriggersCatalog()
@@ -281,14 +281,17 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-        public void Stop(bool didBreak, int result)
+        public void Stop(bool didBreak, int result, bool mute)
         {
             if (!didBreak)
             {
                 Dispose();
             }
 
-            _writer.Write($"Exiting with exitcode {result}");
+            if (!mute)
+            {
+                _writer.Write($"Exiting with exitcode {result}");
+            }
         }
 
         internal void CleanupServer()
