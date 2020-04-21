@@ -112,8 +112,8 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
         [Given(@"I type HostName as a valid anonymous Elasticsearch server")]
         public void GivenITypeHostNameAsAValidAnonymousElasticsearchServer()
         {
-            _containerOps = new Depends(Depends.ContainerType.Elasticsearch);
-            TypeDependencyHostName(new Depends(Depends.ContainerType.Elasticsearch));
+            _containerOps = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            TypeDependencyHostName(new Depends(Depends.ContainerType.AnonymousElasticsearch));
         }
 
         [Then(@"server port is ""(.*)""")]
@@ -214,8 +214,8 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
         [Given(@"I type HostName as a valid Elasticsearch server")]
         public void GivenITypeHostNameAsAValidElasticsearchServer()
         {
-            _containerOps = new Depends(Depends.ContainerType.Elasticsearch);
-            TypeDependencyHostName(new Depends(Depends.ContainerType.Elasticsearch));
+            _containerOps = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            TypeDependencyHostName(new Depends(Depends.ContainerType.AnonymousElasticsearch));
         }
 
         [Given(@"""(.*)"" is ""(.*)""")]

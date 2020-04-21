@@ -147,7 +147,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.PostGreSQL:
                     InjectPostGreSQLContainer(EnableDocker);
                     break;
-                case ContainerType.Elasticsearch:
+                case ContainerType.AnonymousElasticsearch:
                     InjectElasticContainer(EnableDocker);
                     break;
             }
@@ -175,8 +175,10 @@ namespace Warewolf.UnitTestAttributes
                     return "3148";
                 case ContainerType.Warewolf:
                     return "3146";
-                case ContainerType.Elasticsearch:
+                case ContainerType.AnonymousElasticsearch:
                     return "9200";
+                case ContainerType.Elasticsearch:
+                    return "9400";
             }
             throw new ArgumentOutOfRangeException();
         }
