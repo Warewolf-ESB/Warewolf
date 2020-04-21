@@ -1316,32 +1316,39 @@ namespace Dev2.Studio.ViewModels.Workflow
         IEnumerable<string> GetWorkflowFieldsFromModelItem(ModelItem flowNode)
         {
             var workflowFields = new List<string>();
-
-            var modelProperty = flowNode.Properties["Action"];
-            if (modelProperty != null)
+            try
             {
-                var activity = modelProperty.ComputedValue;
-                workflowFields = GetActivityElements(activity);
-            }
-            else
-            {
-                var propertyName = string.Empty;
-                if (flowNode.ItemType.Name == "FlowDecision")
+                var modelProperty = flowNode.Properties["Action"];
+                if (modelProperty != null)
                 {
-                    propertyName = "Condition";
-                } else
+                    var activity = modelProperty.ComputedValue;
+                    workflowFields = GetActivityElements(activity);
+                }
+                else
                 {
-                    if (flowNode.ItemType.Name == "FlowSwitch`1")
+                    var propertyName = string.Empty;
+                    if (flowNode.ItemType.Name == "FlowDecision")
                     {
-                        propertyName = "Expression";
+                        propertyName = "Condition";
+                    }
+                    else
+                    {
+                        if (flowNode.ItemType.Name == "FlowSwitch`1")
+                        {
+                            propertyName = "Expression";
+                        }
+                    }
+
+                    var property = flowNode.Properties[propertyName];
+                    if (property != null)
+                    {
+                        workflowFields = GetWorkflowFieldsFromProperty(workflowFields, property);
                     }
                 }
-
-                var property = flowNode.Properties[propertyName];
-                if (property != null)
-                {
-                    workflowFields = GetWorkflowFieldsFromProperty(workflowFields, property);
-                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex.Message, GlobalConstants.WarewolfError);
             }
             return workflowFields;
         }
