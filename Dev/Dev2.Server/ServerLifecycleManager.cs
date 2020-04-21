@@ -255,7 +255,7 @@ namespace Dev2
                 }
                 else
                 {
-                    _writer.Write("Done.");
+                    _writer.Write("done.");
                 }
             }
             catch (Exception e)
