@@ -328,7 +328,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override bool CanSave() => TestPassed || CanTest();
+        public override bool CanSave() => !string.IsNullOrWhiteSpace(HostName) && !string.IsNullOrWhiteSpace(Port);
 
         void SaveConnection()
         {
