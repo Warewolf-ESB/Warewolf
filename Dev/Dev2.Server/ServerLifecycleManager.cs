@@ -227,8 +227,9 @@ namespace Dev2
 
                     var checkLogServerConnectionTask = CheckLogServerConnection();
                     var result = Task.WaitAny(new [] { checkLogServerConnectionTask, loggingServerCheckDelay });
-                    var logServerConnectedOkay = result == 0 && !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted;
-                    if (!logServerConnectedOkay)
+                    var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
+                    var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
+                    if (!logServerConnectedOkayNoTimeout)
                     {
                         _writer.WriteLine("unable to connect to logging server");
                         if (checkLogServerConnectionTask.IsFaulted)
