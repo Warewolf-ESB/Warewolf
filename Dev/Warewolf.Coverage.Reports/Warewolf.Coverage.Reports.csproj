@@ -6,6 +6,10 @@
 
   <ItemGroup>
     <Folder Include="Components" />
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
   </ItemGroup>
+
 
 </Project>
