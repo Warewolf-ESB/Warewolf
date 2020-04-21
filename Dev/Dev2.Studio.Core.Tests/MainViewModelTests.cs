@@ -188,18 +188,18 @@ namespace Dev2.Core.Tests
 
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
 
-            var envRepo = new Mock<IServerRepository>();
-            envRepo.Setup(r => r.All()).Returns(new List<IServer>(new[] { env.Object }));
-            envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
-            envRepo.Setup(r => r.Source).Returns(env.Object);
+            var mockEnvRepo = new Mock<IServerRepository>();
+            mockEnvRepo.Setup(r => r.All()).Returns(new List<IServer>(new[] { env.Object }));
+            mockEnvRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
+            mockEnvRepo.Setup(r => r.Source).Returns(env.Object);
 
 
 
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
 
-
+            CustomContainer.Register<IServerRepository>(mockEnvRepo.Object);
             // FetchResourceDefinitionService
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(mockEnvRepo.Object, asyncWorker.Object, false);
 
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()));
 
