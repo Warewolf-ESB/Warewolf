@@ -38,7 +38,7 @@ namespace Warewolf.Auditing.Tests
         {
             if (sink == "AuditingSettingsData")
             {
-                var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+                var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
                 var hostName = "http://" + dependency.Container.IP;
                 return new AuditQueryableElastic(hostName, dependency.Container.Port, "warewolftestlogs",Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous,"","");
             }
@@ -50,7 +50,7 @@ namespace Warewolf.Auditing.Tests
 
         private IAuditQueryable GetAuditQueryableBasicAuthentication()
         {
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             return new AuditQueryableElastic(hostName,dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "user", "password");
         }
@@ -63,7 +63,7 @@ namespace Warewolf.Auditing.Tests
 
         private void LoadLogsintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, string eventLevel)
         {
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             var port = dependency.Container.Port;
             var loggerSource = new SerilogElasticsearchSource
@@ -112,7 +112,7 @@ namespace Warewolf.Auditing.Tests
 
         private void LoadExecutionHistoryintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, string eventLevel)
         {
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             var port = dependency.Container.Port;
             var loggerSource = new SerilogElasticsearchSource
