@@ -1376,7 +1376,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-        public double GetServerCPUUsage()
+        public static double GetServerCPUUsage()
         {
             var processorTimeCounter = new PerformanceCounter(
                     "Process",
@@ -1390,8 +1390,15 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the server CPU usage is less than (.*)%")]
         public void ThenTheServerCPUUsageIsLessThan(int maxCpu)
         {
-            var serverCpuUsage = GetServerCPUUsage();
-
+            double serverCpuUsage = 0;
+            try
+            {
+                serverCpuUsage = GetServerCPUUsage();
+            }
+            catch
+            {
+                Assert.Inconclusive("unable to get cpu usage from PerformanceCounter");
+            }
             Assert.IsTrue(serverCpuUsage < maxCpu, "Warewolf Server CPU usage: " + serverCpuUsage.ToString(CultureInfo.InvariantCulture));
         }
 
