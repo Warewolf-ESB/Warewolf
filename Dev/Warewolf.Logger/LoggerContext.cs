@@ -76,7 +76,7 @@ namespace Warewolf.Logger
                     _loggerConfig = new SeriLogSQLiteConfig();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _source = null;
             }
