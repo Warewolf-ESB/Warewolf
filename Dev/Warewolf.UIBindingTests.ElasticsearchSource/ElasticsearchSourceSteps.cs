@@ -47,6 +47,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
 
             this._scenarioContext = scenarioContext;
         }
+
         void TypeDependencyHostName(Depends dependency)
         {
             var elasticSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
@@ -65,9 +66,10 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
+            var mockServer = new Mock<IServer>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var ElasticsearchSourceViewModel = new ElasticsearchSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
+            var ElasticsearchSourceViewModel = new ElasticsearchSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object, mockServer.Object);
             ElasticsearchSourceControl.DataContext = ElasticsearchSourceViewModel;
             Utils.ShowTheViewForTesting(ElasticsearchSourceControl);
             FeatureContext.Current.Add(Utils.ViewNameKey, ElasticsearchSourceControl);
@@ -86,6 +88,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             _scenarioContext.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
             _scenarioContext.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ElasticsearchSourceViewModel>(Utils.ViewModelNameKey));
         }
+
         [Given(@"I open New Elasticsearch Source")]
         public void GivenIOpenNewElasticsearchSource()
         {
@@ -146,9 +149,9 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
         public void ThenISelectAuthenticationTypeAs(string authenticationTypeString)
         {
             var authenticationType = String.Equals(authenticationTypeString, "Password",
-             StringComparison.OrdinalIgnoreCase)
-             ? AuthenticationType.Password
-             : AuthenticationType.Anonymous;
+                StringComparison.OrdinalIgnoreCase)
+                ? AuthenticationType.Password
+                : AuthenticationType.Anonymous;
 
             var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             elasticsearchSourceControl.SetAuthenticationType(authenticationType);
@@ -189,6 +192,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IElasticsearchSourceDefinition>()))
                     .Throws(new WarewolfTestException(_illegalCharactersInPath, new Exception(_illegalCharactersInPath)));
             }
+
             var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             elasticsearchSourceControl.PerformTestConnection();
         }
@@ -302,7 +306,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
                 Port = "9200"
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>())).Returns(elasticsearchSourceDefinition);
-            var elasticsearchSourceViewModel = new ElasticsearchSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
+            var elasticsearchSourceViewModel = new ElasticsearchSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object,new Mock<IServer>().Object);
             elasticsearchSourceControl.DataContext = elasticsearchSourceViewModel;
             _scenarioContext.Remove("viewModel");
             _scenarioContext.Add("viewModel", elasticsearchSourceViewModel);
@@ -328,7 +332,7 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var viewModel = new ElasticsearchSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
+            var viewModel = new ElasticsearchSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object,new Mock<IServer>().Object);
             var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
             elasticsearchSourceControl.DataContext = viewModel;
             FeatureContext.Current.Remove("viewModel");

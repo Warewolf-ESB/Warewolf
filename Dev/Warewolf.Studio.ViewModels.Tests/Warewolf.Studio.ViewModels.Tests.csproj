@@ -185,6 +185,10 @@
       <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
       <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
+      <Project>{d754b817-a714-4e6e-bd46-8c4ffffbdacb}</Project>
+      <Name>Dev2.Infrastructure.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
@@ -228,6 +232,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
+      <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
+      <Name>Warewolf.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
       <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>

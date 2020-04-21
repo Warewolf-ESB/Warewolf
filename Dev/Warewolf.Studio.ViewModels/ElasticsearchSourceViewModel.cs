@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Warewolf.Configuration;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -39,20 +40,21 @@ namespace Warewolf.Studio.ViewModels
         bool _testing;
         string _resourceName;
         string _searchIndex;
-        
+
         AuthenticationType _authenticationType;
         IElasticsearchSourceDefinition _elasticsearchServiceSource;
         readonly IElasticsearchSourceModel _elasticsearchSourceModel;
         CancellationTokenSource _token;
+        private IServer _currentEnvironment;
 
         public IAsyncWorker AsyncWorker { get; set; }
         public IExternalProcessExecutor Executor { get; set; }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel,IServer currentEnvironment)
             : this(elasticsearchSourceModel)
         {
             VerifyArgument.IsNotNull(nameof(requestServiceNameViewModel), requestServiceNameViewModel);
-
+            CurrentEnvironment = currentEnvironment ?? throw new ArgumentNullException(nameof(currentEnvironment));
             _elasticsearchSourceModel = elasticsearchSourceModel;
             RequestServiceNameViewModel = requestServiceNameViewModel;
 
@@ -78,7 +80,7 @@ namespace Warewolf.Studio.ViewModels
                 FromModel(elasticsearchServiceSource);
             });
         }
-        
+
         ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel)
             : base("ElasticsearchSource")
         {
@@ -96,13 +98,14 @@ namespace Warewolf.Studio.ViewModels
             TestMessage = "";
         }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor,IServer currentEnvironment)
             : base("ElasticsearchSource")
         {
             VerifyArgument.IsNotNull(nameof(executor), executor);
             VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             VerifyArgument.IsNotNull(nameof(elasticsearchSourceModel), elasticsearchSourceModel);
             VerifyArgument.IsNotNull(nameof(aggregator), aggregator);
+            CurrentEnvironment = currentEnvironment ?? throw new ArgumentNullException(nameof(currentEnvironment));
             AsyncWorker = asyncWorker;
             Executor = executor;
             _elasticsearchSourceModel = elasticsearchSourceModel;
@@ -119,18 +122,18 @@ namespace Warewolf.Studio.ViewModels
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
         }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor)
-            : this(elasticsearchSourceModel, aggregator, asyncWorker, executor)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor,IServer currentEnvironment )
+            : this(elasticsearchSourceModel, aggregator, asyncWorker, executor,currentEnvironment)
         {
             VerifyArgument.IsNotNull(nameof(requestServiceNameViewModel), requestServiceNameViewModel);
             RequestServiceNameViewModel = requestServiceNameViewModel;
         }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker, IExternalProcessExecutor executor)
-            : this(elasticsearchSourceModel, aggregator, asyncWorker, executor)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker, IExternalProcessExecutor executor,IServer currentEnvironment )
+            : this(elasticsearchSourceModel, aggregator, asyncWorker, executor,currentEnvironment)
         {
             VerifyArgument.IsNotNull(nameof(elasticsearchServiceSource), elasticsearchServiceSource);
-          
+
             AsyncWorker.Start(() => elasticsearchSourceModel.FetchSource(elasticsearchServiceSource.Id), source =>
             {
                 _elasticsearchServiceSource = source;
@@ -329,7 +332,14 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public override bool CanSave() => !string.IsNullOrWhiteSpace(HostName) && !string.IsNullOrWhiteSpace(Port);
-
+        public IServer CurrentEnvironment
+        {
+            private get => _currentEnvironment;
+            set
+            {
+                _currentEnvironment = value;
+            }
+        }
         void SaveConnection()
         {
             if (_elasticsearchServiceSource == null)
@@ -356,7 +366,8 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var src = ToSource();
-                if (src.Id == Dev2.Common.Config.Auditing.LoggingDataSource.Value)
+                var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
+                if (src.Id == auditingSettingsData.LoggingDataSource.Value)
                 {
                     var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
                     var result = popupController.ShowLoggerSourceChange(src.Name);

@@ -50,9 +50,9 @@ namespace Warewolf.Auditing.Tests
 
         private IAuditQueryable GetAuditQueryableBasicAuthentication()
         {
-            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
             var hostName = "http://" + dependency.Container.IP;
-            return new AuditQueryableElastic(hostName,dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "user", "password");
+            return new AuditQueryableElastic(hostName,dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "WarewolfUser", "$3@R(h");
         }
 
         private IAuditQueryable GetAuditQueryable()
