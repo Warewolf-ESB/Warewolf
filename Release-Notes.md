@@ -1,3 +1,8 @@
+Tuesday 21 April 2020
+======================
+Bug Fix
+--------
+- Studio can now start even if there are corrupt workflows in the active workspace
 
 Thursday 12 March 2020
 ======================

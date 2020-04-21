@@ -1325,6 +1325,79 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkflowDesignerViewModel))]
+        public void WorkflowDesignerViewModel_GetWorkflowFieldsFromFlowNodes_NoExpressionText_ExpectNoException()
+        {
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            var mockWorkflowHelper = new Mock<IWorkflowHelper>();
+            var mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            var envId2 = Guid.NewGuid();
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
+            mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 66");
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            var environmentRepository = WorkflowDesignerUnitTest.SetupEnvironmentRepo(Guid.Empty); // Set the active environment
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            prop.Setup(p => p.PropertyType).Returns(typeof(FlowDecision));
+            properties.Add("NoAction", prop);
+            properties.Add("Condition", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "NoAction", true).Returns(prop.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(prop.Object);
+
+            var mockDecision = new Mock<ModelItem>();
+            mockDecision.Setup(s => s.Name).Returns("Decision");
+            mockDecision.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            mockDecision.Setup(s => s.ItemType).Returns(typeof(FlowDecision));
+
+            var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
+
+            var flowNodes = new List<ModelItem>
+            {
+                mockDecision.Object
+            };
+
+            //------------Execute Test---------------------------
+            testClass.SetupGetWorkflowFieldsFromFlowNodes(flowNodes);
+
+            //------------Assert Results-------------------------
+
+        }
+
+        [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_CanSave")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_CanSave_InvokesResourceModelIsAuthorizedForContribute()
