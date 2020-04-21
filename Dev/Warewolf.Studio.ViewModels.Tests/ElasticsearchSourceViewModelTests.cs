@@ -261,7 +261,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestOkCommand_CanExecute()
         {
-            _elasticsearchourceViewModelWithTask.TestPassed = true;
+            _elasticsearchourceViewModelWithTask.HostName = "HostName";
+            _elasticsearchourceViewModelWithTask.Port = "9200";
             var result = _elasticsearchourceViewModelWithTask.OkCommand.CanExecute(null);
             Assert.IsTrue(result);
         }
@@ -683,7 +684,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestCanSaveTrue()
         {
-            _elasticsearchourceViewModelWithTask.TestPassed = true;
+            _elasticsearchourceViewModelWithTask.HostName = "HostName";
+            _elasticsearchourceViewModelWithTask.Port = "9200";
             var result = _elasticsearchourceViewModelWithTask.CanSave();
             Assert.IsTrue(result);
         }
