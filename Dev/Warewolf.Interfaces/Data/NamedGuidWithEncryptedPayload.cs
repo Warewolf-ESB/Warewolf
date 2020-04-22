@@ -9,25 +9,12 @@
 */
 
 using System;
-using Warewolf.Streams;
 
 namespace Warewolf.Data
 {
-    public interface IEncryptedPayload
+    public sealed class NamedGuidWithEncryptedPayload : NamedGuid, IEquatable<NamedGuidWithEncryptedPayload>
     {
-        string Payload { get; }
-    }
-
-    public class NamedGuidWithEncryptedPayload : NamedGuid, IEncryptedPayload
-    {
-        protected string _payload;
-
-        public NamedGuidWithEncryptedPayload(string name, Guid value, string payload)
-        {
-            Name = name;
-            Value = value;
-            Payload = payload;
-        }
+        private string _payload;
 
         public NamedGuidWithEncryptedPayload()
         {
@@ -36,7 +23,7 @@ namespace Warewolf.Data
             Payload = "";
         }
 
-        public virtual string Payload
+        public string Payload
         {
             get => _payload;
             set
@@ -46,20 +33,25 @@ namespace Warewolf.Data
             }
         }
 
-        public T LoadPayload<T>(IDeserializer deserializer) where T : class, new()
+        public bool Equals(NamedGuidWithEncryptedPayload other)
         {
-            return default;
+            if (other is NamedGuidWithEncryptedPayload guidWithEncryptedPayload)
+            {
+                var eq = base.Equals(other);
+                eq &= Payload.Equals(guidWithEncryptedPayload.Payload);
+                return eq;
+            }
+
+            return false;
+        }
+        public override bool Equals(object other)
+        {
+            return Equals(other as NamedGuidWithEncryptedPayload);
         }
 
-
-        public NamedGuidWithEncryptedPayload Clone()
+        public new NamedGuidWithEncryptedPayload Clone()
         {
-            return new NamedGuidWithEncryptedPayload
-            {
-                _name = _name,
-                _value = _value,
-                _payload = _payload
-            };
+            return (NamedGuidWithEncryptedPayload)MemberwiseClone();
         }
     }
 }
