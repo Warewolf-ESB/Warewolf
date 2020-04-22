@@ -226,7 +226,15 @@ namespace Warewolf.Studio.ViewModels
         {
             if(mainViewModel != null)
             {
-                HasNewVersion = await mainViewModel.CheckForNewVersionAsync().ConfigureAwait(true);
+                try
+                {
+                    HasNewVersion = await mainViewModel.CheckForNewVersionAsync().ConfigureAwait(true);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Warn("failed checking for new version {e.Message}", GlobalConstants.WarewolfWarn);
+                    HasNewVersion = false;
+                }
             }
         }
 

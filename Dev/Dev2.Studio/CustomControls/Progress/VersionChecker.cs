@@ -103,11 +103,12 @@ namespace Dev2.Studio.Core.Helpers
         public async Task<bool> GetNewerVersionAsync()
         {
             var latest = await GetLatestVersionAsync();
-            if (latest is null)
+            var current = Current;
+            if (latest is null || current is null)
             {
                 return false;
             }
-            return latest > Current;
+            return latest > current;
         }
 
         #endregion
