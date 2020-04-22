@@ -48,7 +48,7 @@ namespace Warewolf.Auditing.Tests
             }
         }
 
-        private IAuditQueryable GetAuditQueryableBasicAuthentication()
+        private IAuditQueryable GetAuditQueryablePasswordAuthentication()
         {
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
             var hostName = "http://" + dependency.Container.IP;
@@ -182,9 +182,9 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_BasicAuthentication()
+        public void AuditQueryableElastic_PasswordAuthentication()
         {
-            var auditQueryable = GetAuditQueryableBasicAuthentication();
+            var auditQueryable = GetAuditQueryablePasswordAuthentication();
             var query = new Dictionary<string, StringBuilder>();
 
             var results = auditQueryable.QueryLogData(query);

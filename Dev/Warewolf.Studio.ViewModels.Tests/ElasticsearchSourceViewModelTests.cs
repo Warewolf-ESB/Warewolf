@@ -116,7 +116,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_IRequestServiceNameViewModelTask_ThrowsException()
         {
-            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask,new Mock<IServer>().Object);
+            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _requestServiceNameViewModelTask,null);
             Assert.IsNotNull(source);
         }
 
