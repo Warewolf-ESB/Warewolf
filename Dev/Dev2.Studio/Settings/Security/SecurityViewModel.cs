@@ -36,6 +36,32 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Security
 {
+    public class OverrideResource : Warewolf.BindableBase
+    {
+        private Guid _resourceId;
+        private string _resourceName;
+
+        public Guid ResourceId
+        {
+            get => _resourceId;
+            set
+            {
+                _resourceId = value;
+                OnPropertyChanged(nameof(ResourceId));
+            }
+        }
+
+        public string ResourceName
+        {
+            get => _resourceName;
+            set
+            {
+                _resourceName = value;
+                OnPropertyChanged(nameof(ResourceName));
+            }
+        }
+    }
+    
     public class SecurityViewModel : SettingsItemViewModel, IHelpSource, IUpdatesHelp
     {
         IResourcePickerDialog _resourcePicker;
@@ -94,10 +120,13 @@ namespace Dev2.Settings.Security
 
             PickWindowsGroupCommand = new DelegateCommand(PickWindowsGroup, o => CanPickWindowsGroup(securitySettings?.WindowsGroupPermissions));
             PickResourceCommand = new DelegateCommand(PickResource);
+            OverrideResource = new OverrideResource();
+            PickOverrideResourceCommand = new DelegateCommand(PickOverrideResource);
 
             InitializeHelp();
 
             InitializePermissions(securitySettings?.WindowsGroupPermissions);
+            
         }
 
         static bool CanPickWindowsGroup(IEnumerable<WindowsGroupPermission> permissions) => permissions != null;
@@ -134,6 +163,42 @@ namespace Dev2.Settings.Security
         [JsonIgnore]
         public ICommand PickResourceCommand { get; private set; }
 
+        public OverrideResource OverrideResource
+        {
+            get => _overrideResource;
+            set
+            {
+                _overrideResource = value;
+                OnPropertyChanged(nameof(OverrideResource));
+            }
+        }
+
+        [JsonIgnore]
+        public ICommand PickOverrideResourceCommand { get; }
+
+        private void PickOverrideResource(object obj)
+        {
+            var resourceModel = PickOverrideResource();
+            if (resourceModel == null)
+            {
+                return;
+            }
+
+            OverrideResource.ResourceId = resourceModel.ResourceId;
+            OverrideResource.ResourceName = resourceModel.ResourcePath;
+        }
+
+        private IExplorerTreeItem PickOverrideResource()
+        {
+            var hasResult = _resourcePicker.ShowDialog(_environment);
+
+            if (_environment.ResourceRepository != null)
+            {
+                return hasResult ? _resourcePicker.SelectedResource : null;
+            }
+            throw new Exception(@"Server does not exist");
+        }
+
         [JsonIgnore]
         public bool IsServerHelpVisible
         {
@@ -162,6 +227,7 @@ namespace Dev2.Settings.Security
         ObservableCollection<WindowsGroupPermission> _resourcePermissions;
         ObservableCollection<WindowsGroupPermission> _itemResourcePermissions;
         ObservableCollection<WindowsGroupPermission> _itemServerPermissions;
+        private OverrideResource _overrideResource;
 
         static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
