@@ -96,7 +96,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                         action?.Invoke(dbSource);
                     });
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition = new ElasticsearchSourceViewModel(
-                _elasticsearchSourceModel.Object, _elasticsearchSourceDefinition.Object, _asyncWorkerMock.Object);
+                _elasticsearchSourceModel.Object, _elasticsearchSourceDefinition.Object, _asyncWorkerMock.Object,_server.Object);
         }
 
 
@@ -126,7 +126,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ElasticsearchSourceViewModel_Constructor_Null_ElasticsearchSourceDefinition_ThrowsException()
         {
-            new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, null, new SynchronousAsyncWorker());
+            new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, null, new SynchronousAsyncWorker(),new Mock<IServer>().Object);
         }
 
         [TestMethod, Timeout(60000)]
@@ -143,7 +143,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_ElasticsearchSourceDefinition_IAsyncWorker_IsNotNull()
         {
-            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _elasticsearchSourceDefinition.Object, new SynchronousAsyncWorker());
+            var source = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, _elasticsearchSourceDefinition.Object, new SynchronousAsyncWorker(),new Mock<IServer>().Object);
             Assert.IsNotNull(source);
         }
 
@@ -343,9 +343,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedPort = "9200";
             var expectedUsername = "UserName";
             var expectedPassword = "Password";
+            var expectedSearchIndex = "warewolftestlogs";
 
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HostName = expectedHostName;
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Port = expectedPort;
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.SearchIndex = expectedSearchIndex;
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Username = expectedUsername;
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Password = expectedPassword;
             _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.AuthenticationType = AuthenticationType.Password;
@@ -362,12 +364,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HeaderText, expectedResourceName);
             Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Header, expectedHeader);
             Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HostName, expectedHostName);
+            Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.SearchIndex, expectedSearchIndex);
             Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Port, expectedPort);
             Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Username, expectedUsername);
             Assert.AreEqual(_elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Password, expectedPassword);
 
             _elasticsearchSourceDefinition.VerifySet(x => x.HostName = expectedHostName);
             _elasticsearchSourceDefinition.VerifySet(x => x.Port = expectedPort);
+            _elasticsearchSourceDefinition.VerifySet(x => x.SearchIndex = expectedSearchIndex);
             _elasticsearchSourceDefinition.VerifySet(x => x.Username = expectedUsername);
             _elasticsearchSourceDefinition.VerifySet(x => x.Password = expectedPassword);
             _elasticsearchSourceDefinition.VerifySet(x => x.AuthenticationType = AuthenticationType.Password);

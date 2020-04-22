@@ -523,7 +523,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IElasticsearchSourceDefinition selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
         {
-            var viewModel = new ElasticsearchSourceViewModel(new ElasticsearchSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, _shellViewModel), selectedSource, _shellViewModel.AsyncWorker);
+            var viewModel = new ElasticsearchSourceViewModel(new ElasticsearchSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, _shellViewModel), selectedSource, _shellViewModel.AsyncWorker,ActiveServer);
             var vm = new SourceViewModel<IElasticsearchSourceDefinition>(_shellViewModel.EventPublisher, viewModel, _shellViewModel.PopupProvider, view, ActiveServer);
 
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.RabbitMQSource, selectedSource.Id);
