@@ -11,7 +11,9 @@
 using Dev2.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Windows.Markup;
 using Dev2.SignalR.Wrappers;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Core.Tests.Network
 {
@@ -19,10 +21,13 @@ namespace Dev2.Core.Tests.Network
     public class ServerProxyWithoutChunkingTests
     {
         [TestMethod]
-        [Timeout(16)]
+        [Timeout(16000)]
         public void ServerProxyWithoutChunking_GivenServerAvailable_ExpectConnected()
         {
-            var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));
+            var depend = new Depends(Depends.ContainerType.Warewolf);
+            var host = $"http://{depend.Container.IP}:{depend.Container.Port}";
+
+            var proxy = new ServerProxyWithoutChunking(new Uri(host));
             Assert.AreEqual(ConnState.Disconnected, proxy.StateController.Current);
             Assert.AreEqual(ConnState.Disconnected, proxy.State);
             proxy.Connect(Guid.NewGuid());
@@ -33,7 +38,7 @@ namespace Dev2.Core.Tests.Network
 
 
         [TestMethod]
-        [Timeout(16)]
+        [Timeout(16000)]
         public void ServerProxyWithoutChunking_GivenServerAvailable_AndConnect_WhenDisconnectRequest_ExpectDisconnect()
         {
             var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));

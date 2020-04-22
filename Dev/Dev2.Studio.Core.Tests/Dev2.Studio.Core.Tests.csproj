@@ -465,6 +465,10 @@
       <Project>{b7faa26b-ddcb-4967-9fcb-89afba92e726}</Project>
       <Name>Warewolf.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj">
+      <Project>{4a455098-ffdd-4861-b873-656f960cf0ba}</Project>
+      <Name>Warewolf.UnitTestAttributes</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Utility - Assign.xml" />
