@@ -4143,6 +4143,18 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use a public workflow to associate a username and password with a set of group names that that user belongs to.
+        ///      &lt;br/&gt;&lt;br/&gt;
+        ///      Any request that contains the resulting hashed token will be considered to be in these groups.
+        ///    .
+        /// </summary>
+        public static string SettingsSecurityOverrideAuthHelpText {
+            get {
+                return ResourceManager.GetString("SettingsSecurityOverrideAuthHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource picker.
         /// </summary>
         public static string SettingsSecurityResourceBrowseHelpResources {
