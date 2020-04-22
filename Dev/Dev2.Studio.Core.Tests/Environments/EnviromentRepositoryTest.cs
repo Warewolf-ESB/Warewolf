@@ -1240,8 +1240,11 @@ namespace Dev2.Core.Tests.Environments
                 con.Setup(c => c.IsConnected).Returns(true);
                 if (overrideExecuteCommand)
                 {
+                    var executeCommandReturnValue = new StringBuilder(sources[0]);
                     con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<int>()))
-                       .Returns(new StringBuilder(sources[0]));
+                        .Returns(executeCommandReturnValue);
+                    con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+                        .Returns(executeCommandReturnValue);
                 }
 
                 con.Setup(c => c.ServerEvents).Returns(new EventPublisher());

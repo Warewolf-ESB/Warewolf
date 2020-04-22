@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             Assert.IsNotNull(connectControlSingleton);
             Assert.IsNotNull(connectControlSingleton.Servers);
             Assert.AreEqual(1, connectControlSingleton.Servers.Count);
-            Assert.AreEqual(ConnectControlSingleton.NewServerText, connectControlSingleton.Servers[0].DisplayName);
+            Assert.AreEqual("localhost", connectControlSingleton.Servers[0].DisplayName);
         }
 
         [TestMethod]

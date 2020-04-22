@@ -1754,6 +1754,9 @@ namespace Dev2.Core.Tests.Triggers.Scheduler
         [TestCategory("SchedulerViewModel_EditTrigger")]
         public void SchedulerViewModel_EditTrigger_ShouldEditTheTrigger()
         {
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
+
             //------------Setup for test--------------------------
 
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IServer>().Object);
@@ -1794,7 +1797,10 @@ namespace Dev2.Core.Tests.Triggers.Scheduler
             Assert.AreEqual(02, schedulerViewModel.SelectedTask.NextRunDate.Hour);
             Assert.AreEqual(21, schedulerViewModel.SelectedTask.NextRunDate.Minute);
             Assert.IsTrue(schedulerViewModel.TriggerText.StartsWith("At"));
-            Assert.IsTrue(schedulerViewModel.TriggerText.EndsWith("AM every day"));
+            var triggerText = schedulerViewModel.TriggerText;
+            Assert.IsTrue(triggerText.EndsWith("every day"));
+            var isMorning = triggerText.Contains("02:21") || triggerText.Contains("AM every day");
+            Assert.IsTrue(isMorning);
 
             schedulerViewModel.SelectedTask = null;
             Assert.AreEqual("", schedulerViewModel.TriggerText);

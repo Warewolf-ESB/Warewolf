@@ -103,6 +103,10 @@ namespace Dev2.Studio.Core.Helpers
         public async Task<bool> GetNewerVersionAsync()
         {
             var latest = await GetLatestVersionAsync();
+            if (latest is null)
+            {
+                return false;
+            }
             return latest > Current;
         }
 

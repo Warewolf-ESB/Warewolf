@@ -19,19 +19,21 @@ namespace Dev2.Core.Tests.Network
     public class ServerProxyWithoutChunkingTests
     {
         [TestMethod]
+        [Timeout(16)]
         public void ServerProxyWithoutChunking_GivenServerAvailable_ExpectConnected()
         {
             var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));
             Assert.AreEqual(ConnState.Disconnected, proxy.StateController.Current);
             Assert.AreEqual(ConnState.Disconnected, proxy.State);
             proxy.Connect(Guid.NewGuid());
-            while (proxy.HubConnection.State != SignalR.Wrappers.ConnectionStateWrapped.Connected) { System.Threading.Thread.Sleep(1000);  }
+            while (proxy.HubConnection.State != SignalR.Wrappers.ConnectionStateWrapped.Connected) { System.Threading.Thread.Sleep(1000); }
             Assert.AreEqual(ConnState.Connected, proxy.StateController.Current);
             Assert.AreEqual(ConnState.Connected, proxy.State);
         }
 
 
         [TestMethod]
+        [Timeout(16)]
         public void ServerProxyWithoutChunking_GivenServerAvailable_AndConnect_WhenDisconnectRequest_ExpectDisconnect()
         {
             var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));
