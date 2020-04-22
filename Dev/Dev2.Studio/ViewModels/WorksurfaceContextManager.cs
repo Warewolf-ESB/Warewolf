@@ -1,4 +1,14 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +25,6 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Common.Interfaces.Versioning;
 using Dev2.Data.ServiceModel;
 using Dev2.Factory;
 using Dev2.Instrumentation;
@@ -50,6 +59,7 @@ using Dev2.Views.Merge;
 using Dev2.ViewModels.Search;
 using Dev2.Views.Search;
 using Dev2.Triggers;
+using Warewolf.Data;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -153,6 +163,8 @@ namespace Dev2.Studio.ViewModels
         void ViewSelectedTestForService(IContextualResourceModel resourceModel, IServiceTestModel selectedServiceTest, ServiceTestViewModel testViewModel, IWorkSurfaceKey workSurfaceKey);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
         void RunAllTestsForFolder(string ResourcePath, IExternalProcessExecutor ProcessExecutor);
+        void RunAllTestCoverageForService(IContextualResourceModel contextualResourceModel);
+        void RunAllTestCoverageForFolder(string secureResourcePath, IExternalProcessExecutor processExecutor);
         WorkSurfaceContextViewModel EditResource<T>(IWorkSurfaceKey workSurfaceKey, SourceViewModel<T> viewModel) where T : IEquatable<T>;
 
         IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID);
@@ -384,11 +396,27 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void RunAllTestCoverageForService(IContextualResourceModel resourceModel)
+        {
+            var workflow = new WorkflowDesignerViewModel(resourceModel);
+            using (var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow))
+            {
+                testViewModel.RunAllTestCoverageInBrowserCommand.Execute(null);
+            }
+        }
+
         public void RunAllTestsForFolder(string ResourcePath, IExternalProcessExecutor ProcessExecutor)
         {
             var ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
             var resourceTestsPath = ResourcePath + "/.tests";
             ServiceTestCommandHandler.RunAllTestsInBrowser(false, resourceTestsPath, ProcessExecutor);
+        }
+
+        public void RunAllTestCoverageForFolder(string ResourcePath, IExternalProcessExecutor ProcessExecutor)
+        {
+            var ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
+            var resourceTestsPath = ResourcePath + "/.coverage";
+            ServiceTestCommandHandler.RunAllTestCoverageInBrowser(false, resourceTestsPath, ProcessExecutor);
         }
 
         public void EditResource(IPluginSource selectedSource, IView view) => EditResource(selectedSource, view, null);

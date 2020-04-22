@@ -336,7 +336,7 @@ namespace Dev2.Runtime.ESB.Execution
         static IDev2Activity MockActivityIfNecessary(IDev2Activity activity, List<IServiceTestStep> testSteps)
         {
             IDev2Activity overriddenActivity = null;
-            var foundTestStep = testSteps?.FirstOrDefault(step => activity != null && step.UniqueId.ToString() == activity.UniqueID);
+            var foundTestStep = testSteps?.FirstOrDefault(step => activity != null && step.ActivityID.ToString() == activity.UniqueID);
             if (foundTestStep != null)
             {
                 var shouldMock = foundTestStep.Type == StepType.Mock;

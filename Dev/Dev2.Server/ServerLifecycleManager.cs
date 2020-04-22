@@ -108,7 +108,7 @@ namespace Dev2
         private readonly IAssemblyLoader _assemblyLoader;
         private readonly IWebServerConfiguration _webServerConfiguration;
         private readonly IWriter _writer;
-        private readonly IPauseHelper _pauseHelper;
+        private readonly IPauseHelper _pauseHelper = new PauseHelper();
         private readonly IProcessMonitor _queueProcessMonitor;
         private readonly IClusterMonitor _clusterMonitor;
         private readonly ClusterSettings _clusterSettings;
@@ -187,19 +187,19 @@ namespace Dev2
                     _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
                     _writer.WriteLine("done.");
                 }
-
-                // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
-#if DEBUG
-                try
-                {
-                    var miq = MoqInstallerActionFactory.CreateInstallerActions();
-                    miq.ExecuteMoqInstallerActions();
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
-                }
-#endif
+//
+//                 // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
+// #if DEBUG
+//                 try
+//                 {
+//                     var miq = MoqInstallerActionFactory.CreateInstallerActions();
+//                     miq.ExecuteMoqInstallerActions();
+//                 }
+//                 catch (Exception e)
+//                 {
+//                     Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
+//                 }
+// #endif
 
                 try
                 {
@@ -217,7 +217,6 @@ namespace Dev2
                     OpenCOMStream(null);
                     _loadResources.LoadResourceCatalog();
                     _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                    //new LogFlusherWorker(new LogManagerImplementation(), _writer).Execute();
                     _loadResources.LoadServerWorkspace();
                     _loadResources.LoadActivityCache(_assemblyLoader);
                     LoadTestCatalog();

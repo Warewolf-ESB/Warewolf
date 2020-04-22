@@ -119,7 +119,7 @@ namespace Dev2.Activities
             {
                 if (dataObject.IsServiceTestExecution)
                 {
-                    var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == pluginExecutionDto.Args.PluginConstructor.ID);
+                    var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == pluginExecutionDto.Args.PluginConstructor.ID);
                     if (serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
                     {
                         var start = DateTime.Now;
@@ -146,7 +146,7 @@ namespace Dev2.Activities
                 {
                     if (dataObject.IsServiceTestExecution)
                     {
-                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == dev2MethodInfo.ID);
+                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == dev2MethodInfo.ID);
                         MethodExecution(update, dataObject, pluginExecutionDto, appDomain, index, dev2MethodInfo, serviceTestStep);
                     }
                     else
@@ -444,7 +444,7 @@ namespace Dev2.Activities
                     DispatchDebugState(debugState, dataObject);
                     if (dataObject.IsServiceTestExecution)
                     {
-                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == Guid.Parse(UniqueID));
+                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == Guid.Parse(UniqueID));
                         var serviceTestSteps = serviceTestStep?.Children;
                         dataObject.ResourceID = debugState.SourceResourceID;
                         UpdateDebugWithAssertions(dataObject, serviceTestSteps?.ToList(), debugState.ID);
@@ -453,7 +453,7 @@ namespace Dev2.Activities
             }
             if (dataObject.IsServiceTestExecution)
             {
-                var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == Guid.Parse(UniqueID));
+                var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == Guid.Parse(UniqueID));
                 if (serviceTestStep != null)
                 {
                     UpdateTestStep(dataObject, serviceTestStep);

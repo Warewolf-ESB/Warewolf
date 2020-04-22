@@ -16,10 +16,10 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.Versioning;
+using Warewolf.Data;
 
 namespace Dev2.Studio.Interfaces
 {
-
     public interface IExplorerDeleteProvider
     {
         IDeletedFileMetadata TryDelete(IExplorerItemViewModel explorerItemViewModel);
@@ -27,7 +27,6 @@ namespace Dev2.Studio.Interfaces
 
     public interface IExplorerRepository :IExplorerDeleteProvider
     {
-
         bool Rename(IExplorerItemViewModel vm, string newName);
         Task<bool> Move(IExplorerItemViewModel explorerItemViewModel, IExplorerTreeItem destination);
         Task<IExplorerItem> LoadExplorer();

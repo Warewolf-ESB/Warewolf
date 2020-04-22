@@ -18,6 +18,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
@@ -167,6 +168,13 @@ namespace Dev2.Runtime.WebServer.Handlers
             DsfDataObject.StartTime = DateTime.Now;
             DsfDataObject.EsbChannel = channel;
             DsfDataObject.ServiceName = request.ServiceName;
+            DsfDataObject.Settings = new Dev2WorkflowSettingsTO
+            {
+                EnableDetailedLogging = true,
+                LoggerType = LoggerType.JSON,
+                KeepLogsForDays = 2,
+                CompressOldLogFiles = true
+            };
 
             var resource = request.ResourceID != Guid.Empty ? _catalog.GetResource(workspaceId, request.ResourceID) : _catalog.GetResource(workspaceId, request.ServiceName);
             var isManagementResource = false;

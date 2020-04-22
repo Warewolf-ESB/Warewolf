@@ -10,7 +10,6 @@
 
 using Dev2.Common;
 using Dev2.Common.Interfaces.Logging;
-using Dev2.Interfaces;
 using Newtonsoft.Json;
 using System;
 using Warewolf.Interfaces.Auditing;
@@ -19,7 +18,7 @@ namespace Warewolf.Auditing
 {
     public interface IStateAuditLogger : IDisposable
     {
-        IStateListener NewStateListener(IDSFDataObject dataObject);
+        IStateListener NewStateListener(IExecutionContext dataObject);
     }
 
     public class StateAuditLogger : IStateAuditLogger, IWarewolfLogWriter
@@ -27,7 +26,7 @@ namespace Warewolf.Auditing
         private IWebSocketWrapper _ws;
         private readonly IWebSocketPool _webSocketFactory;
 
-        public IStateListener NewStateListener(IDSFDataObject dataObject) => new StateListener(this, dataObject);
+        public IStateListener NewStateListener(IExecutionContext dataObject) => new StateListener(this, dataObject);
         
         public StateAuditLogger(IWebSocketPool webSocketFactory)
         {

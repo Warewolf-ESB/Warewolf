@@ -61,6 +61,7 @@
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
@@ -70,6 +71,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -138,6 +140,7 @@
     <Compile Include="ESB\Management\Services\TaskExtentions.cs" />
     <Compile Include="ESB\Management\Services\TestSqliteService.cs" />
     <Compile Include="ESB\Management\WorkflowManagementEndpointAbstract.cs" />
+    <Compile Include="Hosting\ContextualResourceCatalog.cs" />
     <Compile Include="Hosting\ResourceCatalogFactory.cs" />
     <Compile Include="Hosting\TriggersCatalog.cs" />
     <Compile Include="IDbSources.cs" />
@@ -400,6 +403,7 @@
     <Compile Include="ServiceModel\RabbitMQSources.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
     <Compile Include="TestCatalog.cs" />
+    <Compile Include="TestCoverageCatalog.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Workspaces\Workspace.cs" />
     <Compile Include="Workspaces\WorkspaceItem.cs" />

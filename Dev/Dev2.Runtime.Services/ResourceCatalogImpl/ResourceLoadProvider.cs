@@ -34,6 +34,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Warewolf;
+using Warewolf.Data;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
@@ -154,6 +155,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 Dev2Logger.Error(ErrorResource.ErrorGettingResources, e, GlobalConstants.WarewolfError);
                 throw;
             }
+        }
+
+        public IEnumerable<T> GetResources<T>(Guid workspaceId) where T : IWarewolfResource
+        {
+            return GetResources(workspaceId).Where(o => o is T).Cast<T>();
         }
 
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType)

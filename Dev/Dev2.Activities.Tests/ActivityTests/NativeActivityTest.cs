@@ -422,7 +422,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     new ServiceTestStepTO
                     {
-                        UniqueId = Guid.Parse(act.UniqueID),
+                        ActivityID = Guid.Parse(act.UniqueID),
                         Type = StepType.Assert,
                         StepOutputs = new ObservableCollection<IServiceTestOutput>
                         {
@@ -511,7 +511,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     new ServiceTestStepTO
                     {
-                        UniqueId = Guid.Parse(activity.UniqueID),
+                        ActivityID = Guid.Parse(activity.UniqueID),
                         Type = StepType.Assert,
                         StepOutputs = new ObservableCollection<IServiceTestOutput>
                         {
@@ -558,7 +558,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     new ServiceTestStepTO
                     {
-                        UniqueId = Guid.Parse(act.UniqueID),
+                        ActivityID = Guid.Parse(act.UniqueID),
                         Type = StepType.Assert,
                         StepOutputs = new ObservableCollection<IServiceTestOutput>
                         {

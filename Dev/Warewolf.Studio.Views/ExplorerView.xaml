@@ -11,6 +11,7 @@
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
              x:Name="ExplorerViewControl"
              KeyUp="ExplorerView_OnKeyUp"
              d:DataContext="{d:DesignInstance Type=interfaces:IExplorerViewModel, IsDesignTimeCreatable=False}"
@@ -175,6 +176,35 @@
 
                                     <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
+                                    <MenuItem Header="Test Editor" Style="{StaticResource MenuItemStyle}" Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                        <MenuItem Name="RunAllTests"
+                                                  Command="{Binding DataContext.ShellViewModel.RunAllTestsCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                  CommandParameter="{Binding .}"
+                                                  Header="Run All Tests"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  IsEnabled="{Binding CanViewRunAllTests}"
+                                                  ToolTip="{x:Static languages:Tooltips.RunAllServerTestsToolTip}"
+                                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                            <MenuItem.Icon>
+                                                <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Play" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="RunAllCoverage"
+                                                  Command="{Binding DataContext.ShellViewModel.RunCoverageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                  CommandParameter="{Binding .}"
+                                                  Header="Run Tests Coverage"
+                                                  Style="{StaticResource MenuItemStyle}"
+                                                  IsEnabled="{Binding CanViewRunAllTests}"
+                                                  ToolTip="{x:Static languages:Tooltips.RunServerCoverageToolTip}"
+                                                  Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                            <MenuItem.Icon>
+                                                <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Shield" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem.Icon>
+                                            <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Flask" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
                                     <!--Set Visibility to collapsed until we add functionality for deploy on server-->
                                     <MenuItem Name="Deploy"
                                               Command="{Binding DeployCommand}"
@@ -661,26 +691,69 @@
 
                                             <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
 
-                                            <MenuItem Name="Test"
-								                      Command="{Binding CreateTestCommand}"
-								                      CommandParameter="{Binding Path=Data}"
-								                      Header="Tests"
-								                      Style="{StaticResource MenuItemStyle}"
-								                      IsEnabled="{Binding CanCreateTest}"
-								                      ToolTip="{Binding ExplorerTooltips.CreateTestTooltip}"
-								                      Visibility="{Binding IsCreateTestVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <MenuItem Header="Test Editor" Style="{StaticResource MenuItemStyle}" Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                                <MenuItem Name="Test"
+								                          Command="{Binding CreateTestCommand}"
+								                          CommandParameter="{Binding Path=Data}"
+								                          Header="Create New Test"
+								                          Style="{StaticResource MenuItemStyle}"
+								                          IsEnabled="{Binding CanCreateTest}"
+								                          ToolTip="{Binding ExplorerTooltips.CreateTestTooltip}"
+								                          Visibility="{Binding IsCreateTestVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <MenuItem.Icon>
+                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Plus" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+
+                                                <MenuItem Name="RunAllTestsItem"
+                                                          Command="{Binding DataContext.ShellViewModel.RunAllTestsCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                          CommandParameter="{Binding .}"
+								                          Header="Run All Tests"
+								                          IsEnabled="{Binding CanViewRunAllTests}"
+								                          Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <MenuItem.Style>
+                                                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                            <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.RunAllTestsToolTip}" />
+                                                            <Style.Triggers>
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.RunAllFolderTestsToolTip}" />
+                                                                </MultiDataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </MenuItem.Style>
+                                                    <MenuItem.Icon>
+                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Foreground="Green" Icon="Play" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Name="RunAllCoverageItem"
+                                                          Command="{Binding DataContext.ShellViewModel.RunCoverageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                          CommandParameter="{Binding .}"
+                                                          Header="Run Tests Coverage"
+                                                          IsEnabled="{Binding CanViewRunAllTests}"
+                                                          Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <MenuItem.Style>
+                                                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                            <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.RunCoverageToolTip}" />
+                                                            <Style.Triggers>
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.RunFolderCoverageToolTip}" />
+                                                                </MultiDataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </MenuItem.Style>
+                                                    <MenuItem.Icon>
+                                                        <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Shield" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
                                                 <MenuItem.Icon>
                                                     <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Flask" />
                                                 </MenuItem.Icon>
-                                            </MenuItem>
-
-                                            <MenuItem Name="RunAllTests"
-								                      Command="{Binding RunAllTestsCommand}"
-								                      Header="Run All Tests"
-								                      Style="{StaticResource MenuItemStyle}"
-								                      IsEnabled="{Binding CanViewRunAllTests}"
-								                      ToolTip="{Binding ExplorerTooltips.RunAllTestsTooltip}"
-								                      Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                             </MenuItem>
 
                                             <MenuItem Name="MergeItem"

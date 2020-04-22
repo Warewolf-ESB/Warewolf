@@ -127,6 +127,7 @@
     <Compile Include="Hosting\TestCatalogTests.cs" />
     <Compile Include="Hosting\ServiceActionRepoTests.cs" />
     <Compile Include="Hosting\ResourceLoadProviderTests.cs" />
+    <Compile Include="Hosting\TestCoverageCatalogTests.cs" />
     <Compile Include="Hosting\UpgradePathTests.cs" />
     <Compile Include="Hosting\VersionStrategyTests.cs" />
     <Compile Include="JsonResource.cs" />

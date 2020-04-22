@@ -1,8 +1,7 @@
-#pragma warning disable
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -10,12 +9,14 @@
 */
 
 using System;
+using System.Linq;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer
 {
-    static class ServiceTestModelJObjectResultBuilder
+    internal static class ServiceTestModelJObjectResultBuilder
     {
         public static JObject BuildTestResultJSONForWebRequest(this IServiceTestModelTO result)
         {
@@ -53,6 +54,44 @@ namespace Dev2.Runtime.WebServer
                     resObj.Add("Message", result.Result.Message);
                 }
             }
+            return resObj;
+        }
+
+
+        public static JObject BuildTestResultJSONForWebRequest(this IServiceTestCoverageModelTo report)
+        {
+            var resObj = new JObject
+            {
+                {"Report Name", report.ReportName},
+                {"OldReportName", report.OldReportName},
+                {"WorkflowId", report.WorkflowId},
+                {"CoveragePercentage", Math.Round(report.CoveragePercentage * 100)},
+                {
+                    "AllTestNodesCovered",
+                    new JArray(report.AllTestNodesCovered.Select(node => node.BuildTestResultJSONForWebRequest()))
+                }
+            };
+
+            return resObj;
+        }
+
+        private static JObject BuildTestResultJSONForWebRequest(this ISingleTestNodesCovered report)
+        {
+            var resObj = new JObject { { "TestNodesCovered", new JArray(report.TestNodesCovered.Select(o => o.BuildTestResultJSONForWebRequest())) } };
+
+            return resObj;
+        }
+
+        private static JObject BuildTestResultJSONForWebRequest(this IWorkflowNode report)
+        {
+            var resObj = new JObject
+            {
+                {"Node Name", report.StepDescription},
+                {"ActivityID", report.ActivityID},
+                {"UniqueID", report.UniqueID},
+                {"MockSelected", report.MockSelected}
+            };
+
             return resObj;
         }
     }

@@ -53,7 +53,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-
         [TestMethod,Timeout(60000)]
         public void TestRefreshCommandChildrenAllowResourceCheck()
         {

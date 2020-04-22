@@ -44,8 +44,6 @@ namespace Warewolf.Auditing.Tests
 
             var notifier = new StateNotifier();
             var stateLoggerMock = new Mock<IStateListener>();
-            stateLoggerMock.Setup(o => o.LogPreExecuteState(_activity.Object)).Verifiable();
-            stateLoggerMock.Setup(o => o.LogPostExecuteState(_activity.Object, nextActivity)).Verifiable();
             stateLoggerMock.Setup(o => o.LogExecuteException(exception, nextActivity)).Verifiable();
             stateLoggerMock.Setup(o => o.LogAdditionalDetail(message, detailMethodName)).Verifiable();
             stateLoggerMock.Setup(o => o.LogExecuteCompleteState(nextActivity)).Verifiable();
@@ -53,9 +51,7 @@ namespace Warewolf.Auditing.Tests
             var listener = stateLoggerMock.Object;
             // test
             notifier.Subscribe(listener);
-
-            notifier.LogPreExecuteState(_activity.Object);
-            notifier.LogPostExecuteState(_activity.Object, nextActivity);
+            
             notifier.LogExecuteException(exception, nextActivity);
             notifier.LogAdditionalDetail(message, detailMethodName);
             notifier.LogExecuteCompleteState(nextActivity);
@@ -88,38 +84,18 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
-        public void IStateAuditLogger_LogPostExecuteState_Tests()
-        {
-            var expectedWorkflowId = Guid.NewGuid();
-            var nextActivity = new Mock<IDev2Activity>();
-            var previousActivity = new Mock<IDev2Activity>();
-            var expectedWorkflowName = "LogPostExecuteState";
-
-            var mockWebSocketPool = new Mock<IWebSocketPool>();
-            mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
-            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketPool.Object);
-
-            //------------------------------Act------------------------------------
-            _stateAuditLogger.NewStateListener(_dSFDataObject).LogPostExecuteState(previousActivity.Object, nextActivity.Object);
-
-            mockWebSocketPool.VerifyAll();
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(IStateAuditLogger))]
         public void IStateAuditLogger_LogPreExecuteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
             var nextActivity = new Mock<IDev2Activity>();
-            var expectedWorkflowName = "LogPreExecuteState";
+            var expectedWorkflowName = "LogActivityExecuteState";
 
             var mockWebSocketPool = new Mock<IWebSocketPool>();
-            mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable(); ;
+            mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(new Mock<IWebSocketWrapper>().Object).Verifiable();
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _stateAuditLogger, out _activity, mockWebSocketPool.Object);
 
             //------------------------------Act------------------------------------
-            _stateAuditLogger.NewStateListener(_dSFDataObject).LogPreExecuteState(nextActivity.Object);
+            _stateAuditLogger.NewStateListener(_dSFDataObject).LogActivityExecuteState(nextActivity.Object);
 
             mockWebSocketPool.VerifyAll();
         }

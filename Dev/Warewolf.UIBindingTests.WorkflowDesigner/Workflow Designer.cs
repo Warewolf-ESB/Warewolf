@@ -403,63 +403,6 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("WorkflowDesignerModel_RunAllTestsCommand")]
-        public void WorkflowDesignerViewModel_RunAllTestsCommand_CanExecute()
-        {
-            //------------Setup for test--------------------------
-            var workflow = new ActivityBuilder
-            {
-                Implementation = new Flowchart
-                {
-                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
-                }
-            };
-
-            #region Setup viewModel
-
-            var resourceRep = new Mock<IResourceRepository>();
-            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
-            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IServer>();
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
-            mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
-            var serverEvents = new Mock<IEventPublisher>();
-            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
-            resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
-            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
-            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-            resourceModel.Setup(m => m.Environment.Connection).Returns(mockConnection.Object);
-            resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
-            resourceModel.Setup(model => model.Category).Returns("myservice");
-            resourceModel.Setup(model => model.ResourceName).Returns("myservice");
-            resourceModel.Setup(model => model.DataList).Returns(StringResourcesTest.DebugInputWindow_NoInputs_XMLData);
-            var workflowHelper = new Mock<IWorkflowHelper>();
-            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-            workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
-            var mockPopController = new Mock<IPopupController>();
-            mockPopController.Setup(controller => controller.ShowNoInputsSelectedWhenClickLink()).Verifiable();
-            var mockExtenalProcessExecutor = new Mock<IExternalProcessExecutor>();
-            mockExtenalProcessExecutor.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>())).Verifiable();
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, mockPopController.Object, mockExtenalProcessExecutor.Object);
-            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-            resourceModel.SetupProperty(model => model.WorkflowXaml);
-
-            #endregion
-
-            //------------Assert Preconditions-------------------
-            Assert.IsNull(resourceModel.Object.WorkflowXaml);
-            //------------Execute Test---------------------------
-            viewModel.RunAllTestsCommand.Execute(null);
-            Assert.IsTrue(viewModel.RunAllTestsCommand.CanExecute(null));
-            //------------Assert Results-------------------------
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
         [TestCategory("WorkflowDesignerModel_DuplicateCommand")]
         public void WorkflowDesignerViewModel_DuplicateCommand_CanExecute()
         {
@@ -1373,6 +1316,79 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             flowNodes.Add(source.Object);
             flowNodes.Add(source1.Object);
             flowNodes.Add(source2.Object);
+
+            //------------Execute Test---------------------------
+            testClass.SetupGetWorkflowFieldsFromFlowNodes(flowNodes);
+
+            //------------Assert Results-------------------------
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkflowDesignerViewModel))]
+        public void WorkflowDesignerViewModel_GetWorkflowFieldsFromFlowNodes_NoExpressionText_ExpectNoException()
+        {
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            var mockWorkflowHelper = new Mock<IWorkflowHelper>();
+            var mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            var envId2 = Guid.NewGuid();
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
+            mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 66");
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            var environmentRepository = WorkflowDesignerUnitTest.SetupEnvironmentRepo(Guid.Empty); // Set the active environment
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            prop.Setup(p => p.PropertyType).Returns(typeof(FlowDecision));
+            properties.Add("NoAction", prop);
+            properties.Add("Condition", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "NoAction", true).Returns(prop.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(prop.Object);
+
+            var mockDecision = new Mock<ModelItem>();
+            mockDecision.Setup(s => s.Name).Returns("Decision");
+            mockDecision.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            mockDecision.Setup(s => s.ItemType).Returns(typeof(FlowDecision));
+
+            var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
+
+            var flowNodes = new List<ModelItem>
+            {
+                mockDecision.Object
+            };
 
             //------------Execute Test---------------------------
             testClass.SetupGetWorkflowFieldsFromFlowNodes(flowNodes);

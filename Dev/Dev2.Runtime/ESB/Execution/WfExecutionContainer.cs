@@ -32,6 +32,7 @@ using System.Threading;
 using Dev2.Runtime.ESB.Management;
 using Warewolf;
 using Warewolf.Execution;
+using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
@@ -148,7 +149,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
         {
-            var resource = new ActivityParser().Parse(flowchartProcess);
+            var resource = CustomContainer.Get<IActivityParser>()?.Parse(flowchartProcess) ?? new ActivityParser().Parse(flowchartProcess);
             EvalInner(dsfDataObject, resource, update);
         }
 
@@ -210,7 +211,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
         }
 
-        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager)
+        private WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, IExecutionManager executionManager)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             _executionManager = executionManager;
@@ -218,24 +219,6 @@ namespace Dev2.Runtime.ESB.Execution
 
         override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
-            IStateNotifier stateNotifier = null;
-            if (dsfDataObject.Settings is null)
-            {
-                dsfDataObject.Settings = new Dev2WorkflowSettingsTO
-                {
-                    EnableDetailedLogging = Config.Server.EnableDetailedLogging,
-                    LoggerType = LoggerType.JSON,
-                    KeepLogsForDays = 2,
-                    CompressOldLogFiles = true
-                };
-            }
-            var outerStateLogger = dsfDataObject.StateNotifier;
-            if (dsfDataObject.Settings.EnableDetailedLogging)
-            {
-                stateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
-                dsfDataObject.StateNotifier = stateNotifier;
-            }
-
             try
             {
                 AddExecutionToExecutionManager(dsfDataObject, resource);
@@ -244,31 +227,29 @@ namespace Dev2.Runtime.ESB.Execution
 
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
 
-                IDev2Activity next;
-                IDev2Activity lastActivity = null;
-                try
+                var lastActivity = resource;
+
+                ExecuteNode(dsfDataObject, update, ref resource, ref lastActivity);
+
+                if (!dsfDataObject.StopExecution & dsfDataObject.ExecutionException is null)
                 {
-                    lastActivity = resource;
-                    if (resource is IStateNotifierRequired stateNotifierRequired)
-                    {
-                        stateNotifierRequired.SetStateNotifier(stateNotifier);
-                    }
-                    next = resource.Execute(dsfDataObject, update);
+                    dsfDataObject.StateNotifier?.LogExecuteCompleteState(lastActivity);
                 }
-                catch (Exception e)
-                {
-                    stateNotifier?.LogExecuteException(e, lastActivity);
-                    Dev2Logger.Debug(e, GlobalConstants.WarewolfError);
-                    throw;
-                }
-                ExecuteNode(dsfDataObject, update, ref next, ref lastActivity);
             }
             finally
             {
-                stateNotifier?.Dispose();
-                dsfDataObject.StateNotifier = outerStateLogger;
+                dsfDataObject.StateNotifier?.Dispose();
                 _executionManager?.CompleteExecution();
             }
+        }
+
+        private static IDev2Activity ExecuteTool(IDSFDataObject dsfDataObject, IDev2Activity activity, int update)
+        {
+            if (activity is IStateNotifierRequired stateNotifierRequired)
+            {
+                stateNotifierRequired.SetStateNotifier(dsfDataObject.StateNotifier);
+            }
+            return activity.Execute(dsfDataObject, update);
         }
 
         void AddExecutionToExecutionManager(IDSFDataObject dsfDataObject, IDev2Activity resource)
@@ -296,27 +277,34 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        static void ExecuteNode(IDSFDataObject dsfDataObject, int update, ref IDev2Activity next, ref IDev2Activity lastActivity)
+        private static void ExecuteNode(IDSFDataObject dsfDataObject, int update, ref IDev2Activity next, ref IDev2Activity lastActivity)
         {
             var environment = dsfDataObject.Environment;
+            try 
+            { 
+                Dev2Logger.Debug("Executing first node", GlobalConstants.WarewolfDebug);
+                while (next != null)
+                {
+                    var current = next;
+                    lastActivity = current;
+                    next = ExecuteTool(dsfDataObject, current, update);
+                    environment.AllErrors.UnionWith(environment.Errors);
 
-            Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
-            while (next != null)
+                    if (dsfDataObject.StopExecution)
+                    {
+                        dsfDataObject.StateNotifier?.LogStopExecutionState(lastActivity);
+
+                        dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
+                        break;
+                    }
+                }
+            }
+            catch (Exception exception)
             {
-                if (dsfDataObject.StopExecution)
-                {
-                    dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
-                    break;
-                }
-                var current = next;
-                lastActivity = current;
-                if (current is IStateNotifierRequired stateNotifierRequired)
-                {
-                    stateNotifierRequired.SetStateNotifier(dsfDataObject.StateNotifier);
-                }
-                next = current.Execute(dsfDataObject, update);
+                Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
 
-                environment.AllErrors.UnionWith(environment.Errors);
+                dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
+                dsfDataObject.StateNotifier?.LogExecuteException(exception, lastActivity);
             }
         }
 

@@ -13,15 +13,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using Warewolf.Auditing;
+using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
+using Warewolf.Streams;
 
 namespace Warewolf.Logger.Tests
 {
+    
     [TestClass]
     public class LogServerTests
     {
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogServer))]
@@ -171,17 +175,30 @@ namespace Warewolf.Logger.Tests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LogServer))]
-        public void LogServer_PerformingClientOnClose_ShouldCallAction()
+        public void LogServer_PerformingClientOnClose_ShouldCallAction_And_OnMessage_ShouldTryConsume_Success()
         {
             //--------------------------------Arrange-------------------------------
+            var mockStreamConfig = new Mock<IStreamConfig>();
+            var mockPublisher = new Mock<IPublisher>();
+            var mockLeaderConnection = new Mock<IConnection>();
+            var mockSourceConnectionFactory = new Mock<ISourceConnectionFactory>();
+
+            var serializer = new JsonSerializer();
+            var testMessage = serializer.Serialize<AuditCommand>(new AuditCommand());
+
+            mockLeaderConnection.Setup(o => o.NewPublisher(It.IsAny<IStreamConfig>())).Returns(mockPublisher.Object);
+            mockSourceConnectionFactory.Setup(o => o.NewConnection()).Returns(mockLeaderConnection.Object);
+
             var mockLoggerSource = new Mock<ILoggerSource>();
             mockLoggerSource.Setup(ls => ls.NewConnection(It.IsAny<ILoggerConfig>())).Returns(new Mock<ILoggerConnection>().Object);
 
             var mockLoggerContext = new Mock<ILoggerContext>();
             mockLoggerContext.Setup(l => l.LoggerConfig).Returns(new Mock<ILoggerConfig>().Object);
             mockLoggerContext.Setup(l => l.Source).Returns(mockLoggerSource.Object);
+            mockLoggerContext.Setup(o => o.LeaderSource).Returns(mockSourceConnectionFactory.Object);
+            mockLoggerContext.Setup(o => o.LeaderConfig).Returns(mockStreamConfig.Object);
 
             Action<IWebSocketConnection> performedAction = null;
             var mockWebSocketServerWrapper = new Mock<IWebSocketServerWrapper>();
@@ -202,11 +219,79 @@ namespace Warewolf.Logger.Tests
             var clients = new List<IWebSocketConnection> { mockClient.Object };
             logServer.Start(clients);
             performedAction(mockClient.Object);
+
+            mockClient.Object.OnMessage(Encoding.UTF8.GetString(testMessage));
             //--------------------------------Act-----------------------------------
             mockClient.Object.OnClose();
             //--------------------------------Assert--------------------------------
             Assert.AreEqual(0, clients.Count);
             Assert.AreEqual("Logging Server OnClose...", consoleString);
+
+            mockPublisher.Verify(o => o.Publish(It.IsAny<byte[]>()), Times.Once);
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(LogServer))]
+        public void LogServer_PerformingClientOnClose_ShouldCallAction_And_OnMessage_ShouldTryConsume_Fails()
+        {
+            //--------------------------------Arrange-------------------------------
+            var mockStreamConfig = new Mock<IStreamConfig>();
+            var mockPublisher = new Mock<IPublisher>();
+            var mockLeaderConnection = new Mock<IConnection>();
+            var mockSourceConnectionFactory = new Mock<ISourceConnectionFactory>();
+            var mockAuditCommandConsumerFactory = new Mock<IAuditCommandConsumerFactory>();
+            var mockAuditCommandConsumer = new Mock<IAuditCommandConsumer>();
+
+            mockAuditCommandConsumerFactory.Setup(o => o.New(It.IsAny<SeriLogConsumer>(), It.IsAny<IWebSocketConnection>(), It.IsAny<IWriter>()))
+                .Returns(mockAuditCommandConsumer.Object);
+
+            var serializer = new JsonSerializer();
+            var testMessage = serializer.Serialize<AuditCommand>(new AuditCommand());
+
+            var falseException = new Exception("False exception from LogServerTests.cs");
+            mockPublisher.Setup(o => o.Publish(It.IsAny<byte[]>())).Throws(falseException);
+            mockLeaderConnection.Setup(o => o.NewPublisher(It.IsAny<IStreamConfig>())).Returns(mockPublisher.Object);
+            mockSourceConnectionFactory.Setup(o => o.NewConnection()).Returns(mockLeaderConnection.Object);
+
+            var mockLoggerSource = new Mock<ILoggerSource>();
+            mockLoggerSource.Setup(ls => ls.NewConnection(It.IsAny<ILoggerConfig>())).Returns(new Mock<ILoggerConnection>().Object);
+
+            var mockLoggerContext = new Mock<ILoggerContext>();
+            mockLoggerContext.Setup(l => l.LoggerConfig).Returns(new Mock<ILoggerConfig>().Object);
+            mockLoggerContext.Setup(l => l.Source).Returns(mockLoggerSource.Object);
+            mockLoggerContext.Setup(o => o.LeaderSource).Returns(mockSourceConnectionFactory.Object);
+            mockLoggerContext.Setup(o => o.LeaderConfig).Returns(mockStreamConfig.Object);
+
+            Action<IWebSocketConnection> performedAction = null;
+            var mockWebSocketServerWrapper = new Mock<IWebSocketServerWrapper>();
+            mockWebSocketServerWrapper.Setup(ws => ws.Start(It.IsAny<Action<IWebSocketConnection>>())).Callback((Action<IWebSocketConnection> a) =>
+            {
+                performedAction = a;
+            });
+
+            var mockWebSocketServerFactory = new Mock<IWebSocketServerFactory>();
+            mockWebSocketServerFactory.Setup(ws => ws.New(It.IsAny<string>())).Returns(mockWebSocketServerWrapper.Object);
+            var consoleString = "";
+            var mockWriter = new Mock<IWriter>();
+            mockWriter.Setup(w => w.WriteLine(It.IsAny<string>())).Callback((string s) => { consoleString = s; });
+            var logServer = new LogServer(mockWebSocketServerFactory.Object, mockWriter.Object, mockLoggerContext.Object, mockAuditCommandConsumerFactory.Object);
+
+            var mockClient = new Mock<IWebSocketConnection>();
+            mockClient.SetupAllProperties();
+            var clients = new List<IWebSocketConnection> { mockClient.Object };
+            logServer.Start(clients);
+            performedAction(mockClient.Object);
+
+            mockClient.Object.OnMessage(Encoding.UTF8.GetString(testMessage));
+            //--------------------------------Act-----------------------------------
+            mockClient.Object.OnClose();
+            //--------------------------------Assert--------------------------------
+            Assert.AreEqual(0, clients.Count);
+            Assert.AreEqual("Logging Server OnClose...", consoleString);
+
+            mockAuditCommandConsumerFactory.Verify(o => o.New(It.IsAny<SeriLogConsumer>(), It.IsAny<IWebSocketConnection>(), It.IsAny<IWriter>()));
+        }
+
     }
 }

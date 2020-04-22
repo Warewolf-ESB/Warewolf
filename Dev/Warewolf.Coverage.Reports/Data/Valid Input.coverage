@@ -1,0 +1,1 @@
+{"$id":"1","$type":"Dev2.Runtime.ServiceTestCoverageModelTo, Dev2.Runtime.Services","AllTestNodesCovered":[[{"$id":"2","$type":"Dev2.Runtime.SingleTestNodesCovered, Dev2.Runtime.Services","TestName":"Valid Input","TestNodesCovered":[]}]],"OldReportName":null,"ReportName":"Valid Input","WorkflowId":"acb75027-ddeb-47d7-814e-a54c37247ec1","CoveragePercentage":0.0}

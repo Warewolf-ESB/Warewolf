@@ -47,6 +47,13 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
             });
             Task.WaitAll(list.ToArray());
+            foreach (var task in list)
+            {
+                if (task.IsFaulted || task.IsCanceled || task.Exception != null)
+                {
+                    Assert.Inconclusive($"expected all tasks to complete successfully, task is {task.Status}, exception is {task.Exception?.Message}");
+                }
+            }
         }
 
         [TestMethod]

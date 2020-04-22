@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,6 +28,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Data;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 
@@ -347,10 +348,6 @@ namespace Warewolf.Studio.ViewModels
             QueueEventCommand = new DelegateCommand(type =>
             {
                 _explorerItemViewModelCommandController.QueueEventCommand(ResourceId);
-            });
-            RunAllTestsCommand = new DelegateCommand(type =>
-            {
-                _explorerItemViewModelCommandController.RunAllTestsCommand(ResourcePath, ResourceId);
             });
             CopyUrlCommand = new DelegateCommand(type =>
             {
@@ -1005,7 +1002,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand DebugBrowserCommand { get; set; }
         public ICommand ScheduleCommand { get; set; }
         public ICommand QueueEventCommand { get; set; }
-        public ICommand RunAllTestsCommand { get; set; }
         public ICommand CopyUrlCommand { get; set; }
 
         public bool ForcedRefresh
@@ -1258,7 +1254,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canViewRunAllTests = value;
-                ExplorerTooltips.RunAllTestsTooltip = _canViewRunAllTests ? Resources.Languages.Tooltips.RunAllTestsToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                ExplorerTooltips.RunAllTestsTooltip = _canViewRunAllTests
+                    ? IsFolder ? Resources.Languages.Tooltips.RunAllFolderTestsToolTip :
+                    Resources.Languages.Tooltips.RunAllTestsToolTip
+                    : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateTest);
             }
         }

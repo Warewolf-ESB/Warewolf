@@ -562,7 +562,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
 
             lazyCon.SetValue(viewModel, envMock.Object);
-            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_communicationController", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
 
             lazyComs.SetValue(viewModel, controller.Object);
             var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
@@ -615,7 +615,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
 
             lazyCon.SetValue(viewModel, envMock.Object);
-            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_communicationController", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
 
             lazyComs.SetValue(viewModel, controller.Object);
             var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
@@ -664,7 +664,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
 
             lazyCon.SetValue(viewModel, envMock.Object);
-            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_communicationController", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
 
             lazyComs.SetValue(viewModel, controller.Object);
             var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);

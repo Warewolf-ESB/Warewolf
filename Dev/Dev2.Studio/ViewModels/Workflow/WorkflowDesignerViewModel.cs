@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -70,12 +70,10 @@ using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -87,15 +85,14 @@ using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
 using Dev2.ViewModels.Merge;
-using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using System.IO;
 using Dev2.Common.Interfaces;
-using System.Xml;
-using Dev2.Common.ExtMethods;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities;
+using Warewolf.Data;
 using Warewolf.Data.Options;
+using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -200,6 +197,23 @@ namespace Dev2.Studio.ViewModels.Workflow
             _firstWorkflowChange = true;
             _workflowDesignerHelper = new WorkflowDesignerWrapper();
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            _shellViewModel = GetShellViewModel();
+        }
+
+        private static IShellViewModel GetShellViewModel()
+        {
+            IShellViewModel shellViewModel;
+            try
+            {
+                if (Application.Current?.MainWindow?.DataContext is IShellViewModel tmpShellViewModel)
+                {
+                    return tmpShellViewModel;
+                }
+            }
+            catch
+            {
+            }
+            return CustomContainer.Get<IShellViewModel>();
         }
 
         public void SetPermission(Permissions permission)
@@ -443,6 +457,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _canRunAllTests = value;
                 RunAllTestsTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canRunAllTests ? Warewolf.Studio.Resources.Languages.Tooltips.RunAllTestsToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
+                RunCoverageTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canRunAllTests ? Warewolf.Studio.Resources.Languages.Tooltips.RunCoverageToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanRunAllTests");
             }
         }
@@ -454,6 +469,16 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _runAllTestsTooltip = value;
                 OnPropertyChanged("RunAllTestsTooltip");
+            }
+        }
+        
+        public string RunCoverageTooltip
+        {
+            get => _runCoverageTooltip;
+            set
+            {
+                _runCoverageTooltip = value;
+                OnPropertyChanged(nameof(RunCoverageTooltip));
             }
         }
 
@@ -856,18 +881,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }));
 
-        public ICommand RunAllTestsCommand => _runAllTestsCommand ?? (_runAllTestsCommand = new DelegateCommand(param =>
-        {
-            if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-            {
-                var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                if (mvm?.ActiveItem != null)
-                {
-                    mvm.RunAllTests(string.Empty, mvm.ActiveItem.ContextualResourceModel.ID);
-                }
-            }
-        }));
-
         public ICommand DuplicateCommand => _duplicateCommand ?? (_duplicateCommand = new DelegateCommand(param =>
         {
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
@@ -915,6 +928,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             MergeWorkflow();
         }));
 
+        public IShellViewModel ShellViewModel => _shellViewModel ?? CustomContainer.Get<IShellViewModel>();
+        
         private static void MergeWorkflow()
         {
             var shellViewModel = Application.Current.MainWindow.DataContext as ShellViewModel;
@@ -1301,32 +1316,39 @@ namespace Dev2.Studio.ViewModels.Workflow
         IEnumerable<string> GetWorkflowFieldsFromModelItem(ModelItem flowNode)
         {
             var workflowFields = new List<string>();
-
-            var modelProperty = flowNode.Properties["Action"];
-            if (modelProperty != null)
+            try
             {
-                var activity = modelProperty.ComputedValue;
-                workflowFields = GetActivityElements(activity);
-            }
-            else
-            {
-                var propertyName = string.Empty;
-                if (flowNode.ItemType.Name == "FlowDecision")
+                var modelProperty = flowNode.Properties["Action"];
+                if (modelProperty != null)
                 {
-                    propertyName = "Condition";
-                } else
+                    var activity = modelProperty.ComputedValue;
+                    workflowFields = GetActivityElements(activity);
+                }
+                else
                 {
-                    if (flowNode.ItemType.Name == "FlowSwitch`1")
+                    var propertyName = string.Empty;
+                    if (flowNode.ItemType.Name == "FlowDecision")
                     {
-                        propertyName = "Expression";
+                        propertyName = "Condition";
+                    }
+                    else
+                    {
+                        if (flowNode.ItemType.Name == "FlowSwitch`1")
+                        {
+                            propertyName = "Expression";
+                        }
+                    }
+
+                    var property = flowNode.Properties[propertyName];
+                    if (property != null)
+                    {
+                        workflowFields = GetWorkflowFieldsFromProperty(workflowFields, property);
                     }
                 }
-
-                var property = flowNode.Properties[propertyName];
-                if (property != null)
-                {
-                    workflowFields = GetWorkflowFieldsFromProperty(workflowFields, property);
-                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex.Message, GlobalConstants.WarewolfError);
             }
             return workflowFields;
         }
@@ -2118,7 +2140,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (ResourceModel.DataList != null)
             {
                 var currentDataList = ResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "");
-                return currentDataList.SpaceCaseInsenstiveComparision(_originalDataList);
+                return StringExtension.SpaceCaseInsenstiveComparision(currentDataList, _originalDataList);
             }
             return true;
         }
@@ -2517,6 +2539,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         string _queueEventTooltip;
         string _createTestTooltip;
         string _runAllTestsTooltip;
+        string _runCoverageTooltip;
         string _duplicateTooltip;
         string _deployTooltip;
         string _showDependenciesTooltip;
@@ -2895,6 +2918,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         protected bool _isPaste;
+        private IShellViewModel _shellViewModel;
 
         public System.Action WorkflowChanged { get; set; }
     }

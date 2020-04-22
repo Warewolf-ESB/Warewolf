@@ -302,7 +302,6 @@
     <Compile Include="IWcfServiceModel.cs" />
     <Compile Include="IWcfSource.cs" />
     <Compile Include="IWebSource.cs" />
-    <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\IWarewolfLogWriter.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />
     <Compile Include="Monitoring\IPerformanceCounterFactory.cs" />
@@ -411,7 +410,6 @@
     <Compile Include="WindowsTaskScheduler\Wrappers\IWrappedObject.cs" />
     <Compile Include="Versioning\IRollbackResult.cs" />
     <Compile Include="Versioning\IServerVersionRepository.cs" />
-    <Compile Include="Versioning\IVersionInfo.cs" />
     <Compile Include="Versioning\IVersionRepository.cs" />
     <Compile Include="Wrappers\IDirectory.cs" />
     <Compile Include="Wrappers\IDirectoryEntry.cs" />

@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -18,30 +16,27 @@ using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Decision;
-using Dev2.Data.TO;
-using Dev2.DataList.Contract;
+ using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Interfaces;
-using Newtonsoft.Json.Linq;
-using Warewolf.Storage;
-using Dev2.Web;
-using Dev2.Common;
+ using Dev2.Web;
+ using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.WebServer
 {
-    static class ServiceTestExecutor
+    internal static class ServiceTestExecutor
     {
-        public static async Task GetTaskForTestExecution(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ICollection<IServiceTestModelTO> testResults, IDSFDataObject dataObjectClone)
+        public static Task<IServiceTestModelTO> ExecuteTestAsync(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IDSFDataObject dataObjectClone)
         {
-            var lastTask = Task.Run(() =>
+            var lastTask = Task<IServiceTestModelTO>.Factory.StartNew(() =>
             {
                 var interTestRequest = new EsbExecuteRequest { ServiceName = serviceName };
                 var dataObjectToUse = dataObjectClone;
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
                 {
                     var esbEndpointClone = new EsbServicesEndpoint();
-                    esbEndpointClone.ExecuteRequest(dataObjectToUse, interTestRequest, workspaceGuid, out ErrorResultTO errs, null);
+                    esbEndpointClone.ExecuteRequest(dataObjectToUse, interTestRequest, workspaceGuid, out _, null);
                 });
                 var result = serializer.Deserialize<ServiceTestModelTO>(interTestRequest.ExecuteResult);
                 if (result == null && interTestRequest.ExecuteResult != null)
@@ -52,9 +47,10 @@ namespace Dev2.Runtime.WebServer
 
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObjectToUse.DataListID);
                 dataObjectToUse.Environment = null;
-                testResults.Add(result);
+                return result;
             });
-            await lastTask.ConfigureAwait(true);
+            lastTask.ConfigureAwait(true);
+            return lastTask;
         }
 
         public static string SetupForTestExecution(Dev2JsonSerializer serializer, EsbExecuteRequest esbExecuteRequest,IDSFDataObject dataObject)
@@ -75,41 +71,31 @@ namespace Dev2.Runtime.WebServer
             return executePayload;
         }
 
-        public static DataListFormat ExecuteTests(string serviceName, IDSFDataObject dataObject, DataListFormat formatter,
-            IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, ref string executePayload)
+        public static DataListFormat ExecuteTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, out string executePayload, ITestCoverageCatalog testCoverageCatalog)
         {
+            executePayload = null;
+
+            DataListFormat formatter = null;
             if (dataObject.TestsResourceIds?.Any() ?? false)
             {
-                if (dataObject.ReturnType == Web.EmitionTypes.TEST)
+                if (dataObject.ReturnType == EmitionTypes.TEST)
                 {
-                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
-                    resourceCatalog, testCatalog, ref executePayload);
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload, testCoverageCatalog);
                 }
-                if (dataObject.ReturnType == Web.EmitionTypes.TRX)
+                if (dataObject.ReturnType == EmitionTypes.TRX)
                 {
-                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
-                    resourceCatalog, testCatalog, ref executePayload);
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload, testCoverageCatalog);
                 }
                 dataObject.ResourceID = Guid.Empty;
             }
             else
             {
-                if (dataObject.ReturnType == EmitionTypes.TEST)
-                {
-                    formatter = dataObject.RunSingleTestBatchAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
-                        serviceName, testCatalog, ref executePayload);
-                }
-                if (dataObject.ReturnType == Web.EmitionTypes.TRX)
-                {
-                    formatter = dataObject.RunSingleTestBatchAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
-                        serviceName, testCatalog, ref executePayload);
-                }
-
+                Dev2.Common.Dev2Logger.Warn("No tests found to execute for requested resource", Dev2.Common.GlobalConstants.WarewolfWarn);
             }
 
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             dataObject.Environment = null;
-            return formatter;
+            return formatter ?? DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
         }
     }
 }

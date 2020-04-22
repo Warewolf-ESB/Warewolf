@@ -2121,13 +2121,13 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
 			Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
 			Assert.AreEqual(forEach.GetType().Name, serviceTestStep.ActivityType);
-			Assert.AreEqual(forEachId, serviceTestStep.UniqueId);
+			Assert.AreEqual(forEachId, serviceTestStep.ActivityID);
 
 			Assert.AreEqual(1, serviceTestStep.Children.Count);
 			var childItem = serviceTestStep.Children[0];
 			Assert.AreEqual(StepType.Mock, childItem.Type);
 			Assert.AreEqual(assignActivity.GetType().Name, childItem.ActivityType);
-			Assert.AreEqual(uniqueId, childItem.UniqueId);
+			Assert.AreEqual(uniqueId, childItem.ActivityID);
 			Assert.AreEqual(serviceTestStep, childItem.Parent);
 
 			Assert.AreEqual(3, childItem.StepOutputs.Count);
@@ -2187,20 +2187,20 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
 			Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
 			Assert.AreEqual(forEach.GetType().Name, serviceTestStep.ActivityType);
-			Assert.AreEqual(forEachId, serviceTestStep.UniqueId);
+			Assert.AreEqual(forEachId, serviceTestStep.ActivityID);
 
 			Assert.AreEqual(1, serviceTestStep.Children.Count);
 			var childItem = serviceTestStep.Children[0];
 			Assert.AreEqual(StepType.Mock, childItem.Type);
 			Assert.AreEqual(sequenceActivity.GetType().Name, childItem.ActivityType);
-			Assert.AreEqual(seqId, childItem.UniqueId);
+			Assert.AreEqual(seqId, childItem.ActivityID);
 			Assert.AreEqual(serviceTestStep, childItem.Parent);
 
 			Assert.AreEqual(1, childItem.Children.Count);
 			var seqChildItem = childItem.Children[0];
 			Assert.AreEqual(StepType.Mock, seqChildItem.Type);
 			Assert.AreEqual(assignActivity.GetType().Name, seqChildItem.ActivityType);
-			Assert.AreEqual(uniqueId, seqChildItem.UniqueId);
+			Assert.AreEqual(uniqueId, seqChildItem.ActivityID);
 			Assert.AreEqual(childItem, seqChildItem.Parent);
 
 			Assert.AreEqual(3, seqChildItem.StepOutputs.Count);
@@ -2259,19 +2259,19 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
 			Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
 			Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
-			Assert.AreEqual(seqId, serviceTestStep.UniqueId);
+			Assert.AreEqual(seqId, serviceTestStep.ActivityID);
 
 			Assert.AreEqual(1, serviceTestStep.Children.Count);
 			var childItem = serviceTestStep.Children[0];
 			Assert.AreEqual(StepType.Mock, childItem.Type);
 			Assert.AreEqual(forEach.GetType().Name, childItem.ActivityType);
-			Assert.AreEqual(forEachId, childItem.UniqueId);
+			Assert.AreEqual(forEachId, childItem.ActivityID);
 			Assert.AreEqual(serviceTestStep, childItem.Parent);
 
 			Assert.AreEqual(1, childItem.Children.Count);
 			var forEachChildItem = childItem.Children[0];
 			Assert.AreEqual(assignActivity.GetType().Name, forEachChildItem.ActivityType);
-			Assert.AreEqual(uniqueId, forEachChildItem.UniqueId);
+			Assert.AreEqual(uniqueId, forEachChildItem.ActivityID);
 			Assert.AreEqual(childItem, forEachChildItem.Parent);
 
 			Assert.AreEqual(3, forEachChildItem.StepOutputs.Count);
@@ -2329,7 +2329,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
 			Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
 			Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
-			Assert.AreEqual(seqId, serviceTestStep.UniqueId);
+			Assert.AreEqual(seqId, serviceTestStep.ActivityID);
 
 			Assert.AreEqual(1, serviceTestStep.Children.Count);
 			var childItem = serviceTestStep.Children[0];
@@ -2379,13 +2379,13 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
 			Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
 			Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
-			Assert.AreEqual(seqId, serviceTestStep.UniqueId);
+			Assert.AreEqual(seqId, serviceTestStep.ActivityID);
 
 			Assert.AreEqual(1, serviceTestStep.Children.Count);
 			var childItem = serviceTestStep.Children[0];
 			Assert.AreEqual(StepType.Mock, childItem.Type);
 			Assert.AreEqual(assignActivity.GetType().Name, childItem.ActivityType);
-			Assert.AreEqual(uniqueId, childItem.UniqueId);
+			Assert.AreEqual(uniqueId, childItem.ActivityID);
 			Assert.AreEqual(serviceTestStep, childItem.Parent);
 
 			Assert.AreEqual(3, childItem.StepOutputs.Count);
@@ -2442,19 +2442,19 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var serviceTestStep = testFrameworkViewModel.SelectedServiceTest.TestSteps[0];
 			Assert.AreEqual(StepType.Mock, serviceTestStep.Type);
 			Assert.AreEqual(sequenceActivity.GetType().Name, serviceTestStep.ActivityType);
-			Assert.AreEqual(seqId, serviceTestStep.UniqueId);
+			Assert.AreEqual(seqId, serviceTestStep.ActivityID);
 
 			Assert.AreEqual(1, serviceTestStep.Children.Count);
 			var childItem = serviceTestStep.Children[0];
 			Assert.AreEqual(StepType.Mock, childItem.Type);
 			Assert.AreEqual(dsfSequenceActivity.GetType().Name, childItem.ActivityType);
-			Assert.AreEqual(dsfSeqId, childItem.UniqueId);
+			Assert.AreEqual(dsfSeqId, childItem.ActivityID);
 			Assert.AreEqual(serviceTestStep, childItem.Parent);
 
 			Assert.AreEqual(1, childItem.Children.Count);
 			var forEachChildItem = childItem.Children[0];
 			Assert.AreEqual(assignActivity.GetType().Name, forEachChildItem.ActivityType);
-			Assert.AreEqual(uniqueId, forEachChildItem.UniqueId);
+			Assert.AreEqual(uniqueId, forEachChildItem.ActivityID);
 			Assert.AreEqual(childItem, forEachChildItem.Parent);
 
 			Assert.AreEqual(3, forEachChildItem.StepOutputs.Count);

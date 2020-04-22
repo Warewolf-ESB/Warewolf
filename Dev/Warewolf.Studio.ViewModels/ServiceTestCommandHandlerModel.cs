@@ -1,8 +1,7 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -26,15 +25,14 @@ namespace Warewolf.Studio.ViewModels
 {
     public sealed class ServiceTestCommandHandlerModel : IServiceTestCommandHandler
     {
-        readonly DataListConversionUtils _dataListConversionUtils;
-
+        private readonly DataListConversionUtils _dataListConversionUtils;
         public ServiceTestCommandHandlerModel()
         {
             DataList = new DataListModel();
             _dataListConversionUtils = new DataListConversionUtils();
         }
 
-        DataListModel DataList { get; set; }
+        private DataListModel DataList { get; set; }
 
         public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber) => CreateTest(resourceModel, testNumber, false);
 
@@ -96,7 +94,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static void ShowRunAllUnsavedError()
+        private static void ShowRunAllUnsavedError()
         {
             var popupController = CustomContainer.Get<IPopupController>();
             popupController?.Show(Resources.Languages.Core.ServiceTestRunAllUnsavedTestsMessage,
@@ -143,7 +141,7 @@ namespace Warewolf.Studio.ViewModels
                 ShowResourceDeleted(selectedServiceTest, resourceModel);
                 return;
             }
-            if (res?.Result != null)
+            if (res.Result != null)
             {
                 if (res.Result.RunTestResult == RunResult.TestResourceDeleted)
                 {
@@ -209,15 +207,13 @@ namespace Warewolf.Studio.ViewModels
 
         private void RunTestStep(IServiceTestModel selectedServiceTest, IServiceTestStep resTestStep)
         {
-            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
-            foreach (var serviceTestStep in serviceTestSteps)
+            var serviceTestSteps = selectedServiceTest
+                .TestSteps
+                .Select(o => o.As<ServiceTestStep>())
+                .Where(testStep => testStep != null && testStep.ActivityID == resTestStep.ActivityID)
+                .ToList();
+            foreach (var resServiceTestStep in serviceTestSteps)
             {
-                var resServiceTestStep = serviceTestStep.As<ServiceTestStep>();
-                if (resServiceTestStep == null)
-                {
-                    continue;
-                }
-
                 UpdateTestStepResult(resServiceTestStep, resTestStep);
 
                 var serviceTestOutputs = resTestStep.StepOutputs;
@@ -233,7 +229,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static void UpdateTestStepResult(ServiceTestStep resServiceTestStep, IServiceTestStep resTestStep)
+        private static void UpdateTestStepResult(ServiceTestStep resServiceTestStep, IServiceTestStep resTestStep)
         {
             resServiceTestStep.Result = resTestStep.Result;
 
@@ -246,7 +242,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static void UpdateTestStatus(IServiceTestModel selectedServiceTest, IServiceTestModelTO res)
+        private static void UpdateTestStatus(IServiceTestModel selectedServiceTest, IServiceTestModelTO res)
         {
             selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
             selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
@@ -262,11 +258,11 @@ namespace Warewolf.Studio.ViewModels
             selectedServiceTest.TestPending = testPending;
         }
 
-        void SetChildrenTestResult(ObservableCollection<IServiceTestStep> resTestStepchildren, ObservableCollection<IServiceTestStep> serviceTestStepChildren)
+        private void SetChildrenTestResult(IEnumerable<IServiceTestStep> resTestStepchildren, IReadOnlyCollection<IServiceTestStep> serviceTestStepChildren)
         {
             foreach (var child in resTestStepchildren)
             {
-                var childServiceTestSteps = serviceTestStepChildren.Where(testStep => testStep.UniqueId == child.UniqueId).ToList();
+                var childServiceTestSteps = serviceTestStepChildren.Where(testStep => testStep.ActivityID == child.ActivityID).ToList();
                 foreach (var childServiceTestStep in childServiceTestSteps)
                 {
                     childServiceTestStep.Result = child.Result;
@@ -281,7 +277,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
+        private static ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(IEnumerable<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
         {
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
             foreach (var serviceTestOutput in stepStepOutputs)
@@ -337,6 +333,16 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public void RunAllTestsInBrowser(bool isDirty, string runAllTestUrl, IExternalProcessExecutor processExecutor)
+        {
+            if (isDirty)
+            {
+                ShowRunAllUnsavedError();
+                return;
+            }
+            processExecutor?.OpenInBrowser(new Uri(runAllTestUrl));
+        }
+
+        public void RunAllTestCoverageInBrowser(bool isDirty, string runAllTestUrl, IExternalProcessExecutor processExecutor)
         {
             if (isDirty)
             {
