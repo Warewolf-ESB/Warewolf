@@ -355,8 +355,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.UnitTestAttributes", "Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj", "{4A455098-FFDD-4861-B873-656F960CF0BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Coverage.Reports", "Warewolf.Coverage.Reports\Warewolf.Coverage.Reports.csproj", "{D598F9F4-B726-456E-82C8-F0D92AAB2265}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1426,14 +1424,6 @@ Global
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|x86.ActiveCfg = Release|Any CPU
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|x86.Build.0 = Release|Any CPU
-		{D598F9F4-B726-456E-82C8-F0D92AAB2265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D598F9F4-B726-456E-82C8-F0D92AAB2265}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D598F9F4-B726-456E-82C8-F0D92AAB2265}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D598F9F4-B726-456E-82C8-F0D92AAB2265}.Debug|x86.Build.0 = Debug|Any CPU
-		{D598F9F4-B726-456E-82C8-F0D92AAB2265}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D598F9F4-B726-456E-82C8-F0D92AAB2265}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D598F9F4-B726-456E-82C8-F0D92AAB2265}.Release|x86.ActiveCfg = Release|Any CPU
-		{D598F9F4-B726-456E-82C8-F0D92AAB2265}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
