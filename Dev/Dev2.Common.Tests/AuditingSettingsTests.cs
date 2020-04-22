@@ -129,5 +129,51 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(expectedAuditingSettingsData.LoggingDataSource.Name, "Data Source");
             Assert.AreEqual(source, result);
         }
+
+        [TestMethod]
+        public void AuditSettingsData_Equals_ExpectTrue()
+        {
+            var data1 = new AuditingSettingsData();
+            var data2 = new AuditingSettingsData();
+
+            Assert.IsTrue(data1.Equals(data2));
+
+            data1.LoggingDataSource.Payload = "foo";
+            data2.LoggingDataSource.Payload = "foo";
+
+            Assert.IsTrue(data1.Equals(data2));
+
+        }
+
+        [TestMethod]
+        public void AuditSettingsData_Equals_ExpectFalse()
+        {
+            var data1 = new AuditingSettingsData();
+            data1.LoggingDataSource.Payload = "foo";
+            var data2 = new AuditingSettingsData();
+            data2.LoggingDataSource.Payload = "foo2";
+
+            Assert.IsFalse(data1.Equals(data2));
+            //Assert.IsTrue(data1.Equals(data2));
+
+        }
+
+        [TestMethod]
+        public void AuditSettingsData_Clone_ExpectUnique()
+        {
+            var data1 = new AuditingSettingsData();
+            data1.LoggingDataSource.Payload = "foo";
+            var data2 = data1.Clone();
+            Assert.AreNotEqual(data1.GetHashCode(), data2.GetHashCode());
+            Assert.IsFalse(ReferenceEquals(data1, data2));
+            Assert.IsFalse(ReferenceEquals(data1.LoggingDataSource, data2.LoggingDataSource));
+
+            Assert.IsTrue(data1.Equals(data2));
+
+            data1.LoggingDataSource.Payload = "foo2";
+
+            Assert.IsFalse(data1.Equals(data2));
+
+        }
     }
 }

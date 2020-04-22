@@ -21,17 +21,28 @@ namespace Warewolf.Configuration
             get => _loggingDataSource;
             set => SetProperty(ref _loggingDataSource, value);
         }
+
         public AuditingSettingsData Clone()
         {
             var result = (AuditingSettingsData)MemberwiseClone();
-            result.LoggingDataSource = LoggingDataSource.Clone();
+            result._loggingDataSource = LoggingDataSource.Clone();
             return result;
         }
-        public bool Equals(AuditingSettingsData other)
+
+        public bool Equals(AuditingSettingsData obj)
         {
-            var equals = base.Equals(other);
-            equals &= string.Equals(LoggingDataSource, other.LoggingDataSource);
-            return equals;
+            if (obj is AuditingSettingsData other)
+            {
+                var equals = base.Equals(other);
+                equals &= LoggingDataSource.Equals(other.LoggingDataSource);
+                return equals;
+            }
+            return false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as AuditingSettingsData);
         }
     }
 }
