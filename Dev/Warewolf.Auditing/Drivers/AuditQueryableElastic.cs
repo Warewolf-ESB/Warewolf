@@ -159,14 +159,10 @@ namespace Warewolf.Auditing.Drivers
         {
             var result = new List<Audit>();
             BuildJsonQuery(values);
-            var results = ExecuteDatabase().ToList();
-            if (results.Count > 0)
-            {
-                var queryLogData = AuditLogs(results, result);
-                if (queryLogData != null) return queryLogData;
-            }
-
-            return result;
+            var results = ExecuteDatabase()?.ToList();
+            if (!(results?.Count > 0)) return result;
+            var queryLogData = AuditLogs(results, result);
+            return queryLogData ?? result;
         }
 
         private void BuildJsonQuery(Dictionary<string, StringBuilder> values)
@@ -357,7 +353,7 @@ namespace Warewolf.Auditing.Drivers
                     .Query(q =>
                         q.Raw(_query));
                 var logEvents = client.Search<object>(search);
-                var sources = logEvents.HitsMetadata.Hits.Select(h => h.Source);
+                var sources = logEvents.HitsMetadata?.Hits.Select(h => h.Source);
                 return sources;
             }
         }
