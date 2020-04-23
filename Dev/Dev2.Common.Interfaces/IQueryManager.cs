@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿using System;
+ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +47,7 @@ namespace Dev2.Common.Interfaces
         IList<Guid> FetchDependenciesOnList(IEnumerable<Guid> values);
 
         IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources();
+        IEnumerable<IElasticsearchSourceDefinition> FetchElasticsearchServiceSources();
         IList<IWcfServerSource> FetchWcfSources();
         IList<IWcfAction> WcfActions(IWcfServerSource source);
 

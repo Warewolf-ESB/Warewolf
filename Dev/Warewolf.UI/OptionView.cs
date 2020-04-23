@@ -13,6 +13,7 @@ using Dev2.Studio.Core.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
+using Warewolf.Data;
 using Warewolf.Options;
 
 namespace Warewolf.UI

@@ -24,7 +24,6 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using Warewolf.Test.Agent;
 using System.Linq;
 using Warewolf.UnitTestAttributes;
 

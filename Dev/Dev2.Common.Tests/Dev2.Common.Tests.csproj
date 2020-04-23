@@ -57,6 +57,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="AuditingSettingsTests.cs" />
     <Compile Include="CommonComparerTests.cs" />
     <Compile Include="Common\GetComputerNamesImplTests.cs" />
     <Compile Include="Core\Database\DbSourceDefinitionTests.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Common\GetComputerNamesTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="JsonResource.cs" />
+    <Compile Include="LegacySettingsTests.cs" />
     <Compile Include="ServerSettingsTests.cs" />
     <Compile Include="ComputerNameTests.cs" />
     <Compile Include="RecordSetSearchPayloadTests.cs" />
@@ -143,6 +145,10 @@
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
       <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
+      <Project>{d754b817-a714-4e6e-bd46-8c4ffffbdacb}</Project>
+      <Name>Dev2.Infrastructure.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
@@ -158,6 +164,10 @@
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
       <Project>{6C6D687D-EC18-4AB9-8F2E-07C9FBDBCA97}</Project>
       <Name>Warewolf.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+      <Name>Warewolf.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>

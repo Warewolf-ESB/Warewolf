@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -2548,7 +2548,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         [TestMethod]
         [ExpectedException(typeof(WarewolfSaveException))]
-        public void SaveServerSettings_OutputNull()
+        public void SaveAuditingSettings_OutputNull()
         {
             //Arrange
             Setup();
@@ -2561,8 +2561,8 @@ namespace BusinessDesignStudio.Unit.Tests
             });
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            var serverSettingsData = new ServerSettingsData { AuditFilePath = "somePath" };
-            _repo.SaveServerSettings(_environmentModel.Object, serverSettingsData);
+            var auditingSettingsDataSettingsData = new LegacySettingsData() { AuditFilePath = "somePath" };
+            _repo.SaveAuditingSettings(_environmentModel.Object, auditingSettingsDataSettingsData);
         }
 
         [TestMethod]

@@ -51,7 +51,6 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BuildConfig.cs" />
     <Compile Include="Database Tools Refresh\DatabaseServiceInputChangeTests.cs" />
     <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -151,10 +150,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="WPF.JoshSmith">
       <HintPath>..\Binaries\WPF.JoshSmith.dll</HintPath>
-    </Reference>
-    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

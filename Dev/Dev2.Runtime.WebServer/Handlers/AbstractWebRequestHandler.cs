@@ -134,12 +134,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var uri = string.IsNullOrWhiteSpace(webRequest.WebServerUrl) ? new Uri("https://test/") : new Uri(webRequest.WebServerUrl);
                 _dataObject = _dataObjectFactory.New(workspaceGuid, user, serviceName, webRequest);
                 _dataObject.OriginalServiceName = serviceName;
+                _dataObject.SetHeaders(headers);
                 _dataObject.SetupForWebDebug(webRequest);
                 webRequest.BindRequestVariablesToDataObject(ref _dataObject);
                 _dataObject.SetupForRemoteInvoke(headers);
                 _dataObject.SetEmissionType(uri, serviceName, headers);
                 _dataObject.SetupForTestExecution(serviceName, headers);
-                _dataObject.SetHeaders(headers);
                 if (_dataObject.ServiceName == null)
                 {
                     _dataObject.ServiceName = serviceName;
@@ -160,7 +160,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         CompressOldLogFiles = true
                     };
                 }
-
+                
                 var stateNotifier = CustomContainer.Get<IStateNotifierFactory>()?.New(_dataObject);
                 _dataObject.StateNotifier = stateNotifier;
             }
@@ -269,8 +269,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if (webRequest.ServiceName.EndsWith(".xml") || _dataObject.ReturnType == EmitionTypes.XML)
                 {
                     formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                }
-                else
+                } else
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 }
@@ -338,7 +337,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 var esbExecuteRequest = new EsbExecuteRequest
                 {
-
+                    
                     ServiceName = serviceName,
                 };
                 foreach (string key in webRequest.Variables)
@@ -527,8 +526,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     IsFromWebServer = true,
                     ExecutingUser = user,
                     ServiceName = serviceName,
-                    WorkspaceID = workspaceGuid,
-                    ExecutionID = Guid.NewGuid(),
+                    WorkspaceID = workspaceGuid
                 };
         }
     }
