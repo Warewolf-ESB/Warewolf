@@ -30,13 +30,14 @@ using Dev2.Services.Security;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
+using Warewolf.Data;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Security
 {
-    public class OverrideResource : Warewolf.BindableBase
+    public class OverrideResource : BindableBase
     {
         private Guid _resourceId;
         private string _resourceName;
