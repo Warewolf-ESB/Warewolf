@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Warewolf.Data;
 
 namespace Dev2.Services.Security
 {
@@ -22,10 +23,16 @@ namespace Dev2.Services.Security
         readonly ReaderWriterLockSlim _permissionsLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
         protected List<WindowsGroupPermission> _permissions = new List<WindowsGroupPermission>();
-
+        protected NamedGuid _overrideResource = new NamedGuid();
         public event EventHandler PermissionsChanged;
 
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
+
+        public NamedGuid OverrideResource
+        {
+            get { return _overrideResource; }
+            set { _overrideResource = value; }
+        }
 
         public IReadOnlyList<WindowsGroupPermission> Permissions
         {
@@ -68,19 +75,20 @@ namespace Dev2.Services.Security
 
                 var removedCount = _permissions.RemoveAll(p => !p.IsServer && p.ResourceID == resourceId);
 
-                if(removedCount > 0)
+                if (removedCount > 0)
                 {
                     RaisePermissionsModified(oldPermissions, _permissions);
 
                     // This will trigger a FileSystemWatcher file changed event
                     // which in turn will cause the permissions to be re-read.
-                    WritePermissions(_permissions);
+                    WritePermissions(_permissions, _overrideResource);
                 }
             }
             finally
             {
                 _permissionsLock.ExitWriteLock();
             }
+
             LogEnd();
         }
 
@@ -94,7 +102,7 @@ namespace Dev2.Services.Security
             {
                 newPermissions = ReadPermissions();
                 _permissions.Clear();
-                if(newPermissions != null)
+                if (newPermissions != null)
                 {
                     _permissions.AddRange(newPermissions);
                 }
@@ -103,17 +111,19 @@ namespace Dev2.Services.Security
             {
                 _permissionsLock.ExitWriteLock();
             }
-            if(newPermissions != null)
+
+            if (newPermissions != null)
             {
                 RaisePermissionsModified(previousPermissions, newPermissions);
             }
+
             RaisePermissionsChanged();
             LogEnd();
         }
 
         void RaisePermissionsModified(IEnumerable<WindowsGroupPermission> oldPermissions, IEnumerable<WindowsGroupPermission> newPermissions)
         {
-            if(oldPermissions != null && newPermissions != null)
+            if (oldPermissions != null && newPermissions != null)
             {
                 RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions.ToList()));
             }
@@ -135,10 +145,9 @@ namespace Dev2.Services.Security
         }
 
         protected abstract List<WindowsGroupPermission> ReadPermissions();
-        protected abstract void WritePermissions(List<WindowsGroupPermission> permissions);
+        protected abstract void WritePermissions(List<WindowsGroupPermission> permissions, NamedGuid overrideResource);
         protected abstract void LogStart([CallerMemberName] string methodName = null);
         protected abstract void LogEnd([CallerMemberName] string methodName = null);
-
     }
 
     public class PermissionsModifiedEventArgs

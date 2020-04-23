@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 settings.HasError = true;
                 settings.Error = ErrorResource.ErrorReadingSettingsConfiguration + ex.Message;
-                settings.Security = new SecuritySettingsTO(SecurityRead.DefaultPermissions);
+                settings.Security = new SecuritySettingsTO(SecurityRead.DefaultPermissions,SecurityRead.DefaultOverrideResouce);
             }
 
           

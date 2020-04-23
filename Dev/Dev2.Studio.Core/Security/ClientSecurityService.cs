@@ -17,6 +17,7 @@ using Dev2.Common;
 using Dev2.Controller;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
+using Warewolf.Data;
 
 namespace Dev2.Security
 {
@@ -81,7 +82,7 @@ namespace Dev2.Security
 
         protected override List<WindowsGroupPermission> ReadPermissions() => null;
 
-        protected override void WritePermissions(List<WindowsGroupPermission> permissions)
+        protected override void WritePermissions(List<WindowsGroupPermission> permissions,NamedGuid overrideResource)
         {
         }
 

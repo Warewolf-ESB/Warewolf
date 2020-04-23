@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Dev2.Services.Security;
+using Warewolf.Data;
 
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
@@ -27,15 +28,15 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             return ReadPermissionsResults;
         }
 
-        protected override void WritePermissions(List<WindowsGroupPermission> permissions)
+        protected override void WritePermissions(List<WindowsGroupPermission> permissions, NamedGuid overrideResource)
         {
         }
 
-        protected override void LogStart([CallerMemberName]string methodName = null)
+        protected override void LogStart([CallerMemberName] string methodName = null)
         {
         }
 
-        protected override void LogEnd([CallerMemberName]string methodName = null)
+        protected override void LogEnd([CallerMemberName] string methodName = null)
         {
         }
     }
