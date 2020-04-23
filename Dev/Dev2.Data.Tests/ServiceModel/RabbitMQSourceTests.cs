@@ -138,7 +138,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RabbitMQSource))]
-        [Depends(Depends.ContainerType.RabbitMQ)]
         public void RabbitMQSource_NewConnection_Success()
         {
             //-------------------------------Arrange-----------------------------

@@ -86,6 +86,7 @@ namespace Dev2.Studio.Core
         public void TestConnection(IWebServiceSource serverSource) => UpdateManagerProxy.TestConnection(serverSource);
 
         public void TestConnection(IRedisServiceSource redisServiceSource) => UpdateManagerProxy.TestConnection(redisServiceSource);
+        public string TestConnection(IElasticsearchSourceDefinition elasticServiceSource) => UpdateManagerProxy.TestConnection(elasticServiceSource);
 
         public void TestConnection(ISharepointServerSource sharePointServiceSource) => UpdateManagerProxy.TestConnection(sharePointServiceSource);
 
@@ -109,6 +110,8 @@ namespace Dev2.Studio.Core
         }
 
         public void Save(IRedisServiceSource redisServiceSource) => UpdateManagerProxy.SaveRedisServiceSource(redisServiceSource, GlobalConstants.ServerWorkspaceID);
+        
+        public void Save(IElasticsearchSourceDefinition elasticsearchServiceSource) => UpdateManagerProxy.SaveElasticsearchServiceSource(elasticsearchServiceSource, GlobalConstants.ServerWorkspaceID);
 
         public void Save(ISharepointServerSource sharePointServiceSource)
         {

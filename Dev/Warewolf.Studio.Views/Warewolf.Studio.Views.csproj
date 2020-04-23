@@ -143,6 +143,9 @@
     <Compile Include="DeployView.xaml.cs">
       <DependentUpon>DeployView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ElasticsearchSourceControl.xaml.cs">
+      <DependentUpon>ElasticsearchSourceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
@@ -241,6 +244,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DeployView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ElasticsearchSourceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

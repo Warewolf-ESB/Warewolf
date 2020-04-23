@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
+using Dev2.Common.Interfaces.Enums;
 using Warewolf.Configuration;
 
 namespace Dev2.Common.Tests
@@ -20,6 +21,13 @@ namespace Dev2.Common.Tests
     public class ServerSettingsTests
     {
         [TestMethod]
+        [TestCategory(nameof(ServerSettings))]
+        public void AuditingSettingsData_Constants()
+        {
+            Assert.AreEqual(nameof(LegacySettingsData), ServerSettings.DefaultSink);
+        }
+        [TestMethod]
+        [TestCategory(nameof(ServerSettings))]
         public void ServerSettingsData_Equals_Valid_Expected()
         {
             var expectedServerSettingsData = new ServerSettingsData
@@ -29,7 +37,8 @@ namespace Dev2.Common.Tests
                 SslCertificateName = "SslCertificateName",
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
-                AuditFilePath = "AuditFilePath"
+                AuditFilePath = "some path",
+                Sink = nameof(LegacySettingsData)
             };
 
             var serverSettingsData = new ServerSettingsData
@@ -39,42 +48,37 @@ namespace Dev2.Common.Tests
                 SslCertificateName = "SslCertificateName",
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
-                AuditFilePath = "AuditFilePath"
+                AuditFilePath = "some path",
+                Sink = nameof(LegacySettingsData)
             };
 
             Assert.IsTrue(serverSettingsData.Equals(expectedServerSettingsData));
         }
 
         [TestMethod]
-        public void Get_AppConfig_Configuration()
+        [TestCategory(nameof(ServerSettings))]
+        public void ServerSettingsData_Get_AppConfig_Configuration()
         {
-            const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
-
             var mockFileWrapper = new Mock<IFile>();
             var mockDirectoryWrapper = new Mock<IDirectory>();
 
             var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
-            Assert.AreEqual(8, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
+            Assert.AreEqual(9, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
-            Assert.AreEqual((ushort)0, settings.WebServerPort);
-            Assert.AreEqual((ushort)0, settings.WebServerSslPort);
+            Assert.AreEqual((ushort) 0, settings.WebServerPort);
+            Assert.AreEqual((ushort) 0, settings.WebServerSslPort);
             Assert.AreEqual(null, settings.SslCertificateName);
             Assert.AreEqual(false, settings.CollectUsageStats);
             Assert.AreEqual(0, settings.DaysToKeepTempFiles);
-            Assert.AreEqual(expectedPath, settings.AuditFilePath);
             Assert.AreEqual(false, settings.EnableDetailedLogging);
             Assert.AreEqual(200, settings.LogFlushInterval);
-        }
-
-        [TestMethod]
-        public void GetServerSettings_Constants()
-        {
-            Assert.AreEqual(@"C:\ProgramData\Warewolf\Audits", ServerSettings.DefaultAuditPath);
+            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
+            Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Logging Paths")]
+        [TestCategory(nameof(ServerSettings))]
         public void ServerSettings_SaveIfNotExists()
         {
             var mockIFile = new Mock<IFile>();
@@ -93,85 +97,13 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory("Logging Paths")]
-        public void ServerSettings_SaveLoggingPath_Exists()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ServerSettings))]
+        public void ServerSettingsData_SinkNotInFile_AuditFilePathIsNotNull_SetSinkEqualLegacySettingsData()
         {
-            var newAuditsFilePath = "falsepath7";
-
-            //arrange
-            ServerSettings serverSettings;
-
-            var sourceFilePath = Config.Server.AuditFilePath;
-
-            var mockIFile = new Mock<IFile>();
-            mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(true).Verifiable();
-            mockIFile.Setup(c => c.Copy(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
-            mockIFile.Setup(o => o.ReadAllText("some path")).Returns("{}");
-            var mockDirectory = new Mock<IDirectory>();
-            mockDirectory.Setup(d => d.CreateIfNotExists(It.IsAny<string>())).Returns(newAuditsFilePath).Verifiable();
-
-            serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
-
-            //act
-            var actual = serverSettings.SaveLoggingPath(sourceFilePath);
-            Assert.IsFalse(actual);
-
-            actual = serverSettings.SaveLoggingPath(newAuditsFilePath);
-            //assert
-            Assert.IsTrue(actual);
-            mockIFile.Verify();
-            mockDirectory.Verify();
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("Logging Paths")]
-        public void ServerSettings_SaveLoggingPath_DoesNot_Exist()
-        {
-            var newAuditsFilePath = "falsepath7";
-
-            //arrange
-            var sourceFilePath = Config.Server.AuditFilePath;
-
-            var mockIFile = new Mock<IFile>();
-            mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
-            var mockDirectory = new Mock<IDirectory>();
-
-            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
-
-            //act
-            var actual = serverSettings.SaveLoggingPath(sourceFilePath);
-            Assert.IsFalse(actual);
-
-            actual = serverSettings.SaveLoggingPath(newAuditsFilePath);
-            //assert
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("Logging Paths")]
-        public void ServerSettings_SaveLoggingPath_Get()
-        {
-            //arrange
-            var mockIFile = new Mock<IFile>();
-            mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
-            var mockDirectory = new Mock<IDirectory>();
-
-            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
-
-            var result = serverSettings.Get();
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", result.AuditFilePath);
-            Assert.IsFalse(result.CollectUsageStats.Value);
-            Assert.AreEqual(0, result.DaysToKeepTempFiles);
-            Assert.IsFalse(result.EnableDetailedLogging.Value);
-            Assert.AreEqual(200, result.LogFlushInterval);
-            Assert.IsNull(result.SslCertificateName);
-            Assert.AreEqual(0, result.WebServerPort.Value);
-            Assert.AreEqual(0, result.WebServerSslPort.Value);
+            var serverSettings = Config.Server.Get();
+            Assert.AreEqual(nameof(LegacySettingsData), serverSettings.Sink);
+            Assert.AreEqual(LegacySettings.DefaultAuditPath, serverSettings.AuditFilePath);
         }
     }
 }

@@ -1,36 +1,50 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SQLite;
-using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
+using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
+using Nest;
+using Newtonsoft.Json.Linq;
+using Serilog.Sinks.Elasticsearch;
+using Warewolf.Auditing;
+using Warewolf.Storage;
+using Warewolf.UnitTestAttributes;
+using Audit = Warewolf.Auditing.Audit;
+using File = System.IO.File;
 
 namespace Warewolf.Driver.Serilog.Tests
 {
     [TestClass]
     public class SeriLogPublishTests
     {
+        const string DefaultPort = "9200";
+
         [TestMethod]
-        [Owner("Siphamandla Dube")]
+        [Owner("Candice Daniel")]
         [TestCategory(nameof(SeriLogPublisher))]
-        public void SeriLogPublisher_NewPublisher_WriteToSink_UsingAny_ILogEventSink_IPML_Success()
+        public void SeriLogPublisher_NewPublisher_Sqlite_WriteToSink_UsingAny_ILogEventSink_IPML_Success()
         {
             //-------------------------Arrange------------------------------
             var testEventSink = new TestLogEventSink();
@@ -40,83 +54,40 @@ namespace Warewolf.Driver.Serilog.Tests
             var loggerConnection = loggerSource.NewConnection(seriConfig);
             var loggerPublisher = loggerConnection.NewPublisher();
 
-            var error = new { ServerName = "testServer", Error = "testError" };
-
-            var expectedTestWarnMsgTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
-            var expectedTestErrorMsg = $"Error From: {@error.ServerName} : {error.Error} ";
+            var error = new {ServerName = "testServer", Error = "testError"};
+            var fatal = new {ServerName = "testServer", Error = "testFatalError"};
+            var info = new {Message = "test message"};
 
             //-------------------------Act----------------------------------
-            loggerPublisher.Warn(expectedTestWarnMsgTemplate);
-            loggerPublisher.Error(expectedTestErrorMsg);
+
+            loggerPublisher.Info(GlobalConstants.WarewolfLogsTemplate, info);
+            loggerPublisher.Error(GlobalConstants.WarewolfLogsTemplate, error);
+            loggerPublisher.Fatal(GlobalConstants.WarewolfLogsTemplate, fatal);
 
             var actualLogEventList = testEventSink.LogData;
             //-------------------------Assert-------------------------------
-            Assert.IsTrue(actualLogEventList.Count == 2);
-
-            Assert.AreEqual(expected: LogEventLevel.Warning, actual: actualLogEventList[0].Level);
-            Assert.AreEqual(expected: expectedTestWarnMsgTemplate, actual: actualLogEventList[0].MessageTemplate.Text);
-
-            Assert.AreEqual(expected: LogEventLevel.Error, actual: actualLogEventList[1].Level);
-            Assert.AreEqual(expected: expectedTestErrorMsg, actual: actualLogEventList[1].MessageTemplate.Text);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(SeriLogPublisher))]
-        public void SeriLogPublisher_NewPublisher_WriteToSink_UsingAny_ILogEventSink_IPML_WithOutputTemplateFormat_Test_Success()
-        {
-            //-------------------------Arrange------------------------------
-            var testEventSink = new TestLogEventSink();
-
-            var seriConfig = new TestSeriLogSinkConfig(testEventSink);
-
-            var loggerSource = new SeriLoggerSource();
-
-            var loggerConnection = loggerSource.NewConnection(seriConfig);
-            var loggerPublisher = loggerConnection.NewPublisher();
-
-            var error = new { ServerName = "testServer", Error = "testError" };
-            var fatal = new { ServerName = "testServer", Error = "testFatalError" };
-
-            var expectedTestInfoMsgTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}";
-            var expectedTestErrorMsgTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
-            var expectedTestFatalMsg = "test infomation {testFatalKey}";
-
-            var expectedTestErrorMsg = $"Error From: {@error.ServerName} : {error.Error} ";
-            //-------------------------Act----------------------------------
-
-            loggerPublisher.Info(expectedTestInfoMsgTemplate, DateTime.Now, LogEventLevel.Information, "test message");
-            loggerPublisher.Error(expectedTestErrorMsgTemplate, DateTime.Now, LogEventLevel.Error, expectedTestErrorMsg, Environment.NewLine, "test exception");
-            loggerPublisher.Fatal(expectedTestFatalMsg, @fatal);
-
-            var actualLogEventList = testEventSink.LogData;
-
-            var item1 = actualLogEventList[0].Properties.FirstOrDefault(o => o.Key == "Message");
-            var item2 = actualLogEventList[1].Properties.First(o => o.Key == "Message");
-
-            //-------------------------Assert-------------------------------
-            Assert.IsTrue(actualLogEventList.Count == 3);
+            Assert.AreEqual(3, actualLogEventList.Count);
 
             Assert.AreEqual(expected: LogEventLevel.Information, actual: actualLogEventList[0].Level);
-            Assert.AreEqual(expected: expectedTestInfoMsgTemplate, actual: actualLogEventList[0].MessageTemplate.Text);
-
-            Assert.AreEqual(expected: "Message", actual: item1.Key);
-            Assert.AreEqual(expected: "\"test message\"".ToString(), actual: item1.Value.ToString());
+            Assert.AreEqual(expected: GlobalConstants.WarewolfLogsTemplate, actual: actualLogEventList[0].MessageTemplate.Text);
+            var o1 = JObject.Parse(actualLogEventList[0].Properties["Data"].ToString());
+            Assert.AreEqual(expected: "test message", actual: o1["Message"].ToString());
 
             Assert.AreEqual(expected: LogEventLevel.Error, actual: actualLogEventList[1].Level);
-            Assert.AreEqual(expected: expectedTestErrorMsgTemplate, actual: actualLogEventList[1].MessageTemplate.Text);
-            Assert.AreEqual(expected: "\"Error From: testServer : testError \"", actual: item2.Value.ToString());
+            Assert.AreEqual(expected: GlobalConstants.WarewolfLogsTemplate, actual: actualLogEventList[1].MessageTemplate.Text);
+            var o2 = JObject.Parse(actualLogEventList[1].Properties["Data"].ToString());
+            Assert.AreEqual(expected: "testServer", o2["ServerName"].ToString());
+            Assert.AreEqual(expected: "testError", o2["Error"].ToString());
 
             Assert.AreEqual(expected: LogEventLevel.Fatal, actual: actualLogEventList[2].Level);
-            Assert.AreEqual(expected: 1, actual: actualLogEventList[2].Properties.Count);
-            Assert.IsTrue(actualLogEventList[2].Properties.ContainsKey("testFatalKey"));
-
-            Assert.AreEqual(1, actualLogEventList[2].Properties.Values.Count());
-            Assert.AreEqual(expected: expectedTestFatalMsg, actual: actualLogEventList[2].MessageTemplate.Text);
+            Assert.AreEqual(expected: GlobalConstants.WarewolfLogsTemplate, actual: actualLogEventList[2].MessageTemplate.Text);
+            var o3 = JObject.Parse(actualLogEventList[2].Properties["Data"].ToString());
+            Assert.AreEqual(expected: "testServer", o3["ServerName"].ToString());
+            Assert.AreEqual(expected: "testFatalError", o3["Error"].ToString());
         }
-       
-        [TestMethod]  
-        [Owner("Siphamandla Dube")]
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
         [TestCategory(nameof(SeriLogPublisher))]
         public void SeriLogPublisher_NewPublisher_Reading_LogData_From_SQLite_Success()
         {
@@ -129,10 +100,9 @@ namespace Warewolf.Driver.Serilog.Tests
             var logger = new LoggerConfiguration().WriteTo.SQLite(testDBPath, testTableName).CreateLogger();
 
             var mockSeriLogConfig = new Mock<ISeriLogConfig>();
-            mockSeriLogConfig.SetupGet(o => o.ConnectionString).Returns(testDBPath);
             mockSeriLogConfig.SetupGet(o => o.Logger).Returns(logger);
 
-            var loggerSource = new SeriLoggerSource
+            var loggerSource = new SeriLogSQLiteSource
             {
                 ConnectionString = testDBPath,
                 TableName = testTableName
@@ -142,42 +112,222 @@ namespace Warewolf.Driver.Serilog.Tests
             {
                 var loggerPublisher = loggerConnection.NewPublisher();
 
-                var error = new { ServerName = "testServer", Error = "testError" };
-                var fatal = new { ServerName = "testServer", Error = "testFatalError" };
+                var error = new {ServerName = "testServer", Error = "testError"};
+                var fatal = new {ServerName = "testServer", Error = "testFatalError"};
 
-                var expectedTestErrorMsgTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+                var expectedTestErrorMsgTemplate = GlobalConstants.WarewolfLogsTemplate;
                 var expectedTestFatalMsg = "test infomation {testFatalKey}";
-
                 var testErrorMsg = $"Error From: {@error.ServerName} : {error.Error} ";
 
                 //-------------------------Act----------------------------------
 
-                loggerPublisher.Info("test message");
-                loggerPublisher.Error(expectedTestErrorMsgTemplate, DateTime.Now, LogEventLevel.Error, testErrorMsg, Environment.NewLine, "test exception");
+                loggerPublisher.Info(GlobalConstants.WarewolfLogsTemplate, "test message");
+                loggerPublisher.Error(expectedTestErrorMsgTemplate, testErrorMsg);
                 loggerPublisher.Fatal(expectedTestFatalMsg, @fatal);
-            };
+            }
 
             //-------------------------Assert------------------------------------
-            var dataFromDB = new TestDatabase(loggerSource.ConnectionString, loggerSource.TableName);
-            var dataList = dataFromDB.GetPublishedData().ToList();
+            var dataFromDb = new TestSqliteDatabase(loggerSource.ConnectionString, loggerSource.TableName);
+            var dataList = dataFromDb.GetPublishedData().ToList();
 
-            Assert.IsNull(dataList[0]);
+            var o1 = JObject.Parse(dataList[0].Properties);
+            Assert.IsNotNull(dataList[0].Timestamp);
+            Assert.AreEqual(null, dataList[0].Exception);
+            Assert.AreEqual(LogEventLevel.Information, dataList[0].Level);
+            Assert.AreEqual(expected: "test message", actual: o1["Data"].ToString());
 
-            Assert.AreEqual(expected: LogEventLevel.Error, actual: dataList[1].Level);
-            Assert.AreEqual(expected: "\r\n", actual: dataList[1].NewLine);
-            Assert.AreEqual(expected: "test exception", actual: dataList[1].Exception);
-            Assert.AreEqual(expected: "Error From: testServer : testError ", actual: dataList[1].Message);
+            var o2 = JObject.Parse(dataList[1].Properties);
+            Assert.IsNotNull(dataList[1].Timestamp);
+            Assert.AreEqual(null, dataList[1].Exception);
+            Assert.AreEqual(LogEventLevel.Error, dataList[1].Level);
+            Assert.AreEqual(expected: "Error From: testServer : testError ", actual: o2["Data"].ToString());
 
-            Assert.AreEqual(expected: LogEventLevel.Verbose, actual: dataList[2].Level);
-            Assert.AreEqual(expected: null, actual: dataList[2].NewLine);
-            Assert.AreEqual(expected: null, actual: dataList[2].Exception);
-            Assert.AreEqual(expected: null, actual: dataList[2].Message);
+            var o3 = JObject.Parse(dataList[2].Properties);
+            Assert.IsNotNull(dataList[2].Timestamp);
+            Assert.AreEqual(null, dataList[2].Exception);
+            Assert.AreEqual(LogEventLevel.Fatal, dataList[2].Level);
+            Assert.AreEqual(expected: "{ ServerName = testServer, Error = testFatalError }", o3["testFatalKey"].ToString());
+        }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SeriLogPublisher))]
+        public void SeriLogPublisher_NewPublisher_Elasticsearch_WriteToSink_UsingAny_ILogEventSink_IPML_Success()
+        {
+            //-------------------------Arrange------------------------------
+            var testEventSink = new TestLogEventSink();
+            var seriConfig = new TestSeriLogSinkConfig(testEventSink);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            var loggerSource = new SerilogElasticsearchSource
+            {
+                Port = DefaultPort,
+                HostName = hostName,
+            };
+
+            var loggerConnection = loggerSource.NewConnection(seriConfig);
+            var loggerPublisher = loggerConnection.NewPublisher();
+
+            var error = new {ServerName = "testServer", Error = "testError"};
+            var fatal = new {ServerName = "testServer", Error = "testFatalError"};
+            var info = new {Message = "test message"};
+
+            //-------------------------Act----------------------------------
+
+            loggerPublisher.Info(GlobalConstants.WarewolfLogsTemplate, info);
+            loggerPublisher.Error(GlobalConstants.WarewolfLogsTemplate, error);
+            loggerPublisher.Fatal(GlobalConstants.WarewolfLogsTemplate, fatal);
+
+            var actualLogEventList = testEventSink.LogData;
+            //-------------------------Assert-------------------------------
+            Assert.AreEqual(3, actualLogEventList.Count);
+
+            Assert.AreEqual(expected: LogEventLevel.Information, actual: actualLogEventList[0].Level);
+            Assert.AreEqual(expected: GlobalConstants.WarewolfLogsTemplate, actual: actualLogEventList[0].MessageTemplate.Text);
+            var o1 = JObject.Parse(actualLogEventList[0].Properties["Data"].ToString());
+            Assert.AreEqual(expected: "test message", actual: o1["Message"].ToString());
+
+            Assert.AreEqual(expected: LogEventLevel.Error, actual: actualLogEventList[1].Level);
+            Assert.AreEqual(expected: GlobalConstants.WarewolfLogsTemplate, actual: actualLogEventList[1].MessageTemplate.Text);
+            var o2 = JObject.Parse(actualLogEventList[1].Properties["Data"].ToString());
+            Assert.AreEqual(expected: "testServer", o2["ServerName"].ToString());
+            Assert.AreEqual(expected: "testError", o2["Error"].ToString());
+
+            Assert.AreEqual(expected: LogEventLevel.Fatal, actual: actualLogEventList[2].Level);
+            Assert.AreEqual(expected: GlobalConstants.WarewolfLogsTemplate, actual: actualLogEventList[2].MessageTemplate.Text);
+            var o3 = JObject.Parse(actualLogEventList[2].Properties["Data"].ToString());
+            Assert.AreEqual(expected: "testServer", o3["ServerName"].ToString());
+            Assert.AreEqual(expected: "testFatalError", o3["Error"].ToString());
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SeriLogPublisher))]
+        public void SeriLogPublisher_NewPublisher_Reading_LogData_From_Elasticsearch_Success()
+        {
+            //-------------------------Arrange------------------------------
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            var loggerSource = new SerilogElasticsearchSource
+            {
+                Port = DefaultPort,
+                HostName = hostName,
+                SearchIndex =  "warewolftestlogs"
+            };
+            var uri = new Uri(hostName + ":" + DefaultPort);
+            var logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(uri)
+                {
+                    AutoRegisterTemplate = true,
+                    IndexDecider = (e, o) => loggerSource.SearchIndex,
+                }))
+                .CreateLogger();
+
+            var mockSeriLogConfig = new Mock<ISeriLogConfig>();
+            mockSeriLogConfig.SetupGet(o => o.Logger).Returns(logger);
+
+            
+            var executionID = Guid.NewGuid();
+            using (var loggerConnection = loggerSource.NewConnection(mockSeriLogConfig.Object))
+            {
+                var loggerPublisher = loggerConnection.NewPublisher();
+                var mockDataObject = SetupDataObjectWithAssignedInputs(executionID);
+                var auditLog = new Audit(mockDataObject.Object, "LogAdditionalDetail", "Test", null, null);
+                var logEntryCommand = new AuditCommand
+                {
+                    Audit = auditLog,
+                    Type = "LogEntry"
+                };
+                //-------------------------Act----------------------------------
+                loggerPublisher.Info(GlobalConstants.WarewolfLogsTemplate, logEntryCommand);
+            }
+            Task.Delay(500).Wait();
+            //-------------------------Assert------------------------------------
+            var dataFromDb = new TestElasticsearchDatabase();
+
+            var dataList = dataFromDb.GetPublishedData(loggerSource, executionID.ToString()).ToList();
+
+            Assert.AreEqual(1,dataList.Count);
+
+            foreach (Dictionary<string, object> fields in dataList)
+            {
+                var level = fields.Where(pair => pair.Key.Contains("level")).Select(pair => pair.Value).FirstOrDefault();
+                Assert.AreEqual("Information", level.ToString());
+                
+                var messageTemplate = fields.Where(pair => pair.Key.Contains("messageTemplate")).Select(pair => pair.Value).FirstOrDefault();
+                Assert.AreEqual("{@Data}", messageTemplate.ToString());
+
+                var message = fields.Where(pair => pair.Key.Contains("message"));
+                Assert.IsNotNull(message);
+            }
+        }
+
+        Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId)
+        {
+            var mockedDataObject = new Mock<IDSFDataObject>();
+            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
+            mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Test-Workflow");
+            mockedDataObject.Setup(o => o.ResourceID).Returns(() => Guid.NewGuid());
+            mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId );
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
+            mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
+            return mockedDataObject;
+        }
+
+        class TestElasticsearchDatabase
+        {
+            public IEnumerable<object> GetPublishedData(SerilogElasticsearchSource source, string executionID)
+            {
+                var uri = new Uri(source.HostName + ":" + source.Port);
+                var settings = new ConnectionSettings(uri)
+                    .RequestTimeout(TimeSpan.FromMinutes(2))
+                    .DefaultIndex(source.SearchIndex);
+                if (source.AuthenticationType == AuthenticationType.Password)
+                {
+                    settings.BasicAuthentication(source.Username, source.Password);
+                }
+
+                var client = new ElasticClient(settings);
+                var result = client.Ping();
+                var isValid = result.IsValid;
+                if (!isValid)
+                {
+                    throw new Exception("Invalid Data Source");
+                }
+                else
+                {
+                    var jArray = new JArray();
+                    var jsonQueryexecutionId = new JObject
+                    {
+                        ["match"] = new JObject
+                        {
+                            ["fields.Data.Audit.ExecutionID"] = executionID
+                        }
+                    };
+                    jArray.Add(jsonQueryexecutionId);
+                    var objMust = new JObject();
+                    objMust.Add("must", jArray);
+
+                    var obj = new JObject();
+                    obj.Add("bool", objMust);
+                    var query = obj.ToString();
+                    var search = new SearchDescriptor<object>()
+                        .Query(q =>
+                            q.Raw(query));
+                    var logEvents = client.Search<object>(search);
+                    var sources = logEvents.HitsMetadata.Hits.Select(h => h.Source);
+                    return sources;
+                }
+            }
         }
 
         class TestLogEventSink : ILogEventSink
         {
             public List<LogEvent> LogData { get; private set; } = new List<LogEvent>();
+
             public void Emit(LogEvent logEvent)
             {
                 LogData.Add(logEvent);
@@ -188,10 +338,7 @@ namespace Warewolf.Driver.Serilog.Tests
         {
             readonly ILogEventSink _logEventSink;
 
-            public ILogger Logger { get => CreateLogger(); }
-            public string ServerLoggingAddress { get; set; }
-
-            public string ConnectionString => throw new NotImplementedException();
+            public ILogger Logger => CreateLogger();
 
             public TestSeriLogSinkConfig(ILogEventSink logEventSink)
             {
@@ -202,75 +349,57 @@ namespace Warewolf.Driver.Serilog.Tests
             {
                 return new LoggerConfiguration().WriteTo.Sink(logEventSink: _logEventSink).CreateLogger();
             }
+
+            public string Endpoint { get; set; }
         }
 
-
-        class TestDatabase
+        class TestSqliteDatabase
         {
             private string _connectionString;
             private string _tableName;
 
-            public TestDatabase(string connectionString, string tableName)
+            public TestSqliteDatabase(string connectionString, string tableName)
             {
                 _connectionString = connectionString;
                 _tableName = tableName;
             }
 
-            public IEnumerable<SeriLogData> GetPublishedData()
+            public IEnumerable<SeriLogLogEvent> GetPublishedData()
             {
-                using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
+                try
                 {
-                    var sql = new StringBuilder($"SELECT * FROM {_tableName} ");
-
-                    using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
+                    using (var sqlConn = new SQLiteConnection(connectionString: "Data Source=" + _connectionString + ";"))
                     {
-                        sqlConn.Open();
-                        var reader = command.ExecuteReader();
-
-                        if (reader.HasRows)
+                        var sql = new StringBuilder($"SELECT * FROM {_tableName} ");
+                        using (var command = new SQLiteCommand(sql.ToString(), sqlConn))
                         {
-                            while (reader.Read())
+                            sqlConn.Open();
+                            var list = new List<SeriLogLogEvent>();
+                            using (var reader = command.ExecuteReader())
                             {
-                                var results = reader.GetValues();
-                                var value = results.GetValues("Properties");
-
-                                var serilogData = JsonConvert.DeserializeObject<SeriLogData>(value[0]);
-
-                                yield return serilogData;
+                                foreach (DbDataRecord s in reader)
+                                {
+                                    Enum.TryParse(s["Level"].ToString(), out LogEventLevel level);
+                                    var log = new SeriLogLogEvent
+                                    {
+                                        Timestamp = DateTimeOffset.Parse(s["Timestamp"].ToString()),
+                                        Level = level,
+                                        Exception = s["Exception"] as Exception,
+                                        Properties = s["Properties"].ToString()
+                                    };
+                                    list.Add(log);
+                                }
                             }
-                        }
-                    };
 
+                            return list;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return null;
                 }
             }
         }
     }
-
-    class TestSeriLogSQLiteConfig : ISeriLogConfig
-    {
-        readonly SeriLogSQLiteConfig.Settings _config;
-
-        public TestSeriLogSQLiteConfig()
-        {
-            _config = new SeriLogSQLiteConfig.Settings();
-        }
-
-        public TestSeriLogSQLiteConfig(SeriLogSQLiteConfig.Settings sqlConfig)
-        {
-            _config = sqlConfig;
-        }
-
-        public ILogger Logger { get => CreateLogger(); }
-        public string ServerLoggingAddress { get; set; }
-        public string ConnectionString { get; }
-
-        private ILogger CreateLogger()
-        {
-            return new LoggerConfiguration()
-                .WriteTo
-                .SQLite(sqliteDbPath: _config.Path, tableName: _config.TableName, restrictedToMinimumLevel: _config.RestrictedToMinimumLevel, formatProvider: _config.FormatProvider, storeTimestampInUtc: _config.StoreTimestampInUtc, retentionPeriod: _config.RetentionPeriod)
-                .CreateLogger();
-        }
-    }
-
 }

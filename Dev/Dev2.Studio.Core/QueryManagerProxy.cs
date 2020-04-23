@@ -622,6 +622,29 @@ namespace Dev2.Studio.Core
             return rabbitMQServiceSources;
         }
 
+        public IEnumerable<IElasticsearchSourceDefinition> FetchElasticsearchServiceSources()
+        {
+            var comsController = CommunicationControllerFactory.CreateController(nameof(FetchElasticsearchServiceSources));
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result == null || result.HasError)
+            {
+                if (!Connection.IsConnected)
+                {
+                    return new List<IElasticsearchSourceDefinition>();
+                }
+                if (result != null)
+                {
+                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
+            }
+            var serializer = new Dev2JsonSerializer();
+    
+            var elasticsearchServiceSources = serializer.Deserialize<List<IElasticsearchSourceDefinition>>(result.Message.ToString());
+            return elasticsearchServiceSources;
+        }
         public IList<IWcfServerSource> FetchWcfSources()
         {
             var comsController = CommunicationControllerFactory.CreateController(nameof(FetchWcfSources));

@@ -17,7 +17,7 @@ using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 
-namespace Warewolf.Tests
+namespace Warewolf.Driver.Serilog.Tests
 {
     [TestClass]
     public class SeriLogConsumerTests

@@ -15,6 +15,7 @@ using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -22,7 +23,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-	public class SqliteDBSource : Resource, IResourceSource, ISqliteDB
+	public class SqliteDBSource : Resource, IResourceSource, ISqliteDB, IAuditingSource
 	{
 		#region CTOR
 
