@@ -249,6 +249,11 @@
       <DependentUpon>WebGet.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\Web\WebGetSteps.cs" />
+    <Compile Include="Toolbox\Utility\DateandTime\Aggregated Calculation that clobered DateandTime.feature.cs">
+      <DependentUpon>Aggregated Calculation that clobered DateandTime.feature</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Toolbox\Utility\DateandTime\DateandTime.feature.cs">
       <DependentUpon>DateandTime.feature</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -641,6 +646,10 @@
     <None Include="Toolbox\Resources\Web\WebGet.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WebGet.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\DateandTime\Aggregated Calculation that clobered DateandTime.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DateandTime.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\DateandTime\DateandTime.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
