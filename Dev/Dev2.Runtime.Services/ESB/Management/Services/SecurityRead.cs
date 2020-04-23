@@ -22,6 +22,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using Warewolf.Data;
 
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -37,20 +38,23 @@ namespace Dev2.Runtime.ESB.Management.Services
             WindowsGroupPermission.CreateGuests()
         };
 
+        public static NamedGuid DefaultOverrideResouce => new NamedGuid();
+
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Debug("Start Security Read", GlobalConstants.WarewolfDebug);
             var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
-            if(File.Exists(serverSecuritySettingsFile))
+            if (File.Exists(serverSecuritySettingsFile))
             {
                 string encryptedData;
                 using (var inStream = new FileStream(serverSecuritySettingsFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    using(var reader = new StreamReader(inStream))
+                    using (var reader = new StreamReader(inStream))
                     {
                         encryptedData = reader.ReadToEnd();
                     }
                 }
+
                 Dev2Logger.Debug("Security Data Read", GlobalConstants.WarewolfDebug);
                 try
                 {
@@ -63,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             var serializer = new Dev2JsonSerializer();
-            var securitySettingsTo = new SecuritySettingsTO(DefaultPermissions) { CacheTimeout = _cacheTimeout };
+            var securitySettingsTo = new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResouce) {CacheTimeout = _cacheTimeout};
             return serializer.SerializeToBuilder(securitySettingsTo);
         }
 
@@ -79,6 +83,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     perm.ResourceName = Catalog.GetResourcePath(GlobalConstants.ServerWorkspaceID, perm.ResourceID);
                 }
             }
+
             decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
             var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
 
@@ -101,12 +106,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 permissionGroup.Sort(QuickSortForPermissions);
                 decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
             }
+
             if (!hasGuestPermission)
             {
                 permissionGroup.Add(WindowsGroupPermission.CreateGuests());
                 permissionGroup.Sort(QuickSortForPermissions);
                 decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
             }
+
             return new StringBuilder(decryptData);
         }
 
@@ -115,42 +122,46 @@ namespace Dev2.Runtime.ESB.Management.Services
             var px = x;
             var py = y;
 
-            if(px == null || py == null)
+            if (px == null || py == null)
             {
                 return 1;
             }
 
             // New items must be last
             //
-            if(px.IsNew)
+            if (px.IsNew)
             {
                 // px is greater than py
                 return int.MaxValue;
             }
-            if(py.IsNew)
+
+            if (py.IsNew)
             {
                 // px is less than py
                 return int.MinValue;
             }
 
             // BuiltInAdministrators must be first
-            if(px.IsBuiltInAdministrators)
+            if (px.IsBuiltInAdministrators)
             {
                 // px is less than py
                 return int.MinValue;
             }
-            if(py.IsBuiltInAdministrators)
+
+            if (py.IsBuiltInAdministrators)
             {
                 // px is greater than py
                 return int.MaxValue;
             }
+
             // IsBuiltInGuests must be second
-            if(px.IsBuiltInGuests)
+            if (px.IsBuiltInGuests)
             {
                 // px is less than py
                 return int.MinValue + 1;
             }
-            if(py.IsBuiltInGuests)
+
+            if (py.IsBuiltInGuests)
             {
                 // px is greater than py
                 return int.MaxValue - 1;

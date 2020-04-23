@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Data;
 
 
 namespace Dev2.Infrastructure.Tests.Services.Security
@@ -48,11 +49,16 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             };
             var perms2 = new List<WindowsGroupPermission>
             {
-                new WindowsGroupPermission { ResourceName = "Permission1" },
-                new WindowsGroupPermission { ResourceName = "Permission2" },
-                new WindowsGroupPermission { ResourceName = "Permission3" },
+                new WindowsGroupPermission {ResourceName = "Permission1"},
+                new WindowsGroupPermission {ResourceName = "Permission2"},
+                new WindowsGroupPermission {ResourceName = "Permission3"},
             };
-            var securityServiceBase = new TestSecurityServiceBase { ReadPermissionsResults = perms1 };
+            var overrideResource = new NamedGuid
+            {
+                Name = "Workflow",
+                Value = new Guid()
+            };
+            var securityServiceBase = new TestSecurityServiceBase {ReadPermissionsResults = perms1, OverrideResource = overrideResource};
             securityServiceBase.Read();
             Assert.AreEqual(perms1.Count, securityServiceBase.Permissions.Count);
 
@@ -63,7 +69,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             //------------Assert Results-------------------------
             Assert.AreEqual(perms2.Count, securityServiceBase.Permissions.Count);
-            for(int i = 0; i < perms2.Count; i++)
+            for (int i = 0; i < perms2.Count; i++)
             {
                 Assert.AreEqual(perms2[i].ResourceName, securityServiceBase.Permissions[i].ResourceName);
             }
@@ -78,20 +84,17 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             List<WindowsGroupPermission> changedPermissions = null;
             var perms1 = new List<WindowsGroupPermission>
             {
-                new WindowsGroupPermission { ResourceName = "Permission1" },
+                new WindowsGroupPermission {ResourceName = "Permission1"},
             };
             var perms2 = new List<WindowsGroupPermission>
             {
-                new WindowsGroupPermission { ResourceName = "Permission1" },
-                new WindowsGroupPermission { ResourceName = "Permission2" },
-                new WindowsGroupPermission { ResourceName = "Permission3" },
+                new WindowsGroupPermission {ResourceName = "Permission1"},
+                new WindowsGroupPermission {ResourceName = "Permission2"},
+                new WindowsGroupPermission {ResourceName = "Permission3"},
             };
-            var securityServiceBase = new TestSecurityServiceBase { ReadPermissionsResults = perms1 };
+            var securityServiceBase = new TestSecurityServiceBase {ReadPermissionsResults = perms1};
             securityServiceBase.Read();
-            securityServiceBase.PermissionsModified += (sender, args) =>
-            {
-                changedPermissions = args.ModifiedWindowsGroupPermissions;
-            };
+            securityServiceBase.PermissionsModified += (sender, args) => { changedPermissions = args.ModifiedWindowsGroupPermissions; };
 
             //----------------Assert Preconditions--------------------------
             Assert.AreEqual(perms1.Count, securityServiceBase.Permissions.Count);
@@ -115,22 +118,19 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             List<WindowsGroupPermission> changedPermissions = null;
             var perms1 = new List<WindowsGroupPermission>
             {
-                new WindowsGroupPermission { ResourceName = "Permission1" },
-                new WindowsGroupPermission { ResourceName = "Permission2" },
-                new WindowsGroupPermission { ResourceName = "Permission3" },
+                new WindowsGroupPermission {ResourceName = "Permission1"},
+                new WindowsGroupPermission {ResourceName = "Permission2"},
+                new WindowsGroupPermission {ResourceName = "Permission3"},
             };
             var perms2 = new List<WindowsGroupPermission>
             {
-                new WindowsGroupPermission { ResourceName = "Permission1" },
-                new WindowsGroupPermission { ResourceName = "Permission2" },
-                new WindowsGroupPermission { ResourceName = "Permission3" },
+                new WindowsGroupPermission {ResourceName = "Permission1"},
+                new WindowsGroupPermission {ResourceName = "Permission2"},
+                new WindowsGroupPermission {ResourceName = "Permission3"},
             };
-            var securityServiceBase = new TestSecurityServiceBase { ReadPermissionsResults = perms1 };
+            var securityServiceBase = new TestSecurityServiceBase {ReadPermissionsResults = perms1};
             securityServiceBase.Read();
-            securityServiceBase.PermissionsModified += (sender, args) =>
-            {
-                changedPermissions = args.ModifiedWindowsGroupPermissions;
-            };
+            securityServiceBase.PermissionsModified += (sender, args) => { changedPermissions = args.ModifiedWindowsGroupPermissions; };
 
             //----------------Assert Preconditions--------------------------
             Assert.AreEqual(perms1.Count, securityServiceBase.Permissions.Count);
@@ -156,7 +156,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 new WindowsGroupPermission(),
                 new WindowsGroupPermission()
             };
-            var securityServiceBase = new TestSecurityServiceBase { ReadPermissionsResults = perms1 };
+            var securityServiceBase = new TestSecurityServiceBase {ReadPermissionsResults = perms1};
             securityServiceBase.Read();
             Assert.AreEqual(perms1.Count, securityServiceBase.Permissions.Count);
 
@@ -196,10 +196,10 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var resourceID = Guid.NewGuid();
             var permissions = new List<WindowsGroupPermission>
             {
-                new WindowsGroupPermission { ResourceID = resourceID, Permissions = AuthorizationContext.View.ToPermissions() }
+                new WindowsGroupPermission {ResourceID = resourceID, Permissions = AuthorizationContext.View.ToPermissions()}
             };
 
-            var securityService = new TestSecurityServiceBase { ReadPermissionsResults = permissions };
+            var securityService = new TestSecurityServiceBase {ReadPermissionsResults = permissions};
             securityService.Read();
 
             //------------Execute Test---------------------------
@@ -220,12 +220,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var resourceID = toBeRemovedID;
             var permissions = new List<WindowsGroupPermission>
             {
-                new WindowsGroupPermission { ResourceID = Guid.NewGuid(), Permissions = AuthorizationContext.View.ToPermissions() },
-                new WindowsGroupPermission { ResourceID = resourceID, Permissions = AuthorizationContext.View.ToPermissions() },
-                new WindowsGroupPermission { ResourceID = resourceID, Permissions = AuthorizationContext.Execute.ToPermissions() }
+                new WindowsGroupPermission {ResourceID = Guid.NewGuid(), Permissions = AuthorizationContext.View.ToPermissions()},
+                new WindowsGroupPermission {ResourceID = resourceID, Permissions = AuthorizationContext.View.ToPermissions()},
+                new WindowsGroupPermission {ResourceID = resourceID, Permissions = AuthorizationContext.Execute.ToPermissions()}
             };
 
-            var securityService = new TestSecurityServiceBase { ReadPermissionsResults = permissions };
+            var securityService = new TestSecurityServiceBase {ReadPermissionsResults = permissions};
             securityService.Read();
 
             //------------Execute Test---------------------------

@@ -235,7 +235,7 @@ namespace Dev2.Core.Tests.Security
 
         public void TestWritePermissions()
         {
-            WritePermissions(null);
+            WritePermissions(null,null);
         }
 
         public int ReadAsyncHitCount { get; private set; }
