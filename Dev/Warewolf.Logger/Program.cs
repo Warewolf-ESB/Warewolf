@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,10 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using CommandLine;
 using Fleck;
 using System.Collections.Generic;
 using System.Threading;
+using Dev2.Network;
+using Warewolf.Common;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 
@@ -35,6 +38,7 @@ namespace Warewolf.Logger
             {
                 _options = options;
             }
+
             public int Run()
             {
                 var context = new LoggerContext(_options);
@@ -59,7 +63,6 @@ namespace Warewolf.Logger
             public Implementation(ILoggerContext context, IWebSocketServerFactory webSocketServerFactory, IConsoleWindowFactory consoleWindowFactory, ILogServerFactory logServerFactory, IWriter writer, IPauseHelper pause)
             {
                 _consoleWindowFactory = consoleWindowFactory;
-
                 _context = context;
                 _webSocketServerFactory = webSocketServerFactory;
                 _writer = writer;
@@ -69,13 +72,29 @@ namespace Warewolf.Logger
 
             public void Run()
             {
-                if (_context.Verbose)
+                try
                 {
-                    _ = _consoleWindowFactory.New();
-                }
+                    if (_context.Verbose)
+                    {
+                        _ = _consoleWindowFactory.New();
+                    }
 
-                var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
-                logServer.Start(new List<IWebSocketConnection>()); 
+                    if (_context.Source != null)
+                    {
+                        _writer.WriteLine("Connecting to logging server.. ");
+                        var logServer = _logServerFactory.New(_webSocketServerFactory, _writer, _context);
+                        logServer.Start(new List<IWebSocketConnection>());
+                        _writer.WriteLine("Logging Server Started.");
+                    }
+                    else
+                    {
+                        _writer.WriteLine("Failed to start logging server: Invalid or missing Logging Data Source.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _writer.WriteLine($"Logging Server OnError, Error details:{ex.Message}");
+                }
             }
 
             public void WaitForExit()

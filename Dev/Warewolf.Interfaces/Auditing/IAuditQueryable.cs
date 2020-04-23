@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,14 +10,14 @@
 
 using System.Collections.Generic;
 using System.Text;
+using Warewolf.Triggers;
 
 namespace Warewolf.Interfaces.Auditing
 {
     public interface IAuditQueryable
     {
-        IEnumerable<dynamic> GetLogData(string executionID, StringBuilder sql);
-        IEnumerable<dynamic> GetQueueLogData(string resourceId);
-        IEnumerable<dynamic> QueryLogData(Dictionary<string, StringBuilder> values);
-        IEnumerable<dynamic> QueryTriggerData(Dictionary<string, StringBuilder> values);
+        string Query { get; set; }
+        IEnumerable<IAudit> QueryLogData(Dictionary<string, StringBuilder> values);
+        IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values);
     }
 }

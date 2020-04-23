@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -24,29 +24,29 @@ namespace Warewolf.Driver.Serilog
 
         public void Error(string outputTemplate, params object[] args)
         {
-            Log.Logger.Error(outputTemplate, args);
+            Log.Logger.Error(outputTemplate, args[0]);
         }
 
         public void Debug(string outputTemplate, params object[] args)
         {
-            Log.Logger.Debug(outputTemplate, args);
+            Log.Logger.Debug(outputTemplate, args[0]);
         }
 
         public void Fatal(string outputTemplate, params object[] args)
         {
-            Log.Logger.Fatal(outputTemplate, args);
+            Log.Logger.Fatal(outputTemplate, args[0]);
         }
 
         public void Info(string outputTemplate, params object[] args)
         {
-            Log.Logger.Information(outputTemplate, args);
+            Log.Logger.Information(outputTemplate,args[0]);
         }
 
         public void Publish(byte[] value) => Info(Encoding.UTF8.GetString(value), null);
 
         public void Warn(string outputTemplate, params object[] args)
         {
-            Log.Logger.Warning(outputTemplate, args);
+            Log.Logger.Warning(outputTemplate, args[0]);
         }
     }
 }

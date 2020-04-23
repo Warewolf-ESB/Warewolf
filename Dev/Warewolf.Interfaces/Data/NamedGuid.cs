@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 
 namespace Warewolf.Data
 {
-    public class NamedGuid : INamedGuid, IEquatable<NamedGuid>, INotifyPropertyChanged
+     public class NamedGuid : INamedGuid, IEquatable<NamedGuid>, INotifyPropertyChanged
     {
         protected string _name;
         protected Guid _value;
@@ -31,7 +31,7 @@ namespace Warewolf.Data
             Value = value;
         }
 
-        public virtual string Name
+        public string Name
         {
             get => _name;
             set
@@ -41,7 +41,7 @@ namespace Warewolf.Data
             }
         }
 
-        public virtual Guid Value
+        public Guid Value
         {
             get => _value;
             set
@@ -92,13 +92,13 @@ namespace Warewolf.Data
             }
             return Equals((NamedGuid)obj);
         }
-
-        public override int GetHashCode()
+        public NamedGuid Clone()
         {
-            unchecked
+            return new NamedGuid
             {
-                return ((_name?.GetHashCode() ?? 0) * 397) ^ (_value.GetHashCode());
-            }
+                _name = _name,
+                _value = _value,
+            };
         }
     }
 }

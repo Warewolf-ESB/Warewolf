@@ -1,0 +1,9 @@
+
+<Source ID="24e12ae4-58b6-4fec-b521-48493230fef7" Name="testElasticsearchSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZYgDRla0wEi9XDoTmhkekAQAAAACAAAAAAADZgAAwAAAABAAAADxmqQHsRBSimuEkYfkowChAAAAAASAAACgAAAAEAAAAFWAZMwDCEHDrF+obQ7RYKawAAAAKILN5Yt4bdlHtQuNTek9TVW4JLw3fMQxkHNRvwvu7bjcoydSSHAg8Nz/llXC/jtdw8+mzux/adzlk11nvWecZ+dAzE+A+1CPb9QP1kh6yU58GJ+NfdQ6eL1L4c+U0UQZTuMfBpixlpj5D5lspOxqQhahCBUwlkC2OFe1YPggfRHf0tUVFQRqYJd2QLuxKpifSi3C4AiugRyf9nOJuDPWQhSZjnoKjzhWeZ1M/z1iSYsUAAAAzHHfNr7ZcDnMIW6m1bnK75BbPMo=" Type="ElasticsearchSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>testElasticsearchSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>ElasticsearchSource</TypeOf>
+  <VersionInfo DateTimeStamp="2020-04-03T10:28:49.7080598+02:00" Reason="" User="PREMIER\Candice.Daniel" VersionNumber="3" ResourceId="24e12ae4-58b6-4fec-b521-48493230fef7" VersionId="24e12ae4-58b6-4fec-b521-48493230fef7" />
+</Source>
