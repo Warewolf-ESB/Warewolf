@@ -121,17 +121,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             }
             return ExecuteWorkflow(__name__, true);
         }
-        [HttpGet]
-        [HttpPost]
-        [Route("login/")]
-        public HttpResponseMessage ExecuteLoginWorklow()
-        {
-            //get resourceId from Config.Server.Login;
-           var resourceId = Guid.NewGuid();
-            //getworkflowname using resourceId;
-            var workflowname = "";
-            return ExecuteWorkflow(workflowname, true);
-        }
+
         [HttpGet]
         [HttpPost]
         [Route("internal/getlogfile")]
