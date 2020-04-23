@@ -88,13 +88,13 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
-using Warewolf.Test.Agent;
 using System.Reflection;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Runtime.Hosting;
 using Dev2.Infrastructure.Tests;
 using Warewolf.UnitTestAttributes;
+using Activity = System.Activities.Activity;
 
 namespace Dev2.Activities.Specs.Composition
 {

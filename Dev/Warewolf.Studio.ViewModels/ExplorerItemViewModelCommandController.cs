@@ -150,6 +150,11 @@ namespace Warewolf.Studio.ViewModels
             SetActiveStates(_shellViewModel, server);
             _shellViewModel.NewRedisSource(resourcePath);
         }
+        public void NewElasticsearchSourceCommand(string resourcePath, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.NewElasticsearchSource(resourcePath);
+        }
         public void NewPluginSourceCommand(string resourcePath, IServer server)
         {
             SetActiveStates(_shellViewModel, server);

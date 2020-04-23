@@ -57,6 +57,8 @@ namespace Dev2
             SetupTempCleanupSetting();
 
             Config.Server.SaveIfNotExists();
+            Config.Auditing.SaveIfNotExists();
+            Config.Legacy.SaveIfNotExists();
         }
 
         protected void PrepareLogging(string settingsConfigFile)

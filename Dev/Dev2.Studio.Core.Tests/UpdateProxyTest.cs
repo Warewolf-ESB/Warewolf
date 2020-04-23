@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Text;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
@@ -10,10 +20,8 @@ using Moq;
 using Dev2.Studio.Interfaces;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.WebServices;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Deploy;
-using Dev2.Util;
 
 namespace Dev2.Core.Tests
 {
@@ -885,6 +893,47 @@ namespace Dev2.Core.Tests
             updateProxyTest.Deploy(new List<Guid> { Guid.NewGuid() }, false, mockConnection.Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<List<IDeployResult>>(env.Object, It.IsAny<Guid>()));
+        }
+        
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("UpdateProxyTest_Save")]
+        public void UpdateProxyTest_Save_ElasticsearchSource_ExpectSuccess()
+        {
+            //------------Setup for test--------------------------
+            var comms = new Mock<ICommunicationControllerFactory>();
+            var env = new Mock<IEnvironmentConnection>();
+            env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
+            var updateProxyTest = new UpdateProxy(comms.Object, env.Object);
+            var controller = new Mock<ICommunicationController>();
+            comms.Setup(a => a.CreateController("SaveElasticsearchSource")).Returns(controller.Object);
+            controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
+            //------------Execute Test---------------------------
+
+            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchSourceDefinition>().Object, Guid.NewGuid());
+            //------------Assert Results-------------------------
+            controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("UpdateProxyTest_Save")]
+        [ExpectedException(typeof(WarewolfSaveException))]
+        public void UpdateProxyTest_Save_ElasticsearchSource_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var comms = new Mock<ICommunicationControllerFactory>();
+            var env = new Mock<IEnvironmentConnection>();
+            env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
+            var updateProxyTest = new UpdateProxy(comms.Object, env.Object);
+            var controller = new Mock<ICommunicationController>();
+            comms.Setup(a => a.CreateController("SaveElasticsearchSource")).Returns(controller.Object);
+            controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
+            //------------Execute Test---------------------------
+
+            updateProxyTest.SaveElasticsearchServiceSource(new Mock<IElasticsearchSourceDefinition>().Object, Guid.NewGuid());
+            //------------Assert Results-------------------------
+            controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
     }
 }

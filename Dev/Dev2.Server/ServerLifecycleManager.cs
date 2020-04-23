@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -42,6 +42,8 @@ using System.Threading.Tasks;
 using Warewolf.Trigger.Queue;
 using Warewolf.OS;
 using Warewolf;
+using Warewolf.Auditing;
+using Warewolf.Interfaces.Auditing;
 
 namespace Dev2
 {
@@ -50,7 +52,7 @@ namespace Dev2
         bool InteractiveMode { get; set; }
 
         Task Run(IEnumerable<IServerLifecycleWorker> initWorkers);
-        void Stop(bool didBreak, int result);
+        void Stop(bool didBreak, int result, bool mute);
     }
 
     public class StartupConfiguration
@@ -66,6 +68,7 @@ namespace Dev2
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
         public IProcessMonitor QueueWorkerMonitor { get; set; } = new NullProcessMonitor();
         public IProcessMonitor LoggingServiceMonitor { get; set; } = new NullProcessMonitor();
+        public IWebSocketPool WebSocketPool { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -85,7 +88,8 @@ namespace Dev2
                 StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
                 QueueWorkerMonitor = new QueueWorkerMonitor(processFactory, new QueueWorkerConfigLoader(), TriggersCatalog.Instance, childProcessTracker),
-                LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory)
+                LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory),
+                WebSocketPool = new WebSocketPool(),
             };
         }
     }
@@ -103,26 +107,25 @@ namespace Dev2
         readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
         readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
         IIpcClient _ipcClient;
-        
+
         private ILoadResources _loadResources;
         private readonly IAssemblyLoader _assemblyLoader;
         private readonly IWebServerConfiguration _webServerConfiguration;
         private readonly IWriter _writer;
         private readonly IPauseHelper _pauseHelper = new PauseHelper();
         private readonly IProcessMonitor _queueProcessMonitor;
+        private readonly IProcessMonitor _loggingProcessMonitor;
+        private readonly IWebSocketPool _webSocketPool;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
-            :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
+            : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
         {
-            
         }
 
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
         {
             SetApplicationDirectory();
             _writer = startupConfiguration.Writer;
-            StartLoggingService(startupConfiguration);
-
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
             _startUpDirectory = startupConfiguration.Directory;
             _startupResourceCatalogFactory = startupConfiguration.ResourceCatalogFactory;
@@ -134,8 +137,13 @@ namespace Dev2
             _startWebServer = startupConfiguration.StartWebServer;
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
 
+            _loggingProcessMonitor = startupConfiguration.LoggingServiceMonitor;
+            _loggingProcessMonitor.OnProcessDied += (e) => _writer.WriteLine("logging service exited");
+
             _queueProcessMonitor = startupConfiguration.QueueWorkerMonitor;
             _queueProcessMonitor.OnProcessDied += (config) => _writer.WriteLine($"queue process died: {config.Name}({config.Id})");
+
+            _webSocketPool = startupConfiguration.WebSocketPool;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }
@@ -155,15 +163,6 @@ namespace Dev2
             }
         }
 
-        private void StartLoggingService(StartupConfiguration startupConfiguration)
-        {
-            _writer.Write("Starting logging service...  ");
-            var monitor = startupConfiguration.LoggingServiceMonitor;
-            monitor.OnProcessDied += (e) => _writer.WriteLine("logging service exited");
-            monitor.Start();
-            _writer.WriteLine("done.");
-        }
-
         /// <summary>
         /// Starts up the server with relevant workers.
         /// NOTE: This must return a task as in Windows Server 2008 and Windows Server 2012 there is an issue
@@ -173,18 +172,16 @@ namespace Dev2
         /// <returns>A Task that starts up the Warewolf Server.</returns>
         public Task Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
-            return Task.Run(() =>
+            void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
             {
-                LoadPerformanceCounters();
+                _writer.Write("Opening named pipe client stream for COM IPC... ");
+                _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
+                _writer.WriteLine("done.");
+            }
 
-            }).ContinueWith((t) =>
+            return Task.Run(LoadPerformanceCounters)
+                .ContinueWith((t) =>
             {
-                void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
-                {
-                    _writer.Write("Opening named pipe client stream for COM IPC... ");
-                    _ipcClient = _ipcClient.GetIpcExecutor(clientStreamWrapper);
-                    _writer.WriteLine("done.");
-                }
 //
 //                 // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 // #if DEBUG
@@ -205,6 +202,9 @@ namespace Dev2
                     {
                         worker.Execute();
                     }
+                    _loggingProcessMonitor.Start();
+                    var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(30));
+
                     _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
                     LoadHostSecurityProvider();
                     _loadResources.CheckExampleResources();
@@ -219,11 +219,30 @@ namespace Dev2
                     _loadResources.LoadActivityCache(_assemblyLoader);
                     LoadTestCatalog();
                     LoadTriggersCatalog();
+
                     StartTrackingUsage();
+
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
                     _queueProcessMonitor.Start();
+
+                    var checkLogServerConnectionTask = CheckLogServerConnection();
+                    var result = Task.WaitAny(new [] { checkLogServerConnectionTask, loggingServerCheckDelay });
+                    var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
+                    var logServerConnectedOkayNoTimeout = result == 0 && isConnectedOkay;
+                    if (!logServerConnectedOkayNoTimeout)
+                    {
+                        _writer.WriteLine("unable to connect to logging server");
+                        if (checkLogServerConnectionTask.IsFaulted)
+                        {
+                            _writer.WriteLine("error: "+ checkLogServerConnectionTask.Exception?.Message);
+                        }
+                        Stop(false, 0, true);
+                    }
 #if DEBUG
-                    SetAsStarted();
+                    if (EnvironmentVariables.IsServerOnline)
+                    {
+                        SetAsStarted();
+                    }
 #endif
                 }
                 catch (Exception e)
@@ -232,8 +251,17 @@ namespace Dev2
                     Console.WriteLine(e);
 #pragma warning restore S2228 // Console logging should not be used
                     Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
-                    Stop(true, 0);
+                    Stop(true, 0, false);
                 }
+            });
+        }
+
+        private Task<bool> CheckLogServerConnection()
+        {
+            return Task.Run(() =>
+            {
+                var webSocketWrapper = _webSocketPool.Acquire(Config.Auditing.Endpoint);
+                return webSocketWrapper.IsOpen();
             });
         }
 
@@ -254,14 +282,17 @@ namespace Dev2
             _writer.WriteLine("done.");
         }
 
-        public void Stop(bool didBreak, int result)
+        public void Stop(bool didBreak, int result, bool mute)
         {
             if (!didBreak)
             {
                 Dispose();
             }
 
-            _writer.Write($"Exiting with exitcode {result}");
+            if (!mute)
+            {
+                _writer.Write($"Exiting with exitcode {result}");
+            }
         }
 
         internal void CleanupServer()
@@ -274,11 +305,13 @@ namespace Dev2
                     _startWebServer.Dispose();
                     _startWebServer = null;
                 }
+
                 if (_ipcClient != null)
                 {
                     _ipcClient.Dispose();
                     _ipcClient = null;
                 }
+
                 DebugDispatcher.Instance.Shutdown();
             }
             catch (Exception ex)
@@ -286,7 +319,7 @@ namespace Dev2
                 Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
             }
         }
-        
+
         ~ServerLifecycleManager()
         {
             Dispose(false);
@@ -306,7 +339,6 @@ namespace Dev2
 
         void Dispose(bool disposing)
         {
-
             if (disposing)
             {
                 CleanupServer();
@@ -322,6 +354,7 @@ namespace Dev2
             {
                 _pulseLogger.Dispose();
             }
+
             if (_pulseTracker != null)
             {
                 _pulseTracker.Dispose();
@@ -358,15 +391,14 @@ namespace Dev2
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
-        
+
         void LoadTestCatalog()
         {
-
             _writer.Write("Loading test catalog...  ");
             TestCatalog.Instance.Load();
             _writer.WriteLine("done.");
         }
-        
+
 
         void LoadHostSecurityProvider()
         {
@@ -376,7 +408,6 @@ namespace Dev2
             {
                 _writer.WriteLine("done.");
             }
-
         }
 
 #if DEBUG
@@ -389,6 +420,7 @@ namespace Dev2
                 {
                     File.Delete(".\\ServerStarted");
                 }
+
                 File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
             }
             catch (Exception err)
@@ -412,7 +444,6 @@ namespace Dev2
             {
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
-
         }
 
         public void Write(string message)
@@ -427,6 +458,7 @@ namespace Dev2
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
         }
+
 
         public void Fail(string message, Exception e)
         {
@@ -446,4 +478,3 @@ namespace Dev2
         }
     }
 }
-

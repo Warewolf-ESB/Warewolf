@@ -31,6 +31,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Data;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
+using BindableBase = Microsoft.Practices.Prism.Mvvm.BindableBase;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -304,7 +305,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 _explorerItemViewModelCommandController.NewRedisSourceCommand(ResourcePath, Server);
             });
-
+            NewElasticsearchSourceCommand = new DelegateCommand(o =>
+            {
+                _explorerItemViewModelCommandController.NewElasticsearchSourceCommand(ResourcePath, Server);
+            });
             NewEmailSourceSourceCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.NewEmailSourceCommand(ResourcePath, Server);
@@ -991,6 +995,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewWcfSourceCommand { get; set; }
         public ICommand NewWebSourceSourceCommand { get; set; }
         public ICommand NewRedisSourceCommand { get; set; }
+        public ICommand NewElasticsearchSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
         public ICommand NewRabbitMqSourceSourceCommand { get; set; }

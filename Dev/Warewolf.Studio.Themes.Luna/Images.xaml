@@ -32,7 +32,7 @@
         <ResourceDictionary Source="Images/MicrosoftSQL.xaml" />
 		<ResourceDictionary Source="Images/AdvancedRecordset.xaml" />
         <ResourceDictionary Source="Images/Dropbox.xaml" />
-
+        <ResourceDictionary Source="Images/Elasticsearch.xaml" />
 
         <ResourceDictionary Source="Images/ControlFlow-Descision.xaml" />
         <ResourceDictionary Source="Images/ControlFlow-Rules.xaml" />

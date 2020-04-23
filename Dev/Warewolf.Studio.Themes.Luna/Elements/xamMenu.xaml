@@ -454,6 +454,11 @@
         <Setter Property="Width" Value="12"/>
         <Setter Property="Source" Value="{StaticResource RedisSource}"/>
     </Style>
+    <Style TargetType="Image" x:Key="NewElasticsearchSourceIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource ElasticsearchSource}"/>
+    </Style>
     <Style TargetType="Image" x:Key="NewPluginSourceIcon">
         <Setter Property="Height" Value="12"/>
         <Setter Property="Width" Value="12"/>

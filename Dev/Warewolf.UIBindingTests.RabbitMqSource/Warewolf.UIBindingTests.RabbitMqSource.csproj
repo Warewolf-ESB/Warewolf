@@ -52,13 +52,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildConfig.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="RabbitMq Source.feature.cs">
       <AutoGen>False</AutoGen>

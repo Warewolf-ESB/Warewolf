@@ -42,7 +42,6 @@ using Dev2.Activities.Specs.BaseTypes;
 using System.IO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Activities.Specs.Composition;
-using Warewolf.Test.Agent;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
 using Warewolf.UnitTestAttributes;
