@@ -1193,7 +1193,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>The default port on which elasticsearch listens is 9200.</value>
   </data>
   <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
-    <value>The server password</value>
+    <value>The Elasticsearch server password</value>
   </data>
   <data name="ElasticsearchUsernameTooltip" xml:space="preserve">
     <value>The Elasticsearch server username</value>
@@ -1201,10 +1201,6 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ElasticsearchSearchIndexTooltip" xml:space="preserve">
     <value>The Elasticsearch server index that will be used to index the data.</value>
   </data>
-  
-  <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
-    <value>The Elasticsearch server password</value>
-  </data>  
   <data name="ElasticsearchTestTooltip" xml:space="preserve">
     <value>Test the elasticsearch source connection</value>
   </data>
