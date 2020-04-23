@@ -37,26 +37,6 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditingSettings))]
-        public void AuditingSettingsData_Equals_Valid_Expected()
-        {
-            var expectedAuditingSettingsData = new AuditingSettingsData
-            {
-                Endpoint = "ws://127.0.0.1:5000/ws",
-                LoggingDataSource = null
-            };
-
-            var auditingSettingsData = new AuditingSettingsData()
-            {
-                Endpoint = "ws://127.0.0.1:5000/ws",
-                LoggingDataSource = null
-            };
-
-            Assert.IsTrue(auditingSettingsData.Equals(expectedAuditingSettingsData));
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditingSettings))]
         public void AuditingSettings_SaveIfNotExists()
         {
             var mockIFile = new Mock<IFile>();
