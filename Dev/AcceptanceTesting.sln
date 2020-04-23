@@ -355,8 +355,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.UnitTestAttributes", "Warewolf.UnitTestAttributes\Warewolf.UnitTestAttributes.csproj", "{4A455098-FFDD-4861-B873-656F960CF0BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Coverage.Reports", "Warewolf.Coverage.Reports\Warewolf.Coverage.Reports.csproj", "{D598F9F4-B726-456E-82C8-F0D92AAB2265}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ElasticsearchSource", "Warewolf.UIBindingTests.ElasticsearchSource\Warewolf.UIBindingTests.ElasticsearchSource.csproj", "{C37C77F5-A157-4A38-A9F1-6347BA1671F5}"
 EndProject
 Global
