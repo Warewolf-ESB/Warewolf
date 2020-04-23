@@ -735,8 +735,8 @@
                                               RowHeight="22"
                                               Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                             <DataGrid.Columns>
-                                                <DataGridTemplateColumn Width="27"
-                                                                    MinWidth="27"
+                                                <DataGridTemplateColumn Width="*"
+                                                                    MinWidth="50"
                                                                     IsReadOnly="True"
                                                                     Header="#"
                                                                     HeaderStyle="{StaticResource QueueDataGridHeaderStyle}"
@@ -751,7 +751,7 @@
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn Width="*"
-                                                                    MinWidth="70"
+                                                                    MinWidth="150"
                                                                     IsReadOnly="True"
                                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                                     Header="Execution id"
@@ -767,7 +767,7 @@
                                                 </DataGridTemplateColumn>
 
                                                 <DataGridTemplateColumn Width="*"
-                                                                    MinWidth="80"
+                                                                    MinWidth="150"
                                                                     IsReadOnly="True"
                                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                                     Header="Start Time"
@@ -783,7 +783,7 @@
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn Width="*"
                                                                     IsReadOnly="True"
-                                                                    MinWidth="80"
+                                                                    MinWidth="150"
                                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                                     Header="End Time"
                                                                     d:DataContext="{d:DesignInstance interfaces:IExecutionHistory}">
@@ -797,7 +797,7 @@
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn Width="*"
-                                                                    MinWidth="70"
+                                                                    MinWidth="150"
                                                                     IsReadOnly="True"
                                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                                     Header="Duration"
@@ -812,7 +812,7 @@
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn Width="*"
-                                                                    MinWidth="50"
+                                                                    MinWidth="100"
                                                                     IsReadOnly="True"
                                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                                     Header="Status"

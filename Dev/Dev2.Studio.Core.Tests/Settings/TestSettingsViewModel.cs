@@ -8,13 +8,21 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Data.ServiceModel;
 using Dev2.Dialogs;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Clusters;
@@ -24,7 +32,10 @@ using Dev2.Settings.Security;
 using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Moq;
+using Newtonsoft.Json;
 using Warewolf.Configuration;
+using Warewolf.Data;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -38,13 +49,13 @@ namespace Dev2.Core.Tests.Settings
         {
         }
 
-        public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow,Mock<IServer> env)
+        public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow, Mock<IServer> env)
             : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IServer>().Object, a => env.Object)
         {
-            
         }
 
         public int ShowErrorHitCount { get; private set; }
+
         protected override void ShowError(string header, string description)
         {
             ShowErrorHitCount++;
@@ -56,10 +67,12 @@ namespace Dev2.Core.Tests.Settings
             get => _theSecurityViewModel;
             set => _theSecurityViewModel = value;
         }
+
         public LogSettingsViewModel TheLogSettingsViewModel { get; set; }
+
         protected override SecurityViewModel CreateSecurityViewModel()
         {
-            return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, ()=> new Mock<IResourcePickerDialog>().Object);
+            return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
         }
 
         protected override PerfcounterViewModel CreatePerfmonViewModel()
@@ -95,14 +108,47 @@ namespace Dev2.Core.Tests.Settings
         static LogSettingsViewModel CreateLogSettingViewModel()
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
-            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE" };
+            var loggingSettingsTo = new LoggingSettingsTo {FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE"};
 
             var _resourceRepo = new Mock<IResourceRepository>();
             var env = new Mock<IServer>();
-            var serverSettingsData = new ServerSettingsData { AuditFilePath = "somePath" };
-            _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(serverSettingsData);
-            env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
+            var expectedServerSettingsData = new ServerSettingsData
+            {
+                Sink = "AuditingSettingsData"
+            };
+            _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            var elasticsearchSource = new ElasticsearchSource
+            {
+                AuthenticationType = AuthenticationType.Anonymous,
+                Port = dependency.Container.Port,
+                HostName = hostName,
+                SearchIndex = "warewolflogstests"
+            };
+            var jsonSource = JsonConvert.SerializeObject(elasticsearchSource);
+            var auditingSettingsData = new AuditingSettingsData
+            {
+                Endpoint = "ws://127.0.0.1:5000/ws",
+                LoggingDataSource = new NamedGuidWithEncryptedPayload
+                {
+                    Name = "Auditing Data Source",
+                    Value = Guid.Empty,
+                    Payload = jsonSource
+                },
+            };
+            _resourceRepo.Setup(res => res.GetAuditingSettings<AuditingSettingsData>(env.Object)).Returns(auditingSettingsData);
+            var selectedAuditingSourceId = Guid.NewGuid();
+            var mockAuditingSource = new Mock<IResource>();
+            mockAuditingSource.Setup(source => source.ResourceID).Returns(selectedAuditingSourceId);
+            var auditingSources = new Mock<IResource>();
+            var expectedList = new List<IResource>
+            {
+                mockAuditingSource.Object, auditingSources.Object
+            };
+            _resourceRepo.Setup(resourceRepository => resourceRepository.FindResourcesByType<IAuditingSource>(env.Object)).Returns(expectedList);
 
+            env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
             var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, env.Object);
             return logSettingsViewModel;
         }

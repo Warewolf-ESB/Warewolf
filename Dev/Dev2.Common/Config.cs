@@ -39,25 +39,49 @@ namespace Dev2.Common
         public static readonly StudioSettings Studio = new StudioSettings();
         public static readonly ClusterSettings Cluster = new ClusterSettings();
         public static readonly AuditingSettings Auditing = new AuditingSettings();
+        public static readonly LegacySettings Legacy = new LegacySettings();
     }
 
     public class ServerSettings : ConfigSettingsBase<ServerSettingsData>
     {
-        const int DELETE_TRIES_SLEEP = 5000;
-        const int DELETE_TRIES_MAX = 30;
-
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "serverSettings.json");
-        public static string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
-        public string AuditFilePath
+        public static string DefaultSink => nameof(LegacySettingsData);
+
+        public bool EnableDetailedLogging
         {
-            get => _settings.AuditFilePath ?? DefaultAuditPath;
+            get => _settings.EnableDetailedLogging ?? false;
+            set => _settings.EnableDetailedLogging = value;
+        }
+
+        public string Sink
+        {
+            get => GetSink();
             set
             {
-                _settings.AuditFilePath = value;
+                _settings.Sink = value;
                 Save();
             }
         }
-        public bool EnableDetailedLogging { get => _settings.EnableDetailedLogging ?? false; set => _settings.EnableDetailedLogging = value; }
+
+        private string GetSink()
+        {
+            if (_settings.Sink == null && _settings.AuditFilePath != null)
+            {
+                return nameof(LegacySettingsData);
+            }
+
+            if (_settings.Sink != null )
+            {
+                {
+                    return _settings.Sink;
+                }
+            }
+            return DefaultSink;
+        }
+
+        [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
+        public string AuditFilePath => _settings.AuditFilePath ?? LegacySettings.DefaultAuditPath;
+
         public ushort WebServerPort => _settings.WebServerPort ?? 0;
         public ushort WebServerSslPort => _settings.WebServerSslPort ?? 0;
         public string SslCertificateName => _settings.SslCertificateName;
@@ -71,6 +95,53 @@ namespace Dev2.Common
             : base(settingsPath, fileWrapper, directoryWrapper, clusterDispatcher)
         {
         }
+    }
+
+    public class LegacySettings : ConfigSettingsBase<LegacySettingsData>
+    {
+        const int DELETE_TRIES_SLEEP = 5000;
+        const int DELETE_TRIES_MAX = 30;
+
+        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "legacySettings.json");
+        public static string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
+        public static string DefaultEndpoint => "ws://127.0.0.1:5000/ws";
+
+        public LegacySettings()
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
+        {
+        }
+
+        public LegacySettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper, IClusterDispatcher clusterDispatcher)
+            : base(settingsPath, file, directoryWrapper, clusterDispatcher)
+        {
+        }
+
+        public string AuditFilePath
+        {
+            get => GetAuditFilePath();
+            set
+            {
+                _settings.AuditFilePath = value;
+                Save();
+            }
+        }
+
+        private string GetAuditFilePath()
+        {
+            if (_settings.AuditFilePath == null && Config.Server.AuditFilePath != null)
+            {
+                return Config.Server.AuditFilePath;
+            }
+
+            if (_settings.AuditFilePath != null )
+            {
+                {
+                    return _settings.AuditFilePath;
+                }
+            }
+            return DefaultAuditPath;
+        }
+        public string Endpoint => _settings.Endpoint ?? DefaultEndpoint;
 
         public bool SaveLoggingPath(string auditsFilePath)
         {
@@ -128,6 +199,7 @@ namespace Dev2.Common
                         {
                             throw;
                         }
+
                         // try until we delete the file at least once
                         Thread.Sleep(DELETE_TRIES_SLEEP);
                     }
@@ -135,10 +207,12 @@ namespace Dev2.Common
             }).Start();
         }
 
-        public delegate void VoidEventHandler();
         public event VoidEventHandler OnLogFlushPauseRequested;
         public event VoidEventHandler OnLogFlushResumeRequested;
+
+        public delegate void VoidEventHandler();
     }
+
 
     public class StudioSettings : ConfigSettingsBase<StudioSettingsData>
     {
@@ -160,21 +234,31 @@ namespace Dev2.Common
     public class AuditingSettings : ConfigSettingsBase<AuditingSettingsData>
     {
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "auditingSettings.json");
+        public static string DefaultEndpoint => "ws://127.0.0.1:5000/ws";
+        public string Endpoint => _settings.Endpoint ?? DefaultEndpoint;
 
         public AuditingSettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), CustomContainer.Get<IClusterDispatcher>())
         {
         }
 
-        protected AuditingSettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper, IClusterDispatcher clusterDispatcher)
+        internal AuditingSettings(string settingsPath, IFileBase file, IDirectoryBase directoryWrapper, IClusterDispatcher clusterDispatcher)
             : base(settingsPath, file, directoryWrapper, clusterDispatcher)
         {
         }
 
-        public string Endpoint => _settings.Endpoint;
+        public NamedGuidWithEncryptedPayload LoggingDataSource
+        {
+            get => _settings.LoggingDataSource ?? new NamedGuidWithEncryptedPayload();
+            set
+            {
+                _settings.LoggingDataSource = value;
+                Save();
+            }
+        }
     }
 
-   public class ClusterSettings : ConfigSettingsBase<ClusterSettingsData>
+    public class ClusterSettings : ConfigSettingsBase<ClusterSettingsData>
     {
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "clusterSettings.json");
         public ClusterSettings()

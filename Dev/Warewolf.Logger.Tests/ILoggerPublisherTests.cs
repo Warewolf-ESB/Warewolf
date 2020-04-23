@@ -9,11 +9,12 @@
 */
 
 
+using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Logging;
 
-namespace Warewolf.Common.Framework48.Tests
+namespace Warewolf.Logger.Tests
 {
     [TestClass]
     public class ILoggerPublisherTests
@@ -58,10 +59,10 @@ namespace Warewolf.Common.Framework48.Tests
             var connection = loggerSource.NewConnection(mockConfig.Object);
             var logger = connection.NewPublisher();
 
-            logger.Info(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}");
-            logger.Warn(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:w3}] {Message:lj}{NewLine}{Exception}");
-            logger.Error(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}");
-            logger.Fatal(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:w3}] {Message:lj}{NewLine}{Exception}");
+            logger.Info(outputTemplate: GlobalConstants.WarewolfLogsTemplate);
+            logger.Warn(outputTemplate: GlobalConstants.WarewolfLogsTemplate);
+            logger.Error(outputTemplate: GlobalConstants.WarewolfLogsTemplate);
+            logger.Fatal(outputTemplate:GlobalConstants.WarewolfLogsTemplate);
 
             //------------------------------------Assert--------------------------------------
             mockloggerSource.Verify(o => o.NewConnection(It.IsAny<ILoggerConfig>()), Times.Once);

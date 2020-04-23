@@ -146,10 +146,12 @@
     <Compile Include="ServiceModel\Data\ExchangeSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ScalarTests.cs" />
     <Compile Include="ServiceModel\Data\WcfSourceTests.cs" />
+    <Compile Include="ServiceModel\ElasticsearchSourcesTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
     <Compile Include="Services\ClusterJoinTests.cs" />
+    <Compile Include="Services\SaveAuditingSettingsTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
     <Compile Include="Services\FetchTriggerQueuesTest.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="Services\FetchTestsForDeployTest.cs" />
     <Compile Include="Services\FetchTestsTest.cs" />
     <Compile Include="Services\FindDependenciesTests.cs" />
+    <Compile Include="Services\GetAuditingSettingsTests.cs" />
     <Compile Include="Services\GetExecutionHistoryTests.cs" />
     <Compile Include="Services\GetServerInformationTest.cs" />
     <Compile Include="Services\GetClusterSettingsServiceTests.cs" />
@@ -235,6 +238,7 @@
     <Compile Include="Services\RollBackToTest.cs" />
     <Compile Include="Services\SaveClusterSettingsServiceTests.cs" />
     <Compile Include="Services\SaveComPluginSourceTests.cs" />
+    <Compile Include="Services\SaveElasticsearchSourceTests.cs" />
     <Compile Include="Services\SavePluginServiceTests.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
     <Compile Include="Services\DirectDeployTest.cs" />
@@ -250,6 +254,7 @@
     <Compile Include="Services\PingTests.cs" />
     <Compile Include="Services\TestClusterConnectionTests.cs" />
     <Compile Include="Services\TestClusterLeaderConnectionServiceTests.cs" />
+    <Compile Include="Services\TestElasticsearchSourceTests.cs" />
     <Compile Include="Services\TestSettingsRead.cs" />
     <Compile Include="Services\SavePerformanceCountesTests.cs" />
     <Compile Include="Services\FetchAllTestsTest.cs" />

@@ -68,9 +68,9 @@ namespace Warewolf.Logger
 
         public void Start(IList<IWebSocketConnection> clients)
         {
-            var loggerConfig = _loggerContext.LoggerConfig as ILoggerConfig;
+            var loggerConfig = _loggerContext.LoggerConfig;
 
-            _server = _webSocketServerFactory.New(loggerConfig.ServerLoggingAddress);
+            _server = _webSocketServerFactory.New(loggerConfig.Endpoint);
             _server.Start(socket =>
             {
                 socket.OnOpen = () =>
@@ -87,7 +87,6 @@ namespace Warewolf.Logger
                 {
                     _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}");
                 };
-
 
                 var innerConsumer = new SeriLogConsumer(_loggerContext);
                 var defaultConsumer = _auditCommandConsumerFactory?.New(innerConsumer, socket, _writer) ?? new AuditCommandConsumerFactory().New(innerConsumer, socket, _writer);
@@ -137,7 +136,7 @@ namespace Warewolf.Logger
             }
             catch
             {
-                return _defaultConsumer.Consume(item, null);
+                return _defaultConsumer.Consume(item, parameters);
             }
         }
     }
@@ -150,7 +149,7 @@ namespace Warewolf.Logger
             {
                 var serializer = new Dev2JsonSerializer();
                 var msg = serializer.Deserialize<T>(message);
-                consumer.Consume(msg, null);
+                consumer.Consume(msg, socket);
             };
         }
     }

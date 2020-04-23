@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 
 using System;
 using Newtonsoft.Json;
+using Warewolf.Data;
 
 namespace Warewolf.Configuration
 {
@@ -27,12 +28,15 @@ namespace Warewolf.Configuration
         public int? DaysToKeepTempFiles { get; set; }
 
         private string _auditFilePath;
+        [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
         public string AuditFilePath
         {
             get => _auditFilePath;
             set => SetProperty(ref _auditFilePath, value);
         }
+       
         public bool? EnableDetailedLogging { get; set; }
+        public string Sink { get; set; } 
         public int? LogFlushInterval { get; set; }
 
         [JsonIgnore]
@@ -49,10 +53,10 @@ namespace Warewolf.Configuration
             equals &= string.Equals(SslCertificateName, other.SslCertificateName, StringComparison.InvariantCultureIgnoreCase);
             equals &= CollectUsageStats == other.CollectUsageStats;
             equals &= DaysToKeepTempFiles == other.DaysToKeepTempFiles;
-            equals &= string.Equals(AuditFilePath, other.AuditFilePath, StringComparison.InvariantCultureIgnoreCase);
             equals &= EnableDetailedLogging == other.EnableDetailedLogging;
             equals &= LogFlushInterval == other.LogFlushInterval;
-
+            equals &= AuditFilePath == other.AuditFilePath;
+            equals &= Sink == other.Sink;
             return equals;
         }
 

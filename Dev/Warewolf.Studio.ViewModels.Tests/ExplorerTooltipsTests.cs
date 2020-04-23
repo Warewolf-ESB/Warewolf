@@ -124,7 +124,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.NewSharepointSourceTooltip = Resources.Languages.Tooltips.NoPermissionsToolTip;
             Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewSharepointSourceTooltip);
         }
-
+        [TestMethod,Timeout(60000)]
+        public void TestNewElasticsearchSourceTooltip()
+        {
+            _target.NewElasticsearchSourceTooltip = Resources.Languages.Tooltips.NoPermissionsToolTip;
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewElasticsearchSourceTooltip);
+        }
         [TestMethod,Timeout(60000)]
         public void TestNewWcfSourceTooltip()
         {

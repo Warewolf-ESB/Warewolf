@@ -399,6 +399,8 @@ where pn.nspname = 'public';
         public static readonly string WarewolfError = "Warewolf Error";
         public static readonly string WarewolfDebug = "Warewolf Debug";
         public static readonly string WarewolfWarn = "Warewolf Warn";
+
+        public static readonly string WarewolfLogsTemplate = "{@Data}";
         public static readonly string HTTPSAddress = "https://";
         public static readonly string HTTPAddress = "http://";
 

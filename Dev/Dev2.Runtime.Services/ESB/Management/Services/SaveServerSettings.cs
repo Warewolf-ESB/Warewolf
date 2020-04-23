@@ -35,11 +35,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 values.TryGetValue("ServerSettings", out StringBuilder resourceDefinition);
 
-                var updatedServerSettings = serializer.Deserialize<ServerSettingsData>(resourceDefinition);
-
-                var auditsFilePath = updatedServerSettings.AuditFilePath;
-
-                Config.Server.SaveLoggingPath(auditsFilePath);
                 msg.Message = new StringBuilder();
                 msg.HasError = false;
             }

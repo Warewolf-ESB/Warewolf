@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Transports;
 using Warewolf;
+using Warewolf.Data;
 
 namespace Dev2.SignalR.Wrappers.New
 {

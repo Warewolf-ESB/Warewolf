@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -205,6 +205,37 @@ namespace Dev2.Studio.Core
             }
         }
 
+        public void SaveElasticsearchServiceSource(IElasticsearchSourceDefinition elasticsearchServiceSource, Guid serverWorkspaceId)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(SaveElasticsearchSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument(SaveElasticsearchSource.ElasticsearchSource, serialiser.SerializeToBuilder(elasticsearchServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+        }
+        public string TestConnection(IElasticsearchSourceDefinition elasticsearchServiceSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController(nameof(TestElasticsearchSource));
+            var serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument(nameof(ElasticsearchSource), serialiser.SerializeToBuilder(elasticsearchServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+            {
+                throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            }
+
+            return output.Message.ToString();
+        }
         public void TestConnection(IRedisServiceSource redisServiceSource)
         {
             var con = Connection;

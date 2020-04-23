@@ -66,7 +66,7 @@ namespace Warewolf.Tests
         {
             var mockFile = new Mock<IFile>();
             var mockDir = new Mock<IDirectory>();
-            var settings = new ServerSettings("some path", mockFile.Object, mockDir.Object, mockClusterDispatcher.Object);
+            var settings = new LegacySettings("some path", mockFile.Object, mockDir.Object, mockClusterDispatcher.Object);
             settings.AuditFilePath = "some new file path";
         }
 

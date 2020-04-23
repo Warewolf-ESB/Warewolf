@@ -22,6 +22,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using System.Linq;
 using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Tests.Runtime.Services

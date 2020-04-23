@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,6 +34,7 @@ namespace Warewolf.Service
 
         public const string GateResume = nameof(GateResume);
     }
+
     public static class Cluster
     {
         public const string GetClusterSettings = nameof(GetClusterSettings);
@@ -46,5 +47,25 @@ namespace Warewolf.Service
             public const string Key = nameof(Key);
         }
     }
+    public static class SaveElasticsearchSource
+    {
+        public const string ElasticsearchSource = nameof(ElasticsearchSource);
+    }
+    public static class TestElasticsearchSource
+    {
+        public const string ElasticsearchSource = nameof(ElasticsearchSource);
+    }
 
+    public static class SaveAuditingSettings
+    {
+        public const string LegacySettings = nameof(LegacySettings);
+        public const string AuditingSettings = nameof(AuditingSettings);
+        public const string SinkType = nameof(SinkType);
+    }
+    public static class GetAuditingSettings
+    {
+        public const string LegacySettings = nameof(LegacySettings);
+        public const string AuditingSettings = nameof(AuditingSettings);
+        public const string SinkType = nameof(SinkType);
+    }
 }

@@ -13,9 +13,9 @@ namespace Warewolf.UnitTestAttributes
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
-            "T004124.premier.local",
+            "t004124.premier.local",
             "RSAKLFSVRHST1.premier.local",
-            "RSAKLFWYNAND.premier.local",
+            "rsaklfwynand",
             "PIETER.premier.local",
             "localhost"
         };
@@ -38,7 +38,9 @@ namespace Warewolf.UnitTestAttributes
             CIRemote = 5,
             Redis = 6,
             AnonymousRedis = 7,
-            AnonymousWarewolf = 8
+            AnonymousWarewolf = 8,
+            Elasticsearch = 9,
+            AnonymousElasticsearch = 10
         }
 
         ContainerType _containerType;
@@ -65,6 +67,10 @@ namespace Warewolf.UnitTestAttributes
                     return "AnonymousRedis";
                 case ContainerType.AnonymousWarewolf:
                     return "AnonymousWarewolf";
+                case ContainerType.Elasticsearch:
+                    return "Elasticsearch";
+                case ContainerType.AnonymousElasticsearch:
+                    return "AnonymousElasticsearch";
             }
 
             throw new ArgumentOutOfRangeException();
@@ -140,6 +146,9 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.PostGreSQL:
                     InjectPostGreSQLContainer(EnableDocker);
                     break;
+                case ContainerType.AnonymousElasticsearch:
+                    InjectElasticContainer(EnableDocker);
+                    break;
             }
         }
 
@@ -165,6 +174,10 @@ namespace Warewolf.UnitTestAttributes
                     return "3148";
                 case ContainerType.Warewolf:
                     return "3146";
+                case ContainerType.AnonymousElasticsearch:
+                    return "9200";
+                case ContainerType.Elasticsearch:
+                    return "9400";
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -251,7 +264,7 @@ namespace Warewolf.UnitTestAttributes
                     knownMssqlServerSources);
             }
         }
-
+        
         void InjectRabbitMQContainer(bool EnableDocker)
         {
             var knownServerSources = new List<string>()
@@ -271,7 +284,24 @@ namespace Warewolf.UnitTestAttributes
                     knownServerSources);
             }
         }
-
+        private void InjectElasticContainer(bool enableDocker)
+        {
+            var knownServerSources = new List<string>()
+            {
+                @"%programdata%\Warewolf\Resources\Sources\Elasticsearch\testElasticsearchSource.bite",
+                @"%programdata%\Warewolf\Resources\Sources\Elasticsearch\testElasticsearchSource.xml"
+            };
+            if (EnableDocker)
+            {
+                UpdateSourcesConnectionStrings(
+                    $"HostName=http://{Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
+                    knownServerSources);
+            }
+            else
+            {
+                throw new Exception("No fallback server exists for Elastic Search in a Docker container.");
+            }
+        }
         void InjectPostGreSQLContainer(bool EnableDocker)
         {
             var knownServerSources = new List<string>()

@@ -56,6 +56,7 @@ namespace Dev2.Common.Interfaces
         IList<Guid> FetchDependenciesOnList(IEnumerable<Guid> values);
 
         IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources();
+        IEnumerable<IElasticsearchSourceDefinition> FetchElasticsearchServiceSources();
         IList<IWcfServerSource> FetchWcfSources();
         IList<IWcfAction> WcfActions(IWcfServerSource source);
 

@@ -2830,7 +2830,34 @@ namespace Dev2.Core.Tests
             _shellViewModel.NewWebSourceCommand.Execute(null);
             mockWM.Verify(manager => manager.NewWebSource(It.IsAny<string>()));
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("MainViewModel_NewElasticsearchSourceCommand")]
+        public void MainViewModel_NewElasticsearchSourceCommand_Handle_Result()
+        {
+            //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
+            CreateFullExportsAndVm();
 
+            var env = SetupEnvironment();
+
+            //------------Execute Test---------------------------
+            _shellViewModel.ActiveServer = env.Object;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(_shellViewModel.ActiveServer);
+            Assert.IsTrue(_shellViewModel.ActiveServer.IsConnected);
+            Assert.IsTrue(_shellViewModel.ActiveServer.CanStudioExecute);
+
+            var canExecute = _shellViewModel.NewElasticsearchSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+
+            var mockWM = new Mock<IWorksurfaceContextManager>();
+            mockWM.Setup(manager => manager.NewElasticsearchSource(It.IsAny<string>())).Verifiable();
+            _shellViewModel.WorksurfaceContextManager = mockWM.Object;
+            _shellViewModel.NewElasticsearchSourceCommand.Execute(null);
+            mockWM.Verify(manager => manager.NewElasticsearchSource(It.IsAny<string>()));
+        }
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_NewRedisSourceCommand")]

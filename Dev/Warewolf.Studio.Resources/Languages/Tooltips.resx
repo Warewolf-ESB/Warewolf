@@ -1186,6 +1186,40 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="RedisTimeoutToolTip" xml:space="preserve">
     <value>Redis Timeout for stored data</value>
   </data>
+  <data name="ElasticsearchSourceHostNameTooltip" xml:space="preserve">
+     <value>The address of the Elasticsearch server name to connect to. </value>
+  </data>
+  <data name="ElasticsearchSourcePortTooltip" xml:space="preserve">
+    <value>The default port on which elasticsearch listens is 9200.</value>
+  </data>
+  <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
+    <value>The server password</value>
+  </data>
+  <data name="ElasticsearchUsernameTooltip" xml:space="preserve">
+    <value>The Elasticsearch server username</value>
+  </data>
+  <data name="ElasticsearchSearchIndexTooltip" xml:space="preserve">
+    <value>The Elasticsearch server index that will be used to index the data.</value>
+  </data>
+  
+  <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
+    <value>The Elasticsearch server password</value>
+  </data>  
+  <data name="ElasticsearchTestTooltip" xml:space="preserve">
+    <value>Test the elasticsearch source connection</value>
+  </data>
+  <data name="ElasticsearchCancelTestTooltip" xml:space="preserve">
+    <value>Cancel the test execution</value>
+  </data>
+  <data name="ElasticsearchServersToolTip" xml:space="preserve">
+    <value>Select a preconfigured elasticsearch source.</value>
+  </data>
+  <data name="ElasticsearchNewSourceToolTip" xml:space="preserve">
+    <value>Create a new Elasticsearch Server Source</value>
+  </data>
+  <data name="ElasticsearchEditSourceToolTip" xml:space="preserve">
+    <value>Edit Elasticsearch Server Source</value>
+  </data>
   <data name="ManageWebSourceDefaultQueryTooltip" xml:space="preserve">
     <value>Optional default query</value>
   </data>
@@ -2442,6 +2476,10 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewAuditsFilePathToolTip" xml:space="preserve">
     <value>Audits Folder Path</value>
   </data>
+  <data name="LoggingViewAuditsDataSourceToolTip" xml:space="preserve">
+    <value>Auditing Data Source</value>
+  </data>
+
   <data name="RedisTTLToolTip" xml:space="preserve">
     <value>Time in seconds before the key expires. Default is 5 Seconds.</value>
   </data>
