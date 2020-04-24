@@ -44,7 +44,7 @@ namespace Dev2.Runtime.Security
             var serializer = new Dev2JsonSerializer();
             var securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
             TimeOutPeriod = securitySettingsTO.CacheTimeout;
-            OverrideResource = securitySettingsTO.OverrideResource;
+            OverrideResource = securitySettingsTO.AuthenticationOverrideWorkflow;
             return securitySettingsTO.WindowsGroupPermissions;
         }
 
