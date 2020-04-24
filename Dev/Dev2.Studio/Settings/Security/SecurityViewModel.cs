@@ -122,7 +122,7 @@ namespace Dev2.Settings.Security
             PickWindowsGroupCommand = new DelegateCommand(PickWindowsGroup, o => CanPickWindowsGroup(securitySettings?.WindowsGroupPermissions));
             PickResourceCommand = new DelegateCommand(PickResource);
 
-            OverrideResource = InitializeOverrideResource(securitySettings?.OverrideResource);
+            OverrideResource = InitializeOverrideResource(securitySettings?.AuthenticationOverrideWorkflow);
             PickOverrideResourceCommand = new DelegateCommand(PickOverrideResource);
 
             InitializeHelp();
@@ -255,7 +255,7 @@ namespace Dev2.Settings.Security
             securitySettings.WindowsGroupPermissions.Clear();
             Copy(ServerPermissions, securitySettings.WindowsGroupPermissions);
             Copy(ResourcePermissions, securitySettings.WindowsGroupPermissions);
-            securitySettings.OverrideResource = new NamedGuid
+            securitySettings.AuthenticationOverrideWorkflow = new NamedGuid
             {
                 Value = OverrideResource.ResourceId,
                 Name = OverrideResource.ResourceName

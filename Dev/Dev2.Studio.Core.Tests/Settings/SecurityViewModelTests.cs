@@ -144,7 +144,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsNotNull(viewModel.OverrideResource);
             var serverPerms = securitySettingsTO?.WindowsGroupPermissions.Where(p => p.IsServer).ToList() ?? new List<WindowsGroupPermission>();
             var resourcePerms = securitySettingsTO?.WindowsGroupPermissions.Where(p => !p.IsServer).ToList() ?? new List<WindowsGroupPermission>();
-            var overrideResource = securitySettingsTO?.OverrideResource ?? new NamedGuid();
+            var overrideResource = securitySettingsTO?.AuthenticationOverrideWorkflow ?? new NamedGuid();
 
             // constructor adds an extra "new"  permission
             Assert.AreEqual(overrideResource.Name, viewModel.OverrideResource.ResourceName);
