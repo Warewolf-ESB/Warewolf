@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GraphQL" Version="3.0.0-preview-1490" />
+    <PackageReference Include="GraphQL.NewtonsoftJson" Version="3.0.0-preview-1490" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
+    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

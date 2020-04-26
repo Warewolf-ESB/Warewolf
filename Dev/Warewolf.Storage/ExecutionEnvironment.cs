@@ -724,6 +724,20 @@ namespace Warewolf.Storage
             return clonedExecutionEnvironment;
         }
 
+        public IEnumerable<(string scalarName, WarewolfAtom scalar)> EvalAllScalars()
+        {
+            return PublicFunctions.EvalEnvScalars(_env).Select(tuple => (tuple.Item1, tuple.Item2));
+        }
+
+        public IEnumerable<(string recSetName, WarewolfRecordset recSet)> EvalAllRecordsets()
+        {
+            return PublicFunctions.EvalEnvRecordSets(_env).Select(tuple => (tuple.Item1,tuple.Item2)); 
+        }
+
+        public IEnumerable<(string objectName, JContainer jObject)> EvalAllObjects()
+        {
+            return PublicFunctions.EvalEnvJsonObjects(_env).Select(tuple => (tuple.Item1, tuple.Item2));
+        }
         private class EnvironmentToJsonHelper : IDisposable
         {
             readonly MemoryStream _stream = new MemoryStream();

@@ -233,6 +233,21 @@ namespace Warewolf.Storage
             return _inner.Snapshot();
         }
 
+        public IEnumerable<(string scalarName, DataStorage.WarewolfAtom scalar)> EvalAllScalars()
+        {
+            return _inner.EvalAllScalars();
+        }
+
+        public IEnumerable<(string recSetName, DataStorage.WarewolfRecordset recSet)> EvalAllRecordsets()
+        {
+            return _inner.EvalAllRecordsets();
+        }
+
+        public IEnumerable<(string objectName, JContainer jObject)> EvalAllObjects()
+        {
+            return _inner.EvalAllObjects();
+        }
+
         public void FromJson(string serializedEnv)
         {
             

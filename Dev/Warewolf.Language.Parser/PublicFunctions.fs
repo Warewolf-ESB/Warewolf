@@ -133,7 +133,8 @@ let RecordsetExpressionExists (exp : string) (env : WarewolfEnvironment) =
         else false
     | _ -> false
 
-
+let EvalEnvScalars (env : WarewolfEnvironment) =
+    Map.toSeq env.Scalar
 let EvalEnvRecordSets (env : WarewolfEnvironment) =
     Map.toSeq env.RecordSets
 let EvalEnvJsonObjects (env : WarewolfEnvironment) =

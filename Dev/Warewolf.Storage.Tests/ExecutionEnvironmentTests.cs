@@ -2142,6 +2142,73 @@ namespace Warewolf.Storage.Tests
             Assert.AreEqual(expected, _environment.ToJson());
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_GivenEnvironmentWithData_EvalAllScalars_ShouldReturnAllScalarsInEnvironment()
+        {
+            var env = EvalMixedDataEnv();
+            var evalAllScalars = env.EvalAllScalars().ToList();
+
+            Assert.IsNotNull(evalAllScalars);
+            Assert.AreEqual(5,evalAllScalars.Count());
+
+            Assert.AreEqual("Age",evalAllScalars[0].scalarName);
+            Assert.AreEqual("FullName", evalAllScalars[1].scalarName);
+            Assert.AreEqual("Name", evalAllScalars[2].scalarName);
+            Assert.AreEqual("Salary", evalAllScalars[3].scalarName);
+            Assert.AreEqual("Surname", evalAllScalars[4].scalarName);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_GivenEnvironmentWithData_EvalAllRecSets_ShouldReturnAllRecSetsInEnvironment()
+        {
+            var env = EvalMixedDataEnv();
+            var evalAllRecsets = env.EvalAllRecordsets().ToList();
+
+            Assert.IsNotNull(evalAllRecsets);
+            Assert.AreEqual(1, evalAllRecsets.Count());
+
+            Assert.AreEqual("rec", evalAllRecsets[0].recSetName);
+            Assert.AreEqual(4, evalAllRecsets[0].recSet.Data.Count); //Count Includes the WarewolfPositionColumn data
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_GivenEnvironmentWithData_EvalAllObjects_ShouldReturnAllJSONObjectsInEnvironment()
+        {
+            var env = EvalMixedDataEnv();
+            var evalAllObjects = env.EvalAllObjects().ToList();
+
+            Assert.IsNotNull(evalAllObjects);
+            Assert.AreEqual(1, evalAllObjects.Count());
+
+            Assert.AreEqual("Person", evalAllObjects[0].objectName);
+            Assert.AreEqual(1, evalAllObjects[0].jObject.Count); //Count Includes the WarewolfPositionColumn data
+        }
+
+        static ExecutionEnvironment EvalMixedDataEnv()
+        {
+            var environment = new ExecutionEnvironment();
+            environment.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), 0);
+            environment.AssignWithFrame(new AssignValue("[[rec().b]]", "2"), 0);
+            environment.AssignWithFrame(new AssignValue("[[rec().c]]", "3"), 0);
+
+            environment.Assign("[[Name]]", "Bob", 0);
+            environment.Assign("[[Surname]]", "Mary", 0);
+            environment.Assign("[[FullName]]", "Bob Mary", 0);
+            environment.Assign("[[Age]]", "15", 0);
+            environment.Assign("[[Salary]]", "1550.55", 0);
+
+            var values = new List<IAssignValue> { new AssignValue("[[@Person.Name]]", "John") };
+            environment.AssignJson(values, 0);
+
+            return environment;
+        }
+
         static DataStorage.WarewolfEnvironment EvalMultiAssign()
         {
             var assigns = new List<IAssignValue>

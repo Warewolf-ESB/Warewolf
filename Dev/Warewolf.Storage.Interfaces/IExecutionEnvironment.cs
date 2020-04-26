@@ -104,5 +104,8 @@ namespace Warewolf.Storage.Interfaces
         string ToJson();
         void FromJson(string serializedEnv);
         IExecutionEnvironment Snapshot();
+        IEnumerable<(string scalarName, DataStorage.WarewolfAtom scalar)> EvalAllScalars();
+        IEnumerable<(string recSetName, DataStorage.WarewolfRecordset recSet)> EvalAllRecordsets();
+        IEnumerable<(string objectName, JContainer jObject)> EvalAllObjects();
     }
 }
