@@ -2,6 +2,7 @@
 using Dev2.Diagnostics.Debug;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Diagnostics.Test
 {
     [TestClass]
