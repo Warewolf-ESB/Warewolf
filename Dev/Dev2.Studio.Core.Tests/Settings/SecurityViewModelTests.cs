@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,17 +12,22 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.ConnectionHelpers;
 using Dev2.Dialogs;
 using Dev2.Services.Security;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -35,13 +40,63 @@ namespace Dev2.Core.Tests.Settings
     [TestCategory("Studio Settings Core")]
     public class SecurityViewModelTests
     {
+        static Mock<IResourceRepository> _resourceRepo = new Mock<IResourceRepository>();
+        static Mock<IServer> _environmentModel;
+        static IServerRepository _serverRepo;
+        static Mock<IContextualResourceModel> _firstResource;
+
+        const string _displayName = "test2";
+        const string _serviceDefinition = "<x/>";
+        static readonly Guid _serverID = Guid.NewGuid();
+        public static Mock<IPopupController> _popupController;
+
+        public static Mock<IContextualResourceModel> CreateResource(ResourceType resourceType, string _resourceName, Guid _resourceID)
+        {
+            var result = new Mock<IContextualResourceModel>();
+
+            result.Setup(c => c.ResourceName).Returns(_resourceName);
+            result.Setup(c => c.ResourceType).Returns(resourceType);
+            result.Setup(c => c.DisplayName).Returns(_displayName);
+            result.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(_serviceDefinition));
+            result.Setup(c => c.Category).Returns("Testing");
+            result.Setup(c => c.Environment).Returns(_environmentModel.Object);
+            result.Setup(c => c.ServerID).Returns(_serverID);
+            result.Setup(c => c.ID).Returns(_resourceID);
+
+            return result;
+        }
+
+        public static IServerRepository GetEnvironmentRepository()
+        {
+            var models = new List<IServer> {_environmentModel.Object};
+            var mock = new Mock<IServerRepository>();
+            mock.Setup(s => s.All()).Returns(models);
+            mock.Setup(s => s.IsLoaded).Returns(true);
+            mock.Setup(repository => repository.Source).Returns(_environmentModel.Object);
+            mock.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(_environmentModel.Object);
+            _serverRepo = mock.Object;
+            CustomContainer.Register(_serverRepo);
+            return _serverRepo;
+        }
+
         [TestInitialize]
         public void setup()
         {
             AppUsageStats.LocalHost = "http://localhost:3142";
-            ServerRepository.Instance.ActiveServer = new Mock<IServer>().Object;
-        }
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            _environmentModel = new Mock<IServer>();
+            _environmentModel.Setup(a => a.DisplayName).Returns("Localhost");
+            mockShellViewModel.Setup(x => x.LocalhostServer).Returns(_environmentModel.Object);
+            mockShellViewModel.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            var explorerTooltips = new Mock<IExplorerTooltips>();
 
+            CustomContainer.Register(mockShellViewModel.Object);
+            CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
+            CustomContainer.Register(connectControlSingleton.Object);
+            CustomContainer.Register(explorerTooltips.Object);
+            ServerRepository.Instance.ActiveServer = _environmentModel.Object;
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -1186,7 +1241,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        [TestCategory("SecurityViewModel_HasDuplicateSecurityViewModel_PickOverrideResourceCommand_PermissionIsNull_DoesNothingResourcePermissions")]
         public void SecurityViewModel_ResourcePermissionsCompare_IsDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1323,6 +1378,138 @@ namespace Dev2.Core.Tests.Settings
             var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
             //------------Assert Results-------------------------
             Assert.IsTrue(hasDuplicateResourcePermissions);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SecurityViewModel_PickResourceCommand")]
+        public void SecurityViewModel_PickOverrideResourceCommand_Sets_OverrideResource()
+        {
+            //------------Setup for test--------------------------
+            var overrrideResourceId = Guid.NewGuid();
+            var overrideResourceName = "AuthWorkflow";
+            var permission = new WindowsGroupPermission
+            {Swas
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = overrrideResourceId,
+                ResourceName = overrideResourceName
+            };
+
+            NamedGuid authenticationOverrideWorkflow = new NamedGuid
+            {
+                Value = overrrideResourceId,
+                Name = overrideResourceName
+            };
+            var authResource = new OverrideResource
+            {
+                ResourceId = overrrideResourceId,
+                ResourceName = overrideResourceName
+            };
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+            var mockPopup = new Mock<IPopupController>();
+
+            _serverRepo = GetEnvironmentRepository();
+            _popupController = new Mock<IPopupController>();
+            CustomContainer.Register(_popupController.Object);
+            _resourceRepo = new Mock<IResourceRepository>();
+
+            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrrideResourceId);
+            var coll = new Collection<IResourceModel> {_firstResource.Object};
+            _resourceRepo.Setup(c => c.All()).Returns(coll);
+
+            CustomContainer.Register(_resourceRepo.Object);
+            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrrideResourceId);
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
+            CustomContainer.Register(mockExplorerTreeItem.Object);
+            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
+            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
+            CustomContainer.Register(mockResourcePickerDialog.Object);
+            mockPopup.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false));
+
+            var viewModel = new SecurityViewModel(
+                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow),
+                new Mock<DirectoryObjectPickerDialog>().Object,
+                new Mock<IWin32Window>().Object,
+                _environmentModel.Object, () => mockResourcePickerDialog.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickOverrideResourceCommand.Execute(authResource);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.ResourceId);
+            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.ResourceName);
+            mockPopup.Verify(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SecurityViewModel_PickResourceCommand")]
+        public void SecurityViewModel_PickOverrideResourceCommand_Sets_OverrideResource_Null()
+        {
+            //------------Setup for test--------------------------
+            var resourceId = Guid.NewGuid();
+            const string resourceName = "Cat\\Resource";
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceId,
+                ResourceName = resourceName
+            };
+            var overrrideResourceId = Guid.NewGuid();
+            var overrideResourceName = "AuthWorkflow";
+            NamedGuid authenticationOverrideWorkflow = new NamedGuid
+            {
+                Value = overrrideResourceId,
+                Name = overrideResourceName
+            };
+            var authResource = new OverrideResource
+            {
+                ResourceId = overrrideResourceId,
+                ResourceName = overrideResourceName
+            };
+            _serverRepo = GetEnvironmentRepository();
+            _popupController = new Mock<IPopupController>();
+            _resourceRepo = new Mock<IResourceRepository>();
+
+            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrrideResourceId);
+            var coll = new Collection<IResourceModel> {_firstResource.Object};
+            _resourceRepo.Setup(c => c.All()).Returns(coll);
+            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+            var viewModel = new SecurityViewModel(
+                new SecuritySettingsTO(
+                    new[]
+                    {
+                        permission
+                    },
+                    authenticationOverrideWorkflow),
+                new Mock<DirectoryObjectPickerDialog>().Object,
+                new Mock<IWin32Window>().Object,
+                _environmentModel.Object, () => new Mock<IResourcePickerDialog>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickOverrideResourceCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.ResourceId);
+            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.ResourceName);
         }
 
         static List<WindowsGroupPermission> CreatePermissions()
