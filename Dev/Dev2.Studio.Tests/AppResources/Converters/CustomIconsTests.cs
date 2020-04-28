@@ -2,6 +2,7 @@
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Studio.Tests.AppResources.Converters
 {
     [TestClass]
