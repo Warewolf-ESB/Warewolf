@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,6 +24,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Dev2.Data;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
@@ -119,10 +120,10 @@ namespace Dev2.Settings.Security
             _directoryObjectPicker.TargetComputer = string.Empty;
             _directoryObjectPicker.ShowAdvancedView = false;
 
+            OverrideResource = InitializeOverrideResource(securitySettings?.AuthenticationOverrideWorkflow);
+
             PickWindowsGroupCommand = new DelegateCommand(PickWindowsGroup, o => CanPickWindowsGroup(securitySettings?.WindowsGroupPermissions));
             PickResourceCommand = new DelegateCommand(PickResource);
-
-            OverrideResource = InitializeOverrideResource(securitySettings?.AuthenticationOverrideWorkflow);
             PickOverrideResourceCommand = new DelegateCommand(PickOverrideResource);
 
             InitializeHelp();
@@ -178,6 +179,7 @@ namespace Dev2.Settings.Security
         [JsonIgnore] public ICommand PickWindowsGroupCommand { get; private set; }
 
         [JsonIgnore] public ICommand PickResourceCommand { get; private set; }
+        [JsonIgnore] public ICommand PickOverrideResourceCommand { get; private set; }
 
         public OverrideResource OverrideResource
         {
@@ -189,23 +191,67 @@ namespace Dev2.Settings.Security
             }
         }
 
-        [JsonIgnore] public ICommand PickOverrideResourceCommand { get; }
 
-        private void PickOverrideResource(object obj)
+        private bool IsValidOverrideWorkflow(IExplorerTreeItem resourceModel)
         {
-            var resourceModel = PickOverrideResource();
+            var foundResourceModel = _environment.ResourceRepository?.FindSingle(model => model.ID == resourceModel.ResourceId);
+            if (foundResourceModel == null)
+            {
+                return false;
+            }
+
+            var converter = new DataListConversionUtils();
+            var dataList = new DataListModel();
+            dataList.Create(foundResourceModel?.DataList, foundResourceModel?.DataList);
+            var outputList = converter.GetOutputs(dataList);
+            if (outputList.Select(sca => sca.Recordset == "UserGroups" && sca.Field == "Name").FirstOrDefault())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        void PickOverrideResource(object obj)
+        {
+            var resource = obj as OverrideResource;
+
+            var resourceModel = PickOverrideResource(resource);
             if (resourceModel == null)
             {
                 return;
             }
 
-            OverrideResource.ResourceId = resourceModel.ResourceId;
-            OverrideResource.ResourceName = resourceModel.ResourcePath;
+            if (IsValidOverrideWorkflow(resourceModel))
+            {
+                OverrideResource.ResourceId = resourceModel.ResourceId;
+                OverrideResource.ResourceName = resourceModel.ResourcePath;
+            }
+            else
+            {
+                var popupController = CustomContainer.Get<Common.Interfaces.Studio.Controller.IPopupController>();
+                if (popupController != null)
+                {
+                    var popupMessage = new PopupMessage
+                    {
+                        Description = Core.Error_Security_Auth_Override_Workflow,
+                        Image = MessageBoxImage.Error,
+                        Buttons = MessageBoxButton.OK,
+                        IsError = true,
+                        Header = @"Invalid Authentication Override"
+                    };
+                    popupController.Show(popupMessage);
+                }
+
+                Dev2Logger.Error(@"Invalid security override: ", new Exception(Core.Error_Security_Auth_Override_Workflow), GlobalConstants.WarewolfError);
+            }
         }
 
-        private IExplorerTreeItem PickOverrideResource()
+        private IExplorerTreeItem PickOverrideResource(OverrideResource resource)
         {
-            var hasResult = _resourcePicker.ShowDialog(_environment);
+           var hasResult = _resourcePicker.ShowDialog(_environment);
 
             if (_environment.ResourceRepository != null)
             {
@@ -255,6 +301,7 @@ namespace Dev2.Settings.Security
             securitySettings.WindowsGroupPermissions.Clear();
             Copy(ServerPermissions, securitySettings.WindowsGroupPermissions);
             Copy(ResourcePermissions, securitySettings.WindowsGroupPermissions);
+
             securitySettings.AuthenticationOverrideWorkflow = new NamedGuid
             {
                 Value = OverrideResource.ResourceId,

@@ -4226,6 +4226,8 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Use a public workflow to associate a username and password with a set of group names that that user belongs to.
         ///      &lt;br/&gt;&lt;br/&gt;
+        ///      Make sure the workflow has a recordset with the name [[UserGroups(*).Name]] containing these group names set to output.
+        ///      &lt;br/&gt;&lt;br/&gt;
         ///      Any request that contains the resulting hashed token will be considered to be in these groups.
         ///    .
         /// </summary>
