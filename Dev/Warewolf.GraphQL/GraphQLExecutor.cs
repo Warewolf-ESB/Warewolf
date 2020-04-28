@@ -8,13 +8,11 @@ namespace Warewolf.GraphQL
     public class GraphQLExecutor
     {
         private readonly IExecutionEnvironment _dataObjEnvironment;
-        private readonly string _dataList;
         private ISchema _schema;
 
-        public GraphQLExecutor(IExecutionEnvironment dataObjEnvironment, string dataList)
+        public GraphQLExecutor(IExecutionEnvironment dataObjEnvironment)
         {
             _dataObjEnvironment = dataObjEnvironment;
-            _dataList = dataList;
             _schema = new Schema
             {
                 Query = new Query(_dataObjEnvironment)
