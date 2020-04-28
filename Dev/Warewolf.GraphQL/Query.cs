@@ -33,6 +33,18 @@ namespace Warewolf.GraphQL
                                       var name = context.GetArgument<string>("name");
                                       return GetRecordset(name);
                                     });
+      Field<RecordsetType>("recordsetColumnName",
+                           arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "name"}),
+                           resolve: context =>
+                                    {
+                                      var name = context.GetArgument<string>("name");
+                                      return GetRecordsetColumn(name);
+                                    });
+    }
+
+    private List<Scalar> GetScalars()
+    {
+      return _env.EvalAllScalars().Select(s => new Scalar {Name = s.scalarName, Value = s.scalar.ToString()}).ToList();
     }
 
     private Scalar GetScalar(string name)
@@ -47,10 +59,7 @@ namespace Warewolf.GraphQL
       return new Scalar {Name = name, Value = value.ToString()};
     }
 
-    private List<Scalar> GetScalars()
-    {
-      return _env.EvalAllScalars().Select(s => new Scalar {Name = s.scalarName, Value = s.scalar.ToString()}).ToList();
-    }
+
 
     private List<RecordSet> GetRecordsets()
     {
@@ -87,7 +96,8 @@ namespace Warewolf.GraphQL
     private RecordSet GetRecordset(string name)
     {
       var recordSet = new RecordSet {Name = name};
-      if (_env.Eval(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(name,true)), 0) is
+      if (_env.Eval(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(name, true)),
+                    0) is
             CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult warewolfEvalResult)
       {
         var recsetData = warewolfEvalResult.Item.Data;
@@ -106,6 +116,28 @@ namespace Warewolf.GraphQL
 
           }
         }
+      }
+
+      return recordSet;
+    }
+
+    private RecordSet GetRecordsetColumn(string name)
+    {
+      var recSetParts = name.Split('.');
+      var recordSet = new RecordSet {Name = recSetParts[0]};
+      if (
+        _env.Eval(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(recSetParts[0], recSetParts[1], "*")),
+                  0) is
+          CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfEvalResult)
+      {
+        var recsetData = warewolfEvalResult.Item;
+        var scalarList = new ScalarList {Name = recSetParts[1]};
+        foreach (var data in recsetData)
+        {
+          scalarList.Value.Add(data.ToString());
+        }
+
+        recordSet.Columns.Add(scalarList);
       }
 
       return recordSet;

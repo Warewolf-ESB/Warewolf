@@ -80,5 +80,24 @@ namespace Warewolf.GraphQL.Tests
                       result);
     }
 
-  }
+    [TestMethod]
+    public void Simple_Query_ForSpecificRecordsetColumn_ShouldReturnQueriedRecordsetColumnFromEnvironment()
+    {
+      //------------Setup----------------------------------------------------
+      var env = new ExecutionEnvironment();
+      env.AssignWithFrame(new AssignValue("[[rec().a]]", "1"), 0);
+      env.AssignWithFrame(new AssignValue("[[rec().b]]", "2"), 0);
+      env.AssignWithFrame(new AssignValue("[[rec().c]]", "3"), 0);
+      env.AssignWithFrame(new AssignValue("[[table().col1]]", "Warewolf"), 0);
+      env.AssignWithFrame(new AssignValue("[[table().col2]]", "Is"), 0);
+      env.AssignWithFrame(new AssignValue("[[table().col3]]", "Great!"), 0);
+      env.AssignWithFrame(new AssignValue("[[table().col2]]", "Cool"), 0);
+      var graphQLExecutor = new GraphQLExecutor(env);
+      var result = graphQLExecutor.Execute("{ recordsetColumnName(name: \"table.col2\") { name, columns { name value } } }");
+      Assert.AreEqual(
+                      "{\"data\":{\"recordsetColumnName\":{\"name\":\"table\",\"columns\":[{\"name\":\"col2\",\"value\":[\"Is\",\"Cool\"]}]}}}",
+                      result);
+    }
+
+    }
 }

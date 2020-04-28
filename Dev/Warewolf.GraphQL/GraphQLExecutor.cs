@@ -15,7 +15,7 @@ namespace Warewolf.GraphQL
             _dataObjEnvironment = dataObjEnvironment;
             _schema = new Schema
             {
-                Query = new Query(_dataObjEnvironment)
+                Query = new Query(_dataObjEnvironment),
             };
 
         }
@@ -23,7 +23,11 @@ namespace Warewolf.GraphQL
 
         public string Execute(string query)
         {
-            return _schema.ExecuteAsync(new DocumentWriter(), _ => { _.Query = query; }).Result;
+            return _schema.ExecuteAsync(new DocumentWriter(), _ =>
+                                                              {
+                                                                _.Query = query;
+                                                                _.EnableMetrics = true;
+                                                              }).Result;
         }
     }
 }
