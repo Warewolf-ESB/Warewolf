@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Dev2.DynamicServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Data;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -10,7 +12,7 @@ namespace Warewolf.GraphQL.Tests
   public class GraphQLTests
   {
     [TestMethod]
-    public void Simple_Query_ForAllScalar_ShouldReturnAllScalarsFromEnvironment()
+    public void Query_ForAllScalar_ShouldReturnAllScalarsFromEnvironment()
     {
       //------------Setup----------------------------------------------------
       var env = new ExecutionEnvironment();
@@ -28,7 +30,7 @@ namespace Warewolf.GraphQL.Tests
     }
 
     [TestMethod]
-    public void Simple_Query_ForSpecifiedScalar_ShouldReturnMatchingScalarsFromEnvironment()
+    public void Query_ForSpecifiedScalar_ShouldReturnMatchingScalarsFromEnvironment()
     {
       //------------Setup----------------------------------------------------
       var env = new ExecutionEnvironment();
@@ -44,7 +46,7 @@ namespace Warewolf.GraphQL.Tests
     }
 
     [TestMethod]
-    public void Simple_Query_ForAllRecordsets_ShouldReturnAllRecordsetsFromEnvironment()
+    public void Query_ForAllRecordsets_ShouldReturnAllRecordsetsFromEnvironment()
     {
       //------------Setup----------------------------------------------------
       var env = new ExecutionEnvironment();
@@ -63,7 +65,7 @@ namespace Warewolf.GraphQL.Tests
     }
 
     [TestMethod]
-    public void Simple_Query_ForSpecificRecordset_ShouldReturnQueriedRecordsetFromEnvironment()
+    public void Query_ForSpecificRecordset_ShouldReturnQueriedRecordsetFromEnvironment()
     {
       //------------Setup----------------------------------------------------
       var env = new ExecutionEnvironment();
@@ -81,7 +83,7 @@ namespace Warewolf.GraphQL.Tests
     }
 
     [TestMethod]
-    public void Simple_Query_ForSpecificRecordsetColumn_ShouldReturnQueriedRecordsetColumnFromEnvironment()
+    public void Query_ForSpecificRecordsetColumn_ShouldReturnQueriedRecordsetColumnFromEnvironment()
     {
       //------------Setup----------------------------------------------------
       var env = new ExecutionEnvironment();
@@ -93,11 +95,61 @@ namespace Warewolf.GraphQL.Tests
       env.AssignWithFrame(new AssignValue("[[table().col3]]", "Great!"), 0);
       env.AssignWithFrame(new AssignValue("[[table().col2]]", "Cool"), 0);
       var graphQLExecutor = new GraphQLExecutor(env);
-      var result = graphQLExecutor.Execute("{ recordsetColumnName(name: \"table.col2\") { name, columns { name value } } }");
+      var result =
+        graphQLExecutor.Execute("{ recordsetColumnName(name: \"table.col2\") { name, columns { name value } } }");
       Assert.AreEqual(
                       "{\"data\":{\"recordsetColumnName\":{\"name\":\"table\",\"columns\":[{\"name\":\"col2\",\"value\":[\"Is\",\"Cool\"]}]}}}",
                       result);
     }
 
+    [TestMethod]
+    public void Query_ForAllObjects_ShouldReturnAllObjectsFromEnvironment()
+    {
+      //------------Setup----------------------------------------------------
+      var env = new ExecutionEnvironment();
+      var values = new List<IAssignValue> {new AssignValue("[[@Person.Name]]", "John")};
+      env.AssignJson(values, 0);
+      //--------------Execute-------------------------------------------------
+      var graphQLExecutor = new GraphQLExecutor(env);
+      var result = graphQLExecutor.Execute("{ objects { name, value } }");
+      Assert.AreEqual(
+                      "{\"data\":{\"objects\":[{\"name\":\"Person\",\"value\":\"{\\r\\n  \\\"Name\\\": \\\"John\\\"\\r\\n}\"}]}}",
+                      result);
     }
+
+    [TestMethod]
+    public void Query_ForSpecificObjectData_ShouldReturnObjectDataFromEnvironment()
+    {
+      //------------Setup----------------------------------------------------
+      var env = new ExecutionEnvironment();
+      var values = new List<IAssignValue> {new AssignValue("[[@Person.Name]]", "John")};
+      env.AssignJson(values, 0);
+      //--------------Execute-------------------------------------------------
+      var graphQLExecutor = new GraphQLExecutor(env);
+      var result = graphQLExecutor.Execute("{ objectData(name: \"Person.Name\") { name, value } }");
+      Assert.AreEqual(
+                      "{\"data\":{\"objectData\":{\"name\":\"Person.Name\",\"value\":\"John\"}}}",
+                      result);
+    }
+
+    [TestMethod]
+    public void Query_ForSpecificObject_ShouldReturnObjectFromEnvironment()
+    {
+      //------------Setup----------------------------------------------------
+      var env = new ExecutionEnvironment();
+      var values = new List<IAssignValue>
+                   {
+                     new AssignValue("[[@Person.Name]]", "John"),
+                     new AssignValue("[[@Person.Address(1).Line1]]", "The Yellow Brick Road")
+                   };
+      env.AssignJson(values, 0);
+      //--------------Execute-------------------------------------------------
+      var graphQLExecutor = new GraphQLExecutor(env);
+      var result = graphQLExecutor.Execute("{ objectData(name: \"Person\") { name, value } }");
+      Assert.AreEqual(
+                      "{\"data\":{\"objectData\":{\"name\":\"Person\",\"value\":\"{\\r\\n  \\\"Name\\\": \\\"John\\\",\\r\\n  \\\"Address\\\": [\\r\\n    {\\r\\n      \\\"Line1\\\": \\\"The Yellow Brick Road\\\"\\r\\n    }\\r\\n  ]\\r\\n}\"}}}",
+                      result);
+    }
+
+  }
 }

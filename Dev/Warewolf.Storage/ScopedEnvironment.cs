@@ -248,6 +248,11 @@ namespace Warewolf.Storage
             return _inner.EvalAllObjects();
         }
 
+        public string EvalResultToString(CommonFunctions.WarewolfEvalResult result)
+        {
+          return _inner.EvalResultToString(result);
+        }
+
         public void FromJson(string serializedEnv)
         {
             

@@ -3,6 +3,7 @@ using System.Linq;
 using Dev2.Data.Util;
 using GraphQL;
 using GraphQL.Types;
+using Newtonsoft.Json;
 using Warewolf.Storage.Interfaces;
 
 namespace Warewolf.GraphQL
@@ -40,6 +41,17 @@ namespace Warewolf.GraphQL
                                       var name = context.GetArgument<string>("name");
                                       return GetRecordsetColumn(name);
                                     });
+
+      Field<ListGraphType<ObjectType>>("objects",
+                                       resolve: context => GetObjects());
+
+      Field<ObjectType>("objectData",
+                        arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "name"}),
+                        resolve: context =>
+                                 {
+                                   var name = context.GetArgument<string>("name");
+                                   return GetObjectData(name);
+                                 });
     }
 
     private List<Scalar> GetScalars()
@@ -141,6 +153,38 @@ namespace Warewolf.GraphQL
       }
 
       return recordSet;
+    }
+
+    private List<Object> GetObjects()
+    {
+      var objects = new List<Object>();
+      var allObjects = _env.EvalAllObjects();
+      foreach (var (name, jContainer) in allObjects)
+      {
+        var recSet = new Object
+                     {
+                       Name = name,
+                       Value = jContainer.ToString(Formatting.Indented)
+                     };
+        objects.Add(recSet);
+      }
+
+      return objects;
+    }
+
+    private Object GetObjectData(string name)
+    {
+      var objectData = new Object
+                       {
+                         Name = name
+                       };
+      var evalResult = _env.EvalForJson(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.ObjectStartMarker+name));
+      if (evalResult != null)
+      {
+        objectData.Value = _env.EvalResultToString(evalResult);
+      }
+
+      return objectData;
     }
   }
 }

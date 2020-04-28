@@ -107,5 +107,6 @@ namespace Warewolf.Storage.Interfaces
         IEnumerable<(string scalarName, DataStorage.WarewolfAtom scalar)> EvalAllScalars();
         IEnumerable<(string recSetName, DataStorage.WarewolfRecordset recSet)> EvalAllRecordsets();
         IEnumerable<(string objectName, JContainer jObject)> EvalAllObjects();
+        string EvalResultToString(CommonFunctions.WarewolfEvalResult result);
     }
 }

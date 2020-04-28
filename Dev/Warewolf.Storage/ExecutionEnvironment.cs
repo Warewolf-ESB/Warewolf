@@ -738,7 +738,12 @@ namespace Warewolf.Storage
         {
             return PublicFunctions.EvalEnvJsonObjects(_env).Select(tuple => (tuple.Item1, tuple.Item2));
         }
-        private class EnvironmentToJsonHelper : IDisposable
+
+        public string EvalResultToString(CommonFunctions.WarewolfEvalResult result)
+        {
+          return WarewolfEvalResultToString(result);
+        }
+    private class EnvironmentToJsonHelper : IDisposable
         {
             readonly MemoryStream _stream = new MemoryStream();
             readonly JsonTextWriter _jsonWriter;
