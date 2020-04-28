@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Runtime.Configuration.Tests
 {
     [TestClass]
