@@ -35,13 +35,15 @@ namespace Warewolf.Cluster
         public void Write<T>(T info) where T : class
         {
         }
+
+        public INotificationListener<ChangeNotification>[] Followers { get; } = new INotificationListener<ChangeNotification>[] { };
     }
 
     /**
      * Uses EsbHub to write DebugState data from Warewolf Server to the Studio. This state data
      * is received by the Studio as events in ServerProxyWithoutChunking as a SendDebugState event
      */
-    internal class ClusterDispatcherImplementation : IClusterDispatcher
+    public class ClusterDispatcherImplementation : IClusterDispatcher
     {
         private readonly ConcurrentDictionary<Guid, INotificationListener<ChangeNotification>> _writers = new ConcurrentDictionary<Guid, INotificationListener<ChangeNotification>>();
         private bool _shutdownRequested;
@@ -74,6 +76,8 @@ namespace Warewolf.Cluster
                 writer.Write(new ChangeNotification());
             }
         }
+
+        public INotificationListener<ChangeNotification>[] Followers => _writers.Values.ToArray();
     }
 
     public static class ClusterDispatcher

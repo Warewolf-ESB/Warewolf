@@ -10,6 +10,7 @@
 
 using System;
 using Warewolf.Data;
+using Warewolf.Debugging;
 
 namespace Warewolf.Esb
 {
@@ -19,5 +20,6 @@ namespace Warewolf.Esb
         void Remove(Guid workspaceId);
         void Shutdown();
         void Write<T>(T info) where T : class;
+        INotificationListener<ChangeNotification>[] Followers { get; }
     }
 }
