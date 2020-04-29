@@ -1389,7 +1389,7 @@ namespace Dev2.Core.Tests.Settings
             var overrrideResourceId = Guid.NewGuid();
             var overrideResourceName = "AuthWorkflow";
             var permission = new WindowsGroupPermission
-            {Swas
+            {
                 IsServer = false,
                 WindowsGroup = "Deploy Admins",
                 View = false,
