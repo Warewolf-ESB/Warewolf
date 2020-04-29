@@ -14,6 +14,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Execution;
 using Warewolf.Auditing;
+using Warewolf.GraphQL;
 
 namespace Dev2.ServerLifeCycleWorkers
 {
@@ -26,7 +27,7 @@ namespace Dev2.ServerLifeCycleWorkers
             CustomContainer.Register<IStateNotifierFactory>(new StateNotifierFactory());
             CustomContainer.Register<IResumableExecutionContainerFactory>(new ResumableExecutionContainerFactory());
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
-
+            CustomContainer.AddToLoadedTypes(typeof(GraphQLExecutor));
         }
     }
 }

@@ -21,6 +21,8 @@ using Newtonsoft.Json.Linq;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 using Warewolf.Data;
+using Warewolf.GraphQL;
+using Warewolf.Storage;
 
 namespace Dev2
 {
@@ -658,6 +660,14 @@ namespace Dev2
             }
         }
 
+        public static string GetGraphQLOutputFromEnvironment(IDSFDataObject dataObject,string dataList, string query)
+        {
+          var jsonOutput = GetJsonForEnvironmentWithColumnIoDirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, 0);
+          dataObject.Environment = new ExecutionEnvironment();
+          UpdateEnvironmentFromOutputPayload(dataObject, new StringBuilder(jsonOutput), dataList);
+          var graphQlExecutor = CustomContainer.CreateInstance<IGraphQLExecutor>(dataObject.Environment);
+          return graphQlExecutor.Execute(query);
+        }
     }
 
     public class Schema

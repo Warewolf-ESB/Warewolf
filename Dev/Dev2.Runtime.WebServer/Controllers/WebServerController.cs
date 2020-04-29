@@ -35,42 +35,55 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic)
         {
-            if (__name__.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
-            {
-                var path = __name__.Split(new[] { "/apis.json" }, StringSplitOptions.RemoveEmptyEntries);
-                if (path.Any() && path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
-                {
-                    path[0] = null;
-                }
+          switch (__name__)
+          {
+            case var _ when __name__.EndsWith("apis.json"):
+              return ApiHttpResponseMessage(__name__, isPublic);
+            case var _ when __name__.EndsWith(".debug"):
+              return DebugHttpResponseMessage(__name__, isPublic);
+            default:
+              return WebHttpResponseMessage(__name__);
+          }
+        }
 
-                var requestVar = new NameValueCollection
-                {
-                    {"path", path[0]},
-                    {"isPublic",isPublic.ToString()}
-                };
-                return ProcessRequest<GetApisJsonServiceHandler>(requestVar);
-            }
-            if (__name__.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var requestVar = new NameValueCollection
-                {
-                    {"isPublic",isPublic.ToString()},
-                    {"IsDebug",true.ToString() },
-                    {"servicename",__name__ }
-                };
-                return Request.Method == HttpMethod.Post
-                        ? ProcessRequest<WebPostRequestHandler>(requestVar)
-                        : ProcessRequest<WebGetRequestHandler>(requestVar);
-            }
-            var requestVariables = new NameValueCollection
-            {
-                { "servicename", __name__ }
-            };
+        private HttpResponseMessage WebHttpResponseMessage(string __name__)
+        {
+          var requestVariables = new NameValueCollection
+                                 {
+                                   {"servicename", __name__}
+                                 };
+          return Request.Method == HttpMethod.Post
+                   ? ProcessRequest<WebPostRequestHandler>(requestVariables)
+                   : ProcessRequest<WebGetRequestHandler>(requestVariables);
+        }
 
+        private HttpResponseMessage DebugHttpResponseMessage(string __name__, bool isPublic)
+        {
+          var requestVar = new NameValueCollection
+                           {
+                             {"isPublic", isPublic.ToString()},
+                             {"IsDebug", true.ToString()},
+                             {"servicename", __name__}
+                           };
+          return Request.Method == HttpMethod.Post
+                   ? ProcessRequest<WebPostRequestHandler>(requestVar)
+                   : ProcessRequest<WebGetRequestHandler>(requestVar);
+        }
 
-            return Request.Method == HttpMethod.Post
-                ? ProcessRequest<WebPostRequestHandler>(requestVariables)
-                : ProcessRequest<WebGetRequestHandler>(requestVariables);
+        private HttpResponseMessage ApiHttpResponseMessage(string __name__, bool isPublic)
+        {
+          var path = __name__.Split(new[] {"/apis.json"}, StringSplitOptions.RemoveEmptyEntries);
+          if (path.Any() && path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
+          {
+            path[0] = null;
+          }
+
+          var requestVar = new NameValueCollection
+                           {
+                             {"path", path[0]},
+                             {"isPublic", isPublic.ToString()}
+                           };
+          return ProcessRequest<GetApisJsonServiceHandler>(requestVar);
         }
 
         public HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)

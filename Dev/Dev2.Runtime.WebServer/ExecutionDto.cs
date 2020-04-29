@@ -162,8 +162,14 @@ namespace Dev2.Runtime.WebServer
                         formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
                         return ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
                     }
-                    default:
-                    case EmitionTypes.JSON:
+                    case EmitionTypes.GraphQL:
+                    {
+                      formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                      return ExecutionEnvironmentUtils.GetGraphQLOutputFromEnvironment(dataObject,
+                                                                                       resource.DataList.ToString(),
+                                                                                       webRequest.Variables["query"]);
+                    }
+                    default: //EmitionTypes.JSON
                     {
                         formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                         return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);

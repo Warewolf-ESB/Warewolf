@@ -2,13 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>Warewolf</RootNamespace>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GraphQL" Version="3.0.0-preview-1490" />
     <PackageReference Include="GraphQL.NewtonsoftJson" Version="3.0.0-preview-1490" />
   </ItemGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj" />

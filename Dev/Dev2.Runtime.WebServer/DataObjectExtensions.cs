@@ -91,6 +91,7 @@ namespace Dev2.Runtime.WebServer
             var isApi = typeOf.Equals("api", StringComparison.OrdinalIgnoreCase);
             var isTests = typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase);
             var isTrx = typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase);
+            var isGraphQl = typeOf.StartsWith("gql", StringComparison.InvariantCultureIgnoreCase);
             if (isTests || isTrx)
             {
                 dataObject.IsServiceTestExecution = true;
@@ -138,6 +139,10 @@ namespace Dev2.Runtime.WebServer
                 dataObject.ReturnType = EmitionTypes.SWAGGER;
             }
 
+            if (isGraphQl)
+            {
+              dataObject.ReturnType = EmitionTypes.GraphQL;
+            }
             dataObject.ServiceName = serviceName;
             return serviceName;
         }

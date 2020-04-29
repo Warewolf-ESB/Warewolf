@@ -5,7 +5,13 @@
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>Warewolf.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GraphQL" Version="3.0.0-preview-1490" />
     <PackageReference Include="GraphQL.NewtonsoftJson" Version="3.0.0-preview-1490" />

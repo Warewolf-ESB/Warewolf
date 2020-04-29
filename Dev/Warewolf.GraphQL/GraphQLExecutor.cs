@@ -5,8 +5,8 @@ using Warewolf.Storage.Interfaces;
 
 namespace Warewolf.GraphQL
 {
-    public class GraphQLExecutor
-    {
+    public class GraphQLExecutor: IGraphQLExecutor
+  {
         private readonly IExecutionEnvironment _dataObjEnvironment;
         private ISchema _schema;
 

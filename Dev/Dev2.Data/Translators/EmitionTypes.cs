@@ -20,5 +20,6 @@ namespace Dev2.Web
         TRX,
         Cover,
         CoverJson,
+        GraphQL
     }
 }
