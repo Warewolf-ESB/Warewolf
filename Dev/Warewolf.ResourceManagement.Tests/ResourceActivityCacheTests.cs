@@ -5,6 +5,7 @@ using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Warewolf.ResourceManagement.Tests
 {
     [TestClass]
