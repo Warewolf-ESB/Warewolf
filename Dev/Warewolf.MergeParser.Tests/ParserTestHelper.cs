@@ -3,8 +3,10 @@ using System.Activities.Statements;
 using Dev2.Communication;
 using Dev2.Studio.Interfaces;
 using Dev2.Utilities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Warewolf.MergeParser.Tests
 {
     public class ParserTestHelper
