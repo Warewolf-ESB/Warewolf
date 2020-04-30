@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using Warewolf;
 using Warewolf.Data;
 
 namespace Dev2.Services.Security
@@ -23,7 +24,7 @@ namespace Dev2.Services.Security
             AuthenticationOverrideWorkflow = new NamedGuid();
         }
 
-        public SecuritySettingsTO(IEnumerable<WindowsGroupPermission> permissions, NamedGuid authenticationOverrideWorkflow)
+        public SecuritySettingsTO(IEnumerable<WindowsGroupPermission> permissions, INamedGuid authenticationOverrideWorkflow)
             : this()
         {
             if (permissions != null)
@@ -42,7 +43,7 @@ namespace Dev2.Services.Security
             }
         }
 
-        public NamedGuid AuthenticationOverrideWorkflow { get; set; }
+        public INamedGuid AuthenticationOverrideWorkflow { get; set; }
         public List<WindowsGroupPermission> WindowsGroupPermissions { get; private set; }
         public TimeSpan CacheTimeout { get; set; }
     }

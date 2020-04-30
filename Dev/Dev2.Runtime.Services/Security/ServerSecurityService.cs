@@ -18,6 +18,7 @@ using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
+using Warewolf;
 using Warewolf.Data;
 
 namespace Dev2.Runtime.Security
@@ -48,7 +49,7 @@ namespace Dev2.Runtime.Security
             return securitySettingsTO.WindowsGroupPermissions;
         }
 
-        protected override void WritePermissions(List<WindowsGroupPermission> permissions, NamedGuid overrideResource)
+        protected override void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource)
         {
             SecurityWrite.Write(new SecuritySettingsTO(permissions, overrideResource));
         }
