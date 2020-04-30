@@ -46,6 +46,10 @@ namespace Dev2.Runtime.WebServer.Hubs
     [HubName("esb")]
     public class EsbHub : ServerHub, IEsbHub, IDebugWriter, IExplorerRepositorySync
     {
+        static EsbHub()
+        {
+            throw new Exception("bork");
+        }
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         static readonly Dictionary<Guid, string> ResourceAffectedMessagesCache = new Dictionary<Guid, string>();

@@ -8,6 +8,7 @@
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:clusters="clr-namespace:Dev2.Settings.Clusters"
              xmlns:controls="clr-namespace:System.Windows.Controls;assembly=Dev2.Runtime.Configuration"
+             xmlns:data="clr-namespace:Warewolf.Data;assembly=Warewolf.Interfaces"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance clusters:ClusterViewModel}">
@@ -169,7 +170,7 @@
                           Style="{StaticResource TreeViewStyle}">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate x:Name="FollowerDataTemplate"
-                                                  DataType="{x:Type clusters:ServerFollower}">
+                                                  DataType="{x:Type data:ServerFollower}">
                             <Grid Background="Transparent">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="{Binding ElementName=HostNameShared, Path=ActualWidth}" />

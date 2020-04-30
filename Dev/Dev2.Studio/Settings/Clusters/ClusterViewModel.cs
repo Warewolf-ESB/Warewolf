@@ -68,16 +68,7 @@ namespace Dev2.Settings.Clusters
             return result;
         }
     }
-    public class Server
-    {
-        public string DisplayName { get; set; }
-    }
-    public class ServerFollower
-    {
-        public string HostName { get; set; }
-        public DateTime ConnectedSince { get; set; }
-        public DateTime LastSync { get; set; }
-    }
+
     public class ClusterViewModel : SettingsItemViewModel, IUpdatesHelp
     {
         private string _filter;

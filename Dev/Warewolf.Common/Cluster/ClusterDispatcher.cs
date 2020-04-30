@@ -11,9 +11,12 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Threading;
 using Warewolf.Data;
 using Warewolf.Debugging;
+using Warewolf.DistributedStore;
 using Warewolf.Esb;
+using Warewolf.Service;
 
 namespace Warewolf.Cluster
 {
@@ -40,11 +43,34 @@ namespace Warewolf.Cluster
     }
 
     /**
-     * Uses EsbHub to write DebugState data from Warewolf Server to the Studio. This state data
-     * is received by the Studio as events in ServerProxyWithoutChunking as a SendDebugState event
+     * Uses EsbHub to write Cluster state data from Warewolf Server to any client that is following cluster events.
+     *
+     * This also updates the distributed list of server followers.
      */
     public class ClusterDispatcherImplementation : IClusterDispatcher
     {
+        static ClusterDispatcherImplementation()
+        {
+            var t = new Thread(() =>
+            {
+                var list = ListRegistry.ClusterFollowers;
+                var rand = new Random();
+                while (true)
+                {
+                    var op = rand.Next(1,4);
+                    switch (op)
+                    {
+                        case 1: list.Add(new ServerFollower()); break;
+                        case 2: list.Remove(new ServerFollower()); break;
+                        case 3: list.Clear(); break;
+                    }
+
+                    Thread.Sleep(1000);
+                }
+            });
+            t.IsBackground = true;
+            t.Start();
+        }
         private readonly ConcurrentDictionary<Guid, INotificationListener<ChangeNotification>> _writers = new ConcurrentDictionary<Guid, INotificationListener<ChangeNotification>>();
         private bool _shutdownRequested;
 
@@ -57,6 +83,12 @@ namespace Warewolf.Cluster
                 return;
             }
             _writers.TryAdd(workspaceId, listener);
+            ListRegistry.ClusterFollowers.Add(new ServerFollower
+            {
+                ConnectedSince = DateTime.Now,
+                HostName = "no eye dear",
+                LastSync = DateTime.Now,// todo: update timestamp whenever follower synchronises
+            });
         }
 
         public void Remove(Guid workspaceId)

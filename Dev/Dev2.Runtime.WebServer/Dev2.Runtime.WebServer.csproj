@@ -97,6 +97,7 @@
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
     <Compile Include="Handlers\IRequestHandler.cs" />
     <Compile Include="Handlers\WebPostRequestHandler.cs" />
+    <Compile Include="Hubs\DistributedList\ClusterFollowers.cs" />
     <Compile Include="Responses\ContentTypes.cs" />
     <Compile Include="Responses\ExceptionResponseWriter.cs" />
     <Compile Include="Responses\FileResponseWriter.cs" />
@@ -171,6 +172,10 @@
       <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
       <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
+      <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
+      <Name>Warewolf.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
       <Name>Warewolf.Interfaces</Name>
@@ -178,6 +183,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj">
+      <Project>{76f7a7f3-1153-49c0-be56-77973867f974}</Project>
+      <Name>Warewolf.ServiceDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
       <Project>{61a15557-1d18-4c69-88eb-31bf49b7fb50}</Project>

@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -21,6 +22,7 @@ using Dev2.SignalR.Wrappers.New;
 using Warewolf.Client;
 using Warewolf.Data;
 using Warewolf.Esb;
+using Warewolf.Service;
 
 namespace Warewolf.ClientConsole
 {
@@ -60,6 +62,13 @@ namespace Warewolf.ClientConsole
                 var response = joinResponse.Result;
 
                 _canExit.WaitOne(-1);
+
+
+                // wait and watch the changes
+
+
+                Console.WriteLine("press enter to exit");
+                Console.ReadLine();
             }
             catch (Exception e)
             {
@@ -101,6 +110,17 @@ namespace Warewolf.ClientConsole
                 // start the sync, that way we could use a singleton inside the server to ensure no other processes try to
                 // do the same thing. This would need some way to know that there was in fact a change notification
                 canExit.Set();
+            };
+
+
+            var list = new ObservableDistributedListClient<ServerFollower>(esbProxy.Connection, DistributedLists.ClusterFollowers);
+            list.CollectionChanged += (sender, args) =>
+            {
+                Console.WriteLine("current items");
+                foreach (var item in list)
+                {
+                    Console.WriteLine("\t- "+ item);
+                }
             };
         }
     }

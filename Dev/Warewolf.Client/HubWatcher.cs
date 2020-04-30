@@ -11,7 +11,6 @@
 using System;
 using Dev2.Common;
 using Dev2.SignalR.Wrappers;
-using Warewolf.Esb;
 
 namespace Warewolf.Client
 {

@@ -86,6 +86,7 @@ namespace Dev2.Runtime.WebServer
 
         AuthenticationSchemes AuthenticationSchemeSelectorDelegate(HttpListenerRequest httpRequest)
         {
+            // todo: fixme: using globals in multithreaded code
             EnvironmentVariables.DnsName = httpRequest.Url.DnsSafeHost;
             EnvironmentVariables.Port = httpRequest.Url.Port;
             if (httpRequest.RawUrl.StartsWith("/public/", StringComparison.OrdinalIgnoreCase))
