@@ -257,8 +257,8 @@ namespace Dev2.Core.Tests
             Assert.IsNull(expected);
         }
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
+        [DoNotParallelize]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
         {
             var workspaceID = Guid.NewGuid();
@@ -1499,8 +1499,8 @@ namespace Dev2.Core.Tests
 
         #region OnDeactivate
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
+        [DoNotParallelize]
         public void MainViewModelOnDeactivateWithTrueExpectedSavesWorkspaceItems()
         {
             var wsiRepo = new Mock<IWorkspaceItemRepository>();
@@ -1529,7 +1529,6 @@ namespace Dev2.Core.Tests
             wsiRepo.Verify(r => r.Write());
         }
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelOnDeactivateWithTrueExpectedSavesResourceModels()
         {
