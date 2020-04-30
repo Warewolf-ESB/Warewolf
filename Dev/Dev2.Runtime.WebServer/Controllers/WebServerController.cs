@@ -50,6 +50,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 };
                 return ProcessRequest<GetApisJsonServiceHandler>(requestVar);
             }
+
             var requestVariables = new NameValueCollection
             {
                 {"servicename", __name__}
@@ -150,15 +151,27 @@ namespace Dev2.Runtime.WebServer.Controllers
                     return ExecuteFolderTests(requestUri.ToString(), true);
                 }
             }
+
             return ExecuteWorkflow(__name__, true);
         }
+
         [HttpGet]
         [HttpPost]
         [Route("Token/{*__name__}")]
         public HttpResponseMessage ExecutePublicTokenWorkflow(string __name__)
         {
-            return ExecuteWorkflowWithToken(__name__);
+            return ExecuteWorkflow(__name__, true);
         }
+
+        [HttpGet]
+        [HttpPost]
+        [Route("login")]
+        public HttpResponseMessage ExecuteLoginWorkflow()
+        {
+            var requestVar = new NameValueCollection();
+            return ProcessTokenRequest<TokenRequestHandler>(requestVar);
+        }
+
         [HttpGet]
         [HttpPost]
         [Route("internal/getlogfile")]

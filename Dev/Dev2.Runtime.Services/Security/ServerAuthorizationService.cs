@@ -148,13 +148,19 @@ namespace Dev2.Runtime.Security
                     result = IsAuthorized(request.User, authorizationContext, GetResource(request));
                     break;
 
+                case WebServerRequestType.WebExecuteLoginWorkflow:
+                case WebServerRequestType.WebExecutePublicTokenWorkflow:
+                    //TODO: Not sure what will happen here...
+                    result = true;
+                    break;
+
                 case WebServerRequestType.WebExecuteService:
                 case WebServerRequestType.WebExecuteSecureWorkflow:
                 case WebServerRequestType.WebExecutePublicWorkflow:
                 case WebServerRequestType.WebBookmarkWorkflow:
                     result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
                     break;
-
+                
                 case WebServerRequestType.WebExecuteInternalService:
                     result = IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
                     break;

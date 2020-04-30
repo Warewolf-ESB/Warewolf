@@ -22,30 +22,40 @@ namespace Dev2.Runtime.WebServer.Controllers
     {
         public WebServerContext Context { get; set; }
 
+
+        protected virtual HttpResponseMessage ProcessTokenRequest<TRequestHandler>(NameValueCollection requestVariables)
+            where TRequestHandler : class, IRequestHandler, new()
+        {
+            var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
+            var handler = CreateHandler<TRequestHandler>();
+            handler.ProcessRequest(context);
+            return context.ResponseMessage;
+        }
+
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
             where TRequestHandler : class, IRequestHandler, new()
         {
-            if(!IsAuthenticated())
+            if (!IsAuthenticated())
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
-            var context = new WebServerContext(Request, requestVariables) { Request = { User = User } };
+            var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
             var handler = CreateHandler<TRequestHandler>();
             handler.ProcessRequest(context);
 
             return context.ResponseMessage;
         }
-        
+
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>()
             where TRequestHandler : class, IRequestHandler, new()
         {
-            if(!IsAuthenticated())
+            if (!IsAuthenticated())
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
-            var context = new WebServerContext(Request) { Request = { User = User } };
+            var context = new WebServerContext(Request) {Request = {User = User}};
             var handler = CreateHandler<TRequestHandler>();
             handler.ProcessRequest(context);
 

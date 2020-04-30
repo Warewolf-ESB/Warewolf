@@ -92,6 +92,14 @@ namespace Dev2.Runtime.WebServer
             {
                 return AuthenticationSchemes.Anonymous;
             }
+            if (httpRequest.RawUrl.StartsWith("/token/", StringComparison.OrdinalIgnoreCase))
+            {
+                return AuthenticationSchemes.Anonymous;
+            }
+            if (httpRequest.RawUrl.StartsWith("/login", StringComparison.OrdinalIgnoreCase))
+            {
+                return AuthenticationSchemes.Anonymous;
+            }
             //DO NOT USE NEGOTIATE BREAKS SERVER to SERVER coms when using public authentication and hostname.
             return AuthenticationSchemes.Ntlm | AuthenticationSchemes.Basic;
         }

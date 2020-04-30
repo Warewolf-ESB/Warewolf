@@ -42,16 +42,9 @@ namespace Dev2.Runtime.WebServer.Security
         {
             VerifyArgument.IsNotNull("actionContext", actionContext);
             var user = actionContext.ControllerContext.RequestContext.Principal;
-            if (actionContext.ActionDescriptor.ActionName == "ExecutePublicTokenWorkflow")
+            if (actionContext.ActionDescriptor.ActionName == "ExecutePublicTokenWorkflow" ||
+                actionContext.ActionDescriptor.ActionName == "ExecuteLoginWorkflow")
             {
-                var tokenAuthorizationRequest = GetAuthorizationRequestForToken(actionContext);
-
-                //TODO: We need to develop IsTokenAuthorized for tokens.
-                if (!Service.IsAuthorized(tokenAuthorizationRequest))
-                {
-                    actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
-                }
-
                 return;
             }
 
@@ -90,7 +83,7 @@ namespace Dev2.Runtime.WebServer.Security
 //TODO: Token below will be a JWT token saved into the request for use later.
                     authorizationRequest = new AuthorizationRequest
                     {
-                        RequestType = WebServerRequestType.WebExecuteTokenWorkflow,
+                        RequestType = WebServerRequestType.WebExecutePublicTokenWorkflow,
                         Token = "",
                         Url = actionContext.Request.RequestUri,
                         QueryString = new QueryString(actionContext.Request.GetQueryNameValuePairs())
