@@ -291,6 +291,7 @@
     <Compile Include="Security\TestServerAuthorizationService.cs" />
     <Compile Include="Security\TestAuthorizationRequest.cs" />
     <Compile Include="WebServer\ApisJsonBuilderTests.cs" />
+    <Compile Include="WebServer\TokenRequestHandlerTests.cs" />
     <Compile Include="WebServer\WebGetRequestHandlerTest.cs" />
     <Compile Include="WebServer\WebPostRequestHandlerTest.cs" />
     <Compile Include="WebServer\WebServerStartupTests.cs" />
