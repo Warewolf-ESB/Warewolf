@@ -8,6 +8,7 @@ namespace Dev2.Core.Tests.Merge
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [DoNotParallelize]
         public void MergePreviewWorkflowStateApplier_Constructor()
         {
             var mergePreviewWorkflowStateApplier = CreateMergePreviewWorkflowStateApplier();
