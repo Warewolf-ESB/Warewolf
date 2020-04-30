@@ -101,6 +101,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void OnExecuteWhereConsolePathHasSpacesIsNotWrappedInQuotesExpectError()
         {
             //------------Setup for test--------------------------
@@ -246,6 +247,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResult()
         {
             //------------Setup for test--------------------------
@@ -358,6 +360,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void OnExecuteWhereOutputToRecordWithNoIndexWithConsoleOutputsExpectOutputForResultAppendedToRecordsets()
         {
             //------------Setup for test--------------------------
@@ -429,6 +432,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void OnExecuteWhereOutputToRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
         {
             //------------Setup for test--------------------------
@@ -456,11 +460,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             actual.AddRange(actualArray.Select(s => s.Trim()));
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-
-
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToRecordSetExpectOutputResultsToMultipleRowsInRecordSet()
         {
             //------------Setup for test--------------------------
@@ -489,6 +492,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToScalarExpectOutputResultOfLastCommandinScalar()
         {
             //------------Setup for test--------------------------
