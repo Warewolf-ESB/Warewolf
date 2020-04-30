@@ -22,5 +22,7 @@ namespace Dev2.Services.Security
         IPrincipal User { get; }
         Uri Url { get; }
         INameValueCollection QueryString { get; }
+        //TODO: Still not sure if this will be used. WiP
+        string Token { get; }
     }
 }

@@ -18,10 +18,12 @@ namespace Dev2.Runtime.WebServer.Security
 {
     public class AuthorizationRequest : IAuthorizationRequest
     {
-        public Tuple<string, string, AuthorizationContext> Key => new Tuple<string, string, AuthorizationContext>(User.Identity.Name, Url.OriginalString,AuthorizationContext.Any);
+        public Tuple<string, string, AuthorizationContext> Key => new Tuple<string, string, AuthorizationContext>(User.Identity.Name, Url.OriginalString, AuthorizationContext.Any);
         public WebServerRequestType RequestType { get; set; }
         public IPrincipal User { get; set; }
         public Uri Url { get; set; }
         public INameValueCollection QueryString { get; set; }
+        //TODO: Still not sure if this will be used. WiP
+        public string Token { get; set; }
     }
 }
