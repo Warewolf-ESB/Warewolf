@@ -37,17 +37,17 @@ namespace Dev2.Tests.Runtime.WebServer
             { "rid", "resourceid" }
         };
 
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
-        {
-            //------------Setup for test-------------------------
-            var handler = new GetApisJsonServiceHandler();
-            //------------Execute Test---------------------------
-            handler.ProcessRequest(null);
-            //------------Assert Results-------------------------
-        }
+            [TestMethod]
+            [Owner("Sanele Mthembu")]
+            [ExpectedException(typeof(ArgumentNullException))]
+            public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
+            {
+                //------------Setup for test-------------------------
+                var handler = new GetApisJsonServiceHandler();
+                //------------Execute Test---------------------------
+                handler.ProcessRequest(null);
+                //------------Assert Results-------------------------
+            }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
