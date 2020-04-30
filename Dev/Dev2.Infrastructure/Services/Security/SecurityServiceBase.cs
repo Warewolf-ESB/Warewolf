@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Warewolf;
 using Warewolf.Data;
 
 namespace Dev2.Services.Security
@@ -23,12 +24,12 @@ namespace Dev2.Services.Security
         readonly ReaderWriterLockSlim _permissionsLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
         protected List<WindowsGroupPermission> _permissions = new List<WindowsGroupPermission>();
-        protected NamedGuid _overrideResource = new NamedGuid();
+        protected INamedGuid _overrideResource = new NamedGuid();
         public event EventHandler PermissionsChanged;
 
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
 
-        public NamedGuid OverrideResource
+        public INamedGuid OverrideResource
         {
             get { return _overrideResource; }
             set { _overrideResource = value; }
@@ -145,7 +146,7 @@ namespace Dev2.Services.Security
         }
 
         protected abstract List<WindowsGroupPermission> ReadPermissions();
-        protected abstract void WritePermissions(List<WindowsGroupPermission> permissions, NamedGuid overrideResource);
+        protected abstract void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource);
         protected abstract void LogStart([CallerMemberName] string methodName = null);
         protected abstract void LogEnd([CallerMemberName] string methodName = null);
     }

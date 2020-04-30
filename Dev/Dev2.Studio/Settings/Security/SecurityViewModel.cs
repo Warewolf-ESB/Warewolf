@@ -31,6 +31,7 @@ using Dev2.Services.Security;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
+using Warewolf;
 using Warewolf.Data;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Resources.Languages;
@@ -131,7 +132,7 @@ namespace Dev2.Settings.Security
             InitializePermissions(securitySettings?.WindowsGroupPermissions);
         }
 
-        private OverrideResource InitializeOverrideResource(NamedGuid securitySettingsOverrideResource)
+        private OverrideResource InitializeOverrideResource(INamedGuid securitySettingsOverrideResource)
         {
             if (securitySettingsOverrideResource != null)
             {

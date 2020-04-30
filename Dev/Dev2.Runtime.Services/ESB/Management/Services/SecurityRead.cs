@@ -22,6 +22,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using Warewolf;
 using Warewolf.Data;
 
 
@@ -38,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             WindowsGroupPermission.CreateGuests()
         };
 
-        public static NamedGuid DefaultOverrideResouce => new NamedGuid();
+        public static INamedGuid DefaultOverrideResouce => new NamedGuid();
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
