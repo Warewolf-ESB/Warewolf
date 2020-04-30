@@ -2100,6 +2100,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditOracleSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [DoNotParallelize]
         public void MainViewModel_EditOracleSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -3059,6 +3060,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
         [Owner("Leon Rajindrapersadh")]
+        [DoNotParallelize]
         public void MainViewModel_OnStudioClosing_ClosesRemoteEnvironmants()
         {
             var viewModel = new Mock<IShellViewModel>();

@@ -447,6 +447,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [DoNotParallelize]
         public void QueryManagerProxy_LoadExplorer_WhenLongerThan30Sec_ShouldLoadExplorerItemsShowPopup()
         {
             //------------Setup for test--------------------------
@@ -472,6 +473,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [DoNotParallelize]
         public void QueryManagerProxy_LoadExplorer_WhenLongerThan30Sec__Localhost_ShouldLoadExplorerItemsNotShowPopup()
         {
             //------------Setup for test--------------------------
