@@ -340,6 +340,7 @@ namespace Dev2.Core.Tests
         #region Close Context
 
         [TestMethod]
+        [DoNotParallelize]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceSaved_RemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved()
         {
             CreateFullExportsAndVm();

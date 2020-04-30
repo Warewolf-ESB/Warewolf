@@ -33,6 +33,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
     [TestCategory("Intellisense Provider Core")]
+    [DoNotParallelize]
     public class DefaultIntellisenseProviderTest
     {
 
@@ -633,10 +634,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-
         }
 
-        //BUG 8755
         [TestMethod]
         public void GetIntellisenseResultsWithCommaSeperatedRegionsAndStarIndexExpectedNoResults()
         {
