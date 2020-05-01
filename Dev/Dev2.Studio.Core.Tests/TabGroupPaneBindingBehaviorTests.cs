@@ -8,6 +8,7 @@ namespace Dev2.Core.Tests
     public class TabGroupPaneBindingBehaviorTests
     {
         [TestMethod]
+        [DoNotParallelize]
         public void TabGroupPaneBindingBehavior_SetDocumentHost_CanSetDocumentHost()
         {
             //------------Setup for test-------------------------

@@ -523,6 +523,7 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
+        [DoNotParallelize]
         public void TriggerQueueView_QueueEvents_Get_Xml_Datalist_InputsFromWorkflow_VerifyCommand_Success()
         {
             var popupController = new Mock<IPopupController>();
@@ -580,6 +581,7 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
+        [DoNotParallelize]
         public void TriggerQueueView_QueueEvents_Get_Xml_DataList_InputsFromWorkflow_VerifyCommand_InvalidData_ShowInvalidDataPopupMessage()
         {
             var popupController = new Mock<IPopupController>();

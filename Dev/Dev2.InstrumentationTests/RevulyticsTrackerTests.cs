@@ -5,6 +5,7 @@ using System.Reflection;
 using RUISDK_5_3_1;
 using System.Configuration;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Instrumentation.Tests
 {
     [TestClass()]
@@ -41,6 +42,7 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
+        [DoNotParallelize]
         public void RevulyticsTracker_CreateRevulyticsConfigTestSdkException()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();

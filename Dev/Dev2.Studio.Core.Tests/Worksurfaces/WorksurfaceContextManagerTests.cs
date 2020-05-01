@@ -1015,6 +1015,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [DoNotParallelize]
         public void AddSchedulerWorkSurface_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------

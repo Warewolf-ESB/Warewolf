@@ -33,6 +33,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
     [TestCategory("Intellisense Provider Core")]
+    [DoNotParallelize]
     public class DefaultIntellisenseProviderTest
     {
 
@@ -267,7 +268,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         [TestMethod]
         
         public void GetIntellisenseResultsWithNumberExpectedErrorInResults()
-
         {
             var context = new IntellisenseProviderContext
             {
@@ -283,7 +283,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         }
 
         [TestMethod]
-        
+        [DoNotParallelize]
         public void GetIntellisenseResults_With_OpenRegion_Expected_AllVarsInResults()
 
         {
@@ -307,9 +307,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         }
 
         [TestMethod]
-        
         public void GetIntellisenseResults_With_OpenRegion_AndInRecSetIndex_Expected_AllVarsInResults()
-
         {
             var context = new IntellisenseProviderContext
             {
@@ -521,11 +519,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             Assert.AreEqual(1, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
-
         }
 
-        //BUG 8755
         [TestMethod]
+        [DoNotParallelize]
         public void GetIntellisenseResultsWithOpenRegionAndAfterStarIndexAndWithPartialFieldExpectedScalarVarInResults()
         {
             var context = new IntellisenseProviderContext
@@ -637,10 +634,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-
         }
 
-        //BUG 8755
         [TestMethod]
         public void GetIntellisenseResultsWithCommaSeperatedRegionsAndStarIndexExpectedNoResults()
         {
@@ -793,8 +788,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
         }
 
-        //BUG 8755
         [TestMethod]
+        [DoNotParallelize]
         public void GetIntellisenseResultsWhereBracketOfRecordsetIsClosedAndThereIsAFieldAfterClosedBracketAndStarIndexExpectedNoResultsAndException()
         {
             var context = new IntellisenseProviderContext
@@ -812,7 +807,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
         }
 
-        //BUG 8736
         [TestMethod]
         public void GetIntellisenseResultsWhereCommaEnteredForInfragisticsFunctonExpectedNoResultsAndException()
         {
@@ -828,7 +822,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual(0, getResults.Count);
         }
 
-        //BUG 8736
         [TestMethod]
         public void GetIntellisenseResultsWithAdjacentRegionsInParamaterOfInfragisticsFunctionExpectedAllVarsInResults()
         {
@@ -854,7 +847,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
         }
 
-        //BUG 8736
         [TestMethod]
         public void GetIntellisenseResultsWhereCarretPositionPastTheLengthOfTheInputTextExpectedNoResultsAndException()
         {
@@ -870,7 +862,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual(0, getResults.Count);
         }
 
-        //BUG 8736
         [TestMethod]
         public void GetIntellisenseResultsWhereCarretPositionLessThanZeroExpectedNoResultsAndException()
         {
@@ -884,7 +875,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual(0, getResults.Count);
         }
 
-        //BUG 8736
         [TestMethod]
         public void GetIntellisenseResultsWhereInputTextContainsSpecialCharactersExpectedNoResultsAndException()
         {

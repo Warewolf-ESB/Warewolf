@@ -9,8 +9,7 @@ using Moq;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 
-
-
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Services.Execution.Tests
 {
     [TestClass]

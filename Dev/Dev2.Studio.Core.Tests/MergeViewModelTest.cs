@@ -170,6 +170,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MergeViewModel_DoDeactivate")]
+        [DoNotParallelize]
         public void MergeViewModel_DoDeactivate_CanSave_ExpectedFalse()
         {
             //------------Setup for test--------------------------
@@ -258,6 +259,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MergeViewModel_PropertyChanged")]
+        [DoNotParallelize]
         public void MergeViewModel_PropertyChanged_DisplayName_IsTrue()
         {
             //------------Setup for test--------------------------
@@ -306,6 +308,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MergeViewModel_PropertyChanged")]
+        [DoNotParallelize]
         public void MergeViewModel_PropertyChanged_DataListViewModel_IsTrue()
         {
             //------------Setup for test--------------------------
@@ -355,6 +358,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MergeViewModel_DoDeactivate")]
+        [DoNotParallelize]
         public void MergeViewModel_DoDeactivate_CanSave_ExpectedTrue()
         {
             //------------Setup for test--------------------------
@@ -416,6 +420,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MergeViewModel_DoDeactivate")]
+        [DoNotParallelize]
         public void MergeViewModel_DoDeactivate_CanSave_MessageBoxYes()
         {
             //------------Setup for test--------------------------
@@ -473,6 +478,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MergeViewModel_DoDeactivate")]
+        [DoNotParallelize]
         public void MergeViewModel_DoDeactivate_CanSave_MessageBoxNo()
         {
             //------------Setup for test--------------------------
