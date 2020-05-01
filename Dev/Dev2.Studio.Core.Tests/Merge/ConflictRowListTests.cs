@@ -8,6 +8,7 @@ namespace Dev2.Core.Tests.Merge
     public class ConflictRowListTests : MergeTestUtils
     {
         [TestMethod]
+        [DoNotParallelize]
         public void ConflictRowList_Constructor()
         {
             var conflictRowList = CreateConflictRowList();

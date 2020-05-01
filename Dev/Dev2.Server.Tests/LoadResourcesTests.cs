@@ -16,6 +16,7 @@ using Moq;
 using System.IO;
 using System.Reflection;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Server.Tests
 {
     [TestClass]
