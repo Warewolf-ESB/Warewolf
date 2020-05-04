@@ -132,7 +132,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Token/{*__name__}")]
         public HttpResponseMessage ExecutePublicTokenWorkflow(string __name__)
         {
-            return ExecuteWorkflow(__name__, true);
+            return ExecuteWorkflow(__name__, false);
         }
 
         [HttpGet]
