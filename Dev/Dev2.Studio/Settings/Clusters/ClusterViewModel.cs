@@ -23,10 +23,13 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.Hosting;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
+using ServiceStack.Common.Extensions;
 using Warewolf;
+using Warewolf.Client;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Options;
+using Warewolf.Service;
 
 namespace Dev2.Settings.Clusters
 {
@@ -176,7 +179,7 @@ namespace Dev2.Settings.Clusters
 
         private void LoadServerFollowers()
         {
-            Followers = new List<ServerFollower>
+            /*Followers = new List<ServerFollower>
             {
                 AddFollower("Server One", -3, 0),
                 AddFollower("Server Two", -5, 1),
@@ -184,7 +187,21 @@ namespace Dev2.Settings.Clusters
                 AddFollower("Server Four", 0, 0),
                 AddFollower("Server Five", -1, 2),
                 AddFollower("Server Six", -2, 0),
+            };*/
+            var list = _server.Connection.ServerFollowerList;
+
+            list.CollectionChanged += (sender, args) =>
+            {
+                Console.WriteLine("current items");
+                foreach (var item in list)
+                {
+                    Console.WriteLine("\t- "+ item);
+                }
+                Followers = list.ToList<ServerFollower>();
+                OnPropertyChanged(nameof(Followers));
             };
+
+            Followers = list.ToList<ServerFollower>();
         }
         
         private static ServerFollower AddFollower(string hostName, int date, int sync)

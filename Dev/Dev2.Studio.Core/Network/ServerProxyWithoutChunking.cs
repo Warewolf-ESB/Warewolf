@@ -42,6 +42,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Warewolf.Esb;
 using Warewolf;
+using Warewolf.Client;
+using Warewolf.Data;
+using Warewolf.Service;
 
 namespace Dev2.Network
 {
@@ -83,7 +86,7 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
-            InitializeEsbProxy();
+            InitializeProxyHubs();
             AsyncWorker = worker;
         }
 
@@ -114,6 +117,19 @@ namespace Dev2.Network
                 return isLocalHost;
             }
         }
+
+        private void InitializeProxyHubs()
+        {
+            InitializeListProxies();
+            InitializeEsbProxy();
+        }
+
+        private void InitializeListProxies()
+        {
+            ServerFollowerList = new ObservableDistributedListClient<ServerFollower>(HubConnection, DistributedLists.ClusterFollowers);
+        }
+
+        public ObservableDistributedListClient<ServerFollower> ServerFollowerList { get; private set; }
 
         void InitializeEsbProxy()
         {

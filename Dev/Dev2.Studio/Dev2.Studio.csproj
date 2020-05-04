@@ -734,6 +734,10 @@
       <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Client\Warewolf.Client.csproj">
+      <Project>{a1fcee35-121b-4d9a-9dd3-3b52c4652e77}</Project>
+      <Name>Warewolf.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj">
       <Project>{bc059e85-358e-49cf-a2e8-e79249c9bf51}</Project>
       <Name>Warewolf.Common.Framework48</Name>
@@ -761,6 +765,10 @@
     <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
       <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>
       <Name>Warewolf.ResourceManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj">
+      <Project>{76f7a7f3-1153-49c0-be56-77973867f974}</Project>
+      <Name>Warewolf.ServiceDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
       <Project>{d7a04a3f-ddbd-497c-a311-efd2016830df}</Project>

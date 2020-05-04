@@ -23,6 +23,8 @@ using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using System.Network;
 using Dev2.Common.Interfaces.Studio.Core;
+using Warewolf.Client;
+using Warewolf.Data;
 using Warewolf.Esb;
 using Warewolf.EsbClient;
 
@@ -76,6 +78,7 @@ namespace Dev2.Studio.Interfaces
         event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
         Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
         IHubConnectionWrapper HubConnection { get; }
+        ObservableDistributedListClient<ServerFollower> ServerFollowerList { get; }
 
         void FetchResourcesAffectedMemo(Guid resourceId);
     }

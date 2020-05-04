@@ -26,6 +26,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
+using Warewolf.Client;
+using Warewolf.Data;
 using Warewolf.Esb;
 
 
@@ -220,6 +222,8 @@ namespace Dev2.Network
             }
         }
         public IHubConnectionWrapper HubConnection => _wrappedConnection.HubConnection;
+
+        public ObservableDistributedListClient<ServerFollower> ServerFollowerList => _wrappedConnection.ServerFollowerList;
 
         public void FetchResourcesAffectedMemo(Guid resourceId)
         {
