@@ -174,8 +174,7 @@
                             <Grid Background="Transparent">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="{Binding ElementName=HostNameShared, Path=ActualWidth}" />
-                                    <ColumnDefinition
-                                        Width="{Binding ElementName=ConnectedSinceShared, Path=ActualWidth}" />
+                                    <ColumnDefinition Width="{Binding ElementName=ConnectedSinceShared, Path=ActualWidth}" />
                                     <ColumnDefinition Width="{Binding ElementName=LastSyncShared, Path=ActualWidth}" />
                                 </Grid.ColumnDefinitions>
                                 <Border Grid.Column="0" BorderThickness="0,0,0,1" BorderBrush="#FFE7E4E0">

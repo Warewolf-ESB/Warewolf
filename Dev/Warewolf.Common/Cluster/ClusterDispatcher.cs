@@ -16,7 +16,6 @@ using Warewolf.Data;
 using Warewolf.Debugging;
 using Warewolf.DistributedStore;
 using Warewolf.Esb;
-using Warewolf.Service;
 
 namespace Warewolf.Cluster
 {
