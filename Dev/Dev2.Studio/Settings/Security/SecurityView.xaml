@@ -603,7 +603,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0"
-                         Text="{Binding OverrideResource.ResourceName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Text="{Binding OverrideResource.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          ToolTip="Public workflow to associate a username and password">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityOverrideAuthHelpText}"

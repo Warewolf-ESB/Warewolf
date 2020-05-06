@@ -39,32 +39,6 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Security
 {
-    public class OverrideResource : BindableBase
-    {
-        private Guid _resourceId;
-        private string _resourceName;
-
-        public Guid ResourceId
-        {
-            get => _resourceId;
-            set
-            {
-                _resourceId = value;
-                OnPropertyChanged(nameof(ResourceId));
-            }
-        }
-
-        public string ResourceName
-        {
-            get => _resourceName;
-            set
-            {
-                _resourceName = value;
-                OnPropertyChanged(nameof(ResourceName));
-            }
-        }
-    }
-
     public class SecurityViewModel : SettingsItemViewModel, IHelpSource, IUpdatesHelp
     {
         IResourcePickerDialog _resourcePicker;
@@ -132,22 +106,22 @@ namespace Dev2.Settings.Security
             InitializePermissions(securitySettings?.WindowsGroupPermissions);
         }
 
-        private OverrideResource InitializeOverrideResource(INamedGuid securitySettingsOverrideResource)
+        private INamedGuid InitializeOverrideResource(INamedGuid securitySettingsOverrideResource)
         {
             if (securitySettingsOverrideResource != null)
             {
-                var resource = new OverrideResource
+                var resource = new NamedGuid
                 {
-                    ResourceId = securitySettingsOverrideResource.Value,
-                    ResourceName = securitySettingsOverrideResource.Name
+                    Value = securitySettingsOverrideResource.Value,
+                    Name = securitySettingsOverrideResource.Name
                 };
                 return resource;
             }
 
-            return new OverrideResource
+            return new NamedGuid
             {
-                ResourceName = "",
-                ResourceId = Guid.Empty
+                Name = "",
+                Value = Guid.Empty
             };
         }
 
@@ -182,7 +156,7 @@ namespace Dev2.Settings.Security
         [JsonIgnore] public ICommand PickResourceCommand { get; private set; }
         [JsonIgnore] public ICommand PickOverrideResourceCommand { get; private set; }
 
-        public OverrideResource OverrideResource
+        public INamedGuid OverrideResource
         {
             get => _overrideResource;
             set
@@ -217,7 +191,7 @@ namespace Dev2.Settings.Security
 
         void PickOverrideResource(object obj)
         {
-            var resource = obj as OverrideResource;
+            var resource = obj as NamedGuid;
 
             var resourceModel = PickOverrideResource(resource);
             if (resourceModel == null)
@@ -227,8 +201,8 @@ namespace Dev2.Settings.Security
 
             if (IsValidOverrideWorkflow(resourceModel))
             {
-                OverrideResource.ResourceId = resourceModel.ResourceId;
-                OverrideResource.ResourceName = resourceModel.ResourcePath;
+                OverrideResource.Value = resourceModel.ResourceId;
+                OverrideResource.Name = resourceModel.ResourcePath;
             }
             else
             {
@@ -250,9 +224,9 @@ namespace Dev2.Settings.Security
             }
         }
 
-        private IExplorerTreeItem PickOverrideResource(OverrideResource resource)
+        private IExplorerTreeItem PickOverrideResource(INamedGuid resource)
         {
-           var hasResult = _resourcePicker.ShowDialog(_environment);
+            var hasResult = _resourcePicker.ShowDialog(_environment);
 
             if (_environment.ResourceRepository != null)
             {
@@ -288,7 +262,7 @@ namespace Dev2.Settings.Security
         ObservableCollection<WindowsGroupPermission> _resourcePermissions;
         ObservableCollection<WindowsGroupPermission> _itemResourcePermissions;
         ObservableCollection<WindowsGroupPermission> _itemServerPermissions;
-        private OverrideResource _overrideResource;
+        private INamedGuid _overrideResource;
 
         static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -305,8 +279,8 @@ namespace Dev2.Settings.Security
 
             securitySettings.AuthenticationOverrideWorkflow = new NamedGuid
             {
-                Value = OverrideResource.ResourceId,
-                Name = OverrideResource.ResourceName
+                Value = OverrideResource.Value,
+                Name = OverrideResource.Name
             };
             SetItem(this);
         }

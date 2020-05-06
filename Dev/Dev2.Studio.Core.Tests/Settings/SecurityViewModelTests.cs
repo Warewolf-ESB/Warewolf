@@ -202,8 +202,8 @@ namespace Dev2.Core.Tests.Settings
             var overrideResource = securitySettingsTO?.AuthenticationOverrideWorkflow ?? new NamedGuid();
 
             // constructor adds an extra "new"  permission
-            Assert.AreEqual(overrideResource.Name, viewModel.OverrideResource.ResourceName);
-            Assert.AreEqual(overrideResource.Value, viewModel.OverrideResource.ResourceId);
+            Assert.AreEqual(overrideResource.Name, viewModel.OverrideResource.Name);
+            Assert.AreEqual(overrideResource.Value, viewModel.OverrideResource.Value);
             Assert.AreEqual(serverPerms.Count + 1, viewModel.ServerPermissions.Count);
             Assert.AreEqual(resourcePerms.Count + 1, viewModel.ResourcePermissions.Count);
         }
@@ -1407,10 +1407,10 @@ namespace Dev2.Core.Tests.Settings
                 Value = overrrideResourceId,
                 Name = overrideResourceName
             };
-            var authResource = new OverrideResource
+            var authResource = new NamedGuid()
             {
-                ResourceId = overrrideResourceId,
-                ResourceName = overrideResourceName
+                Value = overrrideResourceId,
+                Name = overrideResourceName
             };
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
             var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
@@ -1447,8 +1447,8 @@ namespace Dev2.Core.Tests.Settings
             viewModel.PickOverrideResourceCommand.Execute(authResource);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.ResourceId);
-            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.ResourceName);
+            Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.Value);
+            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
             mockPopup.Verify(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false), Times.Never);
         }
 
@@ -1480,10 +1480,10 @@ namespace Dev2.Core.Tests.Settings
                 Value = overrrideResourceId,
                 Name = overrideResourceName
             };
-            var authResource = new OverrideResource
+            var authResource = new NamedGuid()
             {
-                ResourceId = overrrideResourceId,
-                ResourceName = overrideResourceName
+                Value = overrrideResourceId,
+                Name = overrideResourceName
             };
             _serverRepo = GetEnvironmentRepository();
             _popupController = new Mock<IPopupController>();
@@ -1508,8 +1508,8 @@ namespace Dev2.Core.Tests.Settings
             viewModel.PickOverrideResourceCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.ResourceId);
-            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.ResourceName);
+            Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.Value);
+            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
         }
 
         static List<WindowsGroupPermission> CreatePermissions()
