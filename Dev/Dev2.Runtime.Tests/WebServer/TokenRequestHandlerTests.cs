@@ -55,6 +55,10 @@ namespace Dev2.Tests.Runtime.WebServer
             var communicationContext = new Mock<ICommunicationContext>();
             var request = new Mock<ICommunicationRequest>();
             request.Setup(communicationRequest => communicationRequest.BoundVariables).Returns(localQueryString);
+            var qs = new NameValueCollection(1);
+            qs.Add("wid", Guid.NewGuid().ToString());
+            request.Setup(o => o.QueryString).Returns(qs);
+            request.Setup(o => o.Uri).Returns(new Uri("http://localhost:4321/public/something.json"));
 
             var response = new Mock<ICommunicationResponse>();
             request.Setup(communicationResponse => communicationResponse.ContentType).Returns(ContentTypes.Json.ToString);
