@@ -12,6 +12,7 @@ using Dev2.TaskScheduler.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Scheduler.Test
 {
     [TestClass]

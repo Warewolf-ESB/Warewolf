@@ -10,6 +10,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Resource.Errors;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Warewolf.Resource.Tests
 {
     [TestClass]

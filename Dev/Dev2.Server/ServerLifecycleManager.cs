@@ -23,11 +23,9 @@ using Dev2.Data;
 using Dev2.Diagnostics.Debug;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
-using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
-using Dev2.Services.Security.MoqInstallerActions;
 using WarewolfCOMIPC.Client;
 using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
@@ -37,7 +35,6 @@ using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
 using System.Reflection;
-using Dev2;
 using System.Threading.Tasks;
 using Warewolf.Trigger.Queue;
 using Warewolf.OS;
@@ -203,7 +200,7 @@ namespace Dev2
                         worker.Execute();
                     }
                     _loggingProcessMonitor.Start();
-                    var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(30));
+                    var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
 
                     _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
                     LoadHostSecurityProvider();

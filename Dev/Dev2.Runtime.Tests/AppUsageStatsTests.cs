@@ -3,14 +3,12 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Tests.Runtime
 {
     [TestClass]
     public class AppUsageStatsTests
     {
-        /// <summary>
-        /// This test checks that CollectUsageStats is set to False on develop
-        /// </summary>
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("RevulyticsCollectUsageStats")]
