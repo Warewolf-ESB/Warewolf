@@ -420,7 +420,6 @@
     <Compile Include="Wrappers\IDirectory.cs" />
     <Compile Include="Wrappers\IDirectoryEntry.cs" />
     <Compile Include="Wrappers\IDirectoryEntryFactory.cs" />
-    <Compile Include="Wrappers\IDomain.cs" />
     <Compile Include="Wrappers\IDropboxClientWrapper.cs" />
     <Compile Include="Wrappers\IFileInfo.cs" />
     <Compile Include="Wrappers\IIonicZipFileWrapper.cs" />

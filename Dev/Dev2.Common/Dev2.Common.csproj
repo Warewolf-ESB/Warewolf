@@ -203,7 +203,6 @@
     <Compile Include="WorkflowExecutionWatcher.cs" />
     <Compile Include="Wrappers\DirectoryEntryFactory.cs" />
     <Compile Include="Wrappers\DirectoryWrapper.cs" />
-    <Compile Include="Wrappers\DomainWrapper.cs" />
     <Compile Include="Wrappers\DropboxClientWrapper.cs" />
     <Compile Include="Wrappers\FileInfoWrapper.cs" />
     <Compile Include="Wrappers\FilePathWrapper.cs" />
