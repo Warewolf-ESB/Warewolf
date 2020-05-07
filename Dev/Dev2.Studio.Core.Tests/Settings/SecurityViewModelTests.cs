@@ -17,11 +17,14 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
+using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Common.Interfaces.Wrappers;
 using Dev2.ConnectionHelpers;
+using Dev2.Data;
+using Dev2.Data.Interfaces;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Dialogs;
 using Dev2.Services.Security;
 using Dev2.Settings.Security;
@@ -32,6 +35,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Data;
+using Warewolf.Studio.Core.Popup;
 
 
 namespace Dev2.Core.Tests.Settings
@@ -100,7 +104,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_Constructor")]
+        [TestCategory(nameof(SecurityViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SecurityViewModel_Constructor_DirectoryObjectPickerDialogIsNull_ThrowsArgumentNullException()
         {
@@ -116,7 +120,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_Constructor")]
+        [TestCategory(nameof(SecurityViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SecurityViewModel_Constructor_ParentWindowIsNull_ThrowsArgumentNullException()
         {
@@ -132,7 +136,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_Constructor")]
+        [TestCategory(nameof(SecurityViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SecurityViewModel_Constructor_EnvironmentIsNull_ThrowsArgumentNullException()
         {
@@ -148,7 +152,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_Constructor")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_Constructor_SecuritySettingsIsNull_PropertiesInitialized()
         {
             Verify_Constructor_InitializesProperties(null);
@@ -156,7 +160,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_Constructor")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_Constructor_AllParametersValid_PropertiesInitialized()
         {
             //------------Setup for test--------------------------
@@ -190,6 +194,8 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = new SecurityViewModel(securitySettingsTO, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.ServerHelpToggle);
+            Assert.IsNotNull(viewModel.ResourceHelpToggle);
             Assert.IsTrue(viewModel.CloseHelpCommand.CanExecute(null));
             Assert.IsNotNull(viewModel.PickResourceCommand);
             Assert.IsTrue(viewModel.PickResourceCommand.CanExecute(null));
@@ -223,7 +229,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_PermissionChanged_IsDirtyIsTrue()
         {
             //------------Setup for test--------------------------
@@ -251,7 +257,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeContributeTrue_MakesViewExecuteTrue()
         {
             //------------Setup for test--------------------------
@@ -278,7 +284,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_WithContributeTrue_MakeViewFalse_MakesContributeFalse()
         {
             //------------Setup for test--------------------------
@@ -305,7 +311,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_WithContributeTrue_MakeExecuteFalse_MakesContributeFalse()
         {
             //------------Setup for test--------------------------
@@ -332,7 +338,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeAdministratorTrue_MakesAllOtherPermissionsTrue()
         {
             //------------Setup for test--------------------------
@@ -365,7 +371,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeDeployFromFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -398,7 +404,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeDeployToFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -431,7 +437,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeContributeFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -464,7 +470,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeViewFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -497,7 +503,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_MakeExecuteFalse_MakesAdministratorPermissionFalse()
         {
             //------------Setup for test--------------------------
@@ -530,7 +536,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_ServerPermissionWindowsGroupChangedToNonEmptyAndIsNew_NewServerPermissionIsAdded()
         {
             //------------Setup for test--------------------------
@@ -551,7 +557,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_ServerPermissionWindowsGroupChangedToEmptyAndIsNotNew_ServerPermissionIsRemoved()
         {
             //------------Setup for test--------------------------
@@ -585,7 +591,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_ResourcePermissionWindowsGroupAndResourceNameChangedToNonEmptyAndIsNew_NewResourcePermissionIsAdded()
         {
             //------------Setup for test--------------------------
@@ -607,7 +613,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_OnPermissionPropertyChanged")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_OnPermissionPropertyChanged_ResourcePermissionWindowsGroupChangedToEmptyAndIsNotNew_ResourcePermissionIsRemoved()
         {
             //------------Setup for test--------------------------
@@ -641,7 +647,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_PickWindowsGroupCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_PickWindowsGroupCommand_DialogResultIsNotOK_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -671,7 +677,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_PickWindowsGroupCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_PickWindowsGroupCommand_DialogResultIsOKAndNothingSelected_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -701,7 +707,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_PickWindowsGroupCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_PickWindowsGroupCommand_PermissionIsNull_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -731,7 +737,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_PickWindowsGroupCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_PickWindowsGroupCommand_ResultIsNull_PermissionWindowsGroupIsNotUpdated()
         {
             //------------Setup for test--------------------------
@@ -762,7 +768,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_PickWindowsGroupCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_PickWindowsGroupCommand_ResultIsNotNull_PermissionWindowsGroupIsUpdated()
         {
             //------------Setup for test--------------------------
@@ -796,7 +802,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_PickWindowsGroupCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_PickWindowsGroupCommand_ResultIsEmptyArray_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -827,7 +833,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_PickResourceCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_PickResourceCommand_PermissionIsNull_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -859,10 +865,96 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual(ResourceName, viewModel.ResourcePermissions[0].ResourceName);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        [ExpectedException(typeof(Exception), "Server does not exist")]
+        public void SecurityViewModel_PickResourceCommand_WindowsGroupPermission_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var resourceId = Guid.NewGuid();
+            const string resourceName = "Cat\\Resource";
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceId,
+                ResourceName = resourceName
+            };
+
+            var picker = new Mock<IResourcePickerDialog>();
+
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] {permission}), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickResourceCommand.Execute(permission);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resourceId, viewModel.ResourcePermissions[0].ResourceID);
+            Assert.AreEqual(resourceName, viewModel.ResourcePermissions[0].ResourceName);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_PickResourceCommand_WindowsGroupPermission()
+        {
+            //------------Setup for test--------------------------
+            var resourceId = Guid.NewGuid();
+            const string resourceName = "Cat\\Resource";
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceId,
+                ResourceName = resourceName
+            };
+
+            var expectedResourceId = Guid.NewGuid();
+            const string expectedResourceName= "Cat\\Resource";
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(o => o.ResourceId).Returns(expectedResourceId);
+            mockExplorerTreeItem.Setup(o => o.ResourceName).Returns(expectedResourceName);
+
+            var picker = new Mock<IResourcePickerDialog>();
+            picker.Setup(o => o.SelectResource(resourceId));
+            picker.Setup(o => o.SelectedResource).Returns(mockExplorerTreeItem.Object);
+
+            var mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(o => o.ResourceName).Returns("");
+            mockResourceModel.Setup(o => o.ID).Returns(Guid.Empty);
+
+            _resourceRepo.Setup(o => o.FindSingle(a => a.ID == resourceId))
+                .Returns(mockResourceModel.Object);
+
+            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] {permission}), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, _environmentModel.Object, () => picker.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickResourceCommand.Execute(permission);
+
+            //------------Assert Results-------------------------
+            _resourceRepo.Verify(o => o.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()), Times.Once);
+            Assert.AreEqual(resourceId, permission.ResourceID);
+            Assert.AreEqual(resourceName, permission.ResourceName);
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_HelpText")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_HelpText_IsResourceHelpVisibleIsTrue_ContainsResourceHelpText()
         {
             //------------Setup for test--------------------------
@@ -872,11 +964,13 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Warewolf.Studio.Resources.Languages.HelpText.SettingsSecurityResourceHelpResource, viewModel.HelpText);
+            viewModel.UpdateHelpDescriptor("new help text");
+            Assert.AreEqual("new help text", viewModel.HelpText);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_IsServerHelpVisible")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_IsServerHelpVisible_ChangedToTrueAndIsResourceHelpVisibleIsTrue_IsResourceHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------
@@ -891,7 +985,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_IsResourceHelpVisible")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_IsResourceHelpVisible_ChangedToTrueAndIsServerHelpVisibleIsTrue_IsServerHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------
@@ -906,7 +1000,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_CloseHelpCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_CloseHelpCommand_IsServerHelpVisibleIsTrue_IsServerHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------
@@ -922,7 +1016,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_CloseHelpCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_CloseHelpCommand_IsResourceHelpVisibleIsTrue_IsResourceHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------
@@ -938,7 +1032,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_Save")]
+        [TestCategory(nameof(SecurityViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SecurityViewModel_Save_NullPermissions_ThrowsArgumentNullException()
         {
@@ -953,7 +1047,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("SecurityViewModel_Save")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_Save_InvalidPermissions_InvalidPermissionsAreRemoved()
         {
             //------------Setup for test--------------------------
@@ -987,7 +1081,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_Save")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_Save_DeletedPermissions_DeletedPermissionsAreRemoved()
         {
             //------------Setup for test--------------------------
@@ -1021,7 +1115,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Invalid_Resource_That_Is_Being_Deleted_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1042,7 +1136,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Resource_And_No_Group_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1061,7 +1155,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_HasInvalidResourcePermission_Given_Group_And_No_Resource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1080,7 +1174,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_ServerDuplicates_NoDuplicates_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1106,7 +1200,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_ServerDuplicates_HasDuplicatesDeleted_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1134,7 +1228,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_ServerDuplicates_Duplicates_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1160,7 +1254,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesResourceID_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1186,7 +1280,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesWindowsGroup_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1213,7 +1307,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateDeleted_ReturnsFalse()
         {
             //------------Setup for test--------------------------
@@ -1241,7 +1335,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("SecurityViewModel_HasDuplicateSecurityViewModel_PickOverrideResourceCommand_PermissionIsNull_DoesNothingResourcePermissions")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_ResourcePermissionsCompare_IsDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1278,7 +1372,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_ServerPermissionsCompare_IsDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1314,48 +1408,8 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void IsInDomain_GivenNotInDomaint_ShouldReturnCollapsed()
-        {
-            //---------------Set up test pack-------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            var mock = new Mock<IDomain>();
-            mock.Setup(domain => domain.GetComputerDomain()).Throws(new Exception());
-            var type = typeof(SecurityViewModel);
-            var fieldInfo = type.GetField("_domain", BindingFlags.Static | BindingFlags.NonPublic);
-            fieldInfo?.SetValue(null, mock.Object);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(securityViewModel);
-            //---------------Execute Test ----------------------
-            var methodInfo = type.GetMethod("IsInDomain", BindingFlags.Static | BindingFlags.NonPublic);
-            var invoke = methodInfo.Invoke(null, null);
-            //---------------Test Result -----------------------
-            Assert.AreEqual(Visibility.Collapsed, invoke);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void IsInDomain_GivenInDomaint_ShouldReturnVisible()
-        {
-            //---------------Set up test pack-------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
-            var mock = new Mock<IDomain>();
-            mock.Setup(domain => domain.GetComputerDomain()).Verifiable();
-            var type = typeof(SecurityViewModel);
-            var fieldInfo = type.GetField("_domain", BindingFlags.Static | BindingFlags.NonPublic);
-            fieldInfo?.SetValue(null, mock.Object);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(securityViewModel);
-            //---------------Execute Test ----------------------
-            var methodInfo = type.GetMethod("IsInDomain", BindingFlags.Static | BindingFlags.NonPublic);
-            var invoke = methodInfo.Invoke(null, null);
-            //---------------Test Result -----------------------
-            Assert.AreEqual(Visibility.Visible, invoke);
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateNotDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -1382,79 +1436,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("SecurityViewModel_PickResourceCommand")]
-        public void SecurityViewModel_PickOverrideResourceCommand_Sets_OverrideResource()
-        {
-            //------------Setup for test--------------------------
-            var overrrideResourceId = Guid.NewGuid();
-            var overrideResourceName = "AuthWorkflow";
-            var permission = new WindowsGroupPermission
-            {
-                IsServer = false,
-                WindowsGroup = "Deploy Admins",
-                View = false,
-                Execute = false,
-                Contribute = false,
-                DeployTo = true,
-                DeployFrom = true,
-                Administrator = false,
-                ResourceID = overrrideResourceId,
-                ResourceName = overrideResourceName
-            };
-
-            NamedGuid authenticationOverrideWorkflow = new NamedGuid
-            {
-                Value = overrrideResourceId,
-                Name = overrideResourceName
-            };
-            var authResource = new NamedGuid()
-            {
-                Value = overrrideResourceId,
-                Name = overrideResourceName
-            };
-            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
-            var mockPopup = new Mock<IPopupController>();
-
-            _serverRepo = GetEnvironmentRepository();
-            _popupController = new Mock<IPopupController>();
-            CustomContainer.Register(_popupController.Object);
-            _resourceRepo = new Mock<IResourceRepository>();
-
-            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrrideResourceId);
-            var coll = new Collection<IResourceModel> {_firstResource.Object};
-            _resourceRepo.Setup(c => c.All()).Returns(coll);
-
-            CustomContainer.Register(_resourceRepo.Object);
-            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
-
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrrideResourceId);
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
-            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
-            CustomContainer.Register(mockExplorerTreeItem.Object);
-            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
-            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
-            CustomContainer.Register(mockResourcePickerDialog.Object);
-            mockPopup.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false));
-
-            var viewModel = new SecurityViewModel(
-                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow),
-                new Mock<DirectoryObjectPickerDialog>().Object,
-                new Mock<IWin32Window>().Object,
-                _environmentModel.Object, () => mockResourcePickerDialog.Object);
-
-            //------------Execute Test---------------------------
-            viewModel.PickOverrideResourceCommand.Execute(authResource);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.Value);
-            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
-            mockPopup.Verify(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false), Times.Never);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("SecurityViewModel_PickResourceCommand")]
+        [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_PickOverrideResourceCommand_Sets_OverrideResource_Null()
         {
             //------------Setup for test--------------------------
@@ -1510,6 +1492,474 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(overrrideResourceId, viewModel.OverrideResource.Value);
             Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_True()
+        {
+            //------------Setup for test--------------------------
+            var overrideResourceId = Guid.NewGuid();
+            var resourceId = Guid.NewGuid();
+            const string overrideResourceName = "AuthWorkflow";
+            const string resourceName = "Workflow";
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceId,
+                ResourceName = resourceName
+            };
+
+            var authenticationOverrideWorkflow = new NamedGuid
+            {
+                Value = resourceId,
+                Name = resourceName
+            };
+            var authResource = new NamedGuid
+            {
+                Value = overrideResourceId,
+                Name = overrideResourceName
+            };
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+            var mockPopup = new Mock<IPopupController>();
+
+            _serverRepo = GetEnvironmentRepository();
+
+            var dataListItem = new DataListItem {Recordset = "UserGroups", Field = "Name"};
+            var dataListItems = new OptomizedObservableCollection<IDataListItem> {dataListItem};
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(o => o.GetOutputsFromWorkflow(overrideResourceId)).Returns(dataListItems);
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrideResourceId);
+            var coll = new Collection<IResourceModel> {_firstResource.Object};
+            _resourceRepo.Setup(c => c.All()).Returns(coll);
+            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrideResourceId);
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
+            CustomContainer.Register(mockExplorerTreeItem.Object);
+            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
+            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
+            CustomContainer.Register(mockResourcePickerDialog.Object);
+            mockPopup.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false));
+
+            var viewModel = new SecurityViewModel(
+                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow),
+                new Mock<DirectoryObjectPickerDialog>().Object,
+                new Mock<IWin32Window>().Object,
+                _environmentModel.Object, () => mockResourcePickerDialog.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickOverrideResourceCommand.Execute(authResource);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(overrideResourceId, viewModel.OverrideResource.Value);
+            Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
+            mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_False()
+        {
+            //------------Setup for test--------------------------
+            var overrideResourceId = Guid.NewGuid();
+            var resourceId = Guid.NewGuid();
+            const string overrideResourceName = "AuthWorkflow";
+            const string resourceName = "Workflow";
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceId,
+                ResourceName = resourceName
+            };
+
+            var authenticationOverrideWorkflow = new NamedGuid
+            {
+                Value = resourceId,
+                Name = resourceName
+            };
+            var authResource = new NamedGuid
+            {
+                Value = overrideResourceId,
+                Name = overrideResourceName
+            };
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+
+            _serverRepo = GetEnvironmentRepository();
+
+            var dataListItem = new DataListItem {Recordset = "NoGroups", Field = "Name"};
+            var dataListItems = new OptomizedObservableCollection<IDataListItem> {dataListItem};
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(o => o.GetOutputsFromWorkflow(overrideResourceId)).Returns(dataListItems);
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrideResourceId);
+            var coll = new Collection<IResourceModel> {_firstResource.Object};
+            _resourceRepo.Setup(c => c.All()).Returns(coll);
+            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrideResourceId);
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
+            CustomContainer.Register(mockExplorerTreeItem.Object);
+            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
+            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
+            CustomContainer.Register(mockResourcePickerDialog.Object);
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(c => c.Show(It.IsAny<PopupMessage>()));
+            CustomContainer.Register(mockPopupController.Object);
+
+
+            var viewModel = new SecurityViewModel(
+                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow),
+                new Mock<DirectoryObjectPickerDialog>().Object,
+                new Mock<IWin32Window>().Object,
+                _environmentModel.Object, () => mockResourcePickerDialog.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickOverrideResourceCommand.Execute(authResource);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resourceId, viewModel.OverrideResource.Value);
+            Assert.AreEqual(resourceName, viewModel.OverrideResource.Name);
+            mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Once);
+            mockPopupController.Verify(o => o.Show(It.IsAny<PopupMessage>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_ShowDirectoryObjectPickerDialog()
+        {
+            var popupMessage = new PopupMessage
+            {
+                Description = "An error occured while trying to open the Windows Group Picker dialog. Please ensure that you are part of a Domain to use this feature.",
+                Image = MessageBoxImage.Error,
+                Buttons = MessageBoxButton.OK,
+                IsError = true,
+                Header = @"Error"
+            };
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.Show(popupMessage)).Verifiable();
+            CustomContainer.Register(mockPopupController.Object);
+
+            var mockWin32Window = new Mock<IWin32Window>();
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, mockWin32Window.Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+
+            var dialogResult = securityViewModel.ShowDirectoryObjectPickerDialog(mockWin32Window.Object);
+            Assert.AreEqual(DialogResult.Cancel, dialogResult);
+            Assert.IsNotNull(securityViewModel.GetSelectedObjectsFromDirectoryObjectPickerDialog());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_CreateResourcePickerDialog()
+        {
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(o => o.ActiveServer).Returns(new Mock<IServer>().Object);
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            var mockWin32Window = new Mock<IWin32Window>();
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, mockWin32Window.Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+
+            var resourcePicker = securityViewModel.CreateResourcePickerDialog();
+            Assert.IsNotNull(resourcePicker);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ResourcePermissions_Null()
+        {
+            var groupPermission = new WindowsGroupPermission
+            {
+                IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup,
+                View = false, Execute = false, Contribute = true, DeployTo = true, DeployFrom = true, Administrator = true
+            };
+
+            var groupPermissions = new List<WindowsGroupPermission>{groupPermission};
+
+            var securitySettingsTo = new SecuritySettingsTO(groupPermissions);
+            var mockPickerDialog = new Mock<DirectoryObjectPickerDialog>();
+            var mockWin32Window = new Mock<IWin32Window>();
+            var mockServer = new Mock<IServer>();
+            var mockResourcePicker = new Mock<IResourcePickerDialog>();
+            var viewModel = new SecurityViewModel(securitySettingsTo, mockPickerDialog.Object, mockWin32Window.Object, mockServer.Object, () => mockResourcePicker.Object)
+            {
+                ItemServerPermissions = new BindableCollection<WindowsGroupPermission> {groupPermission}
+            };
+
+            Assert.AreEqual(1, viewModel.ItemServerPermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemServerPermissions[0].WindowsGroup = "User";
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ServerPermissions_WindowsGroup()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+
+            viewModel.ItemServerPermissions[0].WindowsGroup = "User";
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ServerPermissions_DeployTo()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemServerPermissions[0].DeployTo = false;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ServerPermissions_DeployFrom()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemServerPermissions[0].DeployFrom = false;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ServerPermissions_Administrator()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemServerPermissions[0].Administrator = false;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ServerPermissions_View()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemServerPermissions[0].View = true;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ServerPermissions_Execute()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemServerPermissions[0].Execute = true;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ServerPermissions_Contribute()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemServerPermissions[0].Contribute = false;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ServerPermissions_IsDeleted()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(3, viewModel.ItemServerPermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemServerPermissions[0].IsDeleted = true;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        private static SecurityViewModel PermissionsValidation()
+        {
+            var serverPermission = new WindowsGroupPermission
+            {
+                IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup,
+                View = false, Execute = false, Contribute = true, DeployTo = true, DeployFrom = true, Administrator = true
+            };
+
+            var resourcePermission = new WindowsGroupPermission
+            {
+                IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup,
+                View = false, Execute = false, Contribute = true, DeployTo = true, DeployFrom = true, Administrator = true
+            };
+
+            var groupPermissions = new List<WindowsGroupPermission> {serverPermission, resourcePermission};
+
+            var securitySettingsTo = new SecuritySettingsTO(groupPermissions);
+            var mockPickerDialog = new Mock<DirectoryObjectPickerDialog>();
+            var mockWin32Window = new Mock<IWin32Window>();
+            var mockServer = new Mock<IServer>();
+            var mockResourcePicker = new Mock<IResourcePickerDialog>();
+            var viewModel = new SecurityViewModel(securitySettingsTo, mockPickerDialog.Object, mockWin32Window.Object,
+                mockServer.Object, () => mockResourcePicker.Object)
+            {
+                ItemServerPermissions = new BindableCollection<WindowsGroupPermission>
+                    {serverPermission, serverPermission, serverPermission},
+                ItemResourcePermissions = new BindableCollection<WindowsGroupPermission> {resourcePermission},
+                //ResourcePermissions = { resourcePermission }
+            };
+            return viewModel;
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ResourcePermissions_ResourceName()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemResourcePermissions[0].ResourceName = "someName";
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ResourcePermissions_WindowsGroup()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemResourcePermissions[0].WindowsGroup = "User";
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ResourcePermissions_View()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemResourcePermissions[0].View = true;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ResourcePermissions_Execute()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemResourcePermissions[0].Execute = true;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ResourcePermissions_Contribute()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemResourcePermissions[0].Contribute = false;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ResourcePermissions_DeployTo()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemResourcePermissions[0].DeployTo = false;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ResourcePermissions_DeployFrom()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemResourcePermissions[0].DeployFrom = false;
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_Equals_ResourcePermissions_Administrator()
+        {
+            var viewModel = PermissionsValidation();
+
+            Assert.AreEqual(1, viewModel.ItemResourcePermissions.Count);
+            Assert.IsFalse(viewModel.IsDirty);
+            viewModel.ItemResourcePermissions[0].Administrator = false;
+            Assert.IsTrue(viewModel.IsDirty);
         }
 
         static List<WindowsGroupPermission> CreatePermissions()
