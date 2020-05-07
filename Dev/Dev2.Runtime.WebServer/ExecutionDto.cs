@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,16 +10,17 @@
 */
 
 using System;
+using System.Linq;
 using System.Runtime;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.Decision;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
-using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
@@ -56,7 +57,6 @@ namespace Dev2.Runtime.WebServer
         public DataListFormat DataListFormat { get; set; }
         public Dev2JsonSerializer Serializer { get; set; }
         public ErrorResultTO ErrorResultTO { get; set; }
-
     }
 
     public class ExecutionDtoExtensions
@@ -66,6 +66,100 @@ namespace Dev2.Runtime.WebServer
         public ExecutionDtoExtensions(IExecutionDto executionDto)
         {
             _executionDto = executionDto;
+        }
+
+        public string CreatePayloadResponse()
+        {
+            var dataObject = _executionDto.DataObject;
+            var esbExecuteRequest = _executionDto.Request;
+            var executionDlid = _executionDto.DataListIdGuid;
+            var workspaceGuid = _executionDto.WorkspaceID;
+            var serviceName = _executionDto.ServiceName;
+            var resource = _executionDto.Resource;
+            var formatter = _executionDto.DataListFormat;
+            var webRequest = _executionDto.WebRequestTO;
+            var serializer = _executionDto.Serializer;
+            var allErrors = _executionDto.ErrorResultTO;
+            bool wasInternalService = esbExecuteRequest?.WasInternalService ?? false;
+
+            if (!wasInternalService)
+            {
+                dataObject.DataListID = executionDlid;
+                dataObject.WorkspaceID = workspaceGuid;
+                dataObject.ServiceName = serviceName;
+                if (dataObject.ExecutionException is null)
+                {
+                    _executionDto.PayLoad = GetEncryptedPayload(dataObject, resource, webRequest, ref formatter);
+                }
+                else
+                {
+                    var content = GetExecuteExceptionPayload(dataObject);
+                    return System.Net.HttpStatusCode.InternalServerError.ToString();
+                }
+            }
+            else
+            {
+                // internal service request we need to return data for it from the request object
+                _executionDto.PayLoad = string.Empty;
+                var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
+
+                if (msg != null)
+                {
+                    _executionDto.PayLoad = msg.Message.ToString();
+                }
+
+                // out fail safe to return different types of data from services
+                if (string.IsNullOrEmpty(_executionDto.PayLoad))
+                {
+                    _executionDto.PayLoad = esbExecuteRequest.ExecuteResult.ToString();
+                }
+            }
+
+            if (dataObject.Environment.HasErrors())
+            {
+                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+            }
+            else
+            {
+                Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+            }
+
+            if (!dataObject.Environment.HasErrors() && wasInternalService)
+            {
+                TryGetFormatter(ref formatter);
+            }
+
+            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
+
+            CleanUp(_executionDto);
+            return _executionDto.PayLoad;
+        }
+        private bool ValidatePayload(StringBuilder resourceDataList)
+        {
+            var converter = new DataListConversionUtils();
+            var dataList = new DataListModel();
+            dataList.Create(resourceDataList.ToString(), resourceDataList.ToString());
+            var outputList = converter.GetOutputs(dataList);
+            if (outputList.Select(sca => sca.Recordset == "UserGroups" && sca.Field == "Name").FirstOrDefault())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        string GetEncryptedPayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
+        {
+            var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
+            var isValidPayload = ValidatePayload(resource?.DataList);
+            if (isValidPayload && notDebug && resource?.DataList != null)
+            {
+                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
+            }
+
+            return string.Empty;
         }
 
         public IResponseWriter CreateResponseWriter(IStringResponseWriterFactory stringResponseWriterFactory)
@@ -90,7 +184,8 @@ namespace Dev2.Runtime.WebServer
                 if (dataObject.ExecutionException is null)
                 {
                     _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
-                } else
+                }
+                else
                 {
                     var content = GetExecuteExceptionPayload(dataObject);
                     return new ExceptionResponseWriter(System.Net.HttpStatusCode.InternalServerError, content);
@@ -116,18 +211,20 @@ namespace Dev2.Runtime.WebServer
 
             if (dataObject.Environment.HasErrors())
             {
-                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine,string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
             }
             else
             {
                 Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
             }
+
             if (!dataObject.Environment.HasErrors() && wasInternalService)
             {
                 TryGetFormatter(ref formatter);
             }
+
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-            
+
             CleanUp(_executionDto);
             return stringResponseWriterFactory.New(_executionDto.PayLoad, formatter.ContentType);
         }
@@ -147,12 +244,14 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
+
         string GetExecutePayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug && resource?.DataList != null)
             {
-                switch (dataObject.ReturnType) {
+                switch (dataObject.ReturnType)
+                {
                     case EmitionTypes.XML:
                     {
                         return ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
@@ -170,8 +269,11 @@ namespace Dev2.Runtime.WebServer
                     }
                 }
             }
+
             return string.Empty;
         }
+
+
 
         string GetExecuteExceptionPayload(IDSFDataObject dataObject)
         {
@@ -188,10 +290,11 @@ namespace Dev2.Runtime.WebServer
                     case EmitionTypes.SWAGGER:
                     case EmitionTypes.JSON:
                     {
-                        return JsonConvert.SerializeObject(new { Message = dataObject.ExecutionException.Message });
+                        return JsonConvert.SerializeObject(new {Message = dataObject.ExecutionException.Message});
                     }
                 }
             }
+
             return string.Empty;
         }
 
@@ -200,8 +303,7 @@ namespace Dev2.Runtime.WebServer
             dto.DataObject = null;
             dto.ErrorResultTO.ClearErrors();
             GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-            GC.Collect(3,GCCollectionMode.Forced,false);
+            GC.Collect(3, GCCollectionMode.Forced, false);
         }
-
     }
 }

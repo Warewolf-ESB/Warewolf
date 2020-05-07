@@ -10,16 +10,22 @@
 
 using System;
 using System.Collections.Specialized;
-using System.Security.Claims;
 using System.Security.Principal;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Monitoring;
-using Dev2.PerformanceCounters.Counters;
+using System.Text;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Enums;
+using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Responses;
+using Dev2.Runtime.WebServer.TransferObjects;
+using Dev2.Services.Security;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -29,6 +35,7 @@ namespace Dev2.Tests.Runtime.WebServer
     {
         [TestMethod]
         [Owner("Candice Daniel")]
+        [TestCategory(nameof(TokenRequestHandler))]
         [ExpectedException(typeof(NullReferenceException))]
         public void TokenRequestHandler_ProcessRequest_GiveNullCommunicationContext_ThrowsException()
         {
@@ -38,8 +45,8 @@ namespace Dev2.Tests.Runtime.WebServer
             handler.ProcessRequest(null);
             //------------Assert Results-------------------------
         }
-
         [TestMethod]
+        [TestCategory(nameof(TokenRequestHandler))]
         [Owner("Candice Daniel")]
         public void TokenRequestHandler_ProcessRequest_ReturnToken()
         {
@@ -61,6 +68,102 @@ namespace Dev2.Tests.Runtime.WebServer
             var result = communicationContext.Object.Response;
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(TokenRequestHandler))]
+        public void TokenRequestHandler_Return_EncyptedUserGroups_Token()
+        {
+            var principal = new Mock<IPrincipal>();
+            GetExecutingUser(principal);
+
+            var outerEnv = new ExecutionEnvironment();
+            outerEnv.Assign("[[UserGroups().Name]]", "public", 0);
+            outerEnv.Assign("[[UserGroups().Name]]", "whatever", 0);
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            dataObject.Setup(o => o.Environment).Returns(outerEnv);
+            //dataObject.Setup(o => o.Environment.HasErrors()).Returns(false);
+            dataObject.Setup(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
+
+            var resourceId = Guid.NewGuid();
+            var resourceName = "loginAuth";
+
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+
+            var mockResource = new Mock<IResource>();
+            mockResource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            mockResource.Setup(o => o.ResourceName).Returns(resourceName);
+            mockResource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><UserGroups Description='' IsEditable='True' ColumnIODirection='Output'><Name Description='' IsEditable='True' ColumnIODirection='Output'>public</Name></UserGroups></DataList>"));
+
+            var mockWarewolfResource = mockResource.As<IWarewolfResource>();
+            mockWarewolfResource.Setup(o => o.ResourceID).Returns(resourceId);
+            mockWarewolfResource.Setup(o => o.ResourceName).Returns(resourceName);
+            mockWarewolfResource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><UserGroups Description='' IsEditable='True' ColumnIODirection='Output'><Name Description='' IsEditable='True' ColumnIODirection='Output'>public</Name></UserGroups></DataList>"));
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(o => o.GetResource(It.IsAny<Guid>(), It.IsAny<string>())).Returns(mockResource.Object);
+
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+
+            var doFactory = new TestTokenRequestDataObjectFactory(dataObject.Object);
+
+            //---------------Assert Precondition----------------
+            var handlerMock = new TokenRequestHandlerMock(resourceCatalog.Object, wRepo.Object, authorizationService.Object, doFactory);
+            var headers = new Mock<NameValueCollection>();
+            var webRequestTo = new WebRequestTO()
+            {
+                ServiceName = "loginAuth",
+                WebServerUrl = "http://localhost:3142/public/loginAuth"
+            };
+
+            //---------------Execute Test ----------------------
+            var responseWriter = handlerMock.CreateFromMock(webRequestTo, "loginAuth", Guid.Empty.ToString(), headers.Object, principal.Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(responseWriter);
+        }
+
+        static void GetExecutingUser(Mock<IPrincipal> principal)
+        {
+            var identity = new Mock<IIdentity>();
+            identity.Setup(p => p.Name).Returns("User1");
+            principal.Setup(p => p.Identity).Returns(identity.Object);
+        }
+    }
+
+    class TestTokenRequestDataObjectFactory : TokenRequestHandler.IDataObjectFactory
+    {
+        readonly IDSFDataObject _dataObject;
+
+        public TestTokenRequestDataObjectFactory(IDSFDataObject dataObject)
+        {
+            _dataObject = dataObject;
+        }
+
+        public IDSFDataObject New(Guid workspaceGuid, IPrincipal user, string serviceName, WebRequestTO webRequest) => _dataObject;
+    }
+
+    class TokenRequestHandlerMock : TokenRequestHandler
+    {
+        public TokenRequestHandlerMock(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
+            : base(resourceCatalog, workspaceRepository, authorizationService, dataObjectFactory)
+        {
+        }
+
+        public IResponseWriter CreateFromMock(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
+        {
+            return ExecuteWorkflow(webRequest, serviceName, workspaceId, headers, user);
+        }
+
+        public override void ProcessRequest(ICommunicationContext ctx)
+        {
+            throw new NotImplementedException();
         }
     }
 }
