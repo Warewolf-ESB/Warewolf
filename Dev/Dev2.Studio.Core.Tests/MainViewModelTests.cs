@@ -1802,6 +1802,41 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ShellViewModel))]
+        public void MainViewModel_GetOutputsFromWorkflow()
+        {
+            //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
+            CreateFullExportsAndVm();
+
+            var resourceId = Guid.NewGuid();
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(o => o.DataList).Returns("<DataList></DataList>");
+
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            mockResourceRepo.Setup(o => o.LoadContextualResourceModel(resourceId)).Returns(mockResourceModel.Object);
+
+            var env = SetupEnvironment();
+            env.Setup(o => o.ResourceRepository).Returns(mockResourceRepo.Object);
+
+            var mockServerRepository = new Mock<IServerRepository>();
+            mockServerRepository.Setup(o => o.Source).Returns(env.Object);
+            mockServerRepository.Setup(o => o.ActiveServer).Returns(env.Object);
+            mockServerRepository.Setup(o => o.All()).Returns(new List<IServer>());
+
+            //------------Execute Test---------------------------
+
+            _shellViewModel = new ShellViewModelPersistenceMock(mockServerRepository.Object);
+
+            //------------Assert Results-------------------------
+            var outputs = _shellViewModel.GetOutputsFromWorkflow(resourceId);
+            Assert.IsNotNull(outputs);
+            Assert.AreEqual(0, outputs.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_ViewSwagger")]
         public void MainViewModel_ViewSwagger_Handle_Result()
         {
