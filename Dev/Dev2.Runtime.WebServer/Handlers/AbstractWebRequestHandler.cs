@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
@@ -43,6 +44,7 @@ using Dev2.Web;
 using Dev2.Workspaces;
 using Warewolf.Auditing;
 using Warewolf.Data;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -59,6 +61,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         public string Location => _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
+
         protected AbstractWebRequestHandler()
             : this(ResourceCatalog.Instance, TestCatalog.Instance, TestCoverageCatalog.Instance)
         {
@@ -72,8 +75,8 @@ namespace Dev2.Runtime.WebServer.Handlers
         protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
             : this(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, workspaceRepository, authorizationService, dataObjectFactory)
         {
-
         }
+
         protected AbstractWebRequestHandler(IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
         {
             _resourceCatalog = resourceCatalog;
@@ -83,6 +86,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             _authorizationService = authorizationService;
             _dataObjectFactory = dataObjectFactory;
         }
+
 
 #pragma warning disable CC0044
         protected IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers) => CreateForm(webRequest, serviceName, workspaceId, headers, null);
@@ -118,7 +122,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if (webRequest.ServiceName.EndsWith(".xml") || _dataObject.ReturnType == EmitionTypes.XML)
                 {
                     formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                } else
+                }
+                else
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 }
@@ -137,6 +142,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 };
                 return DefaultExecutionResponse(executionDto);
             }
+
             private IResponseWriter DefaultExecutionResponse(ExecutionDto executionDto)
             {
                 var allErrors = new ErrorResultTO();
@@ -180,6 +186,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var serialize = SetupForWebExecution(dataObject, serializer);
                 return new StringResponseWriter(serialize, formatter.ContentType);
             }
+
             static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
             {
                 var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
@@ -195,6 +202,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             IResponseWriter BuildResponse(WebRequestTO webRequest, string serviceName);
         }
+
         protected abstract class ExecutorBase : IExecutor
         {
             protected string _executePayload;
@@ -216,6 +224,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 : this(workspaceRepository, resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, authorizationService, dataObjectFactory)
             {
             }
+
             protected ExecutorBase(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
             {
                 _repository = workspaceRepository;
@@ -304,7 +313,15 @@ namespace Dev2.Runtime.WebServer.Handlers
                     return null;
                 }
 
-                _canExecute = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
+                var workflowCanBeExecutedByGroup = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
+                var tokenIsValid = true;
+                var isTokenWorkflow = webRequest.Variables["isToken"];
+                if (isTokenWorkflow == "True")
+                {
+                    tokenIsValid = ValidateToken(headers);
+                }
+
+                _canExecute = workflowCanBeExecutedByGroup && tokenIsValid;
                 if (!_canExecute)
                 {
                     var errorMessage =
@@ -326,6 +343,27 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return null;
             }
 
+            private static bool ValidateToken(NameValueCollection headers)
+            {
+                var authorizationHeader = AuthenticationHeaderValue.Parse(headers["Authorization"]);
+                var hasBearer = authorizationHeader?.Scheme?.Equals("bearer", StringComparison.InvariantCultureIgnoreCase) ?? false;
+                var token = authorizationHeader?.Parameter;
+                var hasParameter = !string.IsNullOrWhiteSpace(token);
+                if (authorizationHeader is null || !hasBearer || !hasParameter)
+                {
+                    return false;
+                }
+
+                var decryptedPayload = DpapiWrapper.Decrypt(token);
+                //TODO: Validate the payload
+                // if (!parameter.IsValid)
+                //  {
+                //       return false;
+                //   }
+                return true;
+            }
+
+
             private Guid DoExecution(WebRequestTO webRequest, string serviceName, Guid workspaceGuid, IDSFDataObject dataObject, IPrincipal userPrinciple)
             {
                 _esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
@@ -339,6 +377,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 return executionDataListId;
             }
+
             private IResponseWriter ExecuteAsTest(IPrincipal userPrinciple)
             {
                 var formatter = ServiceTestExecutor.ExecuteTests(_dataObject, userPrinciple, _workspaceGuid, _serializer, _testCatalog, _resourceCatalog, out _executePayload, _testCoverageCatalog);
@@ -431,6 +470,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     {
                         return baseStr;
                     }
+
                     var args = HttpUtility.ParseQueryString(query);
                     var url = baseStr.Substring(0, startQueryString + 1);
                     var results = new List<string>();
@@ -442,6 +482,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                     return url + string.Join("&", results);
                 }
+
                 return baseStr;
             }
 
@@ -449,22 +490,25 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 if (payload != null)
                 {
-                    var keyValuePairs = payload.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    var keyValuePairs = payload.Split(new[] {"&"}, StringSplitOptions.RemoveEmptyEntries).ToList();
                     foreach (var keyValuePair in keyValuePairs)
                     {
                         if (keyValuePair.StartsWith("wid="))
                         {
                             continue;
                         }
+
                         if (keyValuePair.IsXml() || keyValuePair.IsJSON() || (keyValuePair.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && keyValuePair.ToLowerInvariant().Contains("</DataList>".ToLowerInvariant())))
                         {
                             return keyValuePair;
                         }
                     }
                 }
+
                 var pairs = ctx.Request.QueryString;
                 return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
             }
+
             static string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
             {
                 var data = reader.ReadToEnd();
@@ -481,10 +525,10 @@ namespace Dev2.Runtime.WebServer.Handlers
             private static NameValueCollection ExtractArgumentsFromDataListOrQueryString(ICommunicationContext ctx, string data)
             {
                 var pairs = new NameValueCollection(5);
-                var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var keyValuePairs = data.Split(new[] {"&"}, StringSplitOptions.RemoveEmptyEntries).ToList();
                 foreach (var keyValuePair in keyValuePairs)
                 {
-                    var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                    var keyValue = keyValuePair.Split(new[] {"="}, StringSplitOptions.RemoveEmptyEntries);
                     if (keyValue.Length > 1)
                     {
                         pairs.Add(keyValue[0], keyValue[1]);
@@ -515,12 +559,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                     {
                         continue;
                     }
+
                     if (key.IsXml() || key.IsJSON() || (key.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && key.ToLowerInvariant().Contains("<\\DataList>".ToLowerInvariant())))
                     {
                         return key; //We have a workspace id and XML DataList
                     }
-                    boundVariables.Add(key, pairs[key]);
 
+                    boundVariables.Add(key, pairs[key]);
                 }
 
                 return string.Empty;
@@ -548,5 +593,4 @@ namespace Dev2.Runtime.WebServer.Handlers
                 };
         }
     }
-
 }

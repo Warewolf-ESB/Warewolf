@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,9 +35,13 @@ namespace Dev2.Runtime.WebServer.Controllers
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
             where TRequestHandler : class, IRequestHandler, new()
         {
-            if (!IsAuthenticated())
+            var isTokenRequest = requestVariables["isToken"];
+            if (isTokenRequest == "False")
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                if (!IsAuthenticated())
+                {
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                }
             }
 
             var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
