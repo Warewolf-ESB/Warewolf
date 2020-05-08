@@ -141,9 +141,13 @@ namespace Dev2.Tests.Runtime.WebServer
             mockMessageContext.Setup(o => o.ResponseMessage).Returns(response);
             responseWriter.Write(mockMessageContext.Object);
             mockMessageContext.Verify(o => o.ResponseMessage, Times.AtLeast(1));
+
             var responseText = response.Content.ReadAsStringAsync().Result;
             Assert.IsTrue(!string.IsNullOrWhiteSpace(responseText), "expected non empty token");
-            var text = DpapiWrapper.Decrypt(responseText);
+            var bodyJson = JsonConvert.DeserializeObject<JObject>(responseText);
+            Assert.IsNotNull(bodyJson);
+
+            var text = DpapiWrapper.Decrypt(bodyJson["token"].ToString());
             Assert.IsTrue(!string.IsNullOrWhiteSpace(responseText), "expected valid token that can be decrypted");
             var json = JsonConvert.DeserializeObject<JObject>(text);
 
@@ -152,6 +156,8 @@ namespace Dev2.Tests.Runtime.WebServer
             var hasBothGroups =
                 (group1 == "public" && group2 == "whatever") || (group2 == "public" && group1 == "whatever");
             Assert.IsTrue(hasBothGroups, "groups not found in response token");
+
+            Assert.AreEqual("application/json", response.Content.Headers.ContentType.MediaType, "application/json media type expected");
         }
 
         static void GetExecutingUser(Mock<IPrincipal> principal)

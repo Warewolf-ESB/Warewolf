@@ -253,7 +253,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 _dataObject = _dataObjectFactory.New(workspaceGuid, user, serviceName, webRequest);
                 _dataObject.OriginalServiceName = serviceName;
                 _dataObject.SetHeaders(headers);
-                //_dataObject.ReturnType = EmitionTypes.JSON;
                 _dataObject.SetupForWebDebug(webRequest);
                 webRequest.BindRequestVariablesToDataObject(ref _dataObject);
                 _dataObject.SetupForRemoteInvoke(headers);
