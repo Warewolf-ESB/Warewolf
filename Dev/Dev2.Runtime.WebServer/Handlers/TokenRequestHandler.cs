@@ -8,13 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
-using Dev2.Common.Interfaces;
+using System.Web;
 using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -27,13 +26,12 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
-using Nest;
 using Warewolf;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
-    public class TokenRequestHandler : AbstractWebRequestHandler, IRequestHandler
+    public class TokenRequestHandler : AbstractWebRequestHandler
     {
         public TokenRequestHandler()
             : this(ResourceCatalog.Instance)
@@ -128,9 +126,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             public override IResponseWriter BuildResponse(WebRequestTO webRequest, string serviceName)
             {
-                DataListFormat formatter;
-
-                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 var executionDto = new ExecutionDto
                 {
                     WebRequestTO = webRequest,
@@ -172,17 +168,14 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             private static IResponseWriter CreateEncryptedResponse(string payload)
             {
-                var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 var rs = new StringResponseWriterFactory();
                 if (payload.Length > 0)
                 {
                     var encryptedPayload = DpapiWrapper.Encrypt(payload);
-                    return rs.New(encryptedPayload, formatter.ContentType);
+                    encryptedPayload = "{\"token\": \""+ encryptedPayload +"\"}";
+                    return rs.New(encryptedPayload, "application/json");
                 }
-                else
-                {
-                    return rs.New("", formatter.ContentType);
-                }
+                throw new HttpException(500, "internal server error");
             }
         }
     }
