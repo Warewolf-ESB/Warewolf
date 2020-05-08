@@ -133,7 +133,11 @@ namespace Dev2.Services.Security
             var result = groupPermissions.Aggregate(Permissions.None, (current, gp) => current | gp.Permissions);
             return result;
         }
-
+        public virtual List<WindowsGroupPermission> GetResourcePermissionsList(Guid resourceId)
+        {
+            var groupPermissions = GetGroupPermissions(Utilities.OrginalExecutingUser ?? Thread.CurrentPrincipal, resourceId.ToString()).ToList();
+            return groupPermissions;
+        }
         public List<WindowsGroupPermission> GetPermissions(IPrincipal user)
         {
             lock (_getPermissionsLock)

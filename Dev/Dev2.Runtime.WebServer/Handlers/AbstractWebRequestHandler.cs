@@ -42,6 +42,8 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Auditing;
 using Warewolf.Data;
 using Warewolf.Security.Encryption;
@@ -317,16 +319,18 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var isTokenWorkflow = webRequest.Variables["isToken"];
                 if (isTokenWorkflow == "True")
                 {
-                    tokenIsValid = ValidateToken(headers);
+                    tokenIsValid = ValidateToken(headers, _authorizationService, _resource);
                 }
 
                 _canExecute = workflowCanBeExecutedByGroup && tokenIsValid;
                 if (!_canExecute)
                 {
-                    var errorMessage =
-                        string.Format(
-                            Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException,
-                            _dataObject.ExecutingUser.Identity.Name, _dataObject.ServiceName);
+                    var message = Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException;
+                    if (isTokenWorkflow == "True")
+                    {
+                        message = Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException;
+                    }
+                    var errorMessage = string.Format(message, _dataObject.ExecutingUser?.Identity.Name, _dataObject.ServiceName);
                     _dataObject.Environment.AddError(errorMessage);
                     _dataObject.ExecutionException = new Exception(errorMessage);
                 }
@@ -342,27 +346,40 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return null;
             }
 
-            private static bool ValidateToken(NameValueCollection headers)
+            private static bool ValidateToken(NameValueCollection headers, IAuthorizationService authorizationService, IWarewolfResource resource)
             {
-                var authorizationHeader = AuthenticationHeaderValue.Parse(headers["Authorization"]);
-                var hasBearer = authorizationHeader?.Scheme?.Equals("bearer", StringComparison.InvariantCultureIgnoreCase) ?? false;
-                var token = authorizationHeader?.Parameter;
-                var hasParameter = !string.IsNullOrWhiteSpace(token);
-                if (authorizationHeader is null || !hasBearer || !hasParameter)
+                try
+                {
+                    var authorizationHeader = AuthenticationHeaderValue.Parse(headers["Authorization"]);
+                    var hasBearer = authorizationHeader?.Scheme?.Equals("bearer", StringComparison.InvariantCultureIgnoreCase) ?? false;
+                    var token = authorizationHeader?.Parameter;
+                    var hasParameter = !string.IsNullOrWhiteSpace(token);
+                    if (authorizationHeader is null || !hasBearer || !hasParameter)
+                    {
+                        return false;
+                    }
+
+                    var decryptedPayload = DpapiWrapper.Decrypt(token);
+                    var groupsAllowed = authorizationService.GetResourcePermissionsList(resource.ResourceID);
+                    var data = (JObject) JsonConvert.DeserializeObject(decryptedPayload);
+                    foreach (var group in groupsAllowed)
+                    {
+                        var result = data["UserGroups"]
+                            .Values<JObject>()
+                            .FirstOrDefault(m => m["Name"].Value<string>().ToLower() == @group.WindowsGroup.ToLower());
+                        if (result != null)
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+                catch
                 {
                     return false;
                 }
-
-                var decryptedPayload = DpapiWrapper.Decrypt(token);
-                //TODO: Validate the payload
-                // if (!parameter.IsValid)
-                //  {
-                //       return false;
-                //   }
-                return true;
             }
-
-
             private Guid DoExecution(WebRequestTO webRequest, string serviceName, Guid workspaceGuid, IDSFDataObject dataObject, IPrincipal userPrinciple)
             {
                 _esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);
