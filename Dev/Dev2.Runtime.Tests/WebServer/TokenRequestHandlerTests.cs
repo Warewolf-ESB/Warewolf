@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common.Interfaces.Data;
@@ -24,7 +25,10 @@ using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Data;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Tests.Runtime.WebServer
@@ -77,7 +81,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TokenRequestHandler))]
-        public void TokenRequestHandler_Return_EncyptedUserGroups_Token()
+        public void TokenRequestHandler_Return_EncryptedUserGroups_Token()
         {
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
@@ -131,6 +135,23 @@ namespace Dev2.Tests.Runtime.WebServer
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(responseWriter);
+
+            var response = new HttpResponseMessage();
+            var mockMessageContext = new Mock<IResponseMessageContext>();
+            mockMessageContext.Setup(o => o.ResponseMessage).Returns(response);
+            responseWriter.Write(mockMessageContext.Object);
+            mockMessageContext.Verify(o => o.ResponseMessage, Times.AtLeast(1));
+            var responseText = response.Content.ReadAsStringAsync().Result;
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(responseText), "expected non empty token");
+            var text = DpapiWrapper.Decrypt(responseText);
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(responseText), "expected valid token that can be decrypted");
+            var json = JsonConvert.DeserializeObject<JObject>(text);
+
+            var group1 = json["UserGroups"][0]["Name"].ToString();
+            var group2 = json["UserGroups"][1]["Name"].ToString();
+            var hasBothGroups =
+                (group1 == "public" && group2 == "whatever") || (group2 == "public" && group1 == "whatever");
+            Assert.IsTrue(hasBothGroups, "groups not found in response token");
         }
 
         static void GetExecutingUser(Mock<IPrincipal> principal)
