@@ -13,6 +13,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
+using System.Web;
 using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -167,17 +168,14 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             private static IResponseWriter CreateEncryptedResponse(string payload)
             {
-                var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 var rs = new StringResponseWriterFactory();
                 if (payload.Length > 0)
                 {
                     var encryptedPayload = DpapiWrapper.Encrypt(payload);
-                    return rs.New(encryptedPayload, formatter.ContentType);
+                    encryptedPayload = "{\"token\": \""+ encryptedPayload +"\"}";
+                    return rs.New(encryptedPayload, "application/json");
                 }
-                else
-                {
-                    return rs.New("", formatter.ContentType);
-                }
+                throw new HttpException(500, "internal server error");
             }
         }
     }
