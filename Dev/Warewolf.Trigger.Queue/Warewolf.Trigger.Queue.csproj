@@ -15,6 +15,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj" />
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj" />
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj" />
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj" />
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     <ProjectReference Include="..\Warewolf.UI\Warewolf.UI.csproj" />
