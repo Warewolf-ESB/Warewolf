@@ -170,6 +170,7 @@ namespace Warewolf.Auditing.Tests
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
         [ExpectedException(typeof(Exception))]
+        [DoNotParallelize]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
             var auditQueryable = GetAuditQueryable();
