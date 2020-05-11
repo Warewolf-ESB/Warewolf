@@ -6,6 +6,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Warewolf.Studio.Models.Tests
 {
     [TestClass]

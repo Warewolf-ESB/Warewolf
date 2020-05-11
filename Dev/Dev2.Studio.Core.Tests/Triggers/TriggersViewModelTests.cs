@@ -147,6 +147,7 @@ namespace Dev2.Core.Tests.Triggers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
+        [DoNotParallelize]
         public void TriggersViewModel_NewQueueEventCommand()
         {
 
@@ -283,9 +284,9 @@ namespace Dev2.Core.Tests.Triggers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(TriggersViewModel))]
+        [DoNotParallelize]
         public void TriggersViewModel_DoDeactivate_ShowMessage_True_Expect_True()
         {
-
             var triggersViewModel = CreateTriggerViewModel();
             var value = triggersViewModel.DoDeactivate(false);
             Assert.IsTrue(value);
