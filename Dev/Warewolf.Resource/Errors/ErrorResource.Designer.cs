@@ -2786,7 +2786,16 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("RabbitSourceHasBeenDeleted", resourceCulture);
             }
         }
-        
+        /// <summary>
+        ///   Looks up a localized string similar to Failure: Source has been deleted..
+        /// </summary>
+        public static string RedisSourceHasBeenRemoved
+        {
+            get
+            {
+                return ResourceManager.GetString("RedisSourceHasBeenRemoved", resourceCulture);
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to Please ensure that you have entered an integer or decimal number for End from {0} to {1}..
         /// </summary>
