@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Moq;
 using Newtonsoft.Json.Linq;
 using Serilog;
@@ -53,12 +54,6 @@ namespace Warewolf.Auditing.Tests
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             return new AuditQueryableElastic(hostName,dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "WarewolfUser", "$3@R(h");
-        }
-
-        private IAuditQueryable GetAuditQueryable()
-        {
-
-            return new AuditQueryableElastic();
         }
 
         private void LoadLogsintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, string eventLevel)
@@ -170,14 +165,13 @@ namespace Warewolf.Auditing.Tests
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
         [ExpectedException(typeof(Exception))]
-        [DoNotParallelize]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
-            var auditQueryable = GetAuditQueryable();
+            var auditQueryable = new AuditQueryableElastic("http://invalid-elastic-source", string.Empty, string.Empty, AuthenticationType.Anonymous, string.Empty, string.Empty);
             var query = new Dictionary<string, StringBuilder>();
 
-            var results = auditQueryable.QueryLogData(query);
-            Assert.IsNotNull(results);
+            _ = auditQueryable.QueryLogData(query);
+            Assert.Fail("Invalid Elastic source successfully connected.");
         }
 
         [TestMethod]

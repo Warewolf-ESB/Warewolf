@@ -23,8 +23,8 @@ namespace Warewolf.Auditing.Drivers
 {
     public class AuditQueryableElastic : AuditQueryable, IDisposable
     {
-        private string _query;
-        private readonly ElasticsearchSource _elasticsearchSource;
+        string _query;
+        readonly ElasticsearchSource _elasticsearchSource;
 
         public override string Query
         {
@@ -32,10 +32,6 @@ namespace Warewolf.Auditing.Drivers
             set => _query = value;
         }
 
-        public AuditQueryableElastic()
-        {
-            _elasticsearchSource = new ElasticsearchSource();
-        }
         public AuditQueryableElastic(string hostname,string port, string searchIndex, AuthenticationType authenticationType, string username,string password)
         {
             _elasticsearchSource = new ElasticsearchSource();
