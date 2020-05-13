@@ -1363,20 +1363,6 @@ namespace Dev2.Activities.Specs.Composition
             _scenarioContext.TryGetValue(keyName, out value);
         }
 
-        [Then(@"the server memory difference is less than (.*) mb")]
-        public void ThenTheServerMemoryDifferenceIsLessThanMb(int maxDiff)
-        {
-            var serverMemoryBefore = Get<string>("BeforeServerMemory");
-            var serverMemoryAfter = GetServerMemory();
-
-            var serverMemAfter = Convert.ToDecimal(serverMemoryAfter) / 1024 / 1024;
-            var serverMemBefore = Convert.ToDecimal(serverMemoryBefore) / 1024 / 1024;
-
-            var diffInMem = serverMemAfter - serverMemBefore;
-
-            Assert.IsTrue(diffInMem < maxDiff, "Warewolf Server memory usage: " + diffInMem.ToString(CultureInfo.InvariantCulture));
-        }
-
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" has a debug Server Name of """"(.*)""""")]
         public void ThenTheInWorkflowHasADebugServerNameOf(string toolName, string workflowName, string remoteName)
         {
