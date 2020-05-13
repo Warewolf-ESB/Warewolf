@@ -150,8 +150,8 @@ namespace Dev2.Core.Tests
 
         #region Constructor
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
+        [DoNotParallelize]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedLoadsWorkspaceItems()
         {
             var workspaceID = Guid.NewGuid();
