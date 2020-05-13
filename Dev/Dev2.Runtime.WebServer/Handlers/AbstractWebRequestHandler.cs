@@ -46,7 +46,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Auditing;
 using Warewolf.Data;
-using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -330,6 +329,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     {
                         message = Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException;
                     }
+
                     var errorMessage = string.Format(message, _dataObject.ExecutingUser?.Identity.Name, _dataObject.ServiceName);
                     _dataObject.Environment.AddError(errorMessage);
                     _dataObject.ExecutionException = new Exception(errorMessage);
@@ -359,27 +359,37 @@ namespace Dev2.Runtime.WebServer.Handlers
                         return false;
                     }
 
-                    var decryptedPayload = DpapiWrapper.Decrypt(token);
-                    var groupsAllowed = authorizationService.GetResourcePermissionsList(resource.ResourceID);
-                    var data = (JObject) JsonConvert.DeserializeObject(decryptedPayload);
-                    foreach (var group in groupsAllowed)
-                    {
-                        var result = data["UserGroups"]
-                            .Values<JObject>()
-                            .FirstOrDefault(m => m["Name"].Value<string>().ToLower() == @group.WindowsGroup.ToLower());
-                        if (result != null)
-                        {
-                            return true;
-                        }
-                    }
-
-                    return false;
+                    return ValidateToken(token, authorizationService, resource);
                 }
                 catch
                 {
                     return false;
                 }
             }
+
+            private static bool ValidateToken(string token, IAuthorizationService authorizationService, IWarewolfResource resource)
+            {
+                var payload = JwtManager.ValidateToken(token);
+
+                if (string.IsNullOrEmpty(payload))
+                    return false;
+
+                var groupsAllowed = authorizationService.GetResourcePermissionsList(resource.ResourceID);
+                var data = (JObject) JsonConvert.DeserializeObject(payload);
+                foreach (var group in groupsAllowed)
+                {
+                    var result = data["UserGroups"]
+                        .Values<JObject>()
+                        .FirstOrDefault(m => m["Name"].Value<string>().ToLower() == @group.WindowsGroup.ToLower());
+                    if (result != null)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
             private Guid DoExecution(WebRequestTO webRequest, string serviceName, Guid workspaceGuid, IDSFDataObject dataObject, IPrincipal userPrinciple)
             {
                 _esbExecuteRequest = CreateEsbExecuteRequestFromWebRequest(webRequest, serviceName);

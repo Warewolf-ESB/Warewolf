@@ -27,7 +27,6 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 using Warewolf;
-using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -116,7 +115,6 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
 
-
         class Executor : ExecutorBase
         {
             public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
@@ -171,12 +169,15 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var rs = new StringResponseWriterFactory();
                 if (payload.Length > 0)
                 {
-                    var encryptedPayload = DpapiWrapper.Encrypt(payload);
-                    encryptedPayload = "{\"token\": \""+ encryptedPayload +"\"}";
+                    var encryptedPayload = JwtManager.GenerateToken(payload);
+                    encryptedPayload = "{\"token\": \"" + encryptedPayload + "\"}";
                     return rs.New(encryptedPayload, "application/json");
                 }
+
                 throw new HttpException(500, "internal server error");
             }
+
+
         }
     }
 }

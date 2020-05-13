@@ -28,7 +28,6 @@ using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Data;
-using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Tests.Runtime.WebServer
@@ -93,7 +92,6 @@ namespace Dev2.Tests.Runtime.WebServer
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             dataObject.Setup(o => o.Environment).Returns(outerEnv);
-            //dataObject.Setup(o => o.Environment.HasErrors()).Returns(false);
             dataObject.Setup(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.Setup(p => p.ExecutingUser).Returns(principal.Object);
 
@@ -147,7 +145,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var bodyJson = JsonConvert.DeserializeObject<JObject>(responseText);
             Assert.IsNotNull(bodyJson);
 
-            var text = DpapiWrapper.Decrypt(bodyJson["token"].ToString());
+            var text = JwtManager.ValidateToken(bodyJson["token"].ToString());
             Assert.IsTrue(!string.IsNullOrWhiteSpace(responseText), "expected valid token that can be decrypted");
             var json = JsonConvert.DeserializeObject<JObject>(text);
 

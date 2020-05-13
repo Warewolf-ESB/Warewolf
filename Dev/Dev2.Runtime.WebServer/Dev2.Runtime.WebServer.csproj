@@ -58,7 +58,7 @@
     <Reference Include="DEV2.MultiPartFormPasser">
       <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed"/>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Configuration" />
@@ -99,6 +99,7 @@
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
     <Compile Include="Handlers\IRequestHandler.cs" />
     <Compile Include="Handlers\WebPostRequestHandler.cs" />
+    <Compile Include="JwtManager.cs" />
     <Compile Include="Responses\ContentTypes.cs" />
     <Compile Include="Responses\ExceptionResponseWriter.cs" />
     <Compile Include="Responses\FileResponseWriter.cs" />
@@ -185,10 +186,6 @@
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
-      <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
-      <Name>Warewolf.Security</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
       <Project>{61a15557-1d18-4c69-88eb-31bf49b7fb50}</Project>
       <Name>Warewolf.Storage.Interfaces</Name>
@@ -246,6 +243,9 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt">
+      <Version>5.1.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

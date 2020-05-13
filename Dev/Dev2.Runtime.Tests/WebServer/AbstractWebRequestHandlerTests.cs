@@ -45,7 +45,6 @@ using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Warewolf.Data;
-using Warewolf.Security.Encryption;
 using Warewolf.Services;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -1979,7 +1978,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
             var handlerMock = new AbstractWebRequestHandlerMock(resourceCatalog.Object, wRepo.Object, authorizationService.Object, doFactory);
 
-            var token = DpapiWrapper.Encrypt("{'UserGroups': [{'Name': 'public' }]}");
+            var token = JwtManager.GenerateToken("{'UserGroups': [{'Name': 'public' }]}");
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Authorization")).Returns("Bearer " + token);
             var webRequestTo = new WebRequestTO()
@@ -2068,7 +2067,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
             var handlerMock = new AbstractWebRequestHandlerMock(resourceCatalog.Object, wRepo.Object, authorizationService.Object, doFactory);
 
-            var token = DpapiWrapper.Encrypt("{'UserGroups': [{'Name': 'public' }]}");
+            var token = JwtManager.GenerateToken("{'UserGroups': [{'Name': 'public' }]}");
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Authorization")).Returns(token);
             var webRequestTo = new WebRequestTO()
@@ -2157,7 +2156,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
             var handlerMock = new AbstractWebRequestHandlerMock(resourceCatalog.Object, wRepo.Object, authorizationService.Object, doFactory);
 
-            var token = DpapiWrapper.Encrypt("{'UserGroups': [{'Name': 'auth' }]}");
+            var token = JwtManager.GenerateToken("{'UserGroups': [{'Name': 'auth' }]}");
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Authorization")).Returns(token);
             var webRequestTo = new WebRequestTO()
