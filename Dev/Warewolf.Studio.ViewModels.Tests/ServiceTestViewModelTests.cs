@@ -43,6 +43,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Warewolf.Studio.ViewModels.Tests
 {
 	[TestClass]
+    [DoNotParallelize("Due to the type of dependency injection used in this class. Remove CustomContainer.Register lines and retry.")]
 	public partial class ServiceTestViewModelTests
 	{
 
