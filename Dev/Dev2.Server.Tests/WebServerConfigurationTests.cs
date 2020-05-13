@@ -31,6 +31,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServerConfiguration))]
+        [DoNotParallelize]
         public void WebServerConfigurationTests_Execute_IsWebServerEnabled_False()
         {
             //----------------Arrange--------------------
