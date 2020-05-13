@@ -1363,48 +1363,6 @@ namespace Dev2.Activities.Specs.Composition
             _scenarioContext.TryGetValue(keyName, out value);
         }
 
-
-        public string GetServerMemory()
-        {
-            var stringBuilder = new StringBuilder();
-            var winQuery = new ObjectQuery("SELECT * FROM Win32_Process Where Name LIKE '%Warewolf Server.exe%'");
-            var searcher = new ManagementObjectSearcher(winQuery);
-            foreach (var o in searcher.Get())
-            {
-                var item = (ManagementObject)o;
-                var memory = Convert.ToString(item["WorkingSetSize"]);
-                stringBuilder.Append(memory);
-            }
-            return stringBuilder.ToString();
-        }
-
-
-        public double GetServerCPUUsage()
-        {
-            var processorTimeCounter = new PerformanceCounter(
-                    "Process",
-                    "% Processor Time",
-                    "Warewolf Server", true);
-            processorTimeCounter.NextValue();
-            Thread.Sleep(1000);
-            return processorTimeCounter.NextValue() / Environment.ProcessorCount;
-        }
-
-        [Then(@"the server CPU usage is less than (.*)%")]
-        public void ThenTheServerCPUUsageIsLessThan(int maxCpu)
-        {
-            var serverCpuUsage = GetServerCPUUsage();
-
-            Assert.IsTrue(serverCpuUsage < maxCpu, "Warewolf Server CPU usage: " + serverCpuUsage.ToString(CultureInfo.InvariantCulture));
-        }
-
-        [Given(@"I get the server memory")]
-        public void GivenIGetTheServerMemory()
-        {
-            var serverMemory = GetServerMemory();
-            Add("BeforeServerMemory", serverMemory);
-        }
-
         [Then(@"the server memory difference is less than (.*) mb")]
         public void ThenTheServerMemoryDifferenceIsLessThanMb(int maxDiff)
         {
