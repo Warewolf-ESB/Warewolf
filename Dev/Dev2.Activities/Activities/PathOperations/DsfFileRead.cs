@@ -127,6 +127,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the is result base64.
+        /// </summary>
+        [Inputs("Is Result Base64")]
+        [FindMissing]
+        public string IsResultBase64
+        {
+            get;
+            set;
+        }
+
         #endregion Properties
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)

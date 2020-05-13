@@ -35,6 +35,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding InputPathLabel, Mode=OneWay}" />
@@ -84,5 +85,15 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Result As" Margin="{StaticResource ActivityBorderTop}"/>
+        <CheckBox Grid.Column="1"
+                  Grid.Row="2"
+                  IsChecked="{Binding ModelItem.IsResultBase64, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  Content="Base64" 
+                  Margin="{StaticResource ActivityBorderTop}"
+                  ToolTip="{x:Static languages:Tooltips.ReadFileToolTipIsResultBase64}"
+                  >
+        </CheckBox>
     </Grid>
 </core:ActivityDesignerTemplate>
