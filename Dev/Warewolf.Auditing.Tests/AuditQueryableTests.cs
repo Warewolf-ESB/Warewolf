@@ -32,7 +32,7 @@ namespace Warewolf.Auditing.Tests
         [TestCategory(nameof(AuditQueryable))]
         public void AuditQueryable_QueryTriggerData()
         {
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var query = new Dictionary<string, StringBuilder>();
             var results = auditQueryable.QueryTriggerData(query).ToList();
             Assert.IsNotNull(results);
@@ -52,23 +52,11 @@ namespace Warewolf.Auditing.Tests
                 {"EventLevel", "Debug".ToStringBuilder()}
             };
 
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
 
             Assert.IsTrue(auditQueryable is AuditQueryableSqlite);
-        }
-
-        private IAuditQueryable GetAuditQueryable(string sink,string connectionString)
-        {
-            if (sink == "AuditingSettingsData")
-            {
-                return new AuditQueryableElastic();
-            }
-            else
-            {
-                return new AuditQueryableSqlite(connectionString);
-            }
         }
     }
 }
