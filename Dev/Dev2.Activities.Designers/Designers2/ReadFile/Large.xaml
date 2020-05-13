@@ -17,8 +17,8 @@
                                MinWidth="315"
                                Width="315"
                                MaxWidth="600"
-                               MinHeight="255"
-                               Height="255"
+                               MinHeight="295"
+                               Height="295"
                                MaxHeight="255"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:ReadFileDesignerViewModel}">
@@ -30,7 +30,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
-    
+
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -42,6 +42,7 @@
 
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -166,7 +167,16 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <errors:OnError Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" />
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Result As" Margin="{StaticResource ActivityBorderTop}"/>
+        <CheckBox Grid.Column="1" 
+                  Grid.Row="5"
+                  IsChecked="{Binding ModelItem.IsResultBase64, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Content="Base64" 
+                  Margin="{StaticResource ActivityBorderTop}"
+                  ToolTip="{x:Static languages:Tooltips.ReadFileToolTipIsResultBase64}">
+        </CheckBox>
+
+        <errors:OnError Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" />
 
     </Grid>
 </core:ActivityDesignerTemplate>

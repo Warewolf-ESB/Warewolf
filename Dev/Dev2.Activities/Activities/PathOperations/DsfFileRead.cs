@@ -30,7 +30,7 @@ using Warewolf.Storage;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     [ToolDescriptorInfo("FileFolder-Read", "Read File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_File")]
-    public class DsfFileRead : DsfAbstractFileActivity, IPathInput,IEquatable<DsfFileRead>
+    public class DsfFileRead : DsfAbstractFileActivity, IPathInput, IEquatable<DsfFileRead>
     {
 
         public DsfFileRead()
@@ -127,6 +127,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the is result base64.
+        /// </summary>
+        [Inputs("Is Result Base64")]
+        [FindMissing]
+        public string IsResultBase64
+        {
+            get;
+            set;
+        }
+
         #endregion Properties
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
@@ -187,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfFileRead) obj);
+            return Equals((DsfFileRead)obj);
         }
 
         public override int GetHashCode()
