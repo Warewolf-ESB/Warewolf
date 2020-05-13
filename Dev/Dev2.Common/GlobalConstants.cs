@@ -550,7 +550,7 @@ where pn.nspname = 'public';
         public static readonly string WarewolfStudio = "Warewolf Studio";
         public static readonly string WarewolfServices = "Warewolf Services";
         public static readonly string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
-
+        public static readonly string JWTSecretKey = "runmni/RkNRGqTSuOlzah4Z+dDExetSU7qvjxz02KhNr55IJywu4mUZSYQZDKyxz1o4rM8yuINeiRq4FHP6m1A==";
         public static void HandleEmptyParameters(object paramaTer, string name)
         {
             try
