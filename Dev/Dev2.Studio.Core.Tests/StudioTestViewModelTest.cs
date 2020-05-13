@@ -166,6 +166,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("StudioTestViewModel_DoDeactivate")]
+        [DoNotParallelize]
         public void StudioTestViewModel_DoDeactivate_CanSave_ExpectedFalse()
         {
             //------------Setup for test--------------------------

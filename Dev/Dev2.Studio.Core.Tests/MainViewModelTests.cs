@@ -3232,6 +3232,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
         [Owner("Pieter Terblanche")]
+        [DoNotParallelize]
         public void MainViewModel_OnStudioClosing_CallsWorkflowOnClosing()
         {
             var viewModel = new Mock<IShellViewModel>();
