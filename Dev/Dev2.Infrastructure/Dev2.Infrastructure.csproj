@@ -158,7 +158,9 @@
     <Compile Include="Services\Security\LoggingSettingsTO.cs" />
     <Compile Include="Services\Security\IAuthorizationService.cs" />
     <Compile Include="Services\Security\ISecurityService.cs" />
+    <Compile Include="Services\Security\SecurityEncryption.cs" />
     <Compile Include="Services\Security\SecurityServiceBase.cs" />
+    <Compile Include="Services\Security\SecuritySettings.cs" />
     <Compile Include="Services\Security\SecuritySettingsTO.cs" />
     <Compile Include="Services\Security\WebServerRequestType.cs" />
     <Compile Include="Services\Security\WindowsGroupPermission.cs" />
