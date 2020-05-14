@@ -30,7 +30,7 @@ namespace Dev2.Services.Security
             WindowsGroupPermission.CreateGuests()
         };
 
-        public static INamedGuid DefaultOverrideResouce => new NamedGuid();
+        public static INamedGuid DefaultOverrideResource => new NamedGuid();
 
         public SecuritySettingsTO SecuritySettingsData => ReadSettingsFile();
 
@@ -39,7 +39,7 @@ namespace Dev2.Services.Security
             var serverSecuritySettingsFile = ServerSecuritySettingsFile;
             if (!File.Exists(serverSecuritySettingsFile))
             {
-                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResouce) {CacheTimeout = _cacheTimeout};
+                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource) {CacheTimeout = _cacheTimeout};
             }
 
             string encryptedData;
