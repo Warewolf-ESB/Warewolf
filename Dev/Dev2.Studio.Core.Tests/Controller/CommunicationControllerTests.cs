@@ -22,6 +22,7 @@ namespace Dev2.Core.Tests.Controller
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void ExecuteCommand_GivenReturnAuthorizationError_ShouldShowCorrectPopup()
         {
             //---------------Set up test pack-------------------
@@ -49,6 +50,7 @@ namespace Dev2.Core.Tests.Controller
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void ExecuteCommand_GivenReturnExploreAuthorizationError_ShouldShowCorrectPopup()
         {
             //---------------Set up test pack-------------------
