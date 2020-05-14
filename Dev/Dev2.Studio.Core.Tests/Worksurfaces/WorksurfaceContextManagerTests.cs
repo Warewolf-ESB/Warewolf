@@ -98,6 +98,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void EditResource_GivenIsOAuthSource_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
