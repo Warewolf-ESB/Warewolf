@@ -105,14 +105,6 @@ namespace Dev2.Services.Security
             Dev2Logger.Debug(decryptData, GlobalConstants.WarewolfDebug);
 
             var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
-            if (currentSecuritySettingsTo.WindowsGroupPermissions.Any(a => a.ResourceID != Guid.Empty))
-            {
-                foreach (var perm in currentSecuritySettingsTo.WindowsGroupPermissions.Where(a => a.ResourceID != Guid.Empty))
-                {
-                    //TODO: Getresourcename
-                    //perm.ResourceName = Catalog.GetResourcePath(GlobalConstants.ServerWorkspaceID, perm.ResourceID);
-                }
-            }
 
             var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
             if (permissionGroup.Count > 0)
