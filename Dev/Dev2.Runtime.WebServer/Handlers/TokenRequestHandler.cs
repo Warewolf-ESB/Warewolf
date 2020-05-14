@@ -93,10 +93,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static void LoadSecuritySettings()
         {
-            var reader = new SecurityRead();
-            var result = reader.Execute(null, null);
-            var serializer = new Dev2JsonSerializer();
-            var securitySettings = serializer.Deserialize<SecuritySettingsTO>(result);
+            var settings = new SecuritySettings();
+            var securitySettings = settings.SecuritySettingsData;
             OverrideResource = securitySettings.AuthenticationOverrideWorkflow;
             WindowsPermissions = securitySettings.WindowsGroupPermissions;
         }
