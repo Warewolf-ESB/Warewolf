@@ -3861,6 +3861,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_IsDownloading")]
         [Owner("Tshepo Ntlhokoa")]
+        [DoNotParallelize]
         public void MainViewModel_IsDownloading_IsBusyDownloadingInstallerReturnsFalse_False()
         {
             //------------Setup for test--------------------------
