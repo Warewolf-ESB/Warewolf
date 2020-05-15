@@ -401,7 +401,6 @@ Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only
 	  | [[rec().m]] | aasdasd       |
 	  | [[rec().n]] | aasdd222      |
 	  | [[rec().o]] | 22323asda     |
-	  And I get the server memory
 	  When "WFForEachInsideforEachLargeTenFifty" is executed
 	  Then the workflow execution has "NO" error
 	  And the "ForEachTest1" in WorkFlow "WFForEachInsideforEachLargeTenFifty" debug inputs as 
