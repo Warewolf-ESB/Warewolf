@@ -59,7 +59,7 @@ namespace Dev2.Services.Security
             catch (Exception e)
             {
                 Dev2Logger.Error("SecurityRead", e, GlobalConstants.WarewolfError);
-                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResouce) {CacheTimeout = _cacheTimeout};
+                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource) {CacheTimeout = _cacheTimeout};
             }
         }
 
