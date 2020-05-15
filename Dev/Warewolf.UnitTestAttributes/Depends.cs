@@ -185,7 +185,7 @@ namespace Warewolf.UnitTestAttributes
 
         public void Dispose()
         {
-            //Ashley: Stop containers when they are not in use as an optimization.
+            //TODO: Stop containers when they are not in use as an optimization.
         }
 
         void Stop()
