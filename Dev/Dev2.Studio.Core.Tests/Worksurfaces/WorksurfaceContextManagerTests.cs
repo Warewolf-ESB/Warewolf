@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -98,6 +98,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void EditResource_GivenIsOAuthSource_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
@@ -555,6 +556,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenPostgreSQLResourceType_ShouldEditODBC()
         {
             //---------------Set up test pack-------------------
@@ -870,8 +872,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-
-
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenServerType_ShouldEditServer()
         {
             //---------------Set up test pack-------------------

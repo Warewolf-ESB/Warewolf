@@ -63,6 +63,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
 
         [TestMethod]
+        [DoNotParallelize]
         public void GetIntellisenseResultsWhereNothingPassedExpectListOfDrives()
         {
             //------------Setup for test--------------------------

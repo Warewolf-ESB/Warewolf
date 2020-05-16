@@ -401,11 +401,8 @@ Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only
 	  | [[rec().m]] | aasdasd       |
 	  | [[rec().n]] | aasdd222      |
 	  | [[rec().o]] | 22323asda     |
-	  And I get the server memory
 	  When "WFForEachInsideforEachLargeTenFifty" is executed
 	  Then the workflow execution has "NO" error
-	  And the server CPU usage is less than 15%
-	  And the server memory difference is less than 300 mb
 	  And the "ForEachTest1" in WorkFlow "WFForEachInsideforEachLargeTenFifty" debug inputs as 
 	  |                 | Number |
 	  | No. of Executes | 10      |

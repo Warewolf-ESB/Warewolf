@@ -202,6 +202,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Utilities))]
+        [DoNotParallelize]
         public void Utilities_PerformActionInsideImpersonatedContext_GivenAnonymousPrincipal_ShouldTryServerUser()
         {
             var executed = false;
@@ -233,6 +234,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Utilities))]
+        [DoNotParallelize]
         public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgain()
         {
             var executed = false;

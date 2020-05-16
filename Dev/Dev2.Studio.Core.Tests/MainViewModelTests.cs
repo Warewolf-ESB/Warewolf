@@ -150,8 +150,8 @@ namespace Dev2.Core.Tests
 
         #region Constructor
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
+        [DoNotParallelize]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedLoadsWorkspaceItems()
         {
             var workspaceID = Guid.NewGuid();
@@ -209,8 +209,8 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(expected);
         }
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
+        [DoNotParallelize]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithDifferentEnvID()
         {
             var workspaceID = Guid.NewGuid();
@@ -764,6 +764,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MainViewModel_ShowStartPageCommand")]
+        [DoNotParallelize]
         public void MainViewModel_ShowStartPageCommand_ShowStartPageActive()
         {
             CreateFullExportsAndVm();
@@ -3232,6 +3233,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
         [Owner("Pieter Terblanche")]
+        [DoNotParallelize]
         public void MainViewModel_OnStudioClosing_CallsWorkflowOnClosing()
         {
             var viewModel = new Mock<IShellViewModel>();
@@ -3859,6 +3861,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_IsDownloading")]
         [Owner("Tshepo Ntlhokoa")]
+        [DoNotParallelize]
         public void MainViewModel_IsDownloading_IsBusyDownloadingInstallerReturnsFalse_False()
         {
             //------------Setup for test--------------------------

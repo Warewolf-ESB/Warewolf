@@ -14,8 +14,8 @@ namespace Warewolf.UnitTestAttributes
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
-            "t004124.premier.local",
             "RSAKLFSVRHST1.premier.local",
+            "t004124.premier.local",
             "rsaklfwynand",
             "PIETER.premier.local",
             "localhost"
@@ -102,7 +102,7 @@ namespace Warewolf.UnitTestAttributes
                         }
                         catch (WebException)
                         {
-                            retryCount++;
+                            //Retry another Rig Ops host
                         }
                         if (result == "" || result.Contains("\"IP\": \"\""))
                         {
@@ -185,7 +185,7 @@ namespace Warewolf.UnitTestAttributes
 
         public void Dispose()
         {
-            //Ashley: Stop containers when they are not in use as an optimization.
+            //TODO: Stop containers when they are not in use as an optimization.
         }
 
         void Stop()
