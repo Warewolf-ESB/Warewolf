@@ -126,7 +126,11 @@
     <Compile Include="DataListItem.cs" />
     <Compile Include="DataListModel.cs" />
     <Compile Include="DataListTO.cs" />
+    <Compile Include="Decisions\DecisionExpression.cs" />
+    <Compile Include="Decisions\DynamicDecisionExecutor.cs" />
+    <Compile Include="Decisions\OperandType.cs" />
     <Compile Include="Decisions\Operations\DecisionUtils.cs" />
+    <Compile Include="Decisions\Operations\DynamicExpression.cs" />
     <Compile Include="Decisions\Operations\IsNotNull.cs" />
     <Compile Include="Decisions\Operations\IsNull.cs" />
     <Compile Include="Decisions\Operations\NotBetween.cs" />

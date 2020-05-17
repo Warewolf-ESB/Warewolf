@@ -90,6 +90,7 @@
     <Compile Include="Builders\DataListIntellisenseBuilderTests.cs" />
     <Compile Include="DataListFactoryTests.cs" />
     <Compile Include="DecisionsTests\DecisionDisplayHelperTests.cs" />
+    <Compile Include="DecisionsTests\DynamicDecision\DynamicDecisionTests.cs" />
     <Compile Include="DecisionsTests\IsAlphanumericTests.cs" />
     <Compile Include="DecisionsTests\Operations\IsBase64Tests.cs" />
     <Compile Include="DecisionsTests\Operations\IsBetweenTests.cs" />
@@ -303,6 +304,7 @@
       <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

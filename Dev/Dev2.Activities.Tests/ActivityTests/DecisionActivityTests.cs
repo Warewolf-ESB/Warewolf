@@ -7,6 +7,10 @@ using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Interfaces;
+using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -120,5 +124,135 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
             }
         }
+
+    [TestMethod]
+    [Owner("Hagashen Naidu")]
+    [TestCategory("DsfDecision_Execute")]
+    public void DsfDecision_Execute_WithDynamicExpression_Should_ReturnTrue()
+    {
+      //---------------Set up test pack-------------------
+      var serializedVersion = @"{
+                                 ""Expression"": {
+                                 ""Col1"": ""[[val10]]"",
+                                 ""Col2"": ""10"",
+                                 ""EvaluationFn"": ""IsEqual""
+                                  },
+                                  ""LogicalOperandType"": ""Or"",
+                                  ""Chain"": {
+                                    ""Expression"": {
+                                      ""Col1"": ""[[val12]]"",
+                                      ""Col2"": ""13"",
+                                      ""EvaluationFn"": ""IsEqual""
+                                    },
+                                    ""LogicalOperandType"": ""And"",
+                                    ""Chain"": {
+                                      ""Expression"": {
+                                        ""Col1"": ""[[val12]]"",
+                                        ""Col2"": ""[[val12]]"",
+                                        ""EvaluationFn"": ""IsEqual""
+                                      },
+                                      ""LogicalOperandType"": ""And"",
+                                      ""Chain"": {
+                                        ""Expression"": {
+                                          ""Col1"": ""[[val100]]"",
+                                          ""Col2"": ""[[val100]]"",
+                                          ""EvaluationFn"": ""IsEqual""
+                                        }
+                                      }
+                                    }
+                                  }
+                                }";
+      var conditions = new Dev2DecisionStack();
+      conditions.TheStack = new List<Dev2Decision>();
+      conditions.AddModelItem(new Dev2Decision
+      {
+        Col1 = serializedVersion,
+        EvaluationFn = Data.Decisions.Operations.enDecisionType.Dynamic,
+      });
+      var dataObjectMock = new Mock<IDSFDataObject>();
+      var executionEnvironment = new ExecutionEnvironment();
+      executionEnvironment.Assign("[[val10]]","10",0);
+      executionEnvironment.Assign("[[val12]]","12",0);
+      executionEnvironment.Assign("[[val100]]","100",0);
+      dataObjectMock.Setup(dataObject => dataObject.Environment).Returns(executionEnvironment);
+
+      var trueComment = new DsfCommentActivity {Text = "True Returned"};
+      var falseComment = new DsfCommentActivity {Text = "False Returned"};
+      //------------Setup for test--------------------------
+      var act = new DsfDecision { Conditions = conditions, And = true,TrueArm = new []{trueComment},FalseArm = new []{falseComment}};
+      //------------Execute Test---------------------------
+      var result = act.Execute(dataObjectMock.Object, 0);
+
+      //------------Assert Results-------------------------
+      Assert.IsNotNull(result);
+      var resultActivity = result as DsfCommentActivity;
+      Assert.IsNotNull(resultActivity);
+      Assert.AreEqual("True Returned", resultActivity.Text);
     }
+
+    [TestMethod]
+    [Owner("Hagashen Naidu")]
+    [TestCategory("DsfDecision_Execute")]
+    public void DsfDecision_Execute_WithDynamicExpression_Should_ReturnFalse()
+    {
+      //---------------Set up test pack-------------------
+      var serializedVersion = @"{
+                                 ""Expression"": {
+                                 ""Col1"": ""[[val10]]"",
+                                 ""Col2"": ""10"",
+                                 ""EvaluationFn"": ""IsEqual""
+                                  },
+                                  ""LogicalOperandType"": ""Or"",
+                                  ""Chain"": {
+                                    ""Expression"": {
+                                      ""Col1"": ""[[val12]]"",
+                                      ""Col2"": ""13"",
+                                      ""EvaluationFn"": ""IsEqual""
+                                    },
+                                    ""LogicalOperandType"": ""And"",
+                                    ""Chain"": {
+                                      ""Expression"": {
+                                        ""Col1"": ""[[val12]]"",
+                                        ""Col2"": ""[[val12]]"",
+                                        ""EvaluationFn"": ""IsEqual""
+                                      },
+                                      ""LogicalOperandType"": ""And"",
+                                      ""Chain"": {
+                                        ""Expression"": {
+                                          ""Col1"": ""[[val100]]"",
+                                          ""Col2"": ""[[val10]]"",
+                                          ""EvaluationFn"": ""IsEqual""
+                                        }
+                                      }
+                                    }
+                                  }
+                                }";
+      var conditions = new Dev2DecisionStack();
+      conditions.TheStack = new List<Dev2Decision>();
+      conditions.AddModelItem(new Dev2Decision
+      {
+        Col1 = serializedVersion,
+        EvaluationFn = Data.Decisions.Operations.enDecisionType.Dynamic,
+      });
+      var dataObjectMock = new Mock<IDSFDataObject>();
+      var executionEnvironment = new ExecutionEnvironment();
+      executionEnvironment.Assign("[[val10]]", "10", 0);
+      executionEnvironment.Assign("[[val12]]", "12", 0);
+      executionEnvironment.Assign("[[val100]]", "100", 0);
+      dataObjectMock.Setup(dataObject => dataObject.Environment).Returns(executionEnvironment);
+
+      var trueComment = new DsfCommentActivity { Text = "True Returned" };
+      var falseComment = new DsfCommentActivity { Text = "False Returned" };
+      //------------Setup for test--------------------------
+      var act = new DsfDecision { Conditions = conditions, And = true, TrueArm = new[] { trueComment }, FalseArm = new[] { falseComment } };
+      //------------Execute Test---------------------------
+      var result = act.Execute(dataObjectMock.Object, 0);
+
+      //------------Assert Results-------------------------
+      Assert.IsNotNull(result);
+      var resultActivity = result as DsfCommentActivity;
+      Assert.IsNotNull(resultActivity);
+      Assert.AreEqual("False Returned", resultActivity.Text);
+    }
+  }
 }

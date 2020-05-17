@@ -135,6 +135,8 @@ namespace Dev2.Data.Decisions.Operations
         [DecisionTypeDisplayValue("Is Hex")] IsHex,
         [DecisionTypeDisplayValue("Not Hex")] IsNotHex,
         [DecisionTypeDisplayValue("Is Base64")] IsBase64,
-        [DecisionTypeDisplayValue("Not Base64")] IsNotBase64
+        [DecisionTypeDisplayValue("Not Base64")] IsNotBase64,
+        [DecisionTypeDisplayValue("Dynamic")] Dynamic
+        
     }
 }
