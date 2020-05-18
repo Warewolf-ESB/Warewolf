@@ -22,16 +22,19 @@ namespace Dev2.Services.Security
         {
             WindowsGroupPermissions = new List<WindowsGroupPermission>();
             AuthenticationOverrideWorkflow = new NamedGuid();
+            SecretKey = "";
         }
 
-        public SecuritySettingsTO(IEnumerable<WindowsGroupPermission> permissions, INamedGuid authenticationOverrideWorkflow)
+        public SecuritySettingsTO(IEnumerable<WindowsGroupPermission> permissions, INamedGuid authenticationOverrideWorkflow, string secretKey)
             : this()
         {
             if (permissions != null)
             {
                 WindowsGroupPermissions.AddRange(permissions);
             }
+
             AuthenticationOverrideWorkflow = authenticationOverrideWorkflow;
+            SecretKey = secretKey;
         }
 
         public SecuritySettingsTO(IEnumerable<WindowsGroupPermission> permissions)
@@ -43,6 +46,7 @@ namespace Dev2.Services.Security
             }
         }
 
+        public string SecretKey { get; set; }
         public INamedGuid AuthenticationOverrideWorkflow { get; set; }
         public List<WindowsGroupPermission> WindowsGroupPermissions { get; private set; }
         public TimeSpan CacheTimeout { get; set; }

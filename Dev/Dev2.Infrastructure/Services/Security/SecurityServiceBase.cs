@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,9 +25,16 @@ namespace Dev2.Services.Security
 
         protected List<WindowsGroupPermission> _permissions = new List<WindowsGroupPermission>();
         protected INamedGuid _overrideResource = new NamedGuid();
+        private string _secretKey = "";
         public event EventHandler PermissionsChanged;
 
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
+
+        public string SecretKey
+        {
+            get { return _secretKey; }
+            set { _secretKey = value; }
+        }
 
         public INamedGuid OverrideResource
         {
@@ -82,7 +89,7 @@ namespace Dev2.Services.Security
 
                     // This will trigger a FileSystemWatcher file changed event
                     // which in turn will cause the permissions to be re-read.
-                    WritePermissions(_permissions, _overrideResource);
+                    WritePermissions(_permissions, _overrideResource,_secretKey);
                 }
             }
             finally
@@ -146,7 +153,7 @@ namespace Dev2.Services.Security
         }
 
         protected abstract List<WindowsGroupPermission> ReadPermissions();
-        protected abstract void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource);
+        protected abstract void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource,string secretKey);
         protected abstract void LogStart([CallerMemberName] string methodName = null);
         protected abstract void LogEnd([CallerMemberName] string methodName = null);
     }

@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -184,11 +185,17 @@ namespace Dev2.Core.Tests.Settings
                     WindowsGroup = "Windows Group 1", View = false, Execute = true, Contribute = false
                 }
             };
-            var securitySettingsTO = new SecuritySettingsTO(permissions, overrideResource);
+            var secretKey = GenerateSecretKey();
+            var securitySettingsTO = new SecuritySettingsTO(permissions, overrideResource,secretKey);
 
             Verify_Constructor_InitializesProperties(securitySettingsTO);
         }
 
+        string GenerateSecretKey()
+        {
+            var hmac = new HMACSHA256();
+            return Convert.ToBase64String(hmac.Key);
+        }
         static void Verify_Constructor_InitializesProperties(SecuritySettingsTO securitySettingsTO)
         {
             //------------Execute Test---------------------------
@@ -1476,13 +1483,15 @@ namespace Dev2.Core.Tests.Settings
             var coll = new Collection<IResourceModel> {_firstResource.Object};
             _resourceRepo.Setup(c => c.All()).Returns(coll);
             _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+            var secretKey = GenerateSecretKey();
             var viewModel = new SecurityViewModel(
                 new SecuritySettingsTO(
                     new[]
                     {
                         permission
                     },
-                    authenticationOverrideWorkflow),
+                    authenticationOverrideWorkflow,
+                    secretKey),
                 new Mock<DirectoryObjectPickerDialog>().Object,
                 new Mock<IWin32Window>().Object,
                 _environmentModel.Object, () => new Mock<IResourcePickerDialog>().Object);
@@ -1555,9 +1564,9 @@ namespace Dev2.Core.Tests.Settings
             mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
             CustomContainer.Register(mockResourcePickerDialog.Object);
             mockPopup.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false));
-
+            var secretKey = GenerateSecretKey();
             var viewModel = new SecurityViewModel(
-                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow),
+                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow,secretKey),
                 new Mock<DirectoryObjectPickerDialog>().Object,
                 new Mock<IWin32Window>().Object,
                 _environmentModel.Object, () => mockResourcePickerDialog.Object);
@@ -1634,9 +1643,9 @@ namespace Dev2.Core.Tests.Settings
             mockPopupController.Setup(c => c.Show(It.IsAny<PopupMessage>()));
             CustomContainer.Register(mockPopupController.Object);
 
-
+            var secretKey = GenerateSecretKey();
             var viewModel = new SecurityViewModel(
-                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow),
+                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow,secretKey),
                 new Mock<DirectoryObjectPickerDialog>().Object,
                 new Mock<IWin32Window>().Object,
                 _environmentModel.Object, () => mockResourcePickerDialog.Object);

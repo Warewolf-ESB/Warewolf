@@ -14,10 +14,8 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using System.Web;
-using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
-using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
@@ -90,12 +88,14 @@ namespace Dev2.Runtime.WebServer.Handlers
         private static List<WindowsGroupPermission> WindowsPermissions { get; set; }
 
         private static INamedGuid OverrideResource { get; set; }
+        private static string SecretKey { get; set; }
 
         protected static void LoadSecuritySettings()
         {
             var settings = new SecuritySettings();
             var securitySettings = settings.SecuritySettingsData;
             OverrideResource = securitySettings.AuthenticationOverrideWorkflow;
+            SecretKey = securitySettings.SecretKey;
             WindowsPermissions = securitySettings.WindowsGroupPermissions;
         }
 
@@ -174,8 +174,6 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 throw new HttpException(500, "internal server error");
             }
-
-
         }
     }
 }
