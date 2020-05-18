@@ -105,7 +105,7 @@
     <Compile Include="Activities\Exchange\DsfExchangeEmailNewActivity.cs" />
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
-    <Compile Include="Activities\PathOperations\ReadFileWithBase64.cs" />
+    <Compile Include="Activities\PathOperations\FileReadWithBase64.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />
     <Compile Include="Activities\RabbitMQ\Publish\PublishRabbitMQActivity.cs" />
     <Compile Include="Activities\RedisCounter\RedisCounterActivity.cs" />
