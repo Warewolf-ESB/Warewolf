@@ -12,6 +12,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Dev2.Common;
+using Dev2.Services.Security;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Dev2.Runtime.WebServer
@@ -22,8 +23,9 @@ namespace Dev2.Runtime.WebServer
         {
             try
             {
+                var settings = new SecuritySettings();
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var symmetricKey = Convert.FromBase64String(GlobalConstants.JWTSecretKey);
+                var symmetricKey = Convert.FromBase64String(settings.SecuritySettingsData.SecretKey);
                 var now = DateTime.UtcNow;
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
@@ -51,6 +53,7 @@ namespace Dev2.Runtime.WebServer
 
         public static string ValidateToken(string token)
         {
+
             var payload = "";
             var simplePrinciple = GetPrincipal(token);
 
@@ -77,7 +80,8 @@ namespace Dev2.Runtime.WebServer
                 if (jwtToken == null)
                     return null;
 
-                var symmetricKey = Convert.FromBase64String(GlobalConstants.JWTSecretKey);
+                var settings = new SecuritySettings();
+                var symmetricKey = Convert.FromBase64String(settings.SecuritySettingsData.SecretKey);
 
                 var validationParameters = new TokenValidationParameters
                 {

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using Dev2.Common;
 using Newtonsoft.Json;
 using Warewolf;
@@ -23,7 +24,6 @@ namespace Dev2.Services.Security
     {
         readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
         static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
-
         public static List<WindowsGroupPermission> DefaultPermissions => new List<WindowsGroupPermission>
         {
             WindowsGroupPermission.CreateAdministrators(),
@@ -31,6 +31,8 @@ namespace Dev2.Services.Security
         };
 
         public static INamedGuid DefaultOverrideResource => new NamedGuid();
+        public static string DefaultSecretKey => "";
+
 
         public SecuritySettingsTO SecuritySettingsData => ReadSettingsFile();
 
@@ -39,7 +41,7 @@ namespace Dev2.Services.Security
             var serverSecuritySettingsFile = ServerSecuritySettingsFile;
             if (!File.Exists(serverSecuritySettingsFile))
             {
-                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource) {CacheTimeout = _cacheTimeout};
+                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource, DefaultSecretKey) {CacheTimeout = _cacheTimeout};
             }
 
             string encryptedData;
@@ -59,7 +61,7 @@ namespace Dev2.Services.Security
             catch (Exception e)
             {
                 Dev2Logger.Error("SecurityRead", e, GlobalConstants.WarewolfError);
-                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource) {CacheTimeout = _cacheTimeout};
+                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource, DefaultSecretKey) {CacheTimeout = _cacheTimeout};
             }
         }
 
@@ -85,6 +87,7 @@ namespace Dev2.Services.Security
                 return serverSettingsFolder;
             }
         }
+
         private static string AppDataPath
         {
             get
@@ -99,12 +102,27 @@ namespace Dev2.Services.Security
         }
 
 
+
         static SecuritySettingsTO ProcessSettingsFile(string encryptedData)
         {
             var decryptData = SecurityEncryption.Decrypt(encryptedData);
             Dev2Logger.Debug(decryptData, GlobalConstants.WarewolfDebug);
 
             var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
+            if (currentSecuritySettingsTo.WindowsGroupPermissions.Any(a => a.ResourceID != Guid.Empty))
+            {
+                foreach (var perm in currentSecuritySettingsTo.WindowsGroupPermissions.Where(a => a.ResourceID != Guid.Empty))
+                {
+                    //TODO:
+                   // perm.ResourceName = _resourceCatalog.GetResourcePath(perm.ResourceID);
+                }
+            }
+
+            if (currentSecuritySettingsTo.AuthenticationOverrideWorkflow.Name.Length > 0 && currentSecuritySettingsTo.SecretKey == "")
+            {
+                var hmac = new HMACSHA256();
+                currentSecuritySettingsTo.SecretKey = Convert.ToBase64String(hmac.Key);
+            }
 
             var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
             if (permissionGroup.Count > 0)
@@ -133,6 +151,7 @@ namespace Dev2.Services.Security
 
             return currentSecuritySettingsTo;
         }
+
 
         static int QuickSortForPermissions(WindowsGroupPermission x, WindowsGroupPermission y)
         {
@@ -187,5 +206,4 @@ namespace Dev2.Services.Security
             return 1;
         }
     }
-
 }
