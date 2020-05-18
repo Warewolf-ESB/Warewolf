@@ -102,51 +102,5 @@ namespace Dev2.Tests.Runtime.WebServer
             Common.Utilities.OrginalExecutingUser = old;
         }
 
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(WebPostRequestHandler))]
-        public void WebPostRequestHandler_ProcessRequest_isToken_True_ExpectExecution()
-        {
-            //------------Setup for test--------------------------
-            var principle = new Mock<IPrincipal>();
-            var mockIdentity = new Mock<IIdentity>();
-            mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
-            principle.Setup(p => p.Identity.Name).Returns("FakeUser");
-            principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
-            principle.Setup(p => p.Identity.Name).Verifiable();
-            principle.Setup(p => p.Identity).Returns(mockIdentity.Object).Verifiable();
-            var old = Common.Utilities.OrginalExecutingUser;
-            if (Common.Utilities.OrginalExecutingUser != null)
-            {
-                Common.Utilities.OrginalExecutingUser = principle.Object;
-            }
-
-            ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
-            ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
-            var ctx = new Mock<ICommunicationContext>();
-            var boundVariables = new NameValueCollection
-            {
-                {"servicename", "ping"},
-                {"isToken", "True"},
-                {"instanceid", ""},
-                {"bookmark", ""}
-            };
-            var queryString = new NameValueCollection {{GlobalConstants.DLID, Guid.Empty.ToString()}, {"wid", Guid.Empty.ToString()}};
-            ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
-            ctx.Setup(c => c.Request.QueryString).Returns(queryString);
-            ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
-            ctx.Setup(c => c.Request.User).Returns(principle.Object);
-
-            var webPostRequestHandler = new WebPostRequestHandler();
-
-            //------------Execute Test---------------------------
-            webPostRequestHandler.ProcessRequest(ctx.Object);
-
-            //------------Assert Results-------------------------
-            mockIdentity.VerifyGet(identity => identity.Name, Times.AtLeast(1));
-            Common.Utilities.OrginalExecutingUser = old;
-        }
-
-
     }
 }
