@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
@@ -30,7 +31,7 @@ using Warewolf.Storage;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     [ToolDescriptorInfo("FileFolder-Read", "Read File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_File")]
-    public class FileReadWithBase64 : DsfAbstractFileActivity, IPathInput,IEquatable<FileReadWithBase64>
+    public class FileReadWithBase64 : DsfAbstractFileActivity, IPathInput, IEquatable<FileReadWithBase64>
     {
 
         public FileReadWithBase64()
@@ -87,6 +88,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     AddDebugInputItem(PrivateKeyFile, "Private Key File", context.Environment, update);
                 }
+                if (IsResultBase64)
+                {
+                    AddDebugInputItem(IsResultBase64.ToString(), "Result As Base64", context.Environment, update);
+                }
             }
 
             while (colItr.HasMoreData())
@@ -100,7 +105,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     var result = broker.Get(endpoint);
-                    outputs[0].OutputStrings.Add(result);
+                    if (IsResultBase64)
+                    {
+                        var resultBackToBytes = Encoding.UTF8.GetBytes(result);
+                        outputs[0].OutputStrings.Add(Convert.ToBase64String(resultBackToBytes, Base64FormattingOptions.InsertLineBreaks));
+                    }
+                    else
+                    {
+                        outputs[0].OutputStrings.Add(result);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -122,6 +135,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Inputs("Input Path")]
         [FindMissing]
         public string InputPath
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the is result base64.
+        /// </summary>
+        [Inputs("Is Result Base64")]
+        [FindMissing]
+        public bool IsResultBase64
         {
             get;
             set;
@@ -187,7 +211,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((FileReadWithBase64) obj);
+            return Equals((FileReadWithBase64)obj);
         }
 
         public override int GetHashCode()
