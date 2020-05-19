@@ -13,6 +13,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 
@@ -24,8 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             Dev2Logger.Debug("Start Security Read", GlobalConstants.WarewolfDebug);
             var serializer = new Dev2JsonSerializer();
-            var settings = new SecuritySettings();
-            var settingsData = settings.SecuritySettingsData;
+            var settingsData = SecuritySettings.ReadSettingsFile(new ResourceNameProvider());
             return serializer.SerializeToBuilder(settingsData);
         }
 

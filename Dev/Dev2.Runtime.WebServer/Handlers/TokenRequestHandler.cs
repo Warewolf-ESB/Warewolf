@@ -18,6 +18,7 @@ using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
@@ -92,8 +93,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static void LoadSecuritySettings()
         {
-            var settings = new SecuritySettings();
-            var securitySettings = settings.SecuritySettingsData;
+            var securitySettings = SecuritySettings.ReadSettingsFile(new ResourceNameProvider());
             OverrideResource = securitySettings.AuthenticationOverrideWorkflow;
             SecretKey = securitySettings.SecretKey;
             WindowsPermissions = securitySettings.WindowsGroupPermissions;

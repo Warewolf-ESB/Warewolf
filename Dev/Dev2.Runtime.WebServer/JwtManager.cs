@@ -12,6 +12,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Dev2.Common;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Services.Security;
 using Microsoft.IdentityModel.Tokens;
 
@@ -23,9 +24,9 @@ namespace Dev2.Runtime.WebServer
         {
             try
             {
-                var settings = new SecuritySettings();
+                var securitySettingsData = SecuritySettings.ReadSettingsFile(new ResourceNameProvider());
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var symmetricKey = Convert.FromBase64String(settings.SecuritySettingsData.SecretKey);
+                var symmetricKey = Convert.FromBase64String(securitySettingsData.SecretKey);
                 var now = DateTime.UtcNow;
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
@@ -55,7 +56,7 @@ namespace Dev2.Runtime.WebServer
         {
 
             var payload = "";
-            var simplePrinciple = GetPrincipal(token);
+            var simplePrinciple = BuildPrincipal(token);
 
             var identity = simplePrinciple?.Identity as ClaimsIdentity;
 
@@ -70,18 +71,20 @@ namespace Dev2.Runtime.WebServer
             return payload;
         }
 
-        private static ClaimsPrincipal GetPrincipal(string token)
+        private static ClaimsPrincipal BuildPrincipal(string token)
         {
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
-                if (jwtToken == null)
+                if (jwtToken is null)
+                {
                     return null;
+                }
 
-                var settings = new SecuritySettings();
-                var symmetricKey = Convert.FromBase64String(settings.SecuritySettingsData.SecretKey);
+                var securitySettingsData = SecuritySettings.ReadSettingsFile(new ResourceNameProvider());
+                var symmetricKey = Convert.FromBase64String(securitySettingsData.SecretKey);
 
                 var validationParameters = new TokenValidationParameters
                 {
@@ -91,9 +94,7 @@ namespace Dev2.Runtime.WebServer
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
                 };
 
-                SecurityToken securityToken;
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out securityToken);
-                return principal;
+                return tokenHandler.ValidateToken(token, validationParameters, out _);
             }
             catch (Exception ex)
             {
