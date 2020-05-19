@@ -26,6 +26,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
     [TestCategory("Intellisense Provider Core")]
+    [DoNotParallelize]//Ashley: Because of the static DataListSingleton used in thsi class 
     public class FileSystemIntellisenseProviderTest
     {
         IResourceModel _resourceModel;
