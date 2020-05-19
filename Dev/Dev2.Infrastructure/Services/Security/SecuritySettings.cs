@@ -14,9 +14,11 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using Dev2.Common;
+using Dev2.Runtime.ResourceCatalogImpl;
 using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Data;
+using Warewolf.Services;
 
 namespace Dev2.Services.Security
 {
@@ -24,6 +26,7 @@ namespace Dev2.Services.Security
     {
         readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
         static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
+
         public static List<WindowsGroupPermission> DefaultPermissions => new List<WindowsGroupPermission>
         {
             WindowsGroupPermission.CreateAdministrators(),
@@ -101,7 +104,7 @@ namespace Dev2.Services.Security
             }
         }
 
-
+        private static IResourceNameProvider ResourceNameProvider => new ResourceNameProvider();
 
         static SecuritySettingsTO ProcessSettingsFile(string encryptedData)
         {
@@ -113,8 +116,7 @@ namespace Dev2.Services.Security
             {
                 foreach (var perm in currentSecuritySettingsTo.WindowsGroupPermissions.Where(a => a.ResourceID != Guid.Empty))
                 {
-                    //TODO:
-                   // perm.ResourceName = _resourceCatalog.GetResourcePath(perm.ResourceID);
+                    perm.ResourceName = ResourceNameProvider.GetResourceNameById(perm.ResourceID);
                 }
             }
 

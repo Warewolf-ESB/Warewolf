@@ -51,6 +51,9 @@
     <CodeAnalysisRuleSet>Dev2.Infrastructure.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dev2.Runtime.Services, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Dev2.Studio\bin\Debug\Dev2.Runtime.Services.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
