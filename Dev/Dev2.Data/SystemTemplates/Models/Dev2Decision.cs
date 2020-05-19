@@ -186,6 +186,11 @@ namespace Dev2.Data.SystemTemplates.Models
             {
                 errors = new ErrorResultTO();
 
+                if (_evaluationFn == enDecisionType.Dynamic)
+                {
+                  return "If Dynamic Expression";
+                }
+
                 var fn = DecisionDisplayHelper.GetDisplayValue(_evaluationFn);
 
                 if (_populatedColumnCount == 0)

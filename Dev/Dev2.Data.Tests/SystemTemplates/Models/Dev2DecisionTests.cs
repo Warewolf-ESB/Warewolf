@@ -360,5 +360,24 @@ namespace Dev2.Data.Tests.SystemTemplates.Models
             Assert.AreEqual("If [[a]] Is Between [[a]] AND [[c]] Is Between [[c]]", result);
             Assert.AreEqual(0, error.FetchErrors().Count);
         }
-    }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(Dev2Decision))]
+        public void Dev2Decision_GenerateUserFriendlyModel_PopulatedColumnCount_DynamicDecisionType()
+        {
+          var dev2Decision = new Dev2Decision
+                             {
+                               Col1 = "Some Expression",
+                               EvaluationFn = enDecisionType.Dynamic
+                             };
+
+          var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+
+          var result = dev2Decision.GenerateToolLabel(mockExecutionEnvironment.Object, Dev2DecisionMode.AND, out var error);
+
+          Assert.AreEqual("If Dynamic Expression", result);
+          Assert.AreEqual(0, error.FetchErrors().Count);
+        }
+  }
 }

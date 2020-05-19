@@ -387,6 +387,9 @@ namespace Dev2.TO
                         to.IsSinglematchCriteriaVisible = false;
                         break;
                     default:
+                        to.IsSearchCriteriaVisible = false;
+                        to.IsBetweenCriteriaVisible = false;
+                        to.IsSinglematchCriteriaVisible = false;
                         break;
                 }
             }

@@ -50,7 +50,8 @@ namespace Dev2.Activities.Designers2.Decision
             AddTitleBarLargeToggle();
             Collection = new ObservableCollection<IDev2TOFn>();
             Collection.CollectionChanged += CollectionCollectionChanged;
-            var collection = FindRecsetOptions.FindAllDecision().Select(c => c.HandlesType());
+            var collection = FindRecsetOptions.FindAllDecision().Select(c => c.HandlesType()).ToList();
+            collection.Add(Data.Decisions.Operations.enDecisionType.Dynamic.ToString());
             WhereOptions = new ObservableCollection<string>(collection);
             SearchTypeUpdatedCommand = new DelegateCommand(OnSearchTypeChanged);
             _isInitializing = true;

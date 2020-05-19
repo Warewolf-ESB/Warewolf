@@ -373,7 +373,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             Assert.IsNotNull(viewModel.Collection);
             Assert.AreEqual("ResultsCollection", viewModel.CollectionName);
             Assert.AreEqual(0, viewModel.TitleBarToggles.Count);
-            Assert.AreEqual(38,viewModel.WhereOptions.Count);
+            Assert.AreEqual(39,viewModel.WhereOptions.Count);
         }
 
         [TestMethod]
@@ -681,6 +681,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             public enDecisionType _decisionType;
             public bool _found;
         }
+
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(enDecisionType))]
@@ -714,5 +715,13 @@ namespace Dev2.Activities.Designers.Tests.Decision
             Assert.AreEqual(1, unhandledDecisionTypes.Length);
             Assert.AreEqual(enDecisionType.Choose, unhandledDecisionTypes[0]._decisionType);
         }
-    }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory(nameof(DecisionDesignerViewModel))]
+        public void DecisionDesignerViewModel_OnSearchTypeChangedDynamicCriteriaInputList_IsCriteriaEnabledFalseSearchCriteriaEmptyString()
+        {
+          Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Dynamic", false, false);
+        }
+  }
 }
