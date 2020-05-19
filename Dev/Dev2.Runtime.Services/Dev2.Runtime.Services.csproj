@@ -317,6 +317,7 @@
     <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDuplicateProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceNameProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceRenameProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSaveProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSyncProvider.cs" />
