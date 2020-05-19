@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using Dev2.Common;
-using Dev2.Runtime.ResourceCatalogImpl;
 using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Data;
@@ -22,10 +21,9 @@ using Warewolf.Services;
 
 namespace Dev2.Services.Security
 {
-    public class SecuritySettings
+    public static class SecuritySettings
     {
-        readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
-        static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
+        private static readonly TimeSpan CacheTimeout = new TimeSpan(1, 0, 0);
 
         public static List<WindowsGroupPermission> DefaultPermissions => new List<WindowsGroupPermission>
         {
@@ -34,17 +32,15 @@ namespace Dev2.Services.Security
         };
 
         public static INamedGuid DefaultOverrideResource => new NamedGuid();
+
         public static string DefaultSecretKey => "";
 
-
-        public SecuritySettingsTO SecuritySettingsData => ReadSettingsFile();
-
-        private SecuritySettingsTO ReadSettingsFile()
+        public static SecuritySettingsTO ReadSettingsFile(IResourceNameProvider resourceNameProvider)
         {
-            var serverSecuritySettingsFile = ServerSecuritySettingsFile;
+            var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
             if (!File.Exists(serverSecuritySettingsFile))
             {
-                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource, DefaultSecretKey) {CacheTimeout = _cacheTimeout};
+                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource, DefaultSecretKey) {CacheTimeout = CacheTimeout};
             }
 
             string encryptedData;
@@ -59,54 +55,16 @@ namespace Dev2.Services.Security
             Dev2Logger.Debug("Security Data Read", GlobalConstants.WarewolfDebug);
             try
             {
-                return ProcessSettingsFile(encryptedData);
+                return ProcessSettingsFile(resourceNameProvider, encryptedData);
             }
             catch (Exception e)
             {
                 Dev2Logger.Error("SecurityRead", e, GlobalConstants.WarewolfError);
-                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource, DefaultSecretKey) {CacheTimeout = _cacheTimeout};
+                return new SecuritySettingsTO(DefaultPermissions, DefaultOverrideResource, DefaultSecretKey) {CacheTimeout = CacheTimeout};
             }
         }
 
-        private static string ServerSecuritySettingsFile
-        {
-            get
-            {
-                var severSecurityFile = Path.Combine(ServerSettingsFolder, "secure.config");
-                return severSecurityFile;
-            }
-        }
-
-        private static string ServerSettingsFolder
-        {
-            get
-            {
-                var serverSettingsFolder = Path.Combine(AppDataPath, "Server Settings");
-                if (!Directory.Exists(serverSettingsFolder))
-                {
-                    Directory.CreateDirectory(serverSettingsFolder);
-                }
-
-                return serverSettingsFolder;
-            }
-        }
-
-        private static string AppDataPath
-        {
-            get
-            {
-                if (!Directory.Exists(DataPath))
-                {
-                    Directory.CreateDirectory(DataPath);
-                }
-
-                return DataPath;
-            }
-        }
-
-        private static IResourceNameProvider ResourceNameProvider => new ResourceNameProvider();
-
-        static SecuritySettingsTO ProcessSettingsFile(string encryptedData)
+        static SecuritySettingsTO ProcessSettingsFile(IResourceNameProvider resourceNameProvider, string encryptedData)
         {
             var decryptData = SecurityEncryption.Decrypt(encryptedData);
             Dev2Logger.Debug(decryptData, GlobalConstants.WarewolfDebug);
@@ -116,7 +74,7 @@ namespace Dev2.Services.Security
             {
                 foreach (var perm in currentSecuritySettingsTo.WindowsGroupPermissions.Where(a => a.ResourceID != Guid.Empty))
                 {
-                    perm.ResourceName = ResourceNameProvider.GetResourceNameById(perm.ResourceID);
+                    perm.ResourceName = resourceNameProvider.GetResourceNameById(perm.ResourceID);
                 }
             }
 
@@ -153,7 +111,6 @@ namespace Dev2.Services.Security
 
             return currentSecuritySettingsTo;
         }
-
 
         static int QuickSortForPermissions(WindowsGroupPermission x, WindowsGroupPermission y)
         {
