@@ -588,6 +588,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenMySqlDatabaseResourceType_ShouldEditODBC()
         {
             //---------------Set up test pack-------------------
