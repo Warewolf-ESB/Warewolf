@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Linq;
 using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,7 +21,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void UniqueIDEquals_EmptyFileRead_Object_IsEqual()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_UniqueIDEquals_EmptyFileRead_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -27,7 +38,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void UniqueIDDifferent_EmptyFileRead_Object_Is_Not_Equal()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_UniqueIDDifferent_EmptyFileRead_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -43,7 +55,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsNotCertVerifiable_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_IsNotCertVerifiable_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -61,7 +74,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsNotCertVerifiable_Same_Object_Is_Equal()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_IsNotCertVerifiable_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -79,7 +93,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void InputPath_Same_Object_IsEqual()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_InputPath_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -95,7 +110,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void InputPath_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_InputPath_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -111,7 +127,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void InputPath_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_InputPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -127,7 +144,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Same_Object_IsEqual()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_Equals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -143,7 +161,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_Equals_Given_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -159,7 +178,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -175,7 +195,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Username_Same_Object_IsEqual()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_Username_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -191,7 +212,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Username_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_Username_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -207,7 +229,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Username_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_Username_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -223,7 +246,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void PrivateKeyFile_Same_Object_IsEqual()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_PrivateKeyFile_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -239,7 +263,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void PrivateKeyFile_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_PrivateKeyFile_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -255,7 +280,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void PrivateKeyFile_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_PrivateKeyFile_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -268,9 +294,11 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Password_Same_Object_IsEqual()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_Password_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -286,7 +314,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Password_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_Password_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -302,7 +331,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Password_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_Password_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -319,8 +349,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("FileReadWithBase64Activity_GetState")]
-        public void FileReadWithBase64Activity_GetState_ReturnsStateVariable()
+        [TestCategory(nameof(FileReadWithBase64))]
+        public void FileReadWithBase64_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
             var inputPath = "/Path";

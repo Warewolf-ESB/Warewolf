@@ -35,6 +35,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding InputPathLabel, Mode=OneWay}" />
@@ -84,5 +85,20 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Result As" Margin="{StaticResource ControlBorderTop}"/>
+        <CheckBox Grid.Column="1"
+                  Grid.Row="2"
+                  Margin="-6,-1,0,0"
+                  Content="Base64"
+                  IsChecked="{Binding Path=ModelItem.IsResultBase64, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Tooltips.ReadFileToolTipIsResultBase64}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFileHelpIsResultBase64}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.IsResultBase64"
+                                     SourcePropertyValue="{Binding ModelItem.IsResultBase64, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
     </Grid>
 </core:ActivityDesignerTemplate>

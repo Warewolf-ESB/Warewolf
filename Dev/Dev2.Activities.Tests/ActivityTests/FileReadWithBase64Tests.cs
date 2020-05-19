@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -16,28 +16,21 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-
     /// <summary>
-    /// Summary description for DateTimeDifferenceTests
+    /// Summary description for FileReadWithBase64Tests
     /// </summary>
     [TestClass]
     public class FileReadWithBase64Tests : BaseActivityUnitTest
     {
-
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        
-
-        
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FileReadWithBase64_UpdateForEachInputs")]
+        [TestCategory(nameof(FileReadWithBase64))]
         public void FileReadWithBase64_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -53,7 +46,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FileReadWithBase64_UpdateForEachInputs")]
+        [TestCategory(nameof(FileReadWithBase64))]
         public void FileReadWithBase64_UpdateForEachInputs_MoreThan1Updates_DoesNotUpdates()
         {
             //------------Setup for test--------------------------
@@ -72,7 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FileReadWithBase64_UpdateForEachInputs")]
+        [TestCategory(nameof(FileReadWithBase64))]
         public void FileReadWithBase64_UpdateForEachInputs_1Update_Updates()
         {
             //------------Setup for test--------------------------
@@ -90,7 +83,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FileReadWithBase64_UpdateForEachOutputs")]
+        [TestCategory(nameof(FileReadWithBase64))]
         public void FileReadWithBase64_UpdateForEachOutputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -105,7 +98,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FileReadWithBase64_UpdateForEachOutputs")]
+        [TestCategory(nameof(FileReadWithBase64))]
         public void FileReadWithBase64_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -123,7 +116,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FileReadWithBase64_UpdateForEachOutputs")]
+        [TestCategory(nameof(FileReadWithBase64))]
         public void FileReadWithBase64_UpdateForEachOutputs_1Updates_UpdateResult()
         {
             //------------Setup for test--------------------------
@@ -140,7 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FileReadWithBase64_GetForEachInputs")]
+        [TestCategory(nameof(FileReadWithBase64))]
         public void FileReadWithBase64_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
@@ -158,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("FileReadWithBase64_GetForEachOutputs")]
+        [TestCategory(nameof(FileReadWithBase64))]
         public void FileReadWithBase64_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
         {
             //------------Setup for test--------------------------
