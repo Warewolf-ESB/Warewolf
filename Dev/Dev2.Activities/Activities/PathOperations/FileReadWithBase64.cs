@@ -104,14 +104,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var endpoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ioPath);
                 try
                 {
-                    var result = broker.Get(endpoint);
                     if (IsResultBase64)
                     {
-                        var resultBackToBytes = Encoding.UTF8.GetBytes(result);
-                        outputs[0].OutputStrings.Add(Convert.ToBase64String(resultBackToBytes, Base64FormattingOptions.InsertLineBreaks));
+                        var result = broker.GetBytes(endpoint);
+                        outputs[0].OutputStrings.Add(Convert.ToBase64String(result, Base64FormattingOptions.InsertLineBreaks));
                     }
                     else
                     {
+                        var result = broker.Get(endpoint);
                         outputs[0].OutputStrings.Add(result);
                     }
                 }

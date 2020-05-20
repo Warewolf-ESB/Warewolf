@@ -62,11 +62,23 @@ namespace Dev2.PathOperations
         }
 
         public string Get(IActivityIOOperationsEndPoint path) => Get(path, false);
+        public byte[] GetBytes(IActivityIOOperationsEndPoint path) => GetBytes(path, false);
+
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead)
         {
             try
             {
-
+                return Encoding.UTF8.GetString(GetBytes(path, deferredRead));
+            }
+            finally
+            {
+                RemoveAllTmpFiles();
+            }
+        }
+        public byte[] GetBytes(IActivityIOOperationsEndPoint path, bool deferredRead)
+        {
+            try
+            {
                 byte[] bytes;
                 using (var s = path.Get(path.IOPath, _filesToDelete))
                 {
@@ -75,8 +87,7 @@ namespace Dev2.PathOperations
                     s.Read(bytes, 0, (int)s.Length);
                 }
 
-                return Encoding.UTF8.GetString(bytes);
-
+                return bytes;
             }
             finally
             {
