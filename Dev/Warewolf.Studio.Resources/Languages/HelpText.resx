@@ -458,7 +458,7 @@
     <value>Test the connection to the Database. </value>
   </data>
   <data name="ElasticsearchSourceTestConnectionHelp" xml:space="preserve">
-     <value>Test the elasticsearch source connection</value>
+    <value>Test the elasticsearch source connection</value>
   </data>
   <data name="DecisionHelpDisplayText" xml:space="preserve">
     <value>On the small view on the design surface, this text will show to help identify what decision is being made and will not affect execution.</value>
@@ -1807,7 +1807,7 @@ A test must be ignored/disabled before it can be deleted.</value>
   </data>
   <data name="SearchIndexHelp" xml:space="preserve">
     <value>The search index that will be used to index the data.</value>
-  </data>  
+  </data>
   <data name="WarewolfDefaultHelpDescription" xml:space="preserve">
     <value>&lt;h2&gt; Warewolf Help &lt;/h2&gt; 	For more information, follow the link below.	&lt;br/&gt;&lt;br/&gt;	&lt;a href="http://warewolf.io/knowledge-base/" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
   </data>
@@ -2140,7 +2140,88 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Use the sequence tool to group steps into a single step in a workflow.</value>
   </data>
   <data name="Tool_Flow_Decision" xml:space="preserve">
-    <value>Use the Decision flow tool to check if something is True or False and execute different branches based on that decision.</value>
+    <value>Use the Decision flow tool to check if something is True or False and execute different branches based on that decision.
+The Decision tool supports the following operations:
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsError&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes no variables or values and will return true if an error has occured in the execution and not been handled.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotError&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes no variables or values and will return true if an no error has occured in the execution.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNull&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable and returns true if it is NULL.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotNull&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable and returns true if it is NOT NULL.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNumeric&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotNumeric&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is NOT a number.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsText&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is text.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotText&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is NOT text.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsAlphanumeric&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it contains both numbers and letters.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotAlphanumeric&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it does NOT contains both numbers and letters.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsXML&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is XML.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotXML&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is NOT XML.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsDate&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is a date value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotDate&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is NOT a date value.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsEmail&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is a valid email address.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotEmail&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is NOT a valid email address.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsRegEx&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable matches the pattern defined in the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;NotRegEx&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable does NOT match the pattern defined in the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsEqual&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable equals the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotEqual&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable does NOT equal the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsLessThan&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable is less than the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsLessThanOrEqual&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable is less than or equal to the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsGreaterThan&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable is greater than the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsGreaterThanOrEqual&lt;/b&gt;&lt;/td&gt;This option takes a two variables/values and returns true if the first value/variable is greater than or equal to the second value/variable.&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsContains&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable contains the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;NotContain&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable does NOT contain the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsEndsWith&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable ends with the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;NotEndsWith&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable does NOT end with the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsStartsWith&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable starts with the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;NotStartsWith&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a two variables/values and returns true if the first value/variable does NOT start with the second value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsBetween&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a three variables/values and returns true if the first value/variable is between the second and third value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;NotBetween&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a three variables/values and returns true if the first value/variable is NOT between the second and third value/variable.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsBinary&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is binary.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotBinary&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is NOT binary.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsHex&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is hex.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotHex&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is NOT hex.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsBase64&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is Base64.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotBase64&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if it is NOT Base64.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;Dynamic&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes a single variable/value and returns true if the expression evaluates to true (See NOTE below).&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;b&gt;NOTE:&lt;/b&gt;
+The 'Dynamic' option can be used for more complex decision expressions. It allows for there to be multiple expressions chained together by an AND or OR operand. The expression itself
+takes the form of as it would in the tool itself i.e. &lt;Value/Variable1&gt; &lt;Operation&gt; &lt;Value2/Variable2&gt; as defined by the list of operations above.
+&lt;b&gt;Example&lt;/b&gt;:
+{
+  "Expression": {
+    "Col1": "10",
+    "Col2": "10",
+    "EvaluationFn": "IsEqual"
+  },
+  "LogicalOperandType": "Or",
+  "Chain": {
+    "Expression": {
+      "Col1": "12",
+      "Col2": "13",
+      "EvaluationFn": "IsEqual"
+    },
+    "LogicalOperandType": "And",
+    "Chain": {
+      "Expression": {
+        "Col1": "[[inputValue]]",
+        "Col2": "[[lowerLimit]]",
+		"Col2": "[[upperLime]]"
+        "EvaluationFn": "IsBetween"
+      },
+      "LogicalOperandType": "And",
+      "Chain": {
+        "Expression": {
+          "Col1": "100",
+          "Col2": "100",
+          "EvaluationFn": "IsEqual"
+        }
+      }
+    }
+  }
+} 
+&lt;br/&gt;
+&lt;i&gt;LogicalOperandType&lt;/i&gt; has to be either "And" or "Or" and the &lt;i&gt;EvaluationFn&lt;/i&gt; has to be one of the options listed in the above table.</value>
   </data>
   <data name="Tool_File_Zip" xml:space="preserve">
     <value>Use the Zip tool to compress a folder or a file into a Zip archive. (File System, UNC, FTP, FTPS, SFTP)</value>

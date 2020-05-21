@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class HelpText {
@@ -4985,7 +4985,12 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Decision flow tool to check if something is True or False and execute different branches based on that decision..
+        ///   Looks up a localized string similar to Use the Decision flow tool to check if something is True or False and execute different branches based on that decision.
+        ///The Decision tool supports the following operations:
+        ///&lt;table&gt;
+        ///&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsError&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes no variables or values and will return true if an error has occured in the execution and not been handled.&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;&lt;b&gt;IsNotError&lt;/b&gt;&lt;/td&gt;&lt;td&gt;This option takes no variables or values and will return true if an no error has occured in the execution.&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Tool_Flow_Decision {
             get {
