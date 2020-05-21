@@ -136,9 +136,12 @@ namespace Dev2.Runtime.WebServer
         }
         private bool ValidatePayload(StringBuilder resourceDataList)
         {
+            var datalist = resourceDataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").ToString();
+            datalist = datalist.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
+
             var converter = new DataListConversionUtils();
             var dataList = new DataListModel();
-            dataList.Create(resourceDataList.ToString(), resourceDataList.ToString());
+            dataList.Create(datalist, datalist);
             var outputList = converter.GetOutputs(dataList);
             if (outputList.Select(sca => sca.Recordset == "UserGroups" && sca.Field == "Name").FirstOrDefault())
             {

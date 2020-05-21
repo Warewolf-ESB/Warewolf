@@ -79,7 +79,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                     requestTo.Variables.Add(key, variables[key]);
                 }
             }
-
+            if( requestTo.Variables["isToken"] is null)
+            {
+                requestTo.Variables.Add("isToken","False");
+            }
             Thread.CurrentPrincipal = ctx.Request.User;
             var response = ExecuteWorkflow(requestTo, OverrideResource.Name, workspaceId, ctx.FetchHeaders(), ctx.Request.User);
             ctx.Send(response);
@@ -165,7 +168,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             private static IResponseWriter CreateEncryptedResponse(string payload)
             {
                 var rs = new StringResponseWriterFactory();
-                if (payload.Length > 0)
+                if (payload.Length > 0 && payload != "InternalServerError")
                 {
                     var encryptedPayload = JwtManager.GenerateToken(payload);
                     encryptedPayload = "{\"token\": \"" + encryptedPayload + "\"}";
