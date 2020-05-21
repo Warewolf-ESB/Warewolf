@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Dev2.Common;
 using Warewolf;
 using Warewolf.Data;
 
@@ -27,8 +28,9 @@ namespace Dev2.Services.Security
         protected INamedGuid _overrideResource = new NamedGuid();
         private string _secretKey = "";
         public event EventHandler PermissionsChanged;
-
+        public event EventHandler AuthenticationChanged;
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
+        public event EventHandler<AuthenticationModifiedEventArgs> AuthenticationModified;
 
         public string SecretKey
         {
@@ -89,7 +91,7 @@ namespace Dev2.Services.Security
 
                     // This will trigger a FileSystemWatcher file changed event
                     // which in turn will cause the permissions to be re-read.
-                    WritePermissions(_permissions, _overrideResource,_secretKey);
+                    WritePermissions(_permissions, _overrideResource, _secretKey);
                 }
             }
             finally
@@ -104,12 +106,36 @@ namespace Dev2.Services.Security
         {
             LogStart();
             _permissionsLock.EnterWriteLock();
+
+            Dev2Logger.Debug("Read Permissions from Server", "Warewolf Debug");
             var previousPermissions = _permissions.ToList();
+            var previousOverrideResource = _overrideResource;
+
+            SecuritySettingsTO newSecuritySettings;
             List<WindowsGroupPermission> newPermissions;
+            INamedGuid newOverrideResource;
+            string newSecretKey;
             try
             {
-                newPermissions = ReadPermissions();
+                newSecuritySettings = ReadSecuritySettings();
+                newPermissions = newSecuritySettings.WindowsGroupPermissions;
+                newOverrideResource = newSecuritySettings.AuthenticationOverrideWorkflow;
+                newSecretKey = newSecuritySettings.SecretKey;
+
                 _permissions.Clear();
+                _overrideResource = new NamedGuid();
+                _secretKey = "";
+
+                if (newOverrideResource != null)
+                {
+                    _overrideResource = newOverrideResource;
+                }
+
+                if (newSecretKey != "")
+                {
+                    _secretKey = newSecretKey;
+                }
+
                 if (newPermissions != null)
                 {
                     _permissions.AddRange(newPermissions);
@@ -125,7 +151,13 @@ namespace Dev2.Services.Security
                 RaisePermissionsModified(previousPermissions, newPermissions);
             }
 
+            if (newOverrideResource != null)
+            {
+                RaiseAuthenticationModified(previousOverrideResource, newOverrideResource, newSecretKey);
+            }
+
             RaisePermissionsChanged();
+            RaiseAuthenticationChanged();
             LogEnd();
         }
 
@@ -136,7 +168,6 @@ namespace Dev2.Services.Security
                 RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions.ToList()));
             }
         }
-
         protected virtual void RaisePermissionsChanged()
         {
             LogStart();
@@ -152,8 +183,31 @@ namespace Dev2.Services.Security
             LogEnd();
         }
 
+        void RaiseAuthenticationModified(INamedGuid oldOverrideResource, INamedGuid newOverrideResource, string newSecretKey)
+        {
+            if (oldOverrideResource != null && newOverrideResource != null)
+            {
+                RaiseAuthenticationModified(new AuthenticationModifiedEventArgs(newOverrideResource, newSecretKey));
+            }
+        }
+        protected virtual void RaiseAuthenticationChanged()
+        {
+            LogStart();
+            var handler = AuthenticationChanged;
+            handler?.Invoke(this, EventArgs.Empty);
+            LogEnd();
+        }
+
+        protected virtual void RaiseAuthenticationModified(AuthenticationModifiedEventArgs e)
+        {
+            LogStart();
+            AuthenticationModified?.Invoke(this, e);
+            LogEnd();
+        }
+
         protected abstract List<WindowsGroupPermission> ReadPermissions();
-        protected abstract void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource,string secretKey);
+        protected abstract SecuritySettingsTO ReadSecuritySettings();
+        protected abstract void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource, string secretKey);
         protected abstract void LogStart([CallerMemberName] string methodName = null);
         protected abstract void LogEnd([CallerMemberName] string methodName = null);
     }
@@ -168,6 +222,21 @@ namespace Dev2.Services.Security
         public PermissionsModifiedEventArgs(List<WindowsGroupPermission> modifiedWindowsGroupPermissions)
         {
             ModifiedWindowsGroupPermissions = modifiedWindowsGroupPermissions;
+        }
+    }
+
+    public class AuthenticationModifiedEventArgs
+    {
+        public INamedGuid ModifiedOverrideResource { get; private set; }
+        public string ModifiedSecretKey { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public AuthenticationModifiedEventArgs(INamedGuid modifiedOverrideResource, string modifiedSecretKey)
+        {
+            ModifiedOverrideResource = modifiedOverrideResource;
+            ModifiedSecretKey = modifiedSecretKey;
         }
     }
 }

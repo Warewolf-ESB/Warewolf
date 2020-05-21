@@ -41,6 +41,7 @@ namespace Dev2.Studio.Interfaces
         string Password { get; }
         event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
         event EventHandler PermissionsChanged;
+        event EventHandler AuthenticationChanged;
         bool IsAuthorized { get; set; }
 
         Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId);
@@ -70,6 +71,7 @@ namespace Dev2.Studio.Interfaces
         IAsyncWorker AsyncWorker { get; }
         IPrincipal Principal { get; }
         event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
+        event EventHandler<SecuritySettingsTO> AuthenticationModified;
         Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
         IHubConnectionWrapper HubConnection { get; }
 

@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -50,6 +51,7 @@ namespace Dev2.Settings.Security
         public SecurityViewModel()
         {
         }
+
         [ExcludeFromCodeCoverage]
         internal SecurityViewModel(SecuritySettingsTO securitySettings, IWin32Window parentWindow, IServer environment)
             : this(securitySettings, new DirectoryObjectPickerDialog(), parentWindow, environment)
@@ -70,6 +72,7 @@ namespace Dev2.Settings.Security
             var env = new EnvironmentViewModel(shellViewModel.ActiveServer, shellViewModel, true);
             return env;
         }
+
         [ExcludeFromCodeCoverage]
         public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IServer environment)
             : this(securitySettings, directoryObjectPicker, parentWindow, environment, null)
@@ -95,7 +98,7 @@ namespace Dev2.Settings.Security
             _directoryObjectPicker.ShowAdvancedView = false;
 
             OverrideResource = InitializeOverrideResource(securitySettings?.AuthenticationOverrideWorkflow);
-
+            SecretKey = InitializeSecretKey(securitySettings?.SecretKey);
             PickWindowsGroupCommand = new DelegateCommand(PickWindowsGroup, o => CanPickWindowsGroup(securitySettings?.WindowsGroupPermissions));
             PickResourceCommand = new DelegateCommand(PickResource);
             PickOverrideResourceCommand = new DelegateCommand(PickOverrideResource);
@@ -105,7 +108,18 @@ namespace Dev2.Settings.Security
             InitializePermissions(securitySettings?.WindowsGroupPermissions);
         }
 
-        private static INamedGuid InitializeOverrideResource(INamedGuid securitySettingsOverrideResource)
+        private string InitializeSecretKey(string securitySettingsSecretKey)
+        {
+            if (securitySettingsSecretKey != null)
+            {
+                RegisterSecretKeyPropertyChanged(securitySettingsSecretKey);
+                return securitySettingsSecretKey;
+            }
+
+            return "";
+        }
+
+        private INamedGuid InitializeOverrideResource(INamedGuid securitySettingsOverrideResource)
         {
             if (securitySettingsOverrideResource != null)
             {
@@ -114,14 +128,17 @@ namespace Dev2.Settings.Security
                     Value = securitySettingsOverrideResource.Value,
                     Name = securitySettingsOverrideResource.Name
                 };
+                RegisterOverrideResourcePropertyChanged(resource);
                 return resource;
             }
 
-            return new NamedGuid
+            var defaultResource = new NamedGuid
             {
                 Name = "",
                 Value = Guid.Empty
             };
+
+            return defaultResource;
         }
 
         private static bool CanPickWindowsGroup(IEnumerable<WindowsGroupPermission> permissions) => permissions != null;
@@ -165,6 +182,15 @@ namespace Dev2.Settings.Security
             }
         }
 
+        public string SecretKey
+        {
+            get => _secretKey;
+            set
+            {
+                _secretKey = value;
+                OnPropertyChanged(nameof(SecretKey));
+            }
+        }
 
         private bool IsValidOverrideWorkflow(IExplorerTreeItem resourceModel)
         {
@@ -175,6 +201,7 @@ namespace Dev2.Settings.Security
             {
                 return true;
             }
+
             return false;
         }
 
@@ -192,6 +219,8 @@ namespace Dev2.Settings.Security
             {
                 OverrideResource.Value = resourceModel.ResourceId;
                 OverrideResource.Name = resourceModel.ResourcePath;
+                var hmac = new HMACSHA256();
+                SecretKey = Convert.ToBase64String(hmac.Key);
             }
             else
             {
@@ -261,6 +290,9 @@ namespace Dev2.Settings.Security
         private ObservableCollection<WindowsGroupPermission> _itemResourcePermissions;
         private ObservableCollection<WindowsGroupPermission> _itemServerPermissions;
         private INamedGuid _overrideResource;
+        private INamedGuid _itemOverrideResource;
+        private string _secretKey;
+        private string _itemSecretKey;
 
         private static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -280,6 +312,7 @@ namespace Dev2.Settings.Security
                 Value = OverrideResource.Value,
                 Name = OverrideResource.Name
             };
+            securitySettings.SecretKey = SecretKey;
             SetItem(this);
         }
 
@@ -462,6 +495,20 @@ namespace Dev2.Settings.Security
             }
         }
 
+        private void RegisterSecretKeyPropertyChanged(string secretKey)
+        {
+
+        }
+
+        private void RegisterOverrideResourcePropertyChanged(NamedGuid authResource)
+        {
+            authResource.PropertyChanged += OnAuthenticationPropertyChanged;
+        }
+
+        private void OnAuthenticationPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            IsDirty = !Equals(ItemOverrideResource);
+        }
         private void RemovePermission(WindowsGroupPermission permission)
         {
             var isEmpty = string.IsNullOrEmpty(permission.WindowsGroup);
@@ -649,6 +696,28 @@ namespace Dev2.Settings.Security
         {
             ItemServerPermissions = CloneServerPermissions(model.ServerPermissions);
             ItemResourcePermissions = CloneResourcePermissions(model.ResourcePermissions);
+            ItemOverrideResource = CloneOverrideResourcePermissions(model.OverrideResource);
+            ItemSecretKey = CloneSecretKeyPermissions(model.SecretKey);
+        }
+
+        public INamedGuid ItemOverrideResource
+        {
+            get => _itemOverrideResource;
+            set
+            {
+                _itemOverrideResource = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ItemSecretKey
+        {
+            get => _itemSecretKey;
+            set
+            {
+                _itemSecretKey = value;
+                OnPropertyChanged();
+            }
         }
 
         public ObservableCollection<WindowsGroupPermission> ItemResourcePermissions
@@ -669,6 +738,22 @@ namespace Dev2.Settings.Security
                 _itemServerPermissions = value;
                 OnPropertyChanged();
             }
+        }
+
+        private static INamedGuid CloneOverrideResourcePermissions(INamedGuid overrideResource)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(overrideResource, new JsonSerializerSettings {ContractResolver = resolver});
+            var clone = JsonConvert.DeserializeObject<NamedGuid>(ser);
+            return clone;
+        }
+
+        private static string CloneSecretKeyPermissions(string secretKey)
+        {
+            var resolver = new ShouldSerializeContractResolver();
+            var ser = JsonConvert.SerializeObject(secretKey, new JsonSerializerSettings {ContractResolver = resolver});
+            var clone = JsonConvert.DeserializeObject<string>(ser);
+            return clone;
         }
 
         private static ObservableCollection<WindowsGroupPermission> CloneResourcePermissions(ObservableCollection<WindowsGroupPermission> resourcePermissions)

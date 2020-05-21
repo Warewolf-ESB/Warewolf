@@ -77,6 +77,7 @@
     <Compile Include="..\Warewolf.UnitTestAttributes\Depends.cs">
       <Link>Depends.cs</Link>
     </Compile>
+    <Compile Include="Communication\AuthenticationModifiedMemoTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfNumberOfErrorsByResourceTests.cs" />

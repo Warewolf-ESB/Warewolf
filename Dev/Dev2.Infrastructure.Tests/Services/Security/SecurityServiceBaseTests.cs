@@ -176,14 +176,17 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         {
             //------------Setup for test--------------------------
             var changedEventWasFired = false;
+            var authchangedEventWasFired = false;
             var securityServiceBase = new TestSecurityServiceBase();
             securityServiceBase.PermissionsChanged += (sender, args) => changedEventWasFired = true;
+            securityServiceBase.AuthenticationChanged += (sender, args) => authchangedEventWasFired = true;
 
             //------------Execute Test---------------------------
             securityServiceBase.Read();
 
             //------------Assert Results-------------------------
             Assert.IsTrue(changedEventWasFired);
+            Assert.IsTrue(authchangedEventWasFired);
         }
 
         [TestMethod]

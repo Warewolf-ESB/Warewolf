@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Network;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data;
 
 namespace Dev2.Core.Tests.Security
 {
@@ -32,7 +34,7 @@ namespace Dev2.Core.Tests.Security
     {
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("ClientSecurityService_Constructor")]
+        [TestCategory(nameof(ClientSecurityService))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ClientSecurityService_Constructor_EnvironmentConnectionIsNull_ThrowsArgumentNullException()
         {
@@ -46,7 +48,7 @@ namespace Dev2.Core.Tests.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("ClientSecurityService_EnvironmentConnection")]
+        [TestCategory(nameof(ClientSecurityService))]
         public void ClientSecurityService_EnvironmentConnection_NetworkStateChangedToOnline_DoesNotInvokeRead()
         {
             Verify_EnvironmentConnection_NetworkStateChanged(NetworkState.Offline, NetworkState.Online);
@@ -54,7 +56,7 @@ namespace Dev2.Core.Tests.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("ClientSecurityService_EnvironmentConnection")]
+        [TestCategory(nameof(ClientSecurityService))]
         public void ClientSecurityService_EnvironmentConnection_NetworkStateChangedToOffline_DoesNotInvokeRead()
         {
             Verify_EnvironmentConnection_NetworkStateChanged(NetworkState.Online, NetworkState.Offline);
@@ -89,7 +91,7 @@ namespace Dev2.Core.Tests.Security
             Thread.Sleep(1000);
 
             //------------Assert Results-------------------------
-            if(toState == NetworkState.Online)
+            if (toState == NetworkState.Online)
             {
                 connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID), Times.Never());
                 Assert.IsNull(actualRequest);
@@ -103,7 +105,7 @@ namespace Dev2.Core.Tests.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("ClientSecurityService_Read")]
+        [TestCategory(nameof(ClientSecurityService))]
         public void ClientSecurityService_Read_DoesInvokeReadAsync()
         {
             //------------Setup for test--------------------------
@@ -131,7 +133,7 @@ namespace Dev2.Core.Tests.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("ClientSecurityService_WritePermissions")]
+        [TestCategory(nameof(ClientSecurityService))]
         public void ClientSecurityService_WritePermissions_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -151,7 +153,7 @@ namespace Dev2.Core.Tests.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("ClientSecurityService_OnDispose")]
+        [TestCategory(nameof(ClientSecurityService))]
         public void ClientSecurityService_OnDispose_DoesNothing()
         {
             //------------Setup for test--------------------------
@@ -168,8 +170,8 @@ namespace Dev2.Core.Tests.Security
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ClientSecurityService_PermissionsModified")]
-        public void ClientSecurityService_PermissionsModified_NewPermissionsReceived_ShouldReplaceCurrentPermissions()
+        [TestCategory(nameof(ClientSecurityService))]
+        public void ClientSecurityService_PermissionsAndAuthenticationModified_NewPermissionsAndAuthenticationReceived_ShouldReplaceCurrentPermissionsAndAuthentication()
         {
             //------------Setup for test--------------------------
             var connection = new Mock<IEnvironmentConnection>();
@@ -177,6 +179,7 @@ namespace Dev2.Core.Tests.Security
             connection.Setup(c => c.ServerEvents).Returns(eventPublisher);
             var clientSecurityService = new TestClientSecurityService(connection.Object);
             var currentPermissions = new List<WindowsGroupPermission>();
+
             var resourceID = Guid.NewGuid();
 
             var resourcePermission = new WindowsGroupPermission();
@@ -190,11 +193,21 @@ namespace Dev2.Core.Tests.Security
 
             currentPermissions.Add(serverPermission);
             currentPermissions.Add(resourcePermission);
+
+            var currentOverrideResource = new NamedGuid
+            {
+                Name = "authLogin",
+                Value = Guid.NewGuid()
+            };
+            var currenthmac = new HMACSHA256();
+            var currentSecretKey = Convert.ToBase64String(currenthmac.Key);
+            var currentSettings = new SecuritySettingsTO(currentPermissions, currentOverrideResource, currentSecretKey);
+
             clientSecurityService.SetCurrentPermissions(currentPermissions);
+            clientSecurityService.SetCurrentSettings(currentSettings);
             clientSecurityService.ReadAsync().Wait();
 
             var changedPermissions = new List<WindowsGroupPermission>();
-
             var changedResourcePermission = new WindowsGroupPermission();
             changedResourcePermission.ResourceID = resourceID;
             changedResourcePermission.Permissions = Permissions.Contribute;
@@ -207,11 +220,27 @@ namespace Dev2.Core.Tests.Security
             changedPermissions.Add(changedServerPermission);
             changedPermissions.Add(changedResourcePermission);
 
+            var changedOverrideResource = new NamedGuid
+            {
+                Name = "authLoginNew",
+                Value = Guid.NewGuid()
+            };
+            var hmac = new HMACSHA256();
+            var changedSecretKey = Convert.ToBase64String(hmac.Key);
+            var changedAuthentication = new SecuritySettingsTO(changedPermissions, changedOverrideResource, changedSecretKey);
+
+            var authenticationModifiedMemo = new AuthenticationModifiedMemo();
+            authenticationModifiedMemo.ModifiedAuthentication = changedAuthentication;
+
             var permissionsModifiedMemo = new PermissionsModifiedMemo();
             permissionsModifiedMemo.ModifiedPermissions = changedPermissions;
             //------------Execute Test---------------------------
-            connection.Raise(environmentConnection => environmentConnection.PermissionsModified += null, null,changedPermissions);
+            connection.Raise(environmentConnection => environmentConnection.PermissionsModified += null, null, changedPermissions);
             eventPublisher.Publish(permissionsModifiedMemo);
+
+            connection.Raise(environmentConnection => environmentConnection.AuthenticationModified += null, null, changedAuthentication);
+            eventPublisher.Publish(authenticationModifiedMemo);
+
             //------------Assert Results-------------------------
             var updateResourcePermission = clientSecurityService.Permissions.FirstOrDefault(permission => permission.ResourceID == resourceID);
             var updateServerPermission = clientSecurityService.Permissions.FirstOrDefault(permission => permission.ResourceID == Guid.Empty);
@@ -219,14 +248,16 @@ namespace Dev2.Core.Tests.Security
             Assert.IsNotNull(updateServerPermission);
             Assert.AreEqual(Permissions.Contribute, updateResourcePermission.Permissions);
             Assert.AreEqual(Permissions.Administrator, updateServerPermission.Permissions);
+
+            Assert.AreEqual(changedOverrideResource, clientSecurityService.OverrideResource);
+            Assert.AreEqual(changedSecretKey, clientSecurityService.SecretKey);
         }
-
-
     }
 
     public class TestClientSecurityService : ClientSecurityService
     {
         List<WindowsGroupPermission> _currentPermissions;
+        SecuritySettingsTO _currentSettings;
 
         public TestClientSecurityService(IEnvironmentConnection environmentConnection)
             : base(environmentConnection)
@@ -235,33 +266,47 @@ namespace Dev2.Core.Tests.Security
 
         public void TestWritePermissions()
         {
-            WritePermissions(null,null,"");
+            WritePermissions(null, null, "");
         }
 
         public int ReadAsyncHitCount { get; private set; }
+
         public override Task ReadAsync()
         {
             ReadAsyncHitCount++;
             return base.ReadAsync();
         }
 
-        #region Overrides of ClientSecurityService
+        protected override SecuritySettingsTO ReadSecuritySettings()
+        {
+            var currentSettings = new SecuritySettingsTO();
+            if (_currentSettings != null)
+            {
+                currentSettings = _currentSettings;
+            }
+
+            return currentSettings;
+        }
 
         protected override List<WindowsGroupPermission> ReadPermissions()
         {
             var currentPermissions = new List<WindowsGroupPermission>();
-            if(_currentPermissions != null)
+            if (_currentPermissions != null)
             {
                 currentPermissions = _currentPermissions;
             }
+
             return currentPermissions;
         }
-
-        #endregion
 
         public void SetCurrentPermissions(List<WindowsGroupPermission> windowsGroupPermissions)
         {
             _currentPermissions = windowsGroupPermissions;
+        }
+
+        public void SetCurrentSettings(SecuritySettingsTO settings)
+        {
+            _currentSettings = settings;
         }
     }
 }

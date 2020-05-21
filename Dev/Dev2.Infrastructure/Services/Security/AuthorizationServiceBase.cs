@@ -46,6 +46,8 @@ namespace Dev2.Services.Security
             _isLocalConnection = isLocalConnection;
             _securityService.PermissionsChanged += (s, e) => RaisePermissionsChanged();
             _securityService.PermissionsModified += (s, e) => OnPermissionsModified(e);
+            _securityService.AuthenticationChanged += (s, e) => RaiseAuthenticationChanged();
+            _securityService.AuthenticationModified += (s, e) => OnAuthenticationModified(e);
             _directoryEntryFactory = directoryEntryFactory;
 
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
@@ -112,21 +114,33 @@ namespace Dev2.Services.Security
             throw new Exception(ErrorResource.CannotFindGroup);
         }
         public event EventHandler PermissionsChanged;
-        EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;
+        public event EventHandler AuthenticationChanged;
+        EventHandler<PermissionsModifiedEventArgs> _permissionsModifiedHandler;
+        EventHandler<AuthenticationModifiedEventArgs> _authenticationModifiedHandler;
         readonly object _getPermissionsLock = new object();
 
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified
         {
             add
             {
-                _permissionsModifedHandler += value;
+                _permissionsModifiedHandler += value;
             }
             remove
             {
-                _permissionsModifedHandler -= value;
+                _permissionsModifiedHandler -= value;
             }
         }
-
+        public event EventHandler<AuthenticationModifiedEventArgs> AuthenticationModified
+        {
+            add
+            {
+                _authenticationModifiedHandler += value;
+            }
+            remove
+            {
+                _authenticationModifiedHandler -= value;
+            }
+        }
         public virtual Permissions GetResourcePermissions(Guid resourceId)
         {
             var groupPermissions = GetGroupPermissions(Utilities.OrginalExecutingUser ?? Thread.CurrentPrincipal, resourceId.ToString()).ToList();
@@ -171,9 +185,17 @@ namespace Dev2.Services.Security
 
         protected virtual void OnPermissionsModified(PermissionsModifiedEventArgs e)
         {
-            _permissionsModifedHandler?.Invoke(this, e);
+            _permissionsModifiedHandler?.Invoke(this, e);
+        }
+        protected virtual void RaiseAuthenticationChanged()
+        {
+            AuthenticationChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        protected virtual void OnAuthenticationModified(AuthenticationModifiedEventArgs e)
+        {
+            _authenticationModifiedHandler?.Invoke(this, e);
+        }
         protected bool IsAuthorizedToConnect(IPrincipal principal) => IsAuthorized(AuthorizationContext.Any, principal, () => GetGroupPermissions(principal));
 
         public bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource) => IsAuthorized(context, user, () => GetGroupPermissions(user, resource));

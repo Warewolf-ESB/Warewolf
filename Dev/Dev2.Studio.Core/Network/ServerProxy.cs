@@ -45,6 +45,8 @@ namespace Dev2.Network
             
             _wrappedConnection.PermissionsChanged += (sender, args) => RaisePermissionsChanged();
             _wrappedConnection.PermissionsModified += (sender, list) => RaisePermissionsModified(list);
+            _wrappedConnection.AuthenticationChanged += (sender, args) => RaiseAuthenticationChanged();
+            _wrappedConnection.AuthenticationModified += (sender, list) => RaiseAuthenticationModified(list);
             _wrappedConnection.NetworkStateChanged += (sender, args) => OnNetworkStateChanged(args);           
         }
 
@@ -226,13 +228,18 @@ namespace Dev2.Network
 
         public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
         public event EventHandler PermissionsChanged;
+        public event EventHandler AuthenticationChanged;
 
         void RaisePermissionsChanged()
         {
             PermissionsChanged?.Invoke(this, EventArgs.Empty);
         }
-
+        void RaiseAuthenticationChanged()
+        {
+            AuthenticationChanged?.Invoke(this, EventArgs.Empty);
+        }
         public event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
+        public event EventHandler<SecuritySettingsTO> AuthenticationModified;
 
         void RaisePermissionsModified(List<WindowsGroupPermission> args)
         {
@@ -242,7 +249,14 @@ namespace Dev2.Network
                 PermissionsModified(this, args);
             }
         }
-
+        void RaiseAuthenticationModified(SecuritySettingsTO args)
+        {
+            if (AuthenticationModified != null)
+            {
+                Dev2Logger.Debug("Authentication Modified: "+args, "Warewolf Debug");
+                AuthenticationModified(this, args);
+            }
+        }
         protected void OnNetworkStateChanged(NetworkStateEventArgs e)
         {
             var handler = NetworkStateChanged;

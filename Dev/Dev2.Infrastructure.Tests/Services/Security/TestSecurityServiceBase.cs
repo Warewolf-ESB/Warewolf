@@ -22,12 +22,16 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         }
 
         public List<WindowsGroupPermission> ReadPermissionsResults { get; set; }
+        public SecuritySettingsTO  ReadSecuritySettingsResults { get; set; }
 
         protected override List<WindowsGroupPermission> ReadPermissions()
         {
             return ReadPermissionsResults;
         }
-
+        protected override SecuritySettingsTO ReadSecuritySettings()
+        {
+            return ReadSecuritySettingsResults;
+        }
         protected override void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource,string secretKey)
         {
         }

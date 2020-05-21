@@ -463,19 +463,27 @@ namespace Dev2.Network
         public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
 
         public event EventHandler PermissionsChanged;
+        public event EventHandler AuthenticationChanged;
 
         void RaisePermissionsChanged()
         {
             PermissionsChanged?.Invoke(this, EventArgs.Empty);
         }
-
+        void RaiseAuthenticationChanged()
+        {
+            AuthenticationChanged?.Invoke(this, EventArgs.Empty);
+        }
         public event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
+        public event EventHandler<SecuritySettingsTO> AuthenticationModified;
 
         void RaisePermissionsModified(List<WindowsGroupPermission> args)
         {
             PermissionsModified?.Invoke(this, args);
         }
-
+        void RaiseAuthenticationModified(SecuritySettingsTO args)
+        {
+            AuthenticationModified?.Invoke(this, args);
+        }
         void UpdateIsAuthorized(bool isAuthorized)
         {
             if (IsAuthorized != isAuthorized)

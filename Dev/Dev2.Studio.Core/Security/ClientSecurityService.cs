@@ -18,6 +18,8 @@ using Dev2.Controller;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Warewolf;
+using Warewolf.Data;
+
 namespace Dev2.Security
 {
     public class ClientSecurityService : SecurityServiceBase
@@ -29,7 +31,8 @@ namespace Dev2.Security
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
             _environmentConnection = environmentConnection;
             EnvironmentConnection.NetworkStateChanged += OnNetworkStateChanged;
-            EnvironmentConnection.PermissionsModified+=EnvironmentConnectionOnPermissionsModified;
+            EnvironmentConnection.PermissionsModified += EnvironmentConnectionOnPermissionsModified;
+            EnvironmentConnection.AuthenticationModified += EnvironmentConnectionOnAuthenticationModified;
         }
 
         void EnvironmentConnectionOnPermissionsModified(object sender, List<WindowsGroupPermission> windowsGroupPermissions)
@@ -37,11 +40,17 @@ namespace Dev2.Security
             Permissions = windowsGroupPermissions;
         }
 
+        void EnvironmentConnectionOnAuthenticationModified(object sender, SecuritySettingsTO settings)
+        {
+            OverrideResource = settings.AuthenticationOverrideWorkflow;
+            SecretKey = settings.SecretKey;
+        }
+
         public IEnvironmentConnection EnvironmentConnection => _environmentConnection;
 
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs args)
         {
-            if(args.ToState == NetworkState.Online)
+            if (args.ToState == NetworkState.Online)
             {
                 Read();
             }
@@ -63,39 +72,51 @@ namespace Dev2.Security
                 };
                 Dev2Logger.Debug("Getting Permissions from Server", "Warewolf Debug");
 
-                var securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection,EnvironmentConnection.WorkspaceID).ConfigureAwait(true);
+                var securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection, EnvironmentConnection.WorkspaceID).ConfigureAwait(true);
                 List<WindowsGroupPermission> newPermissions = null;
+                INamedGuid newOverrideResource = null;
+                string newSecretKey = "";
+
                 if (securitySettingsTo != null)
                 {
                     Permissions = securitySettingsTo.WindowsGroupPermissions;
                     newPermissions = securitySettingsTo.WindowsGroupPermissions;
+                    newOverrideResource = securitySettingsTo.AuthenticationOverrideWorkflow;
+                    newSecretKey = securitySettingsTo.SecretKey;
                     Dev2Logger.Debug("Permissions from Server:" + Permissions, "Warewolf Debug");
                 }
+
                 if (newPermissions != null)
                 {
                     RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions));
                 }
+                if (newOverrideResource != null)
+                {
+                    RaiseAuthenticationModified(new AuthenticationModifiedEventArgs(newOverrideResource,newSecretKey));
+                }
+
+                RaiseAuthenticationChanged();
                 RaisePermissionsChanged();
             }
         }
 
         protected override List<WindowsGroupPermission> ReadPermissions() => null;
+        protected override SecuritySettingsTO ReadSecuritySettings() => null;
 
-        protected override void WritePermissions(List<WindowsGroupPermission> permissions,INamedGuid overrideResource,string secretKey)
+        protected override void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource, string secretKey)
         {
         }
 
-        protected override void LogStart([CallerMemberName]string methodName = null)
+        protected override void LogStart([CallerMemberName] string methodName = null)
         {
         }
 
-        protected override void LogEnd([CallerMemberName]string methodName = null)
+        protected override void LogEnd([CallerMemberName] string methodName = null)
         {
         }
 
         protected override void OnDisposed()
         {
-            
         }
     }
 }

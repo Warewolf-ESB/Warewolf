@@ -49,6 +49,18 @@ namespace Dev2.Runtime.Security
             return securitySettingsTO.WindowsGroupPermissions;
         }
 
+        protected override SecuritySettingsTO ReadSecuritySettings()
+        {
+            var reader = new SecurityRead();
+            var result = reader.Execute(null, null);
+            var serializer = new Dev2JsonSerializer();
+            var securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
+            TimeOutPeriod = securitySettingsTO.CacheTimeout;
+            OverrideResource = securitySettingsTO.AuthenticationOverrideWorkflow;
+            SecretKey = securitySettingsTO.SecretKey;
+            return securitySettingsTO;
+        }
+
         protected override void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource, string secretKey)
         {
             SecurityWrite.Write(new SecuritySettingsTO(permissions, overrideResource, secretKey));
