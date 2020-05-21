@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj" />
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj" />
+    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj" />
   </ItemGroup>
 
 </Project>
