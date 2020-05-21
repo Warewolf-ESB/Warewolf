@@ -228,6 +228,7 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
+        [DoNotParallelize]
         public void RevulyticsTracker_DisableAppplicationTrackerTest()
         {
             var tracker = GetRevulyticsTracker();

@@ -108,6 +108,7 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestMethod]
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Pieter Terblanche")]
+        [DoNotParallelize]
         public void TriggerQueueView_DeadLetterQueueSources()
         {
             var triggerQueueView = CreateViewModel();
