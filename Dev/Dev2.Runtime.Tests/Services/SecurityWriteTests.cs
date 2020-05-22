@@ -84,7 +84,7 @@ namespace Dev2.Tests.Runtime.Services
             securityWrite.Execute(new Dictionary<string, StringBuilder> { { "SecuritySettings", new StringBuilder(securitySettingsValue) } }, null);
             //------------Assert Results-------------------------
             var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
-            Assert.IsTrue(File.Exists(serverSecuritySettingsFile));
+            Assert.IsTrue(File.Exists(serverSecuritySettingsFile), $"File \"{serverSecuritySettingsFile}\" does not exist after writing security settings to it.");
             var fileData = File.ReadAllText(serverSecuritySettingsFile);
             Assert.IsFalse(fileData.StartsWith("{"));
             Assert.IsFalse(fileData.EndsWith("}"));
