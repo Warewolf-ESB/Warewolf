@@ -42,6 +42,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadRuntimeConfigurations))]
+        [DoNotParallelize]
         public void LoadRuntimeConfigurations_WebServerUri_Null_ExpectFail1()
         {
             //-------------------Arrange------------------
