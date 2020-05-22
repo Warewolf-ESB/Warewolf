@@ -59,6 +59,34 @@ namespace Dev2.Data.Tests.PathOperations
             mockPath.Verify(o => o.IOPath, Times.Exactly(1));
             mockPath.Verify(o => o.Get(ioPath, It.IsAny<List<string>>()), Times.Once);
         }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_GetBytes()
+        {
+            var someStringBytes = Encoding.UTF8.GetBytes("some string");
+            
+            var mockFileWrapper = new Mock<IFile>();
+            var mockCommonData = new Mock<ICommon>();
+            var mockPath = new Mock<IActivityIOOperationsEndPoint>();
+            var mockIoPath = new Mock<IActivityIOPath>();
+            var ioPath = mockIoPath.Object;
+            mockPath.Setup(o => o.IOPath).Returns(ioPath);
+            mockPath.Setup(o => o.Get(ioPath, It.IsAny<List<string>>()))
+                .Callback<IActivityIOPath, List<string>>((path, filesToRemove) => Assert.AreEqual(0, filesToRemove.Count))
+                .Returns(new MemoryStream(someStringBytes));
+
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object);
+            var result = broker.GetBytes(mockPath.Object);
+            
+            CollectionAssert.AreEqual(someStringBytes, result);
+
+            mockPath.Verify(o => o.IOPath, Times.Exactly(1));
+            mockPath.Verify(o => o.Get(ioPath, It.IsAny<List<string>>()), Times.Once);
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Dev2ActivityIOBroker_Get_GivenPath_ShouldReturnFileEncodingContents()
