@@ -79,10 +79,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     requestTo.Variables.Add(key, variables[key]);
                 }
             }
-            if( requestTo.Variables["isToken"] is null)
-            {
-                requestTo.Variables.Add("isToken","False");
-            }
+
             Thread.CurrentPrincipal = ctx.Request.User;
             var response = ExecuteWorkflow(requestTo, OverrideResource.Name, workspaceId, ctx.FetchHeaders(), ctx.Request.User);
             ctx.Send(response);

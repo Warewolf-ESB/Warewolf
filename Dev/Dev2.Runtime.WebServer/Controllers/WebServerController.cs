@@ -157,8 +157,12 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("login")]
         public HttpResponseMessage ExecuteLoginWorkflow()
         {
-            var requestVar = new NameValueCollection();
-            return ProcessTokenRequest<TokenRequestHandler>(requestVar);
+
+            var requestVariables = new NameValueCollection
+            {
+                {"isToken", "False"}
+            };
+            return ProcessTokenRequest<TokenRequestHandler>(requestVariables);
         }
 
         [HttpGet]
