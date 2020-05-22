@@ -12,11 +12,15 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Warewolf.Data;
+using Warewolf.Services;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -34,10 +38,12 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 File.Delete(EnvironmentVariables.ServerSecuritySettingsFile);
             }
+            var resourceId = Guid.NewGuid();
+            var resourceName = @"Hello World";
 
             var overrideResource = new NamedGuid
             {
-                Name = "Resourcename",
+                Name = "appAuth",
                 Value = Guid.NewGuid()
             };
             var permissions = new[]
@@ -50,17 +56,34 @@ namespace Dev2.Tests.Runtime.WebServer
 
                 new WindowsGroupPermission
                 {
-                    ResourceID = Guid.NewGuid(), ResourceName = "Category1\\Workflow1",
-                    WindowsGroup = "Windows Group 1", View = false, Execute = true, Contribute = false
+                    ResourceID = resourceId,
+                    ResourceName = "Category1\\Workflow1",
+                    WindowsGroup = "Public",
+                    View = true,
+                    Execute = true,
+                    Contribute = false
                 }
             };
             var hmac = new HMACSHA256();
             var secretKey = Convert.ToBase64String(hmac.Key);
             var securitySettingsTO = new SecuritySettingsTO(permissions, overrideResource,secretKey);
-
             SecurityWrite.Write(securitySettingsTO);
             var payload = "<DataList><UserGroups Description='' IsEditable='True' ColumnIODirection='Output'><Name Description='' IsEditable='True' ColumnIODirection='Output'>public</Name></UserGroups></DataList>";
+
+            var res = new Mock<IResource>();
+            res.Setup(a => a.ResourceName).Returns(resourceName);
+            res.Setup(resource => resource.ResourceID).Returns(resourceId);
+            var mockCatalog = new Mock<IResourceCatalog>();
+            mockCatalog.Setup(a => a.GetResource(It.IsAny<Guid>(), resourceId)).Returns(res.Object);
+            mockCatalog.Setup(a => a.GetResourcePath(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("bob\\dave");
+            CustomContainer.Register(mockCatalog.Object);
+
+            var mockResourceNameProvider = new Mock<IResourceNameProvider>();
+            mockResourceNameProvider.Setup(a => a.GetResourceNameById(It.IsAny<Guid>())).Returns(resourceName);
+            CustomContainer.Register(mockResourceNameProvider.Object);
+
             //------------Execute Test---------------------------
+
             var encryptedPayload = JwtManager.GenerateToken(payload);
             var response = JwtManager.ValidateToken(encryptedPayload);
             //------------Assert Results-------------------------
