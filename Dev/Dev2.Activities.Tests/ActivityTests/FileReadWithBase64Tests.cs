@@ -11,8 +11,13 @@
 using System;
 using System.Collections.Generic;
 using ActivityUnitTests;
+using Dev2.Data.TO;
+using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -27,6 +32,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
+        private string _filePath;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            var newGuid = Guid.NewGuid();
+            _filePath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "2.txt");
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -165,6 +178,73 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual(result, dsfForEachItems[0].Name);
             Assert.AreEqual(result, dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("FileReadWithBase64_Intergration")]
+        public void FileReadWithBase64_TryExecuteConcreteAction_IsResultBase64_ReturnsOutputStrings()
+        {
+            //------------Setup for test--------------------------
+            CreateFileTest(_filePath);
+            const string result = "[[CompanyName]]";
+            var env = new ExecutionEnvironment();
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(env);
+            mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
+
+            var act = new TestFileReadWithBase64 { IsResultBase64 = true, InputPath = _filePath, Result = result };
+
+            //------------Execute Test---------------------------
+            var dsfOutputStrings = act.TestTryExecuteConcreteAction(mockDataObject.Object, out _, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfOutputStrings.Count);
+            Assert.AreEqual("c29tZSBzdHJpbmc=", dsfOutputStrings[0].OutputStrings[0]);
+            Assert.AreEqual(4, act.GetDebugInputs(env, 0).Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("FileReadWithBase64_Intergration")]
+        public void FileReadWithBase64_TryExecuteConcreteAction_IsResultNotBase64_ReturnsOutputStrings()
+        {
+            //------------Setup for test--------------------------
+            CreateFileTest(_filePath);
+            const string result = "[[CompanyName]]";
+            var env = new ExecutionEnvironment();
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(env);
+            mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
+
+            var act = new TestFileReadWithBase64 { IsResultBase64 = false, InputPath = _filePath, Result = result };
+            //------------Execute Test---------------------------
+            var dsfOutputStrings = act.TestTryExecuteConcreteAction(mockDataObject.Object, out _, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dsfOutputStrings.Count);
+            Assert.AreEqual("some string", dsfOutputStrings[0].OutputStrings[0]);
+            Assert.AreEqual(3, act.GetDebugInputs(env, 0).Count);
+        }
+
+        private void CreateFileTest(string filePath)
+        {
+            System.IO.File.WriteAllText(filePath, "some string");
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            System.IO.File.Delete(_filePath);
+        }
+
+    }
+
+    internal class TestFileReadWithBase64 : FileReadWithBase64
+    {
+        public IList<OutputTO> TestTryExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO errorResultTO, int update)
+        {
+            return base.TryExecuteConcreteAction(dataObject, out errorResultTO, update);
         }
     }
 }
