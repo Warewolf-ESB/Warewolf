@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
     public class SharepointSearchToEqualityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_EmptyTos_IsEqual()
         {
@@ -25,6 +26,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_FieldNames__Object_Is_IsEqual()
         {
@@ -40,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFieldNames_Object_Is_Not_IsEqual_CaseSensitive()
         {
@@ -55,6 +58,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFieldNames_Object_Is_Not_IsEqua()
         {
@@ -70,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_SearchType__Object_Is_IsEqual()
         {
@@ -85,6 +90,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentSearchType_Object_Is_Not_IsEqual_CaseSensitive()
         {
@@ -100,6 +106,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentSearchType_Object_Is_Not_IsEqua()
         {
@@ -116,6 +123,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_InternalName__Object_Is_IsEqual()
         {
@@ -131,6 +139,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentInternalName_Object_Is_Not_IsEqual_CaseSensitive()
         {
@@ -146,6 +155,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentInternalName_Object_Is_Not_IsEqua()
         {
@@ -161,6 +171,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_From__Object_Is_IsEqual()
         {
@@ -176,6 +187,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFrom_Object_Is_Not_IsEqual_CaseSensitive()
         {
@@ -191,6 +203,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentTo_Object_Is_Not_IsEqua()
         {
@@ -206,6 +219,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_To__Object_Is_IsEqual()
         {
@@ -221,6 +235,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentTo_Object_Is_Not_IsEqual_CaseSensitive()
         {
@@ -235,6 +250,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentValueToMatch_Object_Is_Not_IsEqua()
         {
@@ -250,6 +266,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_ValueToMatch__Object_Is_IsEqual()
         {
@@ -265,6 +282,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentValueToMatch_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -280,6 +298,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFrom_Object_Is_Not_IsEqua()
         {
@@ -296,6 +315,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsSearchCriteriaEnabled_Different_Object_Is_Not_Equal()
         {
@@ -313,6 +333,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsSearchCriteriaEnabled_Same_Object_Is_Equal()
         {
@@ -330,6 +351,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Inserted_Different_Object_Is_Not_Equal()
         {
@@ -347,6 +369,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Inserted_Same_Object_Is_Equal()
         {
@@ -363,6 +386,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsSearchCriteriaFocused_Different_Object_Is_Not_Equal()
         {
@@ -380,6 +404,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsSearchCriteriaFocused_Same_Object_Is_Equal()
         {
@@ -397,6 +422,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void SavedSource_Null_Object_Is_NotEqual()
         {
             //---------------Set up test pack-------------------
@@ -410,6 +436,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void SavedSource_Itself_Is_Equal()
         {
             //---------------Set up test pack-------------------
@@ -423,6 +450,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void SavedSource_DifferentType_Is_NotEqual()
         {
             //---------------Set up test pack-------------------
@@ -441,6 +469,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void EqualsOperator_WithEqualObjects_AreEqual()
         {
             var firstEmailServiceSourceDefinition = new SharePointServiceSourceDefinition
@@ -464,6 +493,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NotEqualsOperator_WithNotEqualObjects_AreNotEqual()
         {
             var firstEmailServiceSourceDefinition = new SharePointServiceSourceDefinition

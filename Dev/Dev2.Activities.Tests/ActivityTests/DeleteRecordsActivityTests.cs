@@ -36,6 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Delete Using Index
 
         [TestMethod]
+        [Timeout(60000)]
         public void DeleteRecord_Using_Index_When_Record_Exists_Expected_RecordToBeRemovedFromRecordset_Success()
         {
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(1)]]", "[[res]]");
@@ -58,6 +59,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Delete Using Star
 
         [TestMethod]
+        [Timeout(60000)]
         public void DeleteRecord_Using_Star_When_Record_Exists_Expected_WholeRecordsetToBeRemoved_Success()
         {
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(*)]]", "[[res]]");
@@ -77,6 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Delete Using Blank Index
 
         [TestMethod]
+        [Timeout(60000)]
         public void DeleteRecord_Using_Blank_Index_When_Record_Exists_Expected_LastRecordToBeRemoved_Success()
         {
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1()]]", "[[res]]");
@@ -99,6 +102,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Delete Using Evalauted Index
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DeleteRecords,UnitTest")]
         [Description("Test that When Deleting a Record With An Valid Evaluated Index It Happens As Excepted")]
         [Owner("Travis Frisinger")]
@@ -163,6 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Error Test Cases
 
         [TestMethod]
+        [Timeout(60000)]
         public void DeleteRecord_Blank_RecordSet_Name_When_Record_Exists_Expected_No_Change_Failure()
         {
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "", "[[res]]");
@@ -179,6 +184,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DeleteRecord_Blank_Result_Field_When_Record_Exists_Expected_RecordRemove()
         {
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(1)]]", "");
@@ -196,6 +202,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DeleteRecord_Scalar_When_Record_Exists_Expected_NoChange()
         {
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[res]]", "[[res]]");
@@ -211,6 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DeleteRecord_When_Index_Doesnt_Exist_Expected_NoChange()
         {
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(8)]]", "[[res]]");
@@ -226,6 +234,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DeleteRecord_When_Index_Is_Negative_Expected_No_Change_Failure()
         {
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(-1)]]", "[[res]]");
@@ -241,6 +250,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DeleteRecord_When_Index_Is_Zero_Expected_No_Change_Failure()
         {
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(0)]]", "[[res]]");
@@ -278,6 +288,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivity_UpdateForEachInputs")]
         public void DsfDeleteRecordActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -293,6 +304,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivity_GetOutputs")]
         public void DsfDeleteRecordActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -308,6 +320,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivity_UpdateForEachInputs")]
         public void DsfDeleteRecordActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
@@ -324,6 +337,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivity_UpdateForEachInputs")]
         public void DsfDeleteRecordActivity_UpdateForEachInputs_UpdatesNotMatching_DoesNotUpdateRecordsetName()
@@ -339,6 +353,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivity_UpdateForEachOutputs")]
         public void DsfDeleteRecordActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -352,6 +367,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivity_UpdateForEachOutputs")]
         public void DsfDeleteRecordActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -368,6 +384,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivity_UpdateForEachOutputs")]
         public void DsfDeleteRecordActivity_UpdateForEachOutputs_1Updates_UpdateResult()
@@ -382,6 +399,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivity_GetForEachInputs")]
         public void DsfDeleteRecordActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -398,6 +416,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDeleteRecordActivityGetForEachOutputs")]
         public void DsfDeleteRecordActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -413,6 +432,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfDeleteRecordActivity_GetState")]
         public void DsfDeleteRecordActivity_GetState_ReturnsStateVariable()
@@ -459,6 +479,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region |Valid Recordset Name|
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfDeleteRecordActivity_Execute")]
         public void DsfDeleteRecordActivity_Execute_EmptyRecordsetName_Failure()
@@ -473,6 +494,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfDeleteRecordActivity_Execute")]
         public void DsfDeleteRecordActivity_Execute_RecordsetHasFieldName_Failure()
@@ -487,6 +509,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfDeleteRecordActivity_Execute")]
         public void DsfDeleteRecordActivity_Execute_RecordsetHasAnIndex_Failure()
@@ -501,6 +524,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfDeleteRecordActivity_Execute")]
         public void DsfDeleteRecordActivity_Execute_TwoInputVariables_Failure()
@@ -515,6 +539,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfDeleteRecordActivity_Execute")]
         public void DsfDeleteRecordActivity_Execute_InputIsAScalar_Failure()

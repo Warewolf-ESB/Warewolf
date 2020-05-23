@@ -17,6 +17,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
     public class DsfPublishRabbitMQActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Construct")]
         public void DsfSqlBulkInsertActivity_Construct_Paramterless_SetsDefaultPropertyValues()
@@ -31,6 +32,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
         public void DsfPublishRabbitMQActivity_Execute_Sucess()
@@ -74,6 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
         public void DsfPublishRabbitMQActivity_Execute_Failure_NullSource()
@@ -97,6 +100,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
         public void DsfPublishRabbitMQActivity_Execute_Failure_NoParams()
@@ -122,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
         public void DsfPublishRabbitMQActivity_Execute_Failure_InvalidParams()
@@ -147,6 +152,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
         [ExpectedException(typeof(Exception))]
@@ -174,6 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPublishRabbitMQActivity_GetState")]
         public void DsfPublishRabbitMQActivity_GetState_ReturnsStateVariable()

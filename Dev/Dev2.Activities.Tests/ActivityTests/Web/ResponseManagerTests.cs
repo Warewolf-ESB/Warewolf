@@ -30,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     public class WebResponseManagerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenOutputDescriptionANdMapping_ShouldNotThrowException()
         {
@@ -47,6 +48,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UnescapeRawXml_GivenEscapedXml_ShouldUnescapeXml()
         {
@@ -68,6 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UnescapeRawXml_GivenUnEscapedXml_ShouldUnescapeXml()
         {
@@ -89,6 +92,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PushResponseIntoEnvironment_GivenNoDataObject_ShouldCatchObjectNullException()
@@ -108,6 +112,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PushResponseIntoEnvironment_GivenResponse_ShouldNotThrowException()
         {
@@ -157,6 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PushResponseIntoEnvironment_GivenResponseAndIsJosn_ShouldAssignJsonObjects()
         {
@@ -197,6 +203,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PushResponseIntoEnvironment_GivenScalaResponseAndIsJosn_ShouldAssignJsonObjects()
         {
@@ -235,6 +242,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PushXmlIntoEnvironment_GivenNull_ShouldLoggError()
         {
@@ -281,6 +289,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PushResponseIntoEnvironment_GivenNoResponse_ShouldNotThrowException()
         {
@@ -306,6 +315,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PushResponseIntoEnvironment_GivenNoResponse_ShouldNotAssignOutputs()
         {
@@ -335,6 +345,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PushResponseIntoEnvironment_GivenNoResponse_ShouldNotAaddError()
         {
@@ -361,6 +372,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PushResponseIntoEnvironment_GivenEmptyMappedTo_ShouldNotAddPath()
         {

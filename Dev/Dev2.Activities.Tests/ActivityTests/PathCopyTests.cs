@@ -37,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCopy_UpdateForEachInputs")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -56,6 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCopy_UpdateForEachInputs")]
         public void DsfPathCopy_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -77,6 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCopy_UpdateForEachOutputs")]
         public void DsfPathCopy_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -92,6 +95,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCopy_UpdateForEachOutputs")]
         public void DsfPathCopy_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -110,6 +114,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCopy_UpdateForEachOutputs")]
         public void DsfPathCopy_UpdateForEachOutputs_1Updates_UpdateResult()
@@ -128,6 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCopy_GetForEachInputs")]
         public void DsfPathCopy_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -149,6 +155,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCopy_GetForEachOutputs")]
         public void DsfPathCopy_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -167,6 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfPathCopy_Execute")]
         public void Copy_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
@@ -207,6 +215,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfPathCopy_Construct")]
         public void Copy_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()
@@ -218,6 +227,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfPathCopy_GetState")]
         public void DsfPathCopy_GetState_ReturnsStateVariable()

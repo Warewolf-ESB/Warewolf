@@ -14,6 +14,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
     public class DsfCreateJsonActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -29,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -44,6 +46,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_IsEqual()
         {
@@ -60,6 +63,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
@@ -76,6 +80,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_JsonString_IsEqual()
         {
@@ -92,6 +97,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_JsonString_Is_Not_Equal()
         {
@@ -108,6 +114,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_JsonMappings_IsEqual()
         {
@@ -125,6 +132,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_JsonMappings_DifferentIndexes_Is_Not_Equal()
         {
@@ -162,6 +170,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_JsonMappings_Is_Not_Equal()
         {
@@ -192,6 +201,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfCreateJsonActivity_GetState")]
         public void DsfCreateJsonActivity_GetState_ReturnsStateVariable()

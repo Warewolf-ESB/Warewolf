@@ -37,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public const string CommandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteCommandLineShouldHaveInputProperty()
         {
             //------------Setup for test--------------------------
@@ -49,6 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfExecuteCommandLineActivity_GetOutputs")]
         public void DsfExecuteCommandLineActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -68,6 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteCommandLineShouldHaveCommandResultProperty()
         {
             //------------Setup for test--------------------------
@@ -80,6 +83,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [DeploymentItem(CommandLineToolName)]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
         {
@@ -101,6 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [DoNotParallelize]
         public void OnExecuteWhereConsolePathHasSpacesIsNotWrappedInQuotesExpectError()
         {
@@ -135,6 +140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void OnExecuteWhereConsolePathHasNoSpacesIsNotWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
@@ -168,6 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void OnExecute_WhereConsolePathStartsWithExplorer_ShouldError()
         {
             //------------Setup for test--------------------------
@@ -190,6 +197,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void OnExecute_WhereConsolePathStartsWithCmd_ShouldError()
         {
             //------------Setup for test--------------------------
@@ -213,6 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void OnExecuteWhereConsoleOutputsWithArgsWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
@@ -247,6 +256,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [DoNotParallelize]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResult()
         {
@@ -282,6 +292,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResultCmddirc()
         {
             //------------Setup for test--------------------------
@@ -307,6 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResultExplorer()
         {
             //------------Setup for test--------------------------
@@ -330,6 +342,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
         {
             // ------------Setup for test--------------------------
@@ -360,6 +373,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [DoNotParallelize]
         public void OnExecuteWhereOutputToRecordWithNoIndexWithConsoleOutputsExpectOutputForResultAppendedToRecordsets()
         {
@@ -396,6 +410,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void OnExecuteWhereOutputToRecordWithStarIndexWithConsoleOutputsExpectOutputForResultOverwriteToRecordsets()
         {
             //------------Setup for test--------------------------
@@ -432,6 +447,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [DoNotParallelize]
         public void OnExecuteWhereOutputToRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
         {
@@ -463,6 +479,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [DoNotParallelize]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToRecordSetExpectOutputResultsToMultipleRowsInRecordSet()
         {
@@ -492,6 +509,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [DoNotParallelize]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToScalarExpectOutputResultOfLastCommandinScalar()
         {
@@ -519,6 +537,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachInputs")]
         public void DsfExecuteCommandLineActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -535,6 +554,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachInputs")]
         public void DsfExecuteCommandLineActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
@@ -555,6 +575,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachInputs")]
         public void DsfExecuteCommandLineActivity_UpdateForEachInputs_UpdatesNotMatching_DoesNotUpdateRecordsetName()
@@ -572,6 +593,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachOutputs")]
         public void DsfExecuteCommandLineActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -587,6 +609,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachOutputs")]
         public void DsfExecuteCommandLineActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -605,6 +628,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfExecuteCommandLineActivity_UpdateForEachOutputs")]
         public void DsfExecuteCommandLineActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -622,6 +646,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfExecuteCommandLineActivity_GetForEachInputs")]
         public void DsfExecuteCommandLineActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -642,6 +667,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfExecuteCommandLineActivity_GetForEachOutputs")]
         public void DsfExecuteCommandLineActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -671,6 +697,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DsfExecuteCommandLineActivity_Priority")]
         public void DsfExecuteCommandLineActivity_Priority_Initialization_Normal()
@@ -687,6 +714,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsExecuteCommandLineActivity_GetState")]
         public void DsExecuteCommandLineActivity_GetState_ReturnsStateVariable()
