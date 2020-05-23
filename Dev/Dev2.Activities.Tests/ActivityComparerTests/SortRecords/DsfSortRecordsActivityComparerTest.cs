@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SortRecords
     public class DsfSortRecordsActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SortRecords
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -40,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SortRecords
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Same_DisplayName_IsEqual()
         {
@@ -56,6 +59,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SortRecords
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Different_DisplayName_Is_Not_Equal()
         {
@@ -71,6 +75,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SortRecords
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_SortField_IsEqual()
         {
@@ -87,6 +92,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SortRecords
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_SortField_Is_Not_Equal()
         {
@@ -103,6 +109,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SortRecords
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_SelectedSort_IsEqual()
         {
@@ -119,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SortRecords
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_SelectedSort_Is_Not_Equal()
         {

@@ -29,6 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class DsfEnhancedDotNetDllActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Constructor_GivenIsNew_ShouldHaveCorrectValues()
         {
@@ -43,6 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNoNamespace_ShouldAddError()
         {
@@ -61,6 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNoMethod_ShouldAddError()
         {
@@ -87,6 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNoMethodNameSpace_ShouldPassThough()
         {
@@ -126,6 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenIsExistingObject_ShouldEvalFromEnvironment()
         {
@@ -175,6 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNullValues_ShouldExecuteMethodUsingNulls()
         {
@@ -250,6 +256,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenEmptyIsNull_ShouldExecuteWithNull()
         {
@@ -320,6 +327,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Null value passed", methodResult);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenEmptyIsNullFalse_ShouldExecuteWithEmptyString()
         {
@@ -392,6 +400,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNoConstructor_ShouldDefaultEmptyConstructor()
         {
@@ -438,6 +447,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenValidArgs_ShouldReturnValidData()
         {
@@ -485,6 +495,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void Execute_GivenValidArgs_ListType_ToObject_ShouldReturnValidData()
         {
@@ -538,6 +549,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
        
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void Execute_GivenValidArgs_ListType_ToRecordset_ShouldReturnValidData()
         {
@@ -589,6 +601,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void Execute_GivenValidArgs_ListType_ToScalar_ShouldReturnValidData()
         {
@@ -638,6 +651,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenExistingObject_ShouldUseExistingObject()
         {
@@ -696,6 +710,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenParameters_ShouldUseExistingObject()
         {
@@ -766,6 +781,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenActivity_ShouldReturnDatgrid()
         {
@@ -780,6 +796,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void BuildConstructorInputs_GivenConstructor_ShouldConstructorDebug()
         {
@@ -848,6 +865,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void BuildConstructorOutput_GivenConstructorWithOutput_ShouldConstructorDebug()
         {
@@ -915,6 +933,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void BuildMethodInputs_GivenActionsWithInputs_ShouldActionsInputDebug()
         {
@@ -986,6 +1005,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void BuildMethodOutputs_GivenMethodOutput_ShouldDebugOutput()
         {
@@ -1060,6 +1080,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void BuildMethodOutputs_GivenMethodIsvoid_ShouldReturnNone()
         {
@@ -1140,6 +1161,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenHasIncorrectExistingTypeObjectSelected_ShouldAddCorrectError()
         {
@@ -1218,6 +1240,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             StringAssert.Contains(single, "is not compatible with");
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         public void Execute_GivenValidArgs_ListType_ToObject_ShouldReturnValidData_IsServiceTestExecution()
         {

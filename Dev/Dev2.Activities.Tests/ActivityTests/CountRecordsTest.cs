@@ -36,6 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Store To Scalar Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void CountOutputToScalar_Expected_ScalarValueCorrectlySetToRecordSetCount()
         {
 
@@ -53,6 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         //Bug 7853
         [TestMethod]
+        [Timeout(60000)]
         public void CountOutputToScalar_With_EmptyRecSet_Expected_ScalarValueCorrectlySetTo0()
         {
 
@@ -74,6 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Store To RecordSet Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void CountOutputToRecset()
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
@@ -95,6 +98,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_UpdateForEachInputs")]
         public void DsfCountRecordsetActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -109,6 +113,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_GetOutputs")]
         public void DsfCountRecordsetActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -125,6 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_UpdateForEachInputs")]
         public void DsfCountRecordsetActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
@@ -141,6 +147,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_UpdateForEachInputs")]
         public void DsfCountRecordsetActivity_UpdateForEachInputs_1Updates_UpdateRecordsetName()
@@ -156,6 +163,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_UpdateForEachOutputs")]
         public void DsfCountRecordsetActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -170,6 +178,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_UpdateForEachOutputs")]
         public void DsfCountRecordsetActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -186,6 +195,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_UpdateForEachOutputs")]
         public void DsfCountRecordsetActivity_UpdateForEachOutputs_1Updates_UpdateCountNumber()
@@ -201,6 +211,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivityGetForEachInputs")]
         public void DsfCountRecordsetActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -217,6 +228,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_GetForEachOutputs")]
         public void DsfCountRecordsetActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
@@ -233,6 +245,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_GetState")]
         public void DsfCountRecordsetActivity_GetState_ReturnsStateVariable()
@@ -281,6 +294,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region |Valid Recordset Name|
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfCountRecordsetActivity_Execute")]
         public void DsfCountRecordsetActivity_Execute_EmptyRecordsetName_NoCount()
@@ -297,6 +311,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfCountRecordsetActivity_Execute")]
         public void DsfCountRecordsetActivity_Execute_RecordsetHasFieldName_NoCount()
@@ -313,6 +328,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfCountRecordsetActivity_Execute")]
         public void DsfCountRecordsetActivity_Execute_TwoInputVariables_NoCount()
@@ -329,6 +345,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfCountRecordsetActivity_Execute")]
         public void DsfCountRecordsetActivity_Execute_InputIsAScalar_NoCount()

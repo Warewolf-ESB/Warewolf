@@ -30,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             }
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenIsValid_ShouldShouldNotBeNull()
         {
@@ -41,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             Assert.IsNotNull(localPathManager);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenInValid_ShouldShouldNotBeNull()
         {
@@ -53,6 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ManageDirectory_GivenInValid_ShouldBeNotNull()
         {
@@ -66,6 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             Assert.IsFalse(string.IsNullOrEmpty(manageDirectory));
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ManageDirectory_GivenValid_ShouldBeNotNull()
         {
@@ -80,6 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateValidFolder_GivenValid_ShouldNotCreateFolder()
         {
@@ -94,6 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             Assert.IsTrue(Directory.Exists(validFolder));
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateValidFolder_GivenInValid_ShouldCreateFolder()
         {
@@ -109,6 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetFileName_GivenInValid_ShouldReturnFilename()
         {
@@ -123,6 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             Assert.AreEqual("hi.file", fileName);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetFullFileName_GivenInValid_ShouldReturnFullFilename()
         {
@@ -138,6 +146,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void FileExist_GivenTemp_ShouldReturnFalse()
         {

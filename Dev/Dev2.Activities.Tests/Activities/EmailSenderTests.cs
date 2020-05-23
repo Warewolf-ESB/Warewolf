@@ -20,6 +20,7 @@ namespace Dev2.Tests.Activities.Activities
     public class EmailSenderTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(EmailSender))]
         public void EmailSender_Validate_Send()
