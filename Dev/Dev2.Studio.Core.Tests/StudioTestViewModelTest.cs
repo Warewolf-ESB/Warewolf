@@ -107,6 +107,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("StudioTestViewModel_DebugOutputMessage")]
+        [DoNotParallelize]
         public void StudioTestViewModel_DebugOutputMessage_Handle_NotNull()
         {
             //------------Setup for test--------------------------

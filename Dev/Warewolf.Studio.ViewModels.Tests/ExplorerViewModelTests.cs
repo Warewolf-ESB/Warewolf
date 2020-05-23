@@ -102,6 +102,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod,Timeout(60000)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
+        [DoNotParallelize]
         public void ExplorerViewModel_ValidateEnvironmentContainsDoesNotAdd()
         {
             //arrange
