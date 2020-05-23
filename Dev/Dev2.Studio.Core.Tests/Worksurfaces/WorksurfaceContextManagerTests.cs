@@ -93,7 +93,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -115,7 +114,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -141,7 +139,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -167,7 +164,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -193,7 +189,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -219,7 +214,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -245,7 +239,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -271,7 +264,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -297,7 +289,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -323,7 +314,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
 
@@ -351,7 +341,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -377,7 +366,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -403,8 +391,8 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void EditMySqlSource_GivenResourceModel_ShouldPassThrough()
@@ -428,7 +416,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -455,7 +442,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -520,8 +506,8 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
             Assert.IsTrue(workSurfaceViewModels);
-
         }
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void DisplayResourceWizard_GivenOracleResourceType_ShouldEditODBC()
@@ -551,7 +537,6 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
             Assert.IsTrue(workSurfaceViewModels);
-
         }
 
         [TestMethod]
@@ -583,11 +568,11 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
             Assert.IsTrue(workSurfaceViewModels);
-
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenMySqlDatabaseResourceType_ShouldEditODBC()
         {
             //---------------Set up test pack-------------------
@@ -614,7 +599,6 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<Common.Interfaces.ServerProxyLayer.IDbSource>);
             Assert.IsTrue(workSurfaceViewModels);
-
         }
 
         [TestMethod]
@@ -650,8 +634,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-
-
         public void DisplayResourceWizard_GivenWcfSourceResourceType_ShouldEditWcfSource()
         {
             //---------------Set up test pack-------------------
@@ -712,8 +694,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-
-
         public void DisplayResourceWizard_GivenExchangeSourceResourceType_ShouldEditExchangeSource()
         {
             //---------------Set up test pack-------------------
@@ -744,8 +724,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-
-
         public void DisplayResourceWizard_GivenDropBoxSourceResourceType_ShouldEditDropBoxSource()
         {
             //---------------Set up test pack-------------------
@@ -776,8 +754,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-
-
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenSharepointServerSourceResourceType_ShouldEditSharepointServerSource()
         {
             //---------------Set up test pack-------------------
@@ -840,8 +817,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-
-
         public void DisplayResourceWizard_GivenRabbitMQSourceResourceType_ShouldEditRabbitMQSource()
         {
             //---------------Set up test pack-------------------
@@ -930,14 +905,11 @@ namespace Dev2.Core.Tests
             sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
             var workSurfaceViewModels = _shellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
-
             Assert.IsTrue(workSurfaceViewModels);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-
-
         public void DisplayResourceWizard_GivenServerSourceType_ShouldServerSource()
         {
             //---------------Set up test pack-------------------
@@ -1011,7 +983,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -1032,7 +1003,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
 
         [TestMethod]
@@ -1052,8 +1022,6 @@ namespace Dev2.Core.Tests
             var afterCount = _shellViewModel.Items.Count;
             //---------------Test Result -----------------------
             Assert.IsTrue(afterCount > beforeCount);
-
         }
-
     }
 }
