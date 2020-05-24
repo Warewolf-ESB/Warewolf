@@ -34,6 +34,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
+    [DoNotParallelize]//Due to the type of dependency injection used in this class. Remove CustomContainer.Register from ServiceTestViewModelTests.cs and retry.
     partial class ServiceTestViewModelTests
     {
 
