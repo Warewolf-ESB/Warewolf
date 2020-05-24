@@ -626,6 +626,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_RunAllTests")]
         [Description("An exisiting workflow with unsaved changes that is saved, must commit the resource model.")]
         [Owner("Pieter Terblanche")]
+        [DoNotParallelize]
         public void MainViewModel_RunAllTests()
         {
             CreateFullExportsAndVm();
