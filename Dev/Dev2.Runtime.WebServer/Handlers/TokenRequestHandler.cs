@@ -135,11 +135,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                     PayLoad = _executePayload ?? string.Empty,
                     Serializer = _serializer,
                 };
-                return CreateEncryptedResponse(DefaultExecutionResponse(executionDto));
-            }
-
-            private string DefaultExecutionResponse(ExecutionDto executionDto)
-            {
                 var allErrors = new ErrorResultTO();
 
                 var currentErrors = executionDto.DataObject.Environment?.Errors?.Union(executionDto.DataObject.Environment?.AllErrors);
@@ -155,11 +150,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 executionDto.Request = _esbExecuteRequest;
-
                 executionDto.ErrorResultTO = allErrors;
-
                 var executionDtoExtensions = new ExecutionDtoExtensions(executionDto);
-                return executionDtoExtensions.CreatePayloadResponse();
+                var resp = executionDtoExtensions.CreateResponse();
+                return CreateEncryptedResponse(resp.Content);
             }
 
             private static IResponseWriter CreateEncryptedResponse(string payload)

@@ -11,8 +11,10 @@
 
 using System;
 using System.Linq;
+using System.Net;
 using System.Runtime;
 using System.Text;
+using System.Web;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Communication;
@@ -68,104 +70,55 @@ namespace Dev2.Runtime.WebServer
             _executionDto = executionDto;
         }
 
-        public string CreatePayloadResponse()
+        public class ResponseData
         {
-            var dataObject = _executionDto.DataObject;
-            var esbExecuteRequest = _executionDto.Request;
-            var executionDlid = _executionDto.DataListIdGuid;
-            var workspaceGuid = _executionDto.WorkspaceID;
-            var serviceName = _executionDto.ServiceName;
-            var resource = _executionDto.Resource;
-            var formatter = _executionDto.DataListFormat;
-            var webRequest = _executionDto.WebRequestTO;
-            var serializer = _executionDto.Serializer;
-            var allErrors = _executionDto.ErrorResultTO;
-            bool wasInternalService = esbExecuteRequest?.WasInternalService ?? false;
-
-            if (!wasInternalService)
+            private ResponseData(string content)
             {
-                dataObject.DataListID = executionDlid;
-                dataObject.WorkspaceID = workspaceGuid;
-                dataObject.ServiceName = serviceName;
-                if (dataObject.ExecutionException is null)
+                Content = content;
+            }
+
+            private ResponseData(string content, string contentType)
+                : this(content)
+            {
+                ContentType = contentType;
+            }
+
+            private ResponseData(HttpException exception, string content)
+                : this(content)
+            {
+                Exception = exception;
+            }
+            public string Content { get; }
+            public string ContentType { get; }
+            public HttpException Exception { get; }
+
+            public static ResponseData FromExecutionDto(IExecutionDto executionDto, string contentType)
+            {
+                return new ResponseData(executionDto.PayLoad, contentType);
+            }
+
+            public static ResponseData FromException(HttpException exception, string content)
+            {
+                return new ResponseData(exception, content);
+            }
+
+            public IResponseWriter ToResponseWriter(IStringResponseWriterFactory stringResponseWriterFactory)
+            {
+                if (Exception != null)
                 {
-                    _executionDto.PayLoad = GetEncryptedPayload(dataObject, resource, webRequest, ref formatter);
-                }
-                else
-                {
-                    var content = GetExecuteExceptionPayload(dataObject);
-                    return System.Net.HttpStatusCode.InternalServerError.ToString();
-                }
-            }
-            else
-            {
-                // internal service request we need to return data for it from the request object
-                _executionDto.PayLoad = string.Empty;
-                var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
-
-                if (msg != null)
-                {
-                    _executionDto.PayLoad = msg.Message.ToString();
+                    return new ExceptionResponseWriter(HttpStatusCode.InternalServerError, Content);
                 }
 
-                // out fail safe to return different types of data from services
-                if (string.IsNullOrEmpty(_executionDto.PayLoad))
-                {
-                    _executionDto.PayLoad = esbExecuteRequest.ExecuteResult.ToString();
-                }
+                return stringResponseWriterFactory.New(Content, ContentType);
             }
-
-            if (dataObject.Environment.HasErrors())
-            {
-                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
-            }
-            else
-            {
-                Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
-            }
-
-            if (!dataObject.Environment.HasErrors() && wasInternalService)
-            {
-                TryGetFormatter(ref formatter);
-            }
-
-            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-
-            CleanUp(_executionDto);
-            return _executionDto.PayLoad;
-        }
-        private bool ValidatePayload(StringBuilder resourceDataList)
-        {
-            var datalist = resourceDataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").ToString();
-            datalist = datalist.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
-
-            var converter = new DataListConversionUtils();
-            var dataList = new DataListModel();
-            dataList.Create(datalist, datalist);
-            var outputList = converter.GetOutputs(dataList);
-            if (outputList.Select(sca => sca.Recordset == "UserGroups" && sca.Field == "Name").FirstOrDefault())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        string GetEncryptedPayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
-        {
-            var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
-            var isValidPayload = ValidatePayload(resource?.DataList);
-            if (isValidPayload && notDebug && resource?.DataList != null)
-            {
-                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-            }
-
-            return string.Empty;
         }
 
         public IResponseWriter CreateResponseWriter(IStringResponseWriterFactory stringResponseWriterFactory)
+        {
+            var responseData = CreateResponse();
+            return responseData.ToResponseWriter(stringResponseWriterFactory);
+        }
+        public ResponseData CreateResponse()
         {
             var dataObject = _executionDto.DataObject;
             var esbExecuteRequest = _executionDto.Request;
@@ -191,7 +144,7 @@ namespace Dev2.Runtime.WebServer
                 else
                 {
                     var content = GetExecuteExceptionPayload(dataObject);
-                    return new ExceptionResponseWriter(System.Net.HttpStatusCode.InternalServerError, content);
+                    return ResponseData.FromException(new HttpException((int)HttpStatusCode.InternalServerError, "internal server error"), content);
                 }
             }
             else
@@ -229,7 +182,7 @@ namespace Dev2.Runtime.WebServer
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
 
             CleanUp(_executionDto);
-            return stringResponseWriterFactory.New(_executionDto.PayLoad, formatter.ContentType);
+            return ResponseData.FromExecutionDto(_executionDto, formatter.ContentType);
         }
 
         void TryGetFormatter(ref DataListFormat formatter)
