@@ -805,7 +805,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_Save")]
-        [DoNotParallelize]
 		public void ServiceTestViewModel_Save_WithTestSteps_ShouldCallSaveTestOnResourceModel()
 		{
 			//------------Setup for test--------------------------
@@ -1308,7 +1307,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
-        [DoNotParallelize]
 		public void RunSelectedTestCommand_GivenTestNameExists_ShouldShowDuplicateError()
 		{
 			//---------------Set up test pack-------------------
