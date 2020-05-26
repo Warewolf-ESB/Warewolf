@@ -83,9 +83,10 @@ namespace Dev2.Tests.Runtime.WebServer
             CustomContainer.Register(mockResourceNameProvider.Object);
 
             //------------Execute Test---------------------------
-
-            var encryptedPayload = JwtManager.GenerateToken(payload);
-            var response = JwtManager.ValidateToken(encryptedPayload);
+            var securitySettings = new SecuritySettings();
+            var jwtManager = new JwtManager(securitySettings);
+            var encryptedPayload = jwtManager.GenerateToken(payload);
+            var response = jwtManager.ValidateToken(encryptedPayload);
             //------------Assert Results-------------------------
             Assert.IsNotNull(encryptedPayload);
             Assert.AreEqual(payload, response);
@@ -97,8 +98,11 @@ namespace Dev2.Tests.Runtime.WebServer
         public void JwtManager_GenerateToken_ValidateToken_Fails()
         {
             //------------Setup for test-------------------------
+            var securitySettings = new SecuritySettings();
+            var jwtManager = new JwtManager(securitySettings);
+
             //------------Execute Test---------------------------
-            var response = JwtManager.ValidateToken( "321654");
+            var response = jwtManager.ValidateToken( "321654");
             //------------Assert Results-------------------------
             Assert.IsNull(response);
         }

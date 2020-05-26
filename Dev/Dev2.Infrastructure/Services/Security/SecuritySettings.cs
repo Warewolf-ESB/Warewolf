@@ -21,9 +21,18 @@ using Warewolf.Services;
 
 namespace Dev2.Services.Security
 {
-    public static class SecuritySettings
+    public interface ISecuritySettings
     {
-        private static readonly TimeSpan CacheTimeout = new TimeSpan(1, 0, 0);
+        SecuritySettingsTO ReadSettingsFile(IResourceNameProvider resourceNameProvider);
+    }
+    public class SecuritySettings : ISecuritySettings
+    {
+        public SecuritySettings()
+        {
+
+        }
+
+        private readonly TimeSpan CacheTimeout = new TimeSpan(1, 0, 0);
 
         public static List<WindowsGroupPermission> DefaultPermissions => new List<WindowsGroupPermission>
         {
@@ -35,7 +44,7 @@ namespace Dev2.Services.Security
 
         public static string DefaultSecretKey => "";
 
-        public static SecuritySettingsTO ReadSettingsFile(IResourceNameProvider resourceNameProvider)
+        public SecuritySettingsTO ReadSettingsFile(IResourceNameProvider resourceNameProvider)
         {
             var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
             if (!File.Exists(serverSecuritySettingsFile))
@@ -82,6 +91,8 @@ namespace Dev2.Services.Security
             {
                 var hmac = new HMACSHA256();
                 currentSecuritySettingsTo.SecretKey = Convert.ToBase64String(hmac.Key);
+
+
             }
 
             var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;

@@ -20,6 +20,10 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2
 
 {
+    public interface IEsbChannelFactory
+    {
+        IEsbChannel New();
+    }
     public interface IEsbChannel
     {
         Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId,

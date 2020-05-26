@@ -32,6 +32,7 @@ using Dev2.Data;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
@@ -1977,8 +1978,9 @@ namespace Dev2.Tests.Runtime.WebServer
 
             //---------------Assert Precondition----------------
             var handlerMock = new AbstractWebRequestHandlerMock(resourceCatalog.Object, wRepo.Object, authorizationService.Object, doFactory);
-
-            var token = JwtManager.GenerateToken("{'UserGroups': [{'Name': 'public' }]}");
+            var securitySettings = new SecuritySettings();
+            var jwtManager = new JwtManager(securitySettings);
+            var token = jwtManager.GenerateToken("{'UserGroups': [{'Name': 'public' }]}");
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Authorization")).Returns("Bearer " + token);
             var webRequestTo = new WebRequestTO()
@@ -2067,7 +2069,9 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
             var handlerMock = new AbstractWebRequestHandlerMock(resourceCatalog.Object, wRepo.Object, authorizationService.Object, doFactory);
 
-            var token = JwtManager.GenerateToken("{'UserGroups': [{'Name': 'public' }]}");
+            var securitySettings = new SecuritySettings();
+            var jwtManager = new JwtManager(securitySettings);
+            var token = jwtManager.GenerateToken("{'UserGroups': [{'Name': 'public' }]}");
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Authorization")).Returns(token);
             var webRequestTo = new WebRequestTO()
@@ -2156,7 +2160,9 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
             var handlerMock = new AbstractWebRequestHandlerMock(resourceCatalog.Object, wRepo.Object, authorizationService.Object, doFactory);
 
-            var token = JwtManager.GenerateToken("{'UserGroups': [{'Name': 'auth' }]}");
+            var securitySettings = new SecuritySettings();
+            var jwtManager = new JwtManager(securitySettings);
+            var token = jwtManager.GenerateToken("{'UserGroups': [{'Name': 'auth' }]}");
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Authorization")).Returns(token);
             var webRequestTo = new WebRequestTO()
@@ -2198,16 +2204,17 @@ namespace Dev2.Tests.Runtime.WebServer
     class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
     {
         public AbstractWebRequestHandlerMock(AbstractWebRequestHandler.IDataObjectFactory dataObjectFactory, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IWorkspaceRepository repository)
-            : base(catalog, testCatalog, testCoverageCatalog, repository, service, dataObjectFactory)
+            : base(catalog, testCatalog, testCoverageCatalog, repository, service, dataObjectFactory, new DefaultEsbChannelFactory(), new SecuritySettings())
         {
         }
 
         public AbstractWebRequestHandlerMock()
+            : base(ResourceCatalog.Instance, TestCatalog.Instance, TestCoverageCatalog.Instance, new DefaultEsbChannelFactory(), new SecuritySettings())
         {
         }
 
         public AbstractWebRequestHandlerMock(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
-            : base(resourceCatalog, workspaceRepository, authorizationService, dataObjectFactory)
+            : base(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, workspaceRepository, authorizationService, dataObjectFactory, new DefaultEsbChannelFactory(), new SecuritySettings())
         {
         }
 

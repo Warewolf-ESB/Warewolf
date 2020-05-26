@@ -44,6 +44,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
         public InternalServiceRequestHandler(IResourceCatalog catalog, IAuthorizationService authorizationService)
+            : base(ResourceCatalog.Instance, TestCatalog.Instance, TestCoverageCatalog.Instance, new DefaultEsbChannelFactory(), new SecuritySettings())
         {
             _catalog = catalog;
             _authorizationService = authorizationService;

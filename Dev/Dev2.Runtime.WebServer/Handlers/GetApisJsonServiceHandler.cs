@@ -33,6 +33,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
 #pragma warning disable S3010 // Used by tests for constructor injection
         public GetApisJsonServiceHandler(IResourceCatalog catalog, IAuthorizationService auth)
+            : base(ResourceCatalog.Instance, TestCatalog.Instance, TestCoverageCatalog.Instance, new DefaultEsbChannelFactory(), new SecuritySettings())
         {
             _resourceCatalog = catalog;
             _authorizationService = auth;

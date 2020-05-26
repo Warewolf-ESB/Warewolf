@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Principal;
@@ -36,13 +35,17 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
         }
 
-        public TokenRequestHandler(IResourceCatalog resourceCatalog)
-            : this(resourceCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory())
+        private TokenRequestHandler(IResourceCatalog resourceCatalog)
+            : this(resourceCatalog, WorkspaceRepository.Instance, ServerAuthorizationService.Instance, new DataObjectFactory(), new DefaultEsbChannelFactory(), new SecuritySettings())
         {
         }
 
-        protected TokenRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
-            : base(resourceCatalog, workspaceRepository, authorizationService, dataObjectFactory)
+        protected TokenRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings)
+            : this(resourceCatalog, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, new JwtManager(securitySettings))
+        {
+        }
+        private TokenRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IJwtManager jwtManager)
+            : base(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, jwtManager)
         {
         }
 
@@ -85,23 +88,16 @@ namespace Dev2.Runtime.WebServer.Handlers
             ctx.Send(response);
         }
 
-
-        private static List<WindowsGroupPermission> WindowsPermissions { get; set; }
-
         private static INamedGuid OverrideResource { get; set; }
-        private static string SecretKey { get; set; }
-
-        protected static void LoadSecuritySettings()
+        private void LoadSecuritySettings()
         {
-            var securitySettings = SecuritySettings.ReadSettingsFile(new ResourceNameProvider());
+            var securitySettings = _securitySettings.ReadSettingsFile(new ResourceNameProvider());
             OverrideResource = securitySettings.AuthenticationOverrideWorkflow;
-            SecretKey = securitySettings.SecretKey;
-            WindowsPermissions = securitySettings.WindowsGroupPermissions;
         }
 
         protected IResponseWriter ExecuteWorkflow(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
         {
-            var a = new Executor(_workspaceRepository, _resourceCatalog, _authorizationService, _dataObjectFactory);
+            var a = new Executor(_workspaceRepository, _resourceCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
             var isValid = a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
             if (isValid != null)
             {
@@ -115,8 +111,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         class Executor : ExecutorBase
         {
-            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory)
-                : base(workspaceRepository, resourceCatalog, authorizationService, dataObjectFactory)
+            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
+                : base(workspaceRepository, resourceCatalog, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
             {
             }
 
@@ -156,12 +152,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return CreateEncryptedResponse(resp.Content);
             }
 
-            private static IResponseWriter CreateEncryptedResponse(string payload)
+            private IResponseWriter CreateEncryptedResponse(string payload)
             {
                 var rs = new StringResponseWriterFactory();
                 if (payload.Length > 0 && payload != "InternalServerError")
                 {
-                    var encryptedPayload = JwtManager.GenerateToken(payload);
+                    var encryptedPayload = _jwtManager.GenerateToken(payload);
                     encryptedPayload = "{\"token\": \"" + encryptedPayload + "\"}";
                     return rs.New(encryptedPayload, "application/json");
                 }

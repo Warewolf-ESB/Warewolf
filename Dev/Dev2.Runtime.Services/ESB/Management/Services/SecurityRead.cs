@@ -23,9 +23,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            var securitySettings = new SecuritySettings();
             Dev2Logger.Debug("Start Security Read", GlobalConstants.WarewolfDebug);
             var serializer = new Dev2JsonSerializer();
-            var settingsData = SecuritySettings.ReadSettingsFile(new ResourceNameProvider());
+            var settingsData = securitySettings.ReadSettingsFile(new ResourceNameProvider());
             return serializer.SerializeToBuilder(settingsData);
         }
 
