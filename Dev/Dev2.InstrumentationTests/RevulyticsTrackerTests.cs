@@ -9,6 +9,7 @@ using System.Configuration;
 namespace Dev2.Instrumentation.Tests
 {
     [TestClass()]
+    [DoNotParallelize]//Use of static revulytics tracker
     public class RevulyticsTrackerTests
     {
         private RevulyticsTracker GetRevulyticsTracker()
@@ -42,7 +43,6 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
-        [DoNotParallelize]
         public void RevulyticsTracker_CreateRevulyticsConfigTestSdkException()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
@@ -53,7 +53,6 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
-        [DoNotParallelize]
         public void RevulyticsTracker_CreateRevulyticsConfigTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -64,7 +63,6 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
-        [DoNotParallelize]
         public void RevulyticsTracker_StartSdkTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -88,7 +86,6 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
-        [DoNotParallelize]
         public void RevulyticsTracker_StartSessionTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -102,7 +99,6 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
-        [DoNotParallelize]
         public void RevulyticsTracker_StopSessionTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -118,7 +114,6 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
-        [DoNotParallelize]
         public void RevulyticsTracker_SetProductVersionTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -132,7 +127,6 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
-        [DoNotParallelize]
         public void RevulyticsTracker_EnableAppplicationTrackerSdkException()
         {
             var tracker = GetRevulyticsTracker();
@@ -144,7 +138,6 @@ namespace Dev2.Instrumentation.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         public void EnableApplicationTrackerSdkException()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
@@ -179,7 +172,6 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
-        [DoNotParallelize]
         public void RevulyticsTracker_EnableApplicationTrackerTestWithCorrectConfig()
         {
             var tracker = GetRevulyticsTracker();
