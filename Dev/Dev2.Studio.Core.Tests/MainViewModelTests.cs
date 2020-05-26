@@ -69,6 +69,7 @@ using Warewolf.Options;
 namespace Dev2.Core.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class MainViewModelTests : MainViewModelBase
     {
         [TestInitialize]
