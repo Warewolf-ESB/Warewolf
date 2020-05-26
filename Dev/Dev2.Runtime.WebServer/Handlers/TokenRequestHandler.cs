@@ -84,7 +84,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             Thread.CurrentPrincipal = ctx.Request.User;
-            var response = ExecuteWorkflow(requestTo, OverrideResource.Name, workspaceId, ctx.FetchHeaders(), ctx.Request.User);
+            var response = ExecuteWorkflow(requestTo, $"{OverrideResource.Name}.json", workspaceId, ctx.FetchHeaders(), ctx.Request.User);
             ctx.Send(response);
         }
 
@@ -97,13 +97,12 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected IResponseWriter ExecuteWorkflow(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
         {
-            var a = new Executor(_workspaceRepository, _resourceCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
-            var isValid = a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
-            if (isValid != null)
+            if (!serviceName.Contains(".json"))
             {
-                return new ExceptionResponseWriter(System.Net.HttpStatusCode.InternalServerError, "");
+                serviceName += ".json";
             }
-
+            var a = new Executor(_workspaceRepository, _resourceCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
+            a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
             var response = a.BuildResponse(webRequest, serviceName);
             return response;
         }

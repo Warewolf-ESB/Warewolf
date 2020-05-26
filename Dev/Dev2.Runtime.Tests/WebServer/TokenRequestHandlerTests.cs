@@ -230,7 +230,7 @@ namespace Dev2.Tests.Runtime.WebServer
     var hasBothGroups =
         (group1 == "public" && group2 == "whatever") || (group2 == "public" && group1 == "whatever");
     Assert.IsTrue(hasBothGroups, "groups not found in response token");
-  //ServerUser  Assert.AreEqual("application/json", response.Content.Headers.ContentType.MediaType, "application/json media type expected");
+    Assert.AreEqual("application/json", response.Content.Headers.ContentType.MediaType, "application/json media type expected");
 }
 
 delegate void ExecuteRequestCallback(IDSFDataObject dobject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errorResultTO);
