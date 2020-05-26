@@ -21,6 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("SqlBulkInserter_Constructor")]
         public void SqlBulkInserter_Constructor_WhenCreatingNew_ExpectValidObject()
@@ -35,6 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("SqlBulkInserter_Insert")]
         public void SqlBulkInserter_Insert_WhenInsertingTableData_ExpectInsertSuccess()
@@ -53,6 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("SqlBulkInserter_Insert")]
         public void SqlBulkInserter_Insert_WhenInsertingTableData_ExpectInsertFailure()
@@ -71,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("SqlBulkInserter_Insert")]
         public void SqlBulkInserter_Insert_WhenInsertingNullTableData_ExpectInsertFailure()

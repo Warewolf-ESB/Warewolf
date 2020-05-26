@@ -69,6 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void Format_Where_NumberInputIsScalar_Expected_ScalarResolvedAndFormatted()
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
@@ -85,6 +86,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Format_Where_NumberInputIsRecordset_Expected_EveryValueIntheRecordSetIsAndFormatted()
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
@@ -101,6 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Format_Where_NumberInputIsRawNumber_Expected_RawNumberIsFormatted()
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
@@ -115,6 +118,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Format_Where_RoundingDecimalPlacesIsBlank_Expected_0DesimalPlacesAssumed()
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
@@ -131,6 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Format_Where_ShowDecimalPlacesIsBlank_Expected_NoDecimalPlaceAdjustmentOccurs()
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
@@ -151,6 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_UpdateForEachInputs")]
         public void DsfNumberFormatActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -173,6 +179,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_GetOutputs")]
         public void DsfBaseActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -193,6 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_UpdateForEachInputs")]
         public void DsfNumberFormatActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -220,6 +228,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_UpdateForEachOutputs")]
         public void DsfNumberFormatActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -238,6 +247,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_UpdateForEachOutputs")]
         public void DsfNumberFormatActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -259,6 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_UpdateForEachOutputs")]
         public void DsfNumberFormatActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -279,6 +290,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_GetForEachInputs")]
         public void DsfNumberFormatActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -306,6 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_GetForEachOutputs")]
         public void DsfNumberFormatActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -327,6 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_GetState")]
         public void DsfNumberFormatActivity_GetState_ReturnsStateVariable()

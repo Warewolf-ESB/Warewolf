@@ -34,6 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetOutputs")]
         public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -50,6 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Forward Sort Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void FieldSpecifiedSortForwards_Numeric_Expected_Recordset_Sorted_Top_To_Bottom()
         {
             TestStartNode = new FlowStep
@@ -85,6 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void String_ForwardSort_String_Expected_RecordSetSortedAscending()
         {
             TestStartNode = new FlowStep
@@ -118,6 +121,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NoFieldSpecifiedSortForwards_Expected_No_Change()
         {
             SetupArguments(
@@ -141,6 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Backward Sort Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void FieldSpecifiedSortBackwards_Expected_Recordset_Sorted_Bottom_To_Top()
         {
 
@@ -161,6 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NoFieldSpecifiedSortBackwards_Expected_Reverse_Order()
         {
             SetupArguments(
@@ -183,6 +189,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Negative Test Cases
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecordsetDoesntExist_Expected_No_Change()
         {
             SetupArguments(
@@ -202,6 +209,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void FieldDoesntExistInRecordset_Expected_No_Change()
         {
             SetupArguments(
@@ -222,6 +230,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Error_Handled_Correctly()
         {
             TestStartNode = new FlowStep
@@ -245,6 +254,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSortRecordsActivity_UpdateForEachInputs")]
         public void DsfSortRecordsActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -262,6 +272,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSortRecordsActivity_UpdateForEachInputs")]
         public void DsfSortRecordsActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
@@ -279,6 +290,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSortRecordsActivity_UpdateForEachInputs")]
         public void DsfSortRecordsActivity_UpdateForEachInputs_1Update_UpdateInputPath()
@@ -295,6 +307,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSortRecordsActivity_UpdateForEachOutputs")]
         public void DsfSortRecordsActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -309,6 +322,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSortRecordsActivity_UpdateForEachOutputs")]
         public void DsfSortRecordsActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -326,6 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSortRecordsActivity_UpdateForEachOutputs")]
         public void DsfSortRecordsActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -342,6 +357,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSortRecordsActivity_GetForEachInputs")]
         public void DsfSortRecordsActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -359,6 +375,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSortRecordsActivity_GetForEachOutputs")]
         public void DsfSortRecordsActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -376,6 +393,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
  
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfSortRecordsActivity_Execute")]
         public void DsfSortRecordsActivity_Execute_GetDebugOutputs_ExpectCorrectCount()
@@ -404,6 +422,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfSortRecordsActivity_Execute")]
         public void DsfSortRecordsActivity_Execute_SingleRecordSetRuleCalled_ExpectNoResultsSortFieldIncorrect()
@@ -428,6 +447,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSortRecordsActivity_GetState")]
         public void DsfSortRecordsActivity_GetState_ReturnsStateVariable()

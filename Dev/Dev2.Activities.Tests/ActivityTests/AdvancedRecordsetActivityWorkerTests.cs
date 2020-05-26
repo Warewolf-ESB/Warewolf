@@ -32,6 +32,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_LoadRecordset()
@@ -50,6 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_AddDeclarations()
@@ -71,6 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_AddDeclarations_ExpectedException_NoThrow()
@@ -89,6 +92,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_ExecuteSql_TSQLStatementType_Select()
@@ -127,6 +131,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_ExecuteSql_ProcessComplexStatement_UNION()
@@ -167,6 +172,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_ExecuteSql_ProcessComplexStatement_CREATE()
@@ -211,6 +217,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_ExecuteSql_ProcessComplexStatement_UPDATE()
@@ -263,6 +270,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_ExecuteSql_ProcessComplexStatement_DELETE()
@@ -315,6 +323,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_ExecuteSql_ProcessComplexStatement_INSERT()
@@ -367,6 +376,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_ExecuteSql_ProcessComplexStatement_REPLACE()
@@ -419,6 +429,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_ExecuteRecordset_With_No_DeclareVariables()
@@ -456,6 +467,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_GetIdentifiers_TSQLStatementType_SELECT_GivenNoAnyField_ReturnIdentifierWithZeroValue()
@@ -479,6 +491,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_GetIdentifiers_TSQLStatementType_SELECT_GivenTwoField_ReturnIdentifierWithTwoValues()

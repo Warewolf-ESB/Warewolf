@@ -23,6 +23,7 @@ namespace Dev2.Tests.Activities.Activities.DropBox2016
     public class DsfDropBoxBaseActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxBaseActivity))]
         public void DsfDropBoxBaseActivity_SetupDropboxClient_DropboxClient_IsNotNull_ExpectTrue()

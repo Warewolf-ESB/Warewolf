@@ -33,6 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         IDirectory dirHelper;
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfFolderRead_UpdateForEachInputs")]
         public void DsfFolderRead_Execute_Expecting_No_Out_Puts_Has_0_Records()
         {
@@ -49,6 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfFolderRead_UpdateForEachInputs")]
         public void DsfFolderRead_Execute_ExpectRecords()
         {
@@ -67,6 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfFolderRead_UpdateForEachInputs")]
         public void DsfFolderRead_Execute_ExpectRecords2()
         {
@@ -85,6 +88,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfFolderReadActivity_UpdateForEachInputs")]
         public void DsfFolderReadActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
@@ -99,6 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfFolderReadActivity_UpdateForEachInputs")]
         public void DsfFolderReadActivity_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
         {
@@ -115,6 +120,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderReadActivity_UpdateForEachInputs")]
         public void DsfFolderReadActivity_UpdateForEachInputs_1Update_UpdateInputPath()
@@ -131,6 +137,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderReadActivity_UpdateForEachOutputs")]
         public void DsfFolderReadActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -145,6 +152,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderReadActivity_UpdateForEachOutputs")]
         public void DsfFolderReadActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -162,6 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderReadActivity_UpdateForEachOutputs")]
         public void DsfFolderReadActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -178,6 +187,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderReadActivity_GetForEachInputs")]
         public void DsfFolderReadActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -195,6 +205,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderReadActivity_GetForEachOutputs")]
         public void DsfFolderReadActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -212,6 +223,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfFolderReadActivity_GetState")]
         public void DsfFolderReadActivity_GetState_IsFilesSelected_ReturnsStateVariable()
@@ -295,6 +307,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfFolderReadActivity_GetState")]
         public void DsfFolderReadActivity_GetState_IsFoldersSelected_ReturnsStateVariable()
@@ -378,6 +391,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfFolderReadActivity_GetState")]
         public void DsfFolderReadActivity_GetState_IsFilesAndFoldersSelected_ReturnsStateVariable()

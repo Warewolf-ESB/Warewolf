@@ -33,6 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
     public partial class SharepointCopyFileActivityTests : BaseActivityUnitTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_Construct_GivenInstance_ShouldNotBeNull()
@@ -47,6 +48,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_SharepointSource_DoesNotExist_OnResourceCatalog_ShouldSetSharepointSource_ToGuidEmpty()
@@ -80,6 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_SharepointSource_Exists_OnResourceCatalog_BlankRecordSet()
@@ -122,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_SharepointSource_Exists_OnResourceCatalog_NumericRecordSet_ExpextErrorMessage()
@@ -164,6 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_SharepointSource_Exists_OnResourceCatalog_StarRecordSet()
@@ -206,6 +211,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -241,6 +247,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -279,6 +286,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -317,6 +325,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_TryExecuteConcreteAction_DSFDataObject_IsEmpty_Expect_ErrorVariableNotFound()
@@ -363,6 +372,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_GetDebugInputs_ExecutionEnvironment_IsEmpty_Expect_ResultCountZero()
@@ -396,6 +406,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_GetDebugOutputs_ExecutionEnvironment_IsEmpty_Expect_ResultCountZero()
@@ -428,6 +439,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_GetHashCode_IsNotNull_Expect_True()
@@ -458,6 +470,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_GetState_ReturnsStateVariable_Expect_AreEqualTrue()
@@ -495,6 +508,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_UniqueIDEquals_EmptySharepointCopyFile_Object_Is_Equal()
@@ -512,6 +526,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_UniqueIDDifferent_EmptySharepointCopyFile_Object_Is_Not_Equal()
@@ -529,6 +544,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_Equals_Given_Same_Object_IsEqual()
@@ -546,6 +562,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_Equals_Given_Different_Object_Is_Not_Equal()
@@ -563,6 +580,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -580,6 +598,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_ServerInputPathFrom_Same_Object_IsEqual()
@@ -597,6 +616,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_ServerInputPathFrom_Different_Object_Is_Not_Equal()
@@ -614,6 +634,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_ServerInputPathFrom_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -631,6 +652,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_ServerInputPathTo_Same_Object_IsEqual()
@@ -648,6 +670,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_ServerInputPathTo_Different_Object_Is_Not_Equal()
@@ -665,6 +688,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_SharepointServerResourceId_Same_Object_IsEqual()
@@ -682,6 +706,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_SharepointServerResourceId_Different_Object_Is_Not_Equal()
@@ -699,6 +724,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_ServerInputPathTo_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -716,6 +742,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_Overwrite_Different_Object_Is_Not_Equal()
@@ -735,6 +762,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_Overwrite_Same_Object_Is_Equal()
@@ -754,6 +782,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_Equals_IsNull_Expect_IsFalse()
@@ -767,6 +796,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_Equals_IsThis_Expect_IsTrue()
@@ -780,6 +810,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_ObjectEquals_IsNull_Expect_IsFalse()
@@ -796,6 +827,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_ObjectEquals_IsNotNull_Expect_IsFalse()

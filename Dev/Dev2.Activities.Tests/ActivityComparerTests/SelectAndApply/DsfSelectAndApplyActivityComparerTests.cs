@@ -12,6 +12,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
     public class DsfSelectAndApplyActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDEquals_EmptySelectAndApply_IsEqual()
         {
@@ -28,6 +29,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDDifferent_EmptySelectAndApply_Object_IsEqual()
         {
@@ -44,6 +46,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Same_Object_IsEqual()
         {
@@ -60,6 +63,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal()
         {
@@ -76,6 +80,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -98,6 +103,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ApplyActivityFunc_SameAssigns_Object_Is_Equal()
         {
@@ -131,6 +137,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ApplyActivityFunc_Equalsssigns_Object_Is_Equal()
         {
@@ -166,6 +173,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ApplyActivityFunc_DifferentAssigns_Object_Is_Not_Equal()
         {
@@ -201,6 +209,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfSelectAndApplyActivity_GetState")]
         public void DsfSelectAndApplyActivity_GetState_ReturnsStateVariable()
