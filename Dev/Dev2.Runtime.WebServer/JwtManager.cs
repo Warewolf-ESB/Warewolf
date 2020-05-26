@@ -18,13 +18,25 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Dev2.Runtime.WebServer
 {
-    public static class JwtManager
+    public interface IJwtManager
     {
-        public static string GenerateToken(string payload, int expireMinutes = 20)
+        string GenerateToken(string payload, int expireMinutes = 20);
+        string ValidateToken(string token);
+    }
+    public class JwtManager : IJwtManager
+    {
+        private readonly ISecuritySettings _securitySettings;
+
+        public JwtManager(ISecuritySettings securitySettings)
+        {
+            _securitySettings = securitySettings;
+        }
+
+        public string GenerateToken(string payload, int expireMinutes = 20)
         {
             try
             {
-                var securitySettingsData = SecuritySettings.ReadSettingsFile(new ResourceNameProvider());
+                var securitySettingsData = _securitySettings.ReadSettingsFile(new ResourceNameProvider());
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var symmetricKey = Convert.FromBase64String(securitySettingsData.SecretKey);
                 var now = DateTime.UtcNow;
@@ -52,10 +64,8 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        public static string ValidateToken(string token)
+        public string ValidateToken(string token)
         {
-
-            var payload = "";
             var simplePrinciple = BuildPrincipal(token);
 
             var identity = simplePrinciple?.Identity as ClaimsIdentity;
@@ -67,11 +77,11 @@ namespace Dev2.Runtime.WebServer
                 return null;
 
             var authClaim = identity.FindFirst(ClaimTypes.Authentication);
-            payload = authClaim?.Value;
+            var payload = authClaim?.Value;
             return payload;
         }
 
-        private static ClaimsPrincipal BuildPrincipal(string token)
+        private ClaimsPrincipal BuildPrincipal(string token)
         {
             try
             {
@@ -83,7 +93,7 @@ namespace Dev2.Runtime.WebServer
                     return null;
                 }
 
-                var securitySettingsData = SecuritySettings.ReadSettingsFile(new ResourceNameProvider());
+                var securitySettingsData = _securitySettings.ReadSettingsFile(new ResourceNameProvider());
                 var symmetricKey = Convert.FromBase64String(securitySettingsData.SecretKey);
 
                 var validationParameters = new TokenValidationParameters
