@@ -141,6 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
+        [DoNotParallelize]
         public void OnExecuteWhereConsolePathHasNoSpacesIsNotWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
