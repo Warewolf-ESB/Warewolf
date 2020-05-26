@@ -43,6 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         const string _userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Constructed")]
         public void DsfWebPutActivity_Constructed_Correctly_ShouldHaveInheritDsfActivity()
@@ -55,6 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Constructor")]
         public void DsfWebPutActivity_Constructor_Correctly_ShouldSetTypeDisplayName()
@@ -67,6 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Constructed")]
         public void DsfWebPutActivity_Constructed_Correctly_ShouldHaveCorrectProperties()
@@ -82,6 +85,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
         public void DsfWebPutActivity_Execute_WithNoOutputDescription_ShouldAddError()
@@ -123,6 +127,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
         public void DsfWebPutActivity_Execute_WithValidWebResponse_ShouldSetVariables()
@@ -173,6 +178,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
         public void DsfWebPutActivity_Execute_WithValidTextResponse_ShouldSetVariables()
@@ -223,6 +229,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
         public void DsfWebPutActivity_Execute_WithInValidWebResponse_ShouldError()
@@ -280,6 +287,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
         public void DsfWebPutActivity_Execute_WithValidXmlEscaped_ShouldSetVariables()
@@ -332,6 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
         public void DsfWebPutActivity_Execute_WithInputVariables_ShouldEvalVariablesBeforeExecutingWebRequest()
@@ -384,6 +393,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Constructer_GivenHasInstance_ShouldHaveType()
         {
@@ -398,6 +408,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenWebPostActivity_ShouldReturnMissingTypeDataGridAcitvity()
         {
@@ -412,6 +423,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentIsNull_ShouldReturnZeroDebugInputs()
         {
@@ -425,6 +437,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenMockEnvironment_ShouldAddDebugInputItems()
         {
@@ -475,6 +488,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenNoHeaders_ShouldHaveTwoHeaders()
         {
@@ -495,6 +509,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CleateClient_GivenNoHeaders_ShouldGlobalConstantsUserAgent()
         {
@@ -511,6 +526,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenWebSourceAuthenticationTypeIsUser_ShouldSetWebClientPasswordAndUserName()
         {
@@ -529,6 +545,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenAuthenticationTypeIsNotUser_ShouldNotSetCredentials()
         {
@@ -544,6 +561,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenHeaders_ShouldHaveHeadersAdded()
         {
@@ -566,6 +584,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPutActivity_Execute")]
         public void DsfWebPutActivity_Execute_ErrorResponse_ShouldSetVariables()
@@ -601,6 +620,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebPutActivity))]
         public void DsfWebPutActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()

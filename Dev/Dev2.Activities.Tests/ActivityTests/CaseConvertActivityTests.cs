@@ -40,6 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region AllUpper Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvert_AllUpper_Expected_AllUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "UPPER", "[[testVar]]", 1) };
@@ -56,6 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCaseConvertActivity_GetOutputs")]
         public void DsfCaseConvertActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -72,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvertWithAllUpperAndMultipleRegionsExpectedAllUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet().field]], [[testVar]]", "UPPER", "[[testRecSet().field]], [[testVar]]", 1) };
@@ -90,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("CaseConvert_Evaluate")]
         public void CaseConvert_Evaluate_WhenRecursiveRegion_ExpectSingleWellFormedRegionAsResult()
@@ -110,6 +114,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvertWithAllUpperAndMultipleRegionsInStringToConvertWithSingleOutputTargetExpectedOneUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet().field]], [[testVar]]", "UPPER", "[[testRecSet().field]]", 1) };
@@ -128,6 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfCaseConvert_OnExecute")]
         public void DsfCaseConvert_OnExecute_StarNotation_ReplacesExistingData()
@@ -154,6 +160,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfCaseConvert_OnExecute")]
         public void DsfCaseConvert_OnExecute_StarNotation_NoResultField_ReplacesExistingData()
@@ -184,6 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region AllLower Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvert_AllLower_Expected_AllLowerCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "lower", "[[testVar]]", 1) };
@@ -205,6 +213,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region FirstUpper Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvert_FirstUpper_Expected_FirstLetterIsUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Sentence", "[[testVar]]", 1) };
@@ -225,6 +234,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region AllFirstUpper Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvert_AllFirstUpper_Expected_AllFirstLettersIsUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "[[testVar]]", 1) };
@@ -242,6 +252,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvert_No_Result_Variable_Expected_AllFirstLettersIsUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "", 1) };
@@ -259,6 +270,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvert_Numbers_In_StringToConvert_Expected_AllFirstLettersIsUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "Title Case", "[[testVar]]", 1) };
@@ -278,6 +290,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvert_Blank_StringToConvert_Expected_AllFirstLettersIsUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("", "Title Case", "", 1) };
@@ -306,6 +319,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region ForEach Update/Get Inputs/Outputs
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfCaseConvert_UpdateForEachInputs")]
         public void DsfCaseConvert_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
@@ -333,6 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfCaseConvert_UpdateForEachInputs")]
         public void DsfCaseConvert_UpdateForEachInputs_WhenContainsMatchingStar_UpdateSuccessful()
@@ -360,6 +375,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfCaseConvert_UpdateForEachOutputs")]
         public void DsfCaseConvert_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
@@ -386,6 +402,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfCaseConvert_GetForEachInputs")]
         public void DsfCaseConvert_GetForEachInputs_Normal_UpdateSuccessful()
@@ -409,6 +426,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfCaseConvert_GetForEachOutputs")]
         public void DsfCaseConvert_GetForEachOutputs_Normal_UpdateSuccessful()
@@ -432,6 +450,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfCaseConvertActivity_GetState_Returns_Inputs_And_Outputs()
         {            
             //------------Setup for test--------------------------
@@ -455,6 +474,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region RecordSet Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvert_WithRecordSetDataAndEmptyIndex_Expected_LastRecordCaseConverted()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(2).testVar]]", "Title Case", "[[testRecSet().testVar]]", 3) };
@@ -474,6 +494,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvert_WithRecordSetDataAndStar_Expected_AllRecordsConverted()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).testVar]]", "Title Case", "[", 3) };
@@ -498,6 +519,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region InsertToCollection
         
         [TestMethod]
+        [Timeout(60000)]
         public void AddListToCollectionWhereNotOverwriteExpectInsertToCollection()
         {
             //------------Setup for test--------------------------
@@ -516,6 +538,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AddListToCollectionWhereNotOverwriteEmptyListExpectAddToCollection()
         {
             //------------Setup for test--------------------------
@@ -533,6 +556,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AddListToCollectionWhereOverwriteExpectAddToCollection()
         {
             //------------Setup for test--------------------------

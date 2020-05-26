@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     {
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void SetCredentialOnHandler_GivenHandlerIsNull_ShouldReturnNull()
         {
@@ -22,6 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNull(httpClientHandler);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void SetCredentialOnHandler_GivenHandlerIsNotNull_ShouldReturnHttpHandler()
         {
@@ -37,6 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         } 
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void SetCredentialOnHandler_GivenSourceIsAnonymousAuth_ShouldReturnHttpHandlerWithNoCredentials()
         {
@@ -52,6 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         } 
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void SetCredentialOnHandler_GivenSourceIsUserAuth_ShouldReturnHttpHandlerWithCredentials()
         {

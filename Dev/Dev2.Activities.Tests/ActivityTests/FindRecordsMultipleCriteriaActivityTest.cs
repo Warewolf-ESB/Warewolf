@@ -39,6 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFindRecordsMultipleCriteriaActivity_GetOutputs")]
         public void DsfFindRecordsMultipleCriteriaActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -60,6 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void FindRecordsMulitpleCriteriaActivity_WithTextInMatchField_Expected_NoResults()
         {
             TestStartNode = new FlowStep
@@ -130,6 +132,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void FindRecordsMulitpleCriteriaActivity_FindWithMultipleCriteriaExpectAllTrue_Expected_NoResults()
         {
             TestStartNode = new FlowStep
@@ -202,6 +205,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachInputs")]
         public void DsfFindRecordsMultipleCriteriaActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -222,6 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachInputs")]
         public void DsfFindRecordsMultipleCriteriaActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
@@ -244,6 +249,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs")]
         public void DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -263,6 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs")]
         public void DDsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -284,6 +291,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs")]
         public void DsfFindRecordsMultipleCriteriaActivity_UpdateForEachOutputs_1Updates_UpdateResult()
@@ -304,6 +312,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFindRecordsMultipleCriteriaActivity_GetForEachInputs")]
         public void DsfFindRecordsMultipleCriteriaActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -327,6 +336,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFindRecordsMultipleCriteriaActivity_GetForEachOutputs")]
         public void DsfFindRecordsMultipleCriteriaActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
@@ -348,6 +358,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void AddResultDebugInputs_Sets_Operand_To_EmptyString()
         {

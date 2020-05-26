@@ -18,6 +18,7 @@ namespace Dev2.Tests.Activities.Validation
     public class IsValidExpressionRuleTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_InvalidVariable_RaisesError()
@@ -32,6 +33,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_ValidVariable_RaisesNoError()
@@ -45,6 +47,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_VariableIsEmptyString_RaisesNoError()
@@ -58,6 +61,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_MalformedVariable_RaisesAnError()
@@ -72,6 +76,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_VariableExpressionIsValid_ReturnsNoError()
@@ -89,6 +94,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_VariableExpressionHasAnUnderscore_ReturnsAnError()
@@ -109,6 +115,7 @@ namespace Dev2.Tests.Activities.Validation
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_ExpressionWithPlainTextIsValid_ReturnsNoError()
@@ -129,6 +136,7 @@ namespace Dev2.Tests.Activities.Validation
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_RecordsetExpressionIsValid_ReturnsNoError()
@@ -146,6 +154,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_VaribaleExpressionHasSpecialCharacter_ReturnsAnError()
@@ -164,6 +173,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_RecordsetExpressionHasSpecialCharacter_ReturnsAnError()
@@ -182,6 +192,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_RecordsetHasANegativeIndex_ReturnsAnError()
@@ -200,6 +211,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
         public void IsValidExpressionRule_Check_RecordsetHasAnInvalidIndex_ReturnsAnError()

@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
     public class DbColumnEqualityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_EmptyTos_IsEqual()
         {
@@ -23,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_ColumnName__Object_Is_IsEqual()
         {
@@ -38,6 +40,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentColumnName_Object_Is_Not_IsEqual_CaseSensitive()
         {
@@ -53,6 +56,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentColumnName_Object_Is_Not_IsEqua()
         {
@@ -68,6 +72,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_SqlDataType__Object_Is_IsEqual()
         {
@@ -83,6 +88,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentSqlDataType_Object_Is_Not_IsEqual()
         {
@@ -98,6 +104,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentIsNullable_Object_Is_Not_IsEqua()
         {
@@ -114,6 +121,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_IsNullable__Object_Is_IsEqual()
         {
@@ -129,6 +137,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentMaxLength_Object_Is_Not_IsEqual()
         {
@@ -144,6 +153,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_SameMaxLength_Object_Is_IsEqua()
         {

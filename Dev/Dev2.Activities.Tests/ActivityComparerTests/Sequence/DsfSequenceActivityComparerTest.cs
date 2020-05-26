@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
     public class DsfSequenceActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -25,6 +26,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -41,6 +43,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_ActivityTools_AreEqual()
         {
@@ -56,6 +59,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_ActivityTools_AreNotEqual()
         {
@@ -72,6 +76,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Activities_ActivityTools_AreEqual()
         {
@@ -89,6 +94,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Activities_ActivityTools_AreNotEqual()
         {
@@ -118,6 +124,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetChildrenNodes_Given_Activities_ActivityTools()
         {
@@ -146,6 +153,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfSequenceActivity_GetState")]
         public void DsfSequenceActivity_GetState_ReturnsStateVariable()

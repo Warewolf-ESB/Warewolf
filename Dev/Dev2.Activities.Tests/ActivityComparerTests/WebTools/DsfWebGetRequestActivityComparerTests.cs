@@ -14,6 +14,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
     public class DsfWebGetRequestActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameUniqueID_EmptyWebGetRequestTools_AreEqual()
         {
@@ -30,6 +31,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentWebGetRequestToolIds_AreNotEqual()
         {
@@ -47,6 +49,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameWebGetRequestTool_IsEqual()
         {
@@ -63,6 +66,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_Value_IsEqual()
         {
@@ -79,6 +83,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Value_IsNOT_Equal()
         {
@@ -95,6 +100,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_Value_Different_Casing_IsNotEqual()
         {
@@ -111,6 +117,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Result_IsEqual()
         {
@@ -128,6 +135,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Result_IsNOTEqual()
         {
@@ -144,6 +152,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Url_IsEqual()
         {
@@ -160,6 +169,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Url_Different_Casing_IsNOtEqual()
         {
@@ -175,6 +185,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Url_IsNOTEqual()
         {
@@ -191,6 +202,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Headers_IsNOTEqual()
         {
@@ -207,6 +219,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Headers_Different_Casing_IsNotEqual()
         {
@@ -223,6 +236,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Headers_IsEqual()
         {
@@ -239,6 +253,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Method_IsNOTEqual()
         {
@@ -255,6 +270,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Method_Different_Casing_IsNotEqual()
         {
@@ -271,6 +287,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Method_IsEqual()
         {
@@ -287,6 +304,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebGetRequestActivity_GetState")]
         public void DsfWebGetRequestActivity_GetState_ReturnsStateVariable()

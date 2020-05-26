@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
     public class DsfConsumeRabbitMqActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDEquals_EmptyConsumeRabbitMQ_IsEqual()
         {
@@ -26,6 +27,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDDifferent_EmptyConsumeRabbitMQ_Is_Not_Equal()
         {
@@ -42,6 +44,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Same_Object_IsEqual()
         {
@@ -58,6 +61,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Different_Object_Is_Not_Equal()
         {
@@ -74,6 +78,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -90,6 +95,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void QueueName_Same_Object_IsEqual()
         {
@@ -106,6 +112,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void QueueName_Different_Object_Is_Not_Equal()
         {
@@ -122,6 +129,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void QueueName_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -139,6 +147,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Same_Object_IsEqual()
         {
@@ -155,6 +164,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal()
         {
@@ -171,6 +181,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -187,6 +198,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Response_Same_Object_IsEqual()
         {
@@ -203,6 +215,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Response_Different_Object_Is_Not_Equal()
         {
@@ -219,6 +232,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Response_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -235,6 +249,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ObjectName_Same_Object_IsEqual()
         {
@@ -251,6 +266,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ObjectName_Different_Object_Is_Not_Equal()
         {
@@ -267,6 +283,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ObjectName_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -283,6 +300,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RabbitMQSourceResourceId_Same_Object_IsEqual()
         {
@@ -299,6 +317,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RabbitMQSourceResourceId_Different_Object_Is_Not_Equal()
         {
@@ -315,6 +334,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RabbitMQSourceResourceId_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -331,6 +351,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Prefetch_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -349,6 +370,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Prefetch_Same_Object_Is_Equal()
         {
@@ -367,6 +389,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void TimeOut_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -385,6 +408,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void TimeOut_Same_Object_Is_Equal()
         {
@@ -403,6 +427,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsObject_Different_Object_Is_Not_Equal()
         {
@@ -421,6 +446,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsObject_Same_Object_Is_Equal()
         {
@@ -439,6 +465,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Acknowledge_Different_Object_Is_Not_Equal()
         {
@@ -457,6 +484,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Acknowledge_Same_Object_Is_Equal()
         {
@@ -475,6 +503,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ReQueue_Different_Object_Is_Not_Equal()
         {
@@ -493,6 +522,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ReQueue_Same_Object_Is_Equal()
         {
@@ -511,6 +541,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RabbitSource_Different_Object_Is_Not_Equal()
         {
@@ -529,6 +560,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RabbitSource_Same_Object_Is_Equal()
         {

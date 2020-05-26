@@ -6,6 +6,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CaseConvert
     public class CaseConvertToEqualityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_EmptyTos_IsEqual()
         {
@@ -21,6 +22,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CaseConvert
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Values_Object_Is_IsEqual()
         {
@@ -36,6 +38,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CaseConvert
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFieldNames_Is_NotIsEqual()
         {
@@ -51,6 +54,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CaseConvert
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFromType_Is_NotIsEqual()
         {
@@ -66,6 +70,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CaseConvert
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentindexNumber_Is_NotIsEqual()
         {
@@ -81,6 +86,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CaseConvert
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentExpression_Is_NotIsEqual()
         {
@@ -96,6 +102,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CaseConvert
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentToType_Is_NotIsEqual()
         {

@@ -23,6 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseActivityWhenHasVariableShouldEvaluate()
         {
             //---------------Set up test pack-------------------
@@ -47,6 +48,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_UpdateForEachInputs")]
         public void DsfBaseActivity_UpdateForEachInputs_DoesNothing()
@@ -61,6 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_UpdateForEachOutputs")]
         public void DsfBaseActivity_UpdateForEachOutputs_NullDoesNothing_DoesNothing()
@@ -74,6 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_UpdateForEachOutputs")]
         public void DsfBaseActivity_UpdateForEachOutputsMoreThanTwoItems_DoesNothing()
@@ -89,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_UpdateForEachOutputs")]
         public void DsfBaseActivity_UpdateForEachOutputs_UpdatesTextValue()
@@ -103,6 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_GetForEachInputs")]
         public void DsfBaseActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -116,6 +122,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_GetForEachOutputs")]
         public void DsfBaseActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
@@ -131,6 +138,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_GetOutputs")]
         public void DsfBaseActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()

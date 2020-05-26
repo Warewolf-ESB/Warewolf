@@ -38,6 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Numbers Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomNumberWithStaticInputsExpectedARandomNumberToBeOutput()
         {
             const int Start = 10;
@@ -61,6 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomNumberWithRecordsetWithBlankInOutputExpectedRecordsetToHaveTenNumbers()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "[[recset2(*).field2]]", "[[recset1(*).field1]]", string.Empty, "[[recset2().field2]]");
@@ -91,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomNumberWithBlankStringInFromExpectedError()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "", "[[recset1(1).field1]]", string.Empty, "[[recset2().field2]]");
@@ -111,6 +114,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomNumberWithBlankStringInToExpectedError()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "[[recset2(1).field2]]", "", string.Empty, "[[recset2().field2]]");
@@ -132,6 +136,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         //Test ammended as this is required to work now BUG 9506.
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomNumberWithFromHigherThenToExpectedANumberBetweenTheTwoNumbersIsGenerated()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "[[recset1(1).field1]]", "[[recset2(1).field2]]", string.Empty, "[[OutVar1]]");
@@ -154,6 +159,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomNumberWithFromBlankExpectedError()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "", "[[recset2(1).field2]]", string.Empty, "[[recset2().field2]]");
@@ -174,6 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomNumberWithToBlankExpectedError()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "[[recset1(1).field1]]", "", string.Empty, "[[recset2().field2]]");
@@ -194,6 +201,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomNumberWithToFieldWithLettersExpectedError()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "[[recset1(1).field1]]", "letters", "", "[[recset2().field2]]");
@@ -216,6 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomNumberWithFromFieldWithLettersExpectedError()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "letters", "[[recset1(1).field1]]", string.Empty, "[[recset2().field2]]");
@@ -242,6 +251,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Letters Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomLettersWithLengthOfTenStaticValueExpectedFiveRandomCharString()
         {
             const int Length = 10;
@@ -263,6 +273,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomLettersWithLengthOfTenRecordsetWithIndexValueExpectedFiveRandomCharString()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Letters, string.Empty, string.Empty, "[[recset1(1).field1]]", "[[OutVar1]]");
@@ -283,6 +294,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomLettersWithLengthOfNegativeTenExpectedError()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Letters, string.Empty, string.Empty, "[[recset2(1).field2]]", "[[OutVar1]]");
@@ -305,6 +317,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomLettersWithLengthOfLettersExpectedError()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Letters, string.Empty, string.Empty, "letters", "[[OutVar1]]");
@@ -327,6 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GenerateRandomLettersWithBlankLengthExpectedError()
         {
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Letters, string.Empty, string.Empty, "", "[[OutVar1]]");
@@ -351,6 +365,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_UpdateForEachInputs")]
         public void DsfRandomActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -371,6 +386,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_GetOutputs")]
         public void DsfRandomActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -389,6 +405,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_UpdateForEachInputs")]
         public void DsfRandomActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -413,6 +430,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
         public void DsfRandomActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -430,6 +448,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
         public void DsfRandomActivity_UpdateForEachOutputs_MoreThan1Updates()
@@ -450,6 +469,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
         public void DsfRandomActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -469,6 +489,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_GetForEachInputs")]
         public void DsfRandomActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -493,6 +514,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_GetForEachOutputs")]
         public void DsfRandomActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -513,6 +535,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_GetState")]
         public void DsfRandomActivity_GetState_ReturnsStateVariable()

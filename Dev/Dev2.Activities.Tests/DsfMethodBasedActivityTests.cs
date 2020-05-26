@@ -28,6 +28,7 @@ namespace Dev2.Tests.Activities
     public class DsfMethodBasedActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfMethodBasedActivity))]
         public void DsfMethodBasedActivity_Inputs_Null_ExpectZeroListsCount()
@@ -51,6 +52,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfMethodBasedActivity))]
         public void DsfMethodBasedActivity_Inputs_NotNull_Name_NotNull_ExpectListsCountNonZero()
@@ -83,6 +85,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfMethodBasedActivity))]
         public void DsfMethodBasedActivity_Inputs_NotNull_Name_Null_ExpectListsCountNonZero()
