@@ -152,7 +152,6 @@ namespace Dev2.Core.Tests
         #region Constructor
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedLoadsWorkspaceItems()
         {
             var workspaceID = Guid.NewGuid();
@@ -211,7 +210,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithDifferentEnvID()
         {
             var workspaceID = Guid.NewGuid();
@@ -259,7 +257,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
         {
             var workspaceID = Guid.NewGuid();
@@ -341,7 +338,6 @@ namespace Dev2.Core.Tests
         #region Close Context
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceSaved_RemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved()
         {
             CreateFullExportsAndVm();
@@ -361,7 +357,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceNotSavedPopupOk_RemoveWorkspaceItemCalledAndContextRemovedAndSaveResourceEventAggregatorMessage()
         {
             CreateFullExportsAndVm();
@@ -627,7 +622,6 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_RunAllTests")]
         [Description("An exisiting workflow with unsaved changes that is saved, must commit the resource model.")]
         [Owner("Pieter Terblanche")]
-        [DoNotParallelize]
         public void MainViewModel_RunAllTests()
         {
             CreateFullExportsAndVm();
@@ -766,7 +760,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MainViewModel_ShowStartPageCommand")]
-        [DoNotParallelize]
         public void MainViewModel_ShowStartPageCommand_ShowStartPageActive()
         {
             CreateFullExportsAndVm();
@@ -918,7 +911,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Description("Makes sure that new workflow only calls TempSave, not save on the resource repository")]
         [Owner("Jurie Smit")]
-        [DoNotParallelize]
         public void MainViewModel_Regression_NewWorkFlowCommand_DoesNotSaveRepository()
         {
             //Setup
@@ -1503,7 +1495,6 @@ namespace Dev2.Core.Tests
         #region OnDeactivate
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModelOnDeactivateWithTrueExpectedSavesWorkspaceItems()
         {
             var wsiRepo = new Mock<IWorkspaceItemRepository>();
@@ -2009,7 +2000,6 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditSqlServerSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditSqlServerSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2041,7 +2031,6 @@ namespace Dev2.Core.Tests
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditMySqlSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2072,7 +2061,6 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditPostgreSqlSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditPostgreSqlSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2103,7 +2091,6 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditOracleSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditOracleSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2134,7 +2121,6 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditOdbcSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditOdbcSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -3063,7 +3049,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
         [Owner("Leon Rajindrapersadh")]
-        [DoNotParallelize]
         public void MainViewModel_OnStudioClosing_ClosesRemoteEnvironmants()
         {
             var viewModel = new Mock<IShellViewModel>();
@@ -3235,7 +3220,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
         [Owner("Pieter Terblanche")]
-        [DoNotParallelize]
         public void MainViewModel_OnStudioClosing_CallsWorkflowOnClosing()
         {
             var viewModel = new Mock<IShellViewModel>();
@@ -3863,7 +3847,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_IsDownloading")]
         [Owner("Tshepo Ntlhokoa")]
-        [DoNotParallelize]
         public void MainViewModel_IsDownloading_IsBusyDownloadingInstallerReturnsFalse_False()
         {
             //------------Setup for test--------------------------
