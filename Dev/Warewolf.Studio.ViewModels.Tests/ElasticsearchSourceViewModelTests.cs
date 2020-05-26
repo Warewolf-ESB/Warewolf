@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
@@ -814,6 +815,40 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = _elasticsearchourceViewModelWithTask.CanTest();
 
             Assert.IsFalse(result);
+        }
+          [TestMethod, Timeout(60000)]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ElasticsearchSourceViewModel))]
+        public void ElasticsearchSourceViewModel_TestOkCommand_Execute_SaveSource_InvalidSearchIndexFormat()
+        {
+            var expectedResourceName = "ResourceName";
+            var expectedResourcePath = "ResourcePath";
+            var expectedHeader = expectedResourceName + " *";
+            var expectedHostName = "HostName";
+            var expectedPort = "9200";
+            var expectedUsername = "UserName";
+            var expectedPassword = "Password";
+            var expectedSearchIndex = "warewolftestlogs_1R";+
+
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowInvalidFormatMessage(expectedSearchIndex));
+
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HostName = expectedHostName;
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Port = expectedPort;
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.SearchIndex = expectedSearchIndex;
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Username = expectedUsername;
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Password = expectedPassword;
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.AuthenticationType = AuthenticationType.Password;
+
+            _elasticsearchSourceDefinition.SetupGet(it => it.Path).Returns(expectedResourcePath);
+            _elasticsearchSourceDefinition.SetupGet(it => it.Name).Returns(expectedResourceName);
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Item = _elasticsearchSourceDefinition.Object;
+
+            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.OkCommand.Execute(null);
+
+            //assert
+            popupController.Verify(controller => controller.ShowInvalidFormatMessage("expectedSearchIndex"), Times.AtLeastOnce);
+
         }
     }
 }
