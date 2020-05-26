@@ -140,8 +140,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mock = new Mock<IPopupController>();
             mock.Setup(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false)).Verifiable();
-            CustomContainer.Register(mock.Object);
-            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, mock.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             testVM.ShowDuplicatePopup();
@@ -542,8 +541,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
-            CustomContainer.Register(popupController.Object);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -954,12 +952,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             resourceModelMock.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-
             var popupController = new Mock<IPopupController>();
-            CustomContainer.Register(popupController.Object);
 
             //------------Execute Test---------------------------
-            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
             serviceTestViewModel.CreateTestCommand.Execute(null);
             Assert.IsTrue(serviceTestViewModel.CanSave);
             serviceTestViewModel.Save();
@@ -1436,8 +1432,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
-            CustomContainer.Register(popupController.Object);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
             testFrameworkViewModel.Save();
@@ -1462,8 +1457,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
             testFrameworkViewModel.Save();
@@ -1601,8 +1595,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
-            CustomContainer.Register(popupController.Object);
-
             var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
             var mockEnvironmentModel = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
@@ -1617,7 +1609,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModelMock.Setup(model => model.Category).Returns("My WF");
             resourceModelMock.Setup(model => model.ResourceName).Returns("My WF");
 
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
 
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
@@ -1639,8 +1631,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
-
             var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
             var mockEnvironmentModel = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
@@ -1655,7 +1645,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModelMock.Setup(model => model.Category).Returns("My WF");
             resourceModelMock.Setup(model => model.ResourceName).Returns("My WF");
 
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
 
             var wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
