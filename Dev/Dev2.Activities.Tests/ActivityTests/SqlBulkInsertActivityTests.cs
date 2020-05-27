@@ -32,6 +32,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Construct")]
         public void DsfSqlBulkInsertActivity_Construct_Paramterless_SetsDefaultPropertyValues()
@@ -48,6 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_SqlBulkInserter")]
         public void DsfSqlBulkInsertActivity_SqlBulkInserter_NotSet_ReturnsConcreateType()
@@ -64,6 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_SqlBulkInserter")]
         public void DsfSqlBulkInsertActivity_SqlBulkInserter_WhenSet_ReturnsSetValue()
@@ -81,6 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithNoInputMappings_EmptyDataTableToInsert()
@@ -99,6 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetOutputs")]
         public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -113,6 +118,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_OptionsNotSet_HasSqlBulkCopyWithOptionsWithDefaultValues()
@@ -135,6 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -149,6 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_OptionsSet_HasSqlBulkCopyWithOptionsWithValues()
@@ -172,6 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_OptionsSetMixed_HasSqlBulkCopyWithOptionsWithValues()
@@ -194,6 +203,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_OptionsSetMixedUsingDataList_HasSqlBulkCopyWithOptionsWithValues()
@@ -224,6 +234,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappings_HasDataTableToInsert()
@@ -256,6 +267,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsStringMapping_HasDataTableToInsertWithStringColumnHavingMaxLength()
@@ -288,6 +300,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithMultipleInputMappings_HasDataTableWithMultipleColumns()
@@ -353,6 +366,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListAppend_HasDataTableWithData()
@@ -406,6 +420,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListStar_HasDataTableWithData()
@@ -469,6 +484,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithBlankRowsInData_HasDataTableWithDataExcludingBlankRows()
@@ -532,6 +548,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithIgnoreBlankRowsFalse_HasDataTableWithDataIncludingBlankRows()
@@ -605,6 +622,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListStar_HasDataTableWithDataColumnHaveCorrectDataTypes()
@@ -689,6 +707,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListAppendMulitpleRows_HasDataTableWithDataOnlyLastRowFromDataList()
@@ -744,6 +763,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListStarWithOneScalar_HasDataTableWithData()
@@ -817,6 +837,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithIdentityColumnWithDataMappedAndKeepIdentityOnWhenMultiTable_HasTableWithData()
@@ -880,6 +901,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithIdentityColumnWithDataMappedAndKeepIdentityOffWhenMultiTable_HasErrorAboutColumn()
@@ -932,6 +954,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithInvalidIndex_HasErrorAboutColumn()
@@ -984,6 +1007,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithInvalidEvaluatedIndex_HasErrorAboutColumn()
@@ -1037,6 +1061,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithIdentityColumnWithNoDataMappedAndKeepIdentityOnWhenMultiTable_HasErrorAboutColumn()
@@ -1089,6 +1114,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithIdentityColumnWithNoDataMappedAndKeepIdentityOffWhenMultiTable_HasDataTableWithData()
@@ -1149,6 +1175,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithNullableColumnWithNoDataMappedWhenMultiTable_HasDataTableWithData()
@@ -1209,6 +1236,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithNullableColumnWithDataMappedWhenMultiTable_HasDataTableWithData()
@@ -1272,6 +1300,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -1336,6 +1365,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithNonNullableColumnWithNoDataMappedWhenMultiTable_HasErrorAboutColumn()
@@ -1388,6 +1418,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_IgnoreBlankRowsFalse_HasDataTableWithBlankRowData()
@@ -1462,6 +1493,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_MixedData_IgnoreBlankRowsTrue_HasDataTableWithOutBlankRowData()
@@ -1529,6 +1561,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListStarWithOneScalarAndAppend_HasDataTableWithData()
@@ -1602,6 +1635,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsAndDataFromDataListStarWithOneScalarAndAppendMixedRecsets_HasDataTableWithData()
@@ -1734,6 +1768,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachInputs")]
         public void DsfSqlBulkInsertActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -1764,6 +1799,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachInputs")]
         public void DsfSqlBulkInsertActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -1797,6 +1833,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachOutputs")]
         public void DsfSqlBulkInsertActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -1820,6 +1857,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachOutputs")]
         public void DsfSqlBulkInsertActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -1846,6 +1884,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_UpdateForEachOutputs")]
         public void DsfSqlBulkInsertActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -1871,6 +1910,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_GetForEachInputs")]
         public void DsfSqlBulkInsertActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -1918,6 +1958,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_GetForEachOutputs")]
         public void DsfSqlBulkInsertActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -1945,6 +1986,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DsfSqlBulkInsertActivity_GetFindMissingType")]
         public void DsfSqlBulkInsertActivity_GetFindMissingType_MixedActivity()

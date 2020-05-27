@@ -29,6 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUpload_GivenNewInstance_ShouldNotBeNull()
         {
@@ -42,6 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewActivity_GivenIsNew_ShouldHaveDisplayName()
         {
@@ -58,6 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenIsNew_ShouldSetDatagridAcitivity()
         {
@@ -76,6 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
         {
@@ -89,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentMockEnvironmentAndFromPath_ShouldHaveOneDebugOutputs()
         {
@@ -104,6 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentMockEnvironmentAndToPathNotExecuted_ShouldHaveOneDebugOutputs()
         {
@@ -118,6 +124,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             Assert.AreEqual(0, debugInputs.Count());
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentMockEnvironmentAndToPathAndFromPath_ShouldHaveTwoDebugOutputs()
         {
@@ -135,6 +142,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugOutputs_GivenNullEnvironment_ShouldHaveNoDebugOutPuts()
         {
@@ -148,6 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugOutputs_GivenFileMetadataIsNull_ShouldHaveNoDebugOutPuts()
         {
@@ -161,6 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugOutputs_GivenFileMetadataIsNotNull_ShouldHaveOneDebugOutPuts()
         {
@@ -181,6 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugOutputs_GivenWebRequestSuccess_ShouldCorrectDebugValue()
         {
@@ -204,6 +215,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTool_GivenNoFromPath_ShouldAddError()
         {
@@ -226,6 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTool_GivenNoToPath_ShouldAddError()
         {
@@ -248,6 +261,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
         public void PerformExecution_GivenNoPaths_ShouldThrowException()

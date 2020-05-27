@@ -17,6 +17,7 @@ namespace Dev2.Tests.Activities.TOTests
     public class CaseConvertDTOTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("CaseConvertDTO_Constructor")]
         public void CaseConvertDTO_Constructor_FullConstructor_DefaultValues()
@@ -34,6 +35,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanAdd Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("CaseConvertTO_CanAdd")]
         public void CaseConvertTO_CanAdd_StringToConvertEmpty_ReturnFalse()
@@ -46,6 +48,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("CaseConvertTO_CanAdd")]
         public void CaseConvertTO_CanAdd_StringToConvertnHasData_ReturnTrue()
@@ -58,6 +61,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvertTO_GetRuleSet_StringToConvert_ReturnsStringToConvertRule()
         {
             //------------Setup for test--------------------------
@@ -70,6 +74,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvertTO_ClearRow_StringToConvert_ReturnsStringToConvertRule()
         {
             //------------Setup for test--------------------------
@@ -83,6 +88,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CaseConvertTO_GetRuleSet_ConvertType_ReturnsNoRule()
         {
             //------------Setup for test--------------------------
@@ -99,6 +105,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanRemove Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("CaseConvertTO_CanRemove")]
         public void CaseConvertTO_CanRemove_StringToConvertEmpty_ReturnTrue()
@@ -111,6 +118,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("CaseConvertTO_CanRemove")]
         public void CaseConvertTO_CanRemove_StringToConvertWithData_ReturnFalse()

@@ -7,6 +7,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
     public class AssignObjectDtoTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_EmptyTos_Object_IsEqual()
         {
@@ -22,6 +23,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_FieldNames_Object_Is_IsEqual()
         {
@@ -37,6 +39,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFieldNames_Object_Is_NotIsEqual()
         {
@@ -52,6 +55,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFielValue_Object_Is_NotIsEqual()
         {
@@ -67,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ObjectAssign
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentindexNumber_Object_Is_NotIsEqual()
         {

@@ -20,6 +20,7 @@ namespace Dev2.Tests.Activities.Activities
     public class DsfPluginActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfPluginActivity))]
         public void DsfPluginActivity_ExecutionImpl_tempErrors_IsNotNull_Expect_True()

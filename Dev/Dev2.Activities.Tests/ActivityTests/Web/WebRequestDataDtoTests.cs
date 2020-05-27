@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     public class WebRequestDataDtoTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateRequestDataDto_GivenMethodGet_ShouldReturnDtoWithMethodGet()
         {
@@ -23,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateRequestDataDto_GivenTypeA_ShouldReturnDtoWithTypeA()
         {
@@ -36,6 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateRequestDataDto_GivenDisplayNameB_ShouldReturnDtoWithDisplayNameB()
         {

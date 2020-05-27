@@ -15,6 +15,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
     public class DsfJavascriptActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void UniqueIDEquals_EmptyJavascript_Object_IsEqual()
@@ -32,6 +33,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDDifferent_EmptyCountRecordset_Object_Is_Equal()
         {
@@ -47,6 +49,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Same_Object_IsEqual()
         {
@@ -63,6 +66,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal()
         {
@@ -79,6 +83,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -95,6 +100,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Script_Same_Object_IsEqual()
         {
@@ -111,6 +117,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Script_Different_Object_Is_Not_Equal()
         {
@@ -127,6 +134,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Script_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -143,6 +151,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Same_Object_IsEqual()
         {
@@ -159,6 +168,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Different_Object_Is_Not_Equal()
         {
@@ -175,6 +185,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -191,6 +202,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IncludeFile_Same_Object_IsEqual()
         {
@@ -207,6 +219,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IncludeFile_Different_Object_Is_Not_Equal()
         {
@@ -223,6 +236,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IncludeFile_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -239,6 +253,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ScriptType_Same_Object_IsEqual()
         {
@@ -255,6 +270,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ScriptType_Different_Object_Is_Not_Equal()
         {
@@ -272,6 +288,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void EscapeScript_Different_Object_Is_Not_Equal()
         {
@@ -290,6 +307,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void EscapeScript_Same_Object_Is_Equal()
         {
@@ -308,6 +326,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         public void JavascriptActivity_ExecuteTool()
         {
@@ -329,6 +348,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfJavascriptActivity_GetState")]
         public void DsfJavascriptActivity_GetState_ReturnsStateVariable()

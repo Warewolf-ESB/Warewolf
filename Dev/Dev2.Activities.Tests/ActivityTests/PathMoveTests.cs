@@ -91,6 +91,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathMove_UpdateForEachInputs")]
         public void DsfPathMove_Serialize_ShouldDeserializeCorrectly()
@@ -111,6 +112,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathMove_UpdateForEachInputs")]
         public void DsfPathMove_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -129,6 +131,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathMove_UpdateForEachInputs")]
         public void DsfPathMove_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -150,6 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathMove_UpdateForEachOutputs")]
         public void DsfPathMove_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -165,6 +169,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathMove_UpdateForEachOutputs")]
         public void DsfPathMove_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -183,6 +188,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathMove_UpdateForEachOutputs")]
         public void DsfPathMove_UpdateForEachOutputs_1Updates_UpdateResult()
@@ -201,6 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathMove_GetForEachInputs")]
         public void DsfPathMove_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -222,6 +229,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathMove_GetForEachOutputs")]
         public void DsfPathMove_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -240,6 +248,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfPathMove_Execute")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -288,6 +297,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfPathMove_Construct")]
         public void Move_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()
@@ -298,6 +308,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfPathMove_GetState")]
         public void DsfPathMove_GetState_ReturnsStateVariable()

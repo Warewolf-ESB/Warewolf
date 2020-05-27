@@ -20,6 +20,7 @@ namespace Dev2.Tests.Activities.TOTests
     public class FindRecordsTOTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindRecordsTO_Constructor")]
         public void FindRecordsTO_Constructor_Default_SetsProperties()
@@ -38,6 +39,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindRecordsTO_Constructor")]
         public void FindRecordsTO_ParameterConstructor_SetsProperties()
@@ -58,6 +60,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindRecordsTO_SearchType")]
         public void FindRecordsTO_SearchType_SetValue_FiresNotifyPropertyChanged()
@@ -75,6 +78,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindRecordsTO_SearchType")]
         public void FindRecordsTO_SearchCriteria_SetValue_FiresNotifyPropertyChanged()
@@ -92,6 +96,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindRecordsTO_IndexNum")]
         public void FindRecordsTO_IndexNum_SetValue_FiresNotifyPropertyChanged()
@@ -107,6 +112,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindRecordsTO_IsSearchCriteriaEnabled")]
         public void FindRecordsTO_IsSearchCriteriaEnabled_SetValue_FiresNotifyPropertyChanged()
@@ -124,6 +130,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanAdd Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("FindRecordsTO_CanAdd")]
         public void FindRecordsTO_CanAdd_SearchTypeEmpty_ReturnFalse()
@@ -136,6 +143,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("FindRecordsTO_CanAdd")]
         public void FindRecordsTO_CanAdd_SearchTypeWithData_ReturnTrue()
@@ -152,6 +160,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanRemove Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("FindRecordsTO_CanRemove")]
         public void FindRecordsTO_CanRemove_SearchTypeEmptyAndSearchTypeEmpty_ReturnTrue()
@@ -164,6 +173,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("FindRecordsTO_CanRemove")]
         public void FindRecordsTO_CanRemove_SearchTypeWithDataAndSearchTypeEmpty_ReturnFalse()
@@ -176,6 +186,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("FindRecordsTO_CanRemove")]
         public void FindRecordsTO_CanRemove_SearchTypeEmptyAndSearchTypeWithData_ReturnFalse()
@@ -188,6 +199,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
         public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsStartsWith_ReturnTwoRules()
@@ -198,6 +210,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
         public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsEndsWith_ReturnTwoRules()
@@ -208,6 +221,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
         public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsDoesntEndWith_ReturnTwoRules()
@@ -218,6 +232,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
         public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsDoesntStartWith_ReturnTwoRules()
@@ -228,6 +243,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
         public void FindRecordsTO_GetRuleSet_OnFromSearchTypeAsIsBetween_ReturnTwoRules()
@@ -238,6 +254,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
         public void FindRecordsTO_GetRuleSet_OnFromSearchTypeAsIsNotBetween_ReturnTwoRules()
@@ -247,6 +264,7 @@ namespace Dev2.Tests.Activities.TOTests
             VerifyCorrectRulesForEachField(findRecordsTO, "From");
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
         public void FindRecordsTO_GetRuleSet_OnToSearchTypeAsIsBetween_ReturnTwoRules()
@@ -257,6 +275,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
         public void FindRecordsTO_GetRuleSet_OnToSearchTypeAsIsNotBetween_ReturnTwoRules()

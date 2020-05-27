@@ -34,6 +34,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
     public class DsfComDllActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_Method_IsNull_Expect_Error()
@@ -50,6 +51,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_ExecutionImpl_Catch_Common_IsNotNull_Expect_NoError()
@@ -106,6 +108,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_ExecutionImpl_Catch_GetResource_IsNull_Expect_Error()
@@ -158,6 +161,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_GetFindMissingType_WhenCalled_Expect_DataGridActivity()
@@ -171,6 +175,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_GetHashCode_IsNotNull_Expect_True()
@@ -184,6 +189,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_GetHashCode_MethodOutputDescriptionSource_NotNull_Expect_IsNotNull()
@@ -210,6 +216,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_Equals_IsNotNull_Expect_True()
@@ -223,6 +230,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_Equals_IsNull_Expect_False()
@@ -236,6 +244,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_Equals_InstancesWithNoParams_NotSame_Expect_False()
@@ -249,6 +258,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_Equals_InstancesWithSameParams_NotSame_Expect_False()
@@ -283,6 +293,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_ObjectEquals_IsNotSameInstance_Expect_False()
@@ -298,6 +309,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_ObjectEquals_IsNull_Expect_False()
@@ -313,6 +325,7 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWcfEndPointActivity))]
         public void DsfWcfEndPointActivity_TryExecute_injectVal_IsNull_Expect_NoError()

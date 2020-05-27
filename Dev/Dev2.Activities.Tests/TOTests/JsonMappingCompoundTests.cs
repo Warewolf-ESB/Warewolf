@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.TOTests
     public class JsonMappingCompoundTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingCompoundToConstructor")]
         public void JsonMappingCompoundTo_Constructor_SetsProperties_NotIsCompound()
@@ -47,6 +48,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.IsFalse(jsonMappingCompound.IsCompound);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingCompoundToConstructor")]
         public void JsonMappingCompoundTo_Constructor_SetsProperties_IsCompound()
@@ -72,6 +74,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.IsTrue(jsonMappingCompound.IsCompound);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingCompoundToMaxCount")]
         public void JsonMappingCompoundTo_MaxCount_NotIsCompound()
@@ -112,6 +115,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual(jsonMappingCompound.MaxCount, 2);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingCompoundToMaxCount")]
         public void JsonMappingCompoundTo_MaxCount_IsCompound()
@@ -151,6 +155,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual(jsonMappingCompound.MaxCount, 2);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingCompoundToEvalResultIndexed")]
         public void JsonMappingCompoundTo_EvalResultIndexed_IsCompound()
@@ -176,6 +181,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.IsTrue(jsonMappingCompound.IsCompound);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingCompoundToEvalResultIndexed")]
         public void JsonMappingCompoundTo_EvalResultIndexed_NotIsCompound()
@@ -227,6 +233,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual(new JObject(new JProperty("b", jsonMappingCompound.EvaluatedResultIndexed(1))).ToString(Formatting.None), "{\"b\":[500,600]}");
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingCompoundToHasRecordSetInCompound")]
         public void JsonMappingCompoundTo_HasRecordSetInCompound()
@@ -266,6 +273,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.IsTrue(jsonMappingCompound.HasRecordSetInCompound);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingCompoundToIsValid")]
         public void JsonMappingCompoundTo_IsValid()
@@ -295,6 +303,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingCompoundTo_ComplexEvaluatedResultIndexed")]
         public void JsonMappingCompoundTo_ComplexEvaluatedResultIndexed()
@@ -310,6 +319,7 @@ namespace Dev2.Tests.Activities.TOTests
             CheckComplexEvaluatedResultIndexed("[[a]],[[b]]", "myName", 0, @"{""myName"":{""a"":10,""b"":20}}", dataObject);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingCompoundTo_ComplexEvaluatedResultIndexed")]
         public void JsonMappingCompoundTo_ComplexEvaluatedResultIndexedRecset()
@@ -325,6 +335,7 @@ namespace Dev2.Tests.Activities.TOTests
             CheckComplexEvaluatedResultIndexed("[[rec(*)]]", "myName", 0, @"{""rec"":[{""a"":50,""b"":500},{""a"":60,""b"":600}]}", dataObject);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingCompoundTo_ComplexEvaluatedResultIndexed")]
         public void JsonMappingCompoundTo_ComplexEvaluatedResultIndexedRecsetColumnMixed()
