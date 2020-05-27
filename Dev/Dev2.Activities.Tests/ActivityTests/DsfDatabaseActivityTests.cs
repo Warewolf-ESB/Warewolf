@@ -29,6 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Database Service Execution
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfDatabaseActivity_BeforeExecutionStart")]
         [Description("DsfDatabaseActivity BeforeExecutionStart constructs a valid database service execution.")]
         [Owner("Trevor Williams-Ros")]
@@ -49,6 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfDatabaseActivity_ExecutionImpl")]
         [Description("DsfDatabaseActivity ExecutionImpl invokes the database service.")]
         [Owner("Trevor Williams-Ros")]
@@ -78,6 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfDatabaseActivity_AfterExecutionCompleted")]
         [Description("DsfDatabaseActivity AfterExecutionCompleted invokes DatabaseServiceExecution AfterExecution.")]
         [Owner("Trevor Williams-Ros")]

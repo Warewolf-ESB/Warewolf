@@ -18,6 +18,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class DecisionActivityTests : BaseActivityUnitTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDecision_SerializeDeserialize")]
         public void DsfDecision_SerializeDeserialize_WhenAndSetTrue_ShouldHaveAndAsTrueWhenDeserialized()
@@ -34,6 +35,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDecision_SerializeDeserialize")]
         public void DsfDecision_SerializeDeserialize_WhenAndSetFalse_ShouldHaveAndAsFalseWhenDeserialized()
@@ -50,6 +52,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDecision_GetState")]
         public void DsfDecision_GetState_ReturnsStateVariable()

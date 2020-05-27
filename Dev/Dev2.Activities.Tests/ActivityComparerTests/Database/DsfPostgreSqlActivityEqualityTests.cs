@@ -11,6 +11,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
     public class DsfPostgreSqlActivityEqualityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void UniqueIDEquals_EmptyPostgreDatabase_Object_Is_Equal()
         {
@@ -27,6 +28,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void UniqueIDDifferent_EmptyPostgreDatabase_Object_Is_Not_Equal()
         {
@@ -43,6 +45,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_SourceId_IsEqual()
         {
@@ -60,6 +63,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_SourceId_IsNotEqual()
         {
@@ -78,6 +82,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_IsEqual()
         {
@@ -94,6 +99,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
@@ -109,6 +115,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_ProcedureName_IsEqual()
         {
@@ -125,6 +132,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_ProcedureName_Different_Casing_IsNotEqual()
         {
@@ -141,6 +149,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_ProcedureName_Is_Not_Equal()
         {
@@ -157,6 +166,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentInputs_ActivityTools_AreNotEqual()
         {
@@ -178,6 +188,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameInputsDifferentIndexes_ActivityTools_AreNotEqual()
         {
@@ -204,6 +215,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameInputs_ActivityTools_AreEqual()
         {
@@ -221,6 +233,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentOutputs_ActivityTools_AreNotEqual()
         {
@@ -240,6 +253,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameOutputs_DifferentIndexes_ActivityTools_AreNotEqual()
         {
@@ -266,6 +280,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameOutputs_ActivityTools_AreEqual()
         {

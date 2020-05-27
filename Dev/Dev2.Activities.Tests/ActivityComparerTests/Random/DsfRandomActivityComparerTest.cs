@@ -9,6 +9,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
     public class DsfRandomActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -40,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_IsEqual()
         {
@@ -56,6 +59,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
@@ -71,6 +75,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Length_IsEqual()
         {
@@ -87,6 +92,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Length_Is_Not_Equal()
         {
@@ -102,6 +108,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_From_IsEqual()
         {
@@ -118,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_From_Is_Not_Equal()
         {
@@ -134,6 +142,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
                  
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_To_IsEqual()
         {
@@ -150,6 +159,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_To_Is_Not_Equal()
         {
@@ -166,6 +176,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
                  
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Result_IsEqual()
         {
@@ -182,6 +193,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Result_Is_Not_Equal()
         {
@@ -199,6 +211,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
                  
                  
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_RandomType_IsEqual()
         {
@@ -216,6 +229,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Random
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_RandomType_Is_Not_Equal()
         {

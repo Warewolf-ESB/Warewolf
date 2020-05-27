@@ -1267,7 +1267,7 @@ namespace Dev2.Studio.ViewModels
                     if (selectedTest != null)
                     {
                         var workflow = new WorkflowDesignerViewModel(contextualResourceModel);
-                        var testViewModel = new ServiceTestViewModel(contextualResourceModel, new AsyncWorker(), EventPublisher, new ExternalProcessExecutor(), workflow);
+                        var testViewModel = new ServiceTestViewModel(contextualResourceModel, new AsyncWorker(), EventPublisher, new ExternalProcessExecutor(), workflow, CustomContainer.Get<IPopupController>());
 
                         var serviceTestModel = testViewModel.ToServiceTestModel(selectedTest);
                         _worksurfaceContextManager.ViewSelectedTestForService(contextualResourceModel, serviceTestModel, testViewModel, workSurfaceKey);

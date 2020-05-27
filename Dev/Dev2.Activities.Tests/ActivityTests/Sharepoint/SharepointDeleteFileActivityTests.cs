@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFileActivity_Construct")]
         public void SharepointDeleteFileActivity_Construct_GivenInstance_ShouldNotBeNull()
@@ -36,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFile_Execute")]
         public void SharepointSource_DoesNotExist_OnResourceCatalog_ShouldSetSharepointSource_ToGuidEmpty()
@@ -69,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFile_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_BlankRecordSet()
@@ -111,6 +114,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFile_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_StarRecordSet()
@@ -153,6 +157,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFile_Execute")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -183,6 +188,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointDeleteFile_Execute")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -215,6 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("SharepointDeleteFile_GetState")]
         public void SharepointDeleteFile_GetState()

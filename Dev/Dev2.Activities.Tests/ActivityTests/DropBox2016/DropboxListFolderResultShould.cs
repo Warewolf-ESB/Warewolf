@@ -20,6 +20,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         public class DropboxListFolderResultShould
         {
             [TestMethod]
+        [Timeout(60000)]
             [Owner("Nkosinathi Sangweni")]
             [TestCategory(nameof(DropboxListFolderSuccesResult))]
             public void DropboxListFolderSuccesResult_ConstructDropBoxSuccessResult_GivenListFolderResult_ShouldRetunNewSuccessResult()
@@ -34,6 +35,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             }
 
             [TestMethod]
+        [Timeout(60000)]
             [Owner("Siphamandla Dube")]
             [TestCategory(nameof(DropboxListFolderSuccesResult))]
             public void DropboxListFolderSuccesResult_GivenListFolderResult_Expect_ILIstFolderResult()

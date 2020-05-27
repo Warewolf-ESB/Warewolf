@@ -44,6 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropboxFileList_GivenNewInstance_ShouldNotBeNull()
         {
@@ -56,6 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewActivity_GivenIsNew_ShouldHaveDisplayName()
         {
@@ -69,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenIsNew_ShouldSetStaticActivity()
         {
@@ -82,6 +85,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
         {
@@ -95,6 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentMockEnvironmentAndFromPath_ShouldHaveOneDebugOutputs()
         {
@@ -110,6 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugOutputs_GivenWebRequestSuccess_ShouldCorrectDebugValue()
         {
@@ -130,6 +136,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugOutputs_GivenFileMetadataIsNotNull_ShouldHaveOneDebugOutPuts()
         {
@@ -150,6 +157,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTool_GivenPaths_ShouldExecuteTool()
         {
@@ -170,6 +178,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenNoPaths_ShouldReturnSuccess()
         {
@@ -205,6 +214,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenPath_ShouldReturnSuccess()
         {
@@ -238,6 +248,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenPathAndIncludeFolders_ShouldLoadFolders()
         {
@@ -273,6 +284,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenPathAndIsFilesAndFoldersSelected_ShouldLoadFoldersAndFiles()
         {
@@ -308,6 +320,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void
             PerformExecution_GivenPathAndIsFilesAndFoldersSelectedAndIncludeDeleted_ShouldLoadFoldersAndFilesAndDeleted()
@@ -345,6 +358,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenPathAndIncludeDeleted_ShouldLoadDeletedFiles()
         {
@@ -380,6 +394,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenPathNotIncludeFolders_ShouldLoadNotLoadFolders()
         {
@@ -414,6 +429,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenHasError_ShouldReturnExceptionMessage()
         {
@@ -446,6 +462,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTool_GivenNoToPath_ShouldExecuteTool()
         {
@@ -466,6 +483,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [ExpectedException(typeof(Exception))]
         public void PerformExecution_GivenHasError_ShouldReturnDropboxFailureResult()
@@ -499,6 +517,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(Exception))]
         public void PerformExecution_GivenNoToPath_ShouldPassesThrough()
@@ -528,6 +547,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenValues_ShouldAddDebugInputs()
         {

@@ -37,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Index Positive Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Recordset_With_Index_Expected_Index_Of_Four_Returned()
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
@@ -52,6 +53,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Recordset_With_Star_And_Star_Search_Criteria_Expected_Index_Of_Four_Returned()
         {
             SetupArguments(ActivityStrings.IndexDataListShapeWithThreeRecordsets, ActivityStrings.IndexDataListWithDataAndThreeRecordsets,
@@ -72,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         /// This method takes a recordset as input and outputs a single value
         /// </summary>
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Recordset_With_Star_And_Star_Search_Criteria_Numeric_Return_Field_Expected_RowWithValuesAsCSV()
         {
             const int Expected = 1;
@@ -92,6 +95,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Recordset_With_No_Index_Expected_Index_Of_One_Returned()
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
@@ -107,6 +111,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Recordset_With_Star_Expected_Six_Different_Indexs_Returned()
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
@@ -124,6 +129,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         /// getting a scalar, returning a scalar
         /// </summary>
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Scalar_Expected_Index_Of_Four_Returned()
         {
             const string Expected = "4";
@@ -143,6 +149,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Scalar_RightToLeft_Expected_Index_Of_One_Returned()
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
@@ -157,6 +164,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Scalar_Text_Not_Found_Expected_Index_Of_Negative_One_Returned()
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
@@ -175,6 +183,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Index Negative Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Raw_Data_AllOccurrences_Expected_Success()
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListShape,
@@ -191,6 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests
      
 
         [TestMethod]
+        [Timeout(60000)]
         public void Index_Recordset_With_Star_AllOccurrences_Expected_Seven_Different_Indexs_Returned()
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
@@ -210,6 +220,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_GetOutputs")]
         public void DsfBaseActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -227,6 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfIndexActivity_UpdateForEachInputs")]
         public void DsfIndexActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -244,6 +256,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfIndexActivity_UpdateForEachInputs")]
         public void DsfIndexActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -264,6 +277,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfIndexActivity_UpdateForEachOutputs")]
         public void DsfIndexActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -278,6 +292,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfIndexActivity_UpdateForEachOutputs")]
         public void DsfIndexActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -295,6 +310,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfIndexActivity_UpdateForEachOutputs")]
         public void DsfIndexActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -310,6 +326,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfIndexActivity_GetForEachInputs")]
         public void DsfIndexActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -330,6 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfIndexActivity_GetForEachOutputs")]
         public void DsfIndexActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -347,6 +365,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfIndexActivity_UpdateForEachOutputs")]
         public void DsfIndexActivity_GetState_Returns_Inputs_And_Outputs()
         {

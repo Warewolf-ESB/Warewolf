@@ -26,6 +26,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     public class SequenceActivityFindMissingStrategyTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SequenceActivityFindMissingStrategy_GetActivityFields")]
         public void SequenceActivityFindMissingStrategy_GetActivityFields_WithAssignAndDataMerge_ReturnsAllVariables()
@@ -54,6 +55,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SequenceActivityFindMissingStrategy_GetActivityFields")]
         public void SequenceActivityFindMissingStrategy_GetActivityFields_WithAssignAndDecision_ReturnsAllVariables()

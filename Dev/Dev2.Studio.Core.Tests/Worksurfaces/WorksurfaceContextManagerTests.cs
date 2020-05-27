@@ -510,6 +510,7 @@ namespace Dev2.Core.Tests
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenOracleResourceType_ShouldEditODBC()
         {
             //---------------Set up test pack-------------------
@@ -785,6 +786,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenOauthSourceResourceType_ShouldEditOauthSource()
         {
             //---------------Set up test pack-------------------

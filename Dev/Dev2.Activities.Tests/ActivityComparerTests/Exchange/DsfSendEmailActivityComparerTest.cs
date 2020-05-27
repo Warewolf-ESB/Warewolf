@@ -13,6 +13,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
     public class DsfSendEmailActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void UniqueIDEquals_EmptySendEmailActivities_IsEqual()
         {
@@ -29,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void UniqueID_Different_Object_Is_Not_Equal()
         {
@@ -44,6 +46,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
             Assert.IsFalse(equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Object_IsEqual()
         {
@@ -60,6 +63,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Object_Is_Not_Equal()
         {
@@ -76,6 +80,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -91,6 +96,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
             Assert.IsFalse(equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Result_Same_Object_IsEqual()
         {
@@ -107,6 +113,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Result_Different_Object_Is_Not_Equal()
         {
@@ -123,6 +130,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Result_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -139,6 +147,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void To_Same_Object_IsEqual()
         {
@@ -155,6 +164,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void To_Different_Object_Is_Not_Equal()
         {
@@ -171,6 +181,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void DeletePath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -188,6 +199,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Cc_Same_Object_IsEqual()
         {
@@ -204,6 +216,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Cc_Different_Object_Is_Not_Equal()
         {
@@ -220,6 +233,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Cc_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -237,6 +251,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Bcc_Same_Object_IsEqual()
         {
@@ -253,6 +268,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Bcc_Different_Object_Is_Not_Equal()
         {
@@ -269,6 +285,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Bcc_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -285,6 +302,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Subject_Same_Object_IsEqual()
         {
@@ -301,6 +319,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Subject_Different_Object_Is_Not_Equal()
         {
@@ -317,6 +336,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Subject_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -334,6 +354,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Attachments_Same_Object_IsEqual()
         {
@@ -350,6 +371,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Attachments_Different_Object_Is_Not_Equal()
         {
@@ -366,6 +388,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Attachments_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -382,6 +405,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Body_Same_Object_IsEqual()
         {
@@ -398,6 +422,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void BodyDifferent_Object_Is_Not_Equal()
         {
@@ -414,6 +439,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Body_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -430,6 +456,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Password_Same_Object_IsEqual()
         {
@@ -446,6 +473,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void PasswordDifferent_Object_Is_Not_Equal()
         {
@@ -462,6 +490,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Password_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -477,6 +506,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
             Assert.IsFalse(equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void FromAccountDifferent_Object_Is_Not_Equal()
         {
@@ -493,6 +523,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void FromAccount_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -509,6 +540,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Priority_Same_Object_Is_Equal()
         {
@@ -525,6 +557,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Priority_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -541,6 +574,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void IsHtml_Same_Object_Is_Equal()
         {
@@ -557,6 +591,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void IsHtml_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -573,6 +608,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfSendEmailActivity_GetState")]
         public void DsfSendEmailActivity_GetState_ReturnsStateVariable()

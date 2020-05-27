@@ -70,6 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("XPath_Execute")]
         public void XPath_Execute_WhenLoadingTestResultsFile_ExpectParsableXML()
@@ -88,7 +89,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
-        [TestMethod] // - OK
+        [TestMethod]
+        [Timeout(60000)] // - OK
         public void EmptySourceStringExpectedNoData()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
@@ -102,6 +104,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ScalarExpectedPathsAndInsertToScalarLastValue()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
@@ -123,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ScalarExpectedWithXPathInScalarPathsAndInsertToScalarLastValue()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "[[xpath]]", 1));
@@ -145,6 +149,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathActivity_OnExecute")]
         public void XPathActivity_Execute_MultipleScalars_XPathExecuteAndInsertMutipleScalars()
@@ -172,6 +177,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathActivity_OnExecute")]
         public void XPathActivity_Execute_ScalarWithXPathInRecset_XPathExecuteAndInsertMutipleScalars()
@@ -199,6 +205,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecsetWithXPathInRecsetExpectedXPathExecuteAndInsertMutipleScalars()
         {
 
@@ -217,6 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathActivity_OnExecute")]
         public void MixedScalarsAndRecordsetWithIndexExpectedXPathEvalInsertMutipleScalarAndRecordsets()
@@ -246,6 +254,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("XPathActivity_OnExecute")]
         public void XPathActivity_Execute_MixedScalarsAndRecordsetWithoutIndex_XPathValuesToEndInsertingMutipleScalarAndRecordsets()
@@ -281,6 +290,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiRecsetsWithNoIndexExpectedXPathResultsAppendToTheRecordsets()
         {
             _resultsCollection.Add(new XPathDTO("[[recset1().rec1]]", "//type/method/@name", 1));
@@ -309,6 +319,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecsetWithStarExpectedXPathsResultsOverwriteRecordsFromIndex1()
         {
 
@@ -336,6 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecsetWithStarExpectedXPaths_InsideForEach_ShouldRespect_UpdateValueForRecordsetIndex()
         {
 
@@ -388,6 +400,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("XPathActivity_Execution")]
         [Description("XPathActivity execute upserts one result only")]
         [Owner("Ashley Lewis")]
@@ -411,6 +424,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfXPathActivity_UpdateForEachInputs")]
         public void DsfXPathActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -428,6 +442,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetOutputs")]
         public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -444,6 +459,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfXPathActivity_UpdateForEachInputs")]
         public void DsfXPathActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -464,6 +480,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfXPathActivity_UpdateForEachOutputs")]
         public void DsfXPathActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -480,6 +497,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfXPathActivity_UpdateForEachOutputs")]
         public void DsfXPathActivity_UpdateForEachOutputs_MoreThan1Updates_Updates()
@@ -499,6 +517,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfUniqueActivity_UpdateForEachOutputs")]
         public void DsfXPathActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -517,6 +536,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfUniqueActivity_GetForEachInputs")]
         public void DsfXPathActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -536,6 +556,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfXPathActivity_GetForEachOutputs")]
         public void DsfXPathActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -554,6 +575,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfXPathActivity_GetState")]
         public void DsfXPathActivity_GetState_ReturnsStateVariable()

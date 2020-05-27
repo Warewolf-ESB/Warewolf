@@ -57,6 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithNullDebugDispatcher_Expected_ArgumentNullException()
         {
@@ -66,6 +67,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ConstructorWithDebugDispatcher_Expected_NoArgumentNullException()
         {
 
@@ -74,6 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DsfNativeActivity_Constructor")]
         public void DsfNativeActivity_Constructor_OnError_PropertiesInitialized()
@@ -90,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DsfNativeActivity_Constructor")]
         public void DsfNativeActivity_Constructor_OnErrorVariable_HasFindMissingAttribute()
@@ -106,12 +110,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithNoDataObject_Expected_DoesNotInvokeDebugDispatcher()
         {
             VerifyDispatcherWriteCount(null, 0);
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithIsDebugTrue_Expected_InvokesDebugDispatcher()
         {
             VerifyDispatcherWriteCount(CreateDataObject(true, false), 1);
@@ -119,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithIsDebugFalse_Expected_DoesNotInvokeDebugDispatcher()
         {
             VerifyDispatcherWriteCount(CreateDataObject(false, false), 0);
@@ -167,6 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfNativeActivity_InitializeDebugState")]
         [Description("DsfNativeActivity InitializeDebugState must set the DebugState's properties.")]
         [Owner("Trevor Williams-Ros")]
@@ -222,6 +230,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void DsfNativeActivity_DispatchDebugState_Before_SetsStartTimeCorrectly()
         {
@@ -259,6 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void DsfNativeActivity_DispatchDebugState_After_SetsEndTimeCorrectly()
         {
@@ -303,6 +313,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNativeActivity_GetForEachItems")]
         public void DsfNativeActivity_GetForEachItems_NullStringList_EmptyList()
@@ -317,6 +328,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNativeActivity_GetForEachItems")]
         public void DsfNativeActivity_GetForEachItems_EmptyStringList_EmptyList()
@@ -331,6 +343,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNativeActivity_GetForEachItems")]
         public void DsfNativeActivity_GetForEachItems_WhenHasStringItems_ReturnsForEachItemList()
@@ -351,6 +364,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
 
@@ -376,6 +390,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfNativeActivity_UpdateDebugParentID")]
 
@@ -402,6 +417,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNativeActivity_UpdateDebugParentID")]
         public void DsfNativeActivity_ExecuteTool_DebugFalse_TestExecution()
@@ -446,6 +462,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNativeActivity_UpdateDebugParentID")]
         public void DsfNativeActivity_ExecuteTool_Errors_PerformsErrorHandling()
@@ -479,6 +496,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void DsfNativeActivity_DispatchDebugState_After_TestExecution()
         {
@@ -538,6 +556,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfNativeActivity_ExecuteTool")]
         public void DsfNativeActivity_ExecuteTool_NoTestStepOutputs_TestExecution()
@@ -575,6 +594,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("DsfNativeActivity_ExecuteTool")]
         public void DsfNativeActivity_ExecuteTool_TestErrors_TestExecution()

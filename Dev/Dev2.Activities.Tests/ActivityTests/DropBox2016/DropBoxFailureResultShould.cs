@@ -9,6 +9,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
     public class DropBoxFailureResultShould
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ConstructDropBoxFailureResult_GivenException_ShouldRetunNewFailureResult()
         {
@@ -22,6 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void failureResult_GivenException_ShouldRetunNewFailureResult()
         {

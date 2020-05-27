@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
     public class DsfCommentActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -23,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -39,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_IsEqual()
         {
@@ -55,6 +58,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
@@ -70,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Text_IsEqual()
         {
@@ -86,6 +91,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Text_Different_Casing_IsNotEqual()
         {
@@ -102,6 +108,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Comment
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Text_Is_Not_Equal()
         {

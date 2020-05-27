@@ -22,6 +22,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void DsfSqlServerDatabaseActivity_GivenNewInstance_ShouldNotBeNull()
         {
@@ -34,6 +35,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void CreateNewActivity_GivenIsNew_ShouldHaveDisplayName()
         {
@@ -48,6 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void GetFindMissingType_GivenIsNew_ShouldSetDatagridAcitivity()
         {
@@ -62,6 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void GetDebugInputs_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
         {
@@ -75,6 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void GetDebugInputs_GivenEnvironmentMockEnvironmentAndFromPath_ShouldHaveOneDebugOutputs()
         {

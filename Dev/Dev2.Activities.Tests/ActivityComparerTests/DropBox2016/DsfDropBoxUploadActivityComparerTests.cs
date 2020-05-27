@@ -30,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
     public class DsfDropBoxUploadActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_UniqueIDEquals_EmptyDropBoxDeleteActivities_IsEqual()
@@ -47,6 +48,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_UniqueID_Different_Object_Is_Not_Equal()
@@ -63,6 +65,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_Equals_Given_Same_Object_IsEqual()
@@ -80,6 +83,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_Equals_Given_Different_Object_Is_Not_Equal()
@@ -97,6 +101,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -113,6 +118,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_Result_Same_Object_IsEqual()
@@ -130,6 +136,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_Result_Different_Object_Is_Not_Equal()
@@ -147,6 +154,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_Result_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -164,6 +172,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_FromPath_Same_Object_IsEqual()
@@ -181,6 +190,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_FromPath_Different_Object_Is_Not_Equal()
@@ -198,6 +208,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_FromPath_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -215,6 +226,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_ToPath_Same_Object_IsEqual()
@@ -232,6 +244,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_ToPath_Different_Object_Is_Not_Equal()
@@ -249,6 +262,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_ToPath_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -266,6 +280,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_DropBoxSource_Different_Object_Is_Not_Equal()
@@ -301,6 +316,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_DropBoxSource_Same_Object_Is_Equal()
@@ -333,6 +349,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_AddMode_Different_Object_Is_Not_Equal()
@@ -365,6 +382,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_AddMode_Same_Object_Is_Equal()
@@ -396,6 +414,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             }
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_OverWriteMode_Different_Object_Is_Not_Equal()
@@ -428,6 +447,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_OverWriteMode_Same_Object_Is_Equal()
@@ -460,6 +480,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_GetState_ReturnsStateVariable()
@@ -541,6 +562,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_ObjectEquals_IsFalse_ExpectFalse()
@@ -563,6 +585,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_ObjectEquals_IsTrue_ExpectTrue()
@@ -585,6 +608,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_ObjectEquals_IsNotExpectedObject_ExpectFalse()
@@ -604,6 +628,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_Equals_ExpectFalse()
@@ -624,6 +649,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_Equals_IsNull_ExpectFalse()
@@ -643,6 +669,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_Equals_IsEqual_ExpectTrue()
@@ -655,6 +682,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_GetHashCode_Properties_NotNull_ExpertTrue()
@@ -680,6 +708,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_GetHashCode_Properties_IsNull_ExpertTrue()
@@ -701,6 +730,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_PerformExecution_GetDebugInputs_Null_ExpertSuccess()
@@ -721,6 +751,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_PerformExecution_GetDebugInputs_NotNull_WithSetProperties_ExpertSuccess()
