@@ -326,14 +326,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 var workflowCanBeExecutedByGroup = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
-                var tokenIsValid = true;
                 var isTokenWorkflow = webRequest.Variables["isToken"];
-                if (isTokenWorkflow == "True")
-                {
-                    tokenIsValid = ValidateToken(headers, _authorizationService, _resource);
-                }
-
-                _canExecute = workflowCanBeExecutedByGroup && tokenIsValid;
+                _canExecute = workflowCanBeExecutedByGroup;
+                
                 if (!_canExecute)
                 {
                     var message = Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException;

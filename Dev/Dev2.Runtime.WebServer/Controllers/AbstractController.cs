@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
+using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
@@ -35,6 +36,8 @@ namespace Dev2.Runtime.WebServer.Controllers
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
             where TRequestHandler : class, IRequestHandler, new()
         {
+            var user = User;
+
             var isTokenRequest = requestVariables["isToken"];
             if (isTokenRequest == "False")
             {
@@ -44,8 +47,19 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
             }
 
-            var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
+            if (isTokenRequest == "True")
+            {
+                var token = Request.Headers.Authorization?.Parameter;
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                   user = new JwtManager(new SecuritySettings()).BuildPrincipal(token);
+                }
+            }
+
+            var context = new WebServerContext(Request, requestVariables) { Request = { User = user } };
             var handler = CreateHandler<TRequestHandler>();
+
+
             handler.ProcessRequest(context);
 
             return context.ResponseMessage;

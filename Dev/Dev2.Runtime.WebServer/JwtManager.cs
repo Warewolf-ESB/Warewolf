@@ -81,7 +81,7 @@ namespace Dev2.Runtime.WebServer
             return payload;
         }
 
-        private ClaimsPrincipal BuildPrincipal(string token)
+        public ClaimsPrincipal BuildPrincipal(string token)
         {
             try
             {
