@@ -223,6 +223,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
+        [DoNotParallelize]
         public void OnExecuteWhereConsoleOutputsWithArgsWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
