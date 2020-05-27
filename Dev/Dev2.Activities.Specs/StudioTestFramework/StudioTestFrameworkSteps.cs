@@ -504,7 +504,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             if (MyContext.TryGetValue(workflowName, out ResourceModel resourceModel))
             {
-                var vm = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+                var vm = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object, GetPopupController().Object);
                 vm.WebClient = new Mock<IWarewolfWebClient>().Object;
                 Assert.IsNotNull(vm);
                 Assert.IsNotNull(vm.ResourceModel);
@@ -522,7 +522,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(loadContextualResourceModel, "Cannot find " + workflowName);
             var msg = sourceResourceRepository.FetchResourceDefinition(loadContextualResourceModel.Environment, GlobalConstants.ServerWorkspaceID, resourceId, false);
             loadContextualResourceModel.WorkflowXaml = msg.Message;
-            var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object, GetPopupController().Object);
             testFramework.WebClient = new Mock<IWarewolfWebClient>().Object;
             Assert.IsNotNull(testFramework, "ServiceTestViewModel expects Not Null using Workflow - " + workflowName);
             Assert.IsNotNull(testFramework.ResourceModel, "ServiceTestViewModel ResourceModel expects Not Null using Workflow - " + workflowName);
@@ -815,7 +815,7 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-        private Mock<Common.Interfaces.Studio.Controller.IPopupController> GetPopupController()
+        Mock<IPopupController> GetPopupController()
         {
             if (!MyContext.ContainsKey("popupController"))
             {
@@ -823,7 +823,6 @@ namespace Dev2.Activities.Specs.TestFramework
                 popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
                 popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false)).Verifiable();
                 popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Information, null, false, true, false, false, false, false)).Verifiable();
-                CustomContainer.Register(popupController.Object);
                 MyContext["popupController"] = popupController;
                 return popupController;
             }
@@ -1718,7 +1717,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
                 var executeMessage = _environmentModel.ResourceRepository.SaveTests(testFrameworkFromContext.ResourceModel, serviceTestModelTos);
                 Assert.IsTrue(executeMessage.Result == SaveResult.Success || executeMessage.Result == SaveResult.ResourceUpdated);
-                testFrameworkFromContext = new ServiceTestViewModel(testFrameworkFromContext.ResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+                testFrameworkFromContext = new ServiceTestViewModel(testFrameworkFromContext.ResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object, GetPopupController().Object);
                 testFrameworkFromContext.WebClient = new Mock<IWarewolfWebClient>().Object;
                 MyContext["testFramework"] = testFrameworkFromContext;
 
@@ -1758,7 +1757,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 contextualResource.WorkflowXaml = msg.Message;
                 var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(),
                     new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(),
-                    new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+                    new Mock<IWorkflowDesignerViewModel>().Object, GetPopupController().Object);
                 serviceTestVm.WebClient = new Mock<IWarewolfWebClient>().Object;
                 Assert.IsNotNull(serviceTestVm);
                 Assert.IsNotNull(serviceTestVm.ResourceModel);
