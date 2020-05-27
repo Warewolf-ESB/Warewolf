@@ -45,6 +45,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Number Of Execution Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void NumberOfExecutionsWithNullParamsExpectedTotalExecutions0()
         {
             SetupArguments(
@@ -59,6 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("ForEach,IterativeExecution,UnitTest")]
         [Description("Test to ensure we do not regress on the iterative execution of sub-services in a workflow")]
         [Owner("Trav")]
@@ -82,6 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NumberOfExecutionsWithNegativeNumberExpectedTotalExecutions0()
         {
             SetupArguments(
@@ -102,6 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NumberOfExecutionsWithRangeExpectedTotalExecutions5()
         {
             SetupArguments(
@@ -121,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NumberOfExecutionsWithReversedRangeExpectedTotalExecutions5()
         {
             SetupArguments(
@@ -140,6 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NumberOfExecutionsWithNegitiveNumberAsFromExpectedTotalExecutions15()
         {
             SetupArguments(
@@ -160,6 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NumberOfExecutionsWithNegitiveNumberAsToExpectedTotalExecutions0()
         {
             SetupArguments(
@@ -177,6 +184,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NumberOfExecutionsWithCsvExpectedTotalExecutions2()
         {
             SetupArguments(
@@ -196,6 +204,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NumberOfExecutionsWithCsvExpectedTotalExecutions4()
         {
             SetupArguments(
@@ -216,6 +225,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NumberOfExecutionsWithReverseOrderCsvExpectedTotalExecutions3()
         {
             SetupArguments(
@@ -240,6 +250,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Output Mapping Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
         
@@ -265,6 +276,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
         
@@ -291,6 +303,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
         
@@ -314,6 +327,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfForEachActivity_Execute")]
         public void DsfForEachActivity_Execute_ServiceTestExecution_WithNoUniqueId()

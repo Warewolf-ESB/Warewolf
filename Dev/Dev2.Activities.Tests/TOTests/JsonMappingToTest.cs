@@ -9,6 +9,7 @@ namespace Dev2.Tests.Activities.TOTests
     {
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_Validate")]
         public void JsonMappingTo_Validate_ValidAndInvalidPassThrough()
@@ -29,6 +30,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_Clear")]
         public void JsonMappingTo_Clear()
@@ -48,6 +50,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_AddRemove")]
         public void JsonMappingTo_CanAddRemove_NoSourceAndDestinationName_CanRemoveTrue_CanAddFalse()
@@ -62,6 +65,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_AddRemove")]
         public void JsonMappingTo_CanAddRemove_HasSourceName_CanRemoveFalse_CanAddTrue()
@@ -76,6 +80,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_AddRemove")]
         public void JsonMappingTo_CanAddRemove_HasDestinationName_CanRemoveFalse_CanAddTrue()
@@ -90,6 +95,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_AddRemove")]
         public void JsonMappingTo_CanAddRemove_HasSourceAndDestinationName_CanRemoveFalse_CanAddTrue()
@@ -104,6 +110,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_SourceName")]
         public void JsonMappingTo_SourceName_DoesNotSetsDestinationRecset()
@@ -116,6 +123,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual("asdas", jsonMappingTo.DestinationName);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("JsonMappingTo_Ctor")]
         public void JsonMappingTo_Ctor()

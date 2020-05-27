@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUploadActivity_Construct")]
         public void SharepointFileUploadActivity_Construct_GivenInstance_ShouldNotBeNull()
@@ -36,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_DoesNotExist_OnResourceCatalog_ShouldSetSharepointSource_ToGuidEmpty()
@@ -69,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_BlankRecordSet_IsFilesSelected()
@@ -112,6 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_BlankRecordSet_IsFoldersSelected()
@@ -155,6 +159,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_BlankRecordSet_IsFilesAndFoldersSelected()
@@ -200,6 +205,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_StarRecordSet_IsFilesSelected()
@@ -243,6 +249,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_StarRecordSet_IsFoldersSelected()
@@ -286,6 +293,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_StarRecordSet_IsFilesAndFoldersSelected()
@@ -331,6 +339,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -361,6 +370,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("SharepointReadFolderItemActivity_GetState")]
         public void SharepointReadFolderItemActivity_GetState_IsFilesSelected()
@@ -461,6 +471,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("SharepointReadFolderItemActivity_GetState")]
         public void SharepointReadFolderItemActivity_GetState_IsFoldersSelected()
@@ -561,6 +572,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("SharepointReadFolderItemActivity_GetState")]
         public void SharepointReadFolderItemActivity_GetState_IsFilesAndFoldersSelected()
@@ -663,6 +675,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("SharepointReadFolderItemActivity_GetState")]
         public void SharepointReadFolderItemActivity_GetState_NoneSelected()

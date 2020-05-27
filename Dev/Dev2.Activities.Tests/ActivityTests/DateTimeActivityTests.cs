@@ -41,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         //Added for BUG 9494
         [TestMethod]
+        [Timeout(60000)]
         public void DateTimeUsingdWDatePartWithFullDateNameExpectedDateTimeReturnedCorrectly()
         {
             const string CurrDl = @"<root><MyTestResult></MyTestResult></root>";
@@ -64,6 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DateTime_NominalDateTimeInputs_Expected_DateTimeReturnedCorrectly()
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
@@ -87,6 +89,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DateTime_RecordSetData_Expected_EachRecordSetAppendedWithChangedDateTime()
         {
             const string currDL = @"<root><MyDateRecordSet><Date></Date></MyDateRecordSet></root>";
@@ -115,6 +118,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DateTimeAddSplitsExpectedDateTimeReturnedCorrectly()
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
@@ -137,6 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory(nameof(DsfDateTimeActivity))]
         [Owner("Rory McGuire")]
         public void DsfDateTimeActivity_ExecuteWithBlankInput_DateTimeNowIsUsed()
@@ -169,6 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory(nameof(DsfDateTimeActivity))]
         [Owner("Rory McGuire")]
         public void DsfDateTimeActivity_ExecuteWithBlankInputAndMonthsOutput_OutputNotZero()
@@ -189,6 +195,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDateTimeActivity_GetOutputs")]
         public void DsfDateTimeActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()

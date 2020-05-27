@@ -16,6 +16,7 @@ namespace Dev2.Data.Interfaces
     public interface IActivityOperationsBroker
     {
         string Get(IActivityIOOperationsEndPoint path);
+        byte[] GetBytes(IActivityIOOperationsEndPoint path);
         string Get(IActivityIOOperationsEndPoint path, bool deferredRead);
         string PutRaw(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args);
         string Delete(IActivityIOOperationsEndPoint src);

@@ -60,7 +60,7 @@ namespace Warewolf.UIBindingTests.ServiceTestViewModel
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
             mockResourceModel.Setup(model => model.ID).Returns(Guid.NewGuid);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var testFrameworkViewModel = new Studio.ViewModels.ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            var testFrameworkViewModel = new Studio.ViewModels.ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, new Mock<IPopupController>().Object);
             serviceTestView.DataContext = testFrameworkViewModel;
             Utils.ShowTheViewForTesting(serviceTestView);
             var grid = serviceTestView.Content as Grid;

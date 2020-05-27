@@ -13,6 +13,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
     public class DsfWebPutActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameUniqueID_EmptyWebPutTools_AreEqual()
         {
@@ -29,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentWebPutToolIds_AreNotEqual()
         {
@@ -46,6 +48,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameWebPutTool_IsEqual()
         {
@@ -62,6 +65,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_Value_IsEqual()
         {
@@ -78,6 +82,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Value_IsNOT_Equal()
         {
@@ -94,6 +99,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_Value_Different_Casing_IsNotEqual()
         {
@@ -110,6 +116,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_PutData_Value_IsEqual()
         {
@@ -126,6 +133,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_PutData_Different_Casing_Value_IsNOtEqual()
         {
@@ -142,6 +150,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_PutData_Value_IsNOTEqual()
         {
@@ -158,6 +167,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_QueryString_IsEqual()
         {
@@ -175,6 +185,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_QueryString_IsNOTEqual()
         {
@@ -191,6 +202,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_OutputDescription_IsEqual()
         {
@@ -208,6 +220,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_OutputDescription_IsNOTEqual()
         {
@@ -232,6 +245,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Headers_IsNOTEqual()
         {
@@ -250,6 +264,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Headers_DifferentIndexes_IsNotEqual()
         {
@@ -267,6 +282,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Headers_IsEqual()
         {

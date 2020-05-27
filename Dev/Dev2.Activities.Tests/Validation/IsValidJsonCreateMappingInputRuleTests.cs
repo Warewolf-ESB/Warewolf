@@ -19,6 +19,7 @@ namespace Dev2.Tests.Activities.Validation
     public class IsValidJsonCreateMappingInputRuleTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("IsValidJsonCreateMappingInputRule_Check")]
         public void IsValidJsonCreateMappingInputRule_RaiseError()
@@ -32,6 +33,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("IsValidJsonCreateMappingInputRule_Check")]
         public void IsValidJsonCreateMappingInputRule_RaisesNoError()
