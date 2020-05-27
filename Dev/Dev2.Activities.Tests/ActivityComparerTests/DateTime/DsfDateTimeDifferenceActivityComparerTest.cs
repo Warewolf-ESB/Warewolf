@@ -20,6 +20,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -36,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -52,6 +54,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Same_DisplayName_IsEqual()
         {
@@ -68,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Different_DisplayName_Is_Not_Equal()
         {
@@ -84,6 +88,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Result_IsEqual()
         {
@@ -100,6 +105,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Result_Is_Not_Equal()
         {
@@ -115,6 +121,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Input1_IsEqual()
         {
@@ -131,6 +138,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Input1_Is_Not_Equal()
         {
@@ -147,6 +155,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Input2_IsEqual()
         {
@@ -163,6 +172,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Input2_Is_Not_Equal()
         {
@@ -178,6 +188,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_InputFormat_IsEqual()
         {
@@ -194,6 +205,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_InputFormat_Is_Not_Equal()
         {
@@ -209,6 +221,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_OutputType_IsEqual()
         {
@@ -225,6 +238,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_OutputType_Is_Not_Equal()
         {
@@ -241,6 +255,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfDateTimeDifferenceActivity_GetState")]
         public void DsfDateTimeDifferenceActivity_GetState_ReturnsStateVariable()

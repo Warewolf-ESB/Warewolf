@@ -43,6 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetSystemInformationHelperNullExpectConcreateImplementation()
         {
             //------------Setup for test--------------------------
@@ -54,6 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereConstructedExpectIsICollectionActivity()
         {
             //------------Setup for test--------------------------
@@ -65,6 +67,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGivenAnIGetSystemInformationExpectGetGivenValue()
         {
             //------------Setup for test--------------------------
@@ -79,6 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetWarewolfCPUExpectCPUDetails()
         {
             //------------Setup for test--------------------------
@@ -94,6 +98,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetWarewolfServerMemoryExpectmoryDetails()
         {
             //------------Setup for test--------------------------
@@ -109,6 +114,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetWareWolfVersionExpectVersion()
         {
             //------------Setup for test--------------------------
@@ -124,6 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetComputerNameInformationExpectPCDetails()
         {
             //------------Setup for test--------------------------
@@ -139,6 +146,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetOperatingSystemInformationExpectOSDetails()
         {
             //------------Setup for test--------------------------
@@ -154,6 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetOperatingSystemVersionInformationExpectOSDetails()
         {
             //------------Setup for test--------------------------
@@ -169,6 +178,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetServicePackInformationExpectOSDetails()
         {
             //------------Setup for test--------------------------
@@ -183,6 +193,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetOSBitValueInformationExpectOSDetails()
         {
             //------------Setup for test--------------------------
@@ -197,6 +208,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetFullDateTimeInformationExpectDateTimeInformation()
         {
             //------------Setup for test--------------------------
@@ -216,6 +228,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetDateTimeFormatInformationExpectDateTimeInformation()
         {
             //------------Setup for test--------------------------
@@ -230,6 +243,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetDiskSpaceAvailableInformationExpectDiskInformation()
         {
             //------------Setup for test--------------------------
@@ -244,6 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetDiskSpaceTotalInformationInformationExpectDiskInformation()
         {
             //------------Setup for test--------------------------
@@ -258,6 +273,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetVirtualMemoryAvailableInformationExpectVirtualMemoryInformation()
         {
             //------------Setup for test--------------------------
@@ -272,6 +288,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetVirtualMemoryTotalInformationExpectVirtualMemoryInformation()
         {
             //------------Setup for test--------------------------
@@ -286,6 +303,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetMemoryAvailableInformationExpectMemoryInformation()
         {
             //------------Setup for test--------------------------
@@ -300,6 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetMemoryTotalInformationExpectMemoryInformation()
         {
             //------------Setup for test--------------------------
@@ -314,6 +333,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetCPUAvailableInformationExpectProcessorInformation()
         {
             //------------Setup for test--------------------------
@@ -328,6 +348,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetCPUTotalInformationExpectProcessorInformation()
         {
             //------------Setup for test--------------------------
@@ -342,6 +363,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetLanguageInformationExpectLanguageInformation()
         {
             //------------Setup for test--------------------------
@@ -356,6 +378,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetRegionInformationExpectRegionInformation()
         {
             //------------Setup for test--------------------------
@@ -370,6 +393,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetUserRolesInformationExpectUserRolesInformation()
         {
             //------------Setup for test--------------------------
@@ -384,6 +408,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetUserNameInformationExpectUserNameInformation()
         {
             //------------Setup for test--------------------------
@@ -398,6 +423,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetDomainInformationExpectDomainInformation()
         {
             //------------Setup for test--------------------------
@@ -412,6 +438,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetDefaultGatewayExpectIPInformation()
         {
             //------------Setup for test--------------------------
@@ -426,6 +453,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetDNSServerExpectIPInformation()
         {
             //------------Setup for test--------------------------
@@ -440,6 +468,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetIPv4AdressesExpectIPInformation()
         {
             //------------Setup for test--------------------------
@@ -454,6 +483,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetIPv6AdressesExpectIPInformation()
         {
             //------------Setup for test--------------------------
@@ -468,6 +498,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereGetMACAdressesExpectIPInformation()
         {
             //------------Setup for test--------------------------
@@ -483,6 +514,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetFindMissingTypeExpectDataGridActivityType()
         {
             //------------Setup for test--------------------------
@@ -494,6 +526,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWhereExecuteExpectCorrectResultsWithScalar()
         {
             IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.OperatingSystem, "[[testVar]]", 1) };
@@ -518,6 +551,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWithBlankNotationWhereExecuteExpectCorrectResultsWithRecordsetAppend()
         {
             IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.UserName, "[[recset1().field1]]", 1) };
@@ -547,6 +581,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("sfGatherSystemInformation_ExecuteProcess")]
         public void DsfGatherSystemInformation_ExecuteProcess_ACoupleOfTimes_InitiailizesDebugProperties()
@@ -576,6 +611,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWithStarNotationWhereExecuteExpectCorrectResultsWithRecordsetOverwrite()
         {
             IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.DiskAvailable, "[[recset1(*).field1]]", 1) };
@@ -604,6 +640,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GatherSystemInformationWithSpecificIndexNotationWhereExecuteExpectCorrectResultsWithInsertIntoRecordset()
         {
             IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[recset1(2).field1]]", 1) };
@@ -633,6 +670,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetCollectionCountWhereSystemInformationCollectionHasTwoItemsExpectTwo()
         {
             //------------Setup for test--------------------------
@@ -653,6 +691,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfGatherSystemInformationActivity_GetOutputs")]
         public void DsfGatherSystemInformationActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -677,6 +716,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AddListToCollectionWhereNotOverwriteExpectInsertToCollection()
         {
             //------------Setup for test--------------------------
@@ -698,6 +738,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AddListToCollectionWhereNotOverwriteEmptyListExpectAddToCollection()
         {
             //------------Setup for test--------------------------
@@ -715,6 +756,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AddListToCollectionWhereOverwriteExpectAddToCollection()
         {
             //------------Setup for test--------------------------
@@ -737,6 +779,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfGatherSystemInformationActivity_UpdateForEachInputs")]
         public void DsfGatherSystemInformationActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -756,6 +799,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfGatherSystemInformationActivity_UpdateForEachInputs")]
         public void DsfGatherSystemInformationActivity_UpdateForEachInputs_MoreThan1Updates_Collection()
@@ -777,6 +821,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfGatherSystemInformationActivity_UpdateForEachInputs")]
         public void DsfGatherSystemInformationActivity_UpdateForEachOutputs_MoreThan1Updates_Collection()
@@ -798,6 +843,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfGatherSystemInformationActivity_UpdateForEachOutputs")]
         public void DsfGatherSystemInformationActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -818,6 +864,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfGatherSystemInformationActivity_GetForEachInputs")]
         public void DsfGatherSystemInformationActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -839,6 +886,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfGatherSystemInformationActivity_GetForEachOutputs")]
         public void DsfGatherSystemInformationActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
@@ -860,6 +908,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfGatherSystemInformationActivity_GetState")]
         public void DsfGatherSystemInformationActivity_GetState_ReturnsStateVariable()

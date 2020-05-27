@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUploadActivity_Construct")]
         public void SharepointFileUploadActivity_Construct_GivenInstance_ShouldNotBeNull()
@@ -36,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_DoesNotExist_OnResourceCatalog_ShouldSetSharepointSource_ToGuidEmpty()
@@ -69,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_BlankRecordSet()
@@ -112,6 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_StarRecordSet()
@@ -155,6 +159,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -185,6 +190,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointFileUpload_Execute")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -215,6 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             privateObject.Invoke("ValidateRequest");
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("SharepointFileUploadGetState")]
         public void SharepointFileUpload_GetState()

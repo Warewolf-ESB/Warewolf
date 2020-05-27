@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data.ServiceModel;
 using Dev2.Factory;
@@ -242,7 +243,7 @@ namespace Dev2.Studio.ViewModels
             else
             {
                 var workflow = new WorkflowDesignerViewModel(message.ResourceModel);
-                var testViewModel = new ServiceTestViewModel(message.ResourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow, message);
+                var testViewModel = new ServiceTestViewModel(message.ResourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow, message, CustomContainer.Get<IPopupController>());
                 var vm = new StudioTestViewModel(_shellViewModel.EventPublisher, testViewModel, _shellViewModel.PopupProvider, new ServiceTestView());
                 var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
                 AddAndActivateWorkSurface(workSurfaceContextViewModel);
@@ -380,7 +381,7 @@ namespace Dev2.Studio.ViewModels
         public void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey)
         {
             var workflow = new WorkflowDesignerViewModel(resourceModel);
-            var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow);
+            var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow, CustomContainer.Get<IPopupController>());
             var vm = new StudioTestViewModel(_shellViewModel.EventPublisher, testViewModel, _shellViewModel.PopupProvider, new ServiceTestView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, resourceModel.ID);
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
@@ -400,7 +401,7 @@ namespace Dev2.Studio.ViewModels
         public void RunAllTestsForService(IContextualResourceModel resourceModel)
         {
             var workflow = new WorkflowDesignerViewModel(resourceModel);
-            using (var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow))
+            using (var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow, CustomContainer.Get<IPopupController>()))
             {
                 testViewModel.RunAllTestsInBrowserCommand.Execute(null);
             }
@@ -409,7 +410,7 @@ namespace Dev2.Studio.ViewModels
         public void RunAllTestCoverageForService(IContextualResourceModel resourceModel)
         {
             var workflow = new WorkflowDesignerViewModel(resourceModel);
-            using (var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow))
+            using (var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _shellViewModel.EventPublisher, new ExternalProcessExecutor(), workflow, CustomContainer.Get<IPopupController>()))
             {
                 testViewModel.RunAllTestCoverageInBrowserCommand.Execute(null);
             }

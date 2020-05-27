@@ -59,12 +59,12 @@ namespace Warewolf.Studio.ViewModels
 
         static readonly IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel)
-            : this(resourceModel, asyncWorker, eventPublisher, processExecutor, workflowDesignerViewModel, null)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IPopupController popupController)
+            : this(resourceModel, asyncWorker, eventPublisher, processExecutor, workflowDesignerViewModel, null, popupController)
         {
         }
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg)
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg, IPopupController popupController)
         {
             _processExecutor = processExecutor;
             AsyncWorker = asyncWorker;
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = resourceModel.DisplayName + " - Tests" + _serverName;
 
             ServiceTestCommandHandler = new ServiceTestCommandHandlerModel();
-            PopupController = CustomContainer.Get<IPopupController>();
+            PopupController = popupController;
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
             RunAllTestsInBrowserCommand = new DelegateCommand(RunAllTestsInBrowser, IsServerConnected);
             RunAllTestCoverageInBrowserCommand = new DelegateCommand(RunAllCoverageInBrowser, IsServerConnected);

@@ -30,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class SendEmailActivityTests : BaseActivityUnitTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Constructor")]
         public void SendEmail_Constructor_TypeIsAbstractString()
         {
@@ -41,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Constructor")]
         public void SendEmail_Constructor_EmailSenderIsNotAssigned_GetsNonNullValue()
         {
@@ -53,6 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Constructor")]
         public void SendEmail_Constructor_EmailSenderIsAssigned_GetsGivenValue()
         {
@@ -68,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_GetFindMissingType")]
         public void SendEmail_GetFindMissingType_StaticActivityType()
         {
@@ -80,6 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_StaticValues_CorrectResults()
         {
@@ -121,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_StaticValues_CorrectResults_IsHTML()
         {
@@ -162,6 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_ScalarValuesExpectCorrectResults()
         {
@@ -201,6 +208,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_ScalarValuesHasToList_CorrectResults()
         {
@@ -240,6 +248,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_ScalarValuesHasBCCList_CorrectResults()
         {
@@ -279,6 +288,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_ScalarValuesHasCCList_CorrectResults()
         {
@@ -317,6 +327,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_MixedScalarsRecordsetData_CorrectExcecution()
         {
@@ -346,6 +357,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_FromAccount_EmailSourceIsCorrect()
@@ -430,6 +442,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_UpdateForEachInputs")]
         public void SendEmail_UpdateForEachInputs_ScalarValuesShouldSetValues()
         {
@@ -481,6 +494,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("SendEmail_UpdateForEachOutsputs")]
         public void SendEmail_UpdateForEachOutsputs_ScalarValuesShouldSetValues()
         {
@@ -509,6 +523,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetOutputs")]
         public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()

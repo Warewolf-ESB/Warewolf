@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 
@@ -25,11 +26,17 @@ namespace Dev2.Tests.Activities.Mocks
         public IDev2UnZipOperationTO Dev2UnZipOperationTO   { get; set; }
 
         public string Get(IActivityIOOperationsEndPoint path) => Get(path, false);
+        public byte[] GetBytes(IActivityIOOperationsEndPoint path) => GetBytes(path, false);
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead)
+        {
+            return Encoding.UTF8.GetString(GetBytes(path, deferredRead));
+        }
+
+        public byte[] GetBytes(IActivityIOOperationsEndPoint path, bool deferredRead)
         {
             Source = path;
             DeferredRead = deferredRead;
-            return "Successful";
+            return Encoding.UTF8.GetBytes("Successful");
         }
 
         public string PutRaw(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args)

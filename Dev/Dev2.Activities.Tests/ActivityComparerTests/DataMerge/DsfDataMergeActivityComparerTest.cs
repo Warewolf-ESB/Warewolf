@@ -9,6 +9,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
     public class DsfDataMergeActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -39,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_IsEqual()
         {
@@ -55,6 +58,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
@@ -70,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Result_IsEqual()
         {
@@ -86,6 +91,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Result_Is_Not_Equal()
         {
@@ -102,6 +108,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_MergeCollection_IsEqual()
         {
@@ -119,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_MergeCollection_Different_Indexes_Is_Not_Equal()
         {
@@ -187,6 +195,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_MergeCollection_Is_Not_Equal()
         {

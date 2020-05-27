@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
     public class DsfPathCreateComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDEquals_EmptyFileRead_Object_IsEqual()
         {
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDDifferent_EmptyFileRead_Object_Is_Not_Equal()
         {
@@ -40,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Same_Object_IsEqual()
         {
@@ -56,6 +59,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal()
         {
@@ -72,6 +76,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -88,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OutputPath_Same_Object_IsEqual()
         {
@@ -104,6 +110,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OutputPath_Different_Object_Is_Not_Equal()
         {
@@ -120,6 +127,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OutputPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -136,6 +144,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Username_Same_Object_IsEqual()
         {
@@ -152,6 +161,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Username_Different_Object_Is_Not_Equal()
         {
@@ -168,6 +178,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Username_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -184,6 +195,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PrivateKeyFile_Same_Object_IsEqual()
         {
@@ -200,6 +212,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PrivateKeyFile_Different_Object_Is_Not_Equal()
         {
@@ -216,6 +229,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PrivateKeyFile_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -231,6 +245,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Password_Same_Object_IsEqual()
         {
@@ -247,6 +262,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Password_Different_Object_Is_Not_Equal()
         {
@@ -263,6 +279,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Password_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -279,6 +296,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Overwrite_Different_Object_Is_Not_Equal()
         {
@@ -297,6 +315,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Overwrite_Same_Object_Is_Equal()
         {

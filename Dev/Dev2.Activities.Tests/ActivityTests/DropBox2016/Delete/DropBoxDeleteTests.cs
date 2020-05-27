@@ -23,6 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DropboxDelete_CreateDropboxActivity")]
         public void DropboxDelete_CreateDropboxActivity_GivenIsNew_ShouldNotBeNull()
@@ -37,6 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DropboxDelete_ExecuteTask")]
         public void DropboxDelete_ExecuteTask_GivenDropBoxDelete_ShouldReturnFileMetadata()
@@ -54,6 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DropboxDelete_CreateDropboxActivity")]
         [ExpectedException(typeof(ArgumentException))]
@@ -64,6 +67,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DropboxDelete_CreateDropboxActivity")]
         [ExpectedException(typeof(ArgumentException))]
