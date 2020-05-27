@@ -206,6 +206,7 @@ namespace Dev2.Services.Security
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
             var serverPermissions = _securityService.Permissions;
+            serverPermissions = serverPermissions.Where(p => p.Matches(resource)).ToList();
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
             var groupPermissions = new List<WindowsGroupPermission>();
 
@@ -246,6 +247,21 @@ namespace Dev2.Services.Security
                 else
                 {
                     isInRole = principal.IsInRole(windowsGroup);
+                }
+                if (!isInRole && principal is System.Security.Claims.ClaimsPrincipal claimsPrincipal)
+                {
+                    var c = claimsPrincipal.Claims.First(o => o.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authentication");
+                    var userGroups = Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(c.Value);
+                    var groups = userGroups["UserGroups"];
+                    foreach (var groupName in groups)
+                    {
+                        if (groupName["Name"].ToString() == windowsGroup)
+                        {
+                            isInRole = true;
+                            break;
+                        }
+                    }
+
                 }
             }
             catch (ObjectDisposedException e)
