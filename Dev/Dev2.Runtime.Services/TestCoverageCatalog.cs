@@ -281,7 +281,12 @@ namespace Dev2.Runtime
         public Guid UniqueID { get; set; }
         public string StepDescription { get; set; }
         public bool MockSelected { get; set; }
-        public List<IWorkflowNode> NextNodes { get; set; }
+        public List<IWorkflowNode> NextNodes { get; set; } = new List<IWorkflowNode>();
+
+        public void Add(IWorkflowNode node)
+        {
+            NextNodes.Add(node);
+        }
     }
 
     public interface IServiceTestCoverageModelTo
