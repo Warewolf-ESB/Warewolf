@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -164,6 +164,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("QueryManagerProxy_FetchConstructors")]
+        [DoNotParallelize]
         public void QueryManagerProxy_FetchConstructors()
         {
             var ser = new Dev2JsonSerializer();
