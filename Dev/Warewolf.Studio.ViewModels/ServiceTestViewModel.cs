@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿using System;
+ using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
