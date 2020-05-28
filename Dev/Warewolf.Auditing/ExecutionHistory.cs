@@ -11,6 +11,7 @@
 using Newtonsoft.Json;
 using System;
 using Warewolf.Interfaces.Auditing;
+using Warewolf.Logging;
 using Warewolf.Triggers;
 
 namespace Warewolf.Auditing
@@ -34,7 +35,8 @@ namespace Warewolf.Auditing
         public IExecutionInfo ExecutionInfo { get; set; }
         public string UserName { get; set; }
         public Exception Exception { get; set; }
-        public string AuditType { get; set; } = "Information";
+        public string AuditType { get; set; } = "QueueWorker";
+        public LogLevel LogLevel { get; set; } = LogLevel.Info;
     }
 
     public class ExecutionInfo : IExecutionInfo

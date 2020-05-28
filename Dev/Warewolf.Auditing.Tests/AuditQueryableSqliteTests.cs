@@ -148,7 +148,7 @@ namespace Warewolf.Auditing.Tests
         {
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel", "Information".ToStringBuilder()}
+                {"EventLevel", "Info".ToStringBuilder()}
             };
 
             var auditQueryable = new AuditQueryableSqlite(connstring);
@@ -167,7 +167,7 @@ namespace Warewolf.Auditing.Tests
         {
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel", "Warning".ToStringBuilder()}
+                {"EventLevel", "Warn".ToStringBuilder()}
             };
 
             var auditQueryable = new AuditQueryableSqlite(connstring);

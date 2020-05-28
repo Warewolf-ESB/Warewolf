@@ -18,6 +18,7 @@ using System.Data.Linq.Mapping;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Warewolf.Interfaces.Auditing;
+using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Auditing
 {
@@ -70,6 +71,11 @@ namespace Warewolf.Auditing
         [JsonProperty("AuditType")]
         [DataMember]
         public string AuditType { get; set; }
+
+        [Column(Name = "LogLevel", CanBeNull = true)]
+        [JsonProperty("LogLevel")]
+        [DataMember]
+        public LogLevel LogLevel { get; set; }
 
         [Column(Name = "PreviousActivity", CanBeNull = true)]
         [JsonProperty("PreviousActivity")]
@@ -190,6 +196,7 @@ namespace Warewolf.Auditing
 
         public Audit(IExecutionContext dataObject, string auditType, string detail, object previousActivity, object nextActivity, Exception exception)
         {
+
             var dsfDataObject = dataObject as IDSFDataObject;
             var dev2Serializer = new Dev2JsonSerializer();
             WorkflowID = dsfDataObject.ResourceID.ToString();
@@ -215,6 +222,20 @@ namespace Warewolf.Auditing
             AdditionalDetail = detail;
             Exception = exception;
 
+            LogLevel = LogLevel.Info;
+            if (dsfDataObject.IsDebug)
+            {
+                LogLevel = LogLevel.Debug;
+            }
+            if (dsfDataObject.Environment.HasErrors())
+            {
+                LogLevel = LogLevel.Error;
+            }
+
+            if (exception != null)
+            {
+                LogLevel = LogLevel.Fatal;
+            }
             if (previousActivity is IDev2Activity act1)
             {
                 PreviousActivity = act1.GetDisplayName();
