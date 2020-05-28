@@ -13,14 +13,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Runtime.WebServer;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Services;
 
 
 namespace Dev2.Infrastructure.Tests.Services.Security
@@ -299,6 +302,147 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 //------------Assert Results-------------------------
                 Assert.AreEqual(context != AuthorizationContext.None, authorized);
             }
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        public void AuthorizationServiceBase_IsAuthorized_HasDefaultGuestPermissions_WithoutGivenPermission_AndTokenExists_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var permissions = new List<WindowsGroupPermission>
+            {
+                new WindowsGroupPermission
+                {
+                    IsServer = true,
+                    WindowsGroup = "MySecretGroup",
+                    View = true,
+                    Execute = true,
+                    Contribute = true,
+                    DeployTo = true,
+                    DeployFrom = true,
+                    Administrator = true,
+                    ResourceName = "MyTokenAccessibleResource",
+                    ResourceID = resource,
+                }
+            };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.Setup(o => o.Permissions).Returns(permissions);
+            var mockSecuritySettings = new Mock<ISecuritySettings>();
+            var hmac = new HMACSHA256();
+            var secretKey = Convert.ToBase64String(hmac.Key);
+            mockSecuritySettings.Setup(o => o.ReadSettingsFile(It.IsAny<IResourceNameProvider>())).Returns(new SecuritySettingsTO(permissions)
+            {
+                SecretKey = secretKey,
+            });
+            var jwtManager = new JwtManager(mockSecuritySettings.Object);
+            var tokenData = jwtManager.GenerateToken("{\"UserGroups\":[{\"Name\":\"MySecretGroup\"}]}");
+            var principal = jwtManager.BuildPrincipal(tokenData);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
+
+
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        public void AuthorizationServiceBase_IsAuthorized_HasDefaultGuestPermissions_WithoutGivenPermission_AndTokenExists_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var permissions = new List<WindowsGroupPermission>
+            {
+                new WindowsGroupPermission
+                {
+                    IsServer = true,
+                    WindowsGroup = "MySecretGroup",
+                    View = false,
+                    Execute = false,
+                    Contribute = false,
+                    DeployTo = false,
+                    DeployFrom = false,
+                    Administrator = false,
+                    ResourceName = "MyTokenAccessibleResource",
+                    ResourceID = resource,
+                }
+            };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.Setup(o => o.Permissions).Returns(permissions);
+            var mockSecuritySettings = new Mock<ISecuritySettings>();
+            var hmac = new HMACSHA256();
+            var secretKey = Convert.ToBase64String(hmac.Key);
+            mockSecuritySettings.Setup(o => o.ReadSettingsFile(It.IsAny<IResourceNameProvider>())).Returns(new SecuritySettingsTO(permissions)
+            {
+                SecretKey = secretKey,
+            });
+            var jwtManager = new JwtManager(mockSecuritySettings.Object);
+            var tokenData = jwtManager.GenerateToken("{\"UserGroups\":[{\"Name\":\"MySecretGroup\"}]}");
+            var principal = jwtManager.BuildPrincipal(tokenData);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
+
+
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        public void AuthorizationServiceBase_IsAuthorized_HasDefaultGuestPermissions_WithoutGivenPermission_AndTokenExistsForOtherGroup_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var permissions = new List<WindowsGroupPermission>
+            {
+                new WindowsGroupPermission
+                {
+                    IsServer = true,
+                    WindowsGroup = "MySecretGroup",
+                    View = true,
+                    Execute = true,
+                    Contribute = true,
+                    DeployTo = true,
+                    DeployFrom = true,
+                    Administrator = true,
+                    ResourceName = "MyTokenAccessibleResource",
+                    ResourceID = resource,
+                }
+            };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.Setup(o => o.Permissions).Returns(permissions);
+            var mockSecuritySettings = new Mock<ISecuritySettings>();
+            var hmac = new HMACSHA256();
+            var secretKey = Convert.ToBase64String(hmac.Key);
+            mockSecuritySettings.Setup(o => o.ReadSettingsFile(It.IsAny<IResourceNameProvider>())).Returns(new SecuritySettingsTO(permissions)
+            {
+                SecretKey = secretKey,
+            });
+            var jwtManager = new JwtManager(mockSecuritySettings.Object);
+            var tokenData = jwtManager.GenerateToken("{\"UserGroups\":[{\"Name\":\"MyOtherSecretGroup\"}]}");
+            var principal = jwtManager.BuildPrincipal(tokenData);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
+
+
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
         }
 
         [TestMethod]
