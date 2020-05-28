@@ -18,6 +18,7 @@ using Nest;
 using Newtonsoft.Json.Linq;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Triggers;
+using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Auditing.Drivers
 {
@@ -97,6 +98,11 @@ namespace Warewolf.Auditing.Drivers
                                             break;
                                         case "Exception":
                                             executionHistory.Exception = items.Value as Exception;
+                                            break;
+                                        case "LogLevel":
+                                            LogLevel logLevel;
+                                            Enum.TryParse((string) items.Value, true, out logLevel);
+                                            executionHistory.LogLevel = logLevel;
                                             break;
                                         case "AuditType":
                                             executionHistory.AuditType = items.Value.ToString();
@@ -294,6 +300,11 @@ namespace Warewolf.Auditing.Drivers
                                                 break;
                                             case "AuditType":
                                                 auditHistory.AuditType = items.Value.ToString();
+                                                break;
+                                            case "LogLevel":
+                                                LogLevel logLevel;
+                                                Enum.TryParse((string) items.Value, true, out logLevel);
+                                                auditHistory.LogLevel = logLevel;
                                                 break;
                                             case "IsSubExecution":
                                                 auditHistory.IsSubExecution = Boolean.Parse(items.Value.ToString());
