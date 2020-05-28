@@ -9,6 +9,7 @@ namespace Dev2.Common.Tests.Wrappers
     public class TimerWrapperTests
     {
         [TestMethod]
+        [DoNotParallelize]
         public void TimerWrapper_Construct()
         {
             var callCount = 0;
