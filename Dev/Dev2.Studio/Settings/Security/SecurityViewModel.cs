@@ -192,15 +192,21 @@ namespace Dev2.Settings.Security
 
         private bool IsValidOverrideWorkflow(IExplorerTreeItem resourceModel)
         {
-            var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            var outputs = shellViewModel.GetOutputsFromWorkflow(resourceModel.ResourceId);
+            var allPermissions = ResourcePermissions.Concat(ServerPermissions);
+            var overrideWorkflowPermissions = allPermissions.Where(o => o.ResourceID == Guid.Empty || o.ResourceID == resourceModel.ResourceId);
+            var hasPublicViewAndExecute = overrideWorkflowPermissions
+                .Where(o => o.WindowsGroup == "Public")
+                .Any(o => o.Execute && o.View); //.Select(o => o.ResourceName)
 
-            if (outputs.Select(sca => sca.Recordset == "UserGroups" && sca.Field == "Name").FirstOrDefault())
+            if (!hasPublicViewAndExecute)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var outputs = shellViewModel.GetOutputsFromWorkflow(resourceModel.ResourceId);
+            var hasCorrectOutputs = outputs.Any(sca => sca.Recordset == "UserGroups" && sca.Field == "Name");
+            return hasCorrectOutputs;
         }
 
         private void PickOverrideResource(object obj)
