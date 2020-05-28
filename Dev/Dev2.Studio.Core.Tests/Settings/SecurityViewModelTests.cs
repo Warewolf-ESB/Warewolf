@@ -21,6 +21,7 @@ using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.Data;
@@ -1587,6 +1588,84 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual(overrideResourceId, viewModel.OverrideResource.Value);
             Assert.AreEqual(overrideResourceName, viewModel.OverrideResource.Name);
             mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_PickOverrideResourceCommand_IsValidOverrideWorkflow_GivenNoPublicPermissions_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            var overrideResourceId = Guid.NewGuid();
+            var resourceId = Guid.NewGuid();
+            const string overrideResourceName = "AuthWorkflow";
+            const string resourceName = "Workflow";
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceId,
+                ResourceName = resourceName
+            };
+
+            var authenticationOverrideWorkflow = new NamedGuid
+            {
+                Value = resourceId,
+                Name = resourceName
+            };
+            var authResource = new NamedGuid
+            {
+                Value = overrideResourceId,
+                Name = overrideResourceName
+            };
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            var mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
+            var mockPopup = new Mock<IPopupController>();
+
+            _serverRepo = GetEnvironmentRepository();
+
+            var dataListItem = new DataListItem {Recordset = "UserGroups", Field = "Name"};
+            var dataListItems = new OptomizedObservableCollection<IDataListItem> {dataListItem};
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(o => o.GetOutputsFromWorkflow(overrideResourceId)).Returns(dataListItems);
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            _firstResource = CreateResource(ResourceType.WorkflowService, overrideResourceName, overrideResourceId);
+            var coll = new Collection<IResourceModel> {_firstResource.Object};
+            _resourceRepo.Setup(c => c.All()).Returns(coll);
+            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceId).Returns(overrideResourceId);
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourcePath).Returns(overrideResourceName);
+            mockExplorerTreeItem.Setup(explorerItem => explorerItem.ResourceName).Returns(overrideResourceName);
+            CustomContainer.Register(mockExplorerTreeItem.Object);
+            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.SelectedResource).Returns(mockExplorerTreeItem.Object);
+            mockResourcePickerDialog.Setup(resourcePicker => resourcePicker.ShowDialog(_environmentModel.Object)).Returns(true);
+            CustomContainer.Register(mockResourcePickerDialog.Object);
+            mockPopup.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "", false, false, true, false, false, false));
+            CustomContainer.Register<IPopupController>(mockPopup.Object);
+            var secretKey = GenerateSecretKey();
+            var viewModel = new SecurityViewModel(
+                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow,secretKey),
+                new Mock<DirectoryObjectPickerDialog>().Object,
+                new Mock<IWin32Window>().Object,
+                _environmentModel.Object, () => mockResourcePickerDialog.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickOverrideResourceCommand.Execute(authResource);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resourceId, viewModel.OverrideResource.Value);
+            Assert.AreEqual(resourceName, viewModel.OverrideResource.Name);
+            mockShellViewModel.Verify(o => o.GetOutputsFromWorkflow(overrideResourceId), Times.Never);
+            mockPopup.Verify(o => o.Show(It.IsAny<IPopupMessage>()), Times.Once);
         }
 
         [TestMethod]
