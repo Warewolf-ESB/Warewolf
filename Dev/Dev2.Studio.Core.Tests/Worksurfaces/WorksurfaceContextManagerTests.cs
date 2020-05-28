@@ -635,6 +635,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenWcfSourceResourceType_ShouldEditWcfSource()
         {
             //---------------Set up test pack-------------------
