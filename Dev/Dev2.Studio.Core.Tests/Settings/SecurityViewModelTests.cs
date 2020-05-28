@@ -1603,6 +1603,15 @@ namespace Dev2.Core.Tests.Settings
                 ResourceID = resourceId,
                 ResourceName = resourceName
             };
+            var publicPermission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Public",
+                Execute = true,
+                View = true,
+                ResourceID = overrideResourceId,
+                ResourceName = overrideResourceName,
+            };
 
             var authenticationOverrideWorkflow = new NamedGuid
             {
@@ -1645,7 +1654,7 @@ namespace Dev2.Core.Tests.Settings
 
             var secretKey = GenerateSecretKey();
             var viewModel = new SecurityViewModel(
-                new SecuritySettingsTO(new[] {permission}, authenticationOverrideWorkflow,secretKey),
+                new SecuritySettingsTO(new[] {permission, publicPermission}, authenticationOverrideWorkflow,secretKey),
                 new Mock<DirectoryObjectPickerDialog>().Object,
                 new Mock<IWin32Window>().Object,
                 _environmentModel.Object, () => mockResourcePickerDialog.Object);
