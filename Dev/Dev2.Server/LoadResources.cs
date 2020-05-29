@@ -124,7 +124,7 @@ namespace Dev2
         public void MigrateBinResources()
         {
             var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if !(_directory.Exists(EnvironmentVariables.ResourcePath) || !_directory.Exists(serverBinResources))
+            if (!(_directory.Exists(EnvironmentVariables.ResourcePath) || !_directory.Exists(serverBinResources)))
             {
                 _directory.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
                 _directory.CleanUp(serverBinResources);
