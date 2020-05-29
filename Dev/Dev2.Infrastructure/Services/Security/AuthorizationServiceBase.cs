@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Warewolf.Data;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Security
@@ -254,18 +255,7 @@ namespace Dev2.Services.Security
                 {
                     try
                     {
-                        var claim = claimsPrincipal.Claims.First(o =>
-                            o.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authentication");
-                        var userGroups = JsonConvert.DeserializeObject<JObject>(claim.Value);
-                        var groups = userGroups["UserGroups"];
-                        foreach (var groupName in groups)
-                        {
-                            if (groupName["Name"].ToString() == windowsGroup)
-                            {
-                                isInRole = true;
-                                break;
-                            }
-                        }
+                        isInRole = claimsPrincipal.GetUserGroups().Any(groupName => groupName == windowsGroup);
                     }
                     catch (Exception e)
                     {
