@@ -130,7 +130,7 @@ namespace Dev2
                 _directory.CleanUp(serverBinResources);
             }
             var dockerfile = Path.Combine(EnvironmentVariables.ApplicationPath, "Dockerfile");
-            if File.Exists(dockerfile)
+            if (File.Exists(dockerfile))
             {
                 File.Copy(dockerfile, Path.Combine(EnvironmentVariables.AppDataPath, "Dockerfile"), true);
             }
