@@ -285,6 +285,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             viewModel.Port = "9200";
             Assert.IsTrue(viewModel.CanTest());
+
+            viewModel.SearchIndex = "warewolfindex";
+            Assert.IsTrue(viewModel.CanTest());
         }
 
         [TestMethod, Timeout(60000)]
@@ -297,6 +300,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.Port = "9200";
             _elasticsearchourceViewModelWithTask.Username = "Username";
             _elasticsearchourceViewModelWithTask.Password = "Password";
+            _elasticsearchourceViewModelWithTask.SearchIndex = "searchindex";
             _elasticsearchourceViewModelWithTask.AuthenticationType = AuthenticationType.Anonymous;
 
             var result = _elasticsearchourceViewModelWithTask.TestCommand.CanExecute(null);
@@ -311,6 +315,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             _elasticsearchourceViewModelWithTask.HostName = "HostName";
             _elasticsearchourceViewModelWithTask.Port = "9200";
+            _elasticsearchourceViewModelWithTask.SearchIndex = "searchindex";
             var result = _elasticsearchourceViewModelWithTask.OkCommand.CanExecute(null);
             Assert.IsTrue(result);
         }
@@ -790,6 +795,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             _elasticsearchourceViewModelWithTask.HostName = "HostName";
             _elasticsearchourceViewModelWithTask.Port = "9200";
+            _elasticsearchourceViewModelWithTask.SearchIndex = "warewolflogs";
             var result = _elasticsearchourceViewModelWithTask.CanSave();
             Assert.IsTrue(result);
         }
@@ -812,6 +818,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.HostName = "HostName";
             _elasticsearchourceViewModelWithTask.Username = "Username";
             _elasticsearchourceViewModelWithTask.Password = "Password";
+            _elasticsearchourceViewModelWithTask.SearchIndex = "searchindex";
             _elasticsearchourceViewModelWithTask.AuthenticationType = AuthenticationType.Password;
 
             var result = _elasticsearchourceViewModelWithTask.CanTest();
@@ -825,6 +832,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.HostName = "";
             _elasticsearchourceViewModelWithTask.Username = "Username";
             _elasticsearchourceViewModelWithTask.Password = "Password";
+            _elasticsearchourceViewModelWithTask.SearchIndex = "searchindex";
             _elasticsearchourceViewModelWithTask.AuthenticationType = AuthenticationType.Password;
 
             var result = _elasticsearchourceViewModelWithTask.CanTest();
@@ -840,6 +848,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.HostName = "";
             _elasticsearchourceViewModelWithTask.Username = "";
             _elasticsearchourceViewModelWithTask.Password = "Password";
+            _elasticsearchourceViewModelWithTask.SearchIndex = "searchindex";
             _elasticsearchourceViewModelWithTask.AuthenticationType = AuthenticationType.Password;
 
             var result = _elasticsearchourceViewModelWithTask.CanTest();
@@ -855,6 +864,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.HostName = "";
             _elasticsearchourceViewModelWithTask.Username = "";
             _elasticsearchourceViewModelWithTask.Password = "";
+            _elasticsearchourceViewModelWithTask.SearchIndex = "searchindex";
             _elasticsearchourceViewModelWithTask.AuthenticationType = AuthenticationType.Password;
 
             var result = _elasticsearchourceViewModelWithTask.CanTest();
@@ -870,7 +880,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchourceViewModelWithTask.HostName = "";
             _elasticsearchourceViewModelWithTask.Username = "";
             _elasticsearchourceViewModelWithTask.Password = "";
-
+            _elasticsearchourceViewModelWithTask.SearchIndex = "";
             var result = _elasticsearchourceViewModelWithTask.CanTest();
 
             Assert.IsFalse(result);
@@ -879,45 +889,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod, Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
-        public void ElasticsearchSourceViewModel_TestSaveSource_Failed_InvalidSearchIndex()
-        {
-            var expectedResourceName = "ResourceName";
-            var expectedResourcePath = "ResourcePath";
-            var expectedHostName = "HostName";
-            var expectedSearchIndex = "WarwolfTestLogs";
-            var expectedPort = "9200";
-            var expectedUsername = "Username";
-            var expectedPassword = "Password";
-            var expectedAuthenticationType = AuthenticationType.Password;
-
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.HostName = expectedHostName;
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Port = expectedPort;
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.SearchIndex = expectedSearchIndex;
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Username = expectedUsername;
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Password = expectedPassword;
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.AuthenticationType = expectedAuthenticationType;
-
-            _elasticsearchSourceDefinition.SetupGet(it => it.Path).Returns(expectedResourcePath);
-            _elasticsearchSourceDefinition.SetupGet(it => it.Name).Returns(expectedResourceName);
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Item = _elasticsearchSourceDefinition.Object;
-            _popupController.Setup(controller => controller.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex));
-
-            _elasticsearchSourceViewModelWithElasticsearchServiceSourceDefinition.Save();
-
-            //assert
-            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
-        }
-
-        [TestMethod, Timeout(60000)]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(ElasticsearchSourceViewModel))]
-        public void ElasticsearchSourceViewModel_TestCommand_Failed_InvalidSearchIndex()
+        public void ElasticsearchSourceViewModel_TestConnection_Failed_InvalidSearchIndex()
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExternalExecutor = new Mock<IExternalProcessExecutor>();
             var mockServer = new Mock<IServer>();
             var id = Guid.NewGuid();
-            var expectedSearchIndex = "wareWolf";
+            var expectedSearchIndex = "Dasdasd";
             var elasticsearchSourceDefinition = new ElasticsearchSourceDefinition
             {
                 Id = id,
@@ -929,13 +907,113 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Username = "testUser",
                 Password = "123456",
             };
-
             _elasticsearchSourceModel.Setup(model => model.FetchSource(id)).Returns(elasticsearchSourceDefinition);
             _popupController.Setup(controller => controller.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex));
             var viewModel = new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, mockEventAggregator.Object, elasticsearchSourceDefinition, new SynchronousAsyncWorker(), mockExternalExecutor.Object, mockServer.Object);
 
-            Assert.IsFalse(viewModel.CanTest());
+            Assert.IsTrue(viewModel.CanTest());
+            viewModel.TestCommand.Execute(null);
 
+            Assert.IsTrue(viewModel.TestFailed);
+            Assert.IsFalse(viewModel.Testing);
+            Assert.IsFalse(viewModel.TestPassed);
+            Assert.AreEqual("Exception: Dasdasd is invalid.", viewModel.TestMessage);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "Warewolf";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "-warewolf";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "+warewolf";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "+wareolf";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "-warewolf";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "_wareolf";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            var indexGreaterThan255 = "i5BgEKgzyIwXwJVzfpVbnmjmD1ybq0FtkNp5wEHcDjuMpMCm50sQIzjfIqHGCpsgb3yQnTQlAGXfly61yHgor06bZ36caiz2CKkOvbzkhrBUvJvpmJEJ1vmXx7RtaxMWktT78vxHVkP4efNEmVc9ox7Bec7v3Ol242hzR9VaMK7guA4NG8piO1EBqofYTRnyeWckwxPaT78BytHYhbDeI2vROj9f0O4HelweE2yYzF3jUtTkgVRXBY2IVgv0KCnG";
+            viewModel.SearchIndex = indexGreaterThan255;
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "*logs";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "warewold|logs";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "wareolf,logs";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "#logs";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = ".";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "..";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = ">";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "<";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "?";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = "warewolf logs";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = @"\asdasdasd";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
+            _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
+
+            viewModel.SearchIndex = @"/asdasdasd";
+            viewModel.TestCommand.Execute(null);
+            Assert.IsTrue(viewModel.TestFailed);
             _popupController.Verify(p => p.ShowInvalidElasticsearchIndexFormatMessage(expectedSearchIndex), Times.Once());
         }
     }
