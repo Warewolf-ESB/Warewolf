@@ -446,6 +446,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenSqlDatabaseResourceType_ShouldEditSqlDatabse()
         {
             //---------------Set up test pack-------------------
