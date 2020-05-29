@@ -1378,13 +1378,13 @@ namespace Dev2.Core.Tests
             var dontShowAgainKey = string.Empty;
             var buttons = MessageBoxButton.OK;
             var imageType = MessageBoxImage.Error;
-            string expectedDesc= " {invalidText} is invalid. Elasticsearch Index only supports: " + Environment.NewLine
-                                                                                                        + " Lowercase" + Environment.NewLine
-                                                                                                        + " Cannot be . or .." + Environment.NewLine
-                                                                                                        + " Cannot start with -, _, +" + Environment.NewLine
-                                                                                                        + " Cannot include special characters" + Environment.NewLine
-                                                                                                        + " Cannot be longer than 255 characters" + Environment.NewLine;
-
+            var invalidText = "JJJ__##";
+            var msg = $"{invalidText} is invalid. Elasticsearch Index only supports: " + Environment.NewLine
+                                                                                       + " Lowercase" + Environment.NewLine
+                                                                                       + " Cannot be . or .." + Environment.NewLine
+                                                                                       + " Cannot start with -, _, +" + Environment.NewLine
+                                                                                       + " Cannot include special characters" + Environment.NewLine
+                                                                                       + " Cannot be longer than 255 characters" + Environment.NewLine;
             var popupController = new PopupController
             {
                 ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
@@ -1403,12 +1403,12 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            popupController.ShowInvalidFormatMessage("some invalid text");
+            popupController.ShowInvalidElasticsearchIndexFormatMessage(invalidText);
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
-            Assert.AreEqual("Invalid text", header);
-            Assert.AreEqual(expectedDesc, description);
+            Assert.AreEqual("Invalid Elasticsearch Index", header);
+            Assert.AreEqual(msg, description);
             Assert.AreEqual(MessageBoxImage.Error, imageType);
             Assert.AreEqual(null, dontShowAgainKey);
         }
