@@ -99,6 +99,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadResources))]
+        [DoNotParallelize]
         public void LoadResources_MigrateOldResources_DirectoryExits_False()
         {
             //------------------Arrange---------------
