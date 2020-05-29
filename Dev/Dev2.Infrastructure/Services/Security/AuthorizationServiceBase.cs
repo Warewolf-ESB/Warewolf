@@ -21,6 +21,8 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Security
@@ -250,18 +252,25 @@ namespace Dev2.Services.Security
                 }
                 if (!isInRole && principal is System.Security.Claims.ClaimsPrincipal claimsPrincipal)
                 {
-                    var c = claimsPrincipal.Claims.First(o => o.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authentication");
-                    var userGroups = Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(c.Value);
-                    var groups = userGroups["UserGroups"];
-                    foreach (var groupName in groups)
+                    try
                     {
-                        if (groupName["Name"].ToString() == windowsGroup)
+                        var claim = claimsPrincipal.Claims.First(o =>
+                            o.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authentication");
+                        var userGroups = JsonConvert.DeserializeObject<JObject>(claim.Value);
+                        var groups = userGroups["UserGroups"];
+                        foreach (var groupName in groups)
                         {
-                            isInRole = true;
-                            break;
+                            if (groupName["Name"].ToString() == windowsGroup)
+                            {
+                                isInRole = true;
+                                break;
+                            }
                         }
                     }
-
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Warn($"failed using group override from ClaimsPrinciple: {e.Message}", "Warewolf Warn");
+                    }
                 }
             }
             catch (ObjectDisposedException e)

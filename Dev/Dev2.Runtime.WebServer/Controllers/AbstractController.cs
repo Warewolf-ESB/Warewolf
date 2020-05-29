@@ -14,6 +14,7 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Dev2.Common;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Services.Security;
 
@@ -52,7 +53,18 @@ namespace Dev2.Runtime.WebServer.Controllers
                 var token = Request.Headers.Authorization?.Parameter;
                 if (!string.IsNullOrWhiteSpace(token))
                 {
-                   user = new JwtManager(new SecuritySettings()).BuildPrincipal(token);
+                    try
+                    {
+                        user = new JwtManager(new SecuritySettings()).BuildPrincipal(token);
+                        if (user is null)
+                        {
+                            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Warn($"failed to use authorization header: {e.Message}", "Warewolf Warn");
+                    }
                 }
             }
 
