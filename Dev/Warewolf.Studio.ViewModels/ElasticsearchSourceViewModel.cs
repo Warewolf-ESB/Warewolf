@@ -254,8 +254,17 @@ namespace Warewolf.Studio.ViewModels
         private static bool ValidateSearchIndex(string value)
         {
             if (value.StartsWith("-") ||
-                value.StartsWith("_") ||
                 value.StartsWith("+") ||
+                value.StartsWith("_") ||
+                value.Equals(".") ||
+                value.Equals("..") ||
+                value.Contains("*") ||
+                value.Contains(",") ||
+                value.Contains("?") ||
+                value.Contains("#") ||
+                value.Contains(" ") ||
+                value.Contains(@"\") ||
+                value.Contains(@"/") ||
                 value.Length > 255 ||
                 value.Any(char.IsUpper) ||
                 value.Any(char.IsSymbol))
@@ -361,7 +370,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override bool CanSave() => !string.IsNullOrWhiteSpace(HostName) && !string.IsNullOrWhiteSpace(Port);
+        public override bool CanSave() => !string.IsNullOrWhiteSpace(HostName)
+                                          && !string.IsNullOrWhiteSpace(Port)
+                                          && !string.IsNullOrWhiteSpace(SearchIndex);
 
         public IServer CurrentEnvironment
         {
@@ -371,12 +382,7 @@ namespace Warewolf.Studio.ViewModels
 
         void SaveConnection()
         {
-            if (!ValidateSearchIndex(SearchIndex) || string.IsNullOrEmpty(SearchIndex))
-            {
-                var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-                popupController.ShowInvalidElasticsearchIndexFormatMessage(SearchIndex);
-                return;
-            }
+
             if (_elasticsearchServiceSource == null)
             {
                 RequestServiceNameViewModel.Wait();
@@ -401,6 +407,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
+
                 var src = ToSource();
                 var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
                 if (src.Id == auditingSettingsData.LoggingDataSource.Value)
@@ -461,10 +468,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
-            if (!ValidateSearchIndex(SearchIndex) || string.IsNullOrEmpty(SearchIndex))
+            if (string.IsNullOrEmpty(SearchIndex))
             {
-                var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-                popupController.ShowInvalidElasticsearchIndexFormatMessage(SearchIndex);
                 return false;
             }
             return true;
@@ -472,7 +477,16 @@ namespace Warewolf.Studio.ViewModels
 
         void TestConnection()
         {
-
+            if (!ValidateSearchIndex(SearchIndex))
+            {
+                var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+                popupController.ShowInvalidElasticsearchIndexFormatMessage(SearchIndex);
+                TestFailed = true;
+                TestPassed = false;
+                Testing = false;
+                TestMessage = GetExceptionMessage(new Exception($"{SearchIndex} is invalid."));
+                return;
+            }
             _token = new CancellationTokenSource();
             AsyncWorker.Start(SetupProgressSpinner, () =>
                 {
