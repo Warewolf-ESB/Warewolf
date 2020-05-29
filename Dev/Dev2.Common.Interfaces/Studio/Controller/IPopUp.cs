@@ -55,7 +55,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowDeleteVersionMessage(string displayName);
 
         void ShowInvalidCharacterMessage(string invalidText);
-        void ShowInvalidFormatMessage(string invalidText);
+        void ShowInvalidElasticsearchIndexFormatMessage(string invalidText);
 
         MessageBoxResult ShowDeployNameConflict(string message);
         MessageBoxResult ShowDeploySuccessful(string message);

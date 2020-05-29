@@ -18,6 +18,7 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -244,23 +245,25 @@ namespace Warewolf.Studio.ViewModels
             get => _searchIndex;
             set
             {
-                if (ValidateSearchIndex(value))
-                {
-                    _searchIndex = value;
-                    OnPropertyChanged(() => SearchIndex);
-                    ResetTestValue();
-                }
-                else
-                {
-                    var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-                    popupController.ShowInvalidFormatMessage(value);
-                }
+                _searchIndex = value;
+                OnPropertyChanged(() => SearchIndex);
+                ResetTestValue();
             }
         }
 
         private static bool ValidateSearchIndex(string value)
         {
-            return false;
+            if (value.StartsWith("-") ||
+                value.StartsWith("_") ||
+                value.StartsWith("+") ||
+                value.Length > 255 ||
+                value.Any(char.IsUpper) ||
+                value.Any(char.IsSymbol))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public string Error => string.Empty;
@@ -368,12 +371,19 @@ namespace Warewolf.Studio.ViewModels
 
         void SaveConnection()
         {
+            if (!ValidateSearchIndex(SearchIndex) || string.IsNullOrEmpty(SearchIndex))
+            {
+                var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+                popupController.ShowInvalidElasticsearchIndexFormatMessage(SearchIndex);
+                return;
+            }
             if (_elasticsearchServiceSource == null)
             {
                 RequestServiceNameViewModel.Wait();
                 if (RequestServiceNameViewModel.Exception == null)
                 {
                     var requestServiceNameViewModel = RequestServiceNameViewModel.Result;
+
                     var res = requestServiceNameViewModel.ShowSaveDialog();
 
                     if (res == MessageBoxResult.OK)
@@ -451,12 +461,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
-
+            if (!ValidateSearchIndex(SearchIndex) || string.IsNullOrEmpty(SearchIndex))
+            {
+                var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+                popupController.ShowInvalidElasticsearchIndexFormatMessage(SearchIndex);
+                return false;
+            }
             return true;
         }
 
         void TestConnection()
         {
+
             _token = new CancellationTokenSource();
             AsyncWorker.Start(SetupProgressSpinner, () =>
                 {
