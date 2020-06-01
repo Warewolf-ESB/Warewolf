@@ -23,8 +23,6 @@ namespace Dev2.Runtime.WebServer.Controllers
 {
     public abstract class AbstractController : ApiController
     {
-        public WebServerContext Context { get; set; }
-
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
             where TRequestHandler : class, IRequestHandler, new()
         {
