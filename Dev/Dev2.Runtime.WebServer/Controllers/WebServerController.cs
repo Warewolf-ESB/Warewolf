@@ -72,11 +72,10 @@ namespace Dev2.Runtime.WebServer.Controllers
             {
                 {"path", __url__},
                 {"isPublic", isPublic.ToString()},
-                {"isToken", isToken.ToString()},
                 {"servicename", "*"}
             };
 
-            var httpResponseMessage = ProcessRequest<WebGetRequestHandler>(requestVariables);
+            var httpResponseMessage = ProcessRequest<WebGetRequestHandler>(requestVariables, false);
             return httpResponseMessage;
         }
 
@@ -90,12 +89,12 @@ namespace Dev2.Runtime.WebServer.Controllers
                 var requestUri = Request.RequestUri;
                 if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), false, false);
+                    return ExecuteFolderTests(requestUri.ToString(), false);
                 }
 
                 if (requestUri.ToString().EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), false, false);
+                    return ExecuteFolderTests(requestUri.ToString(), false);
                 }
             }
 
@@ -112,7 +111,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 var requestUri = Request.RequestUri;
                 if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), true, false);
+                    return ExecuteFolderTests(requestUri.ToString(), true);
                 }
             }
 
@@ -124,20 +123,6 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Token/{*__name__}")]
         public HttpResponseMessage ExecutePublicTokenWorkflow(string __name__)
         {
-            if (Request?.RequestUri != null)
-            {
-                var requestUri = Request.RequestUri;
-                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return ExecuteFolderTests(requestUri.ToString(), false, true);
-                }
-
-                if (requestUri.ToString().EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return ExecuteFolderTests(requestUri.ToString(), false, true);
-                }
-            }
-
             return ExecuteWorkflow(__name__, false, true);
         }
 

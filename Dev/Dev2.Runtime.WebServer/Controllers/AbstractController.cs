@@ -71,7 +71,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             return true;
         }
 
-        protected virtual HttpResponseMessage ProcessRequest3<TRequestHandler>()
+        protected HttpResponseMessage ProcessRequest<TRequestHandler>()
             where TRequestHandler : class, IRequestHandler, new()
         {
             if (!IsAuthenticated())
