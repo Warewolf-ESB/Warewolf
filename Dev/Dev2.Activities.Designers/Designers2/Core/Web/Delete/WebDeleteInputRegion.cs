@@ -1,5 +1,14 @@
 #pragma warning disable
-﻿using System;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,18 +17,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Utils;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.Practices.Prism;
-
-
 
 namespace Dev2.Activities.Designers2.Core.Web.Delete
 {
-    
     public class WebDeleteInputRegion : IWebDeleteInputArea
     {
         readonly ModelItem _modelItem;
@@ -32,6 +36,36 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
         public WebDeleteInputRegion()
         {
             ToolRegionName = "DeleteInputRegion";
+        }
+
+        void SetupHeaders(ModelItem modelItem)
+        {
+            var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
+            var headers = new ObservableCollection<INameValue>();
+            if (existing != null)
+            {
+                foreach (var header in existing)
+                {
+                    var nameValue = new NameValue(header.Name, header.Value);
+                    nameValue.PropertyChanged += ValueOnPropertyChanged;
+                    headers.Add(nameValue);
+                }
+            }
+            else
+            {
+                var nameValue = new NameValue();
+                nameValue.PropertyChanged += ValueOnPropertyChanged;
+                headers.Add(nameValue);
+            }
+            headers.CollectionChanged += HeaderCollectionOnCollectionChanged;
+            Headers = headers;
+
+            AddHeaders();
+        }
+
+        void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SetHeaders();
         }
 
         public WebDeleteInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
@@ -48,130 +82,61 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                 IsEnabled = true;
             }
         }
+
         void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-
             if (_source?.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
                 Headers.Clear();
-                Headers.Add(new ObservableAwareNameValue(Headers, s =>
-                {
-                    _modelItem.SetProperty("Headers",
-                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                }));
+                AddHeaders();
                 IsEnabled = true;
             }
 
-            OnPropertyChanged(@"IsEnabled");
+            OnPropertyChanged(nameof(IsEnabled));
         }
-        void SetupHeaders(ModelItem modelItem)
+
+        public string QueryString
         {
-            var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
-            var nameValues = existing ?? new List<INameValue>();
-            Headers = new ObservableCollection<INameValue>(nameValues.Where(name => !string.IsNullOrEmpty(name.Name)));
-
-            Headers.Add(new ObservableAwareNameValue(Headers, s =>
+            get => _modelItem.GetProperty<string>("QueryString") ?? string.Empty;
+            set
             {
-                _modelItem.SetProperty("Headers",
-                    _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-            }));
-
-            Headers.CollectionChanged += HeaderCollectionOnCollectionChanged;
-            if (Headers.Count == 0)
-            {
-                Headers.Add(new ObservableAwareNameValue(Headers, s =>
-                {
-                    _modelItem.SetProperty("Headers",
-                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                }));
-            }
-            else
-            {
-                var nameValue = Headers.Last();
-                if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
-                {
-                    Headers.Add(new ObservableAwareNameValue(Headers, s =>
-                    {
-                        _modelItem.SetProperty("Headers",
-                            _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                    }));
-                }
+                _queryString = value ?? string.Empty;
+                _modelItem.SetProperty("QueryString", value ?? string.Empty);
+                OnPropertyChanged();
             }
         }
-
-        void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        public string RequestUrl
         {
-            AddItemPropertyChangeEvent(e);
-            RemoveItemPropertyChangeEvent(e);
-
-        }
-
-        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
-        {
-            if (args.NewItems == null)
+            get => _requestUrl;
+            set
             {
-                return;
-            }
-
-            foreach (INotifyPropertyChanged item in args.NewItems)
-            {
-                if (item != null)
-                {
-                    item.PropertyChanged += ItemPropertyChanged;
-                }
+                _requestUrl = value;
+                OnPropertyChanged();
             }
         }
-
-        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        public ObservableCollection<INameValue> Headers
         {
-            _modelItem.SetProperty("Headers", _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-        }
-
-        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
-        {
-            if (args.OldItems == null)
+            get => _headers;
+            set
             {
-                return;
-            }
-
-            foreach (INotifyPropertyChanged item in args.OldItems)
-            {
-                if (item != null)
-                {
-                    item.PropertyChanged -= ItemPropertyChanged;
-                }
+                _headers = value;
+                _modelItem.SetProperty("Headers", value.ToList());
+                OnPropertyChanged();
             }
         }
-        #region Implementation of INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-
-        #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
         public bool IsEnabled
         {
-            get
-            {
-                return _isEnabled;
-            }
+            get => _isEnabled;
             set
             {
                 _isEnabled = value;
                 OnPropertyChanged();
             }
         }
-
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
@@ -179,15 +144,17 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             var headers2 = new ObservableCollection<INameValue>();
             foreach (var nameValue in Headers)
             {
-                headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
+                var value = new NameValue(nameValue.Name,nameValue.Value);
+                value.PropertyChanged += ValueOnPropertyChanged;
+                headers2.Add(value);
             }
-            return new WebDeleteInputRegion()
+            return new WebDeleteInputRegion
             {
                 Headers = headers2,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled
-            } as IToolRegion;
+            };
         }
 
         public void RestoreRegion(IToolRegion toRestore)
@@ -198,25 +165,48 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
                 Headers.Clear();
-                Headers.Add(new ObservableAwareNameValue(Headers, s =>
-                {
-                    _modelItem.SetProperty("Headers",
-                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                }));
+                AddHeaders();
                 if (region.Headers != null)
                 {
                     foreach (var nameValue in region.Headers)
                     {
-                        Headers.Add(new ObservableAwareNameValue(Headers, s =>
-                        {
-                            _modelItem.SetProperty("Headers",
-                                _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                        })
+                        Headers.Add(new ObservableAwareNameValue(Headers, s => { SetHeaders(); })
                         { Name = nameValue.Name, Value = nameValue.Value });
                     }
                     Headers.Remove(Headers.First());
                 }
             }
+        }
+
+        private void AddHeaders()
+        {
+            if (Headers.Count == 0)
+            {
+                Headers.Add(new ObservableAwareNameValue(Headers, s => { SetHeaders(); }));
+                return;
+            }
+            var nameValue = Headers.Last();
+            if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
+            {
+                Headers.Add(new ObservableAwareNameValue(Headers, s => { SetHeaders(); }));
+            }
+        }
+
+        private void SetHeaders()
+        {
+            _modelItem.SetProperty("Headers",
+                _headers.Select(a =>
+                {
+                    var nameValue = new NameValue(a.Name, a.Value);
+                    nameValue.PropertyChanged += ValueOnPropertyChanged;
+                    return (INameValue) nameValue;
+                }).ToList());
+        }
+
+        private void ValueOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            SetHeaders();
+            AddHeaders();
         }
 
         public EventHandler<List<string>> ErrorsHandler
@@ -234,50 +224,12 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             }
         }
 
-        #endregion
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        #region Implementation of IWebBeleteInputArea
-
-
-        public string QueryString
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            get
-            {
-                return _modelItem.GetProperty<string>("QueryString") ?? string.Empty;
-            }
-            set
-            {
-                _queryString = value ?? string.Empty;
-                _modelItem.SetProperty("QueryString", value ?? string.Empty);
-                OnPropertyChanged();
-            }
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public string RequestUrl
-        {
-            get
-            {
-                return _requestUrl;
-            }
-            set
-            {
-                _requestUrl = value;
-                OnPropertyChanged();
-            }
-        }
-        public ObservableCollection<INameValue> Headers
-        {
-            get
-            {
-                return _headers;
-            }
-            set
-            {
-                _headers = value;
-                _modelItem.SetProperty("Headers", value.ToList());
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
     }
 }

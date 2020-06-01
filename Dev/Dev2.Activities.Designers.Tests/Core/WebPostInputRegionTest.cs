@@ -1,10 +1,19 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Source;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -17,11 +26,12 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.Core
 {
     [TestClass]
-
     public class WebPostInputRegionTest
     {
         [TestMethod]
-        public void TestInputCtor()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostInputRegion))]
+        public void WebPostInputRegion_TestInputCtor()
         {
             var id = Guid.NewGuid();
             var act = new DsfWebPostActivity() { SourceId = id };
@@ -35,7 +45,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        public void TestInputCtorEmpty()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostInputRegion))]
+        public void WebPostInputRegion_TestInputCtorEmpty()
         {
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
@@ -44,7 +56,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        public void TestClone()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostInputRegion))]
+        public void WebPostInputRegion_TestClone()
         {
             var id = Guid.NewGuid();
             var act = new DsfWebPostActivity() { SourceId = id };
@@ -64,8 +78,8 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("WebInputRegion_RestoreFromPrevious")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostInputRegion))]
         public void WebPostInputRegion_RestoreFromPrevious_Restore_ExpectValuesChanged()
         {
             //------------Setup for test--------------------------
@@ -90,9 +104,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("WebInputRegion_RestoreFromPrevious")]
-        public void WebInputRegion_SrcChanged_UpdateValues()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostInputRegion))]
+        public void WebPostInputRegion_SrcChanged_UpdateValues()
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
@@ -107,6 +121,38 @@ namespace Dev2.Activities.Designers.Tests.Core
             srcreg.SelectedSource = lst[0];
             Assert.AreEqual(region.QueryString, "Dave");
             Assert.AreEqual(region.RequestUrl, "bob");
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostInputRegion))]
+        public void WebPostInputRegion_Headers_AddEmptyHeaders()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var webPostActivity = new DsfWebPostActivity()
+            {
+                SourceId = id,
+                Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },
+            };
+            var src = new Mock<IWebServiceSource>();
+
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+
+            var modelItem = ModelItemUtils.CreateModelItem(webPostActivity);
+
+            var srcreg = new WebSourceRegion(mod.Object, modelItem);
+            var region = new WebPostInputRegion(modelItem, srcreg);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(2, region.Headers.Count);
+            Assert.AreEqual("a", region.Headers[0].Name);
+            Assert.AreEqual("b", region.Headers[0].Value);
+            Assert.AreEqual("", region.Headers[1].Name);
+            Assert.AreEqual("", region.Headers[1].Value);
         }
     }
 }
