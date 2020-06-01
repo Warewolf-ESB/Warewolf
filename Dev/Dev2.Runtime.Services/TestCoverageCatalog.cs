@@ -261,7 +261,7 @@ namespace Dev2.Runtime
             var coveredNodes = allTestNodesCovered.SelectMany(o => o.TestNodesCovered);
 
             var workflow = _resourceCatalog.GetWorkflow(workflowId);
-            var workflowNodes = workflow.WorkflowNodesForHtml;
+            var workflowNodes = workflow.WorkflowNodes;
             var testedNodes = coveredNodes.GroupBy(i => i.ActivityID).Select(o => o.First())
                 .Where(o => o.MockSelected is false)
                 .Select(u => u.ActivityID);
