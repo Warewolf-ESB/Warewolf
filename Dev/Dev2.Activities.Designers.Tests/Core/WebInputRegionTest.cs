@@ -125,5 +125,36 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WebInputRegion_RestoreFromPrevios")]
+        public void WebGetInputRegion_Headers_AddEmptyHeaders()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var webGetActivity = new DsfWebGetActivity() 
+            { 
+                SourceId = id,
+                Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },
+            };
+            var src = new Mock<IWebServiceSource>();
+
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+
+            var modelItem = ModelItemUtils.CreateModelItem(webGetActivity);
+
+            var srcreg = new WebSourceRegion(mod.Object, modelItem);
+            var region = new WebGetInputRegion(modelItem, srcreg);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(2, region.Headers.Count);
+            Assert.AreEqual("a", region.Headers[0].Name);
+            Assert.AreEqual("b", region.Headers[0].Value);
+            Assert.AreEqual("", region.Headers[1].Name);
+            Assert.AreEqual("", region.Headers[1].Value);
+        }
     }
 }
