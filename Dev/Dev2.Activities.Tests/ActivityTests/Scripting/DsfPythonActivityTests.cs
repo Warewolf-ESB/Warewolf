@@ -27,6 +27,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         
       
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Attribute_GivenIsNew_ShouldhaveCorrectValues()
         {
@@ -45,6 +46,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnConstruction_GivenType_ShouldInheritCorrectly()
         {
@@ -59,6 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_GivenIsNew_ShouldSetJavascript()
         {
@@ -74,6 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Script_GivenIsNew_ShouldBeEmpty()
         {
@@ -89,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ScriptType_GivenIsNew_ShouldSetJavascript()
         {

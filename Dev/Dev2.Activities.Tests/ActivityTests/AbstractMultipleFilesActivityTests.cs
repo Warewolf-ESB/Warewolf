@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("AbstractMultipleFiles_Execute")]
         public void AbstractMultipleFiles_Execute_WhenInputPathNotIsRooted_ExceptionCaughtErrorAdded()
@@ -62,6 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("AbstractMultipleFiles_Execute")]
         public void AbstractMultipleFiles_Execute_WhenOutputPathNotIsRooted_ExceptionCaughtErrorAdded()

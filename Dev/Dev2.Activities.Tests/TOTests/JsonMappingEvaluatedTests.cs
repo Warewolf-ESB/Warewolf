@@ -22,6 +22,7 @@ namespace Dev2.Tests.Activities.TOTests
     public class JsonMappingEvaluatedTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Kerneels Roos")]
         [TestCategory("JsonMappingEvaluated_Constructor")]
         public void JsonMappingEvaluated_Constructor_SetsProperties()

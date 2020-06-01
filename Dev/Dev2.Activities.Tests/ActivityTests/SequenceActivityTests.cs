@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class SequenceActivityTests : BaseActivityUnitTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         public void SequenceActivity_Execute()
         {

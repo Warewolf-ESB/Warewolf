@@ -47,6 +47,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -65,6 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_GetForEachInputs")]
         [ExpectedException(typeof(NotImplementedException))]
@@ -79,6 +81,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_GetForEachOutputs")]
         [ExpectedException(typeof(NotImplementedException))]
@@ -93,6 +96,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_UpdateForEachInputs")]
         [ExpectedException(typeof(NotImplementedException))]
@@ -107,6 +111,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_UpdateForEachOutputs")]
         [ExpectedException(typeof(NotImplementedException))]
@@ -121,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_GetFindMissingType")]
         public void DsfActivity_GetFindMissingType_Executed_ReturnsDsfActivity()
@@ -135,6 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_GetOutputs")]
         public void DsfActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -158,6 +165,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
         public void DsfActivity_BeforeExecutionStart_EmptyResourceID_DoesNothing()
@@ -176,6 +184,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
         public void DsfActivity_BeforeExecutionStart_ResourceIDAutorised_Executes()
@@ -198,6 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfActivity_OnExecute")]
         public void DsfActivity_OnExecute_WhenLocalExecutionInLocalContext_ExpectEnviromentIDRemainsLocalAndOverrideSetToFalse()
@@ -237,6 +247,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(isRemoteOverridden);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
 
@@ -262,6 +273,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
 
@@ -284,6 +296,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_Constructor")]
         public void DsfActivity_Constructor_WithParameters_ShouldSetValues()
@@ -308,6 +321,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_Inputs")]
         public void DsfActivity_Inputs_GivenValue_ShouldSetProperty()
@@ -322,6 +336,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_Inputs")]
         public void DsfActivity_Inputs_GivenNull_ShouldNotSetProperty()
@@ -338,6 +353,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_ExecuteTool")]
 
@@ -359,6 +375,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
         public void DsfActivity_GetOutputs_NotObjectAndOutputMapping_GetsOutputs()
@@ -372,6 +389,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
         public void DsfActivity_GetOutptus_ObjectAndOutputMapping_GetsObjectName()
@@ -394,6 +412,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
         public void DsfActivity_GetDebugInputs_ServiceInputIsEmpty()
@@ -421,6 +440,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
         public void DsfActivity_GetDebugInputs_ServiceInputIsAtomListResult()
@@ -456,6 +476,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_OnExecute")]
         public void DsfActivity_OnExecute_WhenIsTestExecutionShouldUpdateDataObject_SetBackToTrue()
@@ -501,6 +522,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfActivity_OnExecute")]
         public void DsfActivity_GetDebugInputs_WhenListInput_DebugInputExists()
@@ -536,6 +558,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfActivity_OnExecute")]
         public void DsfActivity_GetDebugOutputsFromEnv_ObjectNotNull()
@@ -572,6 +595,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("objectname", outputs[0].ResultsList[0].Value);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("DsfActivity_GetState")]
         public void DsfActivity_GetState()

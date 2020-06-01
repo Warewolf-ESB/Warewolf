@@ -22,6 +22,7 @@ namespace Dev2.Tests.Activities.FindRecsetOptionsTests
     public class FindRecsetOptionsTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("FindRecsetOptions_FindAll")]
         public void FindRecsetOptions_FindAll_GetAllRecsetOptions_RightNumberOfOptionsAndCorrectOrder()

@@ -66,6 +66,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region Calculate Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfCalculateActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfCalculateActivity();
@@ -83,6 +84,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region CoutRecordset Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfCountRecordsetActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var nullHandlerActivity = new DsfCountRecordsetNullHandlerActivity();
@@ -96,6 +98,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfRecordsetLengthActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfRecordsetNullhandlerLengthActivity();
@@ -114,6 +117,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region DateTime Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfDateTimeActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfDateTimeActivity();
@@ -134,6 +138,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region DateTimeDifference Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfDateTimeDifferenceActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfDateTimeDifferenceActivity();
@@ -153,6 +158,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region DeleteRecords Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfDeleteRecordActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity();
@@ -170,6 +176,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region ExecuteCommandLine Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfExecuteCommandLineActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfExecuteCommandLineActivity();
@@ -188,6 +195,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region ForEach Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfForEachActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfForEachActivity();
@@ -204,6 +212,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region Index Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfIndexActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfIndexActivity();
@@ -223,6 +232,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region NumberFormat Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfNumberFormatActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfNumberFormatActivity();
@@ -242,6 +252,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region Replace Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfReplaceActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfReplaceActivity();
@@ -261,6 +272,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region SortRecords Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfSortRecordsActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfSortRecordsActivity();
@@ -279,6 +291,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region FileRead Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfFileReadActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfFileRead();
@@ -299,6 +312,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region FileWrite Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfFileWriteActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfFileWrite();
@@ -320,6 +334,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region FolderRead Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfFolderReadActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfFolderRead();
@@ -340,6 +355,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region PathCopy Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfPathCopyActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfPathCopy();
@@ -364,6 +380,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region PathCreate Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfPathCreateActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfPathCreate();
@@ -384,6 +401,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region PathDelete Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfPathDeleteActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfPathDelete();
@@ -404,6 +422,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region PathMove Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfPathMoveActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfPathMove();
@@ -428,6 +447,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region PathRename Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfPathRenameActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfPathRename();
@@ -452,6 +472,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region UnZip Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfUnZipActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfUnZip();
@@ -477,6 +498,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region Zip Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfZipActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var activity = new DsfZip();
