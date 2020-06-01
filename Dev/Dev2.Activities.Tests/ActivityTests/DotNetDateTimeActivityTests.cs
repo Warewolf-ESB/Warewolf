@@ -52,6 +52,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region DateTime Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void DateTime_NominalDateTimeInputs_Expected_DateTimeReturnedCorrectly()
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
@@ -75,6 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DateTime_RecordSetData_Expected_EachRecordSetAppendedWithChangedDateTime()
         {
             const string currDL = @"<root><MyDateRecordSet><Date></Date></MyDateRecordSet></root>";
@@ -103,6 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DateTimeAddSplitsExpectedDateTimeReturnedCorrectly()
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
@@ -125,6 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
 
@@ -152,6 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
 
@@ -184,6 +189,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DateTimeUnitTest")]
 
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_ValidateDateTimeFunction()
@@ -210,6 +216,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDateTimeActivity_GetOutputs")]
         public void DsfDateTimeActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -233,6 +240,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDateTimeActivity_GetOutputs")]
         public void DsfDateTimeActivity_Execute_Blank_ShouldHaveNoErrorWithDebugOutput()
@@ -274,6 +282,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDateTimeActivity_GetOutputs")]
         public void DsfDateTimeActivity_Execute_InvalidDateTime_ShouldHaveErrorWithDebugOutput()
@@ -340,6 +349,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion Private Test Methods
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDateTimeActivity_Equality")]
         public void DsfDotNetDateTimeActivity_Equal()
@@ -407,6 +417,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDateTimeActivity_Equality")]
         public void DsfDotNetDateTimeActivity_NotEqual()
@@ -441,6 +452,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfDotNetDateTimeActivity_GetState")]
         public void DsfDotNetDateTimeActivity_GetState_ReturnsStateVariable()

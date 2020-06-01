@@ -13,6 +13,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
     public class DsfWebGetActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameUniqueID_EmptyWebGetTools_AreEqual()
         {
@@ -29,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentWebGetToolIds_AreNotEqual()
         {
@@ -46,6 +48,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameWebGetTool_IsEqual()
         {
@@ -62,6 +65,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_Value_IsEqual()
         {
@@ -78,6 +82,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Value_IsNOT_Equal()
         {
@@ -94,6 +99,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_Value_Different_Casing_IsNotEqual()
         {
@@ -110,6 +116,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_QueryString_IsEqual()
         {
@@ -127,6 +134,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_QueryString_IsNOTEqual()
         {
@@ -143,6 +151,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_OutputDescription_IsEqual()
         {
@@ -160,6 +169,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_OutputDescription_IsNOTEqual()
         {
@@ -184,6 +194,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Headers_IsNOTEqual()
         {
@@ -202,6 +213,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Headers_DifferentIndexes_IsNotEqual()
         {
@@ -219,6 +231,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Headers_IsEqual()
         {

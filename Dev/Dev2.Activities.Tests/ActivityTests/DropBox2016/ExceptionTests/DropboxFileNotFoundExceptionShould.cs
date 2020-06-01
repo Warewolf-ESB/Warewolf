@@ -9,6 +9,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.ExceptionTests
     public class DropboxFileNotFoundExceptionTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenMessege_ShouldNotBeNull()
         {
@@ -20,6 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.ExceptionTests
             Assert.IsNotNull(dropboxFileNotFoundException);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenMessege_ShouldHaveMessegeSet()
         {
@@ -39,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.ExceptionTests
     public class DropboxPathNotFileFoundExceptionTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenMessege_ShouldNotBeNull()
         {
@@ -50,6 +53,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.ExceptionTests
             Assert.IsNotNull(dropboxPathNotFileFoundException);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenMessege_ShouldHaveMessegeSet()
         {
@@ -69,6 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.ExceptionTests
     public class DropboxFileMalformdedExceptionTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenMessege_ShouldNotBeNull()
         {
@@ -80,6 +85,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.ExceptionTests
             Assert.IsNotNull(dropboxFileMalformdedException);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenMessege_ShouldHaveMessegeSet()
         {

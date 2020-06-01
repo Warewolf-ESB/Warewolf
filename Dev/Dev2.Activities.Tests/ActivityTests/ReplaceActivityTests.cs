@@ -40,6 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         //Added for - Bug 9937
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [Description("Replace special chars")]
         [TestCategory("DsfReplaceActivity")]
@@ -67,6 +68,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Replace_In_Two_Recordset_Fields_Expected_Two_Replaces_Success()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(*).field1]],[[Customers(*).FirstName]]", "Barney", "Wallis", "[[res]]", false);
@@ -93,6 +95,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Replace_In_Two_Recordset_Fields_With_Space_Between_Expected_Two_Replaces_Success()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(*).field1]], [[Customers(*).FirstName]]", "Barney", "Wallis", "[[res]]", false);
@@ -119,6 +122,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Replace_In_Scalar_Field_Expected_One_Replace_Success()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[CompanyName]]", "Dev2", "TheUnlimted", "[[res]]", false);
@@ -144,6 +148,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Replace_In_Scalar_Field_With_CaseMatch_On_Expected_Zero_Replace_Success()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[CompanyName]]", "dev2", "TheUnlimted", "[[res]]", true);
@@ -166,6 +171,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Replace_Recordset_Fields_With_CaseMatch_On_Expected_One_Replace_Success()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(*).field1]],[[Customers(*).FirstName]]", "Barney", "Wallis", "[[res]]", true);
@@ -192,6 +198,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Replace_Recordset_Fields_With_Index_Expected_One_Replace_Success()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(1).field1]],[[Customers(2).FirstName]]", "Barney", "Wallis", "[[res]]", false);
@@ -218,6 +225,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Replace_Scalar_With_Backlash_Expected_One_Replace()
         {
             SetupArguments(@"<DataList><Thing>testlol\</Thing><Res></Res></DataList>", @"<DataList><Thing></Thing><Res></Res></DataList>", @"[[Thing]]", @"lol\", @"Wallis", "[[Res]]", false);
@@ -243,6 +251,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         public void ReplaceInAllRecordsetFieldsExpectedTwoReplacesSuccess()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData.Replace("f2r2", "barney"), ActivityStrings.ReplaceDataListShape, "[[recset1(*)]]", "Barney", "Wallis", "[[res]]", false);
@@ -273,6 +282,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Replace Negative Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void ReplaceRawStringAsInputExpectedFriendlyErrorMessage()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "rawstringdata", "Barney", "Wallis", "[[res]]", false);
@@ -292,6 +302,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Replace_Recordset_Field_With_Negative_Index_Expected_One_Replace_Success()
         {
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(-1).field1]]", "Barney", "Wallis", "[[res]]", false);
@@ -313,6 +324,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Replace_Recordset_Field_With_Zero_Index_Expected_One_Replace_Success()
         {
             SetupArguments(ActivityStrings.ReplaceDataListShape, ActivityStrings.ReplaceDataListWithData, "[[recset1(0).field1]]", "Barney", "Wallis", "[[res]]", false);
@@ -337,6 +349,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfReplaceActivity_UpdateForEachInputs")]
         public void DsfReplaceActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -357,6 +370,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetOutputs")]
         public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -376,6 +390,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfReplaceActivity_UpdateForEachInputs")]
         public void DsfReplaceActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -400,6 +415,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfReplaceActivity_UpdateForEachOutputs")]
         public void DsfReplaceActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -417,6 +433,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfReplaceActivity_UpdateForEachOutputs")]
         public void DsfReplaceActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -437,6 +454,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfReplaceActivity_UpdateForEachOutputs")]
         public void DsfReplaceActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -456,6 +474,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfReplaceActivity_GetForEachInputs")]
         public void DsfReplaceActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -480,6 +499,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfReplaceActivity_GetForEachOutputs")]
         public void DsfReplaceActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -500,6 +520,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("DsfReplaceActivity_Replace_Recordset_Fields")]
         public void DsfReplaceActivity_TestingIsSingleValueRule()
@@ -515,6 +536,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfReplaceActivity_UpdateForEachOutputs")]
         public void DsfReplaceActivity_GetState_Returns_Inputs_And_Outputs()
         {

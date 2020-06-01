@@ -25,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointCreateListItemActivity_Construct")]
         public void SharepointCreateListItemActivity_Construct_GivenInstance_ShouldNotBeNull()
@@ -37,6 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointCreateListItem_Execute")]
         public void SharepointSource_DoesNotExist_OnResourceCatalog_ShouldSetSharepointSource_ToGuidEmpty()
@@ -66,6 +68,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointCreateListItem_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_BlankRecordSet()
@@ -105,6 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("SharepointCreateListItem_GetState")]
         public void SharepointCreateListItem_GetState()

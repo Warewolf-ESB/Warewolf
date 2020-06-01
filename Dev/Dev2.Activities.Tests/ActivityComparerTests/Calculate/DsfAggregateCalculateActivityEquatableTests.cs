@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
     public class DsfAggregateCalculateActivityEquatableTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDEquals_EmptyAssigns_IsEqual()
         {
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDDifferent_EmptyAssigns_IsEqual()
         {
@@ -40,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Same_Object_IsEqual()
         {
@@ -56,6 +59,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal()
         {
@@ -72,6 +76,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -87,6 +92,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
             Assert.IsFalse(equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Expression_Same_Object_IsEqual()
         {
@@ -103,6 +109,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Expression_Different_Object_Is_Not_Equal()
         {
@@ -119,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Expression_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -134,6 +142,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
             Assert.IsFalse(equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Same_Object_IsEqual()
         {
@@ -150,6 +159,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Different_Object_Is_Not_Equal()
         {
@@ -166,6 +176,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Different_Object_Is_Not_Equal_CaseSensitive()
         {

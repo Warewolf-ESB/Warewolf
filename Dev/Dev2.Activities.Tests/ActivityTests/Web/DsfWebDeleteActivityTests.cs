@@ -40,6 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     public class DsfWebDeleteActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         
         public void DsfWebDeleteActivity_GivenInstance_ShouldNotBeNull()
@@ -60,6 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfWebDeleteActivity_GivenIsCreated_ShouldBeDsfActivity()
         {
@@ -74,6 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfWebDeleteActivity_GivenNewActivity_ShouldHaveCustomAttribute()
         {
@@ -88,6 +91,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfWebDeleteActivity_GivenNewActivity_ShouldHaveCorrectAttributeValues()
         {
@@ -106,6 +110,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfWebDeleteActivity_GivenIsNew_ShouldHaveDisplayNameSet()
         {
@@ -119,6 +124,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Constructer_GivenHasInstance_ShouldHaveType()
         {
@@ -133,6 +139,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenDeletePostActivity_ShouldReturnMissingTypeDataGridAcitvity()
         {
@@ -147,6 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentIsNull_ShouldReturnZeroDebugInputs()
         {
@@ -160,6 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebDeleteActivity_Execute")]
         public void DsfWebDeleteActivity_Delete_WithValidWebResponse_ShouldSetVariables()
@@ -207,6 +216,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebDeleteActivity_Execute")]
         public void DsfWebDeleteActivity_Delete_WithTextResponseValidResponseReturned()
@@ -252,6 +262,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebDeleteActivity_Execute")]
         public void DsfWebDeleteActivity_Execute_WithInValidWebResponse_ShouldNotError()
@@ -298,6 +309,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebDeleteActivity_Execute")]
         public void DsfWebDeleteActivity_Execute_WithValidXmlEscaped_ShouldSetVariables()
@@ -355,6 +367,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebDeleteActivity_Execute")]
         public void DsfWebDeleteActivity_Execute_WithInputVariables_ShouldEvalVariablesBeforeExecutingWebRequest()
@@ -400,6 +413,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebDeleteActivity_Execute")]
         public void DsfWebDeleteActivity_Execute_ErrorResponse_ShouldSetVariables()
@@ -433,6 +447,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebDeleteActivity))]
         public void DsfWebDeleteActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()

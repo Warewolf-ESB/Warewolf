@@ -28,6 +28,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         const string userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfWebActivity_GivenDeleteInstance_ShouldNotBenull()
         {
@@ -49,6 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenRequestMethod_ShouldHaveClient()
         {
@@ -65,6 +67,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenWrongUri_ShouldReturnClientWithNoAdress()
         {
@@ -79,6 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Constructer_GivenHasInstance_ShouldHaveType()
         {
@@ -93,6 +97,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenWebPostActivity_ShouldReturnMissingTypeDataGridAcitvity()
         {
@@ -107,6 +112,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentIsNull_ShouldReturnZeroDebugInputs()
         {
@@ -121,6 +127,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenNoHeaders_ShouldHaveTwoHeaders()
         {
@@ -137,6 +144,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CleateClient_GivenNoHeaders_ShouldGlobalConstantsUserAgent()
         {
@@ -154,6 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenWebSourceAuthenticationTypeIsUser_ShouldSetWebClientPasswordAndUserName()
         {
@@ -175,6 +184,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenAuthenticationTypeIsNotUser_ShouldNotSetCredentials()
         {
@@ -190,6 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenHeaders_ShouldHaveHeadersAdded()
         {
@@ -212,6 +223,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenMockEnvironment_ShouldAddDebugInputItems()
         {

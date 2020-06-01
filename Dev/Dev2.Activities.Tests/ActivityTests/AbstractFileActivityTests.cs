@@ -80,6 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfAbstractFileActivity_UpdateForEachInputs")]
         public void DsfAbstractFileActivity_FileOutputStringError_ShouldExistInEnvironmentErrors()

@@ -37,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
         
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfFolderRead_UpdateForEachInputs")]
         public void DsfFolderRead_Execute_Expecting_No_Out_Puts_Has_1_Empty_Record()
         {
@@ -55,6 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfFolderRead_UpdateForEachInputs")]
         public void DsfFolderRead_Execute_Expecting_No_Out_Puts_Has_1_Empty_Record1()
         {
@@ -72,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderRead_UpdateForEachInputs")]
         public void DsfFolderRead_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -87,6 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderRead_UpdateForEachInputs")]
         public void DsfFolderRead_UpdateForEachInputs_MoreThan1Updates_DoesNothing()
@@ -104,6 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderRead_UpdateForEachInputs")]
         public void DsfFolderRead_UpdateForEachInputs_1Update_UpdateInputPath()
@@ -120,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderRead_UpdateForEachOutputs")]
         public void DsfFolderRead_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -134,6 +140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderRead_UpdateForEachOutputs")]
         public void DsfFolderRead_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -151,6 +158,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderRead_UpdateForEachOutputs")]
         public void DsfFolderRead_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -167,6 +175,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderRead_GetForEachInputs")]
         public void DsfFolderRead_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -184,6 +193,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFolderRead_GetForEachOutputs")]
         public void DsfFolderRead_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -201,6 +211,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfFolderRead_GetState")]
         public void DsfFolderRead_GetState_IsFilesSelected_ReturnsStateVariable()
@@ -284,6 +295,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfFolderRead_GetState")]
         public void DsfFolderRead_GetState_IsFoldersSelected_ReturnsStateVariable()
@@ -367,6 +379,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfFolderRead_GetState")]
         public void DsfFolderRead_GetState_IsFilesAndFoldersSelected_ReturnsStateVariable()
