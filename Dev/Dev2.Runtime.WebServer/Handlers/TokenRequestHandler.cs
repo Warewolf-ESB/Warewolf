@@ -13,6 +13,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using System.Web;
+using Dev2.Common;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
@@ -24,6 +25,7 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Security;
 
@@ -149,7 +151,32 @@ namespace Dev2.Runtime.WebServer.Handlers
                 executionDto.ErrorResultTO = allErrors;
                 var executionDtoExtensions = new ExecutionDtoExtensions(executionDto);
                 var resp = executionDtoExtensions.CreateResponse();
-                return CreateEncryptedResponse(resp.Content);
+                var content = resp.Content;
+                if (!content.Contains("UserGroups"))
+                {
+                    throw new HttpException(500, "internal server error");
+                }
+                var json = JsonConvert.DeserializeObject<UserGroupsResponse>(resp.Content);
+                var hasInvalidOutputs = json?.UserGroups?.Any(o => string.IsNullOrWhiteSpace(o.Name)) ?? false;
+
+                return hasInvalidOutputs
+                    ? ThrowInternalServerError()
+                    : CreateEncryptedResponse(resp.Content);
+            }
+
+            private static IResponseWriter ThrowInternalServerError()
+            {
+                Dev2Logger.Warn("invalid login override workflow selected: outputs not valid", GlobalConstants.WarewolfWarn);
+                throw new HttpException(500, "internal server error");
+            }
+
+            public class UserGroup
+            {
+                public string Name { get; set; }
+            }
+            public class UserGroupsResponse
+            {
+                public UserGroup[] UserGroups { get; set; }
             }
 
             private IResponseWriter CreateEncryptedResponse(string payload)
