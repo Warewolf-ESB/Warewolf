@@ -34,7 +34,6 @@ using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Responses;
@@ -46,6 +45,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Auditing;
 using Warewolf.Data;
+using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
