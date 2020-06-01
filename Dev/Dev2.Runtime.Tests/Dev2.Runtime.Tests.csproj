@@ -398,6 +398,10 @@
       <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
       <Name>Warewolf.COMIPC.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj">
+      <Project>{bc059e85-358e-49cf-a2e8-e79249c9bf51}</Project>
+      <Name>Warewolf.Common.Framework48</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
       <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
       <Name>Warewolf.Data</Name>

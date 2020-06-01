@@ -16,13 +16,8 @@ using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Services.Security;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Dev2.Runtime.WebServer
+namespace Warewolf.Security
 {
-    public interface IJwtManager
-    {
-        string GenerateToken(string payload, int expireMinutes = 20);
-        string ValidateToken(string token);
-    }
     public class JwtManager : IJwtManager
     {
         private readonly ISecuritySettings _securitySettings;
