@@ -347,6 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [DoNotParallelize]
+        [DeploymentItem(@"ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
         {
             // ------------Setup for test--------------------------
