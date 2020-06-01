@@ -182,7 +182,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             private IResponseWriter CreateEncryptedResponse(string payload)
             {
                 var rs = new StringResponseWriterFactory();
-                if (payload.Length > 0 && payload != "InternalServerError")
+                if (payload.Length > 0)
                 {
                     var encryptedPayload = _jwtManager.GenerateToken(payload);
                     encryptedPayload = "{\"token\": \"" + encryptedPayload + "\"}";
