@@ -127,7 +127,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WebGetInputRegion)]
+        [TestCategory(nameof(WebGetInputRegion))]
         public void WebGetInputRegion_Headers_AddEmptyHeaders()
         {
             //------------Setup for test--------------------------
