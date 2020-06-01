@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public string GetResourceNameById(Guid resourceId)
         {
             var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
-            return resource.ResourceName;
+            return resource?.ResourceName;
         }
     }
 }
