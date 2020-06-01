@@ -25,13 +25,14 @@ using System.Xml.Linq;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Microsoft.JScript;
 using Warewolf.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     public class Workflow : Resource, IWarewolfWorkflow
     {
-        private List<IWorkflowNode> _workflowNodes;
+        private List<IWorkflowNode> _workflowNodes = new List<IWorkflowNode>();
         private List<IWorkflowNode> _workflowNodesForHtml;
         private Collection<FlowNode> _flowNodes;
 
@@ -43,7 +44,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             DataList = new XElement("DataList");
         }
 
-        public Workflow(Collection<FlowNode> flowNodes)//, List<IWorkflowNode> workflowNodes)
+        public Workflow(Collection<FlowNode> flowNodes)
         {
             _flowNodes = flowNodes;
         }
@@ -58,7 +59,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             Tags = xml.ElementSafe("Tags");
             HelpLink = xml.ElementSafe("HelpLink");
             Name = xml.ElementSafe("DisplayName");
-            //DisplayName = xml.ElementSafe("Name");
 
             var action = xml.Descendants("Action").FirstOrDefault();
             if (action == null)
@@ -83,6 +83,16 @@ namespace Dev2.Runtime.ServiceModel.Data
             return nodeTree.NextNodes;
         }
 
+        private List<IWorkflowNode> GetWorkflowNodes()
+        {
+            foreach (var node in FlowNodes)
+            {
+                _ = GetWorkflowNodeFrom(node);
+            };
+
+            return _workflowNodes;
+        }
+
         private IWorkflowNode GetWorkflowNodeFrom(FlowNode flowNode)
         {
             var nodeType = flowNode.GetType().Name;
@@ -90,25 +100,18 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 case nameof(FlowStep):
                     return CalculateFlowStep((FlowStep)flowNode);
-                    break;
                 case nameof(FlowDecision):
                     return CalculateFlowDecision((FlowDecision)flowNode);
-                    break;
                 case "FlowSwitch`1":
                     return CalculateFlowSwitch((FlowSwitch<string>)flowNode);
-                    break;
                 default:
-                    return new WorkflowNode { MockSelected = true, StepDescription = "{0} is not a valid FlowNode type" };
-                    break;
+                    return null;
             }
         }
 
         private IWorkflowNode CalculateFlowSwitch(FlowSwitch<string> node)
         {
-            var wfTree = new WorkflowNode
-            {
-                StepDescription = node.DisplayName
-            };
+            var wfTree = WorkflowNodeFrom(node?.Expression as IDev2Activity);
 
             foreach (var item in ((FlowSwitch<string>)node).Cases.Values)
             {
@@ -119,10 +122,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         private IWorkflowNode CalculateFlowDecision(FlowDecision node)
         {
-            var wfTree = new WorkflowNode
-            {
-                StepDescription = node.DisplayName
-            };
+            var wfTree = WorkflowNodeFrom(node?.Condition as IDev2Activity);
 
             IDev2Activity activityTrue;
             if (IsFlowStep(node.True))
@@ -145,22 +145,18 @@ namespace Dev2.Runtime.ServiceModel.Data
             return wfTree;
         }
 
-        private static bool IsFlowStep(FlowNode flowNode)
-        {
-            return (flowNode as FlowStep) != null ? true : false;
-        }
 
-        private IWorkflowNode CalculateFlowStep(FlowStep flowNow)
+        private IWorkflowNode CalculateFlowStep(FlowStep flowNode)
         {
-            var activity = ((FlowStep)flowNow)?.Action as IDev2Activity;
-            if (activity is null)
-            {
-
-            }
-            if (!IsDsfComment(activity))
-                return WorkflowNodeFrom(activity);
+            if (IsFlowStep(flowNode))
+                return WorkflowNodeFrom(((FlowStep)flowNode)?.Action as IDev2Activity);
 
             return null;
+        }
+
+        private static bool IsFlowStep(FlowNode flowNode)
+        {
+            return flowNode is FlowStep;
         }
 
         private bool IsDsfComment(IDev2Activity activity)
@@ -168,14 +164,23 @@ namespace Dev2.Runtime.ServiceModel.Data
             return activity.GetType().Name is "DsfCommentActivity";
         }
 
-        private static IWorkflowNode WorkflowNodeFrom(IDev2Activity activity)
+        private IWorkflowNode WorkflowNodeFrom(IDev2Activity activity)
         {
-            return new WorkflowNode
-            {
-                ActivityID = activity.ActivityId,
-                UniqueID = Guid.Parse(activity.UniqueID),
-                StepDescription = activity.GetDisplayName(),
-            };
+            if (activity != null && !IsDsfComment(activity))
+            { 
+                var workflowNode = new WorkflowNode
+                {
+                    ActivityID = activity.ActivityId,
+                    UniqueID = Guid.Parse(activity.UniqueID),
+                    StepDescription = activity.GetDisplayName(),
+                };
+
+                if (!_workflowNodes.Any(o => o.UniqueID == workflowNode.UniqueID))
+                    _workflowNodes.Add(workflowNode);
+
+                return workflowNode;
+            }
+            return null;
         }
 
         private Collection<FlowNode> GetFlowNodes()
@@ -222,6 +227,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string HelpLink { get; set; }
         public Collection<FlowNode> FlowNodes => _flowNodes ?? (_flowNodes = GetFlowNodes());
         public List<IWorkflowNode> WorkflowNodesForHtml => _workflowNodesForHtml ?? (_workflowNodesForHtml = GetWorkflowNodesForHtml());
+        public List<IWorkflowNode> WorkflowNodes => _workflowNodes.Count != 0 ? _workflowNodes : (_workflowNodes = GetWorkflowNodes());
         public string Name { get; set; }
 
         #region ToXml
