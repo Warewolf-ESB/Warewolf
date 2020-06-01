@@ -25,6 +25,7 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 using Warewolf;
+using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
