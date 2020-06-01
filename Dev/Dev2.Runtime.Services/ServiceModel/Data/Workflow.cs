@@ -124,18 +124,18 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var wfTree = WorkflowNodeFrom(node?.Condition as IDev2Activity);
 
-            IDev2Activity activityTrue;
             if (IsFlowStep(node.True))
             {
+                IDev2Activity activityTrue;
                 activityTrue = ((FlowStep)node.True)?.Action as IDev2Activity;
                 wfTree.Add(WorkflowNodeFrom(activityTrue));
             }
             if (!IsFlowStep(node.True))
                 wfTree.Add(GetWorkflowNodeFrom(node.True));
 
-            IDev2Activity activityFalse;
             if (IsFlowStep(node.False))
             {
+                IDev2Activity activityFalse;
                 activityFalse = ((FlowStep)node.False)?.Action as IDev2Activity;
                 wfTree.Add(WorkflowNodeFrom(activityFalse));
             }
@@ -149,7 +149,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         private IWorkflowNode CalculateFlowStep(FlowStep flowNode)
         {
             if (IsFlowStep(flowNode))
-                return WorkflowNodeFrom(((FlowStep)flowNode)?.Action as IDev2Activity);
+                return WorkflowNodeFrom(flowNode?.Action as IDev2Activity);
 
             return null;
         }
