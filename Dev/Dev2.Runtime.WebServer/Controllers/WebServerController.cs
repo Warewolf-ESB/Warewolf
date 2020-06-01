@@ -33,7 +33,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Services/{*__name__}")]
         public HttpResponseMessage ExecuteService(string __name__) => ExecuteWorkflow(__name__, false, false);
 
-        HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic, bool isToken)
+        HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic, bool isUrlWithTokenPrefix)
         {
             if (__name__.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
             {
@@ -46,48 +46,36 @@ namespace Dev2.Runtime.WebServer.Controllers
                 var requestVar = new NameValueCollection
                 {
                     {"path", path[0]},
-                    {"isToken", isToken.ToString()},
                     {"isPublic", isPublic.ToString()}
                 };
-                return ProcessRequest<GetApisJsonServiceHandler>(requestVar);
-            }
-
-            if (__name__.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var requestVar = new NameValueCollection
-                {
-                    {"isPublic", isPublic.ToString()},
-                    {"isToken", isToken.ToString()},
-                    {"IsDebug", true.ToString()},
-                    {"servicename", __name__}
-                };
-                return Request.Method == HttpMethod.Post
-                    ? ProcessRequest<WebPostRequestHandler>(requestVar)
-                    : ProcessRequest<WebGetRequestHandler>(requestVar);
+                return ProcessRequest<GetApisJsonServiceHandler>(requestVar, isUrlWithTokenPrefix);
             }
 
             var requestVariables = new NameValueCollection
             {
                 {"servicename", __name__},
-                {"isToken", isToken.ToString()},
             };
+            if (__name__.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
+            {
+                requestVariables.Add("isPublic", isPublic.ToString());
+                requestVariables.Add("IsDebug", true.ToString());
+            }
 
             return Request.Method == HttpMethod.Post
-                ? ProcessRequest<WebPostRequestHandler>(requestVariables)
-                : ProcessRequest<WebGetRequestHandler>(requestVariables);
+                ? ProcessRequest<WebPostRequestHandler>(requestVariables, isUrlWithTokenPrefix)
+                : ProcessRequest<WebGetRequestHandler>(requestVariables, isUrlWithTokenPrefix);
         }
 
-        public HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic, bool isToken)
+        public HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
         {
             var requestVariables = new NameValueCollection
             {
                 {"path", __url__},
                 {"isPublic", isPublic.ToString()},
-                {"isToken", isToken.ToString()},
                 {"servicename", "*"}
             };
 
-            var httpResponseMessage = ProcessRequest<WebGetRequestHandler>(requestVariables);
+            var httpResponseMessage = ProcessRequest<WebGetRequestHandler>(requestVariables, false);
             return httpResponseMessage;
         }
 
@@ -101,12 +89,12 @@ namespace Dev2.Runtime.WebServer.Controllers
                 var requestUri = Request.RequestUri;
                 if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), false, false);
+                    return ExecuteFolderTests(requestUri.ToString(), false);
                 }
 
                 if (requestUri.ToString().EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), false, false);
+                    return ExecuteFolderTests(requestUri.ToString(), false);
                 }
             }
 
@@ -123,7 +111,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 var requestUri = Request.RequestUri;
                 if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return ExecuteFolderTests(requestUri.ToString(), true, false);
+                    return ExecuteFolderTests(requestUri.ToString(), true);
                 }
             }
 
@@ -135,20 +123,6 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Token/{*__name__}")]
         public HttpResponseMessage ExecutePublicTokenWorkflow(string __name__)
         {
-            if (Request?.RequestUri != null)
-            {
-                var requestUri = Request.RequestUri;
-                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return ExecuteFolderTests(requestUri.ToString(), false, true);
-                }
-
-                if (requestUri.ToString().EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return ExecuteFolderTests(requestUri.ToString(), false, true);
-                }
-            }
-
             return ExecuteWorkflow(__name__, false, true);
         }
 
@@ -157,12 +131,11 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("login")]
         public HttpResponseMessage ExecuteLoginWorkflow()
         {
-
-            var requestVariables = new NameValueCollection
-            {
-                {"isToken", "False"}
-            };
-            return ProcessTokenRequest<TokenRequestHandler>(requestVariables);
+            var requestVariables = new NameValueCollection();
+            var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
+            var handler = CreateHandler<TokenRequestHandler>();
+            handler.ProcessRequest(context);
+            return context.ResponseMessage;
         }
 
         [HttpGet]
@@ -176,7 +149,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         public HttpResponseMessage ExecuteGetRootLevelApisJson()
         {
             var requestVariables = new NameValueCollection();
-            return ProcessRequest<GetApisJsonServiceHandler>(requestVariables);
+            return ProcessRequest<GetApisJsonServiceHandler>(requestVariables, false);
         }
     }
 }
