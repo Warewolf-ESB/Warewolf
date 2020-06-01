@@ -126,8 +126,8 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("WebInputRegion_RestoreFromPrevios")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebGetInputRegion)]
         public void WebGetInputRegion_Headers_AddEmptyHeaders()
         {
             //------------Setup for test--------------------------
