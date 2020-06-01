@@ -49,11 +49,11 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
 
         public Type ProcessRequestHandlerType { get; private set; }
         public NameValueCollection ProcessRequestVariables { get; private set; }
-        protected override HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
+        protected override HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
         {
             ProcessRequestHandlerType = typeof(TRequestHandler);
             ProcessRequestVariables = requestVariables;
-            var result = base.ProcessRequest<TRequestHandler>(requestVariables);
+            var result = base.ProcessRequest<TRequestHandler>(requestVariables, isUrlWithTokenPrefix);
             _verifyProcessRequestInvoked?.Invoke();
             return result;
         }

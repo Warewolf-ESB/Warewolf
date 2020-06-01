@@ -15,11 +15,11 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.WebServer;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Data;
+using Warewolf.Security;
 using Warewolf.Services;
 
 namespace Dev2.Tests.Runtime.WebServer

@@ -46,6 +46,7 @@ using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Warewolf.Data;
+using Warewolf.Security;
 using Warewolf.Services;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;

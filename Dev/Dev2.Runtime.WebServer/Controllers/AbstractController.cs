@@ -25,7 +25,7 @@ namespace Dev2.Runtime.WebServer.Controllers
     {
         public WebServerContext Context { get; set; }
 
-        protected HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
+        protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
             where TRequestHandler : class, IRequestHandler, new()
         {
             var user = User;
