@@ -253,26 +253,25 @@ namespace Warewolf.Studio.ViewModels
 
         private static bool ValidateSearchIndex(string value)
         {
-            if (value.StartsWith("-") ||
-                value.StartsWith("+") ||
-                value.StartsWith("_") ||
-                value.Equals(".") ||
-                value.Equals("..") ||
-                value.Contains("*") ||
-                value.Contains(",") ||
-                value.Contains("?") ||
-                value.Contains("#") ||
-                value.Contains(" ") ||
-                value.Contains(@"\") ||
-                value.Contains(@"/") ||
-                value.Length > 255 ||
-                value.Any(char.IsUpper) ||
-                value.Any(char.IsSymbol))
-            {
-                return false;
-            }
+            var isValid = true;
 
-            return true;
+            isValid &= !value.StartsWith("-");
+            isValid &= !value.StartsWith("+");
+            isValid &= !value.StartsWith("_");
+            isValid &= !value.Equals(".");
+            isValid &= !value.Equals("..");
+            isValid &= !value.Contains("*");
+            isValid &= !value.Contains(",");
+            isValid &= !value.Contains("?");
+            isValid &= !value.Contains("#");
+            isValid &= !value.Contains(" ");
+            isValid &= !value.Contains(@"\");
+            isValid &= !value.Contains(@"/");
+            isValid &= value.Length <= 255;
+            isValid &= !value.Any(char.IsUpper);
+            isValid &= !value.Any(char.IsSymbol);
+
+            return isValid;
         }
 
         public string Error => string.Empty;
