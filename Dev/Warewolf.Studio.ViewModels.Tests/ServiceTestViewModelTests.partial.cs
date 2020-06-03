@@ -37,6 +37,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     partial class ServiceTestViewModelTests
     {
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
@@ -76,6 +77,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
@@ -117,6 +119,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
@@ -169,6 +172,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -219,6 +223,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -267,6 +272,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -325,6 +331,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStatesWithMockAssign.json", "JsonResources")]
@@ -372,6 +379,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -430,6 +438,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -502,6 +511,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -566,6 +576,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -624,6 +635,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DotnetllDebugStates.json", "JsonResources")]
@@ -685,6 +697,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -741,6 +754,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -782,6 +796,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -824,6 +839,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -873,6 +889,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void TestPassingResult_GivenIsSet_ShouldFirePropertyChanges()
@@ -917,6 +934,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnStepOutputPropertyChanges_GivenIsInvoked_ShouldFirePropertyChanges()
@@ -963,6 +981,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStepGetParentType_GivenSequence_ShouldSetupServiceTestStep()
@@ -1007,6 +1026,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStepGetParentType_GivenDsfForEachActivity_ShouldSetupServiceTestStep()
@@ -1051,6 +1071,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStepGetParentType_GivenDsfSelectAndApplyActivity_ShouldSetupServiceTestStep()
@@ -1096,6 +1117,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddOutputsIfHasVariable_GivenListsOutputsAndServiceTestStep_ShouldBuildServiceTestOutputs()
@@ -1135,6 +1157,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddEnhancedDotNetDllMethod_GivenPluginActionAndStep_ShouldMap()
@@ -1179,6 +1202,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         //private void AddEnhancedDotNetDll(DsfEnhancedDotNetDllActivity dotNetDllActivity, ServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddEnhancedDotNetDll_GivenActions_ShouldAddChildrens()
@@ -1242,6 +1266,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddOutputs_GivenNoOutputNotNull()
@@ -1291,6 +1316,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddOutputs_GivenOutputNotNull()
@@ -1340,6 +1366,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStepWithOutputs_GivenBuildCorrectly()
@@ -1380,6 +1407,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RunSelectedTestInBrowser_GivenIsInvoked_ShouldFirePropertyChanges()
@@ -1418,6 +1446,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void MarkChildrenPending_GivenIsInvoked_ShouldSetAsPending()
@@ -1443,6 +1472,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -1485,6 +1515,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -1529,6 +1560,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -1574,6 +1606,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -1617,6 +1650,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PrepopulateTestsUsingDebug_GivenInCorrectMessage_ShouldThrowException()
@@ -1647,6 +1681,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RefreshCommands_ShouldUpdateDisplayName()
@@ -1678,6 +1713,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceID_GivenResourceModel_ShouldReturnCorrectly()
@@ -1705,6 +1741,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Stoptest_GivenServiceTests_ShouldSetValuesCorrectly()
@@ -1739,6 +1776,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void SetStepIcon_GiventypeName_ShouldSetValuesCorrectly_PassThrouth()
