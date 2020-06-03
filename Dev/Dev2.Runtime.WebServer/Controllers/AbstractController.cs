@@ -62,7 +62,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Warn($"failed to use authorization header: {e.Message}", "Warewolf Warn");
+                    Dev2Logger.Warn($"failed to use authorization header: {e.Message}", GlobalConstants.WarewolfWarn);
                 }
             }
 
