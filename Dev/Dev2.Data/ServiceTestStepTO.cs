@@ -36,25 +36,15 @@ namespace Dev2.Data
         public string StepDescription { get; set; }
         public TestRunResult Result { get; set; }
         
-        private bool _mockSelected;
         public bool MockSelected 
         {
-            get { return Type is StepType.Mock; }
-            set 
-            {
-                if (_mockSelected != value)
-                    _mockSelected = value;
-            } 
+            get { return Type is StepType.Mock;  }
+            set { }
         }
-        private bool _assertSelect;
         public bool AssertSelected 
         { 
             get { return Type is StepType.Assert; }
-            set
-            {
-                if (_assertSelect != value)
-                    _assertSelect = value;
-            }
+            set { }
         }
         public void AddNewOutput(string varName) { }
 
