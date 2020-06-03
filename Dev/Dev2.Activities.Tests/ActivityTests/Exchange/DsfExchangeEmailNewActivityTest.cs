@@ -15,6 +15,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Exchange
     public class DsfExchangeEmailNewActivityTest
     {
         [TestMethod]
+        [Timeout(60000)]
         public void DsfExchangeEmailNewActivity_InvalidRuntimeSource()
         {
             var env = new ExecutionEnvironment();
@@ -33,6 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfExchangeEmailNewActivity_UpdateForEachInputs_ExpectReplacedValues()
         {
             var act = new DsfExchangeEmailNewActivity
@@ -71,6 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Exchange
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfExchangeEmailNewActivity_GetState")]
         public void DsfExchangeEmailNewActivity_GetState_ReturnsStateVariable()

@@ -13,6 +13,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
     public class DsfSqlServerDatabaseActivityEqualityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void UniqueIDEquals_EmptySqlDatabase_Object_Is_Equal()
         {
@@ -29,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void UniqueIDDifferent_EmptySqlDatabase_Object_Is_Not_Equal()
         {
@@ -45,6 +47,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_IsEqual()
         {
@@ -61,6 +64,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
@@ -76,6 +80,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_ProcedureName_IsEqual()
         {
@@ -92,6 +97,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_ProcedureName_Different_Casing_IsNotEqual()
         {
@@ -107,6 +113,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_ProcedureName_Is_Not_Equal()
         {

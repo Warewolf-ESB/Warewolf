@@ -33,6 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         }
        
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
         public void RedisRemoveActivity_Equal_BothareObjects()
@@ -44,6 +45,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
         public void RedisRemoveActivity_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()

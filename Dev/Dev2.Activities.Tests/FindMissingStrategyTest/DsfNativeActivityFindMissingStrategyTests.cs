@@ -28,6 +28,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     public class DsfNativeActivityFindMissingStrategyTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DsfNativeActivity_FindMissing")]
         public void DsfNativeActivity_FindMissing_FindsCorrectProperties()

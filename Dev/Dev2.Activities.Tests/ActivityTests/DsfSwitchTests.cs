@@ -32,6 +32,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class DsfSwitchTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Constructor_GivenIsNew_ShouldHaveCorrectValues()
         {
@@ -56,6 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetOutputs_GivenIsNew_ShouldZeroOutputs()
         {
@@ -82,6 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetForEachInputs_ReturnsNull()
         {
@@ -103,6 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetForEachOutputs_ReturnsNull()
         {
@@ -124,6 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenIsNewReturnsZero()
         {
@@ -142,6 +147,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugOutputs_GivenIsNewReturnsZero()
         {
@@ -160,6 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DebugOutput_GivenDataObject_ShouldSetInnerBugOuputsIncrementsDebugOutputs()
         {
@@ -187,6 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Debug_GivenDataObject_ShouldSetInnerBugOuputs_IncrementsDebugInputs()
         {
@@ -218,6 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTool_GivenIsNotDebugMode_NotAddDebugOutputs()
         {
@@ -252,6 +261,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTool_GivenSwicthMacthing_ShouldAddNextNodes()
         {
@@ -289,6 +299,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(contains);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTool_GivenSwicthNotMacthing_ShouldUseDefault()
         {
@@ -329,6 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTool_GivenIsDebugMode_ShouldHaveDebugOutputs()
         {
@@ -369,6 +381,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void ExecuteTool_GivenDefaultIsNull_ShouldShowError()
         {
@@ -407,6 +420,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfSwitch_GetState")]
         public void DsfSwitch_GetState_ReturnsStateVariable()

@@ -446,6 +446,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenSqlDatabaseResourceType_ShouldEditSqlDatabse()
         {
             //---------------Set up test pack-------------------
@@ -635,6 +636,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenWcfSourceResourceType_ShouldEditWcfSource()
         {
             //---------------Set up test pack-------------------
@@ -786,6 +788,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenOauthSourceResourceType_ShouldEditOauthSource()
         {
             //---------------Set up test pack-------------------
@@ -878,6 +881,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenDev2ServerType_ShouldDev2Server()
         {
             //---------------Set up test pack-------------------
@@ -911,6 +915,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void DisplayResourceWizard_GivenServerSourceType_ShouldServerSource()
         {
             //---------------Set up test pack-------------------

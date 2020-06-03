@@ -13,6 +13,7 @@ namespace Dev2.Tests.Activities.TOTests
     public class SharepointSearchToTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_Constructor")]
         public void SharepointSearchTo_Constructor_Default_SetsProperties()
@@ -32,6 +33,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_Constructor")]
         public void SharepointSearchTo_ParameterConstructor_SetsProperties()
@@ -54,6 +56,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_SearchType")]
         public void SharepointSearchTo_SearchType_SetValue_FiresNotifyPropertyChanged()
@@ -71,6 +74,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_SearchType")]
         public void SharepointSearchTo_SearchCriteria_SetValue_FiresNotifyPropertyChanged()
@@ -88,6 +92,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_IndexNum")]
         public void SharepointSearchTo_IndexNum_SetValue_FiresNotifyPropertyChanged()
@@ -103,6 +108,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_IsSearchCriteriaEnabled")]
         public void SharepointSearchTo_IsSearchCriteriaEnabled_SetValue_FiresNotifyPropertyChanged()
@@ -120,6 +126,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanAdd Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_CanAdd")]
         public void SharepointSearchTo_CanAdd_SearchTypeEmpty_ReturnFalse()
@@ -133,6 +140,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_CanAdd")]
         public void SharepointSearchTo_CanAdd_FieldNameEmpty_ReturnFalse()
@@ -146,6 +154,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_CanAdd")]
         public void SharepointSearchTo_CanAdd_SearchTypeWithData_ReturnTrue()
@@ -163,6 +172,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanRemove Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_CanRemove")]
         public void SharepointSearchTo_CanRemove_FieldNameEmpty_ReturnTrue()
@@ -176,6 +186,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_CanRemove")]
         public void SharepointSearchTo_CanRemove_FieldNameEmptyWithData_ReturnFalse()
@@ -190,6 +201,7 @@ namespace Dev2.Tests.Activities.TOTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_GetRuleSet")]
         public void SharepointSearchTo_GetRuleSet_OnValueToMatchNoValue_ReturnTwoRules()
@@ -200,6 +212,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_GetRuleSet")]
         public void SharepointSearchTo_GetRuleSet_OnValueToMatchWithValue_ReturnOneRules()
@@ -210,6 +223,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointSearchTo_GetRuleSet")]
         public void SharepointSearchTo_GetRuleSet_OnFieldNameNoValue_ReturnTwoRules()

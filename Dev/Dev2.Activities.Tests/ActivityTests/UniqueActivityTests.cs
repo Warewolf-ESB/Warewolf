@@ -35,6 +35,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void EmptyInFieldsStringExpectedNoUnique()
         {
             const string DataList = "<ADL><recset1>\r\n\t\t<field1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>";
@@ -48,6 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecordsetWithWithNoRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
             const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
@@ -87,6 +89,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ScalarResultExpectedError()
         {
             const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
@@ -122,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecordsetWithWithRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
             const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
@@ -164,6 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecordsetWithWithMulitpleRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
             const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
@@ -211,6 +216,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis")]
         [Description("Ensure we can use the star notation in the unique tool!")]
         [TestCategory("UniqueTool,UnitTest")]
@@ -260,6 +266,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis")]
         [Description("Ensure we can use mixed star and append notation in the unique tool!")]
         [TestCategory("UniqueTool,UnitTest")]
@@ -321,6 +328,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfUniqueActivity_UpdateForEachInputs")]
         public void DsfUniqueActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -339,6 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfUniqueActivity_UpdateForEachInputs")]
         public void DsfUniqueActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -360,6 +369,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfUniqueActivity_UpdateForEachOutputs")]
         public void DsfUniqueActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -376,6 +386,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfUniqueActivity_UpdateForEachOutputs")]
         public void DsfUniqueActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -395,6 +406,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfUniqueActivity_UpdateForEachOutputs")]
         public void DsfUniqueActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
@@ -413,6 +425,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfUniqueActivity_GetForEachInputs")]
         public void DsfUniqueActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -434,6 +447,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfUniqueActivity_GetForEachOutputs")]
         public void DsfUniqueActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -454,6 +468,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("GetOutputs")]
         public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -471,6 +486,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("Errors")]
         public void DsfUniqueActivity_ResultIsEmpty()
@@ -482,6 +498,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         public void GivenEmptyStringAndName_ExecutionEnvironmentIsValidRecordSetIndex_ShouldReturn()
         {
@@ -491,6 +508,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec().a]]"));
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("DsfUniqueActivity_GetState")]
         public void DsfUniqueActivity_GetState()

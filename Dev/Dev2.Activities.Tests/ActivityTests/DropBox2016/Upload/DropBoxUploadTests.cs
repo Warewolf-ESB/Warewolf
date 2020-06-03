@@ -34,6 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamndla Dube")]
         [TestCategory(nameof(DropBoxUpload))]
         public void DropBoxUpload_CreateDropBoxActivity_GivenIsNew_ShouldNotBeNull()
@@ -47,6 +48,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamndla Dube")]
         [TestCategory(nameof(DropBoxUpload))]
         public void DropBoxUpload_ExecuteTask_GivenDropBoxUpload_ShouldReturnFileMetadata()
@@ -63,6 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         
       
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamndla Dube")]
         [TestCategory(nameof(DropBoxUpload))]
         [ExpectedException(typeof(ArgumentException))]
@@ -76,6 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamndla Dube")]
         [TestCategory(nameof(DropBoxUpload))]
         public void DropBoxUpload_ExecuteTask_IsDropboxFailureResult_ExpectTrue()
