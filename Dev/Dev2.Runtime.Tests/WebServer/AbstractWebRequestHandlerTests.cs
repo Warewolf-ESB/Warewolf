@@ -1932,7 +1932,6 @@ namespace Dev2.Tests.Runtime.WebServer
             var boundVariables = new NameValueCollection
             {
                 {"servicename", "ping"},
-                {"isToken", "True"},
                 {"instanceid", ""},
                 {"bookmark", ""}
             };
@@ -2022,7 +2021,6 @@ namespace Dev2.Tests.Runtime.WebServer
             var boundVariables = new NameValueCollection
             {
                 {"servicename", "ping"},
-                {"isToken", "True"},
                 {"instanceid", ""},
                 {"bookmark", ""}
             };
@@ -2113,7 +2111,6 @@ namespace Dev2.Tests.Runtime.WebServer
             var boundVariables = new NameValueCollection
             {
                 {"servicename", "ping"},
-                {"isToken", "True"},
                 {"instanceid", ""},
                 {"bookmark", ""}
             };

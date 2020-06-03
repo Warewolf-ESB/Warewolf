@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Specialized;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
 
@@ -28,5 +29,7 @@ namespace Dev2.Runtime.WebServer
 
         NameValueCollection QueryString { get; }
         NameValueCollection BoundVariables { get; }
+        HttpRequestHeaders Headers { get; }
+        bool IsTokenAuthentication { get; }
     }
 }

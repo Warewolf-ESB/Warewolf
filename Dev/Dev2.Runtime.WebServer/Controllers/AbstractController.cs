@@ -32,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             {
                 if (!TryOverrideByToken(ref user))
                 {
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
                 }
             } else {
                 if (!IsAuthenticated())
