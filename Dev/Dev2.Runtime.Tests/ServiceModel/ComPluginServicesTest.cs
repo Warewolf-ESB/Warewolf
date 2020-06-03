@@ -2,11 +2,13 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Moq;
 
 
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -31,6 +33,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         class ComPluginServicesMock : ComPluginServices
         {
+            public ComPluginServicesMock(IResourceCatalog resourceCatalog, IAuthorizationService authorizationService)
+                : base(resourceCatalog, authorizationService)
+            {
+            }
+
             public new Service DeserializeService(string args)
             {
                 return base.DeserializeService(args);
@@ -45,14 +52,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [ExpectedException(typeof(ArgumentNullException))]
         public void ComPluginServicesDeserializeServiceWithNullJsonExpectedThrowsArgumentNullException()
         {
-            var services = new ComPluginServicesMock();
+            var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
             services.DeserializeService(null);
         }
 
         [TestMethod]
         public void ComPluginServicesDeserializeServiceWithInvalidJsonExpectedReturnsNewPluginService()
         {
-            var services = new ComPluginServicesMock();
+            var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
             var result = services.DeserializeService("{'root' : 'hello' }");
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
@@ -63,7 +70,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var xml = XmlResource.Fetch("ComPluginService");
             var service = new ComPluginService(xml);
 
-            var services = new ComPluginServicesMock();
+            var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
             var result = services.DeserializeService(service.ToString());
 
             Assert.AreEqual(Guid.Parse("89098b76-ac11-40b2-b3e8-b175314cb3bb"), service.ResourceID);
@@ -81,7 +88,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void ComPluginServicesDeserializeServiceWithNullXmlExpectedReturnsNewPluginService()
         {
-            var services = new ComPluginServicesMock();
+            var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
             var result = (ComPluginService)services.DeserializeService(null, "ComPluginService");
 
             Assert.AreEqual(result.ResourceID, Guid.Empty);
@@ -92,7 +99,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var xml = XmlResource.Fetch("ComPluginService");
 
-            var services = new ComPluginServicesMock();
+            var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
             var service = (ComPluginService)services.DeserializeService(xml, "ComPluginService");
 
             Assert.AreEqual(Guid.Parse("89098b76-ac11-40b2-b3e8-b175314cb3bb"), service.ResourceID);
@@ -180,7 +187,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Test
        
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginServices_Test")]
@@ -195,20 +201,15 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
             catch(Exception e)
             {
-                //Calls the execution correctly;
-                
                 Assert.AreEqual("[Microsoft][ODBC Driver Manager] Data source name not found and no default driver specified", e.InnerException.Message);
-                
             }
-            
-          
         }
 
         [TestMethod]
         public void PluginServicesTestWithNullArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------
-            var services = new ComPluginServicesMock();
+            var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
             //------------Execute Test---------------------------
             var result = services.Test(null, out string serializedResult);
             //------------Assert Results-------------------------
@@ -219,7 +220,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void PluginServicesTestWithInvalidArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------
-            var services = new ComPluginServicesMock();
+            var services = new ComPluginServicesMock(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
             //------------Execute Test---------------------------
             var result = services.Test("xxx", out string serializedResult);
             //------------Assert Results-------------------------
