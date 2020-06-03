@@ -327,12 +327,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 
                 if (!_canExecute)
                 {
-                    var message = Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException;
-                    var isTokenWorkflow = webRequest.Variables["isToken"];
-                    if (isTokenWorkflow == "True")
-                    {
-                        message = Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException;
-                    }
+                    var message = webRequest.IsUrlWithTokenPrefix
+                        ? Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException
+                        : Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException;
 
                     var errorMessage = string.Format(message, _dataObject.ExecutingUser?.Identity.Name, _dataObject.ServiceName);
                     _dataObject.Environment.AddError(errorMessage);

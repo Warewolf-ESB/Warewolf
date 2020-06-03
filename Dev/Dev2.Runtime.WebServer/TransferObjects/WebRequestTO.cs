@@ -22,6 +22,7 @@ namespace Dev2.Runtime.WebServer.TransferObjects
         public string Dev2WebServer { get; set; }
         public string RawRequestPayload { get; set; }
         public NameValueCollection Variables { get; set; }
+        public bool IsUrlWithTokenPrefix { get; set; } = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.

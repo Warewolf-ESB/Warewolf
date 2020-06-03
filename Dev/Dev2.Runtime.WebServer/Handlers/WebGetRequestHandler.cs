@@ -41,7 +41,13 @@ namespace Dev2.Runtime.WebServer.Handlers
             var serviceName = ctx.GetServiceName();
             var workspaceId = ctx.GetWorkspaceID();
 
-            var requestTo = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}" };
+            var requestTo = new WebRequestTO
+            {
+                ServiceName = serviceName,
+                WebServerUrl = ctx.Request.Uri.ToString(),
+                Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}",
+                IsUrlWithTokenPrefix = ctx.Request.IsTokenAuthentication
+            };
             var data = SubmittedData.GetPostData(ctx);
 
             if (!string.IsNullOrEmpty(data))

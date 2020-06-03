@@ -13,6 +13,5 @@ namespace Warewolf.Security
     public interface IJwtManager
     {
         string GenerateToken(string payload, int expireMinutes = 20);
-        string ValidateToken(string token);
     }
 }
