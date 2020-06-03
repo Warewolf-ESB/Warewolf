@@ -1612,11 +1612,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
 
         [Then(@"The duplicate Name popup is shown")]
-        public void ThenTheDuplicateNamePopupIsShown()
-        {
-            var mock = (Mock<Common.Interfaces.Studio.Controller.IPopupController>)MyContext["popupController"];
-            mock.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false));
-        }
+        public void ThenTheDuplicateNamePopupIsShown() => GetPopupController().Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false));
 
         [Given(@"I have a folder ""(.*)""")]
         public void GivenIHaveAFolder(string foldername)
