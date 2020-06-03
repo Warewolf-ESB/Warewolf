@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
@@ -41,8 +40,6 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Warewolf.Auditing;
 using Warewolf.Data;
 using Warewolf.Security;
@@ -326,12 +323,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 var workflowCanBeExecutedByGroup = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
-                var isTokenWorkflow = webRequest.Variables["isToken"];
                 _canExecute = workflowCanBeExecutedByGroup;
                 
                 if (!_canExecute)
                 {
                     var message = Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException;
+                    var isTokenWorkflow = webRequest.Variables["isToken"];
                     if (isTokenWorkflow == "True")
                     {
                         message = Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException;
@@ -351,50 +348,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 return null;
-            }
-
-            private bool ValidateToken(NameValueCollection headers, IAuthorizationService authorizationService, IWarewolfResource resource)
-            {
-                try
-                {
-                    var authorizationHeader = AuthenticationHeaderValue.Parse(headers["Authorization"]);
-                    var hasBearer = authorizationHeader?.Scheme?.Equals("bearer", StringComparison.InvariantCultureIgnoreCase) ?? false;
-                    var token = authorizationHeader?.Parameter;
-                    var hasParameter = !string.IsNullOrWhiteSpace(token);
-                    if (authorizationHeader is null || !hasBearer || !hasParameter)
-                    {
-                        return false;
-                    }
-
-                    return ValidateToken(token, authorizationService, resource);
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-
-            private bool ValidateToken(string token, IAuthorizationService authorizationService, IWarewolfResource resource)
-            {
-                var payload = _jwtManager.ValidateToken(token);
-
-                if (string.IsNullOrEmpty(payload))
-                    return false;
-
-                var groupsAllowed = authorizationService.GetResourcePermissionsList(resource.ResourceID);
-                var data = (JObject) JsonConvert.DeserializeObject(payload);
-                foreach (var group in groupsAllowed)
-                {
-                    var result = data["UserGroups"]
-                        .Values<JObject>()
-                        .FirstOrDefault(m => m["Name"].Value<string>().ToLower() == @group.WindowsGroup.ToLower());
-                    if (result != null)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
             }
 
             private Guid DoExecution(WebRequestTO webRequest, string serviceName, Guid workspaceGuid, IDSFDataObject dataObject, IPrincipal userPrinciple)

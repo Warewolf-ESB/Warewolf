@@ -79,7 +79,6 @@ namespace Dev2.Services.Security
 
                 return false;
             };
-
         }
 
         protected virtual bool IsGroupNameAdministrators<T>(T member, string adGroup)
@@ -113,19 +112,13 @@ namespace Dev2.Services.Security
             throw new Exception(ErrorResource.CannotFindGroup);
         }
         public event EventHandler PermissionsChanged;
-        EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;
+        EventHandler<PermissionsModifiedEventArgs> _permissionsModifiedHandler;
         readonly object _getPermissionsLock = new object();
 
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified
         {
-            add
-            {
-                _permissionsModifedHandler += value;
-            }
-            remove
-            {
-                _permissionsModifedHandler -= value;
-            }
+            add => _permissionsModifiedHandler += value;
+            remove => _permissionsModifiedHandler -= value;
         }
 
         public virtual Permissions GetResourcePermissions(Guid resourceId)
@@ -160,8 +153,6 @@ namespace Dev2.Services.Security
 
         public ISecurityService SecurityService => _securityService;
 
-        public Func<bool> AreAdministratorsMembersOfWarewolfAdministrators1 => AreAdministratorsMembersOfWarewolfAdministrators;
-
         public abstract bool IsAuthorized(AuthorizationContext context, string resource);
         public abstract bool IsAuthorized(IAuthorizationRequest request);
 
@@ -172,7 +163,7 @@ namespace Dev2.Services.Security
 
         protected virtual void OnPermissionsModified(PermissionsModifiedEventArgs e)
         {
-            _permissionsModifedHandler?.Invoke(this, e);
+            _permissionsModifiedHandler?.Invoke(this, e);
         }
 
         protected bool IsAuthorizedToConnect(IPrincipal principal) => IsAuthorized(AuthorizationContext.Any, principal, () => GetGroupPermissions(principal));
@@ -257,20 +248,19 @@ namespace Dev2.Services.Security
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Warn($"failed using group override from ClaimsPrinciple: {e.Message}", "Warewolf Warn");
+                        Dev2Logger.Warn($"failed using group override from ClaimsPrinciple: {e.Message}", GlobalConstants.WarewolfWarn);
                     }
                 }
             }
             catch (ObjectDisposedException e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
                 throw;
             }
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
             }
-
 
             return isInRole || p.IsBuiltInGuestsForExecution;
         }
