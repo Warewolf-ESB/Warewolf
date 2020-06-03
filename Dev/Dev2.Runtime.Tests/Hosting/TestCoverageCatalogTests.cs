@@ -332,14 +332,14 @@ namespace Dev2.Tests.Runtime.Hosting
                     ActivityID = Guid.Parse("0d723deb-402d-43ec-bdbc-97c645a3a8f1"),
                     UniqueID = Guid.Parse("0d723deb-402d-43ec-bdbc-97c645a3a8f1"),
                     StepDescription = "Switch (dsf)",
-                    MockSelected = false
+                    Type = StepType.Assert
                 },
                 new ServiceTestStepTO
                 {
                     ActivityID = Guid.Parse("f8aec437-38c3-47c8-be1c-e5f408efa3bc"),
                     UniqueID = Guid.Parse("f8aec437-38c3-47c8-be1c-e5f408efa3bc"),
                     StepDescription = "Assign (case 1)",
-                    MockSelected = true
+                    Type = StepType.Mock
                 }
             }
         };
@@ -432,7 +432,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                         UniqueID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                         StepDescription = "Assign(input)",
-                        MockSelected = false
+                        Type = StepType.Assert
                     },
 
                     new ServiceTestStepTO
@@ -440,7 +440,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                         UniqueID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                         StepDescription = "If [[data_ttl_expired]] Is = false",
-                        MockSelected = false
+                        Type = StepType.Assert
                     },
 
                     new ServiceTestStepTO
@@ -448,7 +448,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("75cecc31-3ab3-4f68-8348-c30dfa3c04fc"),
                         UniqueID = Guid.Parse("75cecc31-3ab3-4f68-8348-c30dfa3c04fc"),
                         StepDescription = "Assign(error)",
-                        MockSelected = false
+                        Type = StepType.Assert
                     }
                 },
         };
@@ -465,7 +465,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                         UniqueID = Guid.Parse("ef7dba5d-865d-4762-991b-b7451ccff225"),
                         StepDescription = "Assign(input)",
-                        MockSelected = false
+                        Type = StepType.Assert
                     },
 
                     new ServiceTestStepTO
@@ -473,7 +473,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                         UniqueID = Guid.Parse("f8ac128c-6715-428e-8ba9-447cb0ec1fe3"),
                         StepDescription = "If [[data_ttl_expired]] Is = true",
-                        MockSelected = false
+                        Type = StepType.Assert
                     },
 
                     new ServiceTestStepTO
@@ -481,7 +481,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         ActivityID = Guid.Parse("d32cb8ef-cc3c-4044-a6e0-df3d16f91281"),
                         UniqueID = Guid.Parse("d32cb8ef-cc3c-4044-a6e0-df3d16f91281"),
                         StepDescription = "SQL(get person)",
-                        MockSelected = true
+                        Type = StepType.Mock
                     },
 
                     new ServiceTestStepTO
