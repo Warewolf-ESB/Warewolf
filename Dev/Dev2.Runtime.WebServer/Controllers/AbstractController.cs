@@ -13,6 +13,7 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
+using System.Web;
 using System.Web.Http;
 using Dev2.Common;
 using Dev2.Runtime.WebServer.Handlers;
@@ -32,7 +33,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             {
                 if (!TryOverrideByToken(ref user))
                 {
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized, Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
+                    throw new HttpException(401, Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
                 }
             } else {
                 if (!IsAuthenticated())
@@ -50,20 +51,17 @@ namespace Dev2.Runtime.WebServer.Controllers
         private bool TryOverrideByToken(ref IPrincipal user)
         {
             var token = Request.Headers.Authorization?.Parameter;
-            if (!string.IsNullOrWhiteSpace(token))
+            try
             {
-                try
+                user = new JwtManager(new SecuritySettings()).BuildPrincipal(token);
+                if (user is null)
                 {
-                    user = new JwtManager(new SecuritySettings()).BuildPrincipal(token);
-                    if (user is null)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
-                catch (Exception e)
-                {
-                    Dev2Logger.Warn($"failed to use authorization header: {e.Message}", GlobalConstants.WarewolfWarn);
-                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn($"failed to use authorization header: {e.Message}", GlobalConstants.WarewolfWarn);
             }
 
             return true;

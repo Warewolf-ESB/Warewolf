@@ -68,7 +68,7 @@ namespace Dev2.Runtime.WebServer
 
         private void InitializeContentLength()
         {
-            ContentLength = (int)(_request.Content.Headers.ContentLength ?? 0L);
+            ContentLength = (int)(_request?.Content?.Headers?.ContentLength ?? 0L);
         }
 
         private void InitializeContentType()
