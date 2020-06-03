@@ -28,6 +28,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Base 64 Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvert_Base64_Expected_Base64()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
@@ -42,6 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvertActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
         {
             //------------Setup for test--------------------------
@@ -56,6 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvertWithBase64AndMultipleRegionsExpectedBase64()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet().field]], [[testVar]]", "Text", "Base 64", "[[testRecSet().field]], [[testVar]]", 1) };
@@ -72,6 +75,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvert_Evaluate_WhenRecursiveRegion_ExpectSingleWellFormedRegionAsResult()
         {
             //------------Setup for test--------------------------
@@ -89,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvertWithBase64AndMultipleRegionsInFromExpressionWithSingleOutputTargetExpectedOneBase64()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet().field]], [[testVar]]", "Text", "Base 64", "[[testRecSet().field]]", 1) };
@@ -105,6 +110,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvert_OnExecute_StarNotation_ReplacesExistingData()
         {
             //------------Setup for test--------------------------
@@ -123,6 +129,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvert_OnExecute_StarNotation_NoResultField_ReplacesExistingData()
         {
             //------------Setup for test--------------------------
@@ -145,6 +152,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Binary Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvert_Binary_Expected_BinaryBase()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Binary", "[[testVar]]", 1) };
@@ -163,6 +171,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Hex Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvert_Hex_Expected_HexBase()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Hex", "[[testVar]]", 1) };
@@ -177,6 +186,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvert_No_Result_Variable_Expected_HexBase()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Hex", "", 1) };
@@ -191,6 +201,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvert_Numbers_In_FromExpression_Expected_HexBase()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Hex", "[[testVar]]", 1) };
@@ -208,6 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvert_Blank_FromExpression_Expected_HexBase()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("", "Text", "Hex", "", 1) };
@@ -229,6 +241,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region ForEach Update/Get Inputs/Outputs
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvert_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
@@ -252,6 +265,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvert_UpdateForEachInputs_WhenContainsMatchingStar_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
@@ -275,6 +289,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvert_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
@@ -298,6 +313,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvert_GetForEachInputs_Normal_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
@@ -318,6 +334,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvert_GetForEachOutputs_Normal_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
@@ -337,6 +354,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvertActivity_GetState_Returns_Inputs_And_Outputs()
         {
             //------------Setup for test--------------------------
@@ -358,6 +376,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region RecordSet Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvert_WithRecordSetDataAndEmptyIndex_Expected_LastRecordBaseConverted()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(2).testVar]]", "Text", "Hex", "[[testRecSet().testVar]]", 3) };
@@ -375,6 +394,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void BaseConvert_WithRecordSetDataAndStar_Expected_AllRecordsConverted()
         {
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testRecSet(*).testVar]]", "Text", "Hex", "[", 3) };

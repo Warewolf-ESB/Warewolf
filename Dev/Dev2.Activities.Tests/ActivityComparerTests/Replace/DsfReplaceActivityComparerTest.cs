@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
     public class DsfReplaceActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -23,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -39,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_IsEqual()
         {
@@ -55,6 +58,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
@@ -70,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Result_IsEqual()
         {
@@ -86,6 +91,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Result_Is_Not_Equal()
         {
@@ -102,6 +108,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_FieldsToSearch_IsEqual()
         {
@@ -118,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_FieldsToSearch_Is_Not_Equal()
         {
@@ -133,6 +141,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Find_IsEqual()
         {
@@ -149,6 +158,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Find_Is_Not_Equal()
         {
@@ -165,6 +175,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_ReplaceWith_IsEqual()
         {
@@ -181,6 +192,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_ReplaceWith_Is_Not_Equal()
         {
@@ -197,6 +209,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_CaseMatch_IsEqual()
         {
@@ -213,6 +226,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Replace
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_CaseMatch_Is_Not_Equal()
         {

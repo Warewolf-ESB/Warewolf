@@ -9,6 +9,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
     public class DsfDataSplitActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -39,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_SourceString_IsEqual()
         {
@@ -55,6 +58,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_SourceString_Is_Not_Equal()
         {
@@ -70,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_IsEqual()
         {
@@ -86,6 +91,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
@@ -101,6 +107,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_SkipBlankRows_IsEqual()
         {
@@ -117,6 +124,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_SkipBlankRows_Is_Not_Equal()
         {
@@ -133,6 +141,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_ReverseOrder_IsEqual()
         {
@@ -149,6 +158,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_ReverseOrder_Is_Not_Equal()
         {
@@ -165,6 +175,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_ResultsCollection_IsEqual()
         {
@@ -182,6 +193,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_ResultsCollection_Different_Indexes_Is_Not_Equal()
         {
@@ -232,6 +244,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DataMerge
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_ResultsCollection_Object_Is_Equal()
         {

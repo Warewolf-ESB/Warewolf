@@ -25,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_Construct")]
         public void SelectAndApplyActivity_Construct_GivenInstance_ShouldNotBeNull()
@@ -37,6 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectAndApplyActivity_GetFindMissingType")]
         public void SelectAndApplyActivity_GetFindMissingType_GivenInstance_ShouldNotBeNull()
@@ -50,6 +52,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectAndApplyActivity_GetFindMissingType")]
         public void SelectAndApplyActivity_GetOutputs_GivenInstance_ShouldNotBeNull()
@@ -63,6 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_DisplayName")]
         public void SelectAndApplyActivity_DisplayName_GivenIsCreated_ShouldBeSelectAndApply()
@@ -76,6 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_SetupExecute_GivenCaseConvertActivityApplied_ToUpperApplied()
@@ -104,6 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_SetupExecute_GivenCaseConvertActivityApplied_ToCorrectIndex()
@@ -132,6 +138,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_SetupExecute_GivenCaseConvertActivityApplied_ToCorrectIndex_ComplexObjects()
@@ -183,6 +190,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_SetupExecute_GivenNumberFormatTool_ToCorrectFormat()
@@ -211,6 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         } 
          
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_SetupExecute_GivenNumberFormatTool_ToCorrectFormat_ComplexObjects()
@@ -260,6 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_SetupExecute_GivenNullDataSource_DataObjectsHasCorrectErrors()
@@ -300,6 +310,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }  
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_SetupExecute_GivenNumberFormatTool_ToDifferentResult()
@@ -325,6 +336,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         [ExpectedException(typeof(NotImplementedException))]
@@ -334,6 +346,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             activity.UpdateForEachInputs(new List<Tuple<string, string>>());
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         [ExpectedException(typeof(NotImplementedException))]
@@ -344,6 +357,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_GetForEachInputs()
@@ -355,6 +369,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
         public void SelectAndApplyActivity_GetForEachOutputs()

@@ -34,6 +34,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
     public class DsfDropBoxDownloadActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_UniqueIDEquals_EmptyDropBoxDeleteActivities_IsEqual()
@@ -51,6 +52,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_UniqueID_Different_Object_Is_Not_Equal()
@@ -67,6 +69,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_Given_Same_Object_IsEqual()
@@ -84,6 +87,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_Given_Different_Object_Is_Not_Equal()
@@ -101,6 +105,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -117,6 +122,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Result_Same_Object_IsEqual()
@@ -134,6 +140,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Result_Different_Object_Is_Not_Equal()
@@ -151,6 +158,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Result_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -168,6 +176,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_FromPath_Same_Object_IsEqual()
@@ -185,6 +194,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_FromPath_Different_Object_Is_Not_Equal()
@@ -202,6 +212,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_FromPath_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -219,6 +230,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ToPath_Same_Object_IsEqual()
@@ -236,6 +248,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ToPath_Different_Object_Is_Not_Equal()
@@ -253,6 +266,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ToPath_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -270,6 +284,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_DropBoxSource_Different_Object_Is_Not_Equal()
@@ -305,6 +320,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_DropBoxSource_Same_Object_Is_Equal()
@@ -337,6 +353,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_OverwriteFile_Different_Object_Is_Not_Equal()
@@ -369,6 +386,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_OverwriteFile_Same_Object_Is_Equal()
@@ -401,6 +419,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_GetState_ReturnsStateVariable()
@@ -482,6 +501,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ObjectEquals_IsFalse_ExpectFalse()
@@ -505,6 +525,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ObjectEquals_IsTrue_ExpectTrue()
@@ -527,6 +548,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ObjectEquals_IsNotExpectedObject_ExpectFalse()
@@ -546,6 +568,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_ExpectFalse()
@@ -566,6 +589,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_IsNull_ExpectFalse()
@@ -585,6 +609,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_IsEqual_ExpectTrue()
@@ -597,6 +622,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_GetDebugOutputs_ExecutionEnvironment_IsNull_ExpectFalse()
@@ -616,6 +642,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_GetDebugOutputs_ExecutionEnvironment_IsNotNull_ExpectTrue()
@@ -637,6 +664,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_LocalPathManager_SetProperty_AreEqual_ExpectTrue()
@@ -661,6 +689,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ExecuteTool_FromPath_IsNullOrEmpty_VerifyMethodCall_3Times_ExpectTrue()
@@ -690,6 +719,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_GetHashCode_PropertiesNull_IsNull_ExpectTrue()
@@ -709,6 +739,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_GetHashCode_PropertiesNull_IsNotNull_ExpectTrue()
@@ -733,6 +764,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_PerformExecution_ExpectSuccess()
@@ -774,6 +806,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_PerformExecution_ExpectException()
@@ -815,6 +848,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_PerformExecution_ContainsNotFile_ExpectException()

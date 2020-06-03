@@ -37,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DsfUnZip_Constructor")]
         public void DsfUnZip_Constructor_DisplayName_Unzip()
@@ -51,6 +52,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfUnZip_Execute")]
         public void Unzip_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
@@ -88,6 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfUnzip_Construct")]
         public void UnZip_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()

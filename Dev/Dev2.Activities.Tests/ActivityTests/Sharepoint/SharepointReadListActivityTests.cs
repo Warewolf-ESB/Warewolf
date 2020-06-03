@@ -26,6 +26,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointReadListActivity_Construct")]
         public void SharepointReadListActivity_Construct_GivenInstance_ShouldNotBeNull()
@@ -38,6 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointReadList_Execute")]
         public void SharepointSource_DoesNotExist_OnResourceCatalog_ShouldSetSharepointSource_ToGuidEmpty()
@@ -70,6 +72,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointReadList_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_BlankRecordSet()
@@ -111,6 +114,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             Assert.IsNotNull(result);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("SharepointReadListActivity_GetState")]
         public void SharepointReadListActivity_GetState()

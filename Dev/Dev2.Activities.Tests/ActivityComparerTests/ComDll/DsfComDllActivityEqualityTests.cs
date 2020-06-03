@@ -29,6 +29,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
     public class DsfComDllActivityEqualityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_UniqueID_Equals_Object_IsEqual()
@@ -46,6 +47,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_UniqueID_Different_Object_Is_Not_Equal()
@@ -63,6 +65,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_DisplayName_Equals_Given_Same_Object_IsEqual()
@@ -80,6 +83,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Equals_DisplayName_Given_Different_Object_Is_Not_Equal()
@@ -97,6 +101,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Equals_DisplayName_Given_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -114,6 +119,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Method_DisplayName_IsNot_CaseSensitive()
@@ -151,6 +157,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Method_DisplayName_Same_Is_Equal()
@@ -187,6 +194,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Method_DifferentIsObject_Object_Is_Not_Equal_CaseSensitive()
@@ -226,6 +234,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Method_SameIsObject_Object_Is_Equal()
@@ -265,6 +274,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Method_DifferentOutputVariable_Object_Is_Not_Equal_CaseSensitive()
@@ -309,6 +319,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Method_SameOutputVariable_Object_Is_Equal()
@@ -350,6 +361,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Method_DifferentInputs_Object_Is_Not_Equal_CaseSensitive()
@@ -399,6 +411,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Method_SameInputs_Object_Is_Equal()
@@ -450,6 +463,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_OutputDescription_SameFormat_Object_Is_Equal()
@@ -513,6 +527,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_OutputDescription_DifferentFormat_Object_Is_Not_Equal()
@@ -576,6 +591,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_OutputDescription_SameDataSourceShapes_Object_Is_Equal()
@@ -659,6 +675,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_OutputDescription_DifferentDataSourceShapes_Object_Is_Not_Equal()
@@ -742,6 +759,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_OutputDescription_SameJsonPathsDifferentNames_Object_Is_Not_Equal()
@@ -823,6 +841,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_OutputDescription_SameDataTableDifferentNames_Object_Is_Not_Equal()
@@ -906,6 +925,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_OutputDescription_SameStringPathDifferentNames_Object_Is_Not_Equal()
@@ -1006,6 +1026,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_OutputDescription_SamePocoPathDifferentNames_Object_Is_Not_Equal()
@@ -1086,6 +1107,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             Assert.IsTrue(equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_OutputDescription_SameXmlPathDifferentNames_Object_Is_Not_Equal()
@@ -1172,6 +1194,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_SameAssemblyLocation_Object_Is_Equal()
@@ -1235,6 +1258,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_SameAssemblyName_Object_Is_Equal()
@@ -1299,6 +1323,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             Assert.IsTrue(equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_SameFullName_Object_Is_Equal()
@@ -1366,6 +1391,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_SameMethodName_Object_Is_Equal()
@@ -1438,6 +1464,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_SameJsonObject_Object_Is_Equal()
@@ -1509,6 +1536,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_DifferentAssemblyName_Object_Is_Not_Equal()
@@ -1574,6 +1602,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_DifferentFullName_Object_Is_Not_Equal()
@@ -1641,6 +1670,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_DifferentMethodName_Object_Is_not_Equal()
@@ -1710,6 +1740,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_DifferentJsonObject_Object_Is_Not_Equal()

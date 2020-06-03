@@ -40,6 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathRename_UpdateForEachInputs")]
         public void DsfPathRename_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -58,6 +59,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathRename_UpdateForEachInputs")]
         public void DsfPathRename_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -79,6 +81,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathRename_UpdateForEachOutputs")]
         public void DsfPathRename_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -99,6 +102,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathRename_UpdateForEachOutputs")]
         public void DsfPathRename_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -122,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathRename_UpdateForEachOutputs")]
         public void DsfPathRename_UpdateForEachOutputs_1Updates_UpdateResult()
@@ -140,6 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathRename_GetForEachInputs")]
         public void DsfPathRename_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -161,6 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathRename_GetForEachOutputs")]
         public void DsfPathRename_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -184,6 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfPathRename_Execute")]
         public void Rename_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
@@ -226,6 +234,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfPathRename_Construct")]
         public void Rename_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()
@@ -235,6 +244,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(password);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("DsfPathRename_GetState()")]
         public void DsfPathRename_GetState()

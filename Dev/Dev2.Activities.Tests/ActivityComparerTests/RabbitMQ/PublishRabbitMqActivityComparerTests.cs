@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
     public class PublishRabbitMqActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_UniqueIDEquals_EmptyPublishRabbitMQ_IsEqual()
@@ -27,6 +28,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_UniqueIDDifferent_EmptyPublishRabbitMQ_Is_Not_Equal()
@@ -44,6 +46,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_Result_Same_Object_IsEqual()
@@ -61,6 +64,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_Result_Different_Object_Is_Not_Equal()
@@ -78,6 +82,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_Result_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -95,6 +100,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_QueueName_Same_Object_IsEqual()
@@ -112,6 +118,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_QueueName_Different_Object_Is_Not_Equal()
@@ -129,6 +136,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_QueueName_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -146,6 +154,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_Message_Same_Object_IsEqual()
@@ -163,6 +172,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_Message_Different_Object_Is_Not_Equal()
@@ -180,6 +190,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_Message_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -197,6 +208,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_ObjectName_Same_Object_IsEqual()
@@ -214,6 +226,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_Equals_Given_Different_Object_Is_Not_Equal()
@@ -231,6 +244,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -248,6 +262,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_RabbitMQSourceResourceId_Same_Object_IsEqual()
@@ -265,6 +280,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_RabbitMQSourceResourceId_Different_Object_Is_Not_Equal()
@@ -282,6 +298,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_RabbitMQSourceResourceId_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -299,6 +316,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_Equals_Given_Same_Object_Is_Equal()
@@ -319,6 +337,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
        
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_IsDurable_Different_Object_Is_Not_Equal()
@@ -338,6 +357,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_IsDurable_Same_Object_Is_Equal()
@@ -357,6 +377,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_IsExclusive_Different_Object_Is_Not_Equal()
@@ -376,6 +397,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_IsExclusive_Same_Object_Is_Equal()
@@ -395,6 +417,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_IsAutoDelete_Different_Object_Is_Not_Equal()
@@ -414,6 +437,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_IsAutoDelete_Same_Object_Is_Equal()
@@ -433,6 +457,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_RabbitSource_Different_Object_Is_Not_Equal()
@@ -452,6 +477,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RabbitMQ
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("PublishRabbitMqActivityComparer")]
         public void PublishRabbitMqActivityComparer_RabbitSource_Same_Object_Is_Equal()

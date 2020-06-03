@@ -90,6 +90,7 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Blank Output Test
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityIOBroker_Zip")]
         public void ActivityIOBroker_Zip_WhenOverwriteSetTrue_ShouldOverwriteFile()
@@ -117,6 +118,7 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Zip_Execute")]
         public void Zip_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
@@ -158,6 +160,7 @@ namespace ActivityUnitTests.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dsfzip_Construct")]
         public void Zip_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()

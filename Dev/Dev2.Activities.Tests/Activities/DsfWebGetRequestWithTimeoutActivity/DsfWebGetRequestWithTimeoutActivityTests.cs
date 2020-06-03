@@ -35,6 +35,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
     public class DsfWebGetRequestWithTimeoutActivityTests : BaseActivityUnitTest 
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -51,6 +52,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -70,6 +72,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -86,6 +89,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -105,6 +109,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_UpdateForEachOutputs_1Update_UpdateCommandResult()
@@ -123,6 +128,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -141,6 +147,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -159,6 +166,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_Constructed_Expect_IsAbstractString()
@@ -172,6 +180,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_WebRequestInvoker_IsNull_Expect_ConcreateImplementation()
@@ -185,6 +194,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_WebRequestInvoker_Expect_GetGivenValue()
@@ -201,6 +211,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_GetFindMissingType_Expect_StaticActivityType()
@@ -215,6 +226,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithStaticValues_Expect_CorrectResults()
@@ -235,6 +247,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithError_ExpectErrorAdded()
@@ -262,6 +275,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithError_ExpectTimeOut_IsTrue()
@@ -305,6 +319,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithError_Expect_ErrorAdded_TimeoutSecondsOutOfRange()
@@ -336,6 +351,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithScalarValues_Expect_CorrectResults()
@@ -366,6 +382,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_GetOutputs_Called_Expect_ListWithResultValueInIt()
@@ -383,6 +400,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_Execute_WithHeaders()
@@ -411,6 +429,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_Execute_WithHeaders_WithTimeoutActivity()
@@ -439,6 +458,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_Equals_dsfWebGetActivity_Null_IsFalse()
@@ -452,6 +472,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_Equals_dsfWebGetActivity_NotNull_IsTrue()
@@ -471,6 +492,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_Equals_ObjectType_NotEqualToThis_IsFalse()
@@ -490,6 +512,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_Equals_Object_IsNull_IsFalse()
@@ -511,6 +534,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_Equals_ObjectType_IsEqualToThis_IsTrue()
