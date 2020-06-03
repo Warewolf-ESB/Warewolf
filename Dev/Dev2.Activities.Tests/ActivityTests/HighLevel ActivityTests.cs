@@ -60,6 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Check Property Count Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfZip_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfZip");
@@ -73,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfUnZip_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfUnZip");
@@ -86,6 +88,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfPathDelete_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfPathDelete");
@@ -99,6 +102,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfPathCreate_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfPathCreate");
@@ -111,6 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfFolderRead_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfFolderRead");
@@ -123,6 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfFileRead_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfFileRead");
@@ -135,6 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfSortRecordsActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfSortRecordsActivity");
@@ -147,6 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfMultiAssignActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignActivity");
@@ -159,6 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfMultiAssignObjectActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignObjectActivity");
@@ -171,6 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfForEachActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfForEachActivity");
@@ -183,6 +193,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfDateTimeActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfDateTimeActivity");
@@ -195,6 +206,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfDataSplitActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfDataSplitActivity");
@@ -207,6 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfCountRecordsetActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetNullHandlerActivity");
@@ -219,6 +232,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfDeleteRecordsetActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfDeleteRecordNullHandlerActivity");
@@ -231,6 +245,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfRecordsetLengthActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfRecordsetNullhandlerLengthActivity");
@@ -243,6 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfCalculateActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfCalculateActivity");
@@ -255,6 +271,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfCaseConvertActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfCaseConvertActivity");
@@ -267,6 +284,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvertActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfBaseConvertActivity");
@@ -283,6 +301,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Check Property Names
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfMultiAssignActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignActivity");
@@ -298,6 +317,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfMultiAssignObjectActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignObjectActivity");
@@ -313,6 +333,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfCaseConvertActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfCaseConvertActivity");
@@ -327,6 +348,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfBaseConvertActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfBaseConvertActivity");
@@ -341,6 +363,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfCalculateActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfCalculateActivity");
@@ -356,6 +379,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfCountRecordSetActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetNullHandlerActivity");
@@ -370,6 +394,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfDataSplitActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfDataSplitActivity");
@@ -385,6 +410,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfDateTimeActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfDateTimeActivity");
@@ -410,6 +436,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfSortRecordSetActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
             var type = _activityList.FirstOrDefault(c => c.Name == "DsfSortRecordsActivity");

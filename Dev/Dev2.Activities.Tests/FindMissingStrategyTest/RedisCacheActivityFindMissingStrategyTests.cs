@@ -20,6 +20,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     public class RedisCacheActivityFindMissingStrategyTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("RedisCache")]
         [Owner("Devaji Chotaliya")]
         public void RedisCacheActivityFindMissingStrategy_GetActivityFields_CheckRedisCacheActivityWithDsfActivity_ExpectedAllFindMissingFieldsToBeReturned()
@@ -47,6 +48,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("RedisCache")]
         [Owner("Devaji Chotaliya")]
         public void RedisCacheActivityFindMissingStrategy_GetActivityFields_CheckRedisCacheActivityWithDsfMultiAssignActivity_ExpectedAllFindMissingFieldsToBeReturned()

@@ -60,6 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         [TestMethod]
+        [Timeout(60000)]
         public void CanGenerateRemoteDebugItems()
         {
             var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
@@ -81,6 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CanSerializeRemoteDebugItems()
         {
             var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
@@ -109,6 +111,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CanFetchRemoteDebugItemsViaSystemService()
         {
             var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };

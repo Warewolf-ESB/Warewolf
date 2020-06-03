@@ -20,6 +20,7 @@ namespace Dev2.Tests.Activities.TOTests
     public class BaseConvertDtoTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("BaseConvertDTO_Constructor")]
         public void BaseConvertDTO_Constructor_FullConstructor_DefaultValues()
@@ -38,6 +39,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanAdd Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("BaseConvertTO_CanAdd")]
         public void BaseConvertTO_CanAdd_FromExpressionEmpty_ReturnFalse()
@@ -50,6 +52,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("BaseConvertTO_CanAdd")]
         public void BaseConvertTO_CanAdd_FromExpressionHasData_ReturnTrue()
@@ -66,6 +69,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanRemove Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("BaseConvertTO_CanRemove")]
         public void BaseConvertTO_CanRemove_FromExpressionEmpty_ReturnTrue()
@@ -78,6 +82,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("BaseConvertTO_CanRemove")]
         public void BaseConvertTO_CanRemove_FromExpressionWithData_ReturnFalse()

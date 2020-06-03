@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
     public class DsfUniqueActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Empty_UniqueActivity_AreNotEqual()
         {
@@ -22,6 +23,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentResult_UniqueActivity_AreNotEqual()
         {
@@ -38,6 +40,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameResult_Different_Casing_UniqueActivity_AreNotEqual()
         {
@@ -54,6 +57,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameResult_UniqueActivity_AreEqual()
         {
@@ -70,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferntResultFields_UniqueActivity_AreNotEqual()
         {
@@ -85,6 +90,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameResultFields_Different_Casing_UniqueActivity_AreNotEqual()
         {
@@ -100,6 +106,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameResultFields_UniqueActivity_AreEqual()
         {
@@ -115,6 +122,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameInFields_UniqueActivity_AreEqual()
         {
@@ -130,6 +138,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameInFields_Different_Casing_UniqueActivity_AreNotEqual()
         {
@@ -146,6 +155,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Unique
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentInFields_UniqueActivity_AreNotEqual()
         {

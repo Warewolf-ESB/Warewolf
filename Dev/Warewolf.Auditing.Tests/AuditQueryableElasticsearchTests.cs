@@ -228,6 +228,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [DoNotParallelize]
         public void AuditQueryableElastic_QueryTriggerData_FilterBy_ResourceId()
         {
             //setup
@@ -467,6 +468,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [DoNotParallelize]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Error()
         {
             //setup

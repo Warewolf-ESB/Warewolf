@@ -16,6 +16,7 @@ namespace Dev2.Tests.Activities.Utils
     public class SharepointUtilsTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_GetValidReadListItems")]
         public void SharepointUtils_GetValidReadListItems_NullList_EmptyList()
@@ -31,6 +32,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_GetValidReadListItems")]
         public void SharepointUtils_GetValidReadListItems_WhereVariableNameNotNull_ListWithItem()
@@ -48,6 +50,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_GetValidReadListItems")]
         public void SharepointUtils_GetValidReadListItems_WhereVariableNameNull_ListWithoutItem()
@@ -65,6 +68,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_GetValidReadListItems")]
         public void SharepointUtils_GetValidReadListItems_WhereVariableNameEmpty_ListWithoutItem()
@@ -82,6 +86,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_NoFilters_ShouldBeCreateAllItemsQuery()
@@ -96,6 +101,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_NoValidFiltersFieldNameEmpty_ShouldBeCreateAllItemsQuery()
@@ -110,6 +116,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_NoValidFiltersValueToMatchEmpty_ShouldBeCreateAllItemsQuery()
@@ -124,6 +131,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_NoValidFiltersFieldNameNull_ShouldBeCreateAllItemsQuery()
@@ -138,6 +146,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_NoValidFiltersValueToMatchNull_ShouldBeCreateAllItemsQuery()
@@ -152,6 +161,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_ValidFilter_HasQueryWithNoAnd()
@@ -165,6 +175,7 @@ namespace Dev2.Tests.Activities.Utils
             Assert.AreEqual("<View><Query><Where><FieldRef Name=\"Title\"></FieldRef><Value Type=\"Text\">Bob</Value>"+Environment.NewLine+"</Where></Query></View>",camlQuery.ViewXml);
         }
          [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_ValidFilter_In_ListResult()
@@ -181,6 +192,7 @@ namespace Dev2.Tests.Activities.Utils
         } 
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_ValidFilter_In_ScalarResult()
@@ -196,6 +208,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_ValidFilter_In_TextResult()
@@ -210,6 +223,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_ValidFilter_In_TextResultCommaSeperated()
@@ -224,6 +238,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_ValidFilter_In_ScalarResultCommaSeperated()
@@ -240,6 +255,7 @@ namespace Dev2.Tests.Activities.Utils
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_ValidFilter_In_RecSetResultCommaSeperated()
@@ -255,6 +271,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_BuildCamlQuery")]
         public void SharepointUtils_BuildCamlQuery_ValidFilters_HasQueryWithAnd()
@@ -269,6 +286,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_CastWarewolfValueToCorrectType")]
         public void SharepointUtils_CastWarewolfValueToCorrectType_Boolean_ShouldGiveBoolValue()
@@ -283,6 +301,7 @@ namespace Dev2.Tests.Activities.Utils
         } 
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_CastWarewolfValueToCorrectType")]
         public void SharepointUtils_CastWarewolfValueToCorrectType_Text_ShouldGiveStringValue()
@@ -297,6 +316,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_CastWarewolfValueToCorrectType")]
         public void SharepointUtils_CastWarewolfValueToCorrectType_Note_ShouldGiveStringValue()
@@ -311,6 +331,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_CastWarewolfValueToCorrectType")]
         public void SharepointUtils_CastWarewolfValueToCorrectType_Integer_ShouldGiveIntValue()
@@ -325,6 +346,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_CastWarewolfValueToCorrectType")]
         public void SharepointUtils_CastWarewolfValueToCorrectType_NumberWithDecimal_ShouldGiveDecimalValue()
@@ -339,6 +361,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_CastWarewolfValueToCorrectType")]
         public void SharepointUtils_CastWarewolfValueToCorrectType_NumberWithNoDecimal_ShouldGiveDecimalValue()
@@ -353,6 +376,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_CastWarewolfValueToCorrectType")]
         public void SharepointUtils_CastWarewolfValueToCorrectType_Currency_ShouldGiveDecimalValue()
@@ -367,6 +391,7 @@ namespace Dev2.Tests.Activities.Utils
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SharepointUtils_CastWarewolfValueToCorrectType")]
         public void SharepointUtils_CastWarewolfValueToCorrectType_Date_ShouldGiveDateValueValue()

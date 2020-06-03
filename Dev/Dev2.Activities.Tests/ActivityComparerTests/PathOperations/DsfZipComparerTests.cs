@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
     public class DsfZipComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDEquals_Emptyzip_Object_IsEqual()
         {
@@ -26,6 +27,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDDifferent_Emptyzip_Object_Is_Not_Equal()
         {
@@ -42,6 +44,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsNotCertVerifiable_Different_Object_Is_Not_Equal()
         {
@@ -60,6 +63,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsNotCertVerifiable_Same_Object_Is_Equal()
         {
@@ -80,6 +84,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void InputPath_Same_Object_IsEqual()
         {
@@ -96,6 +101,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void InputPath_Different_Object_Is_Not_Equal()
         {
@@ -112,6 +118,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void InputPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -129,6 +136,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ArchivePassword_Same_Object_IsEqual()
         {
@@ -145,6 +153,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ArchivePassword_Different_Object_Is_Not_Equal()
         {
@@ -161,6 +170,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ArchivePassword_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -177,6 +187,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ArchiveName_Same_Object_IsEqual()
         {
@@ -193,6 +204,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ArchiveName_Different_Object_Is_Not_Equal()
         {
@@ -209,6 +221,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ArchiveName_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -224,6 +237,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CompressionRatio_Same_Object_IsEqual()
         {
@@ -240,6 +254,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CompressionRatio_Different_Object_Is_Not_Equal()
         {
@@ -256,6 +271,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CompressionRatio_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -272,6 +288,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Same_Object_IsEqual()
         {
@@ -288,6 +305,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal()
         {
@@ -304,6 +322,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -320,6 +339,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Username_Same_Object_IsEqual()
         {
@@ -336,6 +356,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Username_Different_Object_Is_Not_Equal()
         {
@@ -352,6 +373,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Username_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -368,6 +390,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PrivateKeyFile_Same_Object_IsEqual()
         {
@@ -384,6 +407,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PrivateKeyFile_Different_Object_Is_Not_Equal()
         {
@@ -400,6 +424,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PrivateKeyFile_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -415,6 +440,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Password_Same_Object_IsEqual()
         {
@@ -431,6 +457,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Password_Different_Object_Is_Not_Equal()
         {
@@ -447,6 +474,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Password_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -462,6 +490,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         public void DsfZip_GetState()
         {

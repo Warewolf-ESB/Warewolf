@@ -104,6 +104,7 @@ using Dev2.Activities.RedisCounter;
 using Dev2.Activities.Designers2.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
+using Dev2.Activities.Designers2.ReadFileWithBase64;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -144,6 +145,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPathMove), typeof(MoveDesigner) },
                 { typeof(DsfPathDelete), typeof(DeleteDesigner) },
                 { typeof(DsfFileRead), typeof(ReadFileDesigner) },
+                { typeof(FileReadWithBase64), typeof(ReadFileWithBase64Designer) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
                 { typeof(DsfFolderRead), typeof(Activities.Designers2.ReadFolder.ReadFolderDesigner) },
                 { typeof(DsfFolderReadActivity), typeof(Activities.Designers2.ReadFolderNew.ReadFolderDesigner) },

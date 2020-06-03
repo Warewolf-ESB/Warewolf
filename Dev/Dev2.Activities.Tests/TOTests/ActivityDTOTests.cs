@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.TOTests
     public class ActivityDtoTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Constructor")]
         public void ActivityDTO_Constructor_EmptyConstructor_SetsFieldNameFieldValueIndexNumber()
@@ -40,6 +41,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Constructor")]
         public void ActivityDTO_Constructor_ConstructorWithParameters_SetsProperties()
@@ -60,6 +62,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Constructor")]
         public void ActivityDTO_Constructor_Construct_IsInstanceOfTypeIPerformsValidation()
@@ -76,6 +79,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_OnPropertyChanged")]
         public void ActivityDTO_OnPropertyChanged_FieldNameChanged_FiresPropertyChanged()
@@ -91,6 +95,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_OnPropertyChanged")]
         public void ActivityDTO_OnPropertyChanged_FieldValueChanged_FiresPropertyChanged()
@@ -105,6 +110,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_OnPropertyChanged")]
         public void ActivityDTO_OnPropertyChanged_IndexNumberChanged_FiresPropertyChanged()
@@ -120,6 +126,7 @@ namespace Dev2.Tests.Activities.TOTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_CanRemove")]
         public void ActivityDTO_CanRemove_FieldNameAndFieldValueEmpty_True()
@@ -133,6 +140,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_CanRemove")]
         public void ActivityDTO_CanRemove_FieldNameAndFieldValueNull_True()
@@ -146,6 +154,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_CanRemove")]
         public void ActivityDTO_CanRemove_FieldNameHasValueAndFieldValueNull_False()
@@ -159,6 +168,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_CanRemove")]
         public void ActivityDTO_CanRemove_FieldNameNullAndFieldValueHasValue_False()
@@ -172,6 +182,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_CanAdd")]
         public void ActivityDTO_CanAdd_FieldNameAndFieldValueEmpty_False()
@@ -185,6 +196,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_CanAdd")]
         public void ActivityDTO_CanAdd_FieldNameAndFieldValueNull_False()
@@ -198,6 +210,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_CanAdd")]
         public void ActivityDTO_CanAdd_FieldNameHasValueAndFieldValueNull_True()
@@ -211,6 +224,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_CanAdd")]
         public void ActivityDTO_CanAdd_FieldNameNullAndFieldValueHasValue_True()
@@ -224,6 +238,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_ClearRow")]
         public void ActivityDTO_ClearRow_Executed_SetsFieldNameFieldValueToEmptyString()
@@ -241,6 +256,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_ConvertToOutputTO")]
         public void ActivityDTO_ConvertToOutputTO_Executed_ReturnsOutputTO()
@@ -255,6 +271,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_OutList")]
         public void ActivityDTO_OutList_Property_ListOfString()
@@ -270,6 +287,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_ValidateRules")]
         public void ActivityDTO_ValidateRules_NullRuleSet_ReturnsTrue()
@@ -283,6 +301,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Validate")]
         public void ActivityDTO_Validate_GivenNoRules_ReturnTrue()
@@ -296,6 +315,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Validate")]
         public void ActivityDTO_Validate_GivenRules_HasFailingRuleReturnFalse()
@@ -311,6 +331,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Validate")]
         public void ActivityDTO_Validate_GivenRules_HasPassingRuleReturnTrue()
@@ -326,6 +347,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Validate")]
         public void ActivityDTO_Validate_Executed_SetErrorsProperty()
@@ -341,6 +363,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ActivityDTO_GetRuleSet")]
         public void ActivityDTO_GetRuleSet_OnFieldName_ReturnTwoRules()
@@ -357,6 +380,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ActivityDTO_GetRuleSet")]
         public void ActivityDTO_GetRuleSet_OnFieldValue_ReturnTwoRules()
@@ -374,6 +398,7 @@ namespace Dev2.Tests.Activities.TOTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_OnPropertyChanged")]
         public void ActivityDTO_OnPropertyChanged_ErrorsChanged_FiresPropertyChanged()
@@ -388,6 +413,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_FieldName")]
         public void ActivityDTO_FieldName_ValidatesForErrors_ReturnsError()

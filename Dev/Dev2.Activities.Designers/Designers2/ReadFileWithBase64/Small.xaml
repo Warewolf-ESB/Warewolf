@@ -1,0 +1,104 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.ReadFileWithBase64.Small"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.ReadFileWithBase64"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               MaxWidth="200"
+                               Width="200"
+                               mc:Ignorable="d"
+                               d:DesignWidth="200"
+                               d:DataContext="{d:DesignInstance local:ReadFileWithBase64DesignerViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding InputPathLabel, Mode=OneWay}" />
+        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                FilterType="All"
+                                AllowUserInsertLine="False"
+                                DefaultText="[[PathToRead]]"
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Tooltips.ReadFileToolTipFilename}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFileHelpFilename}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.InputPath"
+                                     SourcePropertyValue="{Binding  ModelItem.InputPath, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="1"
+                                 DefaultText="[[FileData]]"
+                                 FilterType="All"
+                                AllowUserInsertLine="False"
+                                Margin="{StaticResource ControlBorderTop}"
+                                 WrapInBrackets="True"
+                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}"
+                                 ToolTip="{x:Static languages:Tooltips.ReadFileToolTipResult}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFileHelpResult}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Result"
+                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Result As" Margin="{StaticResource ControlBorderTop}"/>
+        <CheckBox Grid.Column="1"
+                  Grid.Row="2"
+                  Margin="-6,-1,0,0"
+                  Content="Base64"
+                  IsChecked="{Binding Path=ModelItem.IsResultBase64, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Tooltips.ReadFileToolTipIsResultBase64}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ReadFileHelpIsResultBase64}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.IsResultBase64"
+                                     SourcePropertyValue="{Binding ModelItem.IsResultBase64, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+    </Grid>
+</core:ActivityDesignerTemplate>

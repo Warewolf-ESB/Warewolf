@@ -48,6 +48,7 @@ namespace ActivityUnitTests.ActivityTests
         #region Positive Test Cases
 
         [TestMethod]
+        [Timeout(60000)]
         public void Positive_With_Normal_Params_Expected_Positive()
         {
             SetupArguments(
@@ -69,6 +70,7 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Positive_UsingRecorsetWithStar_Expected_Positive()
         {
             SetupArguments(
@@ -91,6 +93,7 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Blank_InputFormat_Expected_Error()
         {
             SetupArguments(
@@ -115,6 +118,7 @@ namespace ActivityUnitTests.ActivityTests
         #endregion Error Test Cases
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDateTimeDifferenceActivity_GetOutputs")]
         public void DsfDateTimeDifferenceActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -129,6 +133,7 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDateTimeDifferenceActivity_Equality")]
         public void DsfDateTimeDifferenceActivity_Expect_NotEqual()
@@ -155,6 +160,7 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDateTimeDifferenceActivity_Equality")]
         public void DsfDateTimeDifferenceActivity_Expect_Equal()
@@ -212,6 +218,7 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfDotNetDateTimeDifferenceActivity_GetState")]
         public void DsfDotNetDateTimeDifferenceActivity_GetState_ReturnsStateVariable()

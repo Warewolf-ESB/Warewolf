@@ -37,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileWrite_UpdateForEachInputs")]
         public void DsfFileWrite_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -55,6 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileWrite_UpdateForEachInputs")]
         public void DsfFileWrite_UpdateForEachInputs_MoreThan1Updates_Updates()
@@ -76,6 +78,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileWrite_UpdateForEachOutputs")]
         public void DsfFileWrite_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -91,6 +94,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileWrite_UpdateForEachOutputs")]
         public void DsfFileWrite_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -109,6 +113,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileWrite_UpdateForEachOutputs")]
         public void DsfFileWrite_UpdateForEachOutputs_1Updates_UpdateResult()
@@ -127,6 +132,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileWrite_GetForEachInputs")]
         public void DsfFileWrite_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -148,6 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileWrite_GetForEachOutputs")]
         public void DsfFileWrite_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -166,6 +173,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfFileWrite_GetState")]
         public void DsfFileWrite_GetState_ReturnsStateVariable()

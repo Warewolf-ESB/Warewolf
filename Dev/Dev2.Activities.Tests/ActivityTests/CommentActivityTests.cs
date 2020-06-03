@@ -35,6 +35,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void CommentGetDebugInputOutputWithText()
         {
             var act = new DsfCommentActivity { Text = "SomeText" };
@@ -72,6 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCommentActivity_UpdateForEachInputs")]
         public void DsfCommentActivity_UpdateForEachInputs_DoesNothing()
@@ -86,6 +88,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCommentActivity_UpdateForEachOutputs")]
         public void DsfCommentActivity_UpdateForEachOutputs_NullDoesNothing_DoesNothing()
@@ -99,6 +102,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCommentActivity_UpdateForEachOutputs")]
         public void DsfCommentActivity_UpdateForEachOutputsMoreThanTwoItems_DoesNothing()
@@ -114,6 +118,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCommentActivity_UpdateForEachOutputs")]
         public void DsfCommentActivity_UpdateForEachOutputs_UpdatesTextValue()
@@ -128,6 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCommentActivity_GetForEachInputs")]
         public void DsfCommentActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -141,6 +147,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCommentActivity_GetForEachOutputs")]
         public void DsfCommentActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
@@ -156,6 +163,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfCommentActivity_GetState")]
         public void DsfCommentActivity_GetState_ReturnsStateVariable()

@@ -17,6 +17,7 @@ namespace Dev2.Tests.Activities.Validation
     public class IsSingleRecordSetRuleTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingeRecordSetRule_Check")]
 
@@ -33,6 +34,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingeRecordSetRule_Check")]
 
@@ -48,6 +50,7 @@ namespace Dev2.Tests.Activities.Validation
             //------------Assert Results-------------------------
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingeRecordSetRule_Check")]
 
@@ -64,6 +67,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingeRecordSetRule_Check")]
 
@@ -77,6 +81,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingeRecordSetRule_Check")]
 
@@ -90,6 +95,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingeRecordSetRule_Check")]
 
@@ -103,6 +109,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingeRecordSetRule_Check")]
 

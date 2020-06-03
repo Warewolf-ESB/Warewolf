@@ -50,6 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Attribute_GivenIsNew_ShouldhaveCorrectValues()
         {
@@ -68,6 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnConstruction_GivenType_ShouldInheritCorrectly()
         {
@@ -82,6 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_GivenIsNew_ShouldSetJavascript()
         {
@@ -97,6 +100,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Script_GivenIsNew_ShouldBeEmpty()
         {
@@ -112,6 +116,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ScriptType_GivenIsNew_ShouldSetJavascript()
         {
@@ -129,6 +134,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         #region Should execute valid ruby script
 
         [TestMethod]
+        [Timeout(60000)]
         public void RubytmpHost_ShouldSetDefaultValues()
         {
             var win8Pal = new RubyContext.TmpHost.Win8PAL();
@@ -137,6 +143,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             Assert.IsFalse(win8Pal.DirectoryExists(win8Pal.CurrentDirectory));
         }
         [TestMethod]
+        [Timeout(60000)]
         public void RubyOptionsAttribute_ShouldSetDefaultValues()
         {
             var optionsAttribute = new RubyContext.OptionsAttribute();
@@ -147,6 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithEscapeCharecters_RubyExpectedCorrectResultReturned()
         {
             SetupArguments("<DataList><Result>\"C:\test\"</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
@@ -168,6 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithoutEscapeCharecters_RubyExpectedCorrectResultReturned()
         {
             SetupArguments("<DataList><Result>C:\test</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
@@ -189,6 +198,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithValidRubyExpectedCorrectResultReturned()
         {
             SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"return 1+1;", enScriptType.Ruby);
@@ -209,6 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithValidRubyAndVariableExpectedCorrectResultReturned()
         {
             SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"i = 1 + 1;return i;", enScriptType.Ruby);
@@ -229,6 +240,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithValidRubyWithScalarDataListRegionsInScriptExpectedCorrectResultReturned()
         {
             SetupArguments("<DataList><inputData>1</inputData><Result>0</Result></DataList>", "<DataList><inputData/><Result/></DataList>", "[[Result]]", @"i = [[inputData]] + [[inputData]];return i;", enScriptType.Ruby);
@@ -249,6 +261,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithValidRubyWithRecordAppendNotationDataListRegionsInScriptExpectedCorrectResultReturned()
         {
             SetupArguments("<DataList><inputData><field1>1</field1></inputData><inputData><field1>2</field1></inputData><inputData><field1>3</field1></inputData><inputData><field1>4</field1></inputData><Result>0</Result></DataList>", "<DataList><inputData><field1/></inputData><Result/></DataList>", "[[Result]]", @"i = [[inputData().field1]] + [[inputData().field1]];return i;", enScriptType.Ruby);
@@ -269,6 +282,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithValidRubyWithRecordStarNotationDataListRegionsInScriptExpectedCorrectResultReturned()
         {
             SetupArguments("<DataList><inputData><field1>1</field1></inputData><inputData><field1>2</field1></inputData><inputData><field1>3</field1></inputData><inputData><field1>4</field1></inputData></DataList>", "<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "[[Result().res]]", @"i = '[[inputData(*).field1]]';return i;", enScriptType.Ruby);
@@ -292,6 +306,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteWithValidRubyWithEmptyRecordStarNotationDataListRegionsInScriptExpectedCorrectResultReturned()
         {
             SetupArguments("<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "[[Result().res]]", @"i = [[inputData(*).field1]] + [[inputData(*).field1]];return i;", enScriptType.Ruby);
@@ -312,6 +327,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ExecuteRubyWithNoReturnExpectedReturnsLastValue()
         {
             SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"def Add(x,y); return x + y; end; Add(1,1);", enScriptType.Ruby);

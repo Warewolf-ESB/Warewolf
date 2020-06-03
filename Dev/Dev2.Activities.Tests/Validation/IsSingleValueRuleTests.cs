@@ -17,6 +17,7 @@ namespace Dev2.Tests.Activities.Validation
     public class IsSingleValueRuleTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingleValueRule_Check")]
         
@@ -33,6 +34,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingleValueRule_Check")]
         
@@ -49,6 +51,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingleValueRule_Check")]
         
@@ -64,6 +67,7 @@ namespace Dev2.Tests.Activities.Validation
             //------------Assert Results-------------------------
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingleValueRule_Check")]
         
@@ -80,6 +84,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingleValueRule_Check")]
         
@@ -93,6 +98,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingleValueRule_Check")]
         
@@ -106,6 +112,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingleValueRule_Check")]
         
@@ -119,6 +126,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingleValueRule_Check")]
         
@@ -132,6 +140,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsSingleValueRule_Check")]
         
