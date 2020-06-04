@@ -1,15 +1,23 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
-using System.CodeDom;
 using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Web;
-using System.Web.Http.Controllers;
-using System.Web.Http.Routing;
 using Dev2.Runtime.WebServer.Controllers;
 using Dev2.Runtime.WebServer.Handlers;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Tests
 {
@@ -17,6 +25,8 @@ namespace Dev2.Runtime.WebServer.Tests
     public class AbstractControllerTests
     {
         [TestMethod]
+        [TestCategory(nameof(AbstractController))]
+        [Owner("Rory McGuire")]
         public void AbstractController_ProcessRequest_GivenNotAuthenticated_ExpectUnauthorized()
         {
             var controller = new AbstractControllerForTesting
@@ -30,6 +40,8 @@ namespace Dev2.Runtime.WebServer.Tests
         }
 
         [TestMethod]
+        [TestCategory(nameof(AbstractController))]
+        [Owner("Rory McGuire")]
         public void AbstractController_ProcessRequest_GivenTokenEmptyNotAuthenticated_ExpectUnauthorized()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/token/Hello%20World.json?Name=")
@@ -53,13 +65,15 @@ namespace Dev2.Runtime.WebServer.Tests
                 hadHttpException = true;
             } catch (Exception e)
             {
-                Assert.Fail("expected HttpException");
+                Assert.Fail($"expected HttpException but found {e.GetType().FullName} with message \"{e.Message}\"");
             }
 
             Assert.IsTrue(hadHttpException, "expected HttpException");
         }
 
         [TestMethod]
+        [TestCategory(nameof(AbstractController))]
+        [Owner("Rory McGuire")]
         public void AbstractController_ProcessRequest_GivenTokenNotAuthenticated_ExpectUnauthorized()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/token/Hello%20World.json?Name=")
@@ -92,9 +106,13 @@ namespace Dev2.Runtime.WebServer.Tests
 
 
         [TestMethod]
+        [TestCategory(nameof(AbstractController))]
+        [Owner("Rory McGuire")]
         public void AbstractController_ProcessRequest_GivenValidTokenAuthenticated_ExpectSuccess()
         {
-            var token = ""; // TODO: generate real token here
+            var securitySettings = new SecuritySettings();
+            var jwtManager = new JwtManager(securitySettings);
+            var token = jwtManager.GenerateToken("{'UserGroups': [{'Name': 'public' }]}");
             var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/token/Hello%20World.json?Name=")
             {
                 Headers = { {"Authorization", $"bearer {token}"}},
@@ -110,7 +128,7 @@ namespace Dev2.Runtime.WebServer.Tests
         }
     }
 
-    public class AbstractControllerForTesting : AbstractController
+    internal class AbstractControllerForTesting : AbstractController
     {
         public HttpResponseMessage TestProcessRequest<TRequestHandler>(bool isUrlWithTokenPrefix) where TRequestHandler : class, IRequestHandler, new()
         {
@@ -119,7 +137,7 @@ namespace Dev2.Runtime.WebServer.Tests
         }
     }
 
-    class AssertNotExecutedRequestHandlerForTesting : IRequestHandler
+    internal class AssertNotExecutedRequestHandlerForTesting : IRequestHandler
     {
         public void ProcessRequest(ICommunicationContext ctx)
         {
@@ -127,7 +145,7 @@ namespace Dev2.Runtime.WebServer.Tests
         }
     }
 
-    class RequestHandlerForTesting : IRequestHandler
+    internal class RequestHandlerForTesting : IRequestHandler
     {
         public void ProcessRequest(ICommunicationContext ctx)
         {
