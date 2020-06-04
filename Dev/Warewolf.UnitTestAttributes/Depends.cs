@@ -126,8 +126,11 @@ namespace Warewolf.UnitTestAttributes
             }
             else
             {
-                Container.IP = BackupServer;
-                Container.Port = GetBackupPort(_containerType);
+                Container = new Container()
+                {
+                    IP = BackupServer,
+                    Port=GetBackupPort(_containerType)
+                };
             }
 
             switch (_containerType)
