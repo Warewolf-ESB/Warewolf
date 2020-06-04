@@ -33,6 +33,8 @@ using Warewolf.Services;
 using Enum = System.Enum;
 using System.IO;
 using System.Web.UI;
+using Dev2.Data;
+using log4net.Util;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -676,9 +678,10 @@ namespace Dev2.Runtime.WebServer
                 .Select(o => o.First()).ToArray();
 
             var accum = coveredNodes
+                .Where(o => o.MockSelected is false)
                 .Select(o => o.ActivityID)
                 .Distinct().ToList();
-            var allWorkflowNodes = Resource.WorkflowNodesForHtml;
+            var allWorkflowNodes = Resource.WorkflowNodes;
             var accum2 = allWorkflowNodes.Select(o=> o.UniqueID).ToList();
             var activitiesExistingInTests = accum2.Intersect(accum).ToList();
             var total = Math.Round(activitiesExistingInTests.Count / (double)accum2.Count, 2);
@@ -716,7 +719,24 @@ namespace Dev2.Runtime.WebServer
 
         public void Add(IServiceTestModelTO result)
         {
-            Results.Add(result);
+            Results.Add(new ServiceTestModelTO
+            {
+                OldTestName = result.OldTestName,
+                TestName = result.TestName,
+                TestPassed = !IsTestInValid(result),
+                TestInvalid = IsTestInValid(result),
+                Result = new TestRunResult 
+                {
+                    TestName = result.TestName,
+                    Message = IsTestInValid(result) ? "Test has no selected nodes" : result.FailureMessage,
+                    RunTestResult = IsTestInValid(result) ? RunResult.TestInvalid : result.TestFailing ? RunResult.TestFailed : RunResult.TestPassed,
+                }
+            });
+        }
+
+        private bool IsTestInValid(IServiceTestModelTO test)
+        {
+            return test.TestSteps is null;
         }
     }
 }
