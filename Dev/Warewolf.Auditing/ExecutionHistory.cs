@@ -35,7 +35,7 @@ namespace Warewolf.Auditing
         public IExecutionInfo ExecutionInfo { get; set; }
         public string UserName { get; set; }
         public Exception Exception { get; set; }
-        public string AuditType { get; set; } = "QueueWorker";
+        public string AuditType { get; set; } = "ExecutionLog";
         public LogLevel LogLevel { get; set; } = LogLevel.Info;
     }
 

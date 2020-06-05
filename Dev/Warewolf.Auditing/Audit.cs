@@ -234,7 +234,7 @@ namespace Warewolf.Auditing
 
             if (exception != null)
             {
-                LogLevel = LogLevel.Fatal;
+                LogLevel = LogLevel.Error;
             }
             if (previousActivity is IDev2Activity act1)
             {

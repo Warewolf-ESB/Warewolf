@@ -94,7 +94,7 @@ namespace QueueWorker
             var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error, executionId,customTransactionID);
             var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
             executionEntry.Exception = requestForwarderResult.Exception;
-            executionEntry.AuditType = "QueueWorker";
+            executionEntry.AuditType = "ExecutionLog";
             executionEntry.LogLevel = LogLevel.Fatal;
             _logger.ExecutionFailed(executionEntry);
         }
