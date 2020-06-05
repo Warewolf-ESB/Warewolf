@@ -21,6 +21,17 @@ if ($WarewolfServerProcess) {
 	    Write-Host Starting Warewolf server as $Username
 	    Write-Host 1. Create Warewolf Administrators group.
 	    NET localgroup "Warewolf Administrators" /ADD
+		if ($Password -eq 'W@rEw0lf@dm1n') {
+			$Password = [String]'wW'[(ForEach-Object { Get-Random -Maximum 2 })]
+			$Password += [String]'aA@'[(ForEach-Object { Get-Random -Maximum 3 })]
+			$Password += [String]'rR'[(ForEach-Object { Get-Random -Maximum 2 })]
+			$Password += [String]'eE'[(ForEach-Object { Get-Random -Maximum 2 })]
+			$Password += [String]'wW'[(ForEach-Object { Get-Random -Maximum 2 })]
+			$Password += [String]'oO0'[(ForEach-Object { Get-Random -Maximum 3 })]
+			$Password += [String]'lL1'[(ForEach-Object { Get-Random -Maximum 3 })]
+			$Password += [String]'fF'[(ForEach-Object { Get-Random -Maximum 2 })]
+			$Password += '@dm1n'
+		}
 	    Write-Host 2. Create Warewolf Administrator.
 	    NET user "$Username" "$Password" /ADD /Y
         if ($Error[1].Exception.Message -eq "The password does not meet the password policy requirements. Check the minimum password length, password complexity and password history requirements."){
