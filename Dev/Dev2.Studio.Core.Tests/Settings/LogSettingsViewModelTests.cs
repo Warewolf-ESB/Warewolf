@@ -124,6 +124,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
+        [DoNotParallelize]
         public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------

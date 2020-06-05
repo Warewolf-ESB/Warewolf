@@ -9,6 +9,7 @@ namespace Dev2.Tests.Activities.FindRecsetOptionsTests
     public class IsNullFindRecsetOptionTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("RsOpIsNull_CreateFunc")]
         public void RsOpIsNull_CreateFunc_WhenNull_ReturnsTrue()
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.FindRecsetOptionsTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("RsOpIsNull_CreateFunc")]
         public void RsOpIsNull_CreateFunc_WhenNotNull_ReturnsFalse()
@@ -39,6 +41,7 @@ namespace Dev2.Tests.Activities.FindRecsetOptionsTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("RsOpIsNull_HandlesType")]
         public void RsOpIsNull_HandlesType_ReturnsIsNULL()

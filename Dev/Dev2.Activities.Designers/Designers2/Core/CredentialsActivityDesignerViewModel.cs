@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -38,26 +38,26 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool IsUserNameFocused
         {
-            get { return (bool)GetValue(IsUserNameFocusedProperty); }
-            set { SetValue(IsUserNameFocusedProperty, value); }
+            get => (bool)GetValue(IsUserNameFocusedProperty);
+            set => SetValue(IsUserNameFocusedProperty, value);
         }
 
         public bool IsPasswordFocused
         {
-            get { return (bool)GetValue(IsPasswordFocusedProperty); }
-            set { SetValue(IsPasswordFocusedProperty, value); }
+            get => (bool)GetValue(IsPasswordFocusedProperty);
+            set => SetValue(IsPasswordFocusedProperty, value);
         }
 
         public bool IsDestinationUsernameFocused
         {
-            get { return (bool)GetValue(IsDestinationUsernameFocusedProperty); }
-            set { SetValue(IsDestinationUsernameFocusedProperty, value); }
+            get => (bool)GetValue(IsDestinationUsernameFocusedProperty);
+            set => SetValue(IsDestinationUsernameFocusedProperty, value);
         }
 
         public bool IsDestinationPasswordFocused
         {
-            get { return (bool)GetValue(IsDestinationPasswordFocusedProperty); }
-            set { SetValue(IsDestinationPasswordFocusedProperty, value); }
+            get => (bool)GetValue(IsDestinationPasswordFocusedProperty);
+            set => SetValue(IsDestinationPasswordFocusedProperty, value);
         }
 
         string Username => GetProperty<string>();

@@ -18,6 +18,7 @@ namespace Dev2.Tests.Activities.Validation
     public class IsValidCalculateRuleTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsValidCalculateRule_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -36,6 +37,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsValidCalculateRule_Check")]
         public void IsValidCalculateRule_Check()
@@ -47,6 +49,7 @@ namespace Dev2.Tests.Activities.Validation
 
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsValidCalculateRule_Check")]
         public void IsValidCalculateRule_Check_Literals()
@@ -58,6 +61,7 @@ namespace Dev2.Tests.Activities.Validation
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsValidCalculateRule_Check")]
         public void IsValidCalculateRule_Check_NonCalculationString()
@@ -68,6 +72,7 @@ namespace Dev2.Tests.Activities.Validation
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsValidCalculateRule_Check")]
         public void IsValidCalculateRule_Check_Functions_Valid()
@@ -80,6 +85,7 @@ namespace Dev2.Tests.Activities.Validation
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsValidCalculateRule_Check")]
         public void IsValidCalculateRule_Check_Functions_InValid()
@@ -91,6 +97,7 @@ namespace Dev2.Tests.Activities.Validation
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsValidCalculateRule_Check")]
         public void IsValidCalculateRule_Check_Functions_InValidFunctionSyntax()

@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
     public class DsfNumberFormatActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -23,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -39,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Same_DisplayName_IsEqual()
         {
@@ -55,6 +58,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Different_DisplayName_Is_Not_Equal()
         {
@@ -70,6 +74,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Expression_Same_Expression_IsEqual()
         {
@@ -86,6 +91,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Expression_Different_Expression_Is_Not_Equal()
         {
@@ -102,6 +108,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_RoundingDecimalPlaces_Same_RoundingDecimalPlaces_IsEqual()
         {
@@ -118,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_RoundingDecimalPlaces_Different_RoundingDecimalPlaces_Is_Not_Equal()
         {
@@ -135,6 +143,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
              
              
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_RoundingType_Same_RoundingType_IsEqual()
         {
@@ -151,6 +160,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_RoundingType_Different_RoundingType_Is_Not_Equal()
         {
@@ -168,6 +178,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
              
              
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DecimalPlacesToShow_Same_DecimalPlacesToShow_IsEqual()
         {
@@ -184,6 +195,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DecimalPlacesToShow_Different_DecimalPlacesToShow_Is_Not_Equal()
         {
@@ -201,6 +213,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
              
              
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Result_Same_Result_IsEqual()
         {
@@ -217,6 +230,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Result_Different_Result_Is_Not_Equal()
         {

@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class DebugItemWarewolfAtomListResultTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DebugItemWarewolfAtomListResult_GivenIsNew_GetDebugItemResult()
         {
@@ -35,6 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void DebugItemWarewolfAtomListResult_IsScalarOldValue_GetDebugItemResult()
         {
@@ -59,6 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void DebugItemWarewolfAtomListResult_IsListOldValue_GetDebugItemResult()
         {
@@ -83,6 +86,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void DebugItemWarewolfAtomListResult_IsListOldValue_GetDebugItemResult2()
         {
@@ -109,6 +113,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void DebugItemWarewolfAtomListResult_IsListOldValue_IsCalculate_GetDebugItemResult()
         {
@@ -135,6 +140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void DebugItemWarewolfAtomListResult_IsListOldValue_LeftLabel_IsNotCalculate_GetDebugItemResult()
         {
@@ -163,6 +169,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void DebugItemWarewolfAtomListResult_IsListOldValue_LeftLabel_IsCalculate_GetDebugItemResult()
         {
@@ -191,6 +198,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void DebugItemWarewolfAtomListResult_IsListOldValue_IsCalculate_GetDebugItemResult2()
         {
@@ -219,6 +227,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DebugItemWarewolfAtomListResult_GivenJsonArrayResult_GetDebugItemResult()
         {
@@ -245,6 +254,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(debugEvalResult);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DebugItemWarewolfAtomListResult_GivenRecordsetResult_GetDebugItemResult()
         {
@@ -272,6 +282,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DebugItemWarewolfAtomListResult_GetDebugItemResult()
         {

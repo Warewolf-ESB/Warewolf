@@ -49,6 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Funky Language
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfDataMergeActivity_Execute")]
         public void DsfDataSplitActivity_Execute_WhenUsingAppendAndMixedSplitType_ExpectCorrectSplit()
@@ -96,6 +97,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfDataMergeActivity_Execute")]
         public void DsfDataSplitActivity_Execute_WhenUsingStarAndMixedSplitType_ExpectCorrectSplit()
@@ -142,6 +144,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDataMergeActivity_Execute")]
         public void DsfDataSplitActivity_Execute_WhenUsingStarAndMixedSplitType_WithEmptyLine_ExpectCorrectSplit()
@@ -191,6 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         [TestMethod]
+        [Timeout(60000)]
         public void EmptySourceString_Expected_No_Splits()
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
@@ -203,6 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Scalar_Expected_Split_And_Insert_To_Scalar()
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
@@ -219,6 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MultipleScalars_Expected_Split_And_Insert_Mutiple_Scalars()
         {
 
@@ -248,6 +254,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MixedScalarsAndRecordsetWithIndex_Expected_Split_Insert_Mutiple_Scalar_And_Recordsets()
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
@@ -274,6 +281,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MixedScalarsAndRecordsetWithoutIndex_Expected_Split_To_End_Inserting_Mutiple_Scalar_And_Recordsets()
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
@@ -309,6 +317,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NoResultVariableInFirst_Expected_Still_Spilt_But_Dont_Insert_For_First()
         {
 
@@ -325,6 +334,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void IndexTypeSplit_Expected_Split_At_An_Index()
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
@@ -340,6 +350,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CharsTypeSplitSingle_Expected_Split_Once_At_Chars()
         {
 
@@ -358,6 +369,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void BlankSpaceTypeSplitSingle_Expected_Split_At_BlankSpace()
         {
             _resultsCollection.Clear();
@@ -382,6 +394,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void BlankSpaceTypeSplitMultiple_Expected_Split_Mutiple_At_BlankSpace()
         {
 
@@ -405,6 +418,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NewLineTypeSplitWindows_Expected_Split_On_Windows_NewLine()
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "New Line", "", 1));
@@ -421,6 +435,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         public void TabTypeSplit_Expected_Split_On_Tab()
         {
             _resultsCollection.Add(new DataSplitDTO("[[recset2().field2]]", "Tab", "", 1));
@@ -437,6 +452,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void EndTypeSplit_Expected_Split_On_End_Of_String()
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "End", "", 1));
@@ -458,6 +474,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataSplitActivity_GetOutputs")]
         public void DsfDataSplitActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -476,6 +493,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecordsetsWithVaryingIndexesExpectedSplitAndInsertAtDifferentIndexes()
         {
 
@@ -503,6 +521,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiRecsetsWithNoIndex_Expected_Split_Append_To_The_Recordsets()
         {
             _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Index", "15", 1));
@@ -544,6 +563,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecsetWithStar_Expected_Split_Overwrite_Records_From_Index_1()
         {
 
@@ -591,6 +611,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecorsetWithStarAsIndexInSourceString_Expected_Split_For_Last_Value_In_Recordset()
         {
 
@@ -646,6 +667,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataSplitActivity_UpdateForEachInputs")]
         public void DsfDataSplitActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -661,6 +683,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataSplitActivity_UpdateForEachInputs")]
         public void DsfDataSplitActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
@@ -682,6 +705,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataSplitActivity_UpdateForEachOutputs")]
         public void DsfDataSplitActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -697,6 +721,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataSplitActivity_UpdateForEachOutputs")]
         public void DsfDataSplitActivity_UpdateForEachOutputs_1Updates_UpdateCountNumber()
@@ -713,6 +738,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataSplitActivity_GetForEachInputs")]
         public void DsfDataSplitActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -732,6 +758,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataSplitActivity_GetForEachOutputs")]
         public void DsfDataSplitActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
@@ -749,6 +776,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataSplitActivity_GetState")]
         public void DsfDataSplitActivity_GetState_ReturnsStateVariable()
@@ -806,6 +834,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDataSplitActivity_GetState")]
         public void DsfDataSplitActivity_EmptyLines_ShouldExist()
@@ -847,6 +876,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory("DsfDataSplitActivity_GetState")]
         public void DsfDataSplitActivity_EmptyLinesUnix_ShouldExist()
@@ -888,6 +918,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("DsfDataSplitActivity_EmptyColumn")]
         public void DsfDataSplitActivity_EmptyColumn()

@@ -34,6 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Construct_Default_Execute_Returns_GateActivity()
@@ -54,6 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Equals_Set_OtherIsNull_Returns_IsFalse()
@@ -64,6 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Equals_Set_OtherisEqual_Returns_IsTrue()
@@ -75,6 +78,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Equals_Set_BothAreObjects_Returns_IsFalse()
@@ -86,6 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Equals_Set_OtherisObjectofGateActivityEqual_Returns_IsFalse()
@@ -97,6 +102,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_GetHashCode()
@@ -109,6 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenNoConditions_ExpectDetailedLog()
@@ -133,6 +140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GetDebugInputs()
@@ -159,6 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GetDebugOutputs()
@@ -179,6 +188,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenFailingCondition_ExpectDetailedLog()
@@ -209,6 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenFailingConditionVarNotExistsWithRetry_ExpectRetryGate()
@@ -250,6 +261,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenFailingConditionVarNotExistsWithRetryInvalidGate_ExpectRetryGateFailure()
@@ -296,6 +308,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenFailingConditionWithStopOnError_ExpectRetryGate()
@@ -327,6 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenFailingConditionWithRetry_ExpectRetryGateAsNext()
@@ -368,6 +382,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenPassingConditions_ExpectDetailedLog()
@@ -408,6 +423,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenPassingConditionsOnFirstGateAndPassingSecondGate_ExpectThirdNode()
@@ -462,6 +478,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(GateActivity))]
         public void GateActivity_Execute_GivenPassingConditionsOnFirstGateAndFailingSecondGate_ExpectDetailedLog()

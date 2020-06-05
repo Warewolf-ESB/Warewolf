@@ -34,6 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
     public class PublishRabbitMQActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Construct_Paramterless_SetsDefaultPropertyValues()
@@ -46,6 +47,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_Success()
@@ -104,6 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
       
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_Failure_NullSource()
@@ -132,6 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_Failure_NoParams()
@@ -162,6 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_Execute_Failure_InvalidParams()
@@ -190,6 +195,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
         [ExpectedException(typeof(Exception))]
@@ -224,6 +230,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(PublishRabbitMQActivity))]
         public void PublishRabbitMQActivity_GetState_ReturnsStateVariable()

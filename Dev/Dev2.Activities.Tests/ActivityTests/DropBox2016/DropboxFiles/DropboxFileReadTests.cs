@@ -23,6 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateDropBoxActivity_GivenIsNew_ShouldNotBeNull()
         {
@@ -35,6 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTask_GivendropboxFileRead_ShouldReturnFileMetadata()
         {
@@ -49,6 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewDropboxUpload_GivenEmptyPath_ShouldBeValid()
         {
@@ -61,6 +64,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewdropboxFileRead_GivenPath_ShouldBeValid()
         {
@@ -73,6 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewdropboxFileRead_GivenNullPath_ShouldBeValid()
         {
@@ -90,6 +95,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Ashley Lewis")]
         public void ExecuteDropboxFileRead_Throws_ShouldReturnFailedResult()
         {
