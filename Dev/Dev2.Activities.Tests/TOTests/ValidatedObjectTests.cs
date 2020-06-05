@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.TOTests
     public class ValidatedObjectTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ValidatedObject_Constructor")]
         public void ValidatedObject_Constructor_Properties_Initialized()
@@ -40,6 +41,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ValidatedObject_Validate")]
         public void ValidatedObject_ValidatePropertyNameOnly_InvokesGetRuleSet()
@@ -62,6 +64,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ValidatedObject_Validate")]
         public void ValidatedObject_ValidatePropertyNameAndRuleSet_NullRuleSet_DoesNotInvokesRuleSetAndReturnsTrue()
@@ -87,6 +90,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ValidatedObject_Validate")]
         public void ValidatedObject_ValidatePropertyNameAndRuleSet_NonNullRuleSet_InvokesRuleSetValidateAndReturnsFalse()
@@ -119,6 +123,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ValidatedObject_Validate")]
         public void ValidatedObject_ValidatePropertyNameAndRuleSet_PropertyNameIsNull_ReturnsTrue()

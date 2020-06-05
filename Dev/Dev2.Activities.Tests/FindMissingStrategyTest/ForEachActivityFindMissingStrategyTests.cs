@@ -53,6 +53,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region ForEach Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfForEachActivityWithADsfActivityInsideItExpectedAllFindMissingFieldsToBeReturned()
         {
             var dsfActivity = new DsfActivity
@@ -73,6 +74,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfForEachActivityWithADsfMultiAssignActivityInsideItExpectedAllFindMissingFieldsToBeReturned()
         {
             var multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };

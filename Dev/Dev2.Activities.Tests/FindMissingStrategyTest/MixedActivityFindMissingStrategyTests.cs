@@ -35,6 +35,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region DataSplit Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDataSplitActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var dataSplitActivity = new DsfDataSplitActivity();
@@ -53,6 +54,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #region DataMerge Activity Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDataMergeActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var dataMergeActivity = new DsfDataMergeActivity();
@@ -70,6 +72,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("MixedActivityFindMissingStrategy_GetActivityFields")]
         public void MixedActivityFindMissingStrategy_GetActivityFields_DsfSqlBulkInsertActivity_AllFindMissingFieldsToBeReturned()
@@ -96,6 +99,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOf_DsfCreateJsonActivity_ExpectedAllFindMissingFieldsToBeReturned()
         {
             var act = new DsfCreateJsonActivity {
@@ -115,6 +119,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOf_DsfXPathActivity_ExpectedAllFindMissingFieldsToBeReturned()
         {
             var act = new DsfXPathActivity
@@ -135,6 +140,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOf_DsfFindRecordsMultipleCriteriaActivity_ExpectedAllFindMissingFieldsToBeReturned()
         {
             var act = new DsfFindRecordsMultipleCriteriaActivity
@@ -156,6 +162,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOf_NativeActivity_ExpectErrorWorkflowFieldToBeReturned()
         {
             var act = new DsfFindRecordsMultipleCriteriaActivity

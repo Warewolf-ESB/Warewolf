@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
     public class DsfDeleteRecordNullHandlerActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -26,6 +27,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -42,6 +44,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Same_DisplayName_IsEqual()
         {
@@ -58,6 +61,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Different_DisplayName_Is_Not_Equal()
         {
@@ -74,6 +78,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_RecordsetName_IsEqual()
         {
@@ -90,6 +95,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_RecordsetName_Is_Not_Equal()
         {
@@ -106,6 +112,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Result_IsEqual()
         {
@@ -122,6 +129,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Result_Is_Not_Equal()
         {
@@ -138,6 +146,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_TreatNullAsZero_IsEqual()
         {
@@ -154,6 +163,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_TreatNullAsZero_Is_Not_Equal()
         {
@@ -170,6 +180,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfDeleteRecordNullHandlerActivity_GetState")]
         public void DsfDeleteRecordNullHandlerActivity_GetState_ReturnsStateVariable()

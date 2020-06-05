@@ -26,6 +26,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointUpdateListItemActivity_Construct")]
         public void SharepointUpdateListItemActivity_Construct_GivenInstance_ShouldNotBeNull()
@@ -38,6 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointUpdateListItem_Execute")]
         public void SharepointSource_DoesNotExist_OnResourceCatalog_ShouldSetSharepointSource_ToGuidEmpty()
@@ -69,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SharepointUpdateListItem_Execute")]
         public void SharepointSource_Exists_OnResourceCatalog_BlankRecordSet()
@@ -109,6 +112,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             Assert.IsNotNull(result);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("SharepointUpdateListItemActivity_GetState")]
         public void SharepointUpdateListItemActivity_GetState()

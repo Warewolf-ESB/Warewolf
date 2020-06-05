@@ -12,6 +12,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
     public class DsfSwitchActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Empty_SwitchActivity_AreNotEqual()
         {
@@ -26,6 +27,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentResult_SwitchActivity_AreNotEqual()
         {
@@ -42,6 +44,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameResult_Different_Casing_SwitchActivity_AreNotEqual()
         {
@@ -58,6 +61,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameSwitch_SwitchActivity_AreEqual()
         {
@@ -74,6 +78,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentSwitch_SwitchActivity_AreNotEqual()
         {
@@ -90,6 +95,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameSwitch_Different_Casing_SwitchActivity_AreNotEqual()
         {
@@ -106,6 +112,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameResult_SwitchActivity_AreEqual()
         {
@@ -123,6 +130,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameSwitches_DifferentArmCount_SwitchActivity_AreNotEqual()
         {
@@ -142,6 +150,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameSwitches_DifferentIndexes_SwitchActivity_AreNotEqual()
         {
@@ -161,6 +170,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentSwitches_SwitchActivity_AreNotEqual()
         {
@@ -179,6 +189,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameSwitches_SwitchActivity_AreEqual()
         {
@@ -196,6 +207,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameInner_SwitchActivity_AreEqual()
         {
@@ -220,6 +232,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentInner_SwitchActivity_IsEqual()
         {
@@ -249,6 +262,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentDefault_SwitchActivity_IsEqual()
         {
@@ -267,6 +281,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameDefault_DifferentIndexes_SwitchActivity_AreEqual()
         {
@@ -285,6 +300,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameDefault_SwitchActivity_AreEqual()
         {
@@ -302,6 +318,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void Equals_Given_DifferentErrorVariable_SwitchActivity_AreNotEqual()
         {
@@ -323,6 +340,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void Equals_Given_DifferentErrorWorkflow_SwitchActivity_AreNotEqual()
         {
@@ -344,6 +362,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void Equals_Given_DifferentIsEndedOnError_SwitchActivity_AreNotEqual()
         {
@@ -365,6 +384,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void Equals_Given_DifferentDisplayName_SwitchActivity_AreNotEqual()
         {
@@ -387,6 +407,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfFlowSwitchActivity_GetState")]
         public void DsfFlowSwitchActivity_GetState_ReturnsStateVariable()

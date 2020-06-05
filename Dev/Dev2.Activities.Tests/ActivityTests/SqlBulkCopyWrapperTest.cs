@@ -19,6 +19,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class SqlBulkCopyWrapperTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("SqlBulkCopyWrapper_WriteToServer")]
         [ExpectedException(typeof(ArgumentException))]

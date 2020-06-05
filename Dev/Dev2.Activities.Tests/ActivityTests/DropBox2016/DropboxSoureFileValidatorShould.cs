@@ -19,6 +19,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
     public class DropboxSoureFileValidatorShould
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenFilePath_ShouldNotBeNull()
         {
@@ -31,6 +32,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
         public void Validate_GivenEmpty_ShouldThrowArgumentNull()
@@ -45,6 +47,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
         public void Validate_GivenNull_ShouldThrowArgumentNull()
@@ -59,6 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
         public void Validate_GivenEmptyExcplicit_ShouldThrowArgumentNull()
@@ -73,6 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(NotSupportedException))]
         public void Validate_GivenInvalid_ShouldThrowNotSupportedException()
@@ -87,6 +92,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Validate_GivenTooLong_ShouldThrowPathTooLongException()
         {
@@ -100,6 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(NotSupportedException))]
         public void Validate_GivenPathInValidWithColon_ShouldThrowPathTooLongException()

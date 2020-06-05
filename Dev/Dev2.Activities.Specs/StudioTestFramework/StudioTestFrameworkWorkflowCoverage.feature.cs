@@ -96,22 +96,22 @@ namespace Dev2.Activities.Specs.StudioTestFramework
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1344 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1342 = new TechTalk.SpecFlow.Table(new string[] {
                         "node"});
-            table1344.AddRow(new string[] {
+            table1342.AddRow(new string[] {
                         "Assign(input)"});
-            table1344.AddRow(new string[] {
+            table1342.AddRow(new string[] {
                         "Decision"});
-            table1344.AddRow(new string[] {
+            table1342.AddRow(new string[] {
                         "Assign(error)"});
-            table1344.AddRow(new string[] {
+            table1342.AddRow(new string[] {
                         "SQL"});
-            table1344.AddRow(new string[] {
+            table1342.AddRow(new string[] {
                         "Assign(person)"});
-            table1344.AddRow(new string[] {
+            table1342.AddRow(new string[] {
                         "SMTP Send"});
 #line 9
-  testRunner.Given("a workflow \"wf-one\" with below nodes", ((string)(null)), table1344, "Given ");
+  testRunner.Given("a workflow \"wf-one\" with below nodes", ((string)(null)), table1342, "Given ");
 #line 17
   testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
@@ -119,18 +119,18 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
   testRunner.And("test coverage is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1345 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1343 = new TechTalk.SpecFlow.Table(new string[] {
                         "node"});
-            table1345.AddRow(new string[] {
+            table1343.AddRow(new string[] {
                         "Assign(input)"});
-            table1345.AddRow(new string[] {
+            table1343.AddRow(new string[] {
                         "Decision"});
-            table1345.AddRow(new string[] {
+            table1343.AddRow(new string[] {
                         "False"});
-            table1345.AddRow(new string[] {
+            table1343.AddRow(new string[] {
                         "Assign(error)"});
 #line 20
-  testRunner.Then("the covered nodes are", ((string)(null)), table1345, "Then ");
+  testRunner.Then("the covered nodes are", ((string)(null)), table1343, "Then ");
 #line 26
   testRunner.And("the test coverage is \"35%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -148,53 +148,53 @@ this.ScenarioSetup(scenarioInfo);
 #line 29
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1346 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1344 = new TechTalk.SpecFlow.Table(new string[] {
                         "name"});
-            table1346.AddRow(new string[] {
+            table1344.AddRow(new string[] {
                         "Test Decision false branch"});
-            table1346.AddRow(new string[] {
+            table1344.AddRow(new string[] {
                         "Test Decision true branch"});
 #line 30
-  testRunner.Given("\"wf-one\" saved test(s) below", ((string)(null)), table1346, "Given ");
+  testRunner.Given("\"wf-one\" saved test(s) below", ((string)(null)), table1344, "Given ");
 #line 34
   testRunner.And("generate test coverage is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
   testRunner.When("I run all the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1347 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1345 = new TechTalk.SpecFlow.Table(new string[] {
                         "name",
                         "coverage"});
-            table1347.AddRow(new string[] {
+            table1345.AddRow(new string[] {
                         "Test Decision false branch",
                         "35%"});
-            table1347.AddRow(new string[] {
+            table1345.AddRow(new string[] {
                         "Test Decision true branch",
                         "50%"});
 #line 36
-  testRunner.And("the test coverage is", ((string)(null)), table1347, "And ");
+  testRunner.And("the test coverage is", ((string)(null)), table1345, "And ");
 #line 40
   testRunner.Then("the total workflow test coverage is \"85%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1348 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1346 = new TechTalk.SpecFlow.Table(new string[] {
                         "node"});
-            table1348.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "Assign(input)"});
-            table1348.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "Decision"});
-            table1348.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "False branch"});
-            table1348.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "Assign(error)"});
-            table1348.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "Assign(input)"});
-            table1348.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "Decision"});
-            table1348.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "True branch"});
-            table1348.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "SQL"});
 #line 41
-  testRunner.And("the nodes covered are", ((string)(null)), table1348, "And ");
+  testRunner.And("the nodes covered are", ((string)(null)), table1346, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -210,25 +210,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 53
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1349 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1347 = new TechTalk.SpecFlow.Table(new string[] {
                         "name"});
-            table1349.AddRow(new string[] {
+            table1347.AddRow(new string[] {
                         "Test Decision false branch"});
-            table1349.AddRow(new string[] {
+            table1347.AddRow(new string[] {
                         "Test Decision true branch"});
 #line 54
-  testRunner.Given("\"wf-one\" saved test(s) below", ((string)(null)), table1349, "Given ");
+  testRunner.Given("\"wf-one\" saved test(s) below", ((string)(null)), table1347, "Given ");
 #line 58
   testRunner.And("I run all the tests with generate coverage selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1350 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1348 = new TechTalk.SpecFlow.Table(new string[] {
                         "node"});
-            table1350.AddRow(new string[] {
+            table1348.AddRow(new string[] {
                         "Assign(person)"});
-            table1350.AddRow(new string[] {
+            table1348.AddRow(new string[] {
                         "SMTP Send"});
 #line 59
-  testRunner.Then("the nodes not covered are", ((string)(null)), table1350, "Then ");
+  testRunner.Then("the nodes not covered are", ((string)(null)), table1348, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -250,28 +250,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 67
   testRunner.When("a folder containing test coverage reports is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1351 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1349 = new TechTalk.SpecFlow.Table(new string[] {
                         "total",
                         "passed",
                         "failed"});
-            table1351.AddRow(new string[] {
+            table1349.AddRow(new string[] {
                         "1324",
                         "1300",
                         "24"});
 #line 68
-  testRunner.Then("information bar will have these values", ((string)(null)), table1351, "Then ");
+  testRunner.Then("information bar will have these values", ((string)(null)), table1349, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1352 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1350 = new TechTalk.SpecFlow.Table(new string[] {
                         "name",
                         "coverage"});
-            table1352.AddRow(new string[] {
+            table1350.AddRow(new string[] {
                         "Folder-one",
                         "70 %"});
-            table1352.AddRow(new string[] {
+            table1350.AddRow(new string[] {
                         "Folder-two",
                         "warning: no coverage report found"});
 #line 71
-  testRunner.And("the per folder coverage summary is", ((string)(null)), table1352, "And ");
+  testRunner.And("the per folder coverage summary is", ((string)(null)), table1350, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -291,69 +291,69 @@ this.ScenarioSetup(scenarioInfo);
 #line 79
   testRunner.And("a folder containing test coverage reports is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1353 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1351 = new TechTalk.SpecFlow.Table(new string[] {
                         "total",
                         "passed",
                         "failed"});
-            table1353.AddRow(new string[] {
+            table1351.AddRow(new string[] {
                         "1324",
                         "1300",
                         "24"});
 #line 80
-  testRunner.And("information bar will have these values", ((string)(null)), table1353, "And ");
+  testRunner.And("information bar will have these values", ((string)(null)), table1351, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1354 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1352 = new TechTalk.SpecFlow.Table(new string[] {
                         "name",
                         "coverage",
                         "branch_coverage"});
-            table1354.AddRow(new string[] {
+            table1352.AddRow(new string[] {
                         "wf-one",
                         "85%",
                         "30%"});
-            table1354.AddRow(new string[] {
+            table1352.AddRow(new string[] {
                         "wf-two",
                         "warning: no coverage report found",
                         "0%"});
 #line 83
-  testRunner.And("the per workflow coverage summary is", ((string)(null)), table1354, "And ");
+  testRunner.And("the per workflow coverage summary is", ((string)(null)), table1352, "And ");
 #line 87
   testRunner.When("I select \"wf-one\" within test coverage summary view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table1355 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1353 = new TechTalk.SpecFlow.Table(new string[] {
                         "passed",
                         "node"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "true",
                         "assign(input)"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "false",
                         "Decision"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "true",
                         "False branch"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "true",
                         "Assign(error)"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "true",
                         "Assign(input)"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "true",
                         "Decision"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "true",
                         "True branch"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "true",
                         "SQL"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "false",
                         "Assign(person)"});
-            table1355.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "false",
                         "SMTP Send"});
 #line 88
-  testRunner.Then("the workflow nodes will show", ((string)(null)), table1355, "Then ");
+  testRunner.Then("the workflow nodes will show", ((string)(null)), table1353, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -16,6 +16,7 @@ using Moq;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class ExplorerViewModelTests
     {
         ExplorerViewModel _target;
@@ -102,6 +103,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod,Timeout(60000)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
+        [DoNotParallelize]
         public void ExplorerViewModel_ValidateEnvironmentContainsDoesNotAdd()
         {
             //arrange

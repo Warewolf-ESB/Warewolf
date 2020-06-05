@@ -43,6 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Language Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_Two_Sclars_Char_Merge_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, "", "Left"));
@@ -55,6 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_Recordset_With_Star_Char_Merge_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Chars", ",", 1, "", "Left"));
@@ -66,6 +68,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_RecordsetWithStarCharMerge_Given_CharSameAsLastCharacterInEntry_Expected_DataMergedTogether()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Chars", "s", 1, "", "Left"));
@@ -77,6 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_Recordset_And_Scalar_Char_Merge_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(4).FirstName]]", "Chars", " works at ", 1, "", "Left"));
@@ -89,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_Two_Recordsets_Char_Merge_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Chars", "'s phone number is ", 1, "", "Left"));
@@ -106,6 +111,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region New Line Merge Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_Two_Fields_In_Recordsets_NewLine_Merge_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Chars", ",", 1, "", "Left"));
@@ -135,6 +141,7 @@ Wallis,Buchan
         #region Tab Merge Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_Two_Fields_In_Recordsets_Tab_Merge_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Chars", ",", 1, "", "Left"));
@@ -152,6 +159,7 @@ Wallis,Buchan
         #region No Merge Collection Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_With_No_Merge_Collection_Expected_Blank_Result()
         {
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
@@ -165,6 +173,7 @@ Wallis,Buchan
         #region Index Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_Two_Fields_In_Recordsets_Index_Merge_Blank_Padding_Left_Align_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Index", "1", 1, "", "Left"));
@@ -191,6 +200,7 @@ WBuchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_Two_Fields_In_Recordsets_Index_Merge_Char_Padding_Left_Align_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Index", "10", 1, "0", "Left"));
@@ -221,6 +231,7 @@ Wallis0000Buchan
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
         }
         [TestMethod]
+        [Timeout(60000)]
         public void Merge_Two_Fields_In_Recordsets_Index_Merge_Char_Padding_Right_Align_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Index", "10", 1, "0", "Right"));
@@ -247,6 +258,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MergeTwoFieldsInRecordsetsIndexWithIndexEqualToDataLengthExpectedNoDataLoss()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Index", "6", 1, "", "Left"));
@@ -263,6 +275,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMerge_Execute")]
         public void DsfDataMerge_Execute_AtValueNegativeForIndextType_HasErrorMessage()
@@ -284,6 +297,7 @@ Wallis0000Buchan
         #endregion
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_UpdateForEachInputs")]
         public void DsfDataMergeActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -300,6 +314,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_GetOutputs")]
         public void DsfDataMergeActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -314,6 +329,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_UpdateForEachInputs")]
         public void DsfDataMergeActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
@@ -334,6 +350,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_UpdateForEachOutputs")]
         public void DsfDataMergeActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -350,6 +367,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_UpdateForEachOutputs")]
         public void DsfDataMergeActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -368,6 +386,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_UpdateForEachOutputs")]
         public void DsfDataMergeActivity_UpdateForEachOutputs_1Updates_UpdateCountNumber()
@@ -385,6 +404,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_GetForEachInputs")]
         public void DsfDataMergeActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -406,6 +426,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_GetForEachOutputs")]
         public void DsfDataMergeActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
@@ -424,6 +445,7 @@ Wallis0000Buchan
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         [TestCategory("DsfDataMergeActivity_GetForEachOutputs")]
         public void DsfDataMergeActivity_GetState_Returns_Inputs_And_Outputs()

@@ -14,6 +14,7 @@ namespace Dev2.Tests.Activities
     public class TestMockStepTests
     {
         [TestMethod]
+        [Timeout(60000)]
         public void TestMockStep_ServiceTestOutputs_HaveOutput()
         {
             var originalAct = new Mock<DsfActivityAbstract<string>>();
@@ -39,6 +40,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void TestMockStep_Equality()
         {
             var act = new TestMockStep();
@@ -54,6 +56,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestMockStep_GetState")]
         public void TestMockStep_GetState_ReturnsStateVariable()
