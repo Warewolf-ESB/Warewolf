@@ -29,23 +29,35 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var user = User;
 
-            if (isUrlWithTokenPrefix)
+            try
             {
-                if (!TryOverrideByToken(ref user))
+                if (isUrlWithTokenPrefix)
                 {
-                    throw new HttpException(401, Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
+                    if (!TryOverrideByToken(ref user))
+                    {
+                        throw new HttpException(401,
+                            Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
+                    }
                 }
-            } else {
-                if (!IsAuthenticated())
+                else
                 {
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    if (!IsAuthenticated())
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    }
                 }
-            }
 
-            var context = new WebServerContext(Request, requestVariables) { Request = { User = user } };
-            var handler = CreateHandler<TRequestHandler>();
-            handler.ProcessRequest(context);
-            return context.ResponseMessage;
+                var context = new WebServerContext(Request, requestVariables) {Request = {User = user}};
+                var handler = CreateHandler<TRequestHandler>();
+                handler.ProcessRequest(context);
+                return context.ResponseMessage;
+            }
+            catch (HttpException e)
+            {
+                var response  = Request.CreateResponse((HttpStatusCode)e.GetHttpCode());
+                response.ReasonPhrase = e.Message;
+                return response;
+            }
         }
 
         private bool TryOverrideByToken(ref IPrincipal user)

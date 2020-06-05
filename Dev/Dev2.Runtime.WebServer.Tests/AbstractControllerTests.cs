@@ -44,31 +44,18 @@ namespace Dev2.Runtime.WebServer.Tests
         [Owner("Rory McGuire")]
         public void AbstractController_ProcessRequest_GivenTokenEmptyNotAuthenticated_ExpectUnauthorized()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/token/Hello%20World.json?Name=")
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/token/Hello%20World.json?Name=")
             {
                 Headers = { {"Authorization", "bearer "}},
+                Content = new StringContent("Some content"),
             };
             var controller = new AbstractControllerForTesting
             {
                 Request = request
             };
-            var hadHttpException = false;
-            try
-            {
-                var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(true);
-                Assert.AreEqual(response.ReasonPhrase, Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
-                Assert.Fail("expected exception");
-            }
-            catch (HttpException e)
-            {
-                Assert.IsTrue(string.Equals(e.Message, Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException, StringComparison.InvariantCultureIgnoreCase));
-                hadHttpException = true;
-            } catch (Exception e)
-            {
-                Assert.Fail($"expected HttpException but found {e.GetType().FullName} with message \"{e.Message}\"");
-            }
 
-            Assert.IsTrue(hadHttpException, "expected HttpException");
+            var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(true);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException, response.ReasonPhrase);
         }
 
         [TestMethod]
@@ -85,23 +72,8 @@ namespace Dev2.Runtime.WebServer.Tests
             {
                 Request = request
             };
-            var hadHttpException = false;
-            try
-            {
-                var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(true);
-                Assert.AreEqual(response.ReasonPhrase, Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
-                Assert.Fail("expected exception");
-            }
-            catch (HttpException e)
-            {
-                Assert.IsTrue(string.Equals(e.Message, Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException, StringComparison.InvariantCultureIgnoreCase));
-                hadHttpException = true;
-            } catch (Exception e)
-            {
-                Assert.Fail($"expected HttpException, not {e.Message}");
-            }
-
-            Assert.IsTrue(hadHttpException, "expected HttpException");
+            var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(true);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException, response.ReasonPhrase);
         }
 
 
