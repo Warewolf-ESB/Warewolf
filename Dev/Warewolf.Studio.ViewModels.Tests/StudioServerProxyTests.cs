@@ -79,7 +79,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var studioServerProxy = new StudioServerProxy(new Mock<ICommunicationControllerFactory>().Object, new Mock<IEnvironmentConnection>().Object);
             var mockQueryManager = new Mock<IQueryManager>();
-            mockQueryManager.Setup(manager => manager.Load(false)).Returns(Task.FromResult(new Mock<IExplorerItem>().Object));
+            mockQueryManager.Setup(manager => manager.Load(false, It.IsAny<IPopupController>())).Returns(Task.FromResult(new Mock<IExplorerItem>().Object));
             studioServerProxy.QueryManagerProxy = mockQueryManager.Object;
             //------------Execute Test---------------------------
             var item = studioServerProxy.LoadExplorer().Result;
