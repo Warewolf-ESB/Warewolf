@@ -350,6 +350,144 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
         }
 
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
+        public void AuthorizationServiceBase_IsAuthorized_GivenResourceAndGroupPermissions_ExpectOverrideSystemDefault_ExecuteViewSuccess()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var permissionBuilder = new PermissionTableBuilder();
+            permissionBuilder.AddServerPermission("Warewolf Administrators", AuthorizationContext.View | AuthorizationContext.Execute | AuthorizationContext.Administrator | AuthorizationContext.Contribute | AuthorizationContext.DeployFrom | AuthorizationContext.DeployTo);
+            permissionBuilder.AddServerPermission("Public", AuthorizationContext.None);
+            permissionBuilder.AddResourcePermission(resource, "MyTokenAccessibleResource", "Public", AuthorizationContext.View | AuthorizationContext.Execute);
+            var permissions = permissionBuilder.Permissions;
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.Setup(o => o.Permissions).Returns(() => permissions);
+            var mockSecuritySettings = new Mock<ISecuritySettings>();
+            var hmac = new HMACSHA256();
+            var secretKey = Convert.ToBase64String(hmac.Key);
+            mockSecuritySettings.Setup(o => o.ReadSettingsFile(It.IsAny<IResourceNameProvider>())).Returns(new SecuritySettingsTO(permissions)
+            {
+                SecretKey = secretKey,
+            });
+            var jwtManager = new JwtManager(mockSecuritySettings.Object);
+            var tokenData = jwtManager.GenerateToken("{\"UserGroups\":[{\"Name\":\"MySecretGroup\"}]}");
+            var principal = jwtManager.BuildPrincipal(tokenData);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
+
+
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
+        public void AuthorizationServiceBase_IsAuthorized_GivenResourceAndGroupPermissions_ExpectOverrideSystemDefault_ExecuteViewReject()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var permissionBuilder = new PermissionTableBuilder();
+            permissionBuilder.AddServerPermission("Warewolf Administrators", AuthorizationContext.View | AuthorizationContext.Execute | AuthorizationContext.Administrator | AuthorizationContext.Contribute | AuthorizationContext.DeployFrom | AuthorizationContext.DeployTo);
+            permissionBuilder.AddServerPermission("Public", AuthorizationContext.View | AuthorizationContext.Execute);
+            permissionBuilder.AddResourcePermission(resource, "MyTokenAccessibleResource", "Public", AuthorizationContext.None);
+            var permissions = permissionBuilder.Permissions;
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.Setup(o => o.Permissions).Returns(() => permissions);
+            var mockSecuritySettings = new Mock<ISecuritySettings>();
+            var hmac = new HMACSHA256();
+            var secretKey = Convert.ToBase64String(hmac.Key);
+            mockSecuritySettings.Setup(o => o.ReadSettingsFile(It.IsAny<IResourceNameProvider>())).Returns(new SecuritySettingsTO(permissions)
+            {
+                SecretKey = secretKey,
+            });
+            var jwtManager = new JwtManager(mockSecuritySettings.Object);
+            var tokenData = jwtManager.GenerateToken("{\"UserGroups\":[{\"Name\":\"MySecretGroup\"}]}");
+            var principal = jwtManager.BuildPrincipal(tokenData);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
+
+
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
+        public void AuthorizationServiceBase_IsAuthorized_GivenResourceAndGroupPermissions_ExpectOverrideSystemDefaultDoesNotAffectOtherWorkflow()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var permissionBuilder = new PermissionTableBuilder();
+            permissionBuilder.AddServerPermission("Warewolf Administrators", AuthorizationContext.View | AuthorizationContext.Execute | AuthorizationContext.Administrator | AuthorizationContext.Contribute | AuthorizationContext.DeployFrom | AuthorizationContext.DeployTo);
+            permissionBuilder.AddServerPermission("Public", AuthorizationContext.View | AuthorizationContext.Execute);
+            permissionBuilder.AddResourcePermission(resource, "SomeOtherResource", "Public", AuthorizationContext.None);
+            var permissions = permissionBuilder.Permissions;
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.Setup(o => o.Permissions).Returns(() => permissions);
+            var mockSecuritySettings = new Mock<ISecuritySettings>();
+            var hmac = new HMACSHA256();
+            var secretKey = Convert.ToBase64String(hmac.Key);
+            mockSecuritySettings.Setup(o => o.ReadSettingsFile(It.IsAny<IResourceNameProvider>())).Returns(new SecuritySettingsTO(permissions)
+            {
+                SecretKey = secretKey,
+            });
+            var jwtManager = new JwtManager(mockSecuritySettings.Object);
+            var tokenData = jwtManager.GenerateToken("{\"UserGroups\":[{\"Name\":\"MySecretGroup\"}]}");
+            var principal = jwtManager.BuildPrincipal(tokenData);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
+
+
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+        }
+
+        internal class PermissionTableBuilder
+        {
+            public List<WindowsGroupPermission> Permissions = new List<WindowsGroupPermission>();
+
+            public void AddResourcePermission(Guid resourceId, string resourceName, string groupName, AuthorizationContext authorizationContext)
+            {
+                Permissions.Add(new WindowsGroupPermission
+                {
+                    ResourceID = resourceId,
+                    ResourceName = resourceName,
+                    WindowsGroup = groupName,
+                    View = (authorizationContext & AuthorizationContext.View) != 0,
+                    Execute = (authorizationContext & AuthorizationContext.Execute) != 0,
+                    Contribute = (authorizationContext & AuthorizationContext.Contribute) != 0,
+                });
+            }
+
+            public void AddServerPermission(string groupName, AuthorizationContext authorizationContext)
+            {
+                Permissions.Add(new WindowsGroupPermission
+                {
+                    WindowsGroup = groupName,
+                    View = (authorizationContext & AuthorizationContext.View) != 0,
+                    Execute = (authorizationContext & AuthorizationContext.Execute) != 0,
+                    Contribute = (authorizationContext & AuthorizationContext.Contribute) != 0,
+                });
+            }
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
