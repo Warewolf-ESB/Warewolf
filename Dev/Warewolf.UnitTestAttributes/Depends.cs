@@ -27,7 +27,7 @@ namespace Warewolf.UnitTestAttributes
         public static readonly string SharepointBackupServer = BackupServer;
         static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
         static readonly string BackupCIRemotePort = "3142";
-        static readonly bool EnableDocker = false;
+        static readonly bool EnableDocker = true;
 
         public enum ContainerType
         {
