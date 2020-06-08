@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,12 +32,9 @@ using Npgsql;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Diagnostics;
-using System.Transactions;
-using System.Xml;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using TSQL;
-using System.Linq;
 
 namespace Dev2.Services.Execution
 {
@@ -250,7 +247,16 @@ namespace Dev2.Services.Execution
             {
                 displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
             }
-            environment.Assign(displayExpression, value.ToString(), update);
+
+            if (value is DateTime)
+            {
+              environment.Assign(displayExpression, string.Format("{0:yyyy-MM-dd HH:mm:ss.fffffff}", value), update);
+            }
+            else
+            {
+                environment.Assign(displayExpression, value.ToString(), update);
+            }
+
         }
 
         static object GetColumnValue(DataTable executeService, DataRow row, IServiceOutputMapping serviceOutputMapping) => executeService.Columns.Contains("ReadForXml") ? row["ReadForXml"] : row[serviceOutputMapping.MappedFrom];
