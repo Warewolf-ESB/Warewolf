@@ -32,6 +32,7 @@ using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
+using Nest;
 using Warewolf.Resource.Errors;
 
 
@@ -104,14 +105,22 @@ namespace Dev2.Runtime.WebServer.Hubs
             {
                 return;
             }
-            var user = Context.User;
-            var permissionsMemo = new PermissionsModifiedMemo
+
+            try
             {
-                ModifiedPermissions = ServerAuthorizationService.Instance.GetPermissions(user),
-                ServerID = HostSecurityProvider.Instance.ServerID
-            };
-            var serializedMemo = _serializer.Serialize(permissionsMemo);
-            Clients.Caller.SendPermissionsMemo(serializedMemo);
+                var user = Context.User;
+                var permissionsMemo = new PermissionsModifiedMemo
+                {
+                    ModifiedPermissions = ServerAuthorizationService.Instance.GetPermissions(user),
+                    ServerID = HostSecurityProvider.Instance.ServerID
+                };
+                var serializedMemo = _serializer.Serialize(permissionsMemo);
+                Clients.Caller.SendPermissionsMemo(serializedMemo);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn($"unable to notify remote client with PermissionsMemo, error: {e.Message}", GlobalConstants.WarewolfWarn);
+            }
         }
 
         void SendResourceMessages(Guid resourceId, IList<ICompileMessageTO> compileMessageTos)
