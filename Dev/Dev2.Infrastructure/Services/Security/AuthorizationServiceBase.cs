@@ -198,24 +198,17 @@ namespace Dev2.Services.Security
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
             var serverPermissions = _securityService.Permissions;
-            serverPermissions = serverPermissions.Where(p => p.Matches(resource)).ToList();
-            var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
-            var groupPermissions = new List<WindowsGroupPermission>();
+            var permissionsForResource = serverPermissions.Where(p => !p.IsServer && p.Matches(resource));
+            permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
 
-            foreach (var permission in serverPermissions)
-            {
-                if (resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
-                {
-                    continue;
-                }
-                if (IsInRole(principal, permission) && permission.Matches(resource))
-                {
-                    groupPermissions.Add(permission);
-                }
-            }
+            var serverPermissionsNotOverridden = serverPermissions.Where(permission =>
+                permissionsForResource.All(groupPermission => groupPermission.WindowsGroup != permission.WindowsGroup));
 
-            groupPermissions.AddRange(resourcePermissions);
-            return groupPermissions;
+            var permissionsForServer = serverPermissionsNotOverridden
+                .Where(permission => IsInRole(principal, permission) && permission.Matches(resource)).ToList();
+
+            permissionsForServer.AddRange(permissionsForResource);
+            return permissionsForServer;
         }
 
         bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
