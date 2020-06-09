@@ -881,7 +881,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DebugOutputViewModel_SelectAll")]
-        [DoNotParallelize]
+        [DoNotParallelize]//Studio event aggregation with EventPublishers.Studio
         public void DebugOutputViewModel_SelectAll_Execute_PublishesClearSelection()
         {
             //------------Setup for test--------------------------
