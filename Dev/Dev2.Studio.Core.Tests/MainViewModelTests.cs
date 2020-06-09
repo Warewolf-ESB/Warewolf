@@ -243,7 +243,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.ActiveServer).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
 
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
 
@@ -298,7 +298,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
 
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.AtLeastOnce());
 
@@ -1206,7 +1206,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
             var serverID = Guid.NewGuid();
 
@@ -1265,7 +1265,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.Source).Returns(env.Object);
             envRepo.Setup(e => e.Get(It.IsAny<Guid>())).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
             var serverID = Guid.NewGuid();
 
@@ -1328,7 +1328,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
 
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
             var serverID = Guid.NewGuid();
 
@@ -1393,7 +1393,7 @@ namespace Dev2.Core.Tests
             CustomContainer.DeRegister<IServerRepository>();
             CustomContainer.Register(envRepo.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
 
             #region Setup WorkSurfaceContextViewModel1
@@ -1454,7 +1454,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
 
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object);
             var resourceID = Guid.NewGuid();
 
             #region Setup WorkSurfaceContextViewModel1
@@ -1514,7 +1514,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(mock => mock.Source).Returns(env.Object);
 
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
 
             viewModel.TestClose();
             wsiRepo.Verify(r => r.Write());
@@ -1561,11 +1561,10 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
             envRepo.Setup(e => e.Source).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             viewModel.Items.Add(contextViewModel);
 
             viewModel.TestClose();
-
         }
 
         [TestMethod]
