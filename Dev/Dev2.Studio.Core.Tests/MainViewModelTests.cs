@@ -253,6 +253,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [DoNotParallelize]//Studio event aggregation with EventPublishers.Studio
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
         {
             var workspaceID = Guid.NewGuid();
