@@ -9,6 +9,7 @@
 */
 
 
+using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Web;
@@ -27,7 +28,7 @@ namespace Dev2.Runtime.WebServer.Tests
         [TestCategory(nameof(ServiceTestCoverageExecutor))]
         public void ServiceTestCoverageExecutor_GetTestCoverageReports_ShouldReturnBlank()
         {
-            var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(new Mock<ICoverageDataObject>().Object, Guid.NewGuid(), new Communication.Dev2JsonSerializer(), new Mock<ITestCoverageCatalog>().Object, new Mock<IResourceCatalog>().Object, out string executePayload);
+            var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(new Mock<ICoverageDataObject>().Object, Guid.NewGuid(), new Communication.Dev2JsonSerializer(), new Mock<ITestCoverageCatalog>().Object, new Mock<ITestCatalog>().Object, new Mock<IResourceCatalog>().Object, out string executePayload);
 
             Assert.IsNull(executePayload);
             Assert.AreEqual("HTML", sut.FormatName);
