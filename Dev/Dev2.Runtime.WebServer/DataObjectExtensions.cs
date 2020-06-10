@@ -255,7 +255,6 @@ namespace Dev2.Runtime.WebServer
             if (IsRunAllCoverageRequest(coverageData.ReturnType, serviceName))
             {
                 var pathOfAllResources = webRequest.GetPathForAllResources();
-                //dataObject.ResourceID = Guid.Empty;
                 var path = pathOfAllResources;
                 if (string.IsNullOrEmpty(pathOfAllResources))
                 {
@@ -531,6 +530,12 @@ namespace Dev2.Runtime.WebServer
             var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, catalog);
             var allTests = TestCatalog.Instance.FetchAllTests();
 
+            var workflowTestResults = new WorkflowTestResults();
+            foreach (var test in allTests)
+            {
+                workflowTestResults.Add(test);
+            }
+            
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
 
             var stringWriter = new StringWriter();
@@ -538,7 +543,7 @@ namespace Dev2.Runtime.WebServer
             using (var writer = new HtmlTextWriter(stringWriter))
             {
                 writer.SetupNavBarHtml("nav-bar-row", "Coverage Summary");
-                allTests.SetupCountSummaryHtml(writer, "count-summary row", allCoverageReports, coverageData);
+                workflowTestResults.Results.SetupCountSummaryHtml(writer, "count-summary row", allCoverageReports, coverageData);
 
                 allCoverageReports.AllCoverageReportsSummary
                     .Where(o => o.HasTestReports)
@@ -708,6 +713,10 @@ namespace Dev2.Runtime.WebServer
 
     public class WorkflowTestResults
     {
+        public WorkflowTestResults()
+        {
+        }
+
         public WorkflowTestResults(IWarewolfResource res)
         {
             Resource = res;
@@ -723,9 +732,10 @@ namespace Dev2.Runtime.WebServer
             {
                 OldTestName = result.OldTestName,
                 TestName = result.TestName,
-                TestPassed = !IsTestInValid(result),
+                TestPassed = IsTestPassed(result),
                 TestInvalid = IsTestInValid(result),
-                Result = new TestRunResult 
+                TestFailing = IsTestFailing(result),
+                Result = new TestRunResult
                 {
                     TestName = result.TestName,
                     Message = IsTestInValid(result) ? "Test has no selected nodes" : result.FailureMessage,
@@ -734,9 +744,19 @@ namespace Dev2.Runtime.WebServer
             });
         }
 
+        private bool IsTestFailing(IServiceTestModelTO test)
+        {
+            return IsTestInValid(test) is false && IsTestPassed(test) is false;
+        }
+
+        private bool IsTestPassed(IServiceTestModelTO test)
+        {
+            return IsTestInValid(test) is false && test.TestFailing is false;
+        }
+
         private bool IsTestInValid(IServiceTestModelTO test)
         {
-            return test.TestSteps is null;
+            return test.TestSteps is null || test.TestSteps.Count is 0;
         }
     }
 }

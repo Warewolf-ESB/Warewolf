@@ -156,7 +156,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            writer.Write("Total Test Count: " + allTests.Count.ToString());
+            writer.Write("Total Test Count: " + allTests.Count);
             writer.RenderEndTag();
 
             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
