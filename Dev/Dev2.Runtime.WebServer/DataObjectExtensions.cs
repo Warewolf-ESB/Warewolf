@@ -266,7 +266,7 @@ namespace Dev2.Runtime.WebServer
             }
             else if (resource != null)
             {
-                coverageData.CoverageReportResourceIds = new[] { resource.ResourceID }; 
+                coverageData.CoverageReportResourceIds = new[] { resource.ResourceID };
             }
         }
 
@@ -525,17 +525,17 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
+        public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
         {
             var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, catalog);
-            var allTests = TestCatalog.Instance.FetchAllTests();
+            var allTests = testCatalog.FetchAllTests();
 
             var workflowTestResults = new WorkflowTestResults();
             foreach (var test in allTests)
             {
                 workflowTestResults.Add(test);
             }
-            
+
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
 
             var stringWriter = new StringWriter();
