@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,10 +20,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
     [TestClass]
     public class DataTableMapperTest
     {
-
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("DataTableMapper_Map")]
+        [TestCategory(nameof(DataTableMapper))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DataTableMapper_Map_WhenNull_ExpectNull()
         {
@@ -31,12 +30,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             var dataTableMapper = new DataTableMapper();
             //------------Execute Test---------------------------
             dataTableMapper.Map(null);
-
         }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("DataTableMapper_Map")]
+        [TestCategory(nameof(DataTableMapper))]
         public void DataTableMapper_Map_WhenValidDataTable_ExpectValidPaths()
         {
             //------------Setup for test--------------------------
@@ -65,7 +63,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("DataTableMapper_Map")]
+        [TestCategory(nameof(DataTableMapper))]
         public void DataTableMapper_Map_WhenValidDataTableWithHTMLData_ExpectValidPaths()
         {
             //------------Setup for test--------------------------
@@ -97,6 +95,31 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
             Assert.AreEqual("Foo().Col2", result[1].ActualPath);
             Assert.AreEqual("Foo().Col2", result[1].DisplayPath);
             Assert.AreEqual("b__COMMA__" + htmlFragment, result[1].SampleData);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(DataTableMapper))]
+        public void DataTableMapper_Map_WhenValidDataTableWithDataTimeField_ExpectMillisecondsInResult()
+        {
+            //------------Setup for test--------------------------
+            var dataTableMapper = new DataTableMapper();
+            var obj = new DataTable("Foo");
+            DataColumn colDateTime = new DataColumn("DateTest");
+            colDateTime.DataType = Type.GetType("System.DateTime");
+            obj.Columns.Add(colDateTime);
+
+            var myNewRow = obj.NewRow();
+            myNewRow["DateTest"] = DateTime.Parse("10/06/2020 02:04:16.645 PM");
+            obj.Rows.Add(myNewRow);
+            //------------Execute Test---------------------------
+            var result = dataTableMapper.Map(obj).ToList();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("Foo().DateTest", result[0].ActualPath);
+            Assert.AreEqual("Foo().DateTest", result[0].DisplayPath);
+            Assert.AreEqual("10/06/2020 02:04:16.645 PM", result[0].SampleData);
         }
     }
 }

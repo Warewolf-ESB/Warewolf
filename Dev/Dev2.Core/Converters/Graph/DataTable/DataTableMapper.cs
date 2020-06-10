@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,9 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Data;
 using Dev2.Common;
+using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Dev2.Converters.Graph.DataTable
@@ -63,7 +65,21 @@ namespace Dev2.Converters.Graph.DataTable
             {
                 for (int i = 0; i < totalCols; i++)
                 {
-                    var itemData = row.ItemArray[i].ToString();
+                    var itemData = row.ItemArray[i];
+                    if (row.ItemArray[i] is DateTime)
+                    {
+                        var error = "";
+                        var format = DateTimeConverterFactory.CreateFormatter();
+                        if (format.TryFormat(((DateTime) row.ItemArray[i]), out var date, out error))
+                        {
+                            itemData = date;
+                        }
+                    }
+                    else
+                    {
+                        itemData = row.ItemArray[i].ToString();
+                    }
+
                     result[i].SampleData += itemData;
                     if (rowCnt < totalRows)
                     {

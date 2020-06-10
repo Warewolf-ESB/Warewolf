@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,6 @@ using Dev2.Common.DateAndTime.TO;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Globalization;
 
 namespace Dev2.Common.Tests.DateAndTime
 {
@@ -467,6 +466,35 @@ namespace Dev2.Common.Tests.DateAndTime
 
             Assert.IsTrue(formatResult);
             Assert.AreEqual("2011/10/13 10:00:00.000 AM", result);
+            Assert.AreEqual("", errorMsg);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(StandardDateTimeFormatter))]
+        public void StandardDateTimeFormatter_TryFormat_KeepsMilliseconds()
+        {
+            var date = "2011/10/14 08:10:50.147 PM";
+            var standardDateTimeFormatter = new StandardDateTimeFormatter();
+
+            var formatResult = standardDateTimeFormatter.TryFormat(DateTime.Parse(date), out string result, out string errorMsg);
+
+            Assert.IsTrue(formatResult);
+            Assert.AreEqual("14/10/2011 08:10:50.147 PM", result);
+            Assert.AreEqual("", errorMsg);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(StandardDateTimeFormatter))]
+        public void StandardDateTimeFormatter_TryFormat_DateTimeDataType_NoMilliseconds()
+        {
+            var date = "14/10/2011 08:10:50 PM";
+            var standardDateTimeFormatter = new StandardDateTimeFormatter();
+
+            var formatResult = standardDateTimeFormatter.TryFormat(DateTime.Parse(date), out string result, out string errorMsg);
+
+            Assert.IsTrue(formatResult);
+            Assert.AreEqual("14/10/2011 08:10:50 PM", result);
             Assert.AreEqual("", errorMsg);
         }
     }

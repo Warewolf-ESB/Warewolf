@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,6 +38,30 @@ namespace Dev2.Common.DateAndTime
             private set { _listOfModifierTypes = value; }
         }
 
+        public override bool TryFormat(DateTime dateTimeTO, out string result, out string error)
+        {
+            error = "";
+            result = "";
+            try
+            {
+                var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                var longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                var finalPattern = shortPattern + " " + longPattern;
+                var outputFormat = finalPattern;
+                if (dateTimeTO.Millisecond > 0 && finalPattern.Contains("ss"))
+                {
+                    outputFormat = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
+                }
+                result = dateTimeTO.ToString(outputFormat);
+                return true;
+            }
+            catch
+            {
+                error = string.Concat("Unrecognized format '", dateTimeTO, "'.");
+                return false;
+            }
+        }
+
         public override bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
         {
             result = "";
@@ -63,14 +87,15 @@ namespace Dev2.Common.DateAndTime
             {
                 nothingDied = false;
             }
+
             return nothingDied;
         }
 
         private static string ApplyDateTimeFormatParts(IDateTimeOperationTO dateTimeTO, string result, out string error, IDateTimeParser dateTimeParser, out bool nothingDied, IDateTimeResultTO dateTimeResultTO, DateTime tmpDateTime)
         {
             var outputFormat = string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat)
-                                    ? dateTimeTO.InputFormat
-                                    : dateTimeTO.OutputFormat;
+                ? dateTimeTO.InputFormat
+                : dateTimeTO.OutputFormat;
             if (string.IsNullOrWhiteSpace(outputFormat))
             {
                 var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
@@ -188,11 +213,11 @@ namespace Dev2.Common.DateAndTime
         static string Format_dy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.DayOfYear.ToString(CultureInfo.InvariantCulture);
 
         static string Format_w(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday)
-                    .ToString(CultureInfo.InvariantCulture);
+            .ToString(CultureInfo.InvariantCulture);
 
         static string Format_ww(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday)
-                    .ToString(CultureInfo.InvariantCulture)
-                    .PadLeft(2, '0');
+            .ToString(CultureInfo.InvariantCulture)
+            .PadLeft(2, '0');
 
         static string Format_24h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("HH");
 
