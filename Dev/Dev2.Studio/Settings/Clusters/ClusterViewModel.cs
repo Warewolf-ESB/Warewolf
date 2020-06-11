@@ -178,6 +178,7 @@ namespace Dev2.Settings.Clusters
             {
                 Followers = list.ToList<ServerFollower>();
             };
+            Followers = list.ToList<ServerFollower>();
         }
 
         private void CopyClusterKey()
