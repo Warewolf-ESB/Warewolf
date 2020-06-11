@@ -34,7 +34,6 @@ using Enum = System.Enum;
 using System.IO;
 using System.Web.UI;
 using Dev2.Data;
-using log4net.Util;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -307,9 +306,9 @@ namespace Dev2.Runtime.WebServer
         {
             IWarewolfResource localResource = null;
 
-            if (Guid.TryParse(serviceName, out Guid resourceID))
+            if (Guid.TryParse(serviceName, out var resourceId))
             {
-                localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
+                localResource = catalog.GetResource(dataObject.WorkspaceID, resourceId);
                 if (localResource != null)
                 {
                     MapServiceToDataObjects(dataObject, localResource);
@@ -331,9 +330,9 @@ namespace Dev2.Runtime.WebServer
             if (localResource == null)
             {
                 var stringDynaResourceId = serviceName.Replace(".xml", "").Replace(".bite", "").Replace(".json", "");
-                if (Guid.TryParse(stringDynaResourceId, out resourceID))
+                if (Guid.TryParse(stringDynaResourceId, out resourceId))
                 {
-                    localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
+                    localResource = catalog.GetResource(dataObject.WorkspaceID, resourceId);
                     if (localResource != null)
                     {
                         MapServiceToDataObjects(dataObject, localResource);
