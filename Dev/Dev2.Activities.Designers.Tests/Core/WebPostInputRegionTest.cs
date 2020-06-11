@@ -17,7 +17,6 @@ using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,12 +33,12 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void WebPostInputRegion_TestInputCtor()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebPostActivity() { SourceId = id };
+            var act = new DsfWebPostActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
-            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
+            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
         }
@@ -61,12 +60,12 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void WebPostInputRegion_TestClone()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebPostActivity() { SourceId = id };
+            var act = new DsfWebPostActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
-            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg) { PostData = "bob" };
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
+            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion) { PostData = "bob" };
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
             if (region.CloneRegion() is WebPostInputRegion clone)
@@ -84,18 +83,20 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var act = new DsfWebPostActivity() { SourceId = id };
+            var act = new DsfWebPostActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
-            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            var regionToRestore = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            regionToRestore.IsEnabled = true;
-            regionToRestore.QueryString = "blob";
-            regionToRestore.Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") };
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
+            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
+            var regionToRestore = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion)
+            {
+                IsEnabled = true,
+                QueryString = "blob",
+                Headers = new ObservableCollection<INameValue> {new NameValue("a", "b")}
+            };
             //------------Execute Test---------------------------
-            region.RestoreRegion(regionToRestore as IToolRegion);
+            region.RestoreRegion(regionToRestore);
             //------------Assert Results-------------------------
 
             Assert.AreEqual(region.QueryString, "blob");
@@ -110,15 +111,15 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var act = new DsfWebPostActivity() { SourceId = id };
+            var act = new DsfWebPostActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             var lst = new List<IWebServiceSource> { new WebServiceSourceDefinition() { HostName = "bob", DefaultQuery = "Dave" }, new WebServiceSourceDefinition() { HostName = "f", DefaultQuery = "g" } };
             mod.Setup(a => a.RetrieveSources()).Returns(lst);
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
-            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
+            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
 
-            srcreg.SelectedSource = lst[0];
+            webSourceRegion.SelectedSource = lst[0];
             Assert.AreEqual(region.QueryString, "Dave");
             Assert.AreEqual(region.RequestUrl, "bob");
         }
@@ -130,20 +131,19 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var webPostActivity = new DsfWebPostActivity()
+            var webPostActivity = new DsfWebPostActivity
             {
                 SourceId = id,
                 Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },
             };
-            var src = new Mock<IWebServiceSource>();
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
 
             var modelItem = ModelItemUtils.CreateModelItem(webPostActivity);
 
-            var srcreg = new WebSourceRegion(mod.Object, modelItem);
-            var region = new WebPostInputRegion(modelItem, srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, modelItem);
+            var region = new WebPostInputRegion(modelItem, webSourceRegion);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------

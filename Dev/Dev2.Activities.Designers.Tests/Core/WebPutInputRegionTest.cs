@@ -17,7 +17,6 @@ using Dev2.Activities.Designers2.Core.Web.Put;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,12 +33,12 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void WebPutInputRegion_TestInputCtor()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebPutActivity() { SourceId = id };
+            var act = new DsfWebPutActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
-            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
             Assert.AreEqual(false, region.IsEnabled);
             Assert.AreEqual(0, region.Errors.Count);
         }
@@ -65,13 +64,11 @@ namespace Dev2.Activities.Designers.Tests.Core
             {
                 SourceId = id
             };
-            var src = new Mock<IWebServiceSource>();
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
-            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            region.PutData = "bob";
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion) {PutData = "bob"};
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
             if (region.CloneRegion() is WebPutInputRegion clone)
@@ -85,23 +82,24 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WebPutInputRegion))]
-        public void WebPutInputRegion_RestoreFromPrevios_Restore_ExpectValuesChanged()
+        public void WebPutInputRegion_RestoreFromPrevious_Restore_ExpectValuesChanged()
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var act = new DsfWebGetActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
+            var act = new DsfWebGetActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
-            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            var regionToRestore = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            regionToRestore.IsEnabled = true;
-            regionToRestore.QueryString = "blob";
-            regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
+            var regionToRestore = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion)
+            {
+                IsEnabled = true,
+                QueryString = "blob",
+                Headers = new ObservableCollection<INameValue> {new NameValue("a", "b")}
+            };
             //------------Execute Test---------------------------
-            region.RestoreRegion(regionToRestore as IToolRegion);
+            region.RestoreRegion(regionToRestore);
             //------------Assert Results-------------------------
 
             Assert.AreEqual(region.QueryString, "blob");
@@ -116,17 +114,15 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var act = new DsfWebPutActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
+            var act = new DsfWebPutActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             var  lst = new List<IWebServiceSource> { new WebServiceSourceDefinition(){HostName = "bob",DefaultQuery = "Dave"} , new WebServiceSourceDefinition(){HostName = "f",DefaultQuery = "g"} };
             mod.Setup(a => a.RetrieveSources()).Returns(lst);
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
-            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            var regionToRestore = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
 
-            srcreg.SelectedSource = lst[0];
+            webSourceRegion.SelectedSource = lst[0];
             Assert.AreEqual(region.QueryString,"Dave");
             Assert.AreEqual(region.RequestUrl, "bob");
         }
@@ -138,20 +134,19 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var webPutActivity = new DsfWebPutActivity()
+            var webPutActivity = new DsfWebPutActivity
             {
                 SourceId = id,
                 Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },
             };
-            var src = new Mock<IWebServiceSource>();
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
 
             var modelItem = ModelItemUtils.CreateModelItem(webPutActivity);
 
-            var srcreg = new WebSourceRegion(mod.Object, modelItem);
-            var region = new WebPutInputRegion(modelItem, srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, modelItem);
+            var region = new WebPutInputRegion(modelItem, webSourceRegion);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
