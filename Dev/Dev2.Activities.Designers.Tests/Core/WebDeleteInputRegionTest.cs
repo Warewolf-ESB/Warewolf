@@ -17,7 +17,6 @@ using Dev2.Activities.Designers2.Core.Web.Delete;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,13 +33,12 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void WebDeleteInputRegion_TestInputCtor()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebDeleteActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
+            var act = new DsfWebDeleteActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebDeleteActivity()));
-            var region = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebDeleteActivity()));
+            var region = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count,0);
         }
@@ -50,13 +48,8 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestCategory(nameof(WebDeleteInputRegion))]
         public void WebDeleteInputRegion_TestInputCtorEmpty()
         {
-            var id = Guid.NewGuid();
-            var act = new DsfWebDeleteActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
-
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebDeleteActivity()));
             var region = new WebDeleteInputRegion();
             Assert.AreEqual(region.IsEnabled, false);
         }
@@ -68,13 +61,12 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void WebDeleteInputRegion_TestClone()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebDeleteActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
+            var act = new DsfWebDeleteActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebDeleteActivity()));
-            var region = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebDeleteActivity()));
+            var region = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
             if (region.CloneRegion() is WebDeleteInputRegion clone)
@@ -88,23 +80,24 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WebDeleteInputRegion))]
-        public void WebDeleteInputRegion_RestoreFromPrevios_Restore_ExpectValuesChanged()
+        public void WebDeleteInputRegion_RestoreFromPrevious_Restore_ExpectValuesChanged()
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var act = new DsfWebDeleteActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
+            var act = new DsfWebDeleteActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebDeleteActivity()));
-            var region = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            var regionToRestore = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            regionToRestore.IsEnabled = true;
-            regionToRestore.QueryString = "blob";
-            regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebDeleteActivity()));
+            var region = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
+            var regionToRestore = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion)
+            {
+                IsEnabled = true,
+                QueryString = "blob",
+                Headers = new ObservableCollection<INameValue> {new NameValue("a", "b")}
+            };
             //------------Execute Test---------------------------
-            region.RestoreRegion(regionToRestore as IToolRegion);
+            region.RestoreRegion(regionToRestore);
             //------------Assert Results-------------------------
 
             Assert.AreEqual(region.QueryString, "blob");
@@ -120,17 +113,15 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var act = new DsfWebDeleteActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
+            var act = new DsfWebDeleteActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             var  lst = new List<IWebServiceSource> { new WebServiceSourceDefinition(){HostName = "bob",DefaultQuery = "Dave"} , new WebServiceSourceDefinition(){HostName = "f",DefaultQuery = "g"} };
             mod.Setup(a => a.RetrieveSources()).Returns(lst);
-            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebDeleteActivity()));
-            var region = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            var regionToRestore = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebDeleteActivity()));
+            var region = new WebDeleteInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
 
-            srcreg.SelectedSource = lst[0];
+            webSourceRegion.SelectedSource = lst[0];
             Assert.AreEqual(region.QueryString,"Dave");
             Assert.AreEqual(region.RequestUrl, "bob");
         }
@@ -142,20 +133,19 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var webDeleteActivity = new DsfWebDeleteActivity()
+            var webDeleteActivity = new DsfWebDeleteActivity
             {
                 SourceId = id,
                 Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },
             };
-            var src = new Mock<IWebServiceSource>();
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
 
             var modelItem = ModelItemUtils.CreateModelItem(webDeleteActivity);
 
-            var srcreg = new WebSourceRegion(mod.Object, modelItem);
-            var region = new WebDeleteInputRegion(modelItem, srcreg);
+            var webSourceRegion = new WebSourceRegion(mod.Object, modelItem);
+            var region = new WebDeleteInputRegion(modelItem, webSourceRegion);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
