@@ -137,7 +137,7 @@ namespace Dev2.Studio.Core.Network
                 category = resourceModel.ResourceName;
             }
             var relativeUrl = $"/secure/{category}.{urlExtension}";
-            if (urlType != UrlType.API && urlType != UrlType.Tests)
+            if (urlType != UrlType.API && urlType != UrlType.Tests && urlType != UrlType.Coverage)
             {
                 relativeUrl += "?" + xmlData;
                 if (addworkflowId)
