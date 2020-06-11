@@ -27,6 +27,7 @@ using Dev2.Data.SystemTemplates.Models;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
+    //TODO: Can this not be added here instead of added to every test? [DoNotParallelize]
     public class TestCoverageCatalogTests
     {
         public Mock<IResourceCatalog> GetMockResourceCatalog(IWarewolfWorkflow warewolfWorkflow)

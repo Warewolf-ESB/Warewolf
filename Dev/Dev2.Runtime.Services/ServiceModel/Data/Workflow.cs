@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -13,7 +13,6 @@ using System;
 using System.Activities;
 using System.Activities.Presentation.View;
 using System.Activities.Statements;
-using System.Activities.Validation;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,10 +21,8 @@ using System.Linq;
 using System.Text;
 using System.Xaml;
 using System.Xml.Linq;
-using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Microsoft.JScript;
 using Warewolf.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -35,8 +32,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         private List<IWorkflowNode> _workflowNodes = new List<IWorkflowNode>();
         private List<IWorkflowNode> _workflowNodesForHtml;
         private Collection<FlowNode> _flowNodes;
-
-        #region CTOR
 
         public Workflow()
         {
@@ -77,7 +72,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var workflowNode = GetWorkflowNodeFrom(node);
                 if (workflowNode != null)
+                {
                     nodeTree.Add(workflowNode);
+                }
             }
 
             return nodeTree.NextNodes;
@@ -88,7 +85,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             foreach (var node in FlowNodes)
             {
                 _ = GetWorkflowNodeFrom(node);
-            };
+            }
 
             return _workflowNodes;
         }
@@ -99,13 +96,21 @@ namespace Dev2.Runtime.ServiceModel.Data
             switch (nodeType)
             {
                 case nameof(FlowStep):
+                {
                     return CalculateFlowStep((FlowStep)flowNode);
+                }
                 case nameof(FlowDecision):
+                {
                     return CalculateFlowDecision((FlowDecision)flowNode);
+                }
                 case "FlowSwitch`1":
+                {
                     return CalculateFlowSwitch((FlowSwitch<string>)flowNode);
+                }
                 default:
+                {
                     return null;
+                }
             }
         }
 
@@ -113,10 +118,12 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var wfTree = WorkflowNodeFrom(node?.Expression as IDev2Activity);
 
-            foreach (var item in ((FlowSwitch<string>)node).Cases.Values)
+            // TODO: There is a null check above for node, but what happens in the below case?
+            foreach (var item in node.Cases.Values)
             {
-               wfTree.Add(GetWorkflowNodeFrom(item));
+                wfTree.Add(GetWorkflowNodeFrom(item));
             }
+
             return wfTree;
         }
 
@@ -124,23 +131,28 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var wfTree = WorkflowNodeFrom(node?.Condition as IDev2Activity);
 
+            // TODO: There is a null check above for node, but what happens in the below case?
             if (IsFlowStep(node.True))
             {
-                IDev2Activity activityTrue;
-                activityTrue = ((FlowStep)node.True)?.Action as IDev2Activity;
+                var activityTrue = ((FlowStep)node.True)?.Action as IDev2Activity;
                 wfTree.Add(WorkflowNodeFrom(activityTrue));
             }
+
             if (!IsFlowStep(node.True))
+            {
                 wfTree.Add(GetWorkflowNodeFrom(node.True));
+            }
 
             if (IsFlowStep(node.False))
             {
-                IDev2Activity activityFalse;
-                activityFalse = ((FlowStep)node.False)?.Action as IDev2Activity;
+                var activityFalse = ((FlowStep)node.False)?.Action as IDev2Activity;
                 wfTree.Add(WorkflowNodeFrom(activityFalse));
             }
+
             if (!IsFlowStep(node.False))
+            {
                 wfTree.Add(GetWorkflowNodeFrom(node.False));
+            }
 
             return wfTree;
         }
@@ -149,7 +161,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         private IWorkflowNode CalculateFlowStep(FlowStep flowNode)
         {
             if (IsFlowStep(flowNode))
+            {
                 return WorkflowNodeFrom(flowNode?.Action as IDev2Activity);
+            }
 
             return null;
         }
@@ -175,8 +189,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                     StepDescription = activity.GetDisplayName(),
                 };
 
+                //TODO: Suggestion to change the below to "if (_workflowNodes.All(o => o.UniqueID != workflowNode.UniqueID))"?
                 if (!_workflowNodes.Any(o => o.UniqueID == workflowNode.UniqueID))
+                {
                     _workflowNodes.Add(workflowNode);
+                }
 
                 return workflowNode;
             }
@@ -216,8 +233,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             return null;
         }
 
-        #endregion
-
         public StringBuilder XamlDefinition { get; set; }
         public new XElement DataList { get; set; }
 
@@ -229,8 +244,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         public List<IWorkflowNode> WorkflowNodesForHtml => _workflowNodesForHtml ?? (_workflowNodesForHtml = GetWorkflowNodesForHtml());
         public List<IWorkflowNode> WorkflowNodes => _workflowNodes.Count != 0 ? _workflowNodes : (_workflowNodes = GetWorkflowNodes());
         public string Name { get; set; }
-
-        #region ToXml
 
         public override XElement ToXml()
         {
@@ -247,8 +260,5 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
             return result;
         }
-
-        #endregion
-
     }
 }
