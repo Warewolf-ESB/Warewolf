@@ -83,7 +83,12 @@ namespace Dev2.Services.Security
             {
                 foreach (var perm in currentSecuritySettingsTo.WindowsGroupPermissions.Where(a => a.ResourceID != Guid.Empty))
                 {
-                    perm.ResourceName = resourceNameProvider.GetResourceNameById(perm.ResourceID);
+                    var resourceName = resourceNameProvider.GetResourceNameById(perm.ResourceID);
+                    if (string.IsNullOrWhiteSpace(resourceName))
+                    {
+                        resourceName = perm.ResourcePath ?? string.Empty;
+                    }
+                    perm.ResourceName = resourceName;
                 }
             }
 

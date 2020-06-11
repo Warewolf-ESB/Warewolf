@@ -16,6 +16,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -88,9 +89,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var explorerItemModel = SingleEnvironmentExplorerViewModel.SelectedItem;
 
-            if (explorerItemModel != null)
+            if (explorerItemModel is EnvironmentViewModel environmentViewModel)
+            {
+                isMatched |= environmentViewModel.IsSelected;
+            }
+            else if (explorerItemModel != null)
             {
                 isMatched = explorerItemModel.IsService;
+                isMatched |= explorerItemModel.IsFolder;
             }
 
             return explorerItemModel != null && isMatched;

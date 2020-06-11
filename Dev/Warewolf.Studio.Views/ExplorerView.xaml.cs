@@ -343,7 +343,7 @@ namespace Warewolf.Studio.Views
                 {
                     var environmentViewModel = item as IEnvironmentViewModel;
                     singleEnvironmentExplorerViewModel.SelectedEnvironment = environmentViewModel;
-                    singleEnvironmentExplorerViewModel.SelectedItem = null;
+                    singleEnvironmentExplorerViewModel.SelectedItem = environmentViewModel;
                 }
             }
             else if (treeView?.DataContext is MergeServiceViewModel mergeServiceViewModel)

@@ -395,8 +395,24 @@ namespace Dev2.Settings.Security
                 return;
             }
 
-            permission.ResourceID = resourceModel.ResourceId;
-            permission.ResourceName = resourceModel.ResourcePath;
+            string resourceName;
+            string resourcePath;
+            Guid resourceId;
+            if (resourceModel is EnvironmentViewModel environmentViewModel)
+            {
+                resourceName = environmentViewModel.ResourceName.Replace(" (Connected)", "");
+                resourceId = environmentViewModel.ResourceId;
+                resourcePath = environmentViewModel.ResourcePath;
+            }
+            else
+            {
+                resourceId = resourceModel.ResourceId;
+                resourceName = resourceModel.ResourcePath;
+                resourcePath = resourceModel.ResourcePath;
+            }
+            permission.ResourceID = resourceId;
+            permission.ResourceName = resourceName;
+            permission.ResourcePath = resourcePath;
         }
 
         private IExplorerTreeItem PickResource(IWindowsGroupPermission permission)
