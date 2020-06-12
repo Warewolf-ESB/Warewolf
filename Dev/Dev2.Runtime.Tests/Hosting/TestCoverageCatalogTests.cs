@@ -27,7 +27,7 @@ using Dev2.Data.SystemTemplates.Models;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
-    //TODO: Can this not be added here instead of added to every test? [DoNotParallelize]
+    [DoNotParallelize]
     public class TestCoverageCatalogTests
     {
         public Mock<IResourceCatalog> GetMockResourceCatalog(IWarewolfWorkflow warewolfWorkflow)
@@ -54,7 +54,6 @@ namespace Dev2.Tests.Runtime.Hosting
         private static readonly ITestCoverageCatalog _testCoverageCatalog = TestCoverageCatalog.Instance;
 
         [TestMethod]
-        [DoNotParallelize]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_ExpectPartialCoverageReport()
@@ -75,7 +74,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GenerateSingleTestCoverage_With_MockNodes_ExpectPartialCoverage()
@@ -91,7 +89,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_When_FetchReport_ExpectFullCoverageReport()
@@ -111,7 +108,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_Using_FlowSwitch_HaveMockedNode_When_FetchReport_ExpectCoverageWitoutMockedNode()
@@ -131,7 +127,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_When_DeleteCoverageReport_ExpectFullCoverageRemoved()
@@ -159,7 +154,6 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
         public void TestCoverageCatalog_GivenTestCoverage_When_ReloadAllReports_ExpectFullCoverageRemoved()

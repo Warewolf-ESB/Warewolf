@@ -44,6 +44,38 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodesForHtml_FlowDecision_ContainingNoActivity_ShouldNotAddedAsWorkflowNode()
+        {
+            var flowNodes = new Collection<FlowNode>
+            {
+               new FlowDecision()
+            };
+
+            var sut = new Workflow(flowNodes);
+            var nodes = sut.WorkflowNodesForHtml;
+
+            Assert.AreEqual(0, nodes.Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
+        public void Workflow_WorkflowNodesForHtml_FlowSwitch_ContainingNoActivity_ShouldNotAddedAsWorkflowNode()
+        {
+            var flowNodes = new Collection<FlowNode>
+            {
+               new FlowSwitch<string>()
+            };
+
+            var sut = new Workflow(flowNodes);
+            var nodes = sut.WorkflowNodesForHtml;
+
+            Assert.AreEqual(0, nodes.Count);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Workflow))]
         public void Workflow_WorkflowNodesForHtml_FlowStep_ContainingDsfCommentActivity_ShouldExcludeDsfCommentActivity()
         {
             var commentActivityId = Guid.Parse("18db5fd4-a36c-44e2-b96c-e8a52ab9cd0d");
