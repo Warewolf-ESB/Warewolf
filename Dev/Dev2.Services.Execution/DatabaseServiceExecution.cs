@@ -256,17 +256,16 @@ namespace Dev2.Services.Execution
                 displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
             }
 
-            if (value is DateTime)
+            if (value is DateTime dateTime)
             {
-                var error = "";
                 var format = DateTimeConverterFactory.CreateFormatter();
-                if (format.TryFormat(((DateTime) value), out var result, out error))
+                if (format.TryFormat(dateTime, out var result, out var error))
                 {
                     environment.Assign(displayExpression, result, update);
                 }
                 else
                 {
-                    Dev2Logger.Error("Error:", error);
+                    Dev2Logger.Error("DateTime parse error: " + error, GlobalConstants.WarewolfError);
                 }
             }
             else

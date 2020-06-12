@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -66,13 +66,17 @@ namespace Dev2.Converters.Graph.DataTable
                 for (int i = 0; i < totalCols; i++)
                 {
                     var itemData = row.ItemArray[i];
-                    if (row.ItemArray[i] is DateTime)
+                    if (row.ItemArray[i] is DateTime dateTime)
                     {
                         var error = "";
                         var format = DateTimeConverterFactory.CreateFormatter();
-                        if (format.TryFormat(((DateTime) row.ItemArray[i]), out var date, out error))
+                        if (format.TryFormat(dateTime, out var date, out error))
                         {
                             itemData = date;
+                        }
+                        else
+                        {
+                            Dev2Logger.Error("DateTime parse error: " + error, GlobalConstants.WarewolfError);
                         }
                     }
                     else
