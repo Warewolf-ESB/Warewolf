@@ -479,7 +479,7 @@ namespace Dev2.Common.Tests.DateAndTime
             var formatResult = standardDateTimeFormatter.TryFormat(DateTime.Parse(date), out string result, out string errorMsg);
 
             Assert.IsTrue(formatResult);
-            Assert.AreEqual("14/10/2011 08:10:50.147 PM", result);
+            Assert.AreEqual("2011/10/14 08:10:50.147 PM", result);
             Assert.AreEqual("", errorMsg);
         }
 
@@ -488,13 +488,13 @@ namespace Dev2.Common.Tests.DateAndTime
         [TestCategory(nameof(StandardDateTimeFormatter))]
         public void StandardDateTimeFormatter_TryFormat_DateTimeDataType_NoMilliseconds()
         {
-            var date = "14/10/2011 08:10:50 PM";
+            var date = "2011/10/14 08:10:50 PM";
             var standardDateTimeFormatter = new StandardDateTimeFormatter();
 
             var formatResult = standardDateTimeFormatter.TryFormat(DateTime.Parse(date), out string result, out string errorMsg);
 
             Assert.IsTrue(formatResult);
-            Assert.AreEqual("14/10/2011 08:10:50 PM", result);
+            Assert.AreEqual("2011/10/14 08:10:50 PM", result);
             Assert.AreEqual("", errorMsg);
         }
     }
