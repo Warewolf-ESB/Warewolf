@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Warewolf.Data;
+using Warewolf.Data.Options;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -116,9 +117,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         private IWorkflowNode CalculateFlowSwitch(FlowSwitch<string> node)
         {
-            var wfTree = WorkflowNodeFrom(node?.Expression as IDev2Activity);
+            var wfTree = WorkflowNodeFrom(node.Expression as IDev2Activity);
 
-            // TODO: There is a null check above for node, but what happens in the below case?
             foreach (var item in node.Cases.Values)
             {
                 wfTree.Add(GetWorkflowNodeFrom(item));
@@ -129,31 +129,33 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         private IWorkflowNode CalculateFlowDecision(FlowDecision node)
         {
-            var wfTree = WorkflowNodeFrom(node?.Condition as IDev2Activity);
+            var wfTree = WorkflowNodeFrom(node.Condition as IDev2Activity);
 
-            // TODO: There is a null check above for node, but what happens in the below case?
-            if (IsFlowStep(node.True))
+            if (wfTree != null)
             {
-                var activityTrue = ((FlowStep)node.True)?.Action as IDev2Activity;
-                wfTree.Add(WorkflowNodeFrom(activityTrue));
-            }
+                if (IsFlowStep(node.True))
+                {
+                    var activityTrue = ((FlowStep)node.True).Action as IDev2Activity;
+                    wfTree.Add(WorkflowNodeFrom(activityTrue));
+                }
 
-            if (!IsFlowStep(node.True))
-            {
-                wfTree.Add(GetWorkflowNodeFrom(node.True));
-            }
+                if (!IsFlowStep(node.True))
+                {
+                    wfTree.Add(GetWorkflowNodeFrom(node.True));
+                }
 
-            if (IsFlowStep(node.False))
-            {
-                var activityFalse = ((FlowStep)node.False)?.Action as IDev2Activity;
-                wfTree.Add(WorkflowNodeFrom(activityFalse));
-            }
+                if (IsFlowStep(node.False))
+                {
+                    var activityFalse = ((FlowStep)node.False).Action as IDev2Activity;
+                    wfTree.Add(WorkflowNodeFrom(activityFalse));
+                }
 
-            if (!IsFlowStep(node.False))
-            {
-                wfTree.Add(GetWorkflowNodeFrom(node.False));
+                if (!IsFlowStep(node.False))
+                {
+                    wfTree.Add(GetWorkflowNodeFrom(node.False));
+                }
             }
-
+            
             return wfTree;
         }
 
@@ -181,7 +183,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         private IWorkflowNode WorkflowNodeFrom(IDev2Activity activity)
         {
             if (activity != null && !IsDsfComment(activity))
-            { 
+            {
                 var workflowNode = new WorkflowNode
                 {
                     ActivityID = activity.ActivityId,
@@ -189,8 +191,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     StepDescription = activity.GetDisplayName(),
                 };
 
-                //TODO: Suggestion to change the below to "if (_workflowNodes.All(o => o.UniqueID != workflowNode.UniqueID))"?
-                if (!_workflowNodes.Any(o => o.UniqueID == workflowNode.UniqueID))
+                if (_workflowNodes.All(o => o.UniqueID != workflowNode.UniqueID))
                 {
                     _workflowNodes.Add(workflowNode);
                 }
