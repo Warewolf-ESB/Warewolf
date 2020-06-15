@@ -85,7 +85,27 @@ namespace Dev2.Activities.RedisCache
 
         [Inputs("Key")]
         [FindMissing]
-        public string Key { get; set; }
+        public string Key
+        {
+            get => _key;
+            set => _key = value;
+        }
+
+        private string KeyValue
+        {
+            get
+            {
+                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(_key, 0));
+                if(varValue == _key)
+                {
+                    return _key;
+                }
+                else
+                {
+                    return varValue;
+                }
+            }
+        }
 
         [FindMissing]
         public string Response { get; set; }
@@ -193,7 +213,7 @@ namespace Dev2.Activities.RedisCache
                     base._debugOutputs.Clear();
 
                     var debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + Key + " } found"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + KeyValue + " } found"), debugItem);
                     _debugOutputs.Add(debugItem);
 
                     var outputIndex = 1;
@@ -223,7 +243,7 @@ namespace Dev2.Activities.RedisCache
 
                     var debugItem = new DebugItem();
 
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + Key + " } not found"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + KeyValue + " } not found"), debugItem);
                     _debugInputs.Add(debugItem);
 
                     _innerActivity.Execute(DataObject, 0);
@@ -249,7 +269,7 @@ namespace Dev2.Activities.RedisCache
 
         private IDictionary<string, string> GetCachedOutputs()
         {
-            var cachedData = _redisCache.Get(Key);
+            var cachedData = _redisCache.Get(KeyValue);
             if (cachedData is null)
             {
                 return null;
@@ -274,7 +294,7 @@ namespace Dev2.Activities.RedisCache
                 data.Add(key, value);
             }
 
-            _redisCache.Set(Key, _serializer.Serialize<Dictionary<string, string>>(data), CacheTTL);
+            _redisCache.Set(KeyValue, _serializer.Serialize<Dictionary<string, string>>(data), CacheTTL);
         }
 
         public override List<string> GetOutputs() => new List<string> { Response, Result };
@@ -422,6 +442,8 @@ namespace Dev2.Activities.RedisCache
             return _debugOutputs?.Any() ?? false ? _debugOutputs : new List<DebugItem>();
         }
         IDictionary<string, string> CachedData;
+        private string _keyValue;
+        private string _key;
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (update == 0 && _debugInputs.Count > 1)
