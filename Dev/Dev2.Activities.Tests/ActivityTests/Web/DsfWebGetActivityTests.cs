@@ -40,6 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     public class DsfWebGetActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebGetActivity_Execute")]
         public void DsfWebGetActivity_Execute_WithValidTextResponse_ShouldSetVariables()
@@ -86,6 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebGetActivity_Execute")]
         public void DsfWebGetActivity_Execute_ErrorResponse_ShouldSetVariables()
@@ -123,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetActivity))]
         public void DsfWebGetActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()

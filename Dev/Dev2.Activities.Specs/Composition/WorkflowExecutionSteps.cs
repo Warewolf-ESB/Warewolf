@@ -1361,70 +1361,7 @@ namespace Dev2.Activities.Specs.Composition
             _scenarioContext.TryGetValue(keyName, out value);
         }
 
-
-        public string GetServerMemory()
-        {
-            var stringBuilder = new StringBuilder();
-            var winQuery = new ObjectQuery("SELECT * FROM Win32_Process Where Name LIKE '%Warewolf Server.exe%'");
-            var searcher = new ManagementObjectSearcher(winQuery);
-            foreach (var o in searcher.Get())
-            {
-                var item = (ManagementObject)o;
-                var memory = Convert.ToString(item["WorkingSetSize"]);
-                stringBuilder.Append(memory);
-            }
-            return stringBuilder.ToString();
-        }
-
-
-        public static double GetServerCPUUsage()
-        {
-            var processorTimeCounter = new PerformanceCounter(
-                    "Process",
-                    "% Processor Time",
-                    "Warewolf Server", true);
-            processorTimeCounter.NextValue();
-            Thread.Sleep(1000);
-            return processorTimeCounter.NextValue() / Environment.ProcessorCount;
-        }
-
-        [Then(@"the server CPU usage is less than (.*)%")]
-        public void ThenTheServerCPUUsageIsLessThan(int maxCpu)
-        {
-            double serverCpuUsage = 0;
-            try
-            {
-                serverCpuUsage = GetServerCPUUsage();
-            }
-            catch
-            {
-                Assert.Inconclusive("unable to get cpu usage from PerformanceCounter");
-            }
-            Assert.IsTrue(serverCpuUsage < maxCpu, "Warewolf Server CPU usage: " + serverCpuUsage.ToString(CultureInfo.InvariantCulture));
-        }
-
-        [Given(@"I get the server memory")]
-        public void GivenIGetTheServerMemory()
-        {
-            var serverMemory = GetServerMemory();
-            Add("BeforeServerMemory", serverMemory);
-        }
-
-        [Then(@"the server memory difference is less than (.*) mb")]
-        public void ThenTheServerMemoryDifferenceIsLessThanMb(int maxDiff)
-        {
-            var serverMemoryBefore = Get<string>("BeforeServerMemory");
-            var serverMemoryAfter = GetServerMemory();
-
-            var serverMemAfter = Convert.ToDecimal(serverMemoryAfter) / 1024 / 1024;
-            var serverMemBefore = Convert.ToDecimal(serverMemoryBefore) / 1024 / 1024;
-
-            var diffInMem = serverMemAfter - serverMemBefore;
-
-            Assert.IsTrue(diffInMem < maxDiff, "Warewolf Server memory usage: " + diffInMem.ToString(CultureInfo.InvariantCulture));
-        }
-
-        [Then(@"the ""(.*)"" in Workflow ""(.*)"" has a debug Server Name of """"(.*)""""")]
+       [Then(@"the ""(.*)"" in Workflow ""(.*)"" has a debug Server Name of """"(.*)""""")]
         public void ThenTheInWorkflowHasADebugServerNameOf(string toolName, string workflowName, string remoteName)
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);

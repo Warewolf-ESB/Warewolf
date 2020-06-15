@@ -21,6 +21,7 @@ namespace Dev2.Tests.Activities.Utils
     public class FindRecordsDisplayUtilTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("FindRecordsMigrationUtil_ConvertForDisplay")]
         public void FindRecordsMigrationUtil_ConvertForDisplay_TryAllOptions_CorrectStringsReturned()

@@ -17,6 +17,7 @@ using Warewolf.Storage;
 using WarewolfParserInterop;
 using static DataStorage;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace WarewolfParsingTest
 {
     [TestClass]

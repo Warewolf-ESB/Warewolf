@@ -35,6 +35,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
     public class DsfDropboxFileListActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_UniqueIDEquals_EmptyDropBoxDeleteActivities_IsEqual()
@@ -52,6 +53,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_UniqueID_Different_Object_Is_Not_Equal()
@@ -69,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Equals_Given_Same_Object_IsEqual()
@@ -86,6 +89,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Equals_Given_Different_Object_Is_Not_Equal()
@@ -103,6 +107,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -120,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Result_Same_Object_IsEqual()
@@ -137,6 +143,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Result_Different_Object_Is_Not_Equal()
@@ -154,6 +161,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Result_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -171,6 +179,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_ToPath_Same_Object_IsEqual()
@@ -188,6 +197,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_ToPath_Different_Object_Is_Not_Equal()
@@ -205,6 +215,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_ToPath_Different_Object_Is_Not_Equal_CaseSensitive()
@@ -222,6 +233,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_DropBoxSource_Different_Object_Is_Not_Equal()
@@ -257,6 +269,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_DropBoxSource_Same_Object_Is_Equal()
@@ -289,6 +302,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IncludeMediaInfo_Different_Object_Is_Not_Equal()
@@ -321,6 +335,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IncludeMediaInfo_Same_Object_Is_Equal()
@@ -353,6 +368,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsRecursive_Different_Object_Is_Not_Equal()
@@ -385,6 +401,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsRecursive_Same_Object_Is_Equal()
@@ -417,6 +434,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IncludeDeleted_Different_Object_Is_Not_Equal()
@@ -449,6 +467,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IncludeDeleted_Same_Object_Is_Equal()
@@ -481,6 +500,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFilesSelected_Different_Object_Is_Not_Equal()
@@ -513,6 +533,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFilesSelected_Same_Object_Is_Equal()
@@ -545,6 +566,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFoldersSelected_Different_Object_Is_Not_Equal()
@@ -577,6 +599,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFoldersSelected_Same_Object_Is_Equal()
@@ -609,6 +632,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFilesAndFoldersSelected_Different_Object_Is_Not_Equal()
@@ -641,6 +665,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFilesAndFoldersSelected_Same_Object_Is_Equal()
@@ -673,6 +698,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_GetState_ReturnsStateVariable()
@@ -768,6 +794,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_ObjEquals_ExpertFalse()
@@ -787,6 +814,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_ObjEquals_NotSame_ExpertFalse()
@@ -809,6 +837,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_ObjEquals_Same_ExpertTrue()
@@ -830,6 +859,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Equals_Null_ExpertFalse()
@@ -849,6 +879,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Equals_IsSame_ExpertTrue()
@@ -863,6 +894,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Equals_IsNotSame_ExpertFalse()
@@ -883,6 +915,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_GetHashCode_Properties_NotNull_ExpertTrue()
@@ -909,6 +942,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_GetHashCode_Properties_IsNull_ExpertTrue()
@@ -929,6 +963,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_TestExecuteTool_ExpertNullReferenceException()
@@ -949,6 +984,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         [Ignore("Incompatible with the latest version of Moq.")]
@@ -974,6 +1010,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_TestExecuteTool_IncludeDeleted_IsTrue_ExpertSuccess()
@@ -1016,6 +1053,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
          }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_TestExecuteTool_IsFoldersSelected_IsTrue_ExpertSuccess()
@@ -1058,6 +1096,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_TestExecuteTool_IsAllTrue_ExpertSuccess()
@@ -1110,6 +1149,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_TestPerformExecution_DropboxExecutionResult_DropboxFailureResult_ExpertException()
@@ -1151,6 +1191,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_PerformExecution_IsFilesSelected_True_ExpertSuccess()
@@ -1189,6 +1230,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_PerformExecution_IsFoldersSelected_True_ExpertSuccess()
@@ -1230,6 +1272,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_PerformExecution_IncludeDeleted_True_ExpertSuccess()
@@ -1271,6 +1314,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_PerformExecution_IsFilesAndFoldersSelected_True_ExpertSuccess()
@@ -1311,6 +1355,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_PerformExecution_GetDebugInputs_Null_ExpertSuccess()
@@ -1331,6 +1376,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_PerformExecution_GetDebugInputs_NotNull_ExpertSuccess()
@@ -1353,6 +1399,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_PerformExecution_GetDebugInputs_NotNull_WithSetProperties_ExpertSuccess()
@@ -1381,6 +1428,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_AssignResult_ExpertSuccess()

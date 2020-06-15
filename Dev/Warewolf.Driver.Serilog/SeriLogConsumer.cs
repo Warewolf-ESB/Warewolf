@@ -49,19 +49,18 @@ namespace Warewolf.Driver.Serilog
         {
             var logTemplate = GlobalConstants.WarewolfLogsTemplate;
 
-            // TODO: do not use audit type to determine log level of audit entry
-            switch (audit.AuditType)
+            switch (audit.LogLevel)
             {
-                case "Information":
+                case LogLevel.Info:
                     _publisher.Info(logTemplate, audit);
                     break;
-                case "Warning":
+                case LogLevel.Warn:
                     _publisher.Warn(logTemplate, audit);
                     break;
-                case "Error":
-                    _publisher.Error(logTemplate, audit.Exception);
+                case LogLevel.Error:
+                    _publisher.Error(logTemplate, audit);
                     break;
-                case "Fatal":
+                case LogLevel.Fatal:
                     _publisher.Fatal(logTemplate, audit.Exception);
                     break;
                 default:

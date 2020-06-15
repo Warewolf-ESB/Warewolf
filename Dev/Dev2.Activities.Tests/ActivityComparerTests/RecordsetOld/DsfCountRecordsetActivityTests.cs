@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
     public class DsfCountRecordsetActivityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDEquals_EmptyCountRecordset_Object_IsEqual()
         {
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDDifferent_EmptyCountRecordset_Object_Is_Equal()
         {
@@ -39,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Same_Object_IsEqual()
         {
@@ -55,6 +58,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal()
         {
@@ -71,6 +75,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -87,6 +92,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RecordsetName_Same_Object_IsEqual()
         {
@@ -103,6 +109,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RecordsetName_Different_Object_Is_Not_Equal()
         {
@@ -119,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RecordsetName_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -135,6 +143,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CountNumber_Same_Object_IsEqual()
         {
@@ -151,6 +160,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CountNumber_Different_Object_Is_Not_Equal()
         {
@@ -167,6 +177,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.RecordsetOld
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CountNumber_Different_Object_Is_Not_Equal_CaseSensitive()
         {

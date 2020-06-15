@@ -7,6 +7,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
     public class ActivityDtoEqualityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_EmptyTos_IsEqual()
         {
@@ -22,6 +23,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_FieldNames_Is_IsEqual()
         {
@@ -37,6 +39,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFieldNames_Is_NotIsEqual()
         {
@@ -52,6 +55,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentFielValue_Is_NotIsEqual()
         {
@@ -67,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Assigns
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_DiffentindexNumber_Is_NotIsEqual()
         {

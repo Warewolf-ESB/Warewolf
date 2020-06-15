@@ -18,13 +18,14 @@ using Nest;
 using Newtonsoft.Json.Linq;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Triggers;
+using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Auditing.Drivers
 {
     public class AuditQueryableElastic : AuditQueryable, IDisposable
     {
-        private string _query;
-        private readonly ElasticsearchSource _elasticsearchSource;
+        string _query;
+        readonly ElasticsearchSource _elasticsearchSource;
 
         public override string Query
         {
@@ -32,10 +33,6 @@ namespace Warewolf.Auditing.Drivers
             set => _query = value;
         }
 
-        public AuditQueryableElastic()
-        {
-            _elasticsearchSource = new ElasticsearchSource();
-        }
         public AuditQueryableElastic(string hostname,string port, string searchIndex, AuthenticationType authenticationType, string username,string password)
         {
             _elasticsearchSource = new ElasticsearchSource();
@@ -101,6 +98,11 @@ namespace Warewolf.Auditing.Drivers
                                             break;
                                         case "Exception":
                                             executionHistory.Exception = items.Value as Exception;
+                                            break;
+                                        case "LogLevel":
+                                            LogLevel logLevel;
+                                            Enum.TryParse((string) items.Value, true, out logLevel);
+                                            executionHistory.LogLevel = logLevel;
                                             break;
                                         case "AuditType":
                                             executionHistory.AuditType = items.Value.ToString();
@@ -298,6 +300,11 @@ namespace Warewolf.Auditing.Drivers
                                                 break;
                                             case "AuditType":
                                                 auditHistory.AuditType = items.Value.ToString();
+                                                break;
+                                            case "LogLevel":
+                                                LogLevel logLevel;
+                                                Enum.TryParse((string) items.Value, true, out logLevel);
+                                                auditHistory.LogLevel = logLevel;
                                                 break;
                                             case "IsSubExecution":
                                                 auditHistory.IsSubExecution = Boolean.Parse(items.Value.ToString());

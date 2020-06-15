@@ -32,6 +32,7 @@ namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
     [TestCategory("Studio Settings Core")]
+    [DoNotParallelize]
     public class SecurityViewModelTests
     {
         [TestInitialize]
@@ -41,8 +42,6 @@ namespace Dev2.Core.Tests.Settings
             AppUsageStats.LocalHost = "http://localhost:3142";
             ServerRepository.Instance.ActiveServer = new Mock<IServer>().Object;
         }
-
-
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]

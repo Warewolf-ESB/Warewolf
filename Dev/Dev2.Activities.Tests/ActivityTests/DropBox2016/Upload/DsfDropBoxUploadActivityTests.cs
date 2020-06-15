@@ -49,6 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_DsfDropBoxUpload_GivenNewInstance_ShouldNotBeNull()
@@ -63,6 +64,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_CreateNewActivity_GivenIsNew_ShouldHaveDisplayName()
@@ -77,6 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DsfDropBoxUploadActivity))]
         public void DsfDropBoxUploadActivity_GetFindMissingType_GivenIsNew_ShouldSetDatagridAcitivity()
@@ -92,6 +95,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUploadActivity_GetDebugOutputs_GivenNullEnvironment_ShouldHaveNoDebugOutPuts()
         {
@@ -105,6 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUploadActivity_GetDebugOutputs_GivenFileMetadataIsNull_ShouldHaveNoDebugOutPuts()
         {
@@ -118,6 +123,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUploadActivity_GetDebugOutputs_GivenFileMetadataIsNotNull_ShouldHaveOneDebugOutPuts()
         {
@@ -138,6 +144,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUploadActivity_GetDebugOutputs_GivenWebRequestSuccess_ShouldCorrectDebugValue()
         {
@@ -162,6 +169,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUploadActivity_ExecuteTool_GivenNoFromPath_ShouldAddError()
         {
@@ -185,6 +193,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUploadActivity_ExecuteTool_GivenNoToPath_ShouldAddError()
         {
@@ -212,6 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(KeyNotFoundException))]
         public void DsfDropBoxUploadActivity_PerformExecution_GivenNoPaths_ShouldThrowException()
@@ -231,6 +241,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUploadActivity_PerformExecution_DropboxUploadSuccessResult_GivenPaths_ShouldPassthrough()
         {
@@ -261,6 +272,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUploadActivity_PerformExecution_DropboxFailureResult_GivenPaths_ShouldPassthrough()
         {
@@ -291,6 +303,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropBoxUploadActivity_GetDebugInputs_GivenEnvironment_ShouldhaveDebugInputs()
         {

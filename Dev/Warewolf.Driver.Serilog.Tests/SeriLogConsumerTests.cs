@@ -31,7 +31,7 @@ namespace Warewolf.Driver.Serilog.Tests
         {
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
-            audit.AuditType = "Information";
+            audit.LogLevel = LogLevel.Info;
             audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
@@ -64,7 +64,7 @@ namespace Warewolf.Driver.Serilog.Tests
         {
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
-            audit.AuditType = "Information";
+            audit.LogLevel = LogLevel.Info;
             audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
@@ -96,7 +96,7 @@ namespace Warewolf.Driver.Serilog.Tests
         {
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
-            audit.AuditType = "Warning";
+            audit.LogLevel = LogLevel.Warn;
             audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
@@ -129,7 +129,7 @@ namespace Warewolf.Driver.Serilog.Tests
         {
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
-            audit.AuditType = "Error";
+            audit.LogLevel = LogLevel.Error;
             audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
@@ -162,7 +162,7 @@ namespace Warewolf.Driver.Serilog.Tests
         {
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
-            audit.AuditType = "Fatal";
+            audit.LogLevel = LogLevel.Fatal;
             audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
@@ -194,7 +194,7 @@ namespace Warewolf.Driver.Serilog.Tests
         {
             //------------------------------Arrange-----------------------------
             var audit = new AuditStub();
-            audit.AuditType = "Something Else";
+            audit.LogLevel = LogLevel.Debug;
             audit.CustomTransactionID = "testing SeriLogConsumer";
             var message = audit;
             var mockLogger = new Mock<ILogger>();
@@ -221,6 +221,8 @@ namespace Warewolf.Driver.Serilog.Tests
 
         public class AuditStub : IAudit
         {
+
+            public LogLevel LogLevel { get; set; }
             public string AdditionalDetail { get; set; }
             public DateTime AuditDate { get; set; }
             public string AuditType { get; set; }

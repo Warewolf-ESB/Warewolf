@@ -16,6 +16,7 @@ using Moq;
 using System.IO;
 using System.Reflection;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Server.Tests
 {
     [TestClass]
@@ -77,7 +78,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadResources))]
-        public void LoadResources_MigrateOldResources_DirectoryExits_True()
+        public void LoadResources_MigrateBinResources_DirectoryExits_True()
         {
             //------------------Arrange---------------
             const string resourceDirectory = "Resources - ServerTests";
@@ -89,7 +90,7 @@ namespace Dev2.Server.Tests
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
             //------------------Act-------------------
             var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
-            loadResources.MigrateOldResources();
+            loadResources.MigrateBinResources();
             //------------------Assert----------------
             mockDirectory.Verify(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true), Times.Never);
             mockDirectory.Verify(o => o.CleanUp(It.IsAny<string>()), Times.Never);
@@ -98,7 +99,8 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadResources))]
-        public void LoadResources_MigrateOldResources_DirectoryExits_False()
+        [DoNotParallelize]
+        public void LoadResources_MigrateBinResources_DirectoryExits_False()
         {
             //------------------Arrange---------------
             const string resourceDirectory = "Resources - ServerTests";
@@ -115,7 +117,7 @@ namespace Dev2.Server.Tests
                 .Verifiable();
             //------------------Act-------------------
             var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object);
-            loadResources.MigrateOldResources();
+            loadResources.MigrateBinResources();
             //------------------Assert----------------
             mockDirectory.Verify();
         }

@@ -28,7 +28,7 @@ namespace Dev2
         void LoadResourceCatalog();
         void LoadServerWorkspace();
         void MethodsToBeDepricated();
-        void MigrateOldResources();
+        void MigrateBinResources();
         void MigrateOldTests();
         void ValidateResourceFolder();
     }
@@ -67,7 +67,7 @@ namespace Dev2
         
         public void LoadResourceCatalog()
         {
-            MigrateOldResources();
+            MigrateBinResources();
             ValidateResourceFolder();
             _writer.Write("Loading resource catalog...  ");
             var catalog = _resourceCatalogFactory.New();
@@ -121,15 +121,19 @@ namespace Dev2
             }
         }
 
-        public void MigrateOldResources()
+        public void MigrateBinResources()
         {
             var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (_directory.Exists(EnvironmentVariables.ResourcePath) || !_directory.Exists(serverBinResources)) return;
-            _directory.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
+            if (!(_directory.Exists(EnvironmentVariables.ResourcePath) || !_directory.Exists(serverBinResources)))
+            {
+                _directory.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
+                _directory.CleanUp(serverBinResources);
+            }
             var dockerfile = Path.Combine(EnvironmentVariables.ApplicationPath, "Dockerfile");
-            if (!File.Exists(dockerfile)) return;
-            File.Copy(dockerfile, Path.Combine(EnvironmentVariables.AppDataPath, "Dockerfile"), true);
-            _directory.CleanUp(serverBinResources);
+            if (File.Exists(dockerfile))
+            {
+                File.Copy(dockerfile, Path.Combine(EnvironmentVariables.AppDataPath, "Dockerfile"), true);
+            }
         }
         
         public void LoadServerWorkspace()

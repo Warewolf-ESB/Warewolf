@@ -87,6 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             return new ExecutionEnvironment();
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         public void AdvancedRecordset_FromRecordset()
@@ -95,6 +96,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(Worker);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -130,6 +132,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -144,6 +147,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, results.Tables[0].Rows.Count);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -158,6 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, results.Tables[0].Rows.Count);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -174,6 +179,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3, results.Tables[0].Rows.Count);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -195,6 +201,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3421, int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Postcode"] as byte[])));
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -216,6 +223,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -231,6 +239,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -258,6 +267,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -281,6 +291,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(65, int.Parse(Encoding.UTF8.GetString(result.Tables[0].Rows[0]["Age"] as byte[])));
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -294,6 +305,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3, result);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -305,6 +317,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -315,6 +328,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.ThrowsException<Exception>(() => Worker.ExecuteNonQuery(query));
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -329,6 +343,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -480,6 +495,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -517,6 +533,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -543,6 +560,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -564,6 +582,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -585,6 +604,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]

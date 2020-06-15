@@ -586,6 +586,25 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public void ShowInvalidElasticsearchIndexFormatMessage(string invalidText)
+        {
+            var description = $"{invalidText} is invalid. Elasticsearch Index only supports: " + Environment.NewLine
+                                                                                               + " Lowercase" + Environment.NewLine
+                                                                                               + " Cannot be . or .." + Environment.NewLine
+                                                                                               + " Cannot start with -, _, +" + Environment.NewLine
+                                                                                               + " Cannot include special characters" + Environment.NewLine
+                                                                                               + " Cannot be longer than 255 characters" + Environment.NewLine;
+
+            AssignCommonValues("Invalid Elasticsearch Index", description, MessageBoxButton.OK);
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            Show();
+        }
         public void ShowInvalidCharacterMessage(string invalidText)
         {
             var description = $"{invalidText} is invalid. Warewolf only supports latin characters";

@@ -3926,6 +3926,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If selected it returns the content of the file in base64 format..
+        /// </summary>
+        public static string ReadFileToolTipIsResultBase64 {
+            get {
+                return ResourceManager.GetString("ReadFileToolTipIsResultBase64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. 
         ///By default the account running Warewolf Server.exe service will be used..
         /// </summary>

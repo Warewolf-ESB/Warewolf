@@ -39,6 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region MultiAssign Functionality Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void AssignRecordSetWithEvaluatedSingleExpression()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -59,6 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecursiveEvaluation()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -104,6 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AssignRecordSetWithEvaluatedDoubleExpressionSameRecordSet()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -127,6 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AssignRecordSetWithEvaluatedSingleExpressionMultRecords()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -147,6 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AssignRecordSetWithEvaluatedDoubleExpressionMultRecords()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -171,6 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AssignRecordSetWithEvaluatedRecursiveRightSingleAssignMultRecords()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -197,6 +203,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void AssignRecordSetWithEvaluatedMultLeftIndexInBoundsExpressionMultRecords()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -221,6 +228,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         // -- End New
 
         [TestMethod]
+        [Timeout(60000)]
         public void MultiAssignTenAtOnce_Expected_MultiAssignCorrectlySetsAllScalarValues()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -239,6 +247,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MultiAssignDateFormat_Expected_MultiAssignCorrectlySetsCorrectDateValues()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -255,6 +264,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MultiAssignWithAnEmptyField_Expected_FieldInDataListNotAssignedValue()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -275,6 +285,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MultiAssignWithAnEmptyValue_Expected_FieldInDataListNotAssignedValue()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -296,6 +307,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MultiAssignWithSpecialCharsInValue()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -317,6 +329,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssignWithAddingOneRecSets()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -338,6 +351,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssignWithAddingTenRecSets_Expected_RecordSetPopulatedToIndex()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -359,6 +373,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssignWithEditingExistingRecSets_Expected_RecordSetDataOverwritten()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -380,6 +395,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void ScalarInRecordset_Expected_MultiAssignCorrectlyIdentifiesField()
         {
 
@@ -407,6 +423,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         public void AssignRecordSetWithAppendRecordAndNoExistingRecordExpectedRecordInFirst()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -430,6 +447,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssignWithCalculationOnBlankRecordSetExpectedCalculationReplacesBlankWithZero()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -456,6 +474,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MultiAssignWithAppendCalculationToSameBlankRecordSetAndBlankIndexExpectedValueInFirst()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -481,6 +500,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssignWithAppendCalculationToSameBlankRecordSetAndStaredIndexExpectedValueInFirst()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -507,6 +527,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssignWithImpliedConcatenationExpectedCorrectSetsScalarValue()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -531,6 +552,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssignWithExplicitConcatenationExpectedCorrectSetsScalarValue()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -558,6 +580,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Language Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void StarToStar_Expected_AllValuesOverwrittenWithRecordSetFrom()
         {
 
@@ -600,6 +623,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Star_To_NoIndex_Expected_ValuesAppendedToRecordSet()
         {
 
@@ -633,6 +657,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void NoIndex_To_Star_LastValueOverwritesAllCurrentDataListValues()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -666,6 +691,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Index_To_Star_Expected_AllValuesOverwrittenByIndexValue()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -704,6 +730,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Star_To_Index_Expected_IndexSetToLastValueOfAssignedRecordSet()
         {
 
@@ -737,6 +764,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void StarToScalar_Expected_ScalarSetToLastValueInRecordSet()
         {
 
@@ -767,6 +795,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfBaseActivity_GetOutputs")]
         public void DsfBaseActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -785,6 +814,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecursiveEvaluateRecordset_WhenDataContainsQuotes_ShouldEvaluateWithoutExtraEscaping()
         {
 
@@ -809,6 +839,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void RecursiveEvaluateScalar_WhenDataContainsQuotes_ShouldEvaluateWithoutExtraEscaping()
         {
 
@@ -833,6 +864,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfDotNetMultiAssignActivity_WhenDifferentFieldCollectionData_SHouldBeNotEqual()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -850,6 +882,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(activity1.Equals(activity2));
         }
         [TestMethod]
+        [Timeout(60000)]
         public void DsfDotNetMultiAssignActivity_WhenSameFieldCollectionData_SHouldBeEqual()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -880,6 +913,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Calculate Mode Tests
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssign_CalculateMode_PrefixEncasing_Test()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -901,6 +935,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssign_CalculateMode_SuffixEncasing_Test()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -923,6 +958,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         // changed this test to faciliate the existing evaluate approach, hence the expected is now "" not 5
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssign_CalculateMode_ValidEncasing_Test()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -945,6 +981,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssign_CalculateMode_ValidComplexExpression()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -967,6 +1004,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
+        [Timeout(60000)]
         public void MutiAssign_ErrorHandeling_Expected_ErrorTag()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -985,6 +1023,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfDotNetMultiAssignActivity_RecordSetTypeBlank()
         {
             var env = new ExecutionEnvironment();
@@ -1009,6 +1048,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void DsfDotNetMultiAssignActivity_RecordSetTypeBlankReassign()
         {
             var env = new ExecutionEnvironment();
@@ -1038,6 +1078,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region ForEach Update/Get Inputs/Outputs
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfMultiAssignActivity_UpdateForEachInputs")]
         public void DsfMultiAssignActivity_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
@@ -1065,6 +1106,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfMultiAssignActivity_UpdateForEachInputs")]
         public void DsfMultiAssignActivity_UpdateForEachInputs_WhenContainsMatchingStar_UpdateSuccessful()
@@ -1092,6 +1134,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfMultiAssignActivity_UpdateForEachOutputs")]
         public void DsfMultiAssignActivity_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
@@ -1119,6 +1162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfMultiAssignActivity_GetForEachInputs")]
         public void DsfMultiAssignActivity_GetForEachInputs_Normal_UpdateSuccessful()
@@ -1142,6 +1186,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
         public void DsfMultiAssignActivity_GetForEachOutputs_Normal_UpdateSuccessful()
@@ -1165,6 +1210,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
         public void DsfDotnetMultiAssignActivity_GetState_Returns_Input_And_Outputs()

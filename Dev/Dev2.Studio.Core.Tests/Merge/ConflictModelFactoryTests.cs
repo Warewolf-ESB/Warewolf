@@ -101,6 +101,7 @@ namespace Dev2.Core.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void ConflictModelFactory_GivenAssignConflictNode_ShouldReturnMergeToolModel()
         {
             //------------Setup for test--------------------------
@@ -126,6 +127,7 @@ namespace Dev2.Core.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void GetDataList_GivenResourceModel_ShouldReturnMergeToolModel()
         {
             //------------Setup for test--------------------------
@@ -158,6 +160,7 @@ namespace Dev2.Core.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void GetDataList_GivenEmptyResourceModel_ShouldReturnReturnEmpty()
         {
             //------------Setup for test--------------------------
@@ -191,6 +194,7 @@ namespace Dev2.Core.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void ConflictModelFactory_GivenDsfDecisionConflictNode_ShouldReturnMergeToolModel()
         {
             //------------Setup for test--------------------------
@@ -232,10 +236,10 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual("a", mergeToolModel.MergeDescription);
             Assert.AreEqual(typeof(DecisionDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void ConflictModelFactory_GivenServiceConflictNode_ShouldReturnMergeToolModel()
         {
             //------------Setup for test--------------------------
@@ -266,8 +270,10 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
             Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
+        [DoNotParallelize]
         public void ConflictModelFactory_GivenServiceConflictNode_NullResourceID()
         {
             //------------Setup for test--------------------------

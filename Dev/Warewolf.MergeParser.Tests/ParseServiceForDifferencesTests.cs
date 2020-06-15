@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 namespace Warewolf.MergeParser.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class ParseServiceForDifferencesTests
     {
         [TestMethod]

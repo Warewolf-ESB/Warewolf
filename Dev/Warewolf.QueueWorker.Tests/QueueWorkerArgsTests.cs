@@ -14,6 +14,7 @@ using QueueWorker;
 using System;
 using System.Linq;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Warewolf.QueueWorker.Tests
 {
     [TestClass]

@@ -21,7 +21,7 @@ using PopupController = Dev2.Studio.Controller.PopupController;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]    
+    [TestClass]
     public class PopupControllerTests
     {
         [TestMethod]
@@ -36,19 +36,19 @@ namespace Dev2.Core.Tests
             var buttons = MessageBoxButton.YesNoCancel;
 
             var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
                 {
-                    ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
-                        {
-                            description = desc;
-                            header = hdr;
-                            buttons = btn;
-                            popupWasCalled = true;
-                            return new MessageBoxViewModel(desc,hdr,btn,FontAwesomeIcon.Adn, isDependBtnVisible,isErr,isInf,isQuest,duplicates,isDeleteAnywayBtnVisible,applyToAll)
-                            {
-                                Result = MessageBoxResult.OK
-                            };
-                        }
-                };
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
 
             const string NameOfItemBeingDeleted = "Random button";
             //------------Execute Test---------------------------
@@ -121,7 +121,7 @@ namespace Dev2.Core.Tests
                     };
                 }
             };
-            
+
             //------------Execute Test---------------------------
             var conflictCount = 1;
 
@@ -134,10 +134,10 @@ namespace Dev2.Core.Tests
             }
 
             var Description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
-                          "--------------------------------------------------------------------------------" +
+                              "--------------------------------------------------------------------------------" +
                               Environment.NewLine +
-                          "OK - Continue to deploy resources." + Environment.NewLine +
-                          "Cancel - Cancel the deploy and view the conflicts.";
+                              "OK - Continue to deploy resources." + Environment.NewLine +
+                              "Cancel - Cancel the deploy and view the conflicts.";
 
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
@@ -177,7 +177,7 @@ namespace Dev2.Core.Tests
             var Header = Warewolf.Studio.Resources.Languages.Core.DeployEmptyServerHeader;
 
             popupController.ShowDeployNoResourcesToDeploy(Header, Description);
-            
+
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
@@ -264,10 +264,10 @@ namespace Dev2.Core.Tests
             }
 
             var Description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
-                          "--------------------------------------------------------------------------------" +
+                              "--------------------------------------------------------------------------------" +
                               Environment.NewLine +
-                          "OK - Continue to deploy resources." + Environment.NewLine +
-                          "Cancel - Cancel the deploy and view the conflicts.";
+                              "OK - Continue to deploy resources." + Environment.NewLine +
+                              "Cancel - Cancel the deploy and view the conflicts.";
 
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
@@ -348,11 +348,11 @@ namespace Dev2.Core.Tests
             popupController.ShowDeployResourceNameConflict(conflictResourceName);
 
             var message = "There is a conflict between the two resources in this deploy." +
-                Environment.NewLine + "Conflict Resource Name: " + conflictResourceName +
-                Environment.NewLine + "Click OK and rename the conflicting resource/s." +
-                Environment.NewLine +
+                          Environment.NewLine + "Conflict Resource Name: " + conflictResourceName +
+                          Environment.NewLine + "Click OK and rename the conflicting resource/s." +
+                          Environment.NewLine +
                           "--------------------------------------------------------------------------------" +
-                              Environment.NewLine +
+                          Environment.NewLine +
                           "OK - Cancel the deploy.";
 
             //------------Assert Results-------------------------
@@ -398,13 +398,13 @@ namespace Dev2.Core.Tests
             popupController.ShowDeployServerMinVersionConflict(sourceServerVersion, destinationServerVersion);
 
             var message = "There is a conflict between the two versions in this deploy." +
-                Environment.NewLine + "Source Server Version: " + sourceServerVersion +
-                Environment.NewLine + "Destination Minimum supported version: " + destinationServerVersion +
-                Environment.NewLine + "The destination server does not support all the same features as the source server and your deployment is not guaranteed to work. " +
-                Environment.NewLine + "Click OK to continue or Cancel to return." +
-                Environment.NewLine +
+                          Environment.NewLine + "Source Server Version: " + sourceServerVersion +
+                          Environment.NewLine + "Destination Minimum supported version: " + destinationServerVersion +
+                          Environment.NewLine + "The destination server does not support all the same features as the source server and your deployment is not guaranteed to work. " +
+                          Environment.NewLine + "Click OK to continue or Cancel to return." +
+                          Environment.NewLine +
                           "--------------------------------------------------------------------------------" +
-                              Environment.NewLine +
+                          Environment.NewLine +
                           "OK - Continue to deploy resources." + Environment.NewLine +
                           "Cancel - Cancel the deploy.";
 
@@ -451,12 +451,12 @@ namespace Dev2.Core.Tests
             popupController.ShowDeployServerVersionConflict(sourceServerVersion, destinationServerVersion);
 
             var message = "There is a conflict between the two versions in this deploy." +
-                Environment.NewLine + "Source Server Version: " + sourceServerVersion +
-                Environment.NewLine + "Destination Server Version: " + destinationServerVersion +
-                Environment.NewLine + "Click OK to continue or Cancel to return." +
-                Environment.NewLine +
+                          Environment.NewLine + "Source Server Version: " + sourceServerVersion +
+                          Environment.NewLine + "Destination Server Version: " + destinationServerVersion +
+                          Environment.NewLine + "Click OK to continue or Cancel to return." +
+                          Environment.NewLine +
                           "--------------------------------------------------------------------------------" +
-                              Environment.NewLine +
+                          Environment.NewLine +
                           "OK - Continue to deploy resources." + Environment.NewLine +
                           "Cancel - Cancel the deploy.";
 
@@ -726,9 +726,9 @@ namespace Dev2.Core.Tests
             popupController.ShowConnectServerVersionConflict(selectedServerVersion, currentServerVersion);
 
             var message = "There is a version conflict with the current selected server." + Environment.NewLine +
-                Environment.NewLine + "Selected Server Version: " + selectedServerVersion +
-                Environment.NewLine + "Current Server Version: " + currentServerVersion + Environment.NewLine +
-                Environment.NewLine + "Please make sure that the server you are trying to connect to has the latest version.";
+                          Environment.NewLine + "Selected Server Version: " + selectedServerVersion +
+                          Environment.NewLine + "Current Server Version: " + currentServerVersion + Environment.NewLine +
+                          Environment.NewLine + "Please make sure that the server you are trying to connect to has the latest version.";
 
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
@@ -772,9 +772,9 @@ namespace Dev2.Core.Tests
             popupController.ShowConnectionTimeoutConfirmation(server);
 
             var message = " Unable to reach " + server + ": Connection timed out." + Environment.NewLine
-                              + " Make sure the remote computer is powered on." + Environment.NewLine
-                              + Environment.NewLine
-                              + " Would you like to re-try? " + Environment.NewLine;
+                          + " Make sure the remote computer is powered on." + Environment.NewLine
+                          + Environment.NewLine
+                          + " Would you like to re-try? " + Environment.NewLine;
 
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
@@ -820,7 +820,6 @@ namespace Dev2.Core.Tests
                 Buttons = MessageBoxButton.OK,
                 IsError = true,
                 Header = @"Error"
-
             };
 
             //------------Execute Test---------------------------
@@ -849,9 +848,9 @@ namespace Dev2.Core.Tests
             var errorMessage = string.Empty;
 
             var expectedDescription = "Unable to retrieve tasks." + Environment.NewLine +
-                                         "ERROR: " + errorMessage + ". " + Environment.NewLine +
-                                         "Please check that there a no corrupt files." + Environment.NewLine +
-                                        @"C:\Windows\System32\Tasks\Warewolf";
+                                      "ERROR: " + errorMessage + ". " + Environment.NewLine +
+                                      "Please check that there a no corrupt files." + Environment.NewLine +
+                                      @"C:\Windows\System32\Tasks\Warewolf";
 
             var buttons = MessageBoxButton.OK;
 
@@ -890,7 +889,7 @@ namespace Dev2.Core.Tests
             var header = string.Empty;
 
             var expectedDescription = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine +
-                "in the Community to keep updated on the progress.";
+                                      "in the Community to keep updated on the progress.";
 
             var buttons = MessageBoxButton.OK;
 
@@ -931,12 +930,12 @@ namespace Dev2.Core.Tests
             var newName = string.Empty;
             var buttons = MessageBoxButton.YesNoCancel;
             var expectedDescription = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task." + Environment.NewLine +
-                          " Would you like to save the new name?" + Environment.NewLine +
-                          "-----------------------------------------------------------------" +
-                              Environment.NewLine +
-                          "Yes - Save with the new name." + Environment.NewLine +
-                          "No - Save with the old name." + Environment.NewLine +
-                          "Cancel - Returns you to Scheduler.";
+                                      " Would you like to save the new name?" + Environment.NewLine +
+                                      "-----------------------------------------------------------------" +
+                                      Environment.NewLine +
+                                      "Yes - Save with the new name." + Environment.NewLine +
+                                      "No - Save with the old name." + Environment.NewLine +
+                                      "Cancel - Returns you to Scheduler.";
             var imageType = MessageBoxImage.Error;
 
 
@@ -979,13 +978,13 @@ namespace Dev2.Core.Tests
             var resourceName = "testName";
             var buttons = MessageBoxButton.YesNoCancel;
             var expectedDescription = "You are about to make changes to the source assigned to log queries." + Environment.NewLine
-                                             + "In doing so, you will need to manually restart the logger for the changes to take effect." + Environment.NewLine
-                                             + "Would you like to continue to save the changes? " + Environment.NewLine +
-                                             "-----------------------------------------------------------------" +
-                                             Environment.NewLine +
-                                             "Yes - Save changes." + Environment.NewLine +
-                                             "No - Discard your changes." + Environment.NewLine +
-                                             $"Cancel - Returns you to {resourceName}.";
+                                                                                                             + "In doing so, you will need to manually restart the logger for the changes to take effect." + Environment.NewLine
+                                                                                                             + "Would you like to continue to save the changes? " + Environment.NewLine +
+                                                                                                             "-----------------------------------------------------------------" +
+                                                                                                             Environment.NewLine +
+                                                                                                             "Yes - Save changes." + Environment.NewLine +
+                                                                                                             "No - Discard your changes." + Environment.NewLine +
+                                                                                                             $"Cancel - Returns you to {resourceName}.";
             var imageType = MessageBoxImage.Information;
 
 
@@ -1145,12 +1144,12 @@ namespace Dev2.Core.Tests
             var buttons = MessageBoxButton.YesNoCancel;
             var imageType = MessageBoxImage.Error;
             var expectedDesc = "Scheduler Task has not been saved." + Environment.NewLine
-                              + "Would you like to save the Task? " + Environment.NewLine +
-                              "-----------------------------------------------------------------" +
-                              Environment.NewLine +
-                              "Yes - Save the Task." + Environment.NewLine +
-                              "No - Discard your changes." + Environment.NewLine +
-                              "Cancel - Returns you to Scheduler.";
+                                                                    + "Would you like to save the Task? " + Environment.NewLine +
+                                                                    "-----------------------------------------------------------------" +
+                                                                    Environment.NewLine +
+                                                                    "Yes - Save the Task." + Environment.NewLine +
+                                                                    "No - Discard your changes." + Environment.NewLine +
+                                                                    "Cancel - Returns you to Scheduler.";
 
             var popupController = new PopupController
             {
@@ -1190,12 +1189,12 @@ namespace Dev2.Core.Tests
             var buttons = MessageBoxButton.YesNoCancel;
             var imageType = MessageBoxImage.Error;
             var expectedDesc = "Settings have not been saved." + Environment.NewLine
-                              + "Would you like to save the settings? " + Environment.NewLine +
-                              "-----------------------------------------------------------------" +
-                              Environment.NewLine +
-                              "Yes - Save the settings." + Environment.NewLine +
-                              "No - Discard your changes." + Environment.NewLine +
-                              "Cancel - Returns you to settings.";
+                                                               + "Would you like to save the settings? " + Environment.NewLine +
+                                                               "-----------------------------------------------------------------" +
+                                                               Environment.NewLine +
+                                                               "Yes - Save the settings." + Environment.NewLine +
+                                                               "No - Discard your changes." + Environment.NewLine +
+                                                               "Cancel - Returns you to settings.";
 
             var popupController = new PopupController
             {
@@ -1235,12 +1234,12 @@ namespace Dev2.Core.Tests
             var buttons = MessageBoxButton.YesNoCancel;
             var imageType = MessageBoxImage.Error;
             var expectedDesc = "Tasks have not been saved." + Environment.NewLine
-                              + "Would you like to save the tasks? " + Environment.NewLine +
-                              "-----------------------------------------------------------------" +
-                              Environment.NewLine +
-                              "Yes - Save the tasks." + Environment.NewLine +
-                              "No - Discard your changes." + Environment.NewLine +
-                              "Cancel - Returns you to tasks.";
+                                                            + "Would you like to save the tasks? " + Environment.NewLine +
+                                                            "-----------------------------------------------------------------" +
+                                                            Environment.NewLine +
+                                                            "Yes - Save the tasks." + Environment.NewLine +
+                                                            "No - Discard your changes." + Environment.NewLine +
+                                                            "Cancel - Returns you to tasks.";
 
             var popupController = new PopupController
             {
@@ -1281,8 +1280,8 @@ namespace Dev2.Core.Tests
             var buttons = MessageBoxButton.YesNoCancel;
             var imageType = MessageBoxImage.Error;
             var expectedDesc = "You can pass variables into your workflow" + Environment.NewLine
-                              + "by selecting the Input checkbox" + Environment.NewLine +
-                              "in the Variables window.";
+                                                                           + "by selecting the Input checkbox" + Environment.NewLine +
+                                                                           "in the Variables window.";
 
             var popupController = new PopupController
             {
@@ -1386,12 +1385,12 @@ namespace Dev2.Core.Tests
             popupController.ShowSearchServerVersionConflict(serverVersion, minimumSupportedVersion);
 
             var message = Warewolf.Studio.Resources.Languages.Core.SearchVersionConflictError +
-                                        Environment.NewLine + GlobalConstants.ServerVersion + serverVersion +
-                                        Environment.NewLine + GlobalConstants.MinimumSupportedVersion + minimumSupportedVersion +
-                                        Environment.NewLine + "Click OK to continue or Cancel to return." +
-                Environment.NewLine +
+                          Environment.NewLine + GlobalConstants.ServerVersion + serverVersion +
+                          Environment.NewLine + GlobalConstants.MinimumSupportedVersion + minimumSupportedVersion +
+                          Environment.NewLine + "Click OK to continue or Cancel to return." +
+                          Environment.NewLine +
                           "--------------------------------------------------------------------------------" +
-                              Environment.NewLine +
+                          Environment.NewLine +
                           "OK - Continue to search resources." + Environment.NewLine +
                           "Cancel - Cancel the search.";
 
@@ -1406,5 +1405,51 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(popupController.IsQuestion);
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("PopupController_ShowInvalidFormatMessage")]
+        public void PopupController_ShowInvalidFormatMessage_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            var description = string.Empty;
+            var header = string.Empty;
+            var dontShowAgainKey = string.Empty;
+            var buttons = MessageBoxButton.OK;
+            var imageType = MessageBoxImage.Error;
+            var invalidText = "JJJ__##";
+            var msg = $"{invalidText} is invalid. Elasticsearch Index only supports: " + Environment.NewLine
+                                                                                       + " Lowercase" + Environment.NewLine
+                                                                                       + " Cannot be . or .." + Environment.NewLine
+                                                                                       + " Cannot start with -, _, +" + Environment.NewLine
+                                                                                       + " Cannot include special characters" + Environment.NewLine
+                                                                                       + " Cannot be longer than 255 characters" + Environment.NewLine;
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    imageType = img;
+                    popupWasCalled = true;
+                    dontShowAgainKey = dntShwAgKy;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            //------------Execute Test---------------------------
+            popupController.ShowInvalidElasticsearchIndexFormatMessage(invalidText);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Invalid Elasticsearch Index", header);
+            Assert.AreEqual(msg, description);
+            Assert.AreEqual(MessageBoxImage.Error, imageType);
+            Assert.AreEqual(null, dontShowAgainKey);
+        }
     }
 }

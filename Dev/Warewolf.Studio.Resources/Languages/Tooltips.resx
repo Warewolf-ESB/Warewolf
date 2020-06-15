@@ -865,6 +865,9 @@ Returns the content of the file.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
+  <data name="ReadFileToolTipIsResultBase64" xml:space="preserve">
+    <value>If selected it returns the content of the file in base64 format.</value>
+  </data>
   <data name="ReadFileToolTipPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action. 
 By default the account running Warewolf Server.exe service will be used.</value>

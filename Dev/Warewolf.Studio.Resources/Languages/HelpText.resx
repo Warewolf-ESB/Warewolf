@@ -1296,6 +1296,9 @@
   <data name="ReadFileHelpResult" xml:space="preserve">
     <value>Only variables go in here.	Returns the content of the file.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
+  <data name="ReadFileHelpIsResultBase64" xml:space="preserve">
+    <value>If selected it returns the content of the file in base64 format.</value>
+  </data>
   <data name="ReadFileHelpUsername" xml:space="preserve">
     <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
@@ -1806,7 +1809,15 @@ A test must be ignored/disabled before it can be deleted.</value>
     <value>The full username of the account you want to use to connect to this resource.</value>
   </data>
   <data name="SearchIndexHelp" xml:space="preserve">
-    <value>The search index that will be used to index the data.</value>
+    <value>The search index that will be used to index the data. &lt;br/&gt;&lt;br/&gt;
+     Elasticsearch Index only supports: &lt;br/&gt;
+     Lowercase&lt;br/&gt;
+     Cannot be . or ..&lt;br/&gt;
+     Cannot start with -, _, +&lt;br/&gt;
+     Cannot include \ /  *  ?  " | , # spaces&lt;br/&gt;
+     Cannot include special characters&lt;br/&gt;
+     Cannot be longer than 255 characters&lt;br/&gt;
+    </value>
   </data>  
   <data name="WarewolfDefaultHelpDescription" xml:space="preserve">
     <value>&lt;h2&gt; Warewolf Help &lt;/h2&gt; 	For more information, follow the link below.	&lt;br/&gt;&lt;br/&gt;	&lt;a href="http://warewolf.io/knowledge-base/" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>

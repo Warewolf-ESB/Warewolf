@@ -1,8 +1,40 @@
+Monday 8 June 2020
+======================
+Bug Fixes
+---------
+- Validate SearchIndex on the Elasticsearch Source.
+- Fixed the log levels for execution logging.
+
+
 Tuesday 21 April 2020
 ======================
-Bug Fix
+Features
 --------
+- Test Coverage can now be run on workflows, folders containing workflows and on the host. 
+	~ Run All Tests 
+          - works for workflow, all workflows in a selected folder, and all workflow in a selected host
+          - right-click workflow, folder, or host from Warewolf studio
+          - {workflowpath}.tests when accessing from url
+          - updated the json format
+          - each test run creates a coverage report
+
+       ~ Run Coverage
+         - works for workflow, all workflows in a selected folder, and all workflow in a selected host.
+         - right-click workflow, folder, or host from Warewolf studio
+         - {workflowpath}.coverage when accessing from url
+
+- Logging has been enhanced. 
+	~ All workflow executions are logged if EnableDetailedLogging has been set to true in serverSettings.json.
+	~ Elasticsearch 7.6 can now be used as a logging source. The default is still Sqlite. 
+		1. Download and install Elasticsearch with Docker: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+		2. Create an Elasticsearch data source in warewolf.
+	  	3. In settings select the Elasticsearch source created from the dropdown and save. Default in the dropddown referres to Sqlite.
+	  Note: If the logging source is changed, the server will need to be restarted.
+
+Bug Fixes
+---------
 - Studio can now start even if there are corrupt workflows in the active workspace
+
 
 Thursday 12 March 2020
 ======================

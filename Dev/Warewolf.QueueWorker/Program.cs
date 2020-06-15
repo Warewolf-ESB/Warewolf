@@ -50,7 +50,8 @@ namespace QueueWorker
                 var environmentConnection = new ServerProxy(serverEndpoint);
 
                 Console.Write("connecting to server: " + serverEndpoint + "...");
-                environmentConnection.Connect(Guid.Empty);
+                var connectTask = environmentConnection.ConnectAsync(Guid.Empty);
+                connectTask.Wait();
                 Console.WriteLine("done.");
                 var resourceCatalogProxy = new ResourceCatalogProxy(environmentConnection);
 

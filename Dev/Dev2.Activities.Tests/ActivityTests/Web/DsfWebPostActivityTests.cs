@@ -42,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         const string _userAgent = "user-agent";
         const string _contentType = "Content-Type";
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Constructed")]
         public void DsfWebPostActivity_Constructed_Correctly_ShouldHaveInheritDsfActivity()
@@ -54,6 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Constructor")]
         public void DsfWebPostActivity_Constructor_Correctly_ShouldSetTypeDisplayName()
@@ -66,6 +68,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Constructed")]
         public void DsfWebPostActivity_Constructed_Correctly_ShouldHaveCorrectProperties()
@@ -81,6 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Execute")]
         public void DsfWebPostActivity_Execute_WithNoOutputDescription_ShouldAddError()
@@ -120,6 +124,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Execute")]
         public void DsfWebPostActivity_Execute_WithValidWebResponse_ShouldSetVariables()
@@ -166,6 +171,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Execute")]
         public void DsfWebPostActivity_Execute_WithValidTextResponse_ShouldSetVariables()
@@ -216,6 +222,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Execute")]
         public void DsfWebPostActivity_Execute_WithInValidWebResponse_ShouldError()
@@ -271,6 +278,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Execute")]
         public void DsfWebPostActivity_Execute_WithValidXmlEscaped_ShouldSetVariables()
@@ -320,6 +328,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Execute")]
         public void DsfWebPostActivity_Execute_WithInputVariables_ShouldEvalVariablesBeforeExecutingWebRequest()
@@ -371,6 +380,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Constructer_GivenHasInstance_ShouldHaveType()
         {
@@ -385,6 +395,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenWebPostActivity_ShouldReturnMissingTypeDataGridAcitvity()
         {
@@ -399,6 +410,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentIsNull_ShouldReturnZeroDebugInputs()
         {
@@ -412,6 +424,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenMockEnvironment_ShouldAddDebugInputItems()
         {
@@ -460,6 +473,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenNoHeaders_ShouldHaveTwoHeaders()
         {
@@ -481,6 +495,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CleateClient_GivenNoHeaders_ShouldHaveUserAgentHeader()
         {
@@ -504,6 +519,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CleateClient_GivenNoHeaders_ShouldGlobalConstantsUserAgent()
         {
@@ -524,6 +540,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenWebSourceAuthenticationTypeIsUser_ShouldSetWebClientPasswordAndUserName()
         {
@@ -549,6 +566,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenAuthenticationTypeIsNotUser_ShouldNotSetCredentials()
         {
@@ -569,6 +587,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateClient_GivenHeaders_ShouldHaveHeadersAdded()
         {
@@ -595,6 +614,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Execute")]
         public void DsfWebPostActivity_Execute_ErrorResponse_ShouldSetVariables()
@@ -639,6 +659,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebPostActivity))]
         public void DsfWebPostActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()

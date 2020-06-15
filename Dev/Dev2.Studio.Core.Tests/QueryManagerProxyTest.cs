@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +27,7 @@ using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 namespace Dev2.Core.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class QueryManagerProxyTest
     {
         [TestMethod]

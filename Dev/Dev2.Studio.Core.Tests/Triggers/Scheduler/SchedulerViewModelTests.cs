@@ -46,6 +46,7 @@ namespace Dev2.Core.Tests.Triggers.Scheduler
 {
     [TestClass]
     [TestCategory("Studio Triggers Scheduler Core")]
+    [DoNotParallelize]
     public class SchedulerViewModelTests
     {
         [TestInitialize]

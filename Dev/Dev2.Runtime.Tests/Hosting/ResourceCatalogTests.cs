@@ -52,6 +52,7 @@ namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
+    [DoNotParallelize]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resources saved by SaveResources()

@@ -29,6 +29,7 @@ namespace Dev2.Tests.Activities.Utils
         ///A test for IsBetween
         ///</summary>
         [TestMethod]
+        [Timeout(60000)]
         public void IsBetweenIsFalseIfStartIsNullAndEndIsNull()
         {
             const string value = "2010-01-01";
@@ -43,6 +44,7 @@ namespace Dev2.Tests.Activities.Utils
         ///A test for IsEqualTo
         ///</summary>
         [TestMethod]
+        [Timeout(60000)]
         public void IsEqualToTest()
         {
             var value = string.Empty; // TODO: Initialize to an appropriate value
@@ -56,6 +58,7 @@ namespace Dev2.Tests.Activities.Utils
         ///A test for IsGreaterThan
         ///</summary>
         [TestMethod]
+        [Timeout(60000)]
         public void IsGreaterThanTest()
         {
             var value = string.Empty; // TODO: Initialize to an appropriate value
@@ -69,6 +72,7 @@ namespace Dev2.Tests.Activities.Utils
         ///A test for IsGreaterThanOrEqualTo
         ///</summary>
         [TestMethod]
+        [Timeout(60000)]
         public void IsGreaterThanOrEqualToTest()
         {
             var value = string.Empty; // TODO: Initialize to an appropriate value
@@ -83,6 +87,7 @@ namespace Dev2.Tests.Activities.Utils
         ///A test for IsLessThan
         ///</summary>
         [TestMethod]
+        [Timeout(60000)]
         public void IsLessThanTest()
         {
             var value = string.Empty; // TODO: Initialize to an appropriate value
@@ -98,6 +103,7 @@ namespace Dev2.Tests.Activities.Utils
         ///A test for IsLessThanOrEqualTo
         ///</summary>
         [TestMethod]
+        [Timeout(60000)]
         public void IsLessThanOrEqualToTest()
         {
             var value = string.Empty; // TODO: Initialize to an appropriate value
@@ -113,6 +119,7 @@ namespace Dev2.Tests.Activities.Utils
         ///A test for IsNotEqualTo
         ///</summary>
         [TestMethod]
+        [Timeout(60000)]
         public void IsNotEqualToTest()
         {
             var value = string.Empty; // TODO: Initialize to an appropriate value
@@ -128,6 +135,7 @@ namespace Dev2.Tests.Activities.Utils
         ///A test for ValueIsDate
         ///</summary>
         [TestMethod]
+        [Timeout(60000)]
         public void ValueIsDateTest()
         {
             var value = string.Empty; // TODO: Initialize to an appropriate value
@@ -142,6 +150,7 @@ namespace Dev2.Tests.Activities.Utils
         ///A test for ValueIsNumber
         ///</summary>
         [TestMethod]
+        [Timeout(60000)]
         public void ValueIsNumberTest()
         {
             var value = string.Empty; // TODO: Initialize to an appropriate value
@@ -153,6 +162,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Util_Eq()
         {
             Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq("theString", null));
@@ -167,6 +177,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Util_NtEq()
         {
             Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.NtEq("theString", null));
@@ -180,6 +191,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Util_LsTh()
         {
             Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsTh("theString", null));
@@ -194,6 +206,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Util_LsThEq()
         {
             Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsThEq("theString", null));
@@ -208,6 +221,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Util_GrTh()
         {
             Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh("theString", null));
@@ -222,6 +236,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Util_GrThEq()
         {
             Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq("theString", null));
@@ -236,6 +251,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void Util_Btw()
         {
             Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("", null, null));

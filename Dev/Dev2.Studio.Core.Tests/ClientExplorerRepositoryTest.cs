@@ -19,15 +19,12 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Core.Tests
 {
     [TestClass]
     public class ClientExplorerRepositoryTest
     {
-
-
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ClientExplorerRepository_Ctor")]

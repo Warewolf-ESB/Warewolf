@@ -25,7 +25,6 @@ using Dev2.Runtime;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
-using Dev2.Services.Security.MoqInstallerActions;
 using WarewolfCOMIPC.Client;
 using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
@@ -209,7 +208,7 @@ namespace Dev2
                         worker.Execute();
                     }
                     _loggingProcessMonitor.Start();
-                    var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(30));
+                    var loggingServerCheckDelay = Task.Delay(TimeSpan.FromSeconds(300));
 
                     _loadResources = new LoadResources("Resources", _writer, _startUpDirectory, _startupResourceCatalogFactory);
                     LoadHostSecurityProvider();

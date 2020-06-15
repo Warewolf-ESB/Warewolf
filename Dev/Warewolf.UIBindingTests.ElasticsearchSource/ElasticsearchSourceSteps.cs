@@ -14,7 +14,6 @@ using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.SaveDialog;
-using Dev2.Infrastructure.Tests;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
@@ -138,7 +137,16 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
             Assert.AreEqual(portNumber, viewModel.Port);
         }
-
+        [Given(@"I type as search index as ""(.*)""")]
+        [Then(@"I type search index as ""(.*)""")]
+        [When(@"I change search index to ""(.*)""")]
+        public void ThenITypeSearchIndexAs(string searchIndex)
+        {
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            elasticsearchSourceControl.EnterSearchIndex(searchIndex);
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            Assert.AreEqual(searchIndex, viewModel.SearchIndex);
+        }
 
         [Given(@"I Select Authentication Type as ""(.*)""")]
         [When(@"I Select Authentication Type as ""(.*)""")]

@@ -156,11 +156,6 @@
     <Compile Include="Services\Security\AuthorizationServiceBase.cs" />
     <Compile Include="Services\Security\IAuthorizationRequest.cs" />
     <Compile Include="Services\Security\LoggingSettingsTO.cs" />
-    <Compile Include="Services\Security\MoqInstallerActions\InstallerActionsForDevelopment.cs" />
-    <Compile Include="Services\Security\MoqInstallerActions\MoqInstallerActionFactory.cs" />
-    <Compile Include="Services\Security\MoqInstallerActions\MoqInstallerActions.cs" />
-    <Compile Include="Services\Security\MoqInstallerActions\WarewolfSecurityOperations.cs" />
-    <Compile Include="Services\Security\MoqInstallerActions\WarewolfSecurityOperationsImpl.cs" />
     <Compile Include="Services\Security\IAuthorizationService.cs" />
     <Compile Include="Services\Security\ISecurityService.cs" />
     <Compile Include="Services\Security\SecurityServiceBase.cs" />

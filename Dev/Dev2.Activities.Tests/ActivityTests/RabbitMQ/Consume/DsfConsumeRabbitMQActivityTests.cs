@@ -25,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
     public class DsfConsumeRabbitMQActivityTests : BaseActivityUnitTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
         public void DsfConsumeRabbitMQActivity_Constructor_Should_SetsDefaultPropertyValues()
@@ -46,6 +47,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
         public void DsfConsumeRabbitMQActivity_ConstructorRC_Should_SetsDefaultPropertyValuesIsObject()
@@ -65,6 +67,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
         public void DsfConsumeRabbitMQActivity_ConstructorRM_Should_SetsDefaultPropertyValuesIsObject()
@@ -84,6 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfConsumeRabbitMQActivity_Prefetch")]
         public void DsfConsumeRabbitMQActivity_Prefetch_Should_SetsDefaultPropertyValuesIsObject()
@@ -96,6 +100,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AssignResult_GivenIsObject_ShouldSetResponsemanagerIsObject()
         {
@@ -120,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AssignResult_GivenIsObject_ShouldSetResponsemanagerObjectName()
         {
@@ -145,6 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AssignResult_GivenIsObjectNoMessages_ShouldNotSetResponsemanagerPushResponeToEnvironment()
         {
@@ -172,6 +179,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AssignResult_GivenIsObjectOneMessages_ShouldSetResponsemanagerPushResponeToEnvironment()
         {
@@ -200,6 +208,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AssignResult_GivenIsObjectManyMessages_ShouldSetResponsemanagerPushResponeToEnvironment()
         {
@@ -230,6 +239,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
         public void DsfConsumeRabbitMQActivity_ConstructorRC_Should_SetsDefaultPropertyValuesObjectName()
@@ -249,6 +259,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
         public void DsfConsumeRabbitMQActivity_ConstructorRM_Should_SetsDefaultPropertyValuesObjectName()
@@ -268,6 +279,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
         public void DsfConsumeRabbitMQActivity_Constructor_Should_SetsInitialiseResponseManager()
@@ -287,6 +299,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
         public void DsfConsumeRabbitMQActivity_ConstructorRC_Should_SetsDefaultPropertyValues()
@@ -311,6 +324,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_NoSource_Should_Return_NullSourceException()
@@ -334,6 +348,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_Blank_QueueShould_Return_BlankQueueException_NoTimeout()
@@ -359,6 +374,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_Blank_QueueShould_Return_BlankQueueException_Timeout()
@@ -387,6 +403,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_NoQueue_Shouold_Return_Exception_NoTimeout()
@@ -410,6 +427,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_NoQueue_Shouold_Return_Exception_NoTimeout_Timeout()
@@ -436,6 +454,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         [ExpectedException(typeof(Exception))]
@@ -464,6 +483,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void DsfConsumeRabbitMQActivity_Execute_Empty_Queue_Exception()
@@ -501,6 +521,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void DsfConsumeRabbitMQActivity_Execute_Empty_Queue_Exception_NoTimeout()
@@ -539,6 +560,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_DsfBaseActivity_Inputs_ReturnsInputsInTheDebug()
@@ -577,6 +599,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Assert Results-------------------------
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void DsfConsumeRabbitMQActivity_Execute_DsfBaseActivity_MethodsGivenInputs()
@@ -625,6 +648,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void DsfConsumeRabbitMQActivity_ExecuteIsObject_DsfBaseActivity_MethodsGivenOjectOutput()
@@ -673,6 +697,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_UnExisting_Queue_Returns_QeueuNotFoundException_NoTimeout()
@@ -711,6 +736,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_UnExisting_Queue_Returns_QeueuNotFoundException_Timeout()
@@ -754,6 +780,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_ConsumeAndRequeue_From_UnExisting_Queue_ReturnQeueuNotFoundException()
@@ -799,6 +826,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_ItemsInQueue_ExecuteAndReqeue_WhenExecutedMultipleTimes_ShouldNotAppend_NoTimeout()
@@ -839,6 +867,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_ItemsInQueue_ExecuteAndReqeue_WhenExecutedMultipleTimes_ShouldNotAppend_Timeout()
@@ -877,6 +906,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_EmptyQueue_ExecuteAndReqeue_Empty_Queue_Exception()
@@ -915,6 +945,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformSerialization_ShouldNotError()
@@ -967,6 +998,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfConsumeRabbitMQActivity_GetOutputs")]
         public void DsfConsumeRabbitMQActivity_GetOutputs_ShouldIncludeResponse()
@@ -987,6 +1019,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void DsfConsumeRabbitMQActivity_ShouldSerializeChannel_ShouldReturnFalse()
         {
@@ -999,6 +1032,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void DsfConsumeRabbitMQActivity_ShouldSerializeConnection_ShouldReturnFalse()
         {
@@ -1011,6 +1045,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void DsfConsumeRabbitMQActivity_ShouldSerializeConnectionFactory_ShouldReturnFalse()
         {
@@ -1023,6 +1058,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void DsfConsumeRabbitMQActivity_ShouldSerializeConsumer_ShouldReturnFalse()
         {
@@ -1035,6 +1071,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void DsfConsumeRabbitMQActivity_ShouldSerializeRabbitSource_ShouldReturnFalse()
         {
@@ -1047,6 +1084,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfConsumeRabbitMQActivity_GetState")]
         public void DsfConsumeRabbitMQActivity_GetState_ReturnsStateVariable()

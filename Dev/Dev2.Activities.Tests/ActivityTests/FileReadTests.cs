@@ -36,6 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileRead_UpdateForEachInputs")]
         public void DsfFileRead_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -52,6 +53,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileRead_UpdateForEachInputs")]
         public void DsfFileRead_UpdateForEachInputs_MoreThan1Updates_DoesNotUpdates()
@@ -71,6 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileRead_UpdateForEachInputs")]
         public void DsfFileRead_UpdateForEachInputs_1Update_Updates()
@@ -89,6 +92,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileRead_UpdateForEachOutputs")]
         public void DsfFileRead_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -104,6 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileRead_UpdateForEachOutputs")]
         public void DsfFileRead_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -122,6 +127,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileRead_UpdateForEachOutputs")]
         public void DsfFileRead_UpdateForEachOutputs_1Updates_UpdateResult()
@@ -139,6 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileRead_GetForEachInputs")]
         public void DsfFileRead_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -157,6 +164,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFileRead_GetForEachOutputs")]
         public void DsfFileRead_GetForEachOutputs_WhenHasResult_ReturnsOutputList()

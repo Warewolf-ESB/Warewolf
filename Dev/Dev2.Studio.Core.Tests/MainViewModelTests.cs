@@ -69,6 +69,7 @@ using Warewolf.Options;
 namespace Dev2.Core.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class MainViewModelTests : MainViewModelBase
     {
         [TestInitialize]
@@ -150,7 +151,6 @@ namespace Dev2.Core.Tests
 
         #region Constructor
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedLoadsWorkspaceItems()
         {
@@ -209,7 +209,6 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(expected);
         }
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithDifferentEnvID()
         {
@@ -257,7 +256,6 @@ namespace Dev2.Core.Tests
             Assert.IsNull(expected);
         }
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
         {
@@ -1496,7 +1494,6 @@ namespace Dev2.Core.Tests
 
         #region OnDeactivate
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelOnDeactivateWithTrueExpectedSavesWorkspaceItems()
         {
@@ -1526,7 +1523,6 @@ namespace Dev2.Core.Tests
             wsiRepo.Verify(r => r.Write());
         }
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelOnDeactivateWithTrueExpectedSavesResourceModels()
         {
