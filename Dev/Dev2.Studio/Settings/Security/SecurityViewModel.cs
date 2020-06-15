@@ -398,7 +398,7 @@ namespace Dev2.Settings.Security
             string resourceName;
             string resourcePath;
             Guid resourceId;
-            if (resourceModel is EnvironmentViewModel environmentViewModel)
+            if (resourceModel is IEnvironmentViewModel environmentViewModel)
             {
                 resourceName = environmentViewModel.ResourceName.Replace(" (Connected)", "");
                 resourceId = environmentViewModel.ResourceId;

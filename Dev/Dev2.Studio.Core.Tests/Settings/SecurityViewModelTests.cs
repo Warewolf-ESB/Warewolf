@@ -962,6 +962,117 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_PickResourceCommand_EnvironmentViewModel()
+        {
+            //------------Setup for test--------------------------
+            var resourceId = Guid.NewGuid();
+            const string resourceName = "localhost";
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceId,
+                ResourceName = resourceName
+            };
+
+            var expectedResourceId = Guid.NewGuid();
+            const string serverName= "localhost (Connected)";
+            const string expectedResourceName= "localhost";
+            var mockEnvironmentViewModel = new Mock<IEnvironmentViewModel>();
+            mockEnvironmentViewModel.Setup(o => o.ResourceId).Returns(expectedResourceId);
+            mockEnvironmentViewModel.Setup(o => o.ResourceName).Returns(serverName);
+            mockEnvironmentViewModel.Setup(o => o.ResourcePath).Returns("");
+
+            var picker = new Mock<IResourcePickerDialog>();
+            picker.Setup(o => o.SelectResource(resourceId));
+            picker.Setup(o => o.SelectedResource).Returns(mockEnvironmentViewModel.Object);
+            picker.Setup(o => o.ShowDialog(It.IsAny<IServer>())).Returns(true);
+
+            var mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(o => o.ResourceName).Returns(expectedResourceName);
+            mockResourceModel.Setup(o => o.ID).Returns(expectedResourceId);
+            mockResourceModel.Setup(o => o.GetSavePath()).Returns("");
+
+            _resourceRepo.Setup(o => o.FindSingle(a => a.ID == resourceId))
+                .Returns(mockResourceModel.Object);
+
+            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] {permission}), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, _environmentModel.Object, () => picker.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickResourceCommand.Execute(permission);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedResourceId, permission.ResourceID);
+            Assert.AreEqual(expectedResourceName, permission.ResourceName);
+            Assert.AreEqual("", permission.ResourcePath);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SecurityViewModel))]
+        public void SecurityViewModel_PickResourceCommand_ExplorerItemViewModel()
+        {
+            //------------Setup for test--------------------------
+            var resourceId = Guid.NewGuid();
+            const string resourceName = "Examples/Folder";
+            var permission = new WindowsGroupPermission
+            {
+                IsServer = false,
+                WindowsGroup = "Deploy Admins",
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = false,
+                ResourceID = resourceId,
+                ResourceName = resourceName
+            };
+
+            var expectedResourceId = Guid.NewGuid();
+            const string expectedResourceName= "Examples/Folder";
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(o => o.ResourceId).Returns(expectedResourceId);
+            mockExplorerTreeItem.Setup(o => o.ResourceName).Returns(expectedResourceName);
+            mockExplorerTreeItem.Setup(o => o.ResourcePath).Returns(expectedResourceName);
+
+            var picker = new Mock<IResourcePickerDialog>();
+            picker.Setup(o => o.SelectResource(resourceId));
+            picker.Setup(o => o.SelectedResource).Returns(mockExplorerTreeItem.Object);
+            picker.Setup(o => o.ShowDialog(It.IsAny<IServer>())).Returns(true);
+
+            var mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(o => o.ResourceName).Returns(expectedResourceName);
+            mockResourceModel.Setup(o => o.ID).Returns(expectedResourceId);
+            mockResourceModel.Setup(o => o.GetSavePath()).Returns(expectedResourceName);
+
+            _resourceRepo.Setup(o => o.FindSingle(a => a.ID == resourceId))
+                .Returns(mockResourceModel.Object);
+
+            _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
+
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] {permission}), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, _environmentModel.Object, () => picker.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.PickResourceCommand.Execute(permission);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedResourceId, permission.ResourceID);
+            Assert.AreEqual(expectedResourceName, permission.ResourceName);
+            Assert.AreEqual(expectedResourceName, permission.ResourcePath);
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory(nameof(SecurityViewModel))]
         public void SecurityViewModel_HelpText_IsResourceHelpVisibleIsTrue_ContainsResourceHelpText()
