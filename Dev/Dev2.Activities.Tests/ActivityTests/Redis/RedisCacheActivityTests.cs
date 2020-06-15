@@ -301,6 +301,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             {
                 var dependency = new Depends(Depends.ContainerType.AnonymousRedis);
                 var key = "[[RedisKey]]";
+                var keyValue = "someval";
                 var hostName = dependency.Container.IP;
                 var password = "";
                 var port = int.Parse(dependency.Container.Port);
@@ -322,7 +323,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
                 var mockResourceCatalog = new Mock<IResourceCatalog>();
                 var mockDataObject = new Mock<IDSFDataObject>();
                 var environment = new ExecutionEnvironment();
-                environment.Assign("[[RedisKey]]", "someval", 0);
+                environment.Assign("[[RedisKey]]", keyValue, 0);
 
                 var env = new Mock<IExecutionEnvironment>();
                 env.Setup(e => e.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[RedisKey]]");
@@ -338,7 +339,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
                 var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
                 //----------------------Assert-----------------------
-                AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } found", null, "", "");
+                AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + keyValue + " } found", null, "", "");
             }
             catch (Exception e)
             {
