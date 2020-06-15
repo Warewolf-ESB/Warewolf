@@ -18,6 +18,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Dev2.Diagnostics;
+using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -25,6 +26,7 @@ using Warewolf.Core;
 using Warewolf.Driver.Redis;
 using Warewolf.Interfaces;
 using Warewolf.Resource.Errors;
+using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.RedisRemove
@@ -36,6 +38,7 @@ namespace Dev2.Activities.RedisRemove
 
         private RedisCacheBase _redisCache;
         internal readonly List<string> _messages = new List<string>();
+        private string _key;
 
         public RedisRemoveActivity()
              : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
@@ -60,8 +63,19 @@ namespace Dev2.Activities.RedisRemove
 
         [Inputs("Key")]
         [FindMissing]
-        public string Key { get; set; }
-
+        public string Key
+        {
+            get => _key;
+            set => _key = value;
+        }
+        private string KeyValue
+        {
+            get
+            {
+                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(_key, 0));
+                return varValue == _key ? _key : varValue;
+            }
+        }
         [FindMissing]
         public string Response { get; set; }
 
@@ -97,8 +111,13 @@ namespace Dev2.Activities.RedisRemove
                 }
             };
         }
-
+        private new IDSFDataObject DataObject { get; set; }
         public RedisSource RedisSource { get; set; }
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            DataObject = dataObject;
+            base.ExecuteTool(dataObject, update);
+        }
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
@@ -110,11 +129,11 @@ namespace Dev2.Activities.RedisRemove
                     return _messages;
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
-                if (!_redisCache.Remove(Key))
+                if (!_redisCache.Remove(KeyValue))
                 {
                     _result = "Failure";
                 }
-                Dev2Logger.Debug($"Cache {Key} removed: {_result}", GlobalConstants.WarewolfDebug);
+                Dev2Logger.Debug($"Cache {KeyValue} removed: {_result}", GlobalConstants.WarewolfDebug);
                 Response = _result;
                 return new List<string> { _result };
             }
