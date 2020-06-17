@@ -64,6 +64,10 @@ namespace Dev2.Activities.Designers2.RedisRemove
             {
                 Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
             }
+            if (modelItem.Properties["Result"]?.ComputedValue != null)
+            {
+                Result = modelItem.Properties["Result"]?.ComputedValue.ToString();
+            }
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_RedisRemove;
         }
 
