@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,6 +39,7 @@ namespace Dev2.Activities.RedisRemove
         private RedisCacheBase _redisCache;
         internal readonly List<string> _messages = new List<string>();
         private string _key;
+        private IDSFDataObject _dataObject;
 
         public RedisRemoveActivity()
              : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
@@ -72,7 +73,9 @@ namespace Dev2.Activities.RedisRemove
         {
             get
             {
-                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(_key, 0));
+
+                var expr = _dataObject.Environment.EvalToExpression(_key, 1);
+                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, 1,false,true));
                 return varValue == _key ? _key : varValue;
             }
         }
@@ -111,13 +114,16 @@ namespace Dev2.Activities.RedisRemove
                 }
             };
         }
-        private new IDSFDataObject DataObject { get; set; }
-        public RedisSource RedisSource { get; set; }
+
+
+
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            DataObject = dataObject;
+            _dataObject = dataObject;
             base.ExecuteTool(dataObject, update);
         }
+        public RedisSource RedisSource { get; set; }
+
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
