@@ -135,11 +135,12 @@ namespace Dev2.Activities.RedisRemove
                     return _messages;
                 }
                 _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
-                if (!_redisCache.Remove(KeyValue))
+                var keyValue = KeyValue;
+                if (!_redisCache.Remove(keyValue))
                 {
                     _result = "Failure";
                 }
-                Dev2Logger.Debug($"Cache {KeyValue} removed: {_result}", GlobalConstants.WarewolfDebug);
+                Dev2Logger.Debug($"Cache {keyValue} removed: {_result}", GlobalConstants.WarewolfDebug);
                 Response = _result;
                 return new List<string> { _result };
             }
