@@ -23,7 +23,10 @@ namespace Warewolf.DistributedList
         Task Notify<T>(T item) where T : ListNotification;
     }
 
-    [AuthorizeHub]
+    /**
+     * SignalR hub that allows notifications of server changes to be be carried to clients (followers)
+     */
+    //[AuthorizeHub] // commented out to allow signalr client to be notified without needing authentication
     [HubName(Warewolf.Service.DistributedLists.ClusterFollowers)]
     public class ClusterFollowers : Hub<IClient>, IListWatcher
     {
