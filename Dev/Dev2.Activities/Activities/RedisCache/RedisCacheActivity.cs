@@ -80,6 +80,7 @@ namespace Dev2.Activities.RedisCache
         public Guid SourceId { get; set; }
 
         private IDev2Activity _innerActivity;
+        private int _update;
 
         [Inputs("Key")]
         [FindMissing]
@@ -93,7 +94,8 @@ namespace Dev2.Activities.RedisCache
         {
             get
             {
-                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(_key, 1));
+                var expr = _dataObject.Environment.EvalToExpression(_key, _update);
+                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update,false,true));
                 return varValue == _key ? _key : varValue;
             }
         }
@@ -153,6 +155,7 @@ namespace Dev2.Activities.RedisCache
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _dataObject = dataObject;
+            _update = update;
             base.ExecuteTool(_dataObject, update);
         }
 
