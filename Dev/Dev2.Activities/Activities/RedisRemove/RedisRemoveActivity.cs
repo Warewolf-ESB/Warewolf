@@ -40,6 +40,7 @@ namespace Dev2.Activities.RedisRemove
         internal readonly List<string> _messages = new List<string>();
         private string _key;
         private IDSFDataObject _dataObject;
+        private int _update;
 
         public RedisRemoveActivity()
              : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
@@ -74,8 +75,8 @@ namespace Dev2.Activities.RedisRemove
             get
             {
 
-                var expr = _dataObject.Environment.EvalToExpression(_key, 1);
-                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, 1,false,true));
+                var expr = _dataObject.Environment.EvalToExpression(_key, _update);
+                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update,false,true));
                 return varValue == _key ? _key : varValue;
             }
         }
@@ -115,11 +116,10 @@ namespace Dev2.Activities.RedisRemove
             };
         }
 
-
-
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _dataObject = dataObject;
+            _update = update;
             base.ExecuteTool(dataObject, update);
         }
         public RedisSource RedisSource { get; set; }
