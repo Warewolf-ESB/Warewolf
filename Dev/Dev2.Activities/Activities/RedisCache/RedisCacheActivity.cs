@@ -184,13 +184,14 @@ namespace Dev2.Activities.RedisCache
                     _errorsTo.AddError($"{_innerActivity.GetDisplayName()} activity must have at least one output variable.");
                 }
 
-                var cachedData = GetCachedOutputs();
+                var keyValue = KeyValue;
+                var cachedData = GetCachedOutputs(keyValue);
                 if (cachedData != null)
                 {
                     _debugOutputs.Clear();
 
                     var debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + KeyValue + " } found"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found"), debugItem);
                     _debugOutputs.Add(debugItem);
 
                     var outputIndex = 1;
@@ -218,12 +219,12 @@ namespace Dev2.Activities.RedisCache
                     _debugOutputs.Clear();
                     var debugItem = new DebugItem();
 
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + KeyValue + " } not found"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } not found"), debugItem);
                     _debugInputs.Add(debugItem);
 
                     _innerActivity.Execute(_dataObject, 0);
 
-                    CacheOutputs();
+                    CacheOutputs(keyValue);
                 }
 
                 return new List<string> {_result};
@@ -243,9 +244,9 @@ namespace Dev2.Activities.RedisCache
             }
         }
 
-        private IDictionary<string, string> GetCachedOutputs()
+        private IDictionary<string, string> GetCachedOutputs(string keyValue)
         {
-            var cachedData = _redisCache.Get(KeyValue);
+            var cachedData = _redisCache.Get(keyValue);
             if (cachedData is null)
             {
                 return null;
@@ -255,7 +256,7 @@ namespace Dev2.Activities.RedisCache
             return outputs;
         }
 
-        private void CacheOutputs()
+        private void CacheOutputs(string keyValue)
         {
             var data = new Dictionary<string, string>();
             var innerCount = 1;
@@ -271,7 +272,7 @@ namespace Dev2.Activities.RedisCache
                 data.Add(key, value);
             }
 
-            _redisCache.Set(KeyValue, _serializer.Serialize(data), CacheTTL);
+            _redisCache.Set(keyValue, _serializer.Serialize(data), CacheTTL);
         }
 
         public override List<string> GetOutputs() => new List<string> {Response, Result};
