@@ -26,8 +26,8 @@
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Source:" />
             <TextBlock Grid.Column="1" Grid.Row="0" 
                        TextTrimming="CharacterEllipsis" 
-                       Text="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" 
-                       ToolTip="{Binding Path=SelectedRedisServer.ResourceName, UpdateSourceTrigger=PropertyChanged}" />
+                       Text="{Binding Path=SelectedRedisSource.ResourceName, UpdateSourceTrigger=PropertyChanged}"
+                       ToolTip="{Binding Path=SelectedRedisSource.ResourceName, UpdateSourceTrigger=PropertyChanged}" />
 
             <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
