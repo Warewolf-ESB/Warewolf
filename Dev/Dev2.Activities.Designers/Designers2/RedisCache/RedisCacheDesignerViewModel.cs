@@ -74,6 +74,7 @@ namespace Dev2.Activities.Designers2.RedisCache
             {
                 TTL = int.Parse(modelItem.Properties["TTL"]?.ComputedValue.ToString());
             }
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_RedisCache;
         }
 
         public ObservableCollection<RedisSource> RedisSources { get; private set; }

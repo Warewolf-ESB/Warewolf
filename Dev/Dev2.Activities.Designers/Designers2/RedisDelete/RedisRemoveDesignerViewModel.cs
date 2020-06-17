@@ -64,6 +64,7 @@ namespace Dev2.Activities.Designers2.RedisRemove
             {
                 Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
             }
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_RedisRemove;
         }
 
         public ObservableCollection<RedisSource> RedisSources { get; private set; }
