@@ -28,6 +28,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Web;
 using Warewolf.Auditing;
+using Warewolf.Data;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -258,6 +259,8 @@ namespace Dev2.DynamicServices
         public bool IsOnDemandSimulation { get; set; }
         public Guid ServerID { get; set; }
         public Guid ResourceID { get; set; }
+
+        public IWarewolfResource Resource { get; set; }
 
 
 

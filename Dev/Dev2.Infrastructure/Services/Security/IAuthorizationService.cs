@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
+using Warewolf.Data;
 
 namespace Dev2.Services.Security
 {
@@ -24,6 +25,7 @@ namespace Dev2.Services.Security
 
         bool IsAuthorized(AuthorizationContext context, string resource);
         bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource);
+        bool IsAuthorized(IPrincipal user, AuthorizationContext context, IWarewolfResource resource);
         bool IsAuthorized(IAuthorizationRequest request);
         Permissions GetResourcePermissions(Guid resourceId);
 

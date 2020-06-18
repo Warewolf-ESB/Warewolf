@@ -10,9 +10,12 @@
 */
 
 using System;
+using System.Web;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Attribute;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
+using Warewolf.Data;
 
 namespace Dev2.Services.Security
 {
@@ -77,6 +80,15 @@ namespace Dev2.Services.Security
             return permission;
         }
 
+        public static bool Matches(this WindowsGroupPermission permission, Guid resourceId)
+        {
+            if(permission.IsServer)
+            {
+                return true;
+            }
+
+            return permission.ResourceID == resourceId;
+        }
         public static bool Matches(this WindowsGroupPermission permission, string resource)
         {
             if(permission.IsServer)
@@ -94,7 +106,75 @@ namespace Dev2.Services.Security
             {
                 return true;
             }
-            return permission.ResourceName.Contains("\\" + resource);
+
+            var p1 = resource;
+            var p2 = "\\" + permission.ResourcePath;
+            if (p2 is null)
+            {
+                return false;
+            }
+            var pathMatches = p1?.StartsWith(p2) ?? false;
+            return pathMatches;
+        }
+
+        public static bool Matches(this WindowsGroupPermission permission, IWarewolfResource resource)
+        {
+            if(permission.IsServer)
+            {
+                return true;
+            }
+
+            var matchingResourceID = permission.ResourceID == resource.ResourceID;
+            if (matchingResourceID)
+            {
+                return true;
+            }
+
+            var resourcePath = resource.FilePath?.Replace('/', '\\');
+            if(string.IsNullOrEmpty(resourcePath))
+            {
+                return true;
+            }
+
+            var p1 = resourcePath;
+            if (p1.StartsWith(EnvironmentVariables.ResourcePath))
+            {
+                p1 = p1.Replace(EnvironmentVariables.ResourcePath, "");
+            }
+            var p2 = "\\" + permission.ResourcePath;
+            if (p2 is null)
+            {
+                return false;
+            }
+            var pathMatches = p1?.StartsWith(p2) ?? false;
+            return pathMatches;
+        }
+
+        public static bool Matches(this WindowsGroupPermission permission, IAuthorizationRequest request)
+        {
+            if(permission.IsServer)
+            {
+                return true;
+            }
+
+            var resourcePath = HttpUtility.UrlDecode(request.ResourcePath?.Replace('/', '\\') ?? "");
+            if(string.IsNullOrEmpty(resourcePath))
+            {
+                return true;
+            }
+
+            var p1 = resourcePath;
+            if (p1.StartsWith(EnvironmentVariables.ResourcePath))
+            {
+                p1 = p1.Replace(EnvironmentVariables.ResourcePath, "");
+            }
+            var p2 = "\\" + permission.ResourcePath;
+            if (p2 is null)
+            {
+                return false;
+            }
+            var pathMatches = p1?.StartsWith(p2, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            return pathMatches;
         }
     }
 }

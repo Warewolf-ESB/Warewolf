@@ -136,7 +136,7 @@ namespace Dev2.Runtime.ESB.Execution
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
         {
             var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
-            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString()));
+            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.Resource));
             if (!isAuthorized)
             {
                 dataObject.Environment.AddError(string.Format(ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser?.Identity.Name, dataObject.ServiceName));

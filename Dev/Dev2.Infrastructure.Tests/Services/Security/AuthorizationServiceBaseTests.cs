@@ -430,12 +430,13 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         {
             //------------Setup for test--------------------------
             var resource = Guid.NewGuid();
+            var someOtherResource = Guid.NewGuid();
             var permissionBuilder = new PermissionTableBuilder();
             permissionBuilder.AddServerPermission("Warewolf Administrators", AuthorizationContext.View | AuthorizationContext.Execute | AuthorizationContext.Administrator | AuthorizationContext.Contribute | AuthorizationContext.DeployFrom | AuthorizationContext.DeployTo);
             permissionBuilder.AddServerPermission("Public", AuthorizationContext.View | AuthorizationContext.Execute);
-            permissionBuilder.AddResourcePermission(resource, "SomeOtherResource", "Public", AuthorizationContext.None);
+            permissionBuilder.AddResourcePermission(someOtherResource, "SomeOtherResource", "Public", AuthorizationContext.None);
             var permissions = permissionBuilder.Permissions;
-
+            var j = Newtonsoft.Json.JsonConvert.SerializeObject(permissions);
             var securityService = new Mock<ISecurityService>();
             securityService.Setup(o => o.Permissions).Returns(() => permissions);
             var mockSecuritySettings = new Mock<ISecuritySettings>();
@@ -480,10 +481,17 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             {
                 Permissions.Add(new WindowsGroupPermission
                 {
-                    WindowsGroup = groupName,
-                    View = (authorizationContext & AuthorizationContext.View) != 0,
-                    Execute = (authorizationContext & AuthorizationContext.Execute) != 0,
+                    Administrator = (authorizationContext & AuthorizationContext.Administrator) != 0,
                     Contribute = (authorizationContext & AuthorizationContext.Contribute) != 0,
+                    DeployFrom = (authorizationContext & AuthorizationContext.DeployFrom) != 0,
+                    DeployTo = (authorizationContext & AuthorizationContext.DeployTo) != 0,
+                    Execute = (authorizationContext & AuthorizationContext.Execute) != 0,
+                    IsServer = true,
+                    Path = null,
+                    ResourceID = Guid.Empty,
+                    ResourceName = null,
+                    View = (authorizationContext & AuthorizationContext.View) != 0,
+                    WindowsGroup = groupName,
                 });
             }
         }

@@ -22,6 +22,10 @@ using Warewolf;
 
 namespace Dev2.Runtime.Security
 {
+    /**
+     * Read and write security settings to config files
+     * and monitor the file for changes
+     */
     public class ServerSecurityService : SecurityServiceBase
     {
         bool _disposing;

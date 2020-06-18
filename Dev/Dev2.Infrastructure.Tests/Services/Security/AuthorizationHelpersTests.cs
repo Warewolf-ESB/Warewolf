@@ -85,7 +85,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = true };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(null);
+            var authorized = securityPermission.Matches((string)null);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(authorized);
@@ -100,7 +100,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "CATEGORY\\TEST2" };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(null);
+            var authorized = securityPermission.Matches((string)null);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(authorized);

@@ -22,6 +22,7 @@ using System.Collections.Concurrent;
 using Dev2.Common.Interfaces.Enums;
 using Warewolf;
 using Warewolf.Auditing;
+using Warewolf.Data;
 
 namespace Dev2.Interfaces
 {
@@ -139,5 +140,6 @@ namespace Dev2.Interfaces
         Exception ExecutionException { get; set; }
         IDictionary<IDev2Activity, (RetryState, IEnumerator<bool>)> Gates { get; }
         string OriginalServiceName { get; set; }
+        IWarewolfResource Resource { get; set; }
     }
 }

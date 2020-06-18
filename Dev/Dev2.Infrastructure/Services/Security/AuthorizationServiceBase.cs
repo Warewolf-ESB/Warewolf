@@ -169,6 +169,8 @@ namespace Dev2.Services.Security
         protected bool IsAuthorizedToConnect(IPrincipal principal) => IsAuthorized(AuthorizationContext.Any, principal, () => GetGroupPermissions(principal));
 
         public bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource) => IsAuthorized(context, user, () => GetGroupPermissions(user, resource));
+        public bool IsAuthorized(IPrincipal user, AuthorizationContext context, IAuthorizationRequest request) => IsAuthorized(context, user, () => GetGroupPermissions(user, request));
+        public bool IsAuthorized(IPrincipal user, AuthorizationContext context, IWarewolfResource resource) => IsAuthorized(context, user, () => GetGroupPermissions(user, resource));
 
         protected void DumpPermissionsOnError(IPrincipal principal)
         {
@@ -195,6 +197,21 @@ namespace Dev2.Services.Security
             return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
         }
 
+        protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, Guid resourceId)
+        {
+            var matchedResources = _securityService.Permissions.Where(p => p.Matches(resourceId));
+            var permissionsForResource = matchedResources.Where(p => !p.IsServer);
+            permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
+
+            var serverPermissionsNotOverridden = matchedResources.Where(permission =>
+                permissionsForResource.All(groupPermission => groupPermission.ResourceID == Guid.Empty || (groupPermission.WindowsGroup != permission.WindowsGroup && groupPermission.ResourceID != permission.ResourceID)));
+
+            var permissionsForServer = serverPermissionsNotOverridden
+                .Where(permission => IsInRole(principal, permission)).ToList();
+
+            permissionsForServer.AddRange(permissionsForResource);
+            return permissionsForServer;
+        }
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
             var matchedResources = _securityService.Permissions.Where(p => p.Matches(resource));
@@ -202,7 +219,38 @@ namespace Dev2.Services.Security
             permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
 
             var serverPermissionsNotOverridden = matchedResources.Where(permission =>
-                permissionsForResource.All(groupPermission => groupPermission.WindowsGroup != permission.WindowsGroup));
+                permissionsForResource.All(groupPermission => groupPermission.ResourceID == Guid.Empty || (groupPermission.WindowsGroup != permission.WindowsGroup && groupPermission.ResourceID != permission.ResourceID)));
+
+            var permissionsForServer = serverPermissionsNotOverridden
+                .Where(permission => IsInRole(principal, permission)).ToList();
+
+            permissionsForServer.AddRange(permissionsForResource);
+            return permissionsForServer;
+        }
+
+        protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, IAuthorizationRequest request)
+        {
+            var matchedResources = _securityService.Permissions.Where(p => p.Matches(request));
+            var permissionsForResource = matchedResources.Where(p => !p.IsServer);
+            permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
+
+            var serverPermissionsNotOverridden = matchedResources.Where(permission =>
+                permissionsForResource.All(groupPermission => groupPermission.ResourceID == Guid.Empty || (groupPermission.WindowsGroup != permission.WindowsGroup && groupPermission.ResourceID != permission.ResourceID)));
+
+            var permissionsForServer = serverPermissionsNotOverridden
+                .Where(permission => IsInRole(principal, permission)).ToList();
+
+            permissionsForServer.AddRange(permissionsForResource);
+            return permissionsForServer;
+        }
+        protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, IWarewolfResource resource)
+        {
+            var matchedResources = _securityService.Permissions.Where(p => p.Matches(resource));
+            var permissionsForResource = matchedResources.Where(p => !p.IsServer);
+            permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
+
+            var serverPermissionsNotOverridden = matchedResources.Where(permission =>
+                permissionsForResource.All(groupPermission => groupPermission.ResourceID == Guid.Empty || (groupPermission.WindowsGroup != permission.WindowsGroup && groupPermission.ResourceID != permission.ResourceID)));
 
             var permissionsForServer = serverPermissionsNotOverridden
                 .Where(permission => IsInRole(principal, permission)).ToList();
