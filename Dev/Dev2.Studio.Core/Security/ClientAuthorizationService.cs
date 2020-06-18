@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -37,12 +37,35 @@ namespace Dev2.Security
         public override Permissions GetResourcePermissions(Guid resourceId)
         {
             var principal = _environmentConnection == null ? ClaimsPrincipal.Current : _environmentConnection.Principal;
-            var groupPermissions = GetGroupPermissions(principal, resourceId.ToString()).ToList();
+            var groupPermissions = GetGroupPermissions(principal, resourceId).ToList();
             var result = groupPermissions.Aggregate(Permissions.None, (current, gp) => current | gp.Permissions);
             return result;
         }
 
+        protected override IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, Guid resourceId)
+        {
+            var serverPermissions = _securityService.Permissions;
+            var serverOnlyPermissions = serverPermissions.Where(permission => permission.IsServer || permission.ResourceID==Guid.Empty);
+            if (principal == null)
+            {
+                serverOnlyPermissions= serverOnlyPermissions.Where(permission => permission.IsBuiltInGuests);
+            }
 
+            if (resourceId == Guid.Empty)
+            {
+                return serverOnlyPermissions;
+            }
+            var resourcePermissions = serverPermissions.Where(p => p.Matches(resourceId) && !p.IsServer).ToList();
+            if (resourcePermissions.Any())
+            {
+                if (principal == null)
+                {
+                    return resourcePermissions.Where(permission => permission.IsBuiltInGuestsForExecution);
+                }
+                return resourcePermissions;
+            }
+            return serverOnlyPermissions;
+        }
         protected override IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
             var serverPermissions = _securityService.Permissions;

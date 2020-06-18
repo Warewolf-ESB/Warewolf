@@ -67,37 +67,6 @@ namespace Dev2.Runtime.WebServer.Security
             }
         }
 
-        private AuthorizationRequest GetAuthorizationRequestForToken(HttpActionContext actionContext)
-        {
-            var authorizationRequest = actionContext.GetAuthorizationRequest();
-
-            try
-            {
-                var absolutePath = actionContext.Request.RequestUri.AbsolutePath;
-                var startIndex = GetNameStartIndexForToken(absolutePath);
-                if (startIndex > -1)
-                {
-                    var resourceName = HttpUtility.UrlDecode(absolutePath.Substring(startIndex, absolutePath.Length - startIndex));
-                    var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
-//TODO: GetResource is returning null, need to still figure out why
-//TODO: Token below will be a JWT token saved into the request for use later.
-                    authorizationRequest = new AuthorizationRequest
-                    {
-                        RequestType = WebServerRequestType.WebExecutePublicTokenWorkflow,
-                        Token = "",
-                        Url = actionContext.Request.RequestUri,
-                        QueryString = new QueryString(actionContext.Request.GetQueryNameValuePairs())
-                    };
-                }
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-            }
-
-            return authorizationRequest;
-        }
-
         AuthorizationRequest GetAuthorizationRequest(HttpActionContext actionContext)
         {
             var authorizationRequest = actionContext.GetAuthorizationRequest();

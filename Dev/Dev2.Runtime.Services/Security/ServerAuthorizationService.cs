@@ -18,6 +18,8 @@ using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Web;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Runtime.Security
 {
@@ -40,6 +42,7 @@ namespace Dev2.Runtime.Security
 
         readonly TimeSpan _timeOutPeriod;
         readonly IPerformanceCounter _perfCounter;
+        private static readonly IResourceCatalog _resourceCatalog = ResourceCatalog.Instance;
 
         protected ServerAuthorizationService(ISecurityService securityService)
             : base(securityService, true)
@@ -154,9 +157,11 @@ namespace Dev2.Runtime.Security
                     result = true;
                     break;
 
-                case WebServerRequestType.WebExecuteService:
                 case WebServerRequestType.WebExecuteSecureWorkflow:
                 case WebServerRequestType.WebExecutePublicWorkflow:
+                    result = IsAuthorized(request.User, AuthorizationContext.Execute, request);
+                    break;
+                case WebServerRequestType.WebExecuteService:
                 case WebServerRequestType.WebBookmarkWorkflow:
                     result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
                     break;

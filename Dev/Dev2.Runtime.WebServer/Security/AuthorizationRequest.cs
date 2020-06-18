@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Services.Security;
@@ -23,7 +24,32 @@ namespace Dev2.Runtime.WebServer.Security
         public IPrincipal User { get; set; }
         public Uri Url { get; set; }
         public INameValueCollection QueryString { get; set; }
-        //TODO: Still not sure if this will be used. WiP
-        public string Token { get; set; }
+
+        public string ResourcePath
+        {
+            get
+            {
+                var path = Url.AbsolutePath.ToLower(CultureInfo.InvariantCulture);
+                var secondSlash = path.IndexOf('/', 1);
+                if (secondSlash > 1)
+                {
+                    path = path.Substring(secondSlash);
+                }
+
+                var lastSlash = path.LastIndexOf('/');
+                if (lastSlash >= 0)
+                {
+                    var firstDot = path.IndexOf('.', lastSlash);
+                    if (firstDot > lastSlash)
+                    {
+                        var name = path.Substring(lastSlash, firstDot - lastSlash);
+
+                        path = path.Substring(0, lastSlash + name.Length);
+                    }
+                }
+
+                return path;
+            }
+        }
     }
 }
