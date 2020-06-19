@@ -117,7 +117,7 @@ namespace Dev2.Scheduler
             {
                 throw new SecurityException(Warewolf.Studio.Resources.Languages.Core.SchedulerLogOnAsBatchError);
             }
-            if (!_securityWrapper.IsWarewolfAuthorised(Sebatchlogonright, userName, resource.ResourceId.ToString()))
+            if (!_securityWrapper.IsWarewolfAuthorised(Sebatchlogonright, userName, resource.ResourceId))
             {
                 throw new SecurityException(String.Format(Warewolf.Studio.Resources.Languages.Core.SchedulerExecutePermissionError, resource.WorkflowName));
             }

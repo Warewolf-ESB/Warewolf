@@ -123,7 +123,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var authorizationService = new Mock<IAuthorizationService>();
             authorizationService.Setup(service =>
-                    service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<string>()))
+                    service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<Guid>()))
                 .Returns(true);
             // var mockResource = new Mock<IResource>();
             // mockResource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);

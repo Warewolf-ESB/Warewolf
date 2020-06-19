@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.WebServer
             GetExecutingUser(principal);
 
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -136,7 +136,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -181,7 +181,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -227,7 +227,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -274,7 +274,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -319,7 +319,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -365,7 +365,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -411,7 +411,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(principal.Object, It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(principal.Object, It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
 
             var env = new Mock<IExecutionEnvironment>();
             env.SetupAllProperties();
@@ -502,7 +502,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(principal.Object, It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(principal.Object, It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -560,7 +560,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -948,7 +948,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -977,7 +977,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             const string Someremoteid = "SomeRemoteServerId";
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -1008,7 +1008,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             const string Someremoteid = "SomeRemoteDebugServerId";
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -1494,7 +1494,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -1534,7 +1534,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -1839,7 +1839,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -1884,7 +1884,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var principal = new Mock<IPrincipal>();
             GetExecutingUser(principal);
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupAllProperties();
             var env = new Mock<IExecutionEnvironment>();
@@ -1955,7 +1955,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 },
             };
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             authorizationService.Setup(s => s.GetResourcePermissionsList(It.IsAny<Guid>())).Returns(securityPermissions);
 
             var mockResource = new Mock<IResource>();
@@ -2044,7 +2044,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 },
             };
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             authorizationService.Setup(s => s.GetResourcePermissionsList(It.IsAny<Guid>())).Returns(securityPermissions);
 
             var mockResource = new Mock<IResource>();
@@ -2134,7 +2134,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 },
             };
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
             authorizationService.Setup(s => s.GetResourcePermissionsList(It.IsAny<Guid>())).Returns(securityPermissions);
 
             var mockResource = new Mock<IResource>();

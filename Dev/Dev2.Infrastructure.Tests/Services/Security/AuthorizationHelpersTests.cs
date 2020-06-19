@@ -85,7 +85,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = true };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches((string)null);
+            var authorized = securityPermission.Matches((WebName)null);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(authorized);
@@ -100,7 +100,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "CATEGORY\\TEST2" };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches((string)null);
+            var authorized = securityPermission.Matches((WebName)null);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(authorized);
@@ -116,7 +116,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resourceID };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(resourceID.ToString());
+            var authorized = securityPermission.Matches(resourceID);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(authorized);
@@ -132,7 +132,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = Guid.NewGuid() };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(resourceID.ToString());
+            var authorized = securityPermission.Matches(resourceID);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(authorized);
@@ -148,10 +148,10 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "CATEGORY\\" + ResourceName };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(ResourceName);
+            var authorized = securityPermission.Matches(new WebNameSimple(ResourceName));
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            Assert.IsTrue(authorized, "check that a permissions matches by Permissions.ResourceName.Contains(ResourceName with no path)"); // This fails now, not convinced it should pass. workflow file names are not unique and Contains makes for false positives too
         }
 
         [TestMethod]
@@ -164,7 +164,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "CATEGORY\\TEST2" };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(ResourceName);
+            var authorized = securityPermission.Matches(new WebNameSimple(ResourceName));
 
             //------------Assert Results-------------------------
             Assert.IsFalse(authorized);

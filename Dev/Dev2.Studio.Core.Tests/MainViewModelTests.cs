@@ -142,7 +142,7 @@ namespace Dev2.Core.Tests
             _activeEnvironment.Setup(e => e.IsConnected).Returns(isConnected);
             _activeEnvironment.Setup(e => e.CanStudioExecute).Returns(canStudioExecute);
 
-            _authorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, It.IsAny<string>())).Returns(isAuthorized);
+            _authorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, It.IsAny<Guid>())).Returns(isAuthorized);
 
 
             var actual = _shellViewModel.SettingsCommand.CanExecute(null);
