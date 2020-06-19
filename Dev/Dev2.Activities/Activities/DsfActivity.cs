@@ -265,7 +265,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
-            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString()));
+            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId));
             if (!isAuthorized)
             {
                 

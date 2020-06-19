@@ -61,7 +61,7 @@ namespace Dev2.Security
 
         public AuthorizationContext AuthorizationContext { get;  set; }
 
-        string ResourceId { get; set; }
+        Guid ResourceId { get; set; }
         bool IsVersionResource { get; set; }
 
         public IAuthorizationService AuthorizationService
@@ -95,7 +95,7 @@ namespace Dev2.Security
             if(resourceModel != null)
             {
                 _resourceModel = resourceModel;
-                ResourceId = resourceModel.ID.ToString();
+                ResourceId = resourceModel.ID;
                 IsVersionResource = resourceModel.IsVersionResource;
             }
             AuthorizationService = environment?.AuthorizationService;

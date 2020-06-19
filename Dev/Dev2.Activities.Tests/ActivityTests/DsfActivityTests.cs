@@ -193,7 +193,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var resourceID = Guid.NewGuid();
             var act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(resourceID) };
             var mockAutorizationService = new Mock<IAuthorizationService>();
-            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
+            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID)).Returns(true);
 
             var p = new PrivateObject(act);
             p.SetProperty("AuthorizationService", mockAutorizationService.Object);
@@ -221,7 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 EnvironmentID = Guid.Empty
             };
             var mockAutorizationService = new Mock<IAuthorizationService>();
-            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
+            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID)).Returns(true);
 
             var p = new PrivateObject(act);
             p.SetProperty("AuthorizationService", mockAutorizationService.Object);
@@ -502,7 +502,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 EnvironmentID = Guid.Empty
             };
             var mockAutorizationService = new Mock<IAuthorizationService>();
-            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
+            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID)).Returns(true);
 
             var p = new PrivateObject(act);
             p.SetProperty("AuthorizationService", mockAutorizationService.Object);

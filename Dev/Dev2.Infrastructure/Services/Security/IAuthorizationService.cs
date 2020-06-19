@@ -23,8 +23,11 @@ namespace Dev2.Services.Security
         event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
         ISecurityService SecurityService { get; }
 
-        bool IsAuthorized(AuthorizationContext context, string resource);
-        bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource);
+        //bool IsAuthorized(AuthorizationContext context, string resource);
+        bool IsAuthorized(AuthorizationContext context, Guid resourceId);
+        bool IsAuthorized(AuthorizationContext context, IWarewolfResource resource);
+        // bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource);
+        bool IsAuthorized(IPrincipal user, AuthorizationContext context, Guid resourceId);
         bool IsAuthorized(IPrincipal user, AuthorizationContext context, IWarewolfResource resource);
         bool IsAuthorized(IAuthorizationRequest request);
         Permissions GetResourcePermissions(Guid resourceId);
