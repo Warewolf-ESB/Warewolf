@@ -137,7 +137,16 @@ namespace Warewolf.UIBindingTests.ElasticsearchSource
             var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
             Assert.AreEqual(portNumber, viewModel.Port);
         }
-
+        [Given(@"I type as search index as ""(.*)""")]
+        [Then(@"I type search index as ""(.*)""")]
+        [When(@"I change search index to ""(.*)""")]
+        public void ThenITypeSearchIndexAs(string searchIndex)
+        {
+            var elasticsearchSourceControl = _scenarioContext.Get<ElasticsearchSourceControl>(Utils.ViewNameKey);
+            elasticsearchSourceControl.EnterSearchIndex(searchIndex);
+            var viewModel = _scenarioContext.Get<ElasticsearchSourceViewModel>("viewModel");
+            Assert.AreEqual(searchIndex, viewModel.SearchIndex);
+        }
 
         [Given(@"I Select Authentication Type as ""(.*)""")]
         [When(@"I Select Authentication Type as ""(.*)""")]
