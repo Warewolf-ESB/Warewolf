@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWebGetActivity
             {
                 SourceId = Guid.NewGuid(),
-                Outputs = new List<IServiceOutputMapping>(),
+                Outputs = null,
             };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
 
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWebGetActivity
             {
                 SourceId = Guid.NewGuid(),
-                Outputs = new List<IServiceOutputMapping>(),
+                Outputs = null,
             };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping { MappedFrom = "A", MappedTo = "[[Person().A]]", RecordSetName = "Person" });
@@ -97,7 +97,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWebGetActivity
             {
                 SourceId = Guid.NewGuid(),
-                Outputs = new List<IServiceOutputMapping>(),
+                Outputs = null,
             };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping { MappedFrom = "A", MappedTo = "[[A]]", RecordSetName = "" });
@@ -118,7 +118,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWebGetActivity
             {
                 SourceId = Guid.NewGuid(),
-                Outputs = new List<IServiceOutputMapping>(),
+                Outputs = null,
             };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
@@ -141,7 +141,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWebGetActivity
             {
                 SourceId = Guid.NewGuid(),
-                Outputs = new List<IServiceOutputMapping>(),
+                Outputs = null,
             };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
@@ -167,7 +167,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWebGetActivity
             {
                 SourceId = Guid.NewGuid(),
-                Outputs = new List<IServiceOutputMapping>(),
+                Outputs = null,
             };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());

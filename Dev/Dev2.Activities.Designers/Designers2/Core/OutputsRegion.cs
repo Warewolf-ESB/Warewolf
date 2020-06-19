@@ -57,8 +57,11 @@ namespace Dev2.Activities.Designers2.Core
             _modelItem = modelItem;
             var serviceOutputMappings = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
             var outputs = new ObservableCollection<IServiceOutputMapping>();
-            IsEnabled = serviceOutputMappings?.Count != 0;
-            outputs.AddRange(serviceOutputMappings);
+            IsEnabled = serviceOutputMappings != null;
+            if (serviceOutputMappings != null)
+            {
+                outputs.AddRange(serviceOutputMappings);
+            }
             outputs.CollectionChanged += OutputsCollectionChanged;
             Outputs = outputs;
 
