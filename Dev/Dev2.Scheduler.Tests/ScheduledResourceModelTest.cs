@@ -46,7 +46,7 @@ namespace Dev2.Scheduler.Test
             _folder = new Mock<ITaskFolder>();
             _wrapper = new Mock<ISecurityWrapper>();
             _wrapper.Setup(a => a.IsWindowsAuthorised(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Returns(true);
         }
 
         [TestMethod]
@@ -421,7 +421,7 @@ securityWrapper
             var resourceToSave = new Mock<IScheduledResource>();
 
             //setup expectations
-            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Returns(false);
             resourceToSave.Setup(a => a.WorkflowName).Returns("bob");
             //run test
             model.Save(resourceToSave.Object, out string errorMessage);
@@ -439,7 +439,7 @@ securityWrapper
             var resourceToSave = new Mock<IScheduledResource>();
 
             //setup expectations
-            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Returns(true);
             resourceToSave.Setup(a => a.Name).Returns("bob?");
             //run test
             model.Save(resourceToSave.Object, out string errorMessage);

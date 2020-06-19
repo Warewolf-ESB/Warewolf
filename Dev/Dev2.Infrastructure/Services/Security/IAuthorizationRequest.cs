@@ -15,9 +15,16 @@ using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Services.Security
 {
+    public class AuthorizationRequestKey : Tuple<string, string, AuthorizationContext>
+    {
+        public AuthorizationRequestKey(string item1, string item2, AuthorizationContext item3)
+            : base(item1, item2, item3)
+        {
+        }
+    }
     public interface IAuthorizationRequest
     {
-        Tuple<string, string, AuthorizationContext> Key { get; }
+        AuthorizationRequestKey Key { get; }
         WebServerRequestType RequestType { get; }
         IPrincipal User { get; }
         Uri Url { get; }

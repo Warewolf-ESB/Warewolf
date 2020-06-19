@@ -59,8 +59,8 @@ namespace Dev2.Runtime.WebServer
             {
                 if (isPublic)
                 {
-                    var publicCanExecute = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.Execute, resource.ResourceID.ToString());
-                    var publicCanView = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.View, resource.ResourceID.ToString());
+                    var publicCanExecute = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.Execute, resource);
+                    var publicCanView = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.View, resource);
                     if (publicCanExecute && publicCanView)
                     {
                         apiJson.Apis.Add(CreateSingleApiForResource(resource, true));
@@ -68,8 +68,8 @@ namespace Dev2.Runtime.WebServer
                 }
                 else
                 {
-                    var canExecute = AuthorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ResourceID.ToString());
-                    var canView = AuthorizationService.IsAuthorized(AuthorizationContext.View, resource.ResourceID.ToString());
+                    var canExecute = AuthorizationService.IsAuthorized(AuthorizationContext.Execute, resource);
+                    var canView = AuthorizationService.IsAuthorized(AuthorizationContext.View, resource);
                     if (canView && canExecute)
                     {
                         apiJson.Apis.Add(CreateSingleApiForResource(resource, false));

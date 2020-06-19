@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data;
 using Warewolf.Security;
 using Warewolf.Services;
 
@@ -124,7 +125,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             foreach(AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
             {
                 //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, It.IsAny<string>());
+                var authorized = authorizationService.IsAuthorized(context, It.IsAny<Guid>());
 
                 //------------Assert Results-------------------------
                 Assert.IsFalse(authorized);
@@ -152,7 +153,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 securityPermission.Permissions = context.ToPermissions();
 
                 //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, It.IsAny<string>());
+                var authorized = authorizationService.IsAuthorized(context, It.IsAny<Guid>());
 
                 //------------Assert Results-------------------------
                 Assert.AreEqual(context != AuthorizationContext.None, authorized);
@@ -180,7 +181,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 securityPermission.Permissions = ~context.ToPermissions();
 
                 //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, It.IsAny<string>());
+                var authorized = authorizationService.IsAuthorized(context, It.IsAny<Guid>());
 
                 //------------Assert Results-------------------------
                 Assert.IsFalse(authorized);
@@ -209,7 +210,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 securityPermission.Permissions = context.ToPermissions();
 
                 //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                var authorized = authorizationService.IsAuthorized(context, resource);
 
                 //------------Assert Results-------------------------
                 Assert.AreEqual(context != AuthorizationContext.None, authorized);
@@ -238,7 +239,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 securityPermission.Permissions = ~context.ToPermissions();
 
                 //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                var authorized = authorizationService.IsAuthorized(context, resource);
 
                 //------------Assert Results-------------------------
                 Assert.IsFalse(authorized);
@@ -267,7 +268,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 securityPermission.Permissions = ~context.ToPermissions();
 
                 //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                var authorized = authorizationService.IsAuthorized(context, resource);
 
                 //------------Assert Results-------------------------
                 Assert.IsFalse(authorized);
@@ -296,7 +297,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 securityPermission.Permissions = context.ToPermissions();
 
                 //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                var authorized = authorizationService.IsAuthorized(context, resource);
 
                 //------------Assert Results-------------------------
                 Assert.AreEqual(context != AuthorizationContext.None, authorized);
@@ -342,12 +343,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
 
 
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.View, resource));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource));
         }
 
 
@@ -379,12 +380,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
 
 
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.View, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource));
         }
 
         [TestMethod]
@@ -415,12 +416,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
 
 
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.View, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource));
         }
 
         [TestMethod]
@@ -452,12 +453,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
 
 
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
-            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource));
+            Assert.IsTrue(authorizationService.IsAuthorized(AuthorizationContext.View, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource));
         }
 
         internal class PermissionTableBuilder
@@ -535,12 +536,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
 
 
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.View, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource));
         }
 
         [TestMethod]
@@ -582,12 +583,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = principal };
 
 
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.View, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource.ToString()));
-            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource.ToString()));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Administrator, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Execute, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.View, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.Contribute, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployFrom, resource));
+            Assert.IsFalse(authorizationService.IsAuthorized(AuthorizationContext.DeployTo, resource));
         }
 
         [TestMethod]
@@ -614,7 +615,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 denyPermission.Permissions = ~context.ToPermissions();
 
                 //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                var authorized = authorizationService.IsAuthorized(context, resource);
 
                 //------------Assert Results-------------------------
                 Assert.AreEqual(context != AuthorizationContext.None, authorized);
@@ -839,6 +840,106 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Assert Results-------------------------
             securityService.Verify(p => p.Remove(resourceID));
         }
+
+        [TestMethod]
+        public void AuthorizationServiceBase_IsAuthorized_GivenViewExecutePermissionsAndFolderMatches_ExpectSuccess()
+        {
+            var resourceId = Guid.NewGuid();
+            var securityPermission2 = new WindowsGroupPermission { IsServer = false, WindowsGroup = "Public", ResourcePath = "Category", Permissions = Permissions.Execute|Permissions.View};
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission2 });
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            var context = AuthorizationContext.View | AuthorizationContext.Execute;
+
+            var stringPath = "\\Category\\MyWorkflow";
+            var request = new Mock<IAuthorizationRequest>();
+            request.Setup(o => o.ResourcePath).Returns(stringPath);
+            Assert.IsTrue(authorizationService.IsAuthorized(user.Object, context, request.Object));
+            var resource = new Mock<IWarewolfResource>();
+            resource.Setup(o => o.FilePath).Returns(stringPath);
+            Assert.IsTrue(authorizationService.IsAuthorized(user.Object, context, resource.Object));
+            Assert.IsTrue(authorizationService.IsAuthorized(user.Object, context, new WebNameSimple(stringPath)));
+            //Assert.IsTrue(authorizationService.IsAuthorized(user.Object, context, resourceId)); // currently a resourceId does not have it's folder calculated for folder based permissions
+        }
+
+        [TestMethod]
+        public void AuthorizationServiceBase_IsAuthorized_GivenViewExecutePermissionsAndFolderMatchesWithResourceMatchOverride_ExpectDenied()
+        {
+            var resourceId = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, WindowsGroup = "Public", ResourceName = "Category\\MyWorkflow", ResourceID = resourceId }; // this more specific permission should override folder permissions, worked in Studio+browser but not in this test
+            var securityPermission2 = new WindowsGroupPermission { IsServer = false, WindowsGroup = "Public", ResourcePath = "Category", Permissions = Permissions.Execute|Permissions.View};
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission2, securityPermission });
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            var context = AuthorizationContext.View | AuthorizationContext.Execute;
+
+            var stringPath = "\\Category\\MyWorkflow";
+            var request = new Mock<IAuthorizationRequest>();
+            request.Setup(o => o.ResourcePath).Returns(stringPath);
+            Assert.IsFalse(authorizationService.IsAuthorized(user.Object, context, request.Object));
+            var resource = new Mock<IWarewolfResource>();
+            resource.Setup(o => o.FilePath).Returns(stringPath);
+            Assert.IsFalse(authorizationService.IsAuthorized(user.Object, context, resource.Object));
+            Assert.IsFalse(authorizationService.IsAuthorized(user.Object, context, new WebNameSimple(stringPath)));
+            Assert.IsFalse(authorizationService.IsAuthorized(user.Object, context, resourceId));
+        }
+
+        [TestMethod]
+        public void AuthorizationServiceBase_IsAuthorized_GivenNoFolderPermissionsAndFolderMatches_ExpectAccessDenied()
+        {
+            var resourceId = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, WindowsGroup = "Public", ResourceName = "Category\\MyWorkflow", ResourceID = resourceId };
+            var securityPermission2 = new WindowsGroupPermission { IsServer = false, WindowsGroup = "Public", ResourcePath = "Category"};
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission, securityPermission2 });
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            var context = AuthorizationContext.View | AuthorizationContext.Execute;
+
+            var stringPath = "\\Category\\MyWorkflow";
+            var request = new Mock<IAuthorizationRequest>();
+            request.Setup(o => o.ResourcePath).Returns(stringPath);
+            Assert.IsFalse(authorizationService.IsAuthorized(user.Object, context, request.Object));
+            var resource = new Mock<IWarewolfResource>();
+            resource.Setup(o => o.FilePath).Returns(stringPath);
+            Assert.IsFalse(authorizationService.IsAuthorized(user.Object, context, resource.Object));
+            Assert.IsFalse(authorizationService.IsAuthorized(user.Object, context, request.Object));
+            Assert.IsFalse(authorizationService.IsAuthorized(user.Object, context, resourceId));
+        }
+
+        [TestMethod]
+        public void AuthorizationServiceBase_IsAuthorized_GivenNoFolderPermissionsAndFolderMatchesAndWorkflowMatches_ExpectSuccess()
+        {
+            var resourceId = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, WindowsGroup = "Public", ResourceName = "Category\\MyWorkflow", ResourceID = resourceId, Permissions = Permissions.Execute|Permissions.View};
+            var securityPermission2 = new WindowsGroupPermission { IsServer = false, WindowsGroup = "Public", ResourcePath = "Category"};
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission, securityPermission2 });
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            var context = AuthorizationContext.View | AuthorizationContext.Execute;
+
+            var stringPath = "\\Category\\MyWorkflow";
+            var request = new Mock<IAuthorizationRequest>();
+            request.Setup(o => o.ResourcePath).Returns(stringPath);
+            Assert.IsTrue(authorizationService.IsAuthorized(user.Object, context, request.Object));
+            var resource = new Mock<IWarewolfResource>();
+            resource.Setup(o => o.FilePath).Returns(stringPath);
+            Assert.IsTrue(authorizationService.IsAuthorized(user.Object, context, resource.Object));
+            //Assert.IsTrue(authorizationService.IsAuthorized(user.Object, context, stringPath));
+            Assert.IsTrue(authorizationService.IsAuthorized(user.Object, context, resourceId));
+        }
+
         class TestDirectoryEntry : IDirectoryEntry
         {
             private string _name;
