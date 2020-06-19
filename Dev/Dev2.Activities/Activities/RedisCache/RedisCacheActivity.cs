@@ -95,7 +95,7 @@ namespace Dev2.Activities.RedisCache
             get
             {
                 var expr = _dataObject.Environment.EvalToExpression(_key, _update);
-                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update,false,true));
+                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update, false, true));
                 return varValue == _key ? _key : varValue;
             }
         }
@@ -198,13 +198,23 @@ namespace Dev2.Activities.RedisCache
                     var outputVars = _innerActivity.GetOutputs();
                     foreach (var outputVar in outputVars)
                     {
-                        if (cachedData.ContainsKey(outputVar))
+                        var name = outputVar;
+                        if (DataListUtil.GetRecordsetIndexType(name) == enRecordsetIndexType.Blank)
                         {
-                            var item = cachedData[outputVar];
-                            _dataObject.Environment.Assign(outputVar, item, 0);
-                            if (!string.IsNullOrWhiteSpace(outputVar))
+                            name = DataListUtil.ReplaceRecordBlankWithStar(name);
+                        }
+
+                        if (cachedData.ContainsKey(name))
+                        {
+                            var item = cachedData[name];
+                            var table = _dataObject.Environment.EvalAsTable(name, _update);
+                            var recSet = DataListUtil.ReplaceRecordBlankWithStar(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(name)));
+                            var assignValue = new AssignValue(name, item);
+                            _dataObject.Environment.AssignWithFrame(assignValue,_update);
+
+                            if (!string.IsNullOrWhiteSpace(name))
                             {
-                                debugItem = TryCreateDebugItem(_dataObject.Environment, outputIndex++, new AssignValue(outputVar, item), 0);
+                                debugItem = TryCreateDebugItem(_dataObject.Environment, outputIndex++, new AssignValue(name, item), _update);
                                 _debugOutputs.Add(debugItem);
                             }
                         }
@@ -222,7 +232,7 @@ namespace Dev2.Activities.RedisCache
                     AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } not found"), debugItem);
                     _debugInputs.Add(debugItem);
 
-                    _innerActivity.Execute(_dataObject, 0);
+                    _innerActivity.Execute(_dataObject, _update);
 
                     CacheOutputs(keyValue);
                 }
@@ -264,18 +274,39 @@ namespace Dev2.Activities.RedisCache
             foreach (var output in _innerActivity.GetOutputs())
             {
                 var key = output;
-                var value = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(output, 0));
+                if (DataListUtil.IsValueScalar(key))
+                {
+                    var value = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(key, _update));
+                    var debugItem = TryCreateDebugItem(_dataObject.Environment, innerCount++, new AssignValue(key, value), _update);
+                    _debugInputs.Add(debugItem);
 
-                var debugItem = TryCreateDebugItem(_dataObject.Environment, innerCount++, new AssignValue(key, value), 0);
-                _debugInputs.Add(debugItem);
+                    data.Add(key, value);
+                }
+                else
+                {
+                    if (DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Blank)
+                    {
+                        key = DataListUtil.ReplaceRecordBlankWithStar(key);
+                    }
 
-                data.Add(key, value);
+                    var atomResult = _dataObject.Environment.Eval(key, _update);
+                    var result = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(key, _update));
+                    var debugItem = TryCreateDebugItem(_dataObject.Environment, innerCount++, new AssignValue(key, result), _update);
+                    _debugInputs.Add(debugItem);
+                    if (atomResult.IsWarewolfAtomListresult && atomResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recSetResult)
+                    {
+                        data.Add(_dataObject.Environment.EvalToExpression(key, _update), ExecutionEnvironment.WarewolfEvalResultToString(recSetResult));
+                    }
+                }
             }
 
             _redisCache.Set(keyValue, _serializer.Serialize(data), CacheTTL);
         }
 
-        public override List<string> GetOutputs() => new List<string> {Response, Result};
+        public override List<string> GetOutputs() => new List<string>
+        {
+            Response, Result
+        };
 
 
         private void AddEvaluatedDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string VariableLabelText, string NewFieldLabelText, DebugItem debugItem)
@@ -301,9 +332,10 @@ namespace Dev2.Activities.RedisCache
         {
             var debugItem = new DebugItem();
             const string variableLabelText = "";
-            const string newFieldLabelText = "";
 
+            const string newFieldLabelText = "";
             try
+
             {
                 CreateDebugInput(environment, innerCount, assignValue, update, debugItem, variableLabelText, newFieldLabelText);
             }
@@ -370,6 +402,7 @@ namespace Dev2.Activities.RedisCache
                 }
             }
         }
+
         private void AddErrorDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string variableLabelText, string newFieldLabelText)
         {
             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
