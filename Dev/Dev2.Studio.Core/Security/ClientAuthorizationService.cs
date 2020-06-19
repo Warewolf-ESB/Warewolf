@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
+using Warewolf.Data;
 
 
 namespace Dev2.Security
@@ -66,34 +67,45 @@ namespace Dev2.Security
             }
             return serverOnlyPermissions;
         }
-        protected override IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
+        // protected override IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
+        // {
+        //     var serverPermissions = _securityService.Permissions;
+        //     var serverOnlyPermissions = serverPermissions.Where(permission => permission.IsServer || permission.ResourceID==Guid.Empty);
+        //     if (principal == null)
+        //     {
+        //         serverOnlyPermissions= serverOnlyPermissions.Where(permission => permission.IsBuiltInGuests);
+        //     }
+        //     if (Guid.TryParse(resource, out Guid resourceId))
+        //     {
+        //         if (resourceId == Guid.Empty)
+        //         {
+        //             return serverOnlyPermissions;
+        //         }
+        //         var resourcePermissions = serverPermissions.Where(p => p.Matches(resource) && !p.IsServer).ToList();
+        //         if (resourcePermissions.Any())
+        //         {
+        //             if (principal == null)
+        //             {
+        //                 return resourcePermissions.Where(permission => permission.IsBuiltInGuestsForExecution);
+        //             }
+        //             return resourcePermissions;
+        //         }
+        //     }
+        //     return serverOnlyPermissions;
+        // }
+
+        // public override bool IsAuthorized(AuthorizationContext context, string resource)
+        // {
+        //     var x =IsAuthorized(_environmentConnection.Principal, context, resource);
+        //     return x;
+        // }
+        public override bool IsAuthorized(AuthorizationContext context, Guid resourceId)
         {
-            var serverPermissions = _securityService.Permissions;
-            var serverOnlyPermissions = serverPermissions.Where(permission => permission.IsServer || permission.ResourceID==Guid.Empty);
-            if (principal == null)
-            {
-                serverOnlyPermissions= serverOnlyPermissions.Where(permission => permission.IsBuiltInGuests);
-            }
-            if (Guid.TryParse(resource, out Guid resourceId))
-            {
-                if (resourceId == Guid.Empty)
-                {
-                    return serverOnlyPermissions;
-                }
-                var resourcePermissions = serverPermissions.Where(p => p.Matches(resource) && !p.IsServer).ToList();
-                if (resourcePermissions.Any())
-                {
-                    if (principal == null)
-                    {
-                        return resourcePermissions.Where(permission => permission.IsBuiltInGuestsForExecution);
-                    }
-                    return resourcePermissions;
-                }
-            }
-            return serverOnlyPermissions;
+            var x =IsAuthorized(_environmentConnection.Principal, context, resourceId);
+            return x;
         }
 
-        public override bool IsAuthorized(AuthorizationContext context, string resource)
+        public override bool IsAuthorized(AuthorizationContext context, IWarewolfResource resource)
         {
             var x =IsAuthorized(_environmentConnection.Principal, context, resource);
             return x;

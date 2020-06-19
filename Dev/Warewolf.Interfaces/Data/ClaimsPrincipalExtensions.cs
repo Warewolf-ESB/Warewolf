@@ -19,7 +19,11 @@ namespace Warewolf.Data
     {
         public static string[] GetUserGroups(this ClaimsPrincipal claimsPrincipal)
         {
-            var claim = claimsPrincipal.Claims.First(o => o.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authentication");
+            var claim = claimsPrincipal.Claims.FirstOrDefault(o => o.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authentication");
+            if (claim is null)
+            {
+                return new string[] { };
+            }
             var userGroups = JsonConvert.DeserializeObject<JObject>(claim.Value);
             return userGroups["UserGroups"]
                 .Select(o => o["Name"].Value<string>())

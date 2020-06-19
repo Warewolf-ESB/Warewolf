@@ -89,25 +89,62 @@ namespace Dev2.Services.Security
 
             return permission.ResourceID == resourceId;
         }
-        public static bool Matches(this WindowsGroupPermission permission, string resource)
+        // public static bool Matches(this WindowsGroupPermission permission, string resource)
+        // {
+        //     if(permission.IsServer)
+        //     {
+        //         return true;
+        //     }
+        //
+        //     if (Guid.TryParse(resource, out Guid resourceId))
+        //     {
+        //         return permission.ResourceID == resourceId;
+        //     }
+        //
+        //     resource = resource?.Replace('/', '\\');
+        //     if(string.IsNullOrEmpty(resource))
+        //     {
+        //         return true;
+        //     }
+        //
+        //     var p1 = resource;
+        //     var p2 = "\\" + permission.ResourcePath;
+        //     if (p2 is null)
+        //     {
+        //         return false;
+        //     }
+        //     var pathMatches = p1?.StartsWith(p2) ?? false;
+        //     return pathMatches;
+        // }
+        public static bool Matches(this WindowsGroupPermission permission, WebName resource)
         {
-            if(permission.IsServer)
+            if(permission.IsServer || resource is null)
             {
                 return true;
             }
 
-            if (Guid.TryParse(resource, out Guid resourceId))
+            var resourceString = resource.Value<string>();
+
+            if (Guid.TryParse(resourceString, out var resourceId))
             {
-                return permission.ResourceID == resourceId;
+                var matchingResourceID = permission.ResourceID == resourceId;
+                if (matchingResourceID)
+                {
+                    return true;
+                }
             }
-            
-            resource = resource?.Replace('/', '\\');
-            if(string.IsNullOrEmpty(resource))
+
+            var resourcePath = resourceString?.Replace('/', '\\');
+            if(string.IsNullOrEmpty(resourcePath))
             {
                 return true;
             }
 
-            var p1 = resource;
+            var p1 = resourcePath;
+            if (p1.StartsWith(EnvironmentVariables.ResourcePath))
+            {
+                p1 = p1.Replace(EnvironmentVariables.ResourcePath, "");
+            }
             var p2 = "\\" + permission.ResourcePath;
             if (p2 is null)
             {
@@ -116,7 +153,6 @@ namespace Dev2.Services.Security
             var pathMatches = p1?.StartsWith(p2) ?? false;
             return pathMatches;
         }
-
         public static bool Matches(this WindowsGroupPermission permission, IWarewolfResource resource)
         {
             if(permission.IsServer)
@@ -124,13 +160,13 @@ namespace Dev2.Services.Security
                 return true;
             }
 
-            var matchingResourceID = permission.ResourceID == resource.ResourceID;
+            var matchingResourceID = permission.ResourceID == resource?.ResourceID;
             if (matchingResourceID)
             {
                 return true;
             }
 
-            var resourcePath = resource.FilePath?.Replace('/', '\\');
+            var resourcePath = resource?.FilePath?.Replace('/', '\\');
             if(string.IsNullOrEmpty(resourcePath))
             {
                 return true;
@@ -157,7 +193,7 @@ namespace Dev2.Services.Security
                 return true;
             }
 
-            var resourcePath = HttpUtility.UrlDecode(request.ResourcePath?.Replace('/', '\\') ?? "");
+            var resourcePath = HttpUtility.UrlDecode(request?.ResourcePath?.Replace('/', '\\') ?? "");
             if(string.IsNullOrEmpty(resourcePath))
             {
                 return true;

@@ -1086,7 +1086,7 @@ namespace Dev2.Core.Tests
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
             var authService = new Mock<IAuthorizationService>();
-            authService.Setup(s => s.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            authService.Setup(s => s.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(true);
 
             var serverRepository = new Mock<IServerRepository>();
             CustomContainer.Register(serverRepository.Object);

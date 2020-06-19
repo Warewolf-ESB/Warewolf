@@ -273,7 +273,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (isAuthorized)
             {
                 var authorizationService = _authorizationService;
-                var hasContribute = authorizationService.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString());
+                var hasContribute = authorizationService.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty);
                 if (!hasContribute)
                 {
                     throw new UnauthorizedAccessException("The user does not have permission to execute tests.");
