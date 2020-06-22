@@ -19,6 +19,7 @@ using System.Text;
 using System.Web;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
@@ -123,7 +124,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var authorizationService = new Mock<IAuthorizationService>();
             authorizationService.Setup(service =>
-                    service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<Guid>()))
+                    service.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<IResource>()))
                 .Returns(true);
             // var mockResource = new Mock<IResource>();
             // mockResource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
