@@ -18,6 +18,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
@@ -65,7 +66,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(TokenRequestHandler))]
-        [ExpectedException(typeof(HttpException), "expected 'internal server error'")]
+        [ExpectedException(typeof(AccessDeniedException), "expected 'AccessDeniedException'")]
         public void TokenRequestHandler_ProcessRequest_GivenInvalidWorkflowOutputs_ExpectException()
         {
             NameValueCollection localQueryString = new NameValueCollection();

@@ -8,12 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
@@ -87,8 +89,17 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             Thread.CurrentPrincipal = ctx.Request.User;
-            var response = ExecuteWorkflow(requestTo, $"{OverrideResource.Name}.json", workspaceId, ctx.FetchHeaders(), ctx.Request.User);
-            ctx.Send(response);
+            try
+            {
+                var response = ExecuteWorkflow(requestTo, $"{OverrideResource.Name}.json", workspaceId,
+                    ctx.FetchHeaders(), ctx.Request.User);
+                ctx.Send(response);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn($"failed processing login request: {e.Message}", GlobalConstants.WarewolfWarn);
+                throw;
+            }
         }
 
         private static INamedGuid OverrideResource { get; set; }
@@ -149,6 +160,11 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 executionDto.Request = _esbExecuteRequest;
                 executionDto.ErrorResultTO = allErrors;
+
+                if (executionDto.DataObject.ExecutionException is AccessDeniedException)
+                {
+                    throw executionDto.DataObject.ExecutionException;
+                }
                 var executionDtoExtensions = new ExecutionDtoExtensions(executionDto);
                 var resp = executionDtoExtensions.CreateResponse();
                 var content = resp.Content;

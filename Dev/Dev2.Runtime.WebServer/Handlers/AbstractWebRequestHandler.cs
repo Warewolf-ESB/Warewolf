@@ -324,7 +324,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 var workflowCanBeExecutedByGroup = _dataObject.CanExecuteCurrentResource(_resource, _authorizationService);
                 _canExecute = workflowCanBeExecutedByGroup;
-                
+
+                _executionDataListId = GlobalConstants.NullDataListID;
                 if (!_canExecute)
                 {
                     var message = webRequest.IsUrlWithTokenPrefix
@@ -333,15 +334,14 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                     var errorMessage = string.Format(message, _dataObject.ExecutingUser?.Identity.Name, _dataObject.ServiceName);
                     _dataObject.Environment.AddError(errorMessage);
-                    _dataObject.ExecutionException = new Exception(errorMessage);
-                }
-
-                _executionDataListId = GlobalConstants.NullDataListID;
-
-                if (_canExecute && _dataObject.ReturnType != EmitionTypes.SWAGGER)
+                    _dataObject.ExecutionException = new AccessDeniedException(errorMessage);
+                } else
                 {
-                    Thread.CurrentPrincipal = user;
-                    _executionDataListId = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, user);
+                    if (_dataObject.ReturnType != EmitionTypes.SWAGGER)
+                    {
+                        Thread.CurrentPrincipal = user;
+                        _executionDataListId = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, user);
+                    }
                 }
 
                 return null;
