@@ -26,43 +26,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
     [TestCategory("Intellisense Provider Core")]
-    [DoNotParallelize]//Ashley: Because of the static DataListSingleton used in thsi class 
     public class FileSystemIntellisenseProviderTest
     {
-        IResourceModel _resourceModel;
-
-        #region Test Initialization
-
-        [TestInitialize]
-        public void Init()
-        {
-            var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
-
-            _resourceModel = new ResourceModel(testEnvironmentModel.Object)
-            {
-                ResourceName = "test",
-                ResourceType = ResourceType.Service,
-                DataList = @"
-            <DataList>
-                    <Scalar/>
-                    <Country/>
-                    <State />
-                    <City>
-                        <Name/>
-                        <GeoLocation />
-                    </City>
-             </DataList>
-            "
-            };
-
-            IDataListViewModel setupDatalist = new DataListViewModel();
-            DataListSingleton.SetDataList(setupDatalist);
-            DataListSingleton.ActiveDataList.InitializeDataListViewModel(_resourceModel);
-        }
-
-        #endregion Test Initialization
-
-
         [TestMethod]
         [DoNotParallelize]
         public void GetIntellisenseResultsWhereNothingPassedExpectListOfDrives()

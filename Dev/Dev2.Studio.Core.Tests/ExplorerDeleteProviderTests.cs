@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
@@ -24,7 +25,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
-            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
+            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>(), It.IsAny<IPopupController>()))
                .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = true,
@@ -40,7 +41,7 @@ namespace Dev2.Core.Tests
             var updateManagerProxy = new Mock<IExplorerUpdateManager>();
             updateManagerProxy.Setup(manager => manager.DeleteResource(It.IsAny<Guid>()));
             mock.SetupGet(repository => repository.UpdateManagerProxy).Returns(updateManagerProxy.Object);
-            mock.Setup(repository => repository.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
+            mock.Setup(repository => repository.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>(), It.IsAny<IPopupController>()))
                 .Returns(new DeletedFileMetadata { IsDeleted = true, DeleteAnyway = true });
             var mockExplorerItemModel = new Mock<IExplorerItemViewModel>();
             var child = new Mock<IExplorerItemViewModel>();
@@ -68,7 +69,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
-            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
+            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>(), It.IsAny<IPopupController>()))
                .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = true,
@@ -83,7 +84,7 @@ namespace Dev2.Core.Tests
             mock.SetupGet(repository => repository.VersionManager).Returns(mockVersionManager.Object);
             var updateManagerProxy = new Mock<IExplorerUpdateManager>();
             mock.SetupGet(repository => repository.UpdateManagerProxy).Returns(updateManagerProxy.Object);
-            mock.Setup(repository => repository.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
+            mock.Setup(repository => repository.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>(), It.IsAny<IPopupController>()))
                 .Returns(new DeletedFileMetadata { IsDeleted = true, DeleteAnyway = true });
 
             var mockExplorerItemModelParent = new Mock<IExplorerItemViewModel>();
@@ -118,7 +119,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
-            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
+            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>(), It.IsAny<IPopupController>()))
                .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = true,
@@ -167,7 +168,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
-            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
+            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>(), It.IsAny<IPopupController>()))
                .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = false,
@@ -218,7 +219,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
-            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
+            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>(), It.IsAny<IPopupController>()))
                .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = true,
@@ -267,7 +268,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
-            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
+            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>(), It.IsAny<IPopupController>()))
                .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = false,

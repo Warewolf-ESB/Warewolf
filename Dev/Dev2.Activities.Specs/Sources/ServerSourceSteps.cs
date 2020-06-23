@@ -10,6 +10,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Controller;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
@@ -21,6 +22,7 @@ using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Infrastructure.Tests;
+using Moq;
 using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Activities.Specs.Sources
@@ -121,7 +123,7 @@ namespace Dev2.Activities.Specs.Sources
             }
             var queryManagerProxy = buildManageNewServerSourceModel.Item3;
 
-            var load = queryManagerProxy.Load(true);
+            var load = queryManagerProxy.Load(true, new Mock<IPopupController>().Object);
             var explorerItem = load.Result;
             var explorerItems = explorerItem.Children.Flatten(item => item.Children ?? new List<IExplorerItem>());
             var firstOrDefault = explorerItems.FirstOrDefault(item => item.DisplayName.Equals(p0, StringComparison.InvariantCultureIgnoreCase));
