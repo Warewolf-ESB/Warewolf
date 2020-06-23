@@ -16,7 +16,7 @@ namespace Warewolf.UnitTestAttributes
         {
             "RSAKLFSVRHST1.premier.local",
             "t004124.premier.local",
-            "rsaklfwynand",
+            "rsaklfwynand.premier.local",
             "PIETER.premier.local",
             "localhost"
         };
