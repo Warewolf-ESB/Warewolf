@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +27,6 @@ using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [DoNotParallelize]
     public class QueryManagerProxyTest
     {
         [TestMethod]
@@ -459,13 +458,12 @@ namespace Dev2.Core.Tests
             env.Setup(a => a.DisplayName).Returns("localhost");
             env.Setup(a => a.IsConnected).Returns(true);
             comms.Setup(a => a.CreateController("FetchExplorerItemsService")).Returns(controller.Object);
-            var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
             controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(70000).ContinueWith(t => new Mock<IExplorerItem>().Object));
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
-            CustomContainer.Register(mockPopupController.Object);
+            var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
             //------------Execute Test---------------------------
-            var item = queryManagerProxy.Load(false).Result;
+            var item = queryManagerProxy.Load(false, mockPopupController.Object).Result;
             //------------Assert Results-------------------------
             Assert.IsNotNull(item);
             mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.AtLeastOnce);
@@ -476,7 +474,6 @@ namespace Dev2.Core.Tests
         public void QueryManagerProxy_LoadExplorer_WhenLongerThan30Sec__Localhost_ShouldLoadExplorerItemsNotShowPopup()
         {
             //------------Setup for test--------------------------
-            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             var comms = new Mock<ICommunicationControllerFactory>();
             var env = new Mock<IEnvironmentConnection>();
             var controller = new Mock<ICommunicationController>();
@@ -485,13 +482,12 @@ namespace Dev2.Core.Tests
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(e => e.IsLocalHost).Returns(true);
             comms.Setup(a => a.CreateController("FetchExplorerItemsService")).Returns(controller.Object);
-            var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
             controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(70000).ContinueWith(t => new Mock<IExplorerItem>().Object));
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
-            CustomContainer.Register(mockPopupController.Object);
+            var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
             //------------Execute Test---------------------------
-            var item = queryManagerProxy.Load(false).Result;
+            var item = queryManagerProxy.Load(false, mockPopupController.Object).Result;
             //------------Assert Results-------------------------
             Assert.IsNotNull(item);
             mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.Never);
@@ -526,7 +522,6 @@ namespace Dev2.Core.Tests
         public void RunTest<T>(string svcName, ExecuteMessage message, IList<Tuple<string, Object>> args, Action<T> resultAction, Func<IQueryManager, T> action)
         {
             //------------Setup for test--------------------------
-            CustomContainer.Register<IPopupController>(new PopupController());
             var comms = new Mock<ICommunicationControllerFactory>();
             var env = new Mock<IEnvironmentConnection>();
             env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
@@ -539,10 +534,8 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             var res = action(queryManagerProxy);
             //------------Assert Results-------------------------
-
             foreach (var tuple in args)
             {
-
                 controller.Verify(a => a.AddPayloadArgument(tuple.Item1, It.IsAny<StringBuilder>()));
             }
             resultAction(res);
@@ -551,7 +544,6 @@ namespace Dev2.Core.Tests
         public void RunTestStringArgs<T>(string svcName, ExecuteMessage message, IList<Tuple<string, Object>> args, Action<T> resultAction, Func<IQueryManager, T> action)
         {
             //------------Setup for test--------------------------
-            CustomContainer.Register<IPopupController>(new PopupController());
             var comms = new Mock<ICommunicationControllerFactory>();
             var env = new Mock<IEnvironmentConnection>();
             env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
@@ -564,10 +556,8 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             var res = action(queryManagerProxy);
             //------------Assert Results-------------------------
-
             foreach (var tuple in args)
             {
-
                 controller.Verify(a => a.AddPayloadArgument(tuple.Item1, It.IsAny<string>()));
             }
             resultAction(res);
