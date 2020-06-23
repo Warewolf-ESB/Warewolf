@@ -42,7 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
-        public void RedisActivity_Equal_BothareObjects()
+        public void RedisCacheActivity_Equal_BothareObjects()
         {
             object redisActivity = CreateRedisActivity();
             var other = new object();
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
-        public void RedisActivity_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
+        public void RedisCacheActivity_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
         {
             //---------------Set up test pack-------------------
             var redisActivity = CreateRedisActivity();
@@ -69,16 +69,22 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs()
+        public void RedisCacheActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
             try
             {
                 //----------------------Arrange----------------------
-                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
+                TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
 
-                var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
-                var innerActivity = new DsfMultiAssignActivity() {FieldsCollection = new List<ActivityDTO> {new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2)}};
+                var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
+                var innerActivity = new DsfMultiAssignActivity()
+                {
+                    FieldsCollection = new List<ActivityDTO> {
+                        new ActivityDTO("[[objectId1]]", "ObjectName1", 1),
+                        new ActivityDTO("[[objectId2]]", "ObjectName2", 2)
+                    }
+                };
 
                 GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
                 GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
@@ -122,17 +128,17 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        public void RedisActivity_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
+        public void RedisCacheActivity_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
         {
             //----------------------Arrange----------------------
             try
             {
                 //----------------------Arrange----------------------
-                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
+                TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
 
-                var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
+                var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
                 var isCalValue = GlobalConstants.CalculateTextConvertPrefix + "rec(*).name" + GlobalConstants.CalculateTextConvertSuffix;
-                var innerActivity = new DsfMultiAssignActivity() {FieldsCollection = new List<ActivityDTO> {new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2), new ActivityDTO(isCalValue, "ObjectName3", 3)}};
+                var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2), new ActivityDTO(isCalValue, "ObjectName3", 3) } };
 
 
                 GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
@@ -180,16 +186,16 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        public void RedisActivity_GetDebugOutputs_ShouldReturnCachedData_TTLNotReached()
+        public void RedisCacheActivity_GetDebugOutputs_ShouldReturnCachedData_TTLNotReached()
         {
             //----------------------Arrange----------------------
             try
             {
                 //----------------------Arrange----------------------
-                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
+                TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
 
-                var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
-                var innerActivity = new DsfMultiAssignActivity() {FieldsCollection = new List<ActivityDTO> {new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2)}};
+                var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
+                var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
 
 
                 GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
@@ -233,16 +239,16 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        public void RedisActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs_TTLReached()
+        public void RedisCacheActivity_GetDebugOutputs_ShouldReturnInnerActivityOutputs_TTLReached()
         {
             //----------------------Arrange----------------------
             try
             {
                 //----------------------Arrange----------------------
-                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
+                TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
 
-                var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
-                var innerActivity = new DsfMultiAssignActivity() {FieldsCollection = new List<ActivityDTO> {new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2)}};
+                var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
+                var innerActivity = new DsfMultiAssignActivity() { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[objectId1]]", "ObjectName1", 1), new ActivityDTO("[[objectId2]]", "ObjectName2", 2) } };
 
                 GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
                 GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
@@ -294,7 +300,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
-        public void RedisActivity_UseVariableAsKey()
+        public void RedisCacheActivity_UseVariableAsKey()
         {
             try
             {
@@ -357,29 +363,30 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
-        public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs_Recordset()
+        public void RedisCacheActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs_Recordset()
         {
             //----------------------Arrange----------------------
             try
             {
                 //----------------------Arrange----------------------
-                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
+                TestAnonymousAuth(out string key, out string hostName, out string password, out int port);
 
-                var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
+                var redisSource = new RedisSource { HostName = hostName, Password = password, Port = port.ToString() };
                 var innerActivity = new DsfMultiAssignActivity()
                 {
                     FieldsCollection = new List<ActivityDTO>
                     {
                         new ActivityDTO("[[bank(1).id]]", "1", 1),
                         new ActivityDTO("[[bank(2).id]]", "2", 2),
-                        new ActivityDTO("[[bank(3).id]]", "3", 3),
-                        new ActivityDTO("[[bank(1).name]]", "Test1", 1),
-                        new ActivityDTO("[[bank(2).name]]", "Test2", 2),
-                        new ActivityDTO("[[bank(3).name]]", "Test3", 3),
+                        new ActivityDTO("[[bank(3).id]]", "2", 3),
+                        new ActivityDTO("[[bank(1).name]]", "name1", 1),
+                        new ActivityDTO("[[bank(2).name]]", "name2", 2),
+                        new ActivityDTO("[[bank(3).name]]", "name2", 3),
+
                     }
                 };
 
-                GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+                 GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
                 GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
                 //----------------------Act--------------------------
                 sut.TestExecuteTool(mockDataObject.Object);
@@ -410,8 +417,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             }
         }
 
-        static void TestAnonymousAuth(Depends dependency, out string key, out string hostName, out string password, out int port)
+        static void TestAnonymousAuth(out string key, out string hostName, out string password, out int port)
         {
+            var dependency = new Depends(Depends.ContainerType.AnonymousRedis);
             key = "key" + Guid.NewGuid();
             hostName = dependency.Container.IP;
             password = "";
@@ -420,7 +428,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         private static void GenerateSUTInstance(string key, string hostName, int port, string password, Mock<IResourceCatalog> mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, Activity innerActivity)
         {
-            evel = new Dictionary<string, string> {{"", ""}};
+            evel = new Dictionary<string, string> { { "", "" } };
             var impl = new RedisCacheImpl(hostName, port, password);
             sut = new TestRedisActivity(mockResourceCatalog.Object, impl)
             {
@@ -464,7 +472,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         public void TestExecuteTool(IDSFDataObject dataObject)
         {
-            base.ExecuteTool(dataObject, 0);
+            base.ExecuteTool(dataObject, 1);
         }
 
         public void TestPerformExecution(Dictionary<string, string> evaluatedValues)
