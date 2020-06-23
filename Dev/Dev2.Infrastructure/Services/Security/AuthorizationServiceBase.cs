@@ -256,21 +256,6 @@ namespace Dev2.Services.Security
             permissionsForServer.AddRange(permissionsForResource);
             return permissionsForServer;
         }
-        // protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
-        // {
-        //     var matchedResources = _securityService.Permissions.Where(p => p.Matches(resource));
-        //     var permissionsForResource = matchedResources.Where(p => !p.IsServer);
-        //     permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
-        //
-        //     var serverPermissionsNotOverridden = matchedResources.Where(permission =>
-        //         permissionsForResource.All(groupPermission => groupPermission.ResourceID == Guid.Empty || (groupPermission.WindowsGroup != permission.WindowsGroup && groupPermission.ResourceID != permission.ResourceID)));
-        //
-        //     var permissionsForServer = serverPermissionsNotOverridden
-        //         .Where(permission => IsInRole(principal, permission)).ToList();
-        //
-        //     permissionsForServer.AddRange(permissionsForResource);
-        //     return permissionsForServer;
-        // }
 
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, IAuthorizationRequest request)
         {
