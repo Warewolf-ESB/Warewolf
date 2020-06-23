@@ -156,7 +156,7 @@ namespace Dev2.Runtime.WebServer
             writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-black");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            writer.Write("Total Test Count: " + allTests.Count.ToString());
+            writer.Write("Total Test Count: " + allTests.Count);
             writer.RenderEndTag();
 
             writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
@@ -187,6 +187,24 @@ namespace Dev2.Runtime.WebServer
             writer.Write("Tests Failed: " + failedCount);
             writer.RenderEndTag();
 
+            var invalidCount = allTests.Count(o => o.TestInvalid);
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "200px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "14px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "roboto sans-serif");
+            if (invalidCount > 0)
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "orange");
+            }
+            else
+            {
+                writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "black");
+            }
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "table-td-red");
+            writer.RenderBeginTag(HtmlTextWriterTag.Td);
+            writer.Write("Tests Invalid: " + invalidCount);
+            writer.RenderEndTag();
+
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             if (coverageData.IsMultipleWorkflowReport)
             {
@@ -205,7 +223,7 @@ namespace Dev2.Runtime.WebServer
 
         private static bool IsNodeCovered(IWorkflowNode[] coveredNodes, IWorkflowNode node)
         {
-            return coveredNodes.Any(o => o.ActivityID == node.UniqueID);
+            return coveredNodes.Any(o => o.ActivityID == node.UniqueID && o.MockSelected is false);
         }
     }
 }

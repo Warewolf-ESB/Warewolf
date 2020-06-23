@@ -16,7 +16,7 @@ namespace Warewolf.UnitTestAttributes
         {
             "RSAKLFSVRHST1.premier.local",
             "t004124.premier.local",
-            "rsaklfwynand",
+            "rsaklfwynand.premier.local",
             "PIETER.premier.local",
             "localhost"
         };
@@ -126,8 +126,11 @@ namespace Warewolf.UnitTestAttributes
             }
             else
             {
-                Container.IP = BackupServer;
-                Container.Port = GetBackupPort(_containerType);
+                Container = new Container()
+                {
+                    IP = BackupServer,
+                    Port=GetBackupPort(_containerType)
+                };
             }
 
             switch (_containerType)

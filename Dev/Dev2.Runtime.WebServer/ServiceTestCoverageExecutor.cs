@@ -9,6 +9,7 @@
 */
 
 
+using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
@@ -58,10 +59,10 @@ namespace Dev2.Runtime.WebServer
 
     public static class ServiceTestCoverageExecutor
     {
-        public static DataListFormat GetTestCoverageReports(ICoverageDataObject coverageObject, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog resourceCatalog, out string executePayload)
+        public static DataListFormat GetTestCoverageReports(ICoverageDataObject coverageObject, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, out string executePayload)
         {
             DataListFormat formatter = null;
-            if (coverageObject.CoverageReportResourceIds.Any())
+            if (coverageObject.CoverageReportResourceIds?.Any() ?? false)
             {
                 if (coverageObject.ReturnType == EmitionTypes.CoverJson)
                 {
@@ -69,7 +70,7 @@ namespace Dev2.Runtime.WebServer
                 }
                 else if (coverageObject.ReturnType == EmitionTypes.Cover)
                 {
-                    formatter = coverageObject.RunCoverageAndReturnHTML(testCoverageCatalog, resourceCatalog, workspaceGuid, out executePayload);
+                    formatter = coverageObject.RunCoverageAndReturnHTML(testCoverageCatalog, testCatalog, resourceCatalog, workspaceGuid, out executePayload);
                 }
                 else
                 {
@@ -79,9 +80,10 @@ namespace Dev2.Runtime.WebServer
             else
             {
                 executePayload = null;
-                throw new Exception("do not expect this to be executed any longer");
+                Common.Dev2Logger.Warn("No test coverage reports found to execute for requested resource", Common.GlobalConstants.WarewolfWarn);
             }
-            return formatter;
+            return formatter ?? DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
+
         }
     }
 }
