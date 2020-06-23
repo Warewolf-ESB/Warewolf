@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -183,6 +183,7 @@ namespace Warewolf.Auditing.Tests
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => workflowName);
             mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);
             mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId);
+
             var principal = new Mock<IPrincipal>();
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
@@ -199,6 +200,7 @@ namespace Warewolf.Auditing.Tests
             mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Some Workflow");
             mockedDataObject.Setup(o => o.ResourceID).Returns(() => Guid.NewGuid());
+
             var principal = new Mock<IPrincipal>();
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);

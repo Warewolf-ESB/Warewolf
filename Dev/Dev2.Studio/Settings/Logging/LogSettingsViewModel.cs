@@ -63,6 +63,7 @@ namespace Dev2.Settings.Logging
         string _selectedLoggingType;
         LogLevel _serverEventLogLevel;
         LogLevel _studioEventLogLevel;
+        LogLevel _executionLogLevel;
         ProgressDialogViewModel _progressDialogViewModel;
         string _serverLogFile;
         IServer _currentEnvironment;
@@ -114,6 +115,11 @@ namespace Dev2.Settings.Logging
 
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
             var severSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+
+            if (Enum.TryParse(severSettingsData.ExecutionLogLevel, out LogLevel executionLogLevel))
+            {
+                _executionLogLevel = executionLogLevel;
+            }
 
             if (severSettingsData.Sink == "LegacySettingsData")
             {
@@ -299,7 +305,16 @@ namespace Dev2.Settings.Logging
 
         public ICommand GetServerLogFileCommand { get; }
         public ICommand GetStudioLogFileCommand { get; }
-
+        public LogLevel ExecutionLogLevel
+        {
+            get => _executionLogLevel;
+            set
+            {
+                _executionLogLevel = value;
+                IsDirty = !Equals(Item);
+                OnPropertyChanged();
+            }
+        }
         public LogLevel ServerEventLogLevel
         {
             get => _serverEventLogLevel;
