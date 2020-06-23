@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,7 +21,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using RabbitMQ.Client.Exceptions;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Driver.Redis;
 using Warewolf.Storage;
@@ -340,6 +339,63 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
                 var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
                 //----------------------Assert-----------------------
                 AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + keyValue + " } found", null, "", "");
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("could not connect to redis Instance"))
+                {
+                    Assert.Inconclusive(e.Message);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisCacheActivity))]
+        public void RedisActivity_GetDebugInputs_ShouldReturnInnerActivityOutputs_Recordset()
+        {
+            //----------------------Arrange----------------------
+            try
+            {
+                //----------------------Arrange----------------------
+                TestAnonymousAuth(new Depends(Depends.ContainerType.AnonymousRedis), out string key, out string hostName, out string password, out int port);
+
+                var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
+                var innerActivity = new DsfMultiAssignActivity()
+                {
+                    FieldsCollection = new List<ActivityDTO>
+                    {
+                        new ActivityDTO("[[bank(1).id]]", "1", 1),
+                        new ActivityDTO("[[bank(2).id]]", "2", 2),
+                        new ActivityDTO("[[bank(3).id]]", "3", 3),
+                        new ActivityDTO("[[bank(1).name]]", "Test1", 1),
+                        new ActivityDTO("[[bank(2).name]]", "Test2", 2),
+                        new ActivityDTO("[[bank(3).name]]", "Test3", 3),
+                    }
+                };
+
+                GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
+                GenerateSUTInstance(key, hostName, port, password, mockResourceCatalog, out Dictionary<string, string> evel, out TestRedisActivity sut, innerActivity);
+                //----------------------Act--------------------------
+                sut.TestExecuteTool(mockDataObject.Object);
+                sut.TestPerformExecution(evel);
+
+                var debugInputs = sut.GetDebugInputs(mockDataObject.Object.Environment, 0);
+                var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
+
+                //----------------------Assert-----------------------
+                AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + key + " } not found", null, "", "");
+
+                sut.TestExecuteTool(mockDataObject.Object);
+                sut.TestPerformExecution(evel);
+                var debugOutputs2 = sut.GetDebugOutputs(mockDataObject.Object.Environment, 1);
+                AssertDebugItems(debugOutputs2, 0, 0, "Redis key { " + key + " } found", null, "", "");
+
             }
             catch (Exception e)
             {
