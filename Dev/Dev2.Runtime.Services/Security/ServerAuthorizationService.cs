@@ -150,8 +150,7 @@ namespace Dev2.Runtime.Security
 
                 case WebServerRequestType.WebExecuteLoginWorkflow:
                 case WebServerRequestType.WebExecutePublicTokenWorkflow:
-                    //TODO: Not sure what will happen here...
-                    result = true;
+                    result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
                     break;
 
                 case WebServerRequestType.WebExecuteSecureWorkflow:
