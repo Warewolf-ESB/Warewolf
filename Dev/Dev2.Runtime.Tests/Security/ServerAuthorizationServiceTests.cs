@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Runtime.WebServer.Security;
 
 namespace Dev2.Tests.Runtime.Security
 {
@@ -529,6 +530,27 @@ namespace Dev2.Tests.Runtime.Security
             //------------Assert Results-------------------------
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(AuthorizationRequest))]
+        public void AuthorizationRequest_ResourcePath_GivenValidURL_ExpectSuccess()
+        {
+            var auth = new AuthorizationRequest();
 
+            auth.Url = new Uri("http://localhost:1234/public/path/workflow.json?Name=bob");
+            Assert.AreEqual("/path/workflow", auth.ResourcePath);
+
+            auth.Url = new Uri("http://localhost:1234/public/some/path/to/workflow.json?Name=bob");
+            Assert.AreEqual("/some/path/to/workflow", auth.ResourcePath);
+
+            auth.Url = new Uri("http://localhost:1234/public/workflow.json?Name=bob");
+            Assert.AreEqual("/workflow", auth.ResourcePath);
+
+            auth.Url = new Uri("http://localhost:1234/public/some/path/workflow.coverage.json?Name=bob");
+            Assert.AreEqual("/some/path/workflow", auth.ResourcePath);
+
+            auth.Url = new Uri("http://localhost:1234/public/workflow.woot.ext.json?Name=bob");
+            Assert.AreEqual("/workflow", auth.ResourcePath);
+        }
     }
 }
