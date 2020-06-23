@@ -1,8 +1,7 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -89,33 +88,7 @@ namespace Dev2.Services.Security
 
             return permission.ResourceID == resourceId;
         }
-        // public static bool Matches(this WindowsGroupPermission permission, string resource)
-        // {
-        //     if(permission.IsServer)
-        //     {
-        //         return true;
-        //     }
-        //
-        //     if (Guid.TryParse(resource, out Guid resourceId))
-        //     {
-        //         return permission.ResourceID == resourceId;
-        //     }
-        //
-        //     resource = resource?.Replace('/', '\\');
-        //     if(string.IsNullOrEmpty(resource))
-        //     {
-        //         return true;
-        //     }
-        //
-        //     var p1 = resource;
-        //     var p2 = "\\" + permission.ResourcePath;
-        //     if (p2 is null)
-        //     {
-        //         return false;
-        //     }
-        //     var pathMatches = p1?.StartsWith(p2) ?? false;
-        //     return pathMatches;
-        // }
+
         public static bool Matches(this WindowsGroupPermission permission, WebName resource)
         {
             if(permission.IsServer || resource is null)
@@ -145,12 +118,13 @@ namespace Dev2.Services.Security
             {
                 p1 = p1.Replace(EnvironmentVariables.ResourcePath, "");
             }
-            var p2 = "\\" + permission.ResourcePath;
-            if (p2 is null)
+            var permissionResourcePath = permission.ResourcePath;
+            if (permissionResourcePath is null)
             {
                 return false;
             }
-            var pathMatches = p1?.StartsWith(p2) ?? false;
+            var p2 = "\\" + permissionResourcePath;
+            var pathMatches = p1.StartsWith(p2);
             return pathMatches;
         }
         public static bool Matches(this WindowsGroupPermission permission, IWarewolfResource resource)
@@ -177,12 +151,14 @@ namespace Dev2.Services.Security
             {
                 p1 = p1.Replace(EnvironmentVariables.ResourcePath, "");
             }
-            var p2 = "\\" + permission.ResourcePath;
-            if (p2 is null)
+            var permissionResourcePath = permission.ResourcePath;
+            if (permissionResourcePath is null)
             {
                 return false;
             }
-            var pathMatches = p1?.StartsWith(p2) ?? false;
+
+            var p2 = "\\" + permissionResourcePath;
+            var pathMatches = p1.StartsWith(p2);
             return pathMatches;
         }
 
@@ -204,12 +180,14 @@ namespace Dev2.Services.Security
             {
                 p1 = p1.Replace(EnvironmentVariables.ResourcePath, "");
             }
-            var p2 = "\\" + permission.ResourcePath;
-            if (p2 is null)
+            var permissionResourcePath = permission.ResourcePath;
+            if (permissionResourcePath is null)
             {
                 return false;
             }
-            var pathMatches = p1?.StartsWith(p2, StringComparison.InvariantCultureIgnoreCase) ?? false;
+
+            var p2 = "\\" + permissionResourcePath;
+            var pathMatches = p1.StartsWith(p2, StringComparison.InvariantCultureIgnoreCase);
             return pathMatches;
         }
     }
