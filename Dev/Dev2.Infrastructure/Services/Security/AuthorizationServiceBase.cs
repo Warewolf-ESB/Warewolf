@@ -228,7 +228,7 @@ namespace Dev2.Services.Security
 
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, WebName resource)
         {
-            var matchedResources = _securityService.Permissions.Where(p => p.Matches(resource));
+            var matchedResources = _securityService.Permissions.Where(p => p.Matches(resource)).ToArray();
             var permissionsForResource = matchedResources.Where(p => !p.IsServer);
             permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
 
@@ -243,7 +243,7 @@ namespace Dev2.Services.Security
         }
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, Guid resourceId)
         {
-            var matchedResources = _securityService.Permissions.Where(p => p.Matches(resourceId));
+            var matchedResources = _securityService.Permissions.Where(p => p.Matches(resourceId)).ToArray();
             var permissionsForResource = matchedResources.Where(p => !p.IsServer);
             permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
 
@@ -259,7 +259,7 @@ namespace Dev2.Services.Security
 
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, IAuthorizationRequest request)
         {
-            var matchedResources = _securityService.Permissions.Where(p => p.Matches(request));
+            var matchedResources = _securityService.Permissions.Where(p => p.Matches(request)).ToArray();
             var permissionsForResource = matchedResources.Where(p => !p.IsServer);
             permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
 
@@ -274,7 +274,7 @@ namespace Dev2.Services.Security
         }
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, IWarewolfResource resource)
         {
-            var matchedResources = _securityService.Permissions.Where(p => p.Matches(resource));
+            var matchedResources = _securityService.Permissions.Where(p => p.Matches(resource)).ToArray();
             var permissionsForResource = matchedResources.Where(p => !p.IsServer);
             permissionsForResource = permissionsForResource.Where(p => IsInRole(principal, p)).ToArray();
 
