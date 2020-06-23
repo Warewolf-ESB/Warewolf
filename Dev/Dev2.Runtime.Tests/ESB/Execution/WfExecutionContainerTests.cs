@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,7 +27,7 @@ using WarewolfParserInterop;
 using Warewolf.Storage.Interfaces;
 using Dev2.Runtime;
 using Microsoft.VisualBasic.Activities;
-using Dev2.Activities;
+using Fleck;
 using Warewolf.Auditing;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
@@ -36,11 +36,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     public class WfExecutionContainerTests
     {
         protected FlowNode TestStartNode { get; set; }
+
         protected DynamicActivity FlowchartProcess
         {
             get
             {
-                var activity = new DynamicActivity { Implementation = () => FlowchartActivityBuilder.Implementation };
+                var activity = new DynamicActivity {Implementation = () => FlowchartActivityBuilder.Implementation};
                 foreach (DynamicActivityProperty prop in FlowchartActivityBuilder.Properties)
                 {
                     activity.Properties.Add(prop);
@@ -49,45 +50,46 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 return activity;
             }
         }
+
         protected ActivityBuilder FlowchartActivityBuilder
         {
             get
             {
                 var builder = new ActivityBuilder
                 {
-                    Properties = {
-                    new DynamicActivityProperty{Name = "AmbientDataList",Type = typeof(InOutArgument<List<string>>)}
-                    ,new DynamicActivityProperty{ Name = "ParentWorkflowInstanceId", Type = typeof(InOutArgument<Guid>)}
-                    ,new DynamicActivityProperty{ Name = "ParentServiceName", Type = typeof(InOutArgument<string>)}
-                },
+                    Properties =
+                    {
+                        new DynamicActivityProperty {Name = "AmbientDataList", Type = typeof(InOutArgument<List<string>>)}, new DynamicActivityProperty {Name = "ParentWorkflowInstanceId", Type = typeof(InOutArgument<Guid>)}, new DynamicActivityProperty {Name = "ParentServiceName", Type = typeof(InOutArgument<string>)}
+                    },
                     Implementation = new Flowchart
                     {
-
-                        Variables = {
-                         new Variable<List<string>>{Name = "InstructionList"},
-                         new Variable<string>{Name = "LastResult"},
-                         new Variable<bool>{Name = "HasError" },
-                         new Variable<string>{Name = "ExplicitDataList"},
-                         new Variable<bool>{Name = "IsValid"},
-                         new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util>{ Name = "t"},
-                         new Variable<Dev2DataListDecisionHandler>{Name = "Dev2DecisionHandler"}
-                        }
-                        ,
+                        Variables =
+                        {
+                            new Variable<List<string>> {Name = "InstructionList"},
+                            new Variable<string> {Name = "LastResult"},
+                            new Variable<bool> {Name = "HasError"},
+                            new Variable<string> {Name = "ExplicitDataList"},
+                            new Variable<bool> {Name = "IsValid"},
+                            new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util> {Name = "t"},
+                            new Variable<Dev2DataListDecisionHandler> {Name = "Dev2DecisionHandler"}
+                        },
                         StartNode = TestStartNode
                     }
                 };
 
                 var vbs = new VisualBasicSettings
                 {
-                    ImportReferences =     {
-                        new VisualBasicImportReference {
+                    ImportReferences =
+                    {
+                        new VisualBasicImportReference
+                        {
                             Assembly = "Unlimited.Framework",
                             Import = "Unlimited.Framework"
                         },
-                        new VisualBasicImportReference{
-                             Assembly = "Unlimited.Applications.BusinessDesignStudio.Activities",
-                             Import = "Unlimited.Applications.BusinessDesignStudio.Activities"
-
+                        new VisualBasicImportReference
+                        {
+                            Assembly = "Unlimited.Applications.BusinessDesignStudio.Activities",
+                            Import = "Unlimited.Applications.BusinessDesignStudio.Activities"
                         }
                     }
                 };
@@ -102,7 +104,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void Setup()
         {
             Config.Server.EnableDetailedLogging = false;
-
+            Config.Server.ExecutionLogLevel = LogLevel.Debug.ToString();
             TestStartNode = new FlowStep
             {
                 Action = new DsfNumberFormatActivity(),
@@ -128,6 +130,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 var obj = new Mock<IDSFDataObject>();
                 var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
                 dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(false);
+                dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.Error.ToString);
                 obj.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
                 var workSpace = new Mock<IWorkspace>();
                 var channel = new Mock<IEsbChannel>();
@@ -139,6 +142,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             {
                 Assert.Fail(ex.Message);
             }
+
             //---------------Test Result -----------------------
         }
 
@@ -205,6 +209,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             var dev2WorkflowSettings = new Mock<Common.Interfaces.IDev2WorkflowSettings>();
             dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.Debug.ToString);
             mockDataObject.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -216,9 +221,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockDataObject.Setup(o => o.Environment)
                 .Returns(mockExecutionEnvironment.Object);
             mockDataObject.SetupGet(o => o.Environment.AllErrors)
-                .Returns(new HashSet<string> { "2nd false error from WfExecutionContainerTests" });
+                .Returns(new HashSet<string> {"2nd false error from WfExecutionContainerTests"});
             mockDataObject.SetupGet(o => o.Environment.Errors)
-                .Returns(new HashSet<string> { "1st false error from WfExecutionContainerTests" });
+                .Returns(new HashSet<string> {"1st false error from WfExecutionContainerTests"});
 
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockDataObject.Setup(o => o.StopExecution).Returns(true);
@@ -260,7 +265,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
             dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
-
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.Debug.ToString);
             executionEnvironmentMock.Setup(environment => environment.AllErrors).Returns(new HashSet<string>());
             executionEnvironmentMock.Setup(environment => environment.Errors).Returns(new HashSet<string>());
             dataObjectMock.Setup(o => o.Environment.FetchErrors())
@@ -309,7 +314,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
             dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
-
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.Debug.ToString);
             var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing);
             atomList.AddSomething(DataStorage.WarewolfAtom.NewDataString("Bob"));
             atomList.AddSomething(DataStorage.WarewolfAtom.NewDataString("Stub"));
@@ -318,9 +323,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             dataObjectMock.SetupGet(o => o.Environment).Returns(executionEnvironmentMock.Object);
             dataObjectMock.SetupGet(o => o.Environment.AllErrors)
-                .Returns(new HashSet<string> { "2nd false error from WfExecutionContainerTests" });
+                .Returns(new HashSet<string> {"2nd false error from WfExecutionContainerTests"});
             dataObjectMock.SetupGet(o => o.Environment.Errors)
-                .Returns(new HashSet<string> { "1st false error from WfExecutionContainerTests" });
+                .Returns(new HashSet<string> {"1st false error from WfExecutionContainerTests"});
             dataObjectMock.Setup(o => o.Environment.FetchErrors())
                 .Returns("1st false error from WfExecutionContainerTests, 2nd false error from WfExecutionContainerTests");
 

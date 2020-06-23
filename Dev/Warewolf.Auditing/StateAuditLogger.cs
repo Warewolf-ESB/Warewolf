@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.Logging;
 using Newtonsoft.Json;
 using System;
 using Warewolf.Interfaces.Auditing;
+using Warewolf.Logging;
 
 namespace Warewolf.Auditing
 {
@@ -27,7 +28,7 @@ namespace Warewolf.Auditing
         private readonly IWebSocketPool _webSocketFactory;
 
         public IStateListener NewStateListener(IExecutionContext dataObject) => new StateListener(this, dataObject);
-        
+
         public StateAuditLogger(IWebSocketPool webSocketFactory)
         {
             _webSocketFactory = webSocketFactory;
@@ -37,14 +38,15 @@ namespace Warewolf.Auditing
 
         public void LogAuditState(Object logEntry)
         {
-            if (!_ws.IsOpen())
+            if (logEntry is Audit auditLog && IsValidLogLevel(auditLog.LogLevel))
             {
-                _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
-                _ws.Connect();
-            }
+                if (!_ws.IsOpen())
+                {
+                    _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
+                    _ws.Connect();
+                }
 
-            if (logEntry is Audit auditLog)
-            {
+
                 var auditCommand = new AuditCommand
                 {
                     Audit = auditLog,
@@ -55,7 +57,19 @@ namespace Warewolf.Auditing
             }
         }
 
+        private bool IsValidLogLevel(LogLevel auditLogLogLevel)
+        {
+            Enum.TryParse(Config.Server.ExecutionLogLevel, true, out LogLevel logLevel );
+            if (auditLogLogLevel == logLevel)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private bool _isDisposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_isDisposed)

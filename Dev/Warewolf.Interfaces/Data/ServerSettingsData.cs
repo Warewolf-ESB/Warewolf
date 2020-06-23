@@ -18,9 +18,9 @@ namespace Warewolf.Configuration
         public string SslCertificateName { get; set; }
         public bool? CollectUsageStats { get; set; }
         public int? DaysToKeepTempFiles { get; set; }
-       
         public bool? EnableDetailedLogging { get; set; }
-        public string Sink { get; set; } 
+        public string Sink { get; set; }
+        public string ExecutionLogLevel{ get; set; }
         public int? LogFlushInterval { get; set; }
         
         [Obsolete("AuditFilePath is deprecated. It will be deleted in future releases.")]
@@ -33,6 +33,7 @@ namespace Warewolf.Configuration
             equals &= CollectUsageStats == other.CollectUsageStats;
             equals &= DaysToKeepTempFiles == other.DaysToKeepTempFiles;
             equals &= EnableDetailedLogging == other.EnableDetailedLogging;
+            equals &= ExecutionLogLevel == other.ExecutionLogLevel;
             equals &= LogFlushInterval == other.LogFlushInterval;
             equals &= AuditFilePath == other.AuditFilePath;
             equals &= Sink == other.Sink;

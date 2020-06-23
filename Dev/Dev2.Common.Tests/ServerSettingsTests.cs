@@ -12,7 +12,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
-using Dev2.Common.Interfaces.Enums;
+using Fleck;
 using Warewolf.Configuration;
 
 namespace Dev2.Common.Tests
@@ -38,7 +38,8 @@ namespace Dev2.Common.Tests
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
                 AuditFilePath = "some path",
-                Sink = nameof(LegacySettingsData)
+                Sink = nameof(LegacySettingsData),
+                ExecutionLogLevel = LogLevel.Error.ToString()
             };
 
             var serverSettingsData = new ServerSettingsData
@@ -49,7 +50,8 @@ namespace Dev2.Common.Tests
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
                 AuditFilePath = "some path",
-                Sink = nameof(LegacySettingsData)
+                Sink = nameof(LegacySettingsData),
+                ExecutionLogLevel = LogLevel.Error.ToString()
             };
 
             Assert.IsTrue(serverSettingsData.Equals(expectedServerSettingsData));
@@ -63,14 +65,15 @@ namespace Dev2.Common.Tests
             var mockDirectoryWrapper = new Mock<IDirectory>();
 
             var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
-            Assert.AreEqual(9, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
+            Assert.AreEqual(10, settings.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Length);
 
             Assert.AreEqual((ushort) 0, settings.WebServerPort);
             Assert.AreEqual((ushort) 0, settings.WebServerSslPort);
             Assert.AreEqual(null, settings.SslCertificateName);
             Assert.AreEqual(false, settings.CollectUsageStats);
             Assert.AreEqual(0, settings.DaysToKeepTempFiles);
-            Assert.AreEqual(false, settings.EnableDetailedLogging);
+            Assert.AreEqual(true, settings.EnableDetailedLogging);
+            Assert.AreEqual(LogLevel.Error.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
             Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
