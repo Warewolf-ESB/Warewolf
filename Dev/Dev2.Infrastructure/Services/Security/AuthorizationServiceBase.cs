@@ -178,7 +178,6 @@ namespace Dev2.Services.Security
 
         public ISecurityService SecurityService => _securityService;
 
-        //public abstract bool IsAuthorized(AuthorizationContext context, string resource);
         public abstract bool IsAuthorized(AuthorizationContext context, Guid resource);
         public abstract bool IsAuthorized(AuthorizationContext context, IWarewolfResource resource);
         public abstract bool IsAuthorized(IAuthorizationRequest request);
@@ -195,7 +194,6 @@ namespace Dev2.Services.Security
 
         protected bool IsAuthorizedToConnect(IPrincipal principal) => IsAuthorized(AuthorizationContext.Any, principal, () => GetGroupPermissions(principal));
 
-        //public bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource) => IsAuthorized(context, user, () => GetGroupPermissions(user, resource));
         public bool IsAuthorized(IPrincipal user, AuthorizationContext context, Guid resourceId) => IsAuthorized(context, user, () => GetGroupPermissions(user, resourceId));
         public bool IsAuthorized(IPrincipal user, AuthorizationContext context, IAuthorizationRequest request) => IsAuthorized(context, user, () => GetGroupPermissions(user, request));
         public bool IsAuthorized(IPrincipal user, AuthorizationContext context, IWarewolfResource resource) => IsAuthorized(context, user, () => GetGroupPermissions(user, resource));
