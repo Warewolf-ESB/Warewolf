@@ -13,7 +13,7 @@ using Dev2.Common.Interfaces.Logging;
 using Newtonsoft.Json;
 using System;
 using Warewolf.Interfaces.Auditing;
-using Warewolf.Logging;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Warewolf.Auditing
 {
@@ -38,7 +38,7 @@ namespace Warewolf.Auditing
 
         public void LogAuditState(Object logEntry)
         {
-            if (logEntry is Audit auditLog && IsValidLogLevel(auditLog.LogLevel))
+            if (logEntry is Audit auditLog && IsValidLogLevel(auditLog.LogLevel.ToString()))
             {
                 if (!_ws.IsOpen())
                 {
@@ -57,14 +57,54 @@ namespace Warewolf.Auditing
             }
         }
 
-        private bool IsValidLogLevel(LogLevel auditLogLogLevel)
+        private static bool IsValidLogLevel(string auditLogLogLevel)
         {
-            if (auditLogLogLevel.ToString().ToUpper() == Config.Server.ExecutionLogLevel)
+            Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
+            switch (executionLogLevel)
             {
-                return true;
+                case LogLevel.OFF:
+                    return false;
+                case LogLevel.TRACE:
+                    return true;
+                case LogLevel.FATAL:
+                case LogLevel.ERROR:
+                    return auditLogLogLevel.ToUpper() == LogLevel.ERROR.ToString();
+                case LogLevel.WARN:
+                    switch (auditLogLogLevel.ToUpper())
+                    {
+                        case "FATAL":
+                        case "WARN":
+                        case "ERROR":
+                            return true;
+                        default:
+                            return false;
+                    }
+                case LogLevel.INFO:
+                    switch (auditLogLogLevel.ToUpper())
+                    {
+                        case "FATAL":
+                        case "WARN":
+                        case "ERROR":
+                        case "INFO":
+                            return true;
+                        default:
+                            return false;
+                    }
+                case LogLevel.DEBUG:
+                    switch (auditLogLogLevel.ToUpper())
+                    {
+                        case "FATAL":
+                        case "WARN":
+                        case "ERROR":
+                        case "INFO":
+                        case "DEBUG":
+                            return true;
+                        default:
+                            return false;
+                    }
+                default:
+                    return false;
             }
-
-            return false;
         }
 
         private bool _isDisposed = false;

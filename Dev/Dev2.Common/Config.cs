@@ -47,7 +47,7 @@ namespace Dev2.Common
         }
         public string ExecutionLogLevel
         {
-            get => _settings.ExecutionLogLevel ?? LogLevel.ERROR.ToString();
+            get => _settings.ExecutionLogLevel ?? LogLevel.DEBUG.ToString();
             set
             {
                 _settings.ExecutionLogLevel = value;
