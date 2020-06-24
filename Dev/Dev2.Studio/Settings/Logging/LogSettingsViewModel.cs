@@ -26,6 +26,7 @@ using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.CustomControls.Progress;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
@@ -227,6 +228,13 @@ namespace Dev2.Settings.Logging
                 {
                     changed = true;
                 }
+
+                //TODO: We will use the Server Log Level from the UI until we get the UI changed.
+                if (_executionLogLevel != savedExecutionLogLevel)
+                {
+                    changed = true;
+                }
+
                 if (changed)
                 {
                     var popupController = CustomContainer.Get<IPopupController>();
@@ -235,6 +243,12 @@ namespace Dev2.Settings.Logging
                     {
                         return;
                     }
+                }
+
+                if (_executionLogLevel != savedExecutionLogLevel)
+                {
+                    serverSettingsData.ExecutionLogLevel = _executionLogLevel.ToString();
+                    CurrentEnvironment.ResourceRepository.SaveServerSettings(CurrentEnvironment, serverSettingsData);
                 }
 
                 if (_selectedAuditingSource.ResourceID == Guid.Empty)
@@ -320,6 +334,7 @@ namespace Dev2.Settings.Logging
             get => _serverEventLogLevel;
             set
             {
+                _executionLogLevel = value;
                 _serverEventLogLevel = value;
                 IsDirty = !Equals(Item);
                 OnPropertyChanged();
@@ -348,11 +363,11 @@ namespace Dev2.Settings.Logging
             }
         }
 
-        public IEnumerable<string> LoggingTypes => EnumHelper<LogLevel>.GetDiscriptionsAsList(typeof(LogLevel)).ToList();
+        public IEnumerable<string> LoggingTypes => Data.Interfaces.Enums.EnumHelper<LogLevel>.GetDiscriptionsAsList(typeof(LogLevel)).ToList();
 
         public string SelectedLoggingType
         {
-            get => EnumHelper<LogLevel>.GetEnumDescription(ServerEventLogLevel.ToString());
+            get => Data.Interfaces.Enums.EnumHelper<LogLevel>.GetEnumDescription(ServerEventLogLevel.ToString());
             set
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
@@ -363,7 +378,7 @@ namespace Dev2.Settings.Logging
                 var logLevel = LoggingTypes.Single(p => p.ToString().Contains(value));
                 _selectedLoggingType = logLevel;
 
-                var enumFromDescription = EnumHelper<LogLevel>.GetEnumFromDescription(logLevel);
+                var enumFromDescription = Data.Interfaces.Enums.EnumHelper<LogLevel>.GetEnumFromDescription(logLevel);
                 ServerEventLogLevel = enumFromDescription;
             }
         }

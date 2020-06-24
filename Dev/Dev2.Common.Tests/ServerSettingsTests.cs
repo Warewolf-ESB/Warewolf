@@ -12,7 +12,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
-using Fleck;
+using Dev2.Data.Interfaces.Enums;
 using Warewolf.Configuration;
 
 namespace Dev2.Common.Tests
@@ -39,7 +39,7 @@ namespace Dev2.Common.Tests
                 DaysToKeepTempFiles = 2,
                 AuditFilePath = "some path",
                 Sink = nameof(LegacySettingsData),
-                ExecutionLogLevel = LogLevel.Error.ToString()
+                ExecutionLogLevel = LogLevel.ERROR.ToString()
             };
 
             var serverSettingsData = new ServerSettingsData
@@ -51,7 +51,7 @@ namespace Dev2.Common.Tests
                 DaysToKeepTempFiles = 2,
                 AuditFilePath = "some path",
                 Sink = nameof(LegacySettingsData),
-                ExecutionLogLevel = LogLevel.Error.ToString()
+                ExecutionLogLevel = LogLevel.ERROR.ToString()
             };
 
             Assert.IsTrue(serverSettingsData.Equals(expectedServerSettingsData));
@@ -73,7 +73,7 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(false, settings.CollectUsageStats);
             Assert.AreEqual(0, settings.DaysToKeepTempFiles);
             Assert.AreEqual(true, settings.EnableDetailedLogging);
-            Assert.AreEqual(LogLevel.Error.ToString(), settings.ExecutionLogLevel);
+            Assert.AreEqual(LogLevel.ERROR.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
             Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);

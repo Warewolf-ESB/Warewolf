@@ -16,7 +16,7 @@ using System.IO;
 using System.Threading;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
-using Fleck;
+using Dev2.Data.Interfaces.Enums;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.VirtualFileSystem;
@@ -47,7 +47,7 @@ namespace Dev2.Common
         }
         public string ExecutionLogLevel
         {
-            get => _settings.ExecutionLogLevel ?? LogLevel.Error.ToString();
+            get => _settings.ExecutionLogLevel ?? LogLevel.ERROR.ToString();
             set
             {
                 _settings.ExecutionLogLevel = value;
