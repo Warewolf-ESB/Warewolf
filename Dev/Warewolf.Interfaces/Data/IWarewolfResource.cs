@@ -29,6 +29,7 @@ namespace Warewolf.Data
     {
         string Name { get; }
         List<IWorkflowNode> WorkflowNodesForHtml { get; }
+        List<IWorkflowNode> WorkflowNodes { get; }
         StringBuilder XamlDefinition { get; set; }
 
         XElement ToXml();
@@ -41,7 +42,7 @@ namespace Warewolf.Data
         string StepDescription { get; }
         bool MockSelected { get; }
         List<IWorkflowNode> NextNodes { get; }
-
+        void Add(IWorkflowNode workflowNode);
     }
 
     public interface IFilePathResource

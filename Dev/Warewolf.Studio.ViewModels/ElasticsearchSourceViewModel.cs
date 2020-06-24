@@ -18,6 +18,7 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,7 +28,7 @@ using Warewolf.Configuration;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ElasticsearchSourceViewModel : SourceBaseImpl<IElasticsearchSourceDefinition>,        IElasticsearchSourceViewModel
+    public class ElasticsearchSourceViewModel : SourceBaseImpl<IElasticsearchSourceDefinition>, IElasticsearchSourceViewModel
     {
         string _headerText;
         string _hostName;
@@ -50,7 +51,7 @@ namespace Warewolf.Studio.ViewModels
         public IAsyncWorker AsyncWorker { get; set; }
         public IExternalProcessExecutor Executor { get; set; }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel,IServer currentEnvironment)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IServer currentEnvironment)
             : this(elasticsearchSourceModel)
         {
             VerifyArgument.IsNotNull(nameof(requestServiceNameViewModel), requestServiceNameViewModel);
@@ -67,7 +68,7 @@ namespace Warewolf.Studio.ViewModels
             SearchIndex = string.Empty;
         }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker,IServer currentEnvironment)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker, IServer currentEnvironment)
             : this(elasticsearchSourceModel)
         {
             VerifyArgument.IsNotNull(nameof(elasticsearchServiceSource), elasticsearchServiceSource);
@@ -99,7 +100,7 @@ namespace Warewolf.Studio.ViewModels
             TestMessage = "";
         }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor,IServer currentEnvironment)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor, IServer currentEnvironment)
             : base("ElasticsearchSource")
         {
             VerifyArgument.IsNotNull(nameof(executor), executor);
@@ -123,15 +124,15 @@ namespace Warewolf.Studio.ViewModels
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
         }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor,IServer currentEnvironment )
-            : this(elasticsearchSourceModel, aggregator, asyncWorker, executor,currentEnvironment)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor, IServer currentEnvironment)
+            : this(elasticsearchSourceModel, aggregator, asyncWorker, executor, currentEnvironment)
         {
             VerifyArgument.IsNotNull(nameof(requestServiceNameViewModel), requestServiceNameViewModel);
             RequestServiceNameViewModel = requestServiceNameViewModel;
         }
 
-        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker, IExternalProcessExecutor executor,IServer currentEnvironment )
-            : this(elasticsearchSourceModel, aggregator, asyncWorker, executor,currentEnvironment)
+        public ElasticsearchSourceViewModel(IElasticsearchSourceModel elasticsearchSourceModel, IEventAggregator aggregator, IElasticsearchSourceDefinition elasticsearchServiceSource, IAsyncWorker asyncWorker, IExternalProcessExecutor executor, IServer currentEnvironment)
+            : this(elasticsearchSourceModel, aggregator, asyncWorker, executor, currentEnvironment)
         {
             VerifyArgument.IsNotNull(nameof(elasticsearchServiceSource), elasticsearchServiceSource);
 
@@ -150,7 +151,6 @@ namespace Warewolf.Studio.ViewModels
         public ElasticsearchSourceViewModel()
             : base("ElasticsearchSource")
         {
-
         }
 
         void ToItem()
@@ -158,7 +158,7 @@ namespace Warewolf.Studio.ViewModels
             Item = new ElasticsearchSourceDefinition
             {
                 HostName = _elasticsearchServiceSource.HostName,
-                SearchIndex =  _elasticsearchServiceSource.SearchIndex,
+                SearchIndex = _elasticsearchServiceSource.SearchIndex,
                 Password = _elasticsearchServiceSource.Password,
                 Username = _elasticsearchServiceSource.Username,
                 Port = _elasticsearchServiceSource.Port,
@@ -185,7 +185,9 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Header);
             }
         }
+
         public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
+
         public string HostName
         {
             get => _hostName;
@@ -199,6 +201,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
         public string Port
         {
             get => _port;
@@ -212,7 +215,9 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
         public bool PasswordSelected => AuthenticationType == AuthenticationType.Password;
+
         public string Password
         {
             get => _password;
@@ -223,6 +228,7 @@ namespace Warewolf.Studio.ViewModels
                 ResetTestValue();
             }
         }
+
         public string Username
         {
             get => _username;
@@ -245,6 +251,31 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        private static bool ValidateSearchIndex(string value)
+        {
+            var isValid = true;
+
+            isValid &= !value.StartsWith("-");
+            isValid &= !value.StartsWith("+");
+            isValid &= !value.StartsWith("_");
+            isValid &= !value.Equals(".");
+            isValid &= !value.Equals("..");
+            isValid &= !value.Contains("*");
+            isValid &= !value.Contains(",");
+            isValid &= !value.Contains("?");
+            isValid &= !value.Contains("#");
+            isValid &= !value.Contains(" ");
+            isValid &= !value.Contains(@"\");
+            isValid &= !value.Contains(@"/");
+            isValid &= value.Length <= 255;
+            isValid &= !value.Any(char.IsUpper);
+            isValid &= !value.Any(char.IsSymbol);
+
+            return isValid;
+        }
+
+        public string Error => string.Empty;
+
         public AuthenticationType AuthenticationType
         {
             get => _authenticationType;
@@ -260,9 +291,11 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
         public ICommand TestCommand { get; set; }
         public ICommand CancelTestCommand { get; set; }
         public ICommand OkCommand { get; set; }
+
         public bool TestPassed
         {
             get => _testPassed;
@@ -273,6 +306,7 @@ namespace Warewolf.Studio.ViewModels
                 ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
         }
+
         public bool TestFailed
         {
             get => _testFailed;
@@ -282,6 +316,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => TestFailed);
             }
         }
+
         public string TestMessage
         {
             get => _testMessage;
@@ -292,6 +327,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => TestPassed);
             }
         }
+
         public bool Testing
         {
             get { return _testing; }
@@ -303,6 +339,7 @@ namespace Warewolf.Studio.ViewModels
                 ViewModelUtils.RaiseCanExecuteChanged(CancelTestCommand);
             }
         }
+
         public string ResourceName
         {
             get => _resourceName;
@@ -332,23 +369,26 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override bool CanSave() => !string.IsNullOrWhiteSpace(HostName) && !string.IsNullOrWhiteSpace(Port);
+        public override bool CanSave() => !string.IsNullOrWhiteSpace(HostName)
+                                          && !string.IsNullOrWhiteSpace(Port)
+                                          && !string.IsNullOrWhiteSpace(SearchIndex);
+
         public IServer CurrentEnvironment
         {
             private get => _currentEnvironment;
-            set
-            {
-                _currentEnvironment = value;
-            }
+            set { _currentEnvironment = value; }
         }
+
         void SaveConnection()
         {
+
             if (_elasticsearchServiceSource == null)
             {
                 RequestServiceNameViewModel.Wait();
                 if (RequestServiceNameViewModel.Exception == null)
                 {
                     var requestServiceNameViewModel = RequestServiceNameViewModel.Result;
+
                     var res = requestServiceNameViewModel.ShowSaveDialog();
 
                     if (res == MessageBoxResult.OK)
@@ -366,6 +406,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
+
                 var src = ToSource();
                 var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
                 if (src.Id == auditingSettingsData.LoggingDataSource.Value)
@@ -377,12 +418,14 @@ namespace Warewolf.Studio.ViewModels
                         return;
                     }
                 }
+
                 Save(src);
                 Item = src;
                 _elasticsearchServiceSource = src;
                 SetupHeaderTextFromExisting();
             }
         }
+
         void AfterSave(IRequestServiceNameViewModel requestServiceNameViewModel, IElasticsearchSourceDefinition source)
         {
             if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
@@ -390,6 +433,7 @@ namespace Warewolf.Studio.ViewModels
                 AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, source.Id);
             }
         }
+
         bool CanCancelTest() => Testing;
 
         void CancelTest()
@@ -405,7 +449,6 @@ namespace Warewolf.Studio.ViewModels
                     TestMessage = "Test Cancelled";
                 });
             }
-
         }
 
         public bool CanTest()
@@ -419,7 +462,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
+
             if (string.IsNullOrEmpty(Port))
+            {
+                return false;
+            }
+            if (string.IsNullOrEmpty(SearchIndex))
             {
                 return false;
             }
@@ -428,6 +476,16 @@ namespace Warewolf.Studio.ViewModels
 
         void TestConnection()
         {
+            if (!ValidateSearchIndex(SearchIndex))
+            {
+                var popupController = CustomContainer.Get<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
+                popupController.ShowInvalidElasticsearchIndexFormatMessage(SearchIndex);
+                TestFailed = true;
+                TestPassed = false;
+                Testing = false;
+                TestMessage = GetExceptionMessage(new Exception($"{SearchIndex} is invalid."));
+                return;
+            }
             _token = new CancellationTokenSource();
             AsyncWorker.Start(SetupProgressSpinner, () =>
                 {
@@ -456,6 +514,7 @@ namespace Warewolf.Studio.ViewModels
                     TestPassed = false;
                 }), DispatcherPriority.Background);
             }
+
             _elasticsearchSourceModel.TestConnection(ToNewSource());
         }
 

@@ -3572,7 +3572,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The search index that will be used to index the data..
+        ///   Looks up a localized string similar to The search index that will be used to index the data. &lt;br/&gt;&lt;br/&gt;
+        ///     Elasticsearch Index only supports: &lt;br/&gt;
+        ///     Lowercase&lt;br/&gt;
+        ///     Cannot be . or ..&lt;br/&gt;
+        ///     Cannot start with -, _, +&lt;br/&gt;
+        ///     Cannot include \ /  *  ?  &quot; | , # spaces&lt;br/&gt;
+        ///     Cannot include special characters&lt;br/&gt;
+        ///     Cannot be longer than 255 characters&lt;br/&gt;
+        ///    .
         /// </summary>
         public static string SearchIndexHelp {
             get {

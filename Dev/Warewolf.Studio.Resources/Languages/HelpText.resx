@@ -1821,10 +1821,18 @@ A test must be ignored/disabled before it can be deleted.</value>
     <data name="UserNameAuthenticationHelp" xml:space="preserve">
     <value>The full username of the account you want to use to connect to this resource.</value>
   </data>
-    <data name="SearchIndexHelp" xml:space="preserve">
-    <value>The search index that will be used to index the data.</value>
-  </data>
-    <data name="WarewolfDefaultHelpDescription" xml:space="preserve">
+ <data name="SearchIndexHelp" xml:space="preserve">
+    <value>The search index that will be used to index the data. &lt;br/&gt;&lt;br/&gt;
+     Elasticsearch Index only supports: &lt;br/&gt;
+     Lowercase&lt;br/&gt;
+     Cannot be . or ..&lt;br/&gt;
+     Cannot start with -, _, +&lt;br/&gt;
+     Cannot include \ /  *  ?  " | , # spaces&lt;br/&gt;
+     Cannot include special characters&lt;br/&gt;
+     Cannot be longer than 255 characters&lt;br/&gt;
+    </value>
+  </data>  
+  <data name="WarewolfDefaultHelpDescription" xml:space="preserve">
     <value>&lt;h2&gt; Warewolf Help &lt;/h2&gt; 	For more information, follow the link below.	&lt;br/&gt;&lt;br/&gt;	&lt;a href="http://warewolf.io/knowledge-base/" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
   </data>
     <data name="WarewolfHelpURL" xml:space="preserve">

@@ -48,7 +48,6 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public abstract class AbstractWebRequestHandler : IRequestHandler
     {
-        
         string _location;
         protected readonly IResourceCatalog _resourceCatalog;
         protected readonly ITestCatalog _testCatalog;
@@ -374,7 +373,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType, webRequest.WebServerUrl);
                     coverageDataContext.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, _workspaceGuid), webRequest, serviceName, resource);
-                    var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _resourceCatalog, out _executePayload);
+                    var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _testCatalog, _resourceCatalog, out _executePayload);
                     return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
                 }
                 finally
