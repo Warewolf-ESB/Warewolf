@@ -8,14 +8,29 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Runtime.CompilerServices;
 using Warewolf.Auditing;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace QueueWorker
 {
     internal class ExecutionLogger : NetworkLogger, IExecutionLogPublisher
     {
+        public interface IExecutionLoggerFactory
+        {
+            IExecutionLogPublisher New(ISerializer jsonSerializer, IWebSocketPool webSocketPool); 
+        }
+
+        public class ExecutionLoggerFactory : IExecutionLoggerFactory
+        {
+            public IExecutionLogPublisher New(ISerializer serializer, IWebSocketPool webSocketPool)
+            {
+                return new ExecutionLogger(serializer, webSocketPool);
+            }
+        }
+
         public ExecutionLogger(ISerializer serializer, IWebSocketPool webSocketPool)
             : base(serializer, webSocketPool)
         {

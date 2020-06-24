@@ -8,30 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.IO;
-using Warewolf.OS.IO;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Wrappers
 {
-    public interface IFileSystemWatcherFactory
+    public interface IEnvironmentWrapper
     {
-        IFileSystemWatcherWrapper New();
+        void Exit(int exitCode);
     }
 
-    public class FileSystemWatcherFactory : IFileSystemWatcherFactory
+    [ExcludeFromCodeCoverage]
+    public class EnvironmentWrapper : IEnvironmentWrapper
     {
-        public IFileSystemWatcherWrapper New()
-        {
-            return new FileSystemWatcherWrapper();
-        }
-    }
-
-    public interface IFileSystemWatcherWrapper : IFileSystemWatcher
-    {
-        
-    }
-
-    public class FileSystemWatcherWrapper : FileSystemWatcher, IFileSystemWatcherWrapper
-    {
+        public void Exit(int exitCode) => Environment.Exit(exitCode);
     }
 }

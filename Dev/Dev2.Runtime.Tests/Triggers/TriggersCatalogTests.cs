@@ -203,7 +203,7 @@ namespace Dev2.Tests.Runtime.Triggers
         {
             var triggerId = Guid.NewGuid().ToString();
             var expectedPath = Common.EnvironmentVariables.QueueTriggersPath + @"\" + triggerId + ".bite";
-            var path = TriggersCatalog.PathFromResourceId(triggerId);
+            var path = TriggersCatalog.Instance.PathFromResourceId(triggerId);
             Assert.AreEqual(expectedPath, path);
         }
 
