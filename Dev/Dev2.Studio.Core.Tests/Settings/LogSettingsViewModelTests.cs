@@ -343,7 +343,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Assert Results-------------------------
             Assert.IsTrue(logSettingsViewModel.IsLegacy);
-            Assert.AreEqual("ERROR", logSettingsViewModel.ExecutionLogLevel);
+            Assert.AreEqual(LogLevel.ERROR, logSettingsViewModel.ExecutionLogLevel);
         }
 
         [TestMethod]
