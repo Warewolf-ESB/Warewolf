@@ -10,6 +10,7 @@
 
 using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -115,7 +116,7 @@ namespace Warewolf.QueueWorker.Tests
             var context = ConstructWorkerContext(out var _, out var _);
 
             var mockWatcher = new Mock<IFileSystemWatcher>();
-
+            
             var watcher = mockWatcher.Object;
             context.WatchTriggerResource(watcher);
 
@@ -136,6 +137,9 @@ namespace Warewolf.QueueWorker.Tests
             mockArgs.Setup(o => o.TriggerId).Returns(_resourceId.ToString());
             mockArgs.Setup(o => o.ServerEndpoint).Returns(new Uri("http://somehost:1234"));
             var mockResourceCatalogProxy = new Mock<IResourceCatalogProxy>();
+            var mockFilePath = new Mock<IFilePath>();
+            mockFilePath.Setup(o => o.GetDirectoryName(It.IsAny<string>())).Returns("C:\\ProgramData\\Warewolf\\Triggers\\Queue");
+            mockFilePath.Setup(o => o.GetFileName(It.IsAny<string>())).Returns(_resourceId.ToString()+".bite");
 
             rabbitSource = new RabbitMQSource
             {
@@ -164,8 +168,9 @@ namespace Warewolf.QueueWorker.Tests
                 Inputs = new List<IServiceInputBase> { _expectedIServiceInput },
             };
 
+            mockTriggerCatalog.Setup(o => o.PathFromResourceId(It.IsAny<string>())).Returns("C:\\ProgramData\\Warewolf\\Triggers\\Queue");
             mockTriggerCatalog.Setup(o => o.LoadQueueTriggerFromFile(It.IsAny<string>())).Returns(triggerQueue);
-            return new WorkerContext(mockArgs.Object, mockResourceCatalogProxy.Object, mockTriggerCatalog.Object);
+            return new WorkerContext(mockArgs.Object, mockResourceCatalogProxy.Object, mockTriggerCatalog.Object, mockFilePath.Object);
         }
     }
 }

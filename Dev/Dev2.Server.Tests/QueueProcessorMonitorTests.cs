@@ -169,5 +169,10 @@ namespace Dev2.Server.Tests
         {
 
         }
+
+        public string PathFromResourceId(string triggerId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

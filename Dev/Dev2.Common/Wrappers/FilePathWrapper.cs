@@ -20,5 +20,7 @@ namespace Dev2.Common.Wrappers
         public string Combine(params string[] paths) => Path.Combine(paths);
 
         public bool IsPathRooted(string path) => Path.IsPathRooted(path);
+
+        public string GetDirectoryName(string path) => Path.GetDirectoryName(path);
     }
 }

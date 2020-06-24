@@ -31,6 +31,19 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.Network
 {
+    public interface IServerProxyFactory
+    {
+        IEnvironmentConnection New(Uri serverUri);
+    }
+
+    public class ServerProxyFactory : IServerProxyFactory
+    {
+        public IEnvironmentConnection New(Uri serverUri)
+        {
+            return new ServerProxy(serverUri);
+        }
+    }
+
     public class ServerProxy :  IEnvironmentConnection
     {
         readonly IEnvironmentConnection _wrappedConnection;

@@ -16,6 +16,7 @@ namespace Warewolf.Triggers
     public delegate void TriggerChangeEvent(Guid guid);
     public interface ITriggersCatalog
     {
+        string PathFromResourceId(string triggerId);
         IList<ITriggerQueue> Queues { get; }
         void SaveTriggerQueue(ITriggerQueue triggerQueue);
         void DeleteTriggerQueue(ITriggerQueue triggerQueue);
