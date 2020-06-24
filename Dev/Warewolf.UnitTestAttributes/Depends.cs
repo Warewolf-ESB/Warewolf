@@ -80,7 +80,7 @@ namespace Warewolf.UnitTestAttributes
 
         public Depends() => throw new ArgumentNullException("Missing type of the container.");
 
-        public Depends(ContainerType type)
+        public Depends(ContainerType type, bool performSourceInjection = true)
         {
             _containerType = type;
             if (EnableDocker)
@@ -132,6 +132,7 @@ namespace Warewolf.UnitTestAttributes
                 };
             }
 
+            if (!performSourceInjection) return;
             switch (_containerType)
             {
                 case ContainerType.MySQL:
