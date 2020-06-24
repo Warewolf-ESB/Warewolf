@@ -301,7 +301,15 @@ namespace Dev2.Common
             }
             return result;
         }
-
+        public bool EncryptDataSource
+        {
+            get => _settings.EncryptDataSource;
+            set
+            {
+                _settings.EncryptDataSource = value;
+                Save();
+            }
+        }
         public NamedGuidWithEncryptedPayload LoggingDataSource
         {
             get => _settings.LoggingDataSource ?? new NamedGuidWithEncryptedPayload();
