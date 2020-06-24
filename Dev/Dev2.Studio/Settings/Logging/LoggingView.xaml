@@ -47,13 +47,14 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0"
                                 Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
                                 Background="{StaticResource WareWolfMenuBrush}"
                                 HorizontalAlignment="Stretch"
                                 Orientation="Horizontal">
-                        <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Audits</TextBlock>
+                        <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Execution Logging</TextBlock>
                     </StackPanel>
                     <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
                         <Grid.ColumnDefinitions>
@@ -74,6 +75,24 @@
                         </ComboBox>
                     </Grid>
                     <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}"
+                          Visibility="{Binding IsLegacy, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Row="0"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="2"
+                                  Content="Encrypt Logging Data Source"
+                                  IsChecked="{Binding EncryptDataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="{x:Static languages:Tooltips.LoggingViewEncryptToolTip}">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewEncryptHelpText}"
+                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                            </i:Interaction.Behaviors>
+                        </CheckBox>
+                    </Grid>
+                    <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}"
                           Visibility="{Binding IsLegacy, Converter={StaticResource BoolToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
