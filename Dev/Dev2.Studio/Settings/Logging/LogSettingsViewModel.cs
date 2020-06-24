@@ -65,6 +65,7 @@ namespace Dev2.Settings.Logging
         LogLevel _serverEventLogLevel;
         LogLevel _studioEventLogLevel;
         LogLevel _executionLogLevel;
+        private bool _encryptDataSource;
         ProgressDialogViewModel _progressDialogViewModel;
         string _serverLogFile;
         IServer _currentEnvironment;
@@ -115,14 +116,14 @@ namespace Dev2.Settings.Logging
             }
 
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
-            var severSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+            var serverSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
 
-            if (Enum.TryParse(severSettingsData.ExecutionLogLevel, out LogLevel executionLogLevel))
+            if (Enum.TryParse(serverSettingsData.ExecutionLogLevel, out LogLevel executionLogLevel))
             {
                 _executionLogLevel = executionLogLevel;
             }
 
-            if (severSettingsData.Sink == "LegacySettingsData")
+            if (serverSettingsData.Sink == "LegacySettingsData")
             {
                 var legacySettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
                 AuditFilePath = legacySettingsData.AuditFilePath;
@@ -130,11 +131,12 @@ namespace Dev2.Settings.Logging
                 SelectedAuditingSource = selectedAuditingSource;
             }
 
-            if (severSettingsData.Sink == "AuditingSettingsData")
+            if (serverSettingsData.Sink == "AuditingSettingsData")
             {
                 var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
                 var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == auditingSettingsData.LoggingDataSource.Value);
                 SelectedAuditingSource = selectedAuditingSource;
+                EncryptDataSource = auditingSettingsData.EncryptDataSource;
             }
 
             IsDirty = false;
@@ -211,16 +213,23 @@ namespace Dev2.Settings.Logging
             try
             {
                 var changed = false;
-                var severSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+                var serverSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
                 var savedResourceId = Guid.Empty;
-                var savedSink = severSettingsData.Sink;
-
+                var savedSink = serverSettingsData.Sink;
+                Enum.TryParse(serverSettingsData.ExecutionLogLevel, out LogLevel savedExecutionLogLevel);
+                var savedEncryptDataSource = true;
                 if (savedSink == "AuditingSettingsData")
                 {
                     var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
                     savedResourceId = auditingSettingsData.LoggingDataSource.Value;
+                    savedEncryptDataSource = auditingSettingsData.EncryptDataSource;
                 }
+
                 if (savedSink == "LegacySettingsData" && _selectedAuditingSource.ResourceID != Guid.Empty)
+                {
+                    changed = true;
+                }
+                if (_encryptDataSource != savedEncryptDataSource)
                 {
                     changed = true;
                 }
@@ -264,14 +273,19 @@ namespace Dev2.Settings.Logging
                     var source = _selectedAuditingSource as ElasticsearchSource;
                     var serializer = new Dev2JsonSerializer();
                     var payload = serializer.Serialize(source);
-                    var encryptedPayload = DpapiWrapper.Encrypt(payload);
+                    if (_encryptDataSource)
+                    {
+                        payload = DpapiWrapper.Encrypt(payload);
+                    }
+
                     var data = new AuditingSettingsData
                     {
+                        EncryptDataSource = _encryptDataSource,
                         LoggingDataSource = new NamedGuidWithEncryptedPayload
                         {
                             Name = _selectedAuditingSource.ResourceName,
                             Value = _selectedAuditingSource.ResourceID,
-                            Payload = encryptedPayload
+                            Payload = payload
                         }
                     };
                     CurrentEnvironment.ResourceRepository.SaveAuditingSettings(CurrentEnvironment, data);
@@ -319,6 +333,8 @@ namespace Dev2.Settings.Logging
 
         public ICommand GetServerLogFileCommand { get; }
         public ICommand GetStudioLogFileCommand { get; }
+
+
         public LogLevel ExecutionLogLevel
         {
             get => _executionLogLevel;
@@ -329,6 +345,7 @@ namespace Dev2.Settings.Logging
                 OnPropertyChanged();
             }
         }
+
         public LogLevel ServerEventLogLevel
         {
             get => _serverEventLogLevel;
@@ -422,6 +439,17 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
+            }
+        }
+
+        public bool EncryptDataSource
+        {
+            get => _encryptDataSource;
+            set
+            {
+                IsDirty = !Equals(Item);
+                _encryptDataSource = value;
+                OnPropertyChanged();
             }
         }
 

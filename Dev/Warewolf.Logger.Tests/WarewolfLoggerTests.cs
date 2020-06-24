@@ -84,6 +84,7 @@ namespace Warewolf.Logger.Tests
             var encryptedPayload = DpapiWrapper.Encrypt(payload);
             var data = new AuditingSettingsData
             {
+                EncryptDataSource = true,
                 LoggingDataSource = new NamedGuidWithEncryptedPayload
                 {
                     Name = "Testing Elastic Data Source",
@@ -92,6 +93,7 @@ namespace Warewolf.Logger.Tests
                 }
             };
             Config.Auditing.LoggingDataSource = data.LoggingDataSource;
+            Config.Auditing.EncryptDataSource = data.EncryptDataSource;
             Config.Server.Sink = nameof(AuditingSettingsData);
             return new LoggerContext(mockArgs.Object);
         }

@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -25,7 +25,6 @@ using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Security.Encryption;
@@ -209,6 +208,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             logSettingsViewModel.StudioEventLogLevel = LogLevel.INFO;
+
             //------------Assert Results-------------------------
             Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.StudioEventLogLevel);
             Assert.IsTrue(hasPropertyChanged);
@@ -511,6 +511,7 @@ namespace Dev2.Core.Tests.Settings
                 var auditingSettingsData = new AuditingSettingsData
                 {
                     Endpoint = "ws://127.0.0.1:5000/ws",
+                    EncryptDataSource = true,
                     LoggingDataSource = new NamedGuidWithEncryptedPayload
                     {
                         Name = "Auditing Data Source",

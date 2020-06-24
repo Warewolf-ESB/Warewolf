@@ -114,6 +114,7 @@ namespace Dev2.Core.Tests.Settings
             var auditingSettingsData = new AuditingSettingsData
             {
                 Endpoint = "ws://127.0.0.1:5000/ws",
+                EncryptDataSource = true,
                 LoggingDataSource = new NamedGuidWithEncryptedPayload
                 {
                     Name = "Auditing Data Source",
