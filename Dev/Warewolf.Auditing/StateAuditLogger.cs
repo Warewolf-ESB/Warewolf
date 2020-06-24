@@ -59,8 +59,7 @@ namespace Warewolf.Auditing
 
         private bool IsValidLogLevel(LogLevel auditLogLogLevel)
         {
-            Enum.TryParse(Config.Server.ExecutionLogLevel, true, out LogLevel logLevel );
-            if (auditLogLogLevel == logLevel)
+            if (auditLogLogLevel.ToString().ToUpper() == Config.Server.ExecutionLogLevel)
             {
                 return true;
             }

@@ -20,13 +20,13 @@ using Dev2.Runtime;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
 using Dev2.Studio.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Activities;
 using System.Linq;
 using System.Security.Principal;
-using Fleck;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using Warewolf.Auditing;
@@ -164,7 +164,7 @@ namespace Dev2.Activities.Specs.Composition
                 Environment = environment,
                 Settings = new Dev2WorkflowSettingsTO
                 {
-                    ExecutionLogLevel = LogLevel.Debug.ToString(),
+                    ExecutionLogLevel = LogLevel.DEBUG.ToString(),
                     EnableDetailedLogging = true,
                     LoggerType = LoggerType.JSON,
                     KeepLogsForDays = 2,

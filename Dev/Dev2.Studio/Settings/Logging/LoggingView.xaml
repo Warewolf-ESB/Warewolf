@@ -14,6 +14,7 @@
              xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
              xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
              xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+             xmlns:enums="clr-namespace:Dev2.Data.Interfaces.Enums;assembly=Dev2.Data.Interfaces"
              d:DesignHeight="1000"
              d:DesignWidth="1000"
              mc:Ignorable="d"
@@ -222,7 +223,7 @@
                         <RadioButton Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"
                                      GroupName="Studio_EventLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogOffTooltip}"
-                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">
+                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.OFF}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioEventLogOffHelpText}"
@@ -232,7 +233,7 @@
                         <RadioButton Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center"
                                      GroupName="Studio_EventLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogFatalTooltip}"
-                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.FATAL}}">
+                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.FATAL}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioEventLogFatalHelpText}"
@@ -242,7 +243,7 @@
                         <RadioButton Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center"
                                      GroupName="Studio_EventLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogErrorTooltip}"
-                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.ERROR}}">
+                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.ERROR}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioEventLogErrorHelpText}"
@@ -252,7 +253,7 @@
                         <RadioButton Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center"
                                      GroupName="Studio_EventLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogWarnTooltip}"
-                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.WARN}}">
+                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.WARN}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioEventLogWarnHelpText}"
@@ -262,7 +263,7 @@
                         <RadioButton Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center"
                                      GroupName="Studio_EventLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogInfoTooltip}"
-                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.INFO}}">
+                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.INFO}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioEventLogInfoHelpText}"
@@ -272,7 +273,7 @@
                         <RadioButton Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center"
                                      GroupName="Studio_EventLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogDebugTooltip}"
-                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.DEBUG}}">
+                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.DEBUG}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioEventLogDebugHelpText}"
@@ -282,7 +283,7 @@
                         <RadioButton Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center"
                                      GroupName="Studio_EventLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioEventLogTraceTooltip}"
-                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">
+                                     IsChecked="{Binding StudioEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.TRACE}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioEventLogTraceHelpText}"
@@ -292,7 +293,7 @@
                         <RadioButton Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"
                                      GroupName="Studio_FileLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogOffTooltip}"
-                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">
+                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.OFF}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioFileLogOffHelpText}"
@@ -302,7 +303,7 @@
                         <RadioButton Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center"
                                      GroupName="Studio_FileLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogFatalTooltip}"
-                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.FATAL}}">
+                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.FATAL}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioFileLogFatalHelpText}"
@@ -312,7 +313,7 @@
                         <RadioButton Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center"
                                      GroupName="Studio_FileLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogErrorTooltip}"
-                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.ERROR}}">
+                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.ERROR}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioFileLogErrorHelpText}"
@@ -322,7 +323,7 @@
                         <RadioButton Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center"
                                      GroupName="Studio_FileLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogWarnTooltip}"
-                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.WARN}}">
+                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.WARN}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioFileLogWarnHelpText}"
@@ -332,7 +333,7 @@
                         <RadioButton Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center"
                                      GroupName="Studio_FileLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogInfoTooltip}"
-                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.INFO}}">
+                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.INFO}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioFileLogInfoHelpText}"
@@ -342,7 +343,7 @@
                         <RadioButton Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center"
                                      GroupName="Studio_FileLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogDebugTooltip}"
-                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.DEBUG}}">
+                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.DEBUG}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioFileLogDebugHelpText}"
@@ -352,7 +353,7 @@
                         <RadioButton Grid.Row="7" Grid.Column="2" HorizontalAlignment="Center"
                                      GroupName="Studio_FileLog_Settings"
                                      ToolTip="{x:Static languages:Tooltips.LoggingViewStudioFileLogTraceTooltip}"
-                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">
+                                     IsChecked="{Binding StudioFileLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static enums:LogLevel.TRACE}}">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter
                                     Text="{x:Static languages:HelpText.LoggingViewStudioFileLogTraceHelpText}"

@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -117,6 +118,7 @@ namespace Dev2.Core.Tests.Settings
             logSettingsViewModel.ServerEventLogLevel = LogLevel.FATAL;
             //------------Assert Results-------------------------
             Assert.AreEqual(LogLevel.FATAL, logSettingsViewModel.ServerEventLogLevel);
+            Assert.AreEqual(LogLevel.FATAL, logSettingsViewModel.ExecutionLogLevel);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
@@ -156,6 +158,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual("Fatal: Only log events that are fatal", viewModel.SelectedLoggingType);
             Assert.AreEqual(LogLevel.FATAL, viewModel.ServerEventLogLevel);
+            Assert.AreEqual(LogLevel.FATAL, viewModel.ExecutionLogLevel);
         }
 
         [TestMethod]
@@ -340,6 +343,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Assert Results-------------------------
             Assert.IsTrue(logSettingsViewModel.IsLegacy);
+            Assert.AreEqual("ERROR", logSettingsViewModel.ExecutionLogLevel);
         }
 
         [TestMethod]
@@ -479,7 +483,8 @@ namespace Dev2.Core.Tests.Settings
 
             var expectedServerSettingsData = new ServerSettingsData
             {
-                Sink = sink
+                Sink = sink,
+                ExecutionLogLevel = LogLevel.ERROR.ToString()
             };
             _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
             var selectedAuditingSourceId = Guid.NewGuid();

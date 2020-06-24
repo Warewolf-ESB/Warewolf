@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -22,6 +22,7 @@ using Dev2.Data.Decision;
 using System.Activities.Statements;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Common;
+using Dev2.Data.Interfaces.Enums;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Warewolf.Storage.Interfaces;
@@ -104,7 +105,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void Setup()
         {
             Config.Server.EnableDetailedLogging = false;
-            Config.Server.ExecutionLogLevel = LogLevel.Debug.ToString();
+            Config.Server.ExecutionLogLevel = LogLevel.DEBUG.ToString();
             TestStartNode = new FlowStep
             {
                 Action = new DsfNumberFormatActivity(),
@@ -130,7 +131,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 var obj = new Mock<IDSFDataObject>();
                 var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
                 dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(false);
-                dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.Error.ToString);
+                dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.ERROR.ToString);
                 obj.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
                 var workSpace = new Mock<IWorkspace>();
                 var channel = new Mock<IEsbChannel>();
@@ -209,7 +210,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             var dev2WorkflowSettings = new Mock<Common.Interfaces.IDev2WorkflowSettings>();
             dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
-            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.Debug.ToString);
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.DEBUG.ToString);
             mockDataObject.Setup(o => o.Settings).Returns(dev2WorkflowSettings.Object);
 
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
@@ -265,7 +266,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
             dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
-            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.Debug.ToString);
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.DEBUG.ToString);
             executionEnvironmentMock.Setup(environment => environment.AllErrors).Returns(new HashSet<string>());
             executionEnvironmentMock.Setup(environment => environment.Errors).Returns(new HashSet<string>());
             dataObjectMock.Setup(o => o.Environment.FetchErrors())
@@ -314,7 +315,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
             dev2WorkflowSettings.Setup(o => o.EnableDetailedLogging).Returns(true);
-            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.Debug.ToString);
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.DEBUG.ToString);
             var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing);
             atomList.AddSomething(DataStorage.WarewolfAtom.NewDataString("Bob"));
             atomList.AddSomething(DataStorage.WarewolfAtom.NewDataString("Stub"));
