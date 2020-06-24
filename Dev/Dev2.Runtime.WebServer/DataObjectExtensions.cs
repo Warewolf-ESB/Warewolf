@@ -33,6 +33,7 @@ using Warewolf.Services;
 using Enum = System.Enum;
 using System.IO;
 using System.Web.UI;
+using Dev2.Data;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -253,7 +254,6 @@ namespace Dev2.Runtime.WebServer
             if (IsRunAllCoverageRequest(coverageData.ReturnType, serviceName))
             {
                 var pathOfAllResources = webRequest.GetPathForAllResources();
-                //dataObject.ResourceID = Guid.Empty;
                 var path = pathOfAllResources;
                 if (string.IsNullOrEmpty(pathOfAllResources))
                 {
@@ -265,7 +265,7 @@ namespace Dev2.Runtime.WebServer
             }
             else if (resource != null)
             {
-                coverageData.CoverageReportResourceIds = new[] { resource.ResourceID }; 
+                coverageData.CoverageReportResourceIds = new[] { resource.ResourceID };
             }
         }
 
@@ -306,9 +306,9 @@ namespace Dev2.Runtime.WebServer
         {
             IWarewolfResource localResource = null;
 
-            if (Guid.TryParse(serviceName, out Guid resourceID))
+            if (Guid.TryParse(serviceName, out var resourceId))
             {
-                localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
+                localResource = catalog.GetResource(dataObject.WorkspaceID, resourceId);
                 if (localResource != null)
                 {
                     MapServiceToDataObjects(dataObject, localResource);
@@ -330,9 +330,9 @@ namespace Dev2.Runtime.WebServer
             if (localResource == null)
             {
                 var stringDynaResourceId = serviceName.Replace(".xml", "").Replace(".bite", "").Replace(".json", "");
-                if (Guid.TryParse(stringDynaResourceId, out resourceID))
+                if (Guid.TryParse(stringDynaResourceId, out resourceId))
                 {
-                    localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
+                    localResource = catalog.GetResource(dataObject.WorkspaceID, resourceId);
                     if (localResource != null)
                     {
                         MapServiceToDataObjects(dataObject, localResource);
@@ -525,10 +525,16 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
+        public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
         {
             var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, catalog);
-            var allTests = TestCatalog.Instance.FetchAllTests();
+            var allTests = testCatalog.FetchAllTests();
+
+            var workflowTestResults = new WorkflowTestResults();
+            foreach (var test in allTests)
+            {
+                workflowTestResults.Add(test);
+            }
 
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
 
@@ -537,7 +543,7 @@ namespace Dev2.Runtime.WebServer
             using (var writer = new HtmlTextWriter(stringWriter))
             {
                 writer.SetupNavBarHtml("nav-bar-row", "Coverage Summary");
-                allTests.SetupCountSummaryHtml(writer, "count-summary row", allCoverageReports, coverageData);
+                workflowTestResults.Results.SetupCountSummaryHtml(writer, "count-summary row", allCoverageReports, coverageData);
 
                 allCoverageReports.AllCoverageReportsSummary
                     .Where(o => o.HasTestReports)
@@ -677,9 +683,10 @@ namespace Dev2.Runtime.WebServer
                 .Select(o => o.First()).ToArray();
 
             var accum = coveredNodes
+                .Where(o => o.MockSelected is false)
                 .Select(o => o.ActivityID)
                 .Distinct().ToList();
-            var allWorkflowNodes = Resource.WorkflowNodesForHtml;
+            var allWorkflowNodes = Resource.WorkflowNodes;
             var accum2 = allWorkflowNodes.Select(o=> o.UniqueID).ToList();
             var activitiesExistingInTests = accum2.Intersect(accum).ToList();
             var total = Math.Round(activitiesExistingInTests.Count / (double)accum2.Count, 2);
@@ -706,6 +713,10 @@ namespace Dev2.Runtime.WebServer
 
     public class WorkflowTestResults
     {
+        public WorkflowTestResults()
+        {
+        }
+
         public WorkflowTestResults(IWarewolfResource res)
         {
             Resource = res;
@@ -717,7 +728,35 @@ namespace Dev2.Runtime.WebServer
 
         public void Add(IServiceTestModelTO result)
         {
-            Results.Add(result);
+            Results.Add(new ServiceTestModelTO
+            {
+                OldTestName = result.OldTestName,
+                TestName = result.TestName,
+                TestPassed = IsTestPassed(result),
+                TestInvalid = IsTestInValid(result),
+                TestFailing = IsTestFailing(result),
+                Result = new TestRunResult
+                {
+                    TestName = result.TestName,
+                    Message = IsTestInValid(result) ? "Test has no selected nodes" : result.FailureMessage,
+                    RunTestResult = IsTestInValid(result) ? RunResult.TestInvalid : result.TestFailing ? RunResult.TestFailed : RunResult.TestPassed,
+                }
+            });
+        }
+
+        private bool IsTestFailing(IServiceTestModelTO test)
+        {
+            return IsTestInValid(test) is false && IsTestPassed(test) is false;
+        }
+
+        private bool IsTestPassed(IServiceTestModelTO test)
+        {
+            return IsTestInValid(test) is false && test.TestFailing is false;
+        }
+
+        private bool IsTestInValid(IServiceTestModelTO test)
+        {
+            return test.TestSteps is null || test.TestSteps.Count is 0;
         }
     }
 }

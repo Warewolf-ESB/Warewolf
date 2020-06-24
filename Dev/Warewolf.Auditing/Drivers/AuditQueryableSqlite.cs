@@ -15,6 +15,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
+using Warewolf.Logging;
 using Warewolf.Triggers;
 
 namespace Warewolf.Auditing.Drivers
@@ -92,8 +93,10 @@ namespace Warewolf.Auditing.Drivers
                     endTime = Convert.ToDateTime(endTime).ToString(dtFormat);
                 }
             }
+            LogLevel logLevel;
+            Enum.TryParse(eventLevel, true, out logLevel);
 
-            BuildQuery(executionId, startTime, endTime, eventLevel);
+            BuildQuery(executionId, startTime, endTime, logLevel);
             var results = ExecuteDatabase();
             if (results.Length > 0)
             {
@@ -112,27 +115,27 @@ namespace Warewolf.Auditing.Drivers
             }
         }
 
-        private void BuildQuery(string executionId, string startTime, string endTime, string eventLevel)
+        private void BuildQuery(string executionId, string startTime, string endTime, LogLevel eventLevel = LogLevel.None)
         {
             var sb = new StringBuilder($"SELECT * FROM (SELECT json_extract(Properties, '$.Message') AS Message, Level, TimeStamp FROM Logs) ");
 
-            if (eventLevel != null)
+            if (eventLevel != LogLevel.None)
             {
                 switch (eventLevel)
                 {
-                    case "Debug":
+                    case LogLevel.Debug:
                         sb.Append("WHERE Level = 'Debug' ");
                         break;
-                    case "Information":
+                    case LogLevel.Info:
                         sb.Append("WHERE Level = 'Information' ");
                         break;
-                    case "Warning":
+                    case LogLevel.Warn:
                         sb.Append("WHERE Level = 'Warning' ");
                         break;
-                    case "Error":
+                    case LogLevel.Error:
                         sb.Append("WHERE Level = 'Error' ");
                         break;
-                    case "Fatal":
+                    case LogLevel.Fatal:
                         sb.Append("WHERE Level = 'Fatal' ");
                         break;
                     default:
@@ -140,23 +143,23 @@ namespace Warewolf.Auditing.Drivers
                 }
             }
 
-            if (!string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(executionId))
+            if (eventLevel != LogLevel.None && !string.IsNullOrEmpty(executionId))
             {
                 sb.Append("AND json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
             }
 
-            if (string.IsNullOrEmpty(eventLevel) && !string.IsNullOrEmpty(executionId))
+            if (eventLevel == LogLevel.None && !string.IsNullOrEmpty(executionId))
             {
                 sb.Append("WHERE json_extract(Message, '$.ExecutionID') = '" + executionId + "' ");
             }
 
-            if ((!string.IsNullOrEmpty(eventLevel) || !string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            if ((eventLevel != LogLevel.None || !string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
                 sb.Append("AND (Timestamp >= '" + startTime + "' ");
                 sb.Append("AND Timestamp <= '" + endTime + "') ");
             }
 
-            if ((string.IsNullOrEmpty(eventLevel) && string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            if ((eventLevel == LogLevel.None && string.IsNullOrEmpty(executionId)) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
                 sb.Append("WHERE (Timestamp >= '" + startTime + "' ");
                 sb.Append("AND Timestamp <= '" + endTime + "') ");

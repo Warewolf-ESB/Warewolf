@@ -1,3 +1,11 @@
+Monday 8 June 2020
+======================
+Bug Fixes
+---------
+- Validate SearchIndex on the Elasticsearch Source.
+- Fixed the log levels for execution logging.
+
+
 Tuesday 21 April 2020
 ======================
 Features

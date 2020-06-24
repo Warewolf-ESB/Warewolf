@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data.ServiceModel;
 using Dev2.Factory;
@@ -153,7 +154,7 @@ namespace Dev2.Studio.ViewModels
         void DeleteContext(IContextualResourceModel model);
         T ActivateOrCreateUniqueWorkSurface<T>(WorkSurfaceContext context) where T : IWorkSurfaceViewModel;
         IWorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IContextualResourceModel resource);
-        void AddWorkSurfaceContextImpl(IContextualResourceModel resourceModel, bool isLoadingWorkspace);
+        void AddWorkSurfaceContextImpl(IContextualResourceModel resourceModel, bool isLoadingWorkspace, IPopupController popupController, IAsyncWorker asyncWorker);
         void AddAndActivateWorkSurface(IWorkSurfaceContextViewModel context);
         void AddWorkSurface(IWorkSurfaceObject obj);
         bool CloseWorkSurfaceContext(IWorkSurfaceContextViewModel context, PaneClosingEventArgs e);
@@ -182,7 +183,7 @@ namespace Dev2.Studio.ViewModels
         public IViewFactory ViewFactoryProvider => _factory ?? new ViewFactory();
         private readonly ShellViewModel _shellViewModel;
         private readonly bool _createDesigners;
-        private readonly Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = (resourceModel, createDesigner) => WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
+        private readonly Func<IContextualResourceModel, bool, IPopupController, IAsyncWorker, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = WorkSurfaceContextFactory.CreateResourceViewModel;
         private readonly IApplicationTracker _applicationTracker;
 
         public WorksurfaceContextManager(bool createDesigners, ShellViewModel shellViewModel)
@@ -795,10 +796,7 @@ namespace Dev2.Studio.ViewModels
 
         public bool IsWorkFlowOpened(IContextualResourceModel resource) => FindWorkSurfaceContextViewModel(resource) != null;
 
-        public void AddWorkSurfaceContext(IContextualResourceModel resourceModel)
-        {
-            AddWorkSurfaceContextImpl(resourceModel, false);
-        }
+        public void AddWorkSurfaceContext(IContextualResourceModel resourceModel) => AddWorkSurfaceContextImpl(resourceModel, false, CustomContainer.Get<IPopupController>(), new AsyncWorker());
 
         public void ShowDependencies(bool dependsOnMe, IContextualResourceModel model, IServer server)
         {
@@ -1468,7 +1466,7 @@ namespace Dev2.Studio.ViewModels
             return FindWorkSurfaceContextViewModel(key);
         }
 
-        public void AddWorkSurfaceContextImpl(IContextualResourceModel resourceModel, bool isLoadingWorkspace)
+        public void AddWorkSurfaceContextImpl(IContextualResourceModel resourceModel, bool isLoadingWorkspace, IPopupController popupController, IAsyncWorker asyncWorker)
         {
             if (resourceModel == null)
             {
@@ -1499,7 +1497,7 @@ namespace Dev2.Studio.ViewModels
             }
 
             AddWorkspaceItem(resourceModel);
-            var workSurfaceContextViewModel = _getWorkSurfaceContextViewModel(resourceModel, _createDesigners);
+            var workSurfaceContextViewModel = _getWorkSurfaceContextViewModel(resourceModel, _createDesigners, popupController, asyncWorker);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
             OpeningWorkflowsHelper.RemoveWorkflow(workSurfaceKey);
             _shellViewModel.CanDebug = true;

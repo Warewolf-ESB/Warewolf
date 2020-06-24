@@ -579,7 +579,7 @@ namespace Dev2.Studio.ViewModels
 
             ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), true);
 
-            AddWorkspaceItems();
+            AddWorkspaceItems(popupController);
             ShowStartPageAsync();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
@@ -1916,7 +1916,7 @@ namespace Dev2.Studio.ViewModels
 
         readonly Func<IWorkspaceItemRepository> _getWorkspaceItemRepository = () => WorkspaceItemRepository.Instance;
 
-        protected virtual void AddWorkspaceItems()
+        protected virtual void AddWorkspaceItems(IPopupController popupController)
         {
             if (ServerRepository == null)
             {
@@ -1947,7 +1947,7 @@ namespace Dev2.Studio.ViewModels
                         {
                             return EnvironmentContainsResourceModel(rm, item, environment);
                         }) as IContextualResourceModel;
-                        AddResourcesAsWorkSurfaceItem(workspaceItemsToRemove, item, environment, resource);
+                        AddResourcesAsWorkSurfaceItem(workspaceItemsToRemove, item, environment, resource, popupController);
                     }
                 }
                 else
@@ -1962,7 +1962,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private void AddResourcesAsWorkSurfaceItem(HashSet<IWorkspaceItem> workspaceItemsToRemove, IWorkspaceItem item, IServer environment, IContextualResourceModel resource)
+        private void AddResourcesAsWorkSurfaceItem(HashSet<IWorkspaceItem> workspaceItemsToRemove, IWorkspaceItem item, IServer environment, IContextualResourceModel resource, IPopupController popupController)
         {
             if (resource == null)
             {
@@ -1975,7 +1975,7 @@ namespace Dev2.Studio.ViewModels
                 resource.WorkflowXaml = fetchResourceDefinition.Message;
                 resource.IsWorkflowSaved = item.IsWorkflowSaved;
                 resource.OnResourceSaved += model => _getWorkspaceItemRepository().UpdateWorkspaceItemIsWorkflowSaved(model);
-                _worksurfaceContextManager.AddWorkSurfaceContextImpl(resource, true);
+                _worksurfaceContextManager.AddWorkSurfaceContextImpl(resource, true, popupController, _asyncWorker);
             }
         }
 
