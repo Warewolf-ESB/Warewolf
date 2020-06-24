@@ -567,7 +567,8 @@ namespace Dev2.Studio.ViewModels
             _factory = factory;
             _worksurfaceContextManager = new WorksurfaceContextManager(createDesigners, this);
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController();
-            PopupProvider = popupController ?? new PopupController();
+            popupController = popupController ?? new PopupController();
+            PopupProvider = popupController;
             ServerRepository = serverRepository ?? throw new ArgumentNullException(nameof(serverRepository));
             _activeServer = LocalhostServer;
             ServerRepository.ActiveServer = _activeServer;
