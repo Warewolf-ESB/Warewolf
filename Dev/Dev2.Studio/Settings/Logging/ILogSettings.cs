@@ -30,5 +30,6 @@ namespace Dev2.Settings.Logging
         IResource SelectedAuditingSource { get; }
         List<IResource> AuditingSources { get; }
         bool IsLegacy { get; set; }
+        bool EncryptDataSource{ get; set; }
     }
 }

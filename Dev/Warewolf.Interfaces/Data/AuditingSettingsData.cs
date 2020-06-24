@@ -25,7 +25,7 @@ namespace Warewolf.Configuration
         }
 
         public bool EncryptDataSource {
-            get => _encryptDataSource ?? true;
+            get => _encryptDataSource ?? false;
             set => SetProperty(ref _encryptDataSource, value);
 
         }
