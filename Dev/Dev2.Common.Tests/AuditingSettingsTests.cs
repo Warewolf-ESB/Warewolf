@@ -67,11 +67,14 @@ namespace Dev2.Common.Tests
             var mockDirectory = new Mock<IDirectory>();
 
             var auditSettings = new AuditingSettings("some path", mockIFile.Object, mockDirectory.Object);
-
+            auditSettings.EncryptDataSource = false;
+            auditSettings.LoggingDataSource = new NamedGuidWithEncryptedPayload();
             var result = auditSettings.Get();
 
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEndpoint, result.Endpoint);
+            Assert.AreEqual(new NamedGuidWithEncryptedPayload(), auditSettings.LoggingDataSource );
+            Assert.AreEqual(false, result.EncryptDataSource);
         }
 
         [TestMethod]
@@ -112,7 +115,9 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        public void AuditSettingsData_Equals_ExpectTrue()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditingSettings))]
+        public void AuditingSettingsData_Equals_ExpectTrue()
         {
             var data1 = new AuditingSettingsData();
             var data2 = new AuditingSettingsData();
@@ -127,7 +132,9 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        public void AuditSettingsData_Equals_ExpectFalse()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditingSettings))]
+        public void AuditingSettingsData_Equals_ExpectFalse()
         {
             var data1 = new AuditingSettingsData();
             data1.LoggingDataSource.Payload = "foo";
@@ -139,7 +146,9 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        public void AuditSettingsData_Clone_ExpectUnique()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditingSettings))]
+        public void AuditingSettingsData_Clone_ExpectUnique()
         {
             var data1 = new AuditingSettingsData();
             data1.LoggingDataSource.Payload = "foo";
@@ -155,5 +164,6 @@ namespace Dev2.Common.Tests
             data1.EncryptDataSource = true;
             Assert.IsFalse(data1.Equals(data2));
         }
+
     }
 }
