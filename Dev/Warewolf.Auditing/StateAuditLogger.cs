@@ -28,7 +28,10 @@ namespace Warewolf.Auditing
         private readonly IWebSocketPool _webSocketFactory;
 
         public IStateListener NewStateListener(IExecutionContext dataObject) => new StateListener(this, dataObject);
+        public StateAuditLogger()
+        {
 
+        }
         public StateAuditLogger(IWebSocketPool webSocketFactory)
         {
             _webSocketFactory = webSocketFactory;
@@ -38,15 +41,14 @@ namespace Warewolf.Auditing
 
         public void LogAuditState(Object logEntry)
         {
-            if (logEntry is Audit auditLog && IsValidLogLevel(auditLog.LogLevel.ToString()))
+            Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
+            if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
             {
                 if (!_ws.IsOpen())
                 {
                     _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
                     _ws.Connect();
                 }
-
-
                 var auditCommand = new AuditCommand
                 {
                     Audit = auditLog,
@@ -57,9 +59,8 @@ namespace Warewolf.Auditing
             }
         }
 
-        private static bool IsValidLogLevel(string auditLogLogLevel)
+        public bool IsValidLogLevel(LogLevel executionLogLevel, string auditLogLogLevel)
         {
-            Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
             switch (executionLogLevel)
             {
                 case LogLevel.OFF:
@@ -68,7 +69,14 @@ namespace Warewolf.Auditing
                     return true;
                 case LogLevel.FATAL:
                 case LogLevel.ERROR:
-                    return auditLogLogLevel.ToUpper() == LogLevel.ERROR.ToString();
+                    switch (auditLogLogLevel.ToUpper())
+                    {
+                        case "FATAL":
+                        case "ERROR":
+                            return true;
+                        default:
+                            return false;
+                    }
                 case LogLevel.WARN:
                     switch (auditLogLogLevel.ToUpper())
                     {

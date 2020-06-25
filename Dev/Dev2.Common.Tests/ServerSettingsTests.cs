@@ -80,6 +80,51 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ServerSettings))]
+        public void ServerSettingsData_Get_Configuration()
+        {
+            var mockFileWrapper = new Mock<IFile>();
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+
+            var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
+            var result = settings.Get();
+
+            Assert.AreEqual(0, settings.WebServerPort);
+            Assert.AreEqual(0, settings.WebServerSslPort);
+            Assert.AreEqual(null, settings.SslCertificateName);
+            Assert.AreEqual(false, settings.CollectUsageStats);
+            Assert.AreEqual(0, settings.DaysToKeepTempFiles);
+            Assert.AreEqual(true, settings.EnableDetailedLogging);
+            Assert.AreEqual(LogLevel.DEBUG.ToString(), settings.ExecutionLogLevel);
+            Assert.AreEqual(200, settings.LogFlushInterval);
+            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
+            Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ServerSettings))]
+        public void ServerSettingsData_Edit_Configuration()
+        {
+            var mockIFile = new Mock<IFile>();
+            mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false).Verifiable();
+            mockIFile.Setup(o => o.WriteAllText(ServerSettings.SettingsPath, It.IsAny<string>()));
+            var mockDirectory = new Mock<IDirectory>();
+            mockDirectory.Setup(o => o.CreateIfNotExists(Path.GetDirectoryName(ServerSettings.SettingsPath))).Returns(ServerSettings.SettingsPath);
+
+            var serverSettings = new ServerSettings("some path", mockIFile.Object, mockDirectory.Object);
+            serverSettings.Sink = "LegacySettingsData";
+            serverSettings.EnableDetailedLogging = false;
+            serverSettings.ExecutionLogLevel = LogLevel.TRACE.ToString();
+
+            var result = serverSettings.Get();
+            Assert.AreEqual(LogLevel.TRACE.ToString(), result.ExecutionLogLevel);
+            Assert.AreEqual(false, result.EnableDetailedLogging);
+            Assert.AreEqual(nameof(LegacySettingsData), result.Sink);
+
+        }
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServerSettings))]
         public void ServerSettings_SaveIfNotExists()
