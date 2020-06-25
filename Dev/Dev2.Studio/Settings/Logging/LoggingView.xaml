@@ -74,16 +74,16 @@
                             </i:Interaction.Behaviors>
                         </ComboBox>
                     </Grid>
-                    <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}"
+                    <Grid Grid.Row="2" Margin="0"
                           Visibility="{Binding IsLegacy, Converter={StaticResource InverseBoolToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="{Binding ElementName=LoggingDataSourceTextBlock, Path=ActualWidth}" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <CheckBox Grid.Row="0"
-                                  Grid.Column="0"
-                                  Grid.ColumnSpan="2"
-                                  Content="Encrypt Logging Data Source"
+                                  Grid.Column="1"
+                                  Content="Encrypt"
+                                  Margin="-6,0,0,0"
                                   IsChecked="{Binding EncryptDataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   ToolTip="{x:Static languages:Tooltips.LoggingViewEncryptToolTip}">
                             <i:Interaction.Behaviors>
