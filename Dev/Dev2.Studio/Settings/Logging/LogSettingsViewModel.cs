@@ -212,7 +212,6 @@ namespace Dev2.Settings.Logging
 
             try
             {
-                var changed = false;
                 var serverSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
                 var savedResourceId = Guid.Empty;
                 var savedSink = serverSettingsData.Sink;
@@ -225,24 +224,11 @@ namespace Dev2.Settings.Logging
                     savedEncryptDataSource = auditingSettingsData.EncryptDataSource;
                 }
 
-                if (savedSink == nameof(LegacySettingsData) && _selectedAuditingSource.ResourceID != Guid.Empty)
-                {
-                    changed = true;
-                }
-                if (_encryptDataSource != savedEncryptDataSource)
-                {
-                    changed = true;
-                }
-                if (_selectedAuditingSource.ResourceID != savedResourceId)
-                {
-                    changed = true;
-                }
-
+                var changed = savedSink == nameof(LegacySettingsData) && _selectedAuditingSource.ResourceID != Guid.Empty;
+                changed |= _encryptDataSource != savedEncryptDataSource;
+                changed |= _selectedAuditingSource.ResourceID != savedResourceId;
                 //TODO: We will use the Server Log Level from the UI until we get the UI changed.
-                if (_executionLogLevel != savedExecutionLogLevel)
-                {
-                    changed = true;
-                }
+                changed |= _executionLogLevel != savedExecutionLogLevel;
 
                 if (changed)
                 {
