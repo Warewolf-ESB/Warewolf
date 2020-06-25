@@ -46,6 +46,7 @@ namespace ActivityUnitTests
     {
         public BaseActivityUnitTest()
         {
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
             TestStartNode = new FlowStep
             {
                 Action = new DsfCommentActivity()
