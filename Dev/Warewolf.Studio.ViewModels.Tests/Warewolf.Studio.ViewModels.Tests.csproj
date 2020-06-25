@@ -68,7 +68,7 @@
     <Compile Include="DeployViewModelTests.cs" />
     <Compile Include="DLLChooserTests.cs" />
     <Compile Include="DummyServiceTestTests.cs" />
-    <Compile Include="ElasticsearchSourceModelTests.cs" />    
+    <Compile Include="ElasticsearchSourceModelTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
     <Compile Include="ExplorerTooltipsTests.cs" />
@@ -116,6 +116,7 @@
     <Compile Include="Search\SearchValueTests.cs" />
     <Compile Include="Search\SearchViewModelTests.cs" />
     <Compile Include="ServiceTestStepTests.cs" />
+    <Compile Include="ServiceTestStepTOTests.cs" />
     <Compile Include="ServiceTestViewModelTests.partial.cs" />
     <Compile Include="SharepointServerSourceModelTests.cs" />
     <Compile Include="SharepointServerSourceViewModelTests.cs" />

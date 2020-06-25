@@ -821,6 +821,13 @@ namespace Dev2.Activities.Specs.Composition
             }
             if (remoteEnvironment != null)
             {
+                if (server == "Remote Connection Integration")
+                {
+                    remoteEnvironment.Connection = new ServerProxy(
+                        $"http://{_containerOps.Container.IP}:{_containerOps.Container.Port}", "WarewolfAdmin",
+                        "W@rEw0lf@dm1n");
+                }
+
                 EnsureEnvironmentConnected(remoteEnvironment, EnvironmentConnectionTimeout);
                 if (!remoteEnvironment.HasLoadedResources)
                 {

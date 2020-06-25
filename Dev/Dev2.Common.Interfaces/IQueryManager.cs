@@ -17,7 +17,8 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Toolbox;
+ using Dev2.Common.Interfaces.Studio.Controller;
+ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Dev2.Common.Interfaces
@@ -33,7 +34,7 @@ namespace Dev2.Common.Interfaces
         IExecuteMessage FetchDependants(Guid resourceId);
     
         StringBuilder FetchResourceXaml(Guid resourceId);
-        Task<IExplorerItem> Load(bool reloadCatalogue);
+        Task<IExplorerItem> Load(bool reloadCatalogue, IPopupController popupController);
         IList<IToolDescriptor> FetchTools();
         IList<IExchangeSource> FetchExchangeSources();
         IList<string> GetComputerNames();

@@ -125,7 +125,6 @@ namespace Dev2.Core.Tests
             _popupController = new Mock<IPopupController>();
             _windowManager = new Mock<IWindowManager>();
             CustomContainer.Register(_windowManager.Object);
-            CustomContainer.Register(_popupController.Object);
             _browserPopupController = new Mock<IBrowserPopupController>();
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var mockWorkspaceItemRepository = GetworkspaceItemRespository();

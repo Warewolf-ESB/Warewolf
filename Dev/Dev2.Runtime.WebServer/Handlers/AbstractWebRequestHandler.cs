@@ -160,7 +160,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         CompressOldLogFiles = true
                     };
                 }
-                
+
                 var stateNotifier = CustomContainer.Get<IStateNotifierFactory>()?.New(_dataObject);
                 _dataObject.StateNotifier = stateNotifier;
             }
@@ -243,7 +243,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     var coverageDataContext = new CoverageDataContext(_dataObject.ResourceID, _dataObject.ReturnType, webRequest.WebServerUrl);
                     coverageDataContext.SetTestCoverageResourceIds(_resourceCatalog.NewContextualResourceCatalog(_authorizationService, _workspaceGuid), webRequest, serviceName, resource);
-                    var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _resourceCatalog, out _executePayload);
+                    var formatter = ServiceTestCoverageExecutor.GetTestCoverageReports(coverageDataContext, _workspaceGuid, _serializer, _testCoverageCatalog, _testCatalog, _resourceCatalog, out _executePayload);
                     return new StringResponseWriter(_executePayload ?? string.Empty, formatter.ContentType);
                 }
                 finally
@@ -269,7 +269,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if (webRequest.ServiceName.EndsWith(".xml") || _dataObject.ReturnType == EmitionTypes.XML)
                 {
                     formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                } else
+                }
+                else
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 }
@@ -337,7 +338,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 var esbExecuteRequest = new EsbExecuteRequest
                 {
-                    
+
                     ServiceName = serviceName,
                 };
                 foreach (string key in webRequest.Variables)

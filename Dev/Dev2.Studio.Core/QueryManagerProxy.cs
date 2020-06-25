@@ -91,7 +91,7 @@ namespace Dev2.Studio.Core
             return result.Message;
         }
         
-        public async Task<IExplorerItem> Load(bool reloadCatalogue)
+        public async Task<IExplorerItem> Load(bool reloadCatalogue, IPopupController popupController)
         {
             if (!Connection.IsConnected)
             {
@@ -116,7 +116,6 @@ namespace Dev2.Studio.Core
                 {
                     if (fetchExplorerTask.Status != TaskStatus.RanToCompletion)
                     {
-                        var popupController = CustomContainer.Get<IPopupController>();
                         popupController?.Show(string.Format(ErrorResource.ServerBusyError, Connection.DisplayName), ErrorResource.ServerBusyHeader, MessageBoxButton.OK,
                                               MessageBoxImage.Warning, "", false, false, true, false, false, false);
                     }
