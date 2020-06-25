@@ -123,7 +123,7 @@ namespace Dev2.Settings.Logging
                 _executionLogLevel = executionLogLevel;
             }
 
-            if (serverSettingsData.Sink == "LegacySettingsData")
+            if (serverSettingsData.Sink == nameof(LegacySettingsData))
             {
                 var legacySettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<LegacySettingsData>(CurrentEnvironment);
                 AuditFilePath = legacySettingsData.AuditFilePath;
@@ -131,7 +131,7 @@ namespace Dev2.Settings.Logging
                 SelectedAuditingSource = selectedAuditingSource;
             }
 
-            if (serverSettingsData.Sink == "AuditingSettingsData")
+            if (serverSettingsData.Sink == nameof(AuditingSettingsData))
             {
                 var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
                 var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == auditingSettingsData.LoggingDataSource.Value);
@@ -179,7 +179,7 @@ namespace Dev2.Settings.Logging
         static void OpenStudioLogFile(object o)
         {
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var logFile = Path.Combine(localAppDataFolder, "Warewolf", "Studio Logs", "Warewolf Studio.log");
+            var logFile = Path.Combine(localAppDataFolder, nameof(Warewolf), "Studio Logs", "Warewolf Studio.log");
             if (File.Exists(logFile))
             {
                 Process.Start(logFile);
@@ -218,14 +218,14 @@ namespace Dev2.Settings.Logging
                 var savedSink = serverSettingsData.Sink;
                 Enum.TryParse(serverSettingsData.ExecutionLogLevel, out LogLevel savedExecutionLogLevel);
                 var savedEncryptDataSource = true;
-                if (savedSink == "AuditingSettingsData")
+                if (savedSink == nameof(AuditingSettingsData))
                 {
                     var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
                     savedResourceId = auditingSettingsData.LoggingDataSource.Value;
                     savedEncryptDataSource = auditingSettingsData.EncryptDataSource;
                 }
 
-                if (savedSink == "LegacySettingsData" && _selectedAuditingSource.ResourceID != Guid.Empty)
+                if (savedSink == nameof(LegacySettingsData) && _selectedAuditingSource.ResourceID != Guid.Empty)
                 {
                     changed = true;
                 }
