@@ -73,7 +73,7 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(false, settings.CollectUsageStats);
             Assert.AreEqual(0, settings.DaysToKeepTempFiles);
             Assert.AreEqual(true, settings.EnableDetailedLogging);
-            Assert.AreEqual(LogLevel.ERROR.ToString(), settings.ExecutionLogLevel);
+            Assert.AreEqual(LogLevel.DEBUG.ToString(), settings.ExecutionLogLevel);
             Assert.AreEqual(200, settings.LogFlushInterval);
             Assert.AreEqual("C:\\ProgramData\\Warewolf\\Audits", settings.AuditFilePath);
             Assert.AreEqual(nameof(LegacySettingsData), settings.Sink);

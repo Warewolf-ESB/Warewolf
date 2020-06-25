@@ -343,7 +343,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Assert Results-------------------------
             Assert.IsTrue(logSettingsViewModel.IsLegacy);
-            Assert.AreEqual(LogLevel.ERROR, logSettingsViewModel.ExecutionLogLevel);
+            Assert.AreEqual(LogLevel.DEBUG, logSettingsViewModel.ExecutionLogLevel);
         }
 
         [TestMethod]
@@ -443,13 +443,30 @@ namespace Dev2.Core.Tests.Settings
             mockResource.Setup(o => o.ResourceName).Returns("Default");
             mockResource.Setup(o => o.ResourceID).Returns(Guid.Empty);
             logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
-
             logSettingsViewModel.AuditFilePath = @"C:\ProgramData\Warewolf\Audits";
             //------------Assert Results-------------------------
             logSettingsViewModel.Save(loggingSettingsTo);
             _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<LegacySettingsData>()), Times.Once);
         }
-
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(LogSettingsViewModel))]
+        public void LogSettingsViewModel_Save_ChangeSink()
+        {
+            var _resourceRepo = new Mock<IResourceRepository>();
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel("LegacySettingsData", _resourceRepo);
+            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE", EventLogLoggerLogLevel = "DEBUG" };
+            //------------Execute Test---------------------------
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceName).Returns("Default");
+            mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
+            //------------Assert Results-------------------------
+            logSettingsViewModel.Save(loggingSettingsTo);
+            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<AuditingSettingsData>()), Times.Once);
+        }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
@@ -464,6 +481,8 @@ namespace Dev2.Core.Tests.Settings
             mockResource.Setup(o => o.ResourceName).Returns("Default");
             mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
             logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
+            logSettingsViewModel.ExecutionLogLevel = LogLevel.TRACE;
+            logSettingsViewModel.EncryptDataSource = false;
             CustomContainer.Register(new Mock<IPopupController>().Object);
             //------------Assert Results-------------------------
             logSettingsViewModel.Save(loggingSettingsTo);
@@ -484,7 +503,7 @@ namespace Dev2.Core.Tests.Settings
             var expectedServerSettingsData = new ServerSettingsData
             {
                 Sink = sink,
-                ExecutionLogLevel = LogLevel.ERROR.ToString()
+                ExecutionLogLevel = LogLevel.DEBUG.ToString()
             };
             _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
             var selectedAuditingSourceId = Guid.NewGuid();
