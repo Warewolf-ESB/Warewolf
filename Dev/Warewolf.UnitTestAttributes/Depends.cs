@@ -26,7 +26,6 @@ namespace Warewolf.UnitTestAttributes
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
         static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
-        static readonly string BackupCIRemotePort = "3142";
         static readonly bool EnableDocker = true;
 
         public enum ContainerType
@@ -81,7 +80,7 @@ namespace Warewolf.UnitTestAttributes
 
         public Depends() => throw new ArgumentNullException("Missing type of the container.");
 
-        public Depends(ContainerType type)
+        public Depends(ContainerType type, bool performSourceInjection = true)
         {
             _containerType = type;
             if (EnableDocker)
@@ -133,6 +132,7 @@ namespace Warewolf.UnitTestAttributes
                 };
             }
 
+            if (!performSourceInjection) return;
             switch (_containerType)
             {
                 case ContainerType.MySQL:
@@ -161,7 +161,7 @@ namespace Warewolf.UnitTestAttributes
             switch (type)
             {
                 case ContainerType.CIRemote:
-                    return BackupCIRemotePort;
+                    return "3144";
                 case ContainerType.MSSQL:
                     return "1433";
                 case ContainerType.MySQL:
