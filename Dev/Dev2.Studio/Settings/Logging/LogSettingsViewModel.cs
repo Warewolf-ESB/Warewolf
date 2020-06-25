@@ -65,7 +65,7 @@ namespace Dev2.Settings.Logging
         LogLevel _serverEventLogLevel;
         LogLevel _studioEventLogLevel;
         LogLevel _executionLogLevel;
-        private bool _encryptDataSource;
+        private bool _encryptDataSource = true;
         ProgressDialogViewModel _progressDialogViewModel;
         string _serverLogFile;
         IServer _currentEnvironment;
@@ -136,7 +136,7 @@ namespace Dev2.Settings.Logging
                 var auditingSettingsData = CurrentEnvironment.ResourceRepository.GetAuditingSettings<AuditingSettingsData>(CurrentEnvironment);
                 var selectedAuditingSource = AuditingSources.FirstOrDefault(o => o.ResourceID == auditingSettingsData.LoggingDataSource.Value);
                 SelectedAuditingSource = selectedAuditingSource;
-                EncryptDataSource = auditingSettingsData.EncryptDataSource;
+                _encryptDataSource = auditingSettingsData.EncryptDataSource;
             }
 
             IsDirty = false;
