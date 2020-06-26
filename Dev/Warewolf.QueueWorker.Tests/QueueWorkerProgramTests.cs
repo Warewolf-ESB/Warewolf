@@ -18,63 +18,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using QueueWorker;
 using System;
-using System.CodeDom;
 using Warewolf.Common;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 using Warewolf.Triggers;
 using static QueueWorker.ExecutionLogger;
 using static QueueWorker.Program;
-using Implementation = QueueWorker.Program.Implementation;
 
 namespace Warewolf.QueueWorker.Tests
 {
     [TestClass]
     public class QueueWorkerProgramTests
     {
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(QueueWorker))]
-        public void QueueWorker_Implementation_Run_Given_ConnectionToServer_IsNotSuccessFul_ShouldTerminateConsole_AfterOneMinutes()
-        {
-            var id = Guid.NewGuid().ToString();
-            
-            //Do we not need to time this wait for connection so it teminates at some point?
-            //When I tried this with the below the I think the wait is Infinite, my guess is this line: await _wrappedConnection.ConnectAsync(_wrappedConnection.ID).ConfigureAwait(true)
-            //var environmentConnection = new ServerProxy(new Uri("https://localhost:3143/")); 
-            var args = new Args
-            {
-                TriggerId = id,
-                ServerEndpoint = new Uri("https://localhost:3143/")
-            };
-
-            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
-            mockEnvironmentConnection.Setup(o => o.ConnectAsync(Guid.Empty)).ReturnsAsync(false);
-
-            var mockFilePath = new Mock<IFilePath>();
-
-            var mockResourceCatalogProxy = new Mock<IResourceCatalogProxy>();
-            var mockTriggersCatalog = new Mock<ITriggersCatalog>();
-            var mockWorkerContextFactory = new Mock<IWorkerContextFactory>();
-            mockWorkerContextFactory.Setup(o => o.New(args, mockResourceCatalogProxy.Object, mockTriggersCatalog.Object, mockFilePath.Object)).Throws(new Exception("false test exeption: catalog.LoadQueueTriggerFromFile(_path) => file not found, this might be a bug"));
-
-            var implConfig = SetupQueueWorkerImplementationConfings(out Mock<IWriter> mockWriter, out Mock<IExecutionLogPublisher> mockExecutionLogPublisher,
-                mockEnvironmentConnection.Object, mockResourceCatalogProxy.Object, mockWorkerContextFactory.Object, mockTriggersCatalog.Object, mockFilePath.Object, 
-                new Mock<IFileSystemWatcherFactory>().Object, new Mock<IQueueWorkerImplementationFactory>().Object, new Mock<IEnvironmentWrapper>().Object);
-
-            var sut = new Implementation(args, implConfig);
-
-            var result = sut.Run();
-
-            Assert.AreEqual(0, result, "");
-
-            mockWriter.Verify(o => o.Write("Connecting to server: " + args.ServerEndpoint + "..."), Times.Once);
-            mockWriter.Verify(o => o.WriteLine("failed."), Times.Once);
-
-            mockExecutionLogPublisher.Verify(o => o.Info("Connecting to server: " + args.ServerEndpoint + "..."), Times.Once);
-            mockExecutionLogPublisher.Verify(o => o.Info("Connecting to server: " + args.ServerEndpoint + "... unsuccessful"), Times.Once);
-        }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
