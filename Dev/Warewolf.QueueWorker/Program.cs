@@ -143,7 +143,7 @@ namespace QueueWorker
                 try
                 {
                     var connectTask = environmentConnection.ConnectAsync(Guid.Empty);
-                    connectTask.Wait(60000);
+                    connectTask.Wait();
                     return connectTask;
                 }
                 catch (Exception ex)
