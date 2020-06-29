@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,20 +24,15 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Validation;
-using Dev2.Providers.Errors;
-using Warewolf.Resource.Errors;
 using System.ComponentModel;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Providers.Validation.Rules;
 using Dev2.Activities.Designers2.RedisValidator;
 
 namespace Dev2.Activities.Designers2.RedisRemove
 {
     public class RedisRemoveDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {
-        readonly IServer _server;
-        IShellViewModel _shellViewModel;
+        private readonly IServer _server;
+        private readonly IShellViewModel _shellViewModel;
 
         [ExcludeFromCodeCoverage]
         public RedisRemoveDesignerViewModel(ModelItem modelItem)
@@ -60,13 +55,16 @@ namespace Dev2.Activities.Designers2.RedisRemove
             LoadRedisSources();
             EditRedisSourceCommand = new RelayCommand(o => EditRedisSource(), o => IsRedisSourceSelected);
             NewRedisSourceCommand = new RelayCommand(o => NewRedisSource());
-            if (modelItem.Properties["Key"]?.ComputedValue != null)
+            var modelItemKey = modelItem.Properties["Key"];
+            if (modelItemKey?.ComputedValue != null)
             {
-                Key = modelItem.Properties["Key"]?.ComputedValue.ToString();
+                Key = modelItemKey.ComputedValue.ToString();
             }
-            if (modelItem.Properties["Result"]?.ComputedValue != null)
+
+            var modelItemResult = modelItem.Properties["Result"];
+            if (modelItemResult?.ComputedValue != null)
             {
-                Result = modelItem.Properties["Result"]?.ComputedValue.ToString();
+                Result = modelItemResult.ComputedValue.ToString();
             }
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_RedisRemove;
         }
@@ -160,26 +158,40 @@ namespace Dev2.Activities.Designers2.RedisRemove
             SetSelectedRedisSource();
         }
 
-        void SetSelectedRedisSource()
+        private void SetSelectedRedisSource()
         {
-            var sourceId = Guid.Parse(ModelItem.Properties["SourceId"].ComputedValue.ToString());
-            var selectedRedisSource = RedisSources.FirstOrDefault(redisSource => redisSource.ResourceID == sourceId);
-            SelectedRedisSource = selectedRedisSource;
+            var modelItemProperty = ModelItem.Properties["SourceId"];
+            if (modelItemProperty != null)
+            {
+                var sourceId = Guid.Parse(modelItemProperty.ComputedValue.ToString());
+                var selectedRedisSource = RedisSources.FirstOrDefault(redisSource => redisSource.ResourceID == sourceId);
+                SelectedRedisSource = selectedRedisSource;
+            }
         }
 
-        public bool IsKeyFocused { get => (bool)GetValue(IsKeyFocusedProperty); set { SetValue(IsKeyFocusedProperty, value); } }
+        [ExcludeFromCodeCoverage]
+        public bool IsKeyFocused
+        {
+            get => (bool)GetValue(IsKeyFocusedProperty);
+            set => SetValue(IsKeyFocusedProperty, value);
+        }
 
         public static readonly DependencyProperty IsKeyFocusedProperty =
             DependencyProperty.Register("IsKeyFocused", typeof(bool), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(false));
 
-        public bool IsRedisSourceFocused { get => (bool)GetValue(IsRedisSourceFocusedProperty); set { SetValue(IsRedisSourceFocusedProperty, value); } }
+        [ExcludeFromCodeCoverage]
+        public bool IsRedisSourceFocused
+        {
+            get => (bool)GetValue(IsRedisSourceFocusedProperty);
+            set => SetValue(IsRedisSourceFocusedProperty, value);
+        }
 
         public static readonly DependencyProperty IsRedisSourceFocusedProperty = 
             DependencyProperty.Register("IsRedisSourceFocused", typeof(bool), typeof(RedisRemoveDesignerViewModel), new PropertyMetadata(false));
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        void OnPropertyChanged(string propertyName = null)
+        private void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -189,8 +201,8 @@ namespace Dev2.Activities.Designers2.RedisRemove
         public override void Validate()
         {
             var result = new List<IActionableErrorInfo>();
-            var redisDesignerDTO = new RedisDesignerDTO(SelectedRedisSource, Key);
-            result.AddRange(RedisValidatorDesignerViewModel.Validate(redisDesignerDTO, _isRedisSourceFocused => IsRedisSourceFocused = _isRedisSourceFocused, _isKeyFocused => IsKeyFocused = _isKeyFocused));
+            var redisDesignerDto = new RedisDesignerDTO(SelectedRedisSource, Key);
+            result.AddRange(RedisValidatorDesignerViewModel.Validate(redisDesignerDto, isRedisSourceFocused => IsRedisSourceFocused = isRedisSourceFocused, isKeyFocused => IsKeyFocused = isKeyFocused));
             Errors = result.Count == 0 ? null : result;
         }
        

@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -26,9 +26,21 @@ namespace Dev2.Activities.Designers.Tests.RedisRemove
     [TestClass]
     public class RedisRemoveDesignerViewModelTests
     {
-        static ModelItem CreateModelItem()
+        private static ModelItem CreateModelItem()
         {
             return ModelItemUtils.CreateModelItem(new RedisRemoveActivity());
+        }
+
+        private static ModelItem CreateModelItemWithKey()
+        {
+            var redisRemove = new RedisRemoveActivity {Key = "newKey"};
+            return ModelItemUtils.CreateModelItem(redisRemove);
+        }
+
+        private static ModelItem CreateModelItemWithResult()
+        {
+            var redisRemove = new RedisRemoveActivity {Key = "newKey", Result = "someResult"};
+            return ModelItemUtils.CreateModelItem(redisRemove);
         }
 
         [TestMethod]
@@ -139,8 +151,9 @@ namespace Dev2.Activities.Designers.Tests.RedisRemove
 
             //------------Execute Test---------------------------
             var redisRemoveDesignerViewModel = new RedisRemoveDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
+            Assert.AreEqual("Use the Redis Remove tool to remove existing key with data from cache.", redisRemoveDesignerViewModel.HelpText);
             redisRemoveDesignerViewModel.UpdateHelpDescriptor(expectedHelpText);
-
+            
             mockHelpViewModel.Verify(helpViewModel => helpViewModel.UpdateHelpText(expectedHelpText), Times.Once);
         }
 
@@ -223,6 +236,80 @@ namespace Dev2.Activities.Designers.Tests.RedisRemove
 
             mockShellViewModel.Verify(shellViewModel => shellViewModel.NewRedisSource(""), Times.Once);
             mockResourceRepository.Verify(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource), Times.Exactly(2));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(RedisRemoveDesignerViewModel))]
+        public void RedisRemoveDesignerViewModel_Constructor_KeyNotNull()
+        {
+            var expectedId = Guid.NewGuid();
+            var redisSource = new RedisSource
+            {
+                ResourceID = expectedId,
+                ResourceName = "ResourceName",
+                HostName = "HostName",
+                Port = "6379",
+                AuthenticationType = Runtime.ServiceModel.Data.AuthenticationType.Anonymous
+            };
+
+            var redisSources = new List<RedisSource> { redisSource };
+
+            var environmentId = Guid.NewGuid();
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource)).Returns(redisSources);
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.EnvironmentID).Returns(environmentId);
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockServer.Object);
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.NewRedisSource(""));
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            //------------Execute Test---------------------------
+            var redisRemoveDesignerViewModel = new RedisRemoveDesignerViewModel(CreateModelItemWithKey(), mockServer.Object, mockShellViewModel.Object);
+
+            Assert.AreEqual("newKey", redisRemoveDesignerViewModel.Key);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(RedisRemoveDesignerViewModel))]
+        public void RedisRemoveDesignerViewModel_Constructor_ResultNotNull()
+        {
+            var expectedId = Guid.NewGuid();
+            var redisSource = new RedisSource
+            {
+                ResourceID = expectedId,
+                ResourceName = "ResourceName",
+                HostName = "HostName",
+                Port = "6379",
+                AuthenticationType = Runtime.ServiceModel.Data.AuthenticationType.Anonymous
+            };
+
+            var redisSources = new List<RedisSource> { redisSource };
+
+            var environmentId = Guid.NewGuid();
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.FindSourcesByType<RedisSource>(It.IsAny<IServer>(), enSourceType.RedisSource)).Returns(redisSources);
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.EnvironmentID).Returns(environmentId);
+            mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
+
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.ActiveServer).Returns(mockServer.Object);
+            mockShellViewModel.Setup(shellViewModel => shellViewModel.NewRedisSource(""));
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            //------------Execute Test---------------------------
+            var redisRemoveDesignerViewModel = new RedisRemoveDesignerViewModel(CreateModelItemWithResult(), mockServer.Object, mockShellViewModel.Object);
+
+            Assert.AreEqual("someResult", redisRemoveDesignerViewModel.Result);
         }
     }
 }
