@@ -20,6 +20,7 @@ using Dev2.Runtime;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
 using Dev2.Studio.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -48,7 +49,7 @@ namespace Dev2.Activities.Specs.Composition
         public WorkflowExecutionLoggingSteps(ScenarioContext scenarioContext, FeatureContext featureContext)
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
-            _environmentModel = featureContext.Get<IServer>("environmentModel")?? throw new ArgumentNullException(nameof(featureContext));
+            _environmentModel = featureContext.Get<IServer>("environmentModel") ?? throw new ArgumentNullException(nameof(featureContext));
             _performanceCounterLocater = featureContext.Get<WarewolfPerformanceCounterManager>("performanceCounterLocater");
             _principal = featureContext.Get<IPrincipal>("principal");
             _environment = BuildExecutionEnvironmet();
@@ -82,7 +83,6 @@ namespace Dev2.Activities.Specs.Composition
             {
                 dataObject.Environment.AddError("False error from spec");
             }
-
         }
 
         [Given(@"workflow execution entry point detailed logs are created and logged")]
@@ -164,6 +164,7 @@ namespace Dev2.Activities.Specs.Composition
                 Environment = environment,
                 Settings = new Dev2WorkflowSettingsTO
                 {
+                    ExecutionLogLevel = LogLevel.DEBUG.ToString(),
                     EnableDetailedLogging = true,
                     LoggerType = LoggerType.JSON,
                     KeepLogsForDays = 2,
@@ -194,7 +195,6 @@ namespace Dev2.Activities.Specs.Composition
 
             Assert.AreEqual(nodeTable[0].Key, nodeType.Name);
             Assert.AreEqual(nodeTable[0].Value, displayName.Trim());
-
         }
 
         [Then(@"it has these input parameter values")]
@@ -243,7 +243,6 @@ namespace Dev2.Activities.Specs.Composition
 
             Assert.AreEqual(nodeTable[0].Key, messageVariable);
             Assert.AreEqual(nodeTable[0].Value, actual);
-
         }
 
         private static string Eval(DsfDataObject dataObject, string messageVariable)
@@ -275,7 +274,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenTheWorkflowIsExpectedToThrowException()
         {
             var dataObject = _scenarioContext.Get<DsfDataObject>("dataObject");
-            
+
             var activityParserMock = new Mock<IActivityParser>();
             var activityMock = new Mock<IDev2Activity>();
 
@@ -314,7 +313,6 @@ namespace Dev2.Activities.Specs.Composition
 
             mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Never);
         }
-
     }
 
     internal class NodeLogTable

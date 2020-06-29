@@ -70,11 +70,14 @@ namespace Dev2.Common.Tests
             var mockClusterDispatcher = new Mock<IClusterDispatcher>();
 
             var auditSettings = new AuditingSettings("some path", mockIFile.Object, mockDirectory.Object, mockClusterDispatcher.Object);
-
+            auditSettings.EncryptDataSource = false;
+            auditSettings.LoggingDataSource = new NamedGuidWithEncryptedPayload();
             var result = auditSettings.Get();
 
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEndpoint, result.Endpoint);
+            Assert.AreEqual(new NamedGuidWithEncryptedPayload(), auditSettings.LoggingDataSource );
+            Assert.AreEqual(false, result.EncryptDataSource);
         }
 
         [TestMethod]
@@ -97,6 +100,7 @@ namespace Dev2.Common.Tests
             var expectedAuditingSettingsData = new AuditingSettingsData
             {
                 Endpoint = "ws://127.0.0.1:5000/ws",
+                EncryptDataSource = true,
                 LoggingDataSource = new NamedGuidWithEncryptedPayload
                 {
                     Name = "Data Source",
@@ -114,7 +118,9 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        public void AuditSettingsData_Equals_ExpectTrue()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditingSettings))]
+        public void AuditingSettingsData_Equals_ExpectTrue()
         {
             var data1 = new AuditingSettingsData();
             var data2 = new AuditingSettingsData();
@@ -122,30 +128,34 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(data1.Equals(data2));
 
             data1.LoggingDataSource.Payload = "foo";
+            data1.EncryptDataSource = true;
             data2.LoggingDataSource.Payload = "foo";
-
+            data2.EncryptDataSource = true;
             Assert.IsTrue(data1.Equals(data2));
-
         }
 
         [TestMethod]
-        public void AuditSettingsData_Equals_ExpectFalse()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditingSettings))]
+        public void AuditingSettingsData_Equals_ExpectFalse()
         {
             var data1 = new AuditingSettingsData();
             data1.LoggingDataSource.Payload = "foo";
+            data1.EncryptDataSource = true;
             var data2 = new AuditingSettingsData();
             data2.LoggingDataSource.Payload = "foo2";
-
+            data2.EncryptDataSource = false;
             Assert.IsFalse(data1.Equals(data2));
-            //Assert.IsTrue(data1.Equals(data2));
-
         }
 
         [TestMethod]
-        public void AuditSettingsData_Clone_ExpectUnique()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AuditingSettings))]
+        public void AuditingSettingsData_Clone_ExpectUnique()
         {
             var data1 = new AuditingSettingsData();
             data1.LoggingDataSource.Payload = "foo";
+            data1.EncryptDataSource = true;
             var data2 = data1.Clone();
             Assert.AreNotEqual(data1.GetHashCode(), data2.GetHashCode());
             Assert.IsFalse(ReferenceEquals(data1, data2));
@@ -154,9 +164,9 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(data1.Equals(data2));
 
             data1.LoggingDataSource.Payload = "foo2";
-
+            data1.EncryptDataSource = true;
             Assert.IsFalse(data1.Equals(data2));
-
         }
+
     }
 }

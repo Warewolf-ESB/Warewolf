@@ -42,6 +42,10 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
+    /**
+     * SignalR hub primarily used by Warewolf Studio, if one wanted to use SignalR from a web browser to interact with the Warewolf Server
+     * one would use this hub by connecting using the JS SignalR client library with url "/esb".
+     */
     [AuthorizeHub]
     [HubName("esb")]
     public class EsbHub : ServerHub, IEsbHub, IDebugWriter, IExplorerRepositorySync

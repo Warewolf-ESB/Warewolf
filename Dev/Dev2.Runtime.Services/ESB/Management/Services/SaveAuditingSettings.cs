@@ -37,6 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var updatedAuditingSettings = serializer.Deserialize<AuditingSettingsData>(settings);
                     Config.Auditing.LoggingDataSource = updatedAuditingSettings.LoggingDataSource;
+                    Config.Auditing.EncryptDataSource = updatedAuditingSettings.EncryptDataSource;
                     Config.Server.Sink = nameof(AuditingSettingsData);
                 }
                 else

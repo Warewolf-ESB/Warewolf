@@ -34,9 +34,10 @@ namespace Warewolf.Configuration
             get => _auditFilePath;
             set => SetProperty(ref _auditFilePath, value);
         }
-       
+
         public bool? EnableDetailedLogging { get; set; }
-        public string Sink { get; set; } 
+        public string Sink { get; set; }
+        public string ExecutionLogLevel{ get; set; }
         public int? LogFlushInterval { get; set; }
 
         [JsonIgnore]
@@ -54,6 +55,7 @@ namespace Warewolf.Configuration
             equals &= CollectUsageStats == other.CollectUsageStats;
             equals &= DaysToKeepTempFiles == other.DaysToKeepTempFiles;
             equals &= EnableDetailedLogging == other.EnableDetailedLogging;
+            equals &= ExecutionLogLevel == other.ExecutionLogLevel;
             equals &= LogFlushInterval == other.LogFlushInterval;
             equals &= AuditFilePath == other.AuditFilePath;
             equals &= Sink == other.Sink;

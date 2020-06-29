@@ -293,14 +293,12 @@
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
-    <Compile Include="Settings\Logging\EnumHelper.cs" />
     <Compile Include="Settings\Logging\ILogSettings.cs" />
     <Compile Include="Settings\Logging\LoggingView.xaml.cs">
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\IResourcePickerDialog.cs" />
     <Compile Include="Dialogs\ResourcePickerDialog.cs" />
-    <Compile Include="Settings\Logging\LogLevel.cs" />
     <Compile Include="Settings\Logging\LogSettingsViewModel.cs" />
     <Compile Include="Settings\Perfcounters\PerfCountersToUtilities.cs" />
     <Compile Include="Settings\Perfcounters\PerfCounterView.xaml.cs">

@@ -154,6 +154,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     _dataObject.Settings = new Dev2WorkflowSettingsTO
                     {
+                        ExecutionLogLevel =  Config.Server.ExecutionLogLevel,
                         EnableDetailedLogging = Config.Server.EnableDetailedLogging,
                         LoggerType = LoggerType.JSON,
                         KeepLogsForDays = 2,

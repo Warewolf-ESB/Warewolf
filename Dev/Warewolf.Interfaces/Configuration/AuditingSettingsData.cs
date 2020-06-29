@@ -18,10 +18,18 @@ namespace Warewolf.Configuration
     public class AuditingSettingsData : AuditSettingsDataBase, IEquatable<AuditingSettingsData>, IHasChanged
     {
         private NamedGuidWithEncryptedPayload _loggingDataSource = new NamedGuidWithEncryptedPayload();
+        private bool? _encryptDataSource;
+
         public NamedGuidWithEncryptedPayload LoggingDataSource
         {
             get => _loggingDataSource;
             set => SetProperty(ref _loggingDataSource, value);
+        }
+
+        public bool EncryptDataSource {
+            get => _encryptDataSource ?? true;
+            set => SetProperty(ref _encryptDataSource, value);
+
         }
 
         public AuditingSettingsData Clone()
@@ -37,6 +45,7 @@ namespace Warewolf.Configuration
             {
                 var equals = base.Equals(other);
                 equals &= LoggingDataSource.Equals(other.LoggingDataSource);
+                equals &= EncryptDataSource.Equals(other.EncryptDataSource);
                 return equals;
             }
             return false;

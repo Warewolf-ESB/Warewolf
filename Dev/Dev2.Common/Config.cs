@@ -17,6 +17,7 @@ using System.Threading;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Warewolf;
+using Dev2.Data.Interfaces.Enums;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Esb;
@@ -49,10 +50,18 @@ namespace Dev2.Common
 
         public bool EnableDetailedLogging
         {
-            get => _settings.EnableDetailedLogging ?? false;
+            get => _settings.EnableDetailedLogging ?? true;
             set => _settings.EnableDetailedLogging = value;
         }
-
+        public string ExecutionLogLevel
+        {
+            get => _settings.ExecutionLogLevel ?? LogLevel.DEBUG.ToString();
+            set
+            {
+                _settings.ExecutionLogLevel = value;
+                Save();
+            }
+        }
         public string Sink
         {
             get => GetSink();
@@ -256,6 +265,15 @@ namespace Dev2.Common
                 Save();
             }
         }
+        public bool EncryptDataSource
+        {
+            get => _settings.EncryptDataSource;
+            set
+            {
+                _settings.EncryptDataSource = value;
+                Save();
+            }
+        }
     }
 
     public class ClusterSettings : ConfigSettingsBase<ClusterSettingsData>
@@ -263,9 +281,7 @@ namespace Dev2.Common
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "clusterSettings.json");
         public ClusterSettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper(), new NullClusterDispatcher())
-        {
-        }
-
+        {}
         public ClusterSettings(string settingsPath, IFile file, IDirectory directoryWrapper, IClusterDispatcher clusterDispatcher)
             : base(settingsPath, file, directoryWrapper, clusterDispatcher)
         {
