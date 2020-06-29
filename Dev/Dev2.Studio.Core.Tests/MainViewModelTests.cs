@@ -150,7 +150,6 @@ namespace Dev2.Core.Tests
 
         #region Constructor
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedLoadsWorkspaceItems()
         {
@@ -194,7 +193,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
             envRepo.Setup(r => r.Source).Returns(env.Object);
 
-
+            CustomContainer.Register(envRepo.Object);
 
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
 
