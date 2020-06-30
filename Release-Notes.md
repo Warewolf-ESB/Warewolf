@@ -6,6 +6,17 @@ Features
 - Log Levels for Execution Logging can now be configured in Logging Settings. Default is DEBUG.
 - EnableDetailedLogging in serverSettings is now defaulted to true.
 
+Bug Fixes
+---------
+- Test Coverage
+  ~ Test Coverage summary now no longer throws when a coverage report is required for a non-existing workflow.
+  ~ Complexed nodes like decision and switch tools no longer throws when a test coverage report is requested.
+  ~ All tests are accounted for and the invalid tests have been included in the summary count.
+  ~ When test type is changed -from the test editor- from Assert to Mock this will now update the Test Coverage reports coverage percentage.
+
+- Run Tests
+  ~ The invalid tests are now returned with a message stating the reason and the result as invalid.
+
 
 Monday 8 June 2020
 ======================
