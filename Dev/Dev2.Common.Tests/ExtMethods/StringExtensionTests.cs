@@ -75,7 +75,6 @@ namespace Dev2.Tests.ExtMethods
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("StringExtension")]
-        [DoNotParallelize]
         public void StringExtension_IsNumeric_StringIsNegativeNumericWithAPeriod_True()
         {
             //------------Execute Test---------------------------
