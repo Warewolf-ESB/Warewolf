@@ -107,7 +107,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("StudioTestViewModel_DebugOutputMessage")]
-        [DoNotParallelize]
         public void StudioTestViewModel_DebugOutputMessage_Handle_NotNull()
         {
             //------------Setup for test--------------------------
@@ -167,7 +166,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("StudioTestViewModel_DoDeactivate")]
-        [DoNotParallelize]
         public void StudioTestViewModel_DoDeactivate_CanSave_ExpectedFalse()
         {
             //------------Setup for test--------------------------

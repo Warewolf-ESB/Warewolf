@@ -29,7 +29,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
     public class FileSystemIntellisenseProviderTest
     {
         [TestMethod]
-        [DoNotParallelize]
         public void GetIntellisenseResultsWhereNothingPassedExpectListOfDrives()
         {
             //------------Setup for test--------------------------

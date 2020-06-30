@@ -125,7 +125,6 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
-        [DoNotParallelize]
         public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------
@@ -467,6 +466,7 @@ namespace Dev2.Core.Tests.Settings
             logSettingsViewModel.Save(loggingSettingsTo);
             _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<AuditingSettingsData>()), Times.Once);
         }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
