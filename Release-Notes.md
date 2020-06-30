@@ -1,3 +1,12 @@
+Monday 29 June 2020
+======================
+Features
+--------
+The logging data source has the option not to be encrypted in the settings file. Default is to encrypt the data source.
+Log Levels for Execution Logging can now be configured in Logging Settings. Default is DEBUG.
+EnableDetailedLogging in serverSettings is now defaulted to true.
+
+
 Monday 8 June 2020
 ======================
 Bug Fixes
