@@ -31,6 +31,7 @@ using Warewolf.Logging;
 using Warewolf.Storage;
 using Warewolf.UnitTestAttributes;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Warewolf.Auditing.Tests
 {
     [TestClass]
@@ -228,7 +229,6 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [DoNotParallelize]
         public void AuditQueryableElastic_QueryTriggerData_FilterBy_ResourceId()
         {
             //setup
