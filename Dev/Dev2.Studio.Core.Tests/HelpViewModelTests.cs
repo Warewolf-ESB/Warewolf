@@ -56,7 +56,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("HelpViewModel_OnViewLoaded")]
-        [DoNotParallelize]
         public async Task HelpViewModel_LoadBrowserUri_HasInternetConnection_NavigatesToUrl()
         {
             //------------Setup for test--------------------------

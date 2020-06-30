@@ -85,7 +85,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [DeploymentItem(CommandLineToolName)]
-        [DoNotParallelize]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
         {
             //------------Setup for test--------------------------
@@ -107,7 +106,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DoNotParallelize]
         public void OnExecuteWhereConsolePathHasSpacesIsNotWrappedInQuotesExpectError()
         {
             //------------Setup for test--------------------------
@@ -142,7 +140,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DoNotParallelize]
         public void OnExecuteWhereConsolePathHasNoSpacesIsNotWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
@@ -224,7 +221,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DoNotParallelize]
         public void OnExecuteWhereConsoleOutputsWithArgsWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
@@ -260,7 +256,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DoNotParallelize]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResult()
         {
             //------------Setup for test--------------------------
@@ -346,7 +341,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DoNotParallelize]
         [DeploymentItem(@"ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
         {
@@ -379,7 +373,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DoNotParallelize]
         public void OnExecuteWhereOutputToRecordWithNoIndexWithConsoleOutputsExpectOutputForResultAppendedToRecordsets()
         {
             //------------Setup for test--------------------------
@@ -453,7 +446,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DoNotParallelize]
         public void OnExecuteWhereOutputToRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
         {
             //------------Setup for test--------------------------
@@ -485,7 +477,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DoNotParallelize]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToRecordSetExpectOutputResultsToMultipleRowsInRecordSet()
         {
             //------------Setup for test--------------------------
@@ -515,7 +506,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [DoNotParallelize]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToScalarExpectOutputResultOfLastCommandinScalar()
         {
             //------------Setup for test--------------------------
