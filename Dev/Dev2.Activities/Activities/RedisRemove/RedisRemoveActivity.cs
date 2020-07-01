@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -42,8 +43,9 @@ namespace Dev2.Activities.RedisRemove
         private IDSFDataObject _dataObject;
         private int _update;
 
+        [ExcludeFromCodeCoverage]
         public RedisRemoveActivity()
-             : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
+             : this(Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
 
         }
@@ -74,7 +76,6 @@ namespace Dev2.Activities.RedisRemove
         {
             get
             {
-
                 var expr = _dataObject.Environment.EvalToExpression(_key, _update);
                 var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update,false,true));
                 return varValue == _key ? _key : varValue;
@@ -83,6 +84,7 @@ namespace Dev2.Activities.RedisRemove
         [FindMissing]
         public string Response { get; set; }
 
+        // TODO: This variable should be used to set up the Redis Connection, which we can Mock.
         internal IRedisConnection Connection { get; set; }
 
         public override IEnumerable<StateVariable> GetState()
@@ -122,6 +124,7 @@ namespace Dev2.Activities.RedisRemove
             _update = update;
             base.ExecuteTool(dataObject, update);
         }
+        //TODO: Suggestion to use IRedisSource so that we can Mock the values
         public RedisSource RedisSource { get; set; }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
@@ -134,6 +137,8 @@ namespace Dev2.Activities.RedisRemove
                     _messages.Add(ErrorResource.RedisSourceHasBeenRemoved);
                     return _messages;
                 }
+                //TODO: We need to set this up where it passes IRedisConnection so that we can Mock the values.
+                //      This is creating a real connection when trying to test this
                 _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
                 var keyValue = KeyValue;
                 if (!_redisCache.Remove(keyValue))
