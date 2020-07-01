@@ -38,15 +38,12 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 
 
-
-
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
     public partial class ServiceTestViewModelTests
     {
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
@@ -57,12 +54,11 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            new ServiceTestViewModel(default(IContextualResourceModel), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            new ServiceTestViewModel(default(IContextualResourceModel), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
@@ -73,15 +69,11 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var resourceModel = new Mock<IContextualResourceModel>();
             //------------Execute Test---------------------------
-            new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Results-------------------------
         }
 
-
-
-
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void TestFrameworkViewModel_MsgConstructor_MessageResourceModel_ShouldCreateNewtest()
@@ -94,7 +86,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message, null);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -104,7 +96,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void TestFrameworkViewModel_MsgConstructor_MsgWithInputValues_ShouldAddInputvalues()
@@ -117,7 +108,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message, null);
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -125,7 +116,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ShoDuplicatePopup_GivenIsInvoked_ShouldShowCorrectMessage()
@@ -143,7 +133,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
@@ -153,14 +142,13 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testVM);
             Assert.IsNotNull(testVM.ResourceModel);
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
@@ -170,19 +158,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.DisplayName).Returns("Workflow Name");
             //------------Execute Test---------------------------
-            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testVM = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Results-------------------------
             Assert.AreEqual("My WF - Tests", testVM.DisplayName);
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsUrl()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -191,13 +178,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveDuplicateTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -208,13 +194,12 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveStopTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -225,13 +210,12 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveCreateTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -265,13 +249,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveModel()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -281,13 +264,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -297,14 +279,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsCommandExecuteFalse()
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IEventAggregator>();
-            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -314,13 +295,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -330,14 +310,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNewNotConnected_ShouldSetRunSelectedTestCommandCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IEventAggregator>();
-            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -349,14 +328,13 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsInBrowserCommandCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IEventAggregator>();
-            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), mock.Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -366,13 +344,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestInBrowserCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -382,13 +359,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void AllNamesValid_GivenEmptyItemIn_ListOfTestName_ShouldReturnTrue()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             var privateObj = new PrivateObject(vm);
@@ -400,13 +376,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(false, results);
         }
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void AllNamesValid_GivenListOfTestName_ShouldReturnTrue()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             var privateObj = new PrivateObject(vm);
@@ -419,13 +394,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Save_GivenEmptyTestName_SetErrorMessage()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -439,13 +413,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Save_GivenThrowsNoException_ShouldMarkAllTestsAsNotDirty()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -456,14 +429,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestFrameworkViewModel_SelectedServiceTest")]
         public void TestFrameworkViewModel_SelectedServiceTest_CheckIsNull()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -473,14 +445,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTest()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -490,14 +461,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldIncrementTestNumber()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -508,14 +478,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldDisableDuplicateCommand()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -526,7 +495,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
@@ -545,14 +513,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTestWithDefaultName()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -564,14 +531,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Executed_ShouldSetSelectedTestToNewlyCreatedTest()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -590,7 +556,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
@@ -612,7 +577,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModelMock.Setup(model => model.ResourceName).Returns("My WF");
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.Save();
             //------------Assert Preconditions-------------------
@@ -630,14 +595,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Tests")]
         public void TestFrameworkViewModel_Tests_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
@@ -653,14 +617,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Tests")]
         public void TestFrameworkViewModel_SelectedTest_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
@@ -677,14 +640,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_Tests")]
         public void TestFrameworkViewModel_ErrorMessage_SetProperty_ShouldFireOnPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             var _wasCalled = false;
             testFrameworkViewModel.PropertyChanged += (sender, args) =>
               {
@@ -700,14 +662,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddInputsFromResourceModel()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarInput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarInput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -721,14 +682,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddOutputsFromResourceModel()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -742,13 +702,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -759,13 +718,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DeleteTestCommand_GivenResourceModelIsConnectedAndTestIsDisabled_ShouldsetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             vm.CreateTestCommand.Execute(null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
@@ -782,13 +740,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DeleteTestCommand_GivenResourceModelIsNotConnectedAndTestIsDisabled_ShouldsetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(false), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             vm.CreateTestCommand.Execute(null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
@@ -805,13 +762,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void OnCreation_GivenIsDisabled_DeleteTestCommandShouldBeEnabled()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -822,13 +778,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void OnCreation_GivenIsEnabled_DeleteTestCommandShouldBeDisabled()
         {
             //---------------Set up test pack-------------------
-            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var vm = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(vm);
             //---------------Execute Test ----------------------
@@ -841,7 +796,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_Save")]
@@ -857,7 +811,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(con.Object);
             resourceModelMock.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             serviceTestViewModel.CreateTestCommand.Execute(null);
             serviceTestViewModel.SelectedServiceTest.Inputs = new ObservableCollection<IServiceTestInput>
             {
@@ -875,7 +829,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_Save")]
@@ -930,7 +883,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("ServiceTestViewModel_Save")]
@@ -959,7 +911,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("ServiceTestViewModel_Save")]
@@ -968,7 +919,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             serviceTestViewModel.CreateTestCommand.Execute(null);
             Assert.IsTrue(serviceTestViewModel.IsDirty);
             Assert.IsTrue(serviceTestViewModel.CanSave);
@@ -983,14 +934,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("TestFrameworkViewModel_Constructor")]
         public void TestFrameworkViewModel_Constructor_IsDirty_IsFalse()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -998,14 +948,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldSetHasChangedTrue()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -1017,7 +966,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void TestUpdateHelpDescriptor()
@@ -1029,7 +977,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(mainViewModelMock.Object);
             const string helpText = "someText";
 
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
 
             //act
             testFrameworkViewModel.UpdateHelpDescriptor(helpText);
@@ -1039,14 +987,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_IsDirty")]
         public void ServiceTestViewModel_IsDirty_WhenSetTrue_ShouldUpdateDisplayNameWithStar()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -1056,14 +1003,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_IsDirty")]
         public void ServiceTestViewModel_IsDirty_WhenSetTrueTwice_ShouldUpdateDisplayNameWithOneStarOnly()
         {
             //------------Setup for test--------------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
             testFrameworkViewModel.CreateTestCommand.Execute(null);
@@ -1073,7 +1019,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_Tests")]
@@ -1086,7 +1031,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns((List<IServiceTestModelTO>)null);
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -1096,7 +1041,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_Tests")]
@@ -1109,7 +1053,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -1119,7 +1063,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_Tests")]
@@ -1141,7 +1084,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -1154,7 +1097,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_Tests")]
@@ -1184,7 +1126,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -1195,7 +1137,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_Tests")]
@@ -1231,7 +1172,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnvironment.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(mock.Object);
             resourceMock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
             mock.Setup(model => model.Environment).Returns(mockEnvironment.Object);
-            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var serviceTestViewModel = new ServiceTestViewModel(resourceMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
 
             //------------Execute Test---------------------------
             var tests = serviceTestViewModel.Tests;
@@ -1243,13 +1184,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DuplicateCommand_GivenIsDirty_ShouldSetCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
@@ -1261,13 +1201,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DuplicateCommand_GivenIsDirtyFalseAndSelectedIsNotNull_ShouldSetCanExecuteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
             Assert.IsFalse(testFrameworkViewModel.IsDirty);
@@ -1279,13 +1218,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CanSave_GivenIsDirty_ShouldSetCanSaveFalse()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel.DuplicateTestCommand);
             Assert.IsFalse(testFrameworkViewModel.IsDirty);
@@ -1296,13 +1234,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CanSave_GivenIsDirtyAndValidName_ShouldSetCanSavetrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "name";
             //---------------Assert Precondition----------------
@@ -1315,13 +1252,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CanSave_GivenIsDirtyAndInvalidValidName_ShouldSetCanSaveFalse()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "name$";
             //---------------Assert Precondition----------------
@@ -1335,13 +1271,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CanSave_GivenIsDirtyAndEmptyName_ShouldSetCanSaveFalse()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "";
             //---------------Assert Precondition----------------
@@ -1355,7 +1290,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void RunSelectedTestCommand_GivenSelectedTestIsNotDirty_ShouldRunTheTest()
@@ -1381,7 +1315,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             mockResourceModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success }).Verifiable();
 
-            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(mockResourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
             testFrameworkViewModel.Save();
@@ -1396,13 +1330,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void RunSelectedTestCommand_GivenSelectedTestIsDirty_ShouldSaveAndRunTheTest()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
             testFrameworkViewModel.Save();
@@ -1417,7 +1350,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void RunSelectedTestCommand_GivenTestNameExists_ShouldShowDuplicateError()
@@ -1441,7 +1373,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void DeleteSelectedTestCommand_GivenTestNameExists_ShouldDeleteSelectedTest()
@@ -1467,13 +1398,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CanSave_GivenIsDirtynameHastrailingSpaces_ShouldSetCanSaveFalse()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "name ";
             //---------------Assert Precondition----------------
@@ -1491,13 +1421,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             return viewModel.Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
         }
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldAddNewTestToTestCollection()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
             testFrameworkViewModel.Save();
@@ -1515,13 +1444,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldSetSelectedTestToNewlyDuplicatedTest()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateMockResourceModelWithSingleScalarOutput(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.SelectedServiceTest.TestName = "NewTestSaved";
             testFrameworkViewModel.Save();
@@ -1539,13 +1467,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DeleteCommand_GivenSelectedTestIsDisabled_ShouldSetCanDeleteTrue()
         {
             //---------------Set up test pack-------------------
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, null, null);
             testFrameworkViewModel.CreateTestCommand.Execute(null);
             testFrameworkViewModel.Save();
             //---------------Assert Precondition----------------
@@ -1559,7 +1486,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DeleteTestCommand_GivenNullTest_Execute_ShouldReturnNull()
@@ -1579,7 +1505,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DeleteTestCommand_GivenTests_ShouldShowConfirmation()
@@ -1614,7 +1539,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DeleteTestCommand_GivenTests_ShouldUpdateTestsCollection()
@@ -1663,7 +1587,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsValid_GivenNameOne_ShouldBeValid()
@@ -1689,7 +1612,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsValid_GivenNameOnePErcenta_ShouldBeInValid()
@@ -1715,7 +1637,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsValid_GivenEmpty_ShouldBeInValid()
@@ -1741,7 +1662,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsValid_GivenNull_ShouldBeInValid()
@@ -1767,7 +1687,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsValid_GivennameWithtrailingSpaces_ShouldBeInValid()
@@ -1793,7 +1712,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void LastDateVisibility_GivenSelectedTestIsNew_ShouldHaveDateVisibilityCollapsed()
@@ -1815,7 +1733,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void NeverRunStringVisibility_GivenSelectedTestIsNew_ShouldHaveDateVisibilityVisible()
@@ -1837,7 +1754,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
@@ -1882,7 +1798,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenDebugStateDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
@@ -1907,7 +1822,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, new NewTestFromDebugMessage(), popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, new NewTestFromDebugMessage(), null);
 
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
@@ -1929,7 +1844,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemFlowDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
@@ -1972,7 +1886,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemSwitch_NoDefault_ShouldHaveAddServiceTestStepShouldHaveCaseOptions()
@@ -2013,7 +1926,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemSwitch_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
@@ -2056,7 +1968,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemFlowSwitch_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
@@ -2102,7 +2013,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ItemSelected_GivenSelectedItemSelectAndApply_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
@@ -2137,7 +2047,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemMultiAssign_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -2183,7 +2092,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void ItemSelected_GivenSelectedItemEnhancedDotNetDll_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -2221,7 +2129,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemForEach_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -2249,7 +2156,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -2283,7 +2190,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemForEachWithSequence_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -2316,7 +2222,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -2357,7 +2263,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemSequenceWithForEach_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -2389,7 +2294,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -2430,7 +2335,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_DeleteTestStep_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -2462,7 +2366,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -2485,7 +2389,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemSequence_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -2511,7 +2414,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -2545,7 +2448,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemSequenceWithSequence_ShouldHaveAddServiceTestStepShouldHaveOutputs()
@@ -2575,7 +2477,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "Test 2", NameForDisplay = "Test 2" };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
@@ -2616,7 +2518,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DisplayName_GivenServerIsNotLocalHost_ShouldAppendServerIntoDisplayName()
@@ -2647,7 +2548,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("My WF - Tests - GenDev", testFrameworkViewModel.DisplayName);
         }
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DisplayName_GivenServerIsLocalHost_ShouldAppendNotServerIntoDisplayName()
@@ -2678,7 +2578,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("My WF - Tests", testFrameworkViewModel.DisplayName);
         }
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsValid_GivenNoSelectecTest_ShouldBeValid()
@@ -2704,7 +2603,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_NullOutputs_ShouldSet_StepOutputs()
@@ -2736,7 +2634,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_ShouldReturn()
@@ -2780,7 +2677,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_MoreLink_ShouldSetValue()
@@ -2854,7 +2750,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_DsfEnhancedDotNetDllActivity_ShouldSetValue()
@@ -2933,7 +2828,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_AddSequence_ShouldReturn()
@@ -2970,7 +2864,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_AddSequence_ShouldCall_AddMissingChild()
@@ -3013,7 +2906,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_AddEnhancedDotNetDll_ShouldReturn()
@@ -3027,7 +2919,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
 
             var resourceModel = CreateResourceModel();
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid())
             {
                 TestName = "NameOne",
@@ -3035,7 +2927,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddEnhancedDotNetDll", BindingFlags.NonPublic | BindingFlags.Static);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddEnhancedDotNetDll", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition-`---------------
             Assert.IsNotNull(methodInfo);
 
@@ -3050,7 +2942,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_AddEnhancedDotNetDll_ShouldCall_AddEnhancedDotNetDllMethod()
@@ -3064,7 +2955,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
 
             var resourceModel = CreateResourceModel();
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid())
             {
                 TestName = "NameOne",
@@ -3072,7 +2963,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
             testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
             testFrameworkViewModel.SelectedServiceTest = testModel;
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddEnhancedDotNetDll", BindingFlags.NonPublic | BindingFlags.Static);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddEnhancedDotNetDll", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition-`---------------
             Assert.IsNotNull(methodInfo);
 
@@ -3106,7 +2997,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_ProcessActivity_ShouldAddTestSteps()
@@ -3120,7 +3010,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
 
             var resourceModel = CreateResourceModel();
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid())
             {
                 TestName = "NameOne",
@@ -3151,7 +3041,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_ProcessActivity_ParentNotNull_ShouldAddTestSteps()
@@ -3165,7 +3054,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
 
             var resourceModel = CreateResourceModel();
-            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, popupController.Object, null, null);
             var testModel = new ServiceTestModel(Guid.NewGuid())
             {
                 TestName = "NameOne",
