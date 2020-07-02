@@ -38,6 +38,7 @@ using WarewolfParserInterop;
 using System.Globalization;
 using Dev2.Data.Interfaces.Enums;
 using Warewolf.Data;
+using Warewolf.Exceptions;
 
 namespace Dev2.Activities.RedisCache
 {
@@ -50,6 +51,7 @@ namespace Dev2.Activities.RedisCache
         private IDSFDataObject _dataObject;
         private RedisCacheBase _redisCache;
         internal readonly List<string> _messages = new List<string>();
+
 
         public RedisCacheActivity()
             : this(Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
@@ -202,7 +204,7 @@ namespace Dev2.Activities.RedisCache
                     var debugItem = new DebugItem();
 
                     AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } not found"), debugItem);
-                    _debugInputs.Add(debugItem);
+                    _debugOutputs.Add(debugItem);
 
                     _innerActivity.Execute(_dataObject, _update);
 
@@ -231,15 +233,25 @@ namespace Dev2.Activities.RedisCache
             var outputs = _innerActivity.GetOutputs();
             foreach (var outputVar in outputs)
             {
-                foreach (var item in cachedData)
+                if (outputVar.Length > 0)
                 {
-                    var recordsetName = DataListUtil.ExtractRecordsetNameFromValue(outputVar);
-                    var cacheRecordsetName = DataListUtil.ExtractRecordsetNameFromValue(item.Key);
-                    if (cacheRecordsetName == recordsetName)
+                    var key = outputVar;
+                    if (DataListUtil.IsValueRecordset(key) && DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Blank)
                     {
-                        _dataObject.Environment.Assign(item.Key, item.Value, _update);
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemWarewolfAtomResult("", item.Value, item.Key, "", "", "", "="), debugItem);
+                        key = DataListUtil.ReplaceRecordBlankWithStar(key);
+                    }
+                    var value = cachedData.Where(kvp => kvp.Key == key).Select(kvp => kvp.Value).FirstOrDefault();
+                    var assignValuesList = _serializer.Deserialize<List<AssignValue>>(value);
+                    var counter = 1;
+                    foreach (var assignValue in assignValuesList)
+                    {
+                        _dataObject.Environment.AssignWithFrame(assignValue, _update);
+                        if (_dataObject.IsDebugMode())
+                        {
+                            AddSingleDebugOutputItem(_dataObject.Environment, counter, assignValue, _update);
+                        }
+
+                        counter++;
                     }
                 }
             }
@@ -260,53 +272,113 @@ namespace Dev2.Activities.RedisCache
         private void CacheOutputs(string keyValue)
         {
             var data = new Dictionary<string, string>();
-            var debugItem = new DebugItem();
-            foreach (var output in _innerActivity.GetOutputs())
+            var activityOutputs = _innerActivity.GetOutputs();
+            foreach (var output in activityOutputs)
             {
-                var key = output;
-                if (DataListUtil.IsValueRecordset(key) && DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Blank)
+                if (output.Length > 0)
                 {
-                    key = DataListUtil.ReplaceRecordBlankWithStar(key);
-                }
-
-                var result = _dataObject.Environment.Eval(key, _update);
-                if (result.IsWarewolfAtomListresult)
-                {
-                    var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
-                    var atomListResult = x?.ToList();
-                    var counter = 1;
-                    foreach (var item in atomListResult)
-                    {
-                        var idxKey = key;
-                        if (DataListUtil.GetRecordsetIndexType(idxKey) == enRecordsetIndexType.Star)
-                        {
-                            idxKey = idxKey.Replace(GlobalConstants.StarExpression, counter.ToString(CultureInfo.InvariantCulture));
-                        }
-
-                        data.Add(idxKey, item.ToString());
-                        AddEvaluatedDebugItem(_dataObject.Environment, counter, new AssignValue(idxKey, item.ToString()), _update, "", "", debugItem);
-                        counter++;
-                    }
-                }
-
-                if (result.IsWarewolfAtomResult)
-                {
-                    var value = ExecutionEnvironment.WarewolfEvalResultToString(result);
-                    data.Add(key, value);
-                    AddEvaluatedDebugItem(_dataObject.Environment, 1, new AssignValue(key, value), _update, "", "", debugItem);
-                    _debugInputs.Add(debugItem);
+                    ProcessCache(output, data);
                 }
             }
 
             _redisCache.Set(keyValue, _serializer.Serialize(data), CacheTTL);
         }
 
-
-        public override List<string> GetOutputs() => new List<string>
+        private void ProcessCache(string key, Dictionary<string, string> data)
         {
-            Response, Result
-        };
+            if (DataListUtil.IsValueRecordset(key) && DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Blank)
+            {
+                key = DataListUtil.ReplaceRecordBlankWithStar(key);
+            }
 
+            var result = _dataObject.Environment.Eval(key, _update);
+            var l = new List<AssignValue>();
+            var counter = 1;
+            if (result.IsWarewolfAtomListresult)
+            {
+                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
+                var atomListResult = x?.ToList();
+
+                foreach (var item in atomListResult)
+                {
+                    var idxKey = key;
+                    if (DataListUtil.GetRecordsetIndexType(idxKey) == enRecordsetIndexType.Star)
+                    {
+                        idxKey = idxKey.Replace(GlobalConstants.StarExpression, counter.ToString(CultureInfo.InvariantCulture));
+                    }
+
+                    var assignValue = new AssignValue(idxKey, item.ToString());
+                    l.Add(assignValue);
+
+                    if (_dataObject.IsDebugMode())
+                    {
+                        AddSingleDebugOutputItem(_dataObject.Environment, counter, assignValue, _update);
+                    }
+
+                    counter++;
+                }
+            }
+
+            if (result.IsWarewolfAtomResult)
+            {
+                var value = ExecutionEnvironment.WarewolfEvalResultToString(result);
+                var assignValue = new AssignValue(key, value);
+                l.Add(assignValue);
+                if (_dataObject.IsDebugMode())
+                {
+                    AddSingleDebugOutputItem(_dataObject.Environment, counter, assignValue, _update);
+                }
+            }
+
+            data.Add(key, _serializer.Serialize(l));
+        }
+
+        void AddSingleDebugOutputItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
+        {
+            const string VariableLabelText = "";
+            const string NewFieldLabelText = "";
+            var debugItem = new DebugItem();
+
+            try
+            {
+                if (!DataListUtil.IsEvaluated(assignValue.Value))
+                {
+                    AddDebugItem(environment, innerCount, assignValue, update, VariableLabelText, NewFieldLabelText, debugItem);
+                }
+                else
+                {
+                    AddEvaluatedDebugItem(environment, innerCount, assignValue, update, VariableLabelText, NewFieldLabelText, debugItem);
+                }
+            }
+            catch (NullValueInVariableException)
+            {
+                AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+            }
+
+            _debugOutputs.Add(debugItem);
+        }
+
+        void AddDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string VariableLabelText, string NewFieldLabelText, DebugItem debugItem)
+        {
+            var evalResult = environment.Eval(assignValue.Name, update);
+            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
+            if (evalResult.IsWarewolfAtomResult)
+            {
+                if (evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
+                {
+                    AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
+                }
+            }
+            else
+            {
+                if (evalResult.IsWarewolfAtomListresult && evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recSetResult)
+                {
+                    AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, "", "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                }
+            }
+        }
+
+        public override List<string> GetOutputs() => new List<string> {Response, Result};
 
         private void AddEvaluatedDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string VariableLabelText, string NewFieldLabelText, DebugItem debugItem)
         {
@@ -403,7 +475,7 @@ namespace Dev2.Activities.RedisCache
                 hashCode = (hashCode * 397) ^ SourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (TTL != null ? TTL.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ TTL.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Connection != null ? Connection.GetHashCode() : 0);
                 return hashCode;
             }
