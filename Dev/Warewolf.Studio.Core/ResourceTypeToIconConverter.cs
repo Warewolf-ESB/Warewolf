@@ -74,7 +74,7 @@ namespace Warewolf.Studio.Core
                     case "OauthSource":
                     case "DropBoxSource":
                         return Application.Current.Resources["DropboxSource"];
-                        //TODO: Remove
+                        //TODO: Remove once Triggers is the only entry point.
                     case "Scheduler":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
                     case "Triggers":
