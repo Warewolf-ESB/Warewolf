@@ -59,14 +59,6 @@ namespace Dev2.Tests.Runtime.Hosting
         const int SaveResourceCount = 6;
         static readonly object SyncRoot = new object();
 
-        static string _testDir;
-
-        [ClassInitialize]
-        public static void MyClassInit(TestContext context)
-        {
-            _testDir = context.DeploymentDirectory;
-        }
-
         [TestInitialize]
         public void Initialise()
         {
