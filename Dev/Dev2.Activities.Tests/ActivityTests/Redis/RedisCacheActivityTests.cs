@@ -335,7 +335,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
                     {
                         new ActivityDTO("[[bank().id]]", "1", 1),
                         new ActivityDTO("[[bank().id]]", "2", 2),
-                        new ActivityDTO("[[bank().id]]", "3", 3)
+                        new ActivityDTO("[[bank().id]]", "3", 3),
+                        new ActivityDTO("[[bank().name]]", "name1", 4),
+                        new ActivityDTO("[[bank().name]]", "name2", 5),
+                        new ActivityDTO("[[bank().name]]", "name3", 6)
                     }
                 };
 
@@ -346,17 +349,23 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
                 var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
 
                 //----------------------Assert-----------------------
-                Assert.AreEqual(4, debugOutputs.Count);
+                Assert.AreEqual(7, debugOutputs.Count);
                 AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } not found", null, "", "");
 
                 AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
                 AssertDebugItems(debugOutputs, 1, 1, null, "[[bank(1).id]]", "=", "1");
 
-                AssertDebugItems(debugOutputs, 2, 0, "1", null, "", "");
+                AssertDebugItems(debugOutputs, 2, 0, "2", null, "", "");
                 AssertDebugItems(debugOutputs, 2, 1, null, "[[bank(2).id]]", "=", "2");
 
-                AssertDebugItems(debugOutputs, 3, 0, "1", null, "", "");
+                AssertDebugItems(debugOutputs, 3, 0, "3", null, "", "");
                 AssertDebugItems(debugOutputs, 3, 1, null, "[[bank(3).id]]", "=", "3");
+
+                AssertDebugItems(debugOutputs, 4, 0, "1", null, "", "");
+                AssertDebugItems(debugOutputs, 4, 1, null, "[[bank(1).name]]", "=", "name1");
+
+                AssertDebugItems(debugOutputs, 4, 0, "2", null, "", "");
+                AssertDebugItems(debugOutputs, 5, 1, null, "[[bank(2).name]]", "=", "name2");
 
             }
             catch (Exception e)
