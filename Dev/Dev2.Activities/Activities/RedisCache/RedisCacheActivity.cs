@@ -236,11 +236,6 @@ namespace Dev2.Activities.RedisCache
                 if (outputVar.Length > 0)
                 {
                     var key = outputVar;
-                    if (DataListUtil.IsValueRecordset(key) && DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Blank)
-                    {
-                        key = DataListUtil.ReplaceRecordBlankWithStar(key);
-                    }
-
                     var value = cachedData.Where(kvp => kvp.Key == key).Select(kvp => kvp.Value).FirstOrDefault();
                     var assignValuesList = _serializer.Deserialize<List<AssignValue>>(value);
                     var counter = 1;
@@ -277,14 +272,14 @@ namespace Dev2.Activities.RedisCache
             var outputCounter = 1;
             foreach (var output in activityOutputs)
             {
-                if (output.Length > 0 )
+                if (output.Length > 0)
                 {
                     if (NewRecordsetField(data, output))
                     {
                         outputCounter = 1;
                     }
 
-                    ProcessCache(output, data,outputCounter);
+                    ProcessCache(output, data, outputCounter);
                     outputCounter++;
                 }
             }
@@ -298,8 +293,9 @@ namespace Dev2.Activities.RedisCache
             {
                 foreach (var cacheItem in data)
                 {
-                    if ((DataListUtil.ExtractRecordsetNameFromValue(cacheItem.Key) == DataListUtil.ExtractRecordsetNameFromValue(output)) &&
-                        (DataListUtil.ExtractFieldNameOnlyFromValue(cacheItem.Key) == DataListUtil.ExtractFieldNameOnlyFromValue(output)))
+                    var exists = DataListUtil.ExtractRecordsetNameFromValue(cacheItem.Key) == DataListUtil.ExtractRecordsetNameFromValue(output);
+                    exists = DataListUtil.ExtractFieldNameOnlyFromValue(cacheItem.Key) == DataListUtil.ExtractFieldNameOnlyFromValue(output);
+                    if (exists)
                     {
                         return false;
                     }
@@ -309,19 +305,15 @@ namespace Dev2.Activities.RedisCache
             return true;
         }
 
-        private void ProcessCache(string key, Dictionary<string, string> data,int outputCounter)
+        private void ProcessCache(string key, Dictionary<string, string> data, int outputCounter)
         {
             try
             {
                 var starKey = key;
+
                 if (DataListUtil.IsValueRecordset(key) && DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Blank)
                 {
                     starKey = DataListUtil.ReplaceRecordBlankWithStar(key);
-                }
-
-                if (DataListUtil.IsValueRecordset(key) && DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Numeric)
-                {
-                    starKey = DataListUtil.ReplaceRecordsetIndexWithStar(key);
                 }
 
                 var result = _dataObject.Environment.Eval(starKey, _update);
@@ -339,10 +331,12 @@ namespace Dev2.Activities.RedisCache
                         {
                             idxKey = idxKey.Replace(GlobalConstants.StarExpression, idxCounter.ToString(CultureInfo.InvariantCulture));
                         }
+
                         if (DataListUtil.GetRecordsetIndexType(idxKey) == enRecordsetIndexType.Blank)
                         {
                             idxKey = idxKey.Replace("()", "(" + idxCounter.ToString(CultureInfo.InvariantCulture) + ")");
                         }
+
                         var assignValue = new AssignValue(idxKey, item.ToString());
                         assignValueList.Add(assignValue);
 
@@ -353,6 +347,7 @@ namespace Dev2.Activities.RedisCache
 
                         idxCounter++;
                     }
+
                     data.Add(key, _serializer.Serialize(assignValueList));
                 }
 
@@ -364,10 +359,12 @@ namespace Dev2.Activities.RedisCache
                     {
                         assignKey = key.Replace("()", "(" + outputCounter.ToString(CultureInfo.InvariantCulture) + ")");
                     }
+
                     if (DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Star)
                     {
                         assignKey = key.Replace(GlobalConstants.StarExpression, outputCounter.ToString(CultureInfo.InvariantCulture));
                     }
+
                     var assignValue = new AssignValue(assignKey, value);
 
                     assignValueList.Add(assignValue);
@@ -375,6 +372,7 @@ namespace Dev2.Activities.RedisCache
                     {
                         AddSingleDebugOutputItem(_dataObject.Environment, outputCounter, assignValue, _update);
                     }
+
                     data.Add(assignKey, _serializer.Serialize(assignValueList));
                 }
             }

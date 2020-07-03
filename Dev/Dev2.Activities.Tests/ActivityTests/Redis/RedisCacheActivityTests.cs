@@ -290,71 +290,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
                 AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
                 AssertDebugItems(debugOutputs, 1, 1, null, "[[bank(1).id]]", "=", "1");
 
-                AssertDebugItems(debugOutputs, 2, 0, "1", null, "", "");
-                AssertDebugItems(debugOutputs, 2, 1, null, "[[bank(2).id]]", "=", "2");
-
-                AssertDebugItems(debugOutputs, 3, 0, "1", null, "", "");
-                AssertDebugItems(debugOutputs, 3, 1, null, "[[bank(3).id]]", "=", "3");
-
-                AssertDebugItems(debugOutputs, 4, 0, "1", null, "", "");
-                AssertDebugItems(debugOutputs, 4, 1, null, "[[bank(1).name]]", "=", "name1");
-
-                AssertDebugItems(debugOutputs, 5, 0, "1", null, "", "");
-                AssertDebugItems(debugOutputs, 5, 1, null, "[[bank(2).name]]", "=", "name2");
-
-                AssertDebugItems(debugOutputs, 6, 0, "1", null, "", "");
-                AssertDebugItems(debugOutputs, 6, 1, null, "[[bank(3).name]]", "=", "name3");
-            }
-            catch (Exception e)
-            {
-                if (e.Message.Contains("could not connect to redis Instance"))
-                {
-                    Assert.Inconclusive(e.Message);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
-[TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(RedisCacheActivity))]
-        public void RedisCacheActivity_CacheRecordsetResult_WithBlank_ReturnInnerActivityOutputs()
-        {
-            try
-            {
-                //----------------------Arrange----------------------
-                var key = "key" + Guid.NewGuid();
-                TestAnonymousAuth(out string hostName, out string password, out int port);
-
-                var redisSource = new RedisSource {HostName = hostName, Password = password, Port = port.ToString()};
-                var innerActivity = new DsfMultiAssignActivity()
-                {
-                    FieldsCollection = new List<ActivityDTO>
-                    {
-                        new ActivityDTO("[[bank().id]]", "1", 1),
-                        new ActivityDTO("[[bank().id]]", "2", 2),
-                        new ActivityDTO("[[bank().id]]", "3", 3),
-                        new ActivityDTO("[[bank().name]]", "name1", 4),
-                        new ActivityDTO("[[bank().name]]", "name2", 5),
-                        new ActivityDTO("[[bank().name]]", "name3", 6)
-                    }
-                };
-
-                GenerateMocks(key, redisSource, out Mock<IResourceCatalog> mockResourceCatalog, out Mock<IDSFDataObject> mockDataObject);
-                CreateRedisActivity(key, hostName, port, password, mockResourceCatalog, out TestRedisActivity sut, innerActivity);
-                //----------------------Act--------------------------
-                sut.TestExecuteTool(mockDataObject.Object);
-                var debugOutputs = sut.GetDebugOutputs(mockDataObject.Object.Environment, 0);
-
-                //----------------------Assert-----------------------
-                Assert.AreEqual(7, debugOutputs.Count);
-                AssertDebugItems(debugOutputs, 0, 0, "Redis key { " + sut.Key + " } not found", null, "", "");
-
-                AssertDebugItems(debugOutputs, 1, 0, "1", null, "", "");
-                AssertDebugItems(debugOutputs, 1, 1, null, "[[bank(1).id]]", "=", "1");
-
                 AssertDebugItems(debugOutputs, 2, 0, "2", null, "", "");
                 AssertDebugItems(debugOutputs, 2, 1, null, "[[bank(2).id]]", "=", "2");
 
@@ -364,9 +299,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
                 AssertDebugItems(debugOutputs, 4, 0, "1", null, "", "");
                 AssertDebugItems(debugOutputs, 4, 1, null, "[[bank(1).name]]", "=", "name1");
 
-                AssertDebugItems(debugOutputs, 4, 0, "2", null, "", "");
+                AssertDebugItems(debugOutputs, 5, 0, "2", null, "", "");
                 AssertDebugItems(debugOutputs, 5, 1, null, "[[bank(2).name]]", "=", "name2");
 
+                AssertDebugItems(debugOutputs, 6, 0, "3", null, "", "");
+                AssertDebugItems(debugOutputs, 6, 1, null, "[[bank(3).name]]", "=", "name3");
             }
             catch (Exception e)
             {
