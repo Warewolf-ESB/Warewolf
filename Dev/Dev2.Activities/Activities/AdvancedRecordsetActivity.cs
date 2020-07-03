@@ -239,7 +239,6 @@ namespace Dev2.Activities
         {
         }
 
-        //TODO: Merge constructors
         public AdvancedRecordsetActivityWorker(AdvancedRecordsetActivity activity, IAdvancedRecordset advancedrecordset, IAdvancedRecordsetFactory advancedRecordsetFactory)
         {
             _activity = activity;
