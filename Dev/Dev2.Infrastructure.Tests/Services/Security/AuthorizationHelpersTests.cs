@@ -141,22 +141,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationHelpers_Matches")]
-        public void AuthorizationHelpers_Matches_ResourceIsStringAndHasSecurityPermission_True()
-        {
-            //------------Setup for test--------------------------
-            const string ResourceName = "Test";
-            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "CATEGORY\\" + ResourceName };
-
-            //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(new WebNameSimple(ResourceName));
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorized, "check that a permissions matches by Permissions.ResourceName.Contains(ResourceName with no path)"); // This fails now, not convinced it should pass. workflow file names are not unique and Contains makes for false positives too
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationHelpers_Matches")]
         public void AuthorizationHelpers_Matches_ResourceIsStringAndDoesNotHaveSecurityPermissions_False()
         {
             //------------Setup for test--------------------------
