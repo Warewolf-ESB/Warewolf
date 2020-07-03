@@ -1338,7 +1338,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        //TODO: Remove or update?
+        //TODO: Remove the Scheduler check or update to use Trigger view creation?
         public void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
             if (resourceModel != null)
@@ -1347,7 +1347,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        //TODO: Remove or update?
+        //TODO: Remove the Scheduler check or update to use Trigger view creation?
         void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
             var key = WorkSurfaceKeyFactory.CreateEnvKey(WorkSurfaceContext.Scheduler, ActiveServer.EnvironmentID);
