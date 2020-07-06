@@ -15,7 +15,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
-
+    <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible"/>
     <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="#FF3C7FB1" />
     <SolidColorBrush x:Key="Expander.MouseOver.Circle.Fill" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="#222" />

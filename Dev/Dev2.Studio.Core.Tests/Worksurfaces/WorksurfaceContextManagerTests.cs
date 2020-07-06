@@ -97,7 +97,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void EditResource_GivenIsOAuthSource_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
@@ -446,7 +445,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenSqlDatabaseResourceType_ShouldEditSqlDatabse()
         {
             //---------------Set up test pack-------------------
@@ -511,7 +509,6 @@ namespace Dev2.Core.Tests
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenOracleResourceType_ShouldEditODBC()
         {
             //---------------Set up test pack-------------------
@@ -543,7 +540,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenPostgreSQLResourceType_ShouldEditODBC()
         {
             //---------------Set up test pack-------------------
@@ -574,7 +570,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenMySqlDatabaseResourceType_ShouldEditODBC()
         {
             //---------------Set up test pack-------------------
@@ -636,7 +631,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenWcfSourceResourceType_ShouldEditWcfSource()
         {
             //---------------Set up test pack-------------------
@@ -757,7 +751,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenSharepointServerSourceResourceType_ShouldEditSharepointServerSource()
         {
             //---------------Set up test pack-------------------
@@ -788,7 +781,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenOauthSourceResourceType_ShouldEditOauthSource()
         {
             //---------------Set up test pack-------------------
@@ -851,7 +843,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenServerType_ShouldEditServer()
         {
             //---------------Set up test pack-------------------
@@ -881,7 +872,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenDev2ServerType_ShouldDev2Server()
         {
             //---------------Set up test pack-------------------
@@ -915,7 +905,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DoNotParallelize]
         public void DisplayResourceWizard_GivenServerSourceType_ShouldServerSource()
         {
             //---------------Set up test pack-------------------
@@ -993,7 +982,6 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [DoNotParallelize]
         public void AddSchedulerWorkSurface_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------

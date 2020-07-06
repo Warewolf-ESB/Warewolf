@@ -10,7 +10,6 @@
 */
 
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -31,10 +30,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info("Save Server Settings Service", GlobalConstants.WarewolfInfo);
 
-                values.TryGetValue("ServerSettings", out StringBuilder resourceDefinition);
+                values.TryGetValue(Warewolf.Service.SaveServerSettings.ServerSettings, out StringBuilder settings);
+                var updatedServerSettings = serializer.Deserialize<ServerSettingsData>(settings);
 
+                Config.Server.ExecutionLogLevel = updatedServerSettings.ExecutionLogLevel;
                 msg.Message = new StringBuilder();
                 msg.HasError = false;
             }
@@ -44,6 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 msg.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
+
             return serializer.SerializeToBuilder(msg);
         }
 
@@ -53,6 +55,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ServerSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType() => "SaveServerSettings";
+        public string HandlesType() => nameof(Warewolf.Service.SaveServerSettings);
     }
 }

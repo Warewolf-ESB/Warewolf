@@ -35,8 +35,17 @@ namespace Dev2.Data
         public ObservableCollection<IServiceTestStep> Children { get; set; }
         public string StepDescription { get; set; }
         public TestRunResult Result { get; set; }
-        public bool MockSelected { get; set; }
-        public bool AssertSelected { get; set; }
+        
+        public bool MockSelected 
+        {
+            get { return Type is StepType.Mock;  }
+            set { }
+        }
+        public bool AssertSelected 
+        { 
+            get { return Type is StepType.Assert; }
+            set { }
+        }
         public void AddNewOutput(string varName) { }
 
         T IServiceTestStep.As<T>() => this as T;

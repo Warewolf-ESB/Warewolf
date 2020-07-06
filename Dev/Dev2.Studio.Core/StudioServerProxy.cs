@@ -29,8 +29,6 @@ namespace Dev2.Studio.Core
 {
     public class StudioServerProxy : IExplorerRepository
     {
-        IPopupController _popupController;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
@@ -54,7 +52,7 @@ namespace Dev2.Studio.Core
 
         public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue)
         {
-            var explorerItems = await QueryManagerProxy.Load(reloadCatalogue).ConfigureAwait(true);
+            var explorerItems = await QueryManagerProxy.Load(reloadCatalogue, CustomContainer.Get<IPopupController>()).ConfigureAwait(true);
             return explorerItems;
         }
         public Task<List<string>> LoadExplorerDuplicates()
@@ -105,34 +103,33 @@ namespace Dev2.Studio.Core
             return deletedFileMetadata;
         }
 
-        public IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, IDependencyGraphGenerator graphGenerator, IExecuteMessage dep)
+        public IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, IDependencyGraphGenerator graphGenerator, IExecuteMessage dep, IPopupController popupController)
         {
             var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
-            _popupController = CustomContainer.Get<IPopupController>();
             if (graph.Nodes.Count > 1)
             {
-                var result = _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
+                var result = popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
                     string.Format(StringResources.Delete_Error_Title, explorerItemViewModel.ResourceName),
                     MessageBoxButton.OK, MessageBoxImage.Warning, "false", true, false, true, false, true, true);
 
-                if (_popupController.DeleteAnyway)
+                if (popupController.DeleteAnyway)
                 {
                     return new DeletedFileMetadata
                     {
                         IsDeleted = false,
                         ResourceId = explorerItemViewModel.ResourceId,
                         ShowDependencies = false,
-                        ApplyToAll = _popupController.ApplyToAll,
-                        DeleteAnyway = _popupController.DeleteAnyway
+                        ApplyToAll = popupController.ApplyToAll,
+                        DeleteAnyway = popupController.DeleteAnyway
                     };
                 }
 
                 if (result == MessageBoxResult.OK)
                 {
-                    return BuildMetadata(explorerItemViewModel.ResourceId, false, false, _popupController.ApplyToAll, _popupController.DeleteAnyway);
+                    return BuildMetadata(explorerItemViewModel.ResourceId, false, false, popupController.ApplyToAll, popupController.DeleteAnyway);
                 }
                 explorerItemViewModel.ShowDependencies();
-                return BuildMetadata(explorerItemViewModel.ResourceId, false, true, _popupController.ApplyToAll, _popupController.DeleteAnyway);
+                return BuildMetadata(explorerItemViewModel.ResourceId, false, true, popupController.ApplyToAll, popupController.DeleteAnyway);
               
             }
             return new DeletedFileMetadata

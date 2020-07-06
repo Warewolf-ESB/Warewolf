@@ -30,7 +30,6 @@ using Dev2.Instrumentation;
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 {
     [TestClass]
-    [DoNotParallelize]
     public class IntellisenseTextBoxTests
     {
         [TestInitialize]

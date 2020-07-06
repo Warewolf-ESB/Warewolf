@@ -107,7 +107,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("StudioTestViewModel_DebugOutputMessage")]
-        [DoNotParallelize]
         public void StudioTestViewModel_DebugOutputMessage_Handle_NotNull()
         {
             //------------Setup for test--------------------------
@@ -151,7 +150,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 
             var debugForTest = new List<IDebugState>();
@@ -167,7 +166,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("StudioTestViewModel_DoDeactivate")]
-        [DoNotParallelize]
         public void StudioTestViewModel_DoDeactivate_CanSave_ExpectedFalse()
         {
             //------------Setup for test--------------------------
@@ -211,7 +209,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 
             testViewModel.SelectedServiceTest.TestName = "New Test Name";
@@ -301,7 +299,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 
             var vm = new StudioTestViewModel(eventAggregator.Object, testViewModel, new Mock<IPopupController>().Object, new Mock<IView>().Object);
@@ -381,7 +379,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 
             testViewModel.SelectedServiceTest.TestName = "New Test Name";
@@ -443,7 +441,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 
             testViewModel.SelectedServiceTest.TestName = "New Test Name";
@@ -506,7 +504,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 
             var serviceTestModel = new ServiceTestModel();
@@ -569,7 +567,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             resourceModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 
             testViewModel.SelectedServiceTest.TestName = "New Test Name";

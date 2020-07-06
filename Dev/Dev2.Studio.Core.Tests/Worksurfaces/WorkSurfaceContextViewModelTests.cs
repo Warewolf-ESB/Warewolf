@@ -53,7 +53,6 @@ namespace Dev2.Core.Tests
 {
     [TestClass]
     [TestCategory("Studio Worksurfaces Core")]
-    [DoNotParallelize]
     public class WorkSurfaceContextViewModelTests
     {
         [ClassInitialize]

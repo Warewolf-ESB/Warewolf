@@ -9,6 +9,7 @@
 */
 
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
@@ -27,7 +28,7 @@ namespace Dev2.Core.Tests
 
         public int AddWorkspaceItemsHitCount { get; private set; }
 
-        protected override void AddWorkspaceItems()
+        protected override void AddWorkspaceItems(IPopupController popupController)
         {
             AddWorkspaceItemsHitCount++;
         }

@@ -29,7 +29,6 @@ namespace Dev2.Core.Tests.Merge
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [DoNotParallelize]
         public void ToolConflictItem_SetUserInterface()
         {
             //------------Setup for test--------------------------

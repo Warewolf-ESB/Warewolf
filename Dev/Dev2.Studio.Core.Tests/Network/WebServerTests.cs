@@ -187,5 +187,32 @@ namespace Dev2.Core.Tests.Network
 
             Assert.AreEqual("http://somehost:1234/secure/some category.tests", result.ToString());
         }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServer))]
+        public void ResourceModelWebserverUtil_GetWorkflowUri_GivenCoverage_UrlType_CategoryDefaultsToResourceName()
+        {
+            const string workspaceId = "1c52f5da-2c9d-4320-911e-8fa2d2b1fd62";
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(o => o.WebServerUri).Returns(new Uri("http://somehost:1234/"));
+            mockConnection.Setup(o => o.IsConnected).Returns(true);
+            mockConnection.Setup(o => o.WorkspaceID).Returns(Guid.Parse(workspaceId));
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.Connection).Returns(mockConnection.Object);
+            mockServer.Setup(o => o.IsConnected).Returns(mockConnection.Object.IsConnected);
+
+            const string xmlData = "<xmltag></xmltag>";
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(o => o.Environment).Returns(mockServer.Object);
+            mockResourceModel.Setup(o => o.ResourceName).Returns("some resource name");
+            mockResourceModel.Setup(o => o.Category).Returns("some category");
+
+            var result = mockResourceModel.Object.GetWorkflowUri(xmlData, UrlType.Coverage);
+
+            Assert.AreEqual("http://somehost:1234/secure/some category.coverage", result.ToString());
+        }
     }
 }

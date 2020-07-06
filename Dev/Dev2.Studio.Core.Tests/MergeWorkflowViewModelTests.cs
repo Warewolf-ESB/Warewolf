@@ -9,7 +9,6 @@ namespace Dev2.Core.Tests
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [DoNotParallelize]
         public void MergeWorkflowViewModel_Constructor()
         {
             var mergeWorkflowViewModel = CreateMergeWorkflowViewModel();

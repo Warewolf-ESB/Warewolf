@@ -233,7 +233,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("DebugStateTreeViewItemViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
-        [DoNotParallelize]
         public void DebugStateTreeViewItemViewModel_Constructor_ActivityTypeIsWorkflow_DoesNotPublishSelectionEventWithActivitySelectionTypeAdd()
         {
             Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Workflow, ActivitySelectionType.Add, 0);

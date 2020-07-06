@@ -59,7 +59,6 @@ namespace Dev2.Core.Tests.Workflows
 {
     [TestClass]
     [TestCategory("Studio Workflows Core")]
-    [DoNotParallelize]
     public partial class WorkflowDesignerUnitTest
     {
         static bool _isDesignerInited;
