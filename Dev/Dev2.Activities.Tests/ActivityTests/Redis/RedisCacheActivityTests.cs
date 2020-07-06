@@ -31,6 +31,7 @@ using Activity = System.Activities.Activity;
 namespace Dev2.Tests.Activities.ActivityTests.Redis
 {
     [TestClass]
+    [DoNotParallelize]
     public class RedisCacheActivityTests : BaseActivityTests
     {
         static RedisCacheActivity CreateRedisActivity()
@@ -66,6 +67,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
         public void RedisCacheActivity_CacheVariableResult_GetDebugInputs_With_DataListUtilIsEvaluated_ShouldReturnInnerActivityOutputs()
@@ -129,6 +131,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
         public void RedisCacheActivity_CacheVariableResult_ShouldReturnInnerActivityOutputs_TTLExpired()
@@ -253,6 +256,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheActivity))]
         public void RedisCacheActivity_CacheRecordsetResult_ReturnInnerActivityOutputs()
