@@ -10,7 +10,10 @@
 
 using System;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Factory;
+using Dev2.Services.Events;
 using Dev2.Settings;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Interfaces;
@@ -18,18 +21,20 @@ using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Threading;
 using Dev2.Triggers;
+using Dev2.Utilities;
 
 namespace Dev2.Studio.Factory
 {
     public static class WorkSurfaceContextFactory
     {
-        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel) => CreateResourceViewModel(resourceModel, true);
-        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner)
+        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel) => CreateResourceViewModel(resourceModel, true, CustomContainer.Get<IPopupController>(), new AsyncWorker());
+        public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner, IPopupController popupController, IAsyncWorker asyncWorker)
         {
             var key = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
-            var workSurfaceVm = new WorkflowDesignerViewModel(resourceModel, createDesigner);
+            var workSurfaceVm = new WorkflowDesignerViewModel(EventPublishers.Aggregator, resourceModel, new WorkflowHelper(), popupController, asyncWorker, createDesigner);
 
             var contextVm = new WorkSurfaceContextViewModel(key, workSurfaceVm)
                 {

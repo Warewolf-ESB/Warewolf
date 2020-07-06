@@ -38,7 +38,6 @@ namespace Dev2.Core.Tests.Triggers.QueueEvents
 {
     [TestClass]
     [TestCategory("Studio Triggers Queue Core")]
-    [DoNotParallelize]
     public class QueueEventsViewModelTests
     {
         Guid _workflowResourceId = Guid.NewGuid();

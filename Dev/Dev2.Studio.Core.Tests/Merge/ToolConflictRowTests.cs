@@ -8,7 +8,6 @@ namespace Dev2.Core.Tests.Merge
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [DoNotParallelize]
         public void ToolConflictRow_CreateConflictRow()
         {
             var conflictRow = CreateConflictRow();

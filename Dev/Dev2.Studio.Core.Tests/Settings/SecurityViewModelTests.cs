@@ -32,7 +32,6 @@ namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
     [TestCategory("Studio Settings Core")]
-    [DoNotParallelize]
     public class SecurityViewModelTests
     {
         [TestInitialize]

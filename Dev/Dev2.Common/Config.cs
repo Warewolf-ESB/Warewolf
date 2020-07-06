@@ -16,6 +16,7 @@ using System.IO;
 using System.Threading;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Dev2.Data.Interfaces.Enums;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.VirtualFileSystem;
@@ -41,10 +42,18 @@ namespace Dev2.Common
 
         public bool EnableDetailedLogging
         {
-            get => _settings.EnableDetailedLogging ?? false;
+            get => _settings.EnableDetailedLogging ?? true;
             set => _settings.EnableDetailedLogging = value;
         }
-
+        public string ExecutionLogLevel
+        {
+            get => _settings.ExecutionLogLevel ?? LogLevel.DEBUG.ToString();
+            set
+            {
+                _settings.ExecutionLogLevel = value;
+                Save();
+            }
+        }
         public string Sink
         {
             get => GetSink();
@@ -292,7 +301,15 @@ namespace Dev2.Common
             }
             return result;
         }
-
+        public bool EncryptDataSource
+        {
+            get => _settings.EncryptDataSource;
+            set
+            {
+                _settings.EncryptDataSource = value;
+                Save();
+            }
+        }
         public NamedGuidWithEncryptedPayload LoggingDataSource
         {
             get => _settings.LoggingDataSource ?? new NamedGuidWithEncryptedPayload();

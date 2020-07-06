@@ -19,6 +19,10 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management
 {
+    /**
+     * Base interface for internal services that are primarily called from the Warewolf Studio via SignalR
+     * See EsbHub (HubName("esb")) for the SignalR Hub.
+     */
     public interface IEsbManagementEndpoint : ISpookyLoadable<string>
     {
         StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace);        

@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Storage;
 
-[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Tests.Activities
 {
     [TestClass]

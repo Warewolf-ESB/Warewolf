@@ -1843,6 +1843,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Encrypt the Logging Data Source in the Auditing Settings File.
+        /// </summary>
+        public static string LoggingViewEncryptToolTip {
+            get {
+                return ResourceManager.GetString("LoggingViewEncryptToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerEventLogDebugTooltip {

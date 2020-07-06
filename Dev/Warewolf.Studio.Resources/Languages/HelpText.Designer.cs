@@ -1741,6 +1741,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Encrypt the Logging Data Source in the Auditing Settings File.
+        /// </summary>
+        public static string LoggingViewEncryptHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewEncryptHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events&lt;br /&gt;	Server Pulse Data&lt;br /&gt;	Server System Activity.
         /// </summary>
         public static string LoggingViewServerEventLogDebugHelpText {
