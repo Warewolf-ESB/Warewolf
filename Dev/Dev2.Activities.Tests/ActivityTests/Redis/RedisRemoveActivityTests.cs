@@ -30,6 +30,38 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
     [TestClass]
     public class RedisRemoveActivityNewTests : BaseActivityTests
     {
+        static RedisRemoveActivity CreateRedisRemoveActivity()
+        {
+            return new RedisRemoveActivity();
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisRemoveActivity))]
+        public void RedisRemoveActivity_Equal_BothareObjects()
+        {
+            object RedisRemoveActivity = CreateRedisRemoveActivity();
+            var other = new object();
+            var redisActivityEqual = RedisRemoveActivity.Equals(other);
+            Assert.IsFalse(redisActivityEqual);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(RedisRemoveActivity))]
+        public void RedisRemoveActivity_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
+        {
+            //---------------Set up test pack-------------------
+            var redisRemoveActivity = CreateRedisRemoveActivity();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var debugInputs = redisRemoveActivity.GetDebugInputs(null, 0);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, debugInputs.Count);
+        }
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
