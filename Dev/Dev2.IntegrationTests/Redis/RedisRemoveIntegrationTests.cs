@@ -23,49 +23,19 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
 using WarewolfParserInterop;
+using Activity = System.Activities.Activity;
 
-namespace Dev2.Tests.Activities.ActivityTests.Redis
+namespace Dev2.Integration.Tests.Redis
 {
     [TestClass]
-    public class RedisRemoveActivityTests : BaseActivityTests
+    [DoNotParallelize]
+    public class RedisRemoveIntegrationTests
     {
-        static RedisRemoveActivity CreateRedisRemoveActivity()
-        {
-            return new RedisRemoveActivity();
-        }
-
         [TestMethod]
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
-        public void RedisRemoveActivity_Equal_BothareObjects()
-        {
-            object RedisRemoveActivity = CreateRedisRemoveActivity();
-            var other = new object();
-            var redisActivityEqual = RedisRemoveActivity.Equals(other);
-            Assert.IsFalse(redisActivityEqual);
-        }
-
-        [TestMethod]
-        [Timeout(60000)]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(RedisRemoveActivity))]
-        public void RedisRemoveActivity_GivenEnvironmentIsNull_ShouldHaveNoDebugOutputs()
-        {
-            //---------------Set up test pack-------------------
-            var redisRemoveActivity = CreateRedisRemoveActivity();
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var debugInputs = redisRemoveActivity.GetDebugInputs(null, 0);
-            //---------------Test Result -----------------------
-            Assert.AreEqual(0, debugInputs.Count);
-        }
-
-        [TestMethod]
-        [Timeout(60000)]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(RedisRemoveActivity))]
-        public void RedisRemoveActivity_UseVariableAsKey()
+        public void RedisRemoveIntegration_UseVariableAsKey()
         {
             try
             {
@@ -139,7 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
-        public void RedisRemoveActivity_RecordsetAsKey()
+        public void RedisRemoveIntegration_RecordsetAsKey()
         {
             try
             {
@@ -242,26 +212,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
                 }
             };
         }
-        private static void GenerateRemoveKeyInstance(string key, string hostName, int port, string password, Mock<IResourceCatalog> mockResourceCatalog,out TestRedisRemoveActivity sut)
+
+        private static void GenerateRemoveKeyInstance(string key, string hostName, int port, string password, Mock<IResourceCatalog> mockResourceCatalog, out TestRedisRemoveActivity sut)
         {
             var impl = new RedisCacheImpl(hostName, port, password);
             sut = new TestRedisRemoveActivity(mockResourceCatalog.Object, impl)
             {
                 Key = key,
             };
-        }
-    }
-
-    class TestRedisRemoveActivity : RedisRemoveActivity
-    {
-        public TestRedisRemoveActivity(IResourceCatalog resourceCatalog, RedisCacheImpl impl)
-            : base(resourceCatalog, impl)
-        {
-        }
-
-        public void TestExecuteTool(IDSFDataObject dataObject)
-        {
-            base.ExecuteTool(dataObject, 0);
         }
     }
 }
