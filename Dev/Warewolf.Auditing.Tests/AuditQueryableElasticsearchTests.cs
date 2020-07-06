@@ -40,7 +40,7 @@ namespace Warewolf.Auditing.Tests
         {
             if (sink == "AuditingSettingsData")
             {
-                var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+                var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch, false);
                 var hostName = "http://" + dependency.Container.IP;
                 return new AuditQueryableElastic(hostName, dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous, "", "");
             }
@@ -52,14 +52,14 @@ namespace Warewolf.Auditing.Tests
 
         private IAuditQueryable GetAuditQueryablePasswordAuthentication()
         {
-            var dependency = new Depends(Depends.ContainerType.Elasticsearch);
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch, false);
             var hostName = "http://" + dependency.Container.IP;
             return new AuditQueryableElastic(hostName, dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "WarewolfUser", "$3@R(h");
         }
 
         private void LoadLogsintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, LogLevel eventLevel)
         {
-            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch, false);
             var hostName = "http://" + dependency.Container.IP;
             var port = dependency.Container.Port;
             var loggerSource = new SerilogElasticsearchSource
@@ -120,7 +120,7 @@ namespace Warewolf.Auditing.Tests
 
         private void LoadExecutionHistoryintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, string eventLevel)
         {
-            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch, false);
             var hostName = "http://" + dependency.Container.IP;
             var port = dependency.Container.Port;
             var loggerSource = new SerilogElasticsearchSource
@@ -198,7 +198,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(Elasticsearch.Net.ElasticsearchClientException))]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
             var auditQueryable = new AuditQueryableElastic("http://invalid-elastic-source", string.Empty, string.Empty, AuthenticationType.Anonymous, string.Empty, string.Empty);
