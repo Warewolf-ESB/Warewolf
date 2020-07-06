@@ -45,7 +45,7 @@ namespace QueueWorker
                 QueueWorkerImplementationFactory = new QueueWorkerImplementationFactory()
             };
 
-            var result = Parser.Default.ParseArguments<Args>(args);
+            var result = CommandLine.Parser.Default.ParseArguments<Args>(args);
             return result.MapResult(
                 options => new Implementation(options, implConfig).Run(),
                 _ => 1);
