@@ -169,7 +169,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             DsfDataObject.ServiceName = request.ServiceName;
             DsfDataObject.Settings = new Dev2WorkflowSettingsTO
             {
-                EnableDetailedLogging = true,
+                ExecutionLogLevel =  Config.Server.ExecutionLogLevel,
+                EnableDetailedLogging =  Config.Server.EnableDetailedLogging,
                 LoggerType = LoggerType.JSON,
                 KeepLogsForDays = 2,
                 CompressOldLogFiles = true

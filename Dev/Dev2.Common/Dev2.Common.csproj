@@ -216,6 +216,10 @@
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj">
       <Project>{6c6d687d-ec18-4ab9-8f2e-07c9fbdbca97}</Project>
       <Name>Warewolf.Common</Name>

@@ -11,15 +11,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Dialogs;
 using Dev2.Runtime.ServiceModel.Data;
@@ -98,6 +97,7 @@ namespace Dev2.Core.Tests.Settings
             var env = new Mock<IServer>();
             var expectedServerSettingsData = new ServerSettingsData
             {
+                ExecutionLogLevel = LogLevel.DEBUG.ToString(),
                 Sink = "AuditingSettingsData"
             };
             _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
@@ -114,6 +114,7 @@ namespace Dev2.Core.Tests.Settings
             var auditingSettingsData = new AuditingSettingsData
             {
                 Endpoint = "ws://127.0.0.1:5000/ws",
+                EncryptDataSource = true,
                 LoggingDataSource = new NamedGuidWithEncryptedPayload
                 {
                     Name = "Auditing Data Source",

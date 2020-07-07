@@ -116,6 +116,7 @@ namespace Dev2.Tests.Runtime.Services
             var settingsData = new AuditingSettingsData()
             {
                 LoggingDataSource = new NamedGuidWithEncryptedPayload(),
+                EncryptDataSource = true
             };
             var requestArgs = new Dictionary<string, StringBuilder>();
             requestArgs.Add("AuditingSettings", new StringBuilder(serializer.SerializeToBuilder(settingsData).ToString()));

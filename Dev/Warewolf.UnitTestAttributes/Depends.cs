@@ -103,7 +103,7 @@ namespace Warewolf.UnitTestAttributes
                         {
                             //Retry another Rig Ops host
                         }
-                        if (result == "" || result.Contains("\"IP\": \"\""))
+                        if (result == "" || result.Contains("\"ID\": \"\""))
                         {
                             retryCount++;
                         }

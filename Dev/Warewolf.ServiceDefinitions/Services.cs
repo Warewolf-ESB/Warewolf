@@ -39,6 +39,11 @@ namespace Warewolf.Service
         public const string ElasticsearchSource = nameof(ElasticsearchSource);
     }
 
+    public static class SaveServerSettings
+    {
+        public const string ServerSettings = nameof(ServerSettings);
+    }
+
     public static class SaveAuditingSettings
     {
         public const string LegacySettings = nameof(LegacySettings);
