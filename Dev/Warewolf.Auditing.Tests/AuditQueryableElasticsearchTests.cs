@@ -34,6 +34,7 @@ using Warewolf.UnitTestAttributes;
 namespace Warewolf.Auditing.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class AuditQueryableElasticTests
     {
         private IAuditQueryable GetAuditQueryable(string sink)
