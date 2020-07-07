@@ -81,6 +81,8 @@
     <Compile Include="Enums\enTranslationDepth.cs" />
     <Compile Include="Enums\enTranslationTypes.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
+    <Compile Include="Enums\EnumHelper.cs" />
+    <Compile Include="Enums\LogLevel.cs" />
     <Compile Include="Enums\ReadTypes.cs" />
     <Compile Include="Enums\WriteType.cs" />
     <Compile Include="IActivityIOOperationsEndPoint.cs" />

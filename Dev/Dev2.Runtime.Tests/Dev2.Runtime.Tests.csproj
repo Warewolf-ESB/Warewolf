@@ -244,7 +244,7 @@
     <Compile Include="Services\SavePluginServiceTests.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
     <Compile Include="Services\DirectDeployTest.cs" />
-    <Compile Include="Services\ServerSettingsTest.cs" />
+    <Compile Include="Services\SaveServerSettingsTest.cs" />
     <Compile Include="Services\SaveTestsTest.cs" />
     <Compile Include="Services\SchedulerTestBase.cs" />
     <Compile Include="Services\SecurityReadTests.cs" />

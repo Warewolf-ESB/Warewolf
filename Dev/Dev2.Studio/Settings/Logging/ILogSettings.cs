@@ -10,6 +10,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Settings.Logging
 {
@@ -29,5 +30,6 @@ namespace Dev2.Settings.Logging
         IResource SelectedAuditingSource { get; }
         List<IResource> AuditingSources { get; }
         bool IsLegacy { get; set; }
+        bool EncryptDataSource{ get; set; }
     }
 }

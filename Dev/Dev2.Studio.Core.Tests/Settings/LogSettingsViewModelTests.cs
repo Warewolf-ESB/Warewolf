@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -24,7 +25,6 @@ using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Security.Encryption;
@@ -117,6 +117,7 @@ namespace Dev2.Core.Tests.Settings
             logSettingsViewModel.ServerEventLogLevel = LogLevel.FATAL;
             //------------Assert Results-------------------------
             Assert.AreEqual(LogLevel.FATAL, logSettingsViewModel.ServerEventLogLevel);
+            Assert.AreEqual(LogLevel.FATAL, logSettingsViewModel.ExecutionLogLevel);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
@@ -124,7 +125,6 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(LogSettingsViewModel))]
-        [DoNotParallelize]
         public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------
@@ -156,6 +156,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual("Fatal: Only log events that are fatal", viewModel.SelectedLoggingType);
             Assert.AreEqual(LogLevel.FATAL, viewModel.ServerEventLogLevel);
+            Assert.AreEqual(LogLevel.FATAL, viewModel.ExecutionLogLevel);
         }
 
         [TestMethod]
@@ -206,6 +207,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             logSettingsViewModel.StudioEventLogLevel = LogLevel.INFO;
+
             //------------Assert Results-------------------------
             Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.StudioEventLogLevel);
             Assert.IsTrue(hasPropertyChanged);
@@ -340,6 +342,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Assert Results-------------------------
             Assert.IsTrue(logSettingsViewModel.IsLegacy);
+            Assert.AreEqual(LogLevel.DEBUG, logSettingsViewModel.ExecutionLogLevel);
         }
 
         [TestMethod]
@@ -439,13 +442,31 @@ namespace Dev2.Core.Tests.Settings
             mockResource.Setup(o => o.ResourceName).Returns("Default");
             mockResource.Setup(o => o.ResourceID).Returns(Guid.Empty);
             logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
-
             logSettingsViewModel.AuditFilePath = @"C:\ProgramData\Warewolf\Audits";
             //------------Assert Results-------------------------
             logSettingsViewModel.Save(loggingSettingsTo);
             _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<LegacySettingsData>()), Times.Once);
         }
-
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(LogSettingsViewModel))]
+        public void LogSettingsViewModel_Save_ChangeSink()
+        {
+            var _resourceRepo = new Mock<IResourceRepository>();
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel("LegacySettingsData", _resourceRepo);
+            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE", EventLogLoggerLogLevel = "DEBUG" };
+            //------------Execute Test---------------------------
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceName).Returns("Default");
+            mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
+            //------------Assert Results-------------------------
+            logSettingsViewModel.Save(loggingSettingsTo);
+            _resourceRepo.Verify(o => o.SaveAuditingSettings(It.IsAny<IServer>(), It.IsAny<AuditingSettingsData>()), Times.Once);
+        }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(LogSettingsViewModel))]
@@ -460,6 +481,8 @@ namespace Dev2.Core.Tests.Settings
             mockResource.Setup(o => o.ResourceName).Returns("Default");
             mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
             logSettingsViewModel.SelectedAuditingSource = mockResource.Object;
+            logSettingsViewModel.ExecutionLogLevel = LogLevel.TRACE;
+            logSettingsViewModel.EncryptDataSource = false;
             CustomContainer.Register(new Mock<IPopupController>().Object);
             //------------Assert Results-------------------------
             logSettingsViewModel.Save(loggingSettingsTo);
@@ -479,7 +502,8 @@ namespace Dev2.Core.Tests.Settings
 
             var expectedServerSettingsData = new ServerSettingsData
             {
-                Sink = sink
+                Sink = sink,
+                ExecutionLogLevel = LogLevel.DEBUG.ToString()
             };
             _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(expectedServerSettingsData);
             var selectedAuditingSourceId = Guid.NewGuid();
@@ -506,6 +530,7 @@ namespace Dev2.Core.Tests.Settings
                 var auditingSettingsData = new AuditingSettingsData
                 {
                     Endpoint = "ws://127.0.0.1:5000/ws",
+                    EncryptDataSource = true,
                     LoggingDataSource = new NamedGuidWithEncryptedPayload
                     {
                         Name = "Auditing Data Source",

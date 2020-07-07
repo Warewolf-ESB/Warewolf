@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.Logging;
 using Newtonsoft.Json;
 using System;
 using Warewolf.Interfaces.Auditing;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Warewolf.Auditing
 {
@@ -27,7 +28,10 @@ namespace Warewolf.Auditing
         private readonly IWebSocketPool _webSocketFactory;
 
         public IStateListener NewStateListener(IExecutionContext dataObject) => new StateListener(this, dataObject);
-        
+        public StateAuditLogger()
+        {
+
+        }
         public StateAuditLogger(IWebSocketPool webSocketFactory)
         {
             _webSocketFactory = webSocketFactory;
@@ -37,14 +41,14 @@ namespace Warewolf.Auditing
 
         public void LogAuditState(Object logEntry)
         {
-            if (!_ws.IsOpen())
+            Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
+            if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
             {
-                _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
-                _ws.Connect();
-            }
-
-            if (logEntry is Audit auditLog)
-            {
+                if (!_ws.IsOpen())
+                {
+                    _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
+                    _ws.Connect();
+                }
                 var auditCommand = new AuditCommand
                 {
                     Audit = auditLog,
@@ -55,7 +59,64 @@ namespace Warewolf.Auditing
             }
         }
 
+        public bool IsValidLogLevel(LogLevel executionLogLevel, string auditLogLogLevel)
+        {
+            switch (executionLogLevel)
+            {
+                case LogLevel.OFF:
+                    return false;
+                case LogLevel.TRACE:
+                    return true;
+                case LogLevel.FATAL:
+                case LogLevel.ERROR:
+                    switch (auditLogLogLevel.ToUpper())
+                    {
+                        case "FATAL":
+                        case "ERROR":
+                            return true;
+                        default:
+                            return false;
+                    }
+                case LogLevel.WARN:
+                    switch (auditLogLogLevel.ToUpper())
+                    {
+                        case "FATAL":
+                        case "WARN":
+                        case "ERROR":
+                            return true;
+                        default:
+                            return false;
+                    }
+                case LogLevel.INFO:
+                    switch (auditLogLogLevel.ToUpper())
+                    {
+                        case "FATAL":
+                        case "WARN":
+                        case "ERROR":
+                        case "INFO":
+                            return true;
+                        default:
+                            return false;
+                    }
+                case LogLevel.DEBUG:
+                    switch (auditLogLogLevel.ToUpper())
+                    {
+                        case "FATAL":
+                        case "WARN":
+                        case "ERROR":
+                        case "INFO":
+                        case "DEBUG":
+                            return true;
+                        default:
+                            return false;
+                    }
+                default:
+                    return false;
+            }
+        }
+
         private bool _isDisposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_isDisposed)

@@ -44,7 +44,6 @@ namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
     [TestCategory("Studio Settings Core")]
-    [DoNotParallelize]
     public class SecurityViewModelTests
     {
         static Mock<IResourceRepository> _resourceRepo = new Mock<IResourceRepository>();

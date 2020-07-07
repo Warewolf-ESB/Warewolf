@@ -2408,7 +2408,11 @@ The conflicts on the left will show your current workflow changes and the confli
     <data name="LoggingViewAuditsDataSourceHelpText" xml:space="preserve">
     <value>The Data source for the auditing database.</value>
   </data>
-    <data name="RedisRemoveResultHelp" xml:space="preserve">
+  <data name="LoggingViewEncryptHelpText" xml:space="preserve">
+     <value>Encrypt the Logging Data Source in the Auditing Settings File</value>
+  </data>
+
+  <data name="RedisRemoveResultHelp" xml:space="preserve">
     <value>Only variables go in here.	Returns Success if the key to remove was found and removed or Failure otherwise.</value>
   </data>
     <data name="OptionAutocompleteHelpText" xml:space="preserve">
