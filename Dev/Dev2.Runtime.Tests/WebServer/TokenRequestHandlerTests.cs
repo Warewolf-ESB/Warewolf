@@ -63,35 +63,6 @@ namespace Dev2.Tests.Runtime.WebServer
             handler.ProcessRequest(null);
             //------------Assert Results-------------------------
         }
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(TokenRequestHandler))]
-        [ExpectedException(typeof(AccessDeniedException), "expected 'AccessDeniedException'")]
-        public void TokenRequestHandler_ProcessRequest_GivenInvalidWorkflowOutputs_ExpectException()
-        {
-            NameValueCollection localQueryString = new NameValueCollection();
-
-            var communicationContext = new Mock<ICommunicationContext>();
-            var request = new Mock<ICommunicationRequest>();
-            request.Setup(communicationRequest => communicationRequest.BoundVariables).Returns(localQueryString);
-            var qs = new NameValueCollection(1);
-            qs.Add("wid", Guid.NewGuid().ToString());
-            request.Setup(o => o.QueryString).Returns(qs);
-            request.Setup(o => o.Uri).Returns(new Uri("http://localhost:4321/public/something.json"));
-
-            var response = new Mock<ICommunicationResponse>();
-            request.Setup(communicationResponse => communicationResponse.ContentType).Returns(ContentTypes.Json.ToString);
-
-            communicationContext.Setup(context => context.Request).Returns(request.Object);
-            communicationContext.Setup(context => context.Response).Returns(response.Object);
-            //------------Setup for test-------------------------
-            var handler = new TokenRequestHandler();
-            //------------Execute Test---------------------------
-            handler.ProcessRequest(communicationContext.Object);
-            var result = communicationContext.Object.Response;
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(result);
-        }
 
         [TestMethod]
         [Owner("Candice Daniel")]
