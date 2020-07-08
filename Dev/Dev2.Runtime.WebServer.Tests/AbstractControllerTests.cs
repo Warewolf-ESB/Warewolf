@@ -75,29 +75,6 @@ namespace Dev2.Runtime.WebServer.Tests
             var response = controller.TestProcessRequest<AssertNotExecutedRequestHandlerForTesting>(true);
             Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException, response.ReasonPhrase);
         }
-
-
-        [TestMethod]
-        [TestCategory(nameof(AbstractController))]
-        [Owner("Rory McGuire")]
-        public void AbstractController_ProcessRequest_GivenValidTokenAuthenticated_ExpectSuccess()
-        {
-            var securitySettings = new SecuritySettings();
-            var jwtManager = new JwtManager(securitySettings);
-            var token = jwtManager.GenerateToken("{'UserGroups': [{'Name': 'public' }]}");
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/token/Hello%20World.json?Name=")
-            {
-                Headers = { {"Authorization", $"bearer {token}"}},
-                Content = new StringContent("Some content"),
-            };
-            var controller = new AbstractControllerForTesting
-            {
-                Request = request
-            };
-
-            var response = controller.TestProcessRequest<RequestHandlerForTesting>(true);
-            Assert.IsTrue(response.IsSuccessStatusCode, "expected successful response");
-        }
     }
 
     internal class AbstractControllerForTesting : AbstractController
