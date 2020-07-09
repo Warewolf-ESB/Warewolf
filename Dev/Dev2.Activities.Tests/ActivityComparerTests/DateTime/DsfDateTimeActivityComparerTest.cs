@@ -20,6 +20,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -36,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -52,6 +54,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Same_DisplayName_IsEqual()
         {
@@ -68,6 +71,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DisplayName_Different_DisplayName_Is_Not_Equal()
         {
@@ -84,6 +88,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_Result_IsEqual()
         {
@@ -100,6 +105,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_Result_Is_Not_Equal()
         {
@@ -115,6 +121,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_OutputFormat_IsEqual()
         {
@@ -131,6 +138,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_OutputFormat_Is_Not_Equal()
         {
@@ -147,6 +155,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_InputFormat_IsEqual()
         {
@@ -163,6 +172,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_InputFormat_Is_Not_Equal()
         {
@@ -179,6 +189,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_TimeModifierAmount_IsEqual()
         {
@@ -195,6 +206,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_TimeModifierAmount_Is_Not_Equal()
         {
@@ -210,6 +222,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_TimeModifierType_IsEqual()
         {
@@ -226,6 +239,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_TimeModifierType_Is_Not_Equal()
         {
@@ -241,6 +255,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DateTime_IsEqual()
         {
@@ -257,6 +272,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DateTime_Is_Not_Equal()
         {
@@ -272,6 +288,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_TimeModifierAmountDisplay_IsEqual()
         {
@@ -288,6 +305,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_TimeModifierAmountDisplay_Is_Not_Equal()
         {
@@ -304,6 +322,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfDateTimeActivity_GetState")]
         public void DsfDateTimeActivity_GetState_ReturnsStateVariable()

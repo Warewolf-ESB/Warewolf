@@ -57,8 +57,12 @@ namespace Warewolf.Logger
                 if (Config.Server.Sink == nameof(AuditingSettingsData))
                 {
                     var payload = Config.Auditing.LoggingDataSource.Payload;
-                    var decryptedPayload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
-                    var elasticsearchSource = new Dev2JsonSerializer().Deserialize<ElasticsearchSource>(decryptedPayload);
+                    if (Config.Auditing.EncryptDataSource)
+                    {
+                        payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
+                    }
+
+                    var elasticsearchSource = new Dev2JsonSerializer().Deserialize<ElasticsearchSource>(payload);
                     _source = new SerilogElasticsearchSource
                     {
                         HostName = elasticsearchSource.HostName,

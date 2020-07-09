@@ -33,6 +33,7 @@ namespace Dev2.Tests.Activities.Utils
     public class ActivityHelperTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_Dev2Decision_SetArmTextDefaults_SetArmText_SetDisplayName()
@@ -111,6 +112,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_Dev2Decision_Null_FalseArmText_SetArmText()
@@ -138,6 +140,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_Dev2Decision_Null_TrueArmText_SetArmText()
@@ -165,6 +168,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_WithKeyProperty_SetSwitchKeyProperty_Dev2Switch()
@@ -196,6 +200,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_SetSwitchKeyProperty_Dev2Switch()
@@ -272,6 +277,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_InjectExpression_Dev2SwitchIsNull_ReturnNull()
@@ -305,6 +311,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_InjectExpression_Dev2DecisionStackIsNull_ReturnNull()
@@ -330,6 +337,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_Dev2Switch_ExtractData_Null()
@@ -343,6 +351,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_ExtractData_ExpectResult()
@@ -356,6 +365,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_InjectExpression_Dev2Switch()
@@ -437,6 +447,7 @@ namespace Dev2.Tests.Activities.Utils
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ActivityHelper))]
         public void ActivityHelper_InjectExpression_Dev2DecisionStack()

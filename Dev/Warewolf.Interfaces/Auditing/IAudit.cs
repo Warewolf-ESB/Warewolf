@@ -9,6 +9,7 @@
 */
 
 using System;
+using Warewolf.Logging;
 
 namespace Warewolf.Interfaces.Auditing
 {
@@ -16,6 +17,7 @@ namespace Warewolf.Interfaces.Auditing
     {
         Exception Exception { get; set; }
         string AuditType { get; set; }
+        LogLevel LogLevel { get; set; }
     }
 
     public interface IAudit : IAuditEntry

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,19 +9,15 @@
 */
 
 using System;
-using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Common;
 using Warewolf.Configuration;
 using Warewolf.Data;
-using Warewolf.Driver.Serilog;
 using Warewolf.Logging;
 using Warewolf.Security.Encryption;
 using Warewolf.UnitTestAttributes;
@@ -84,6 +80,7 @@ namespace Warewolf.Logger.Tests
             var encryptedPayload = DpapiWrapper.Encrypt(payload);
             var data = new AuditingSettingsData
             {
+                EncryptDataSource = true,
                 LoggingDataSource = new NamedGuidWithEncryptedPayload
                 {
                     Name = "Testing Elastic Data Source",
@@ -92,6 +89,7 @@ namespace Warewolf.Logger.Tests
                 }
             };
             Config.Auditing.LoggingDataSource = data.LoggingDataSource;
+            Config.Auditing.EncryptDataSource = data.EncryptDataSource;
             Config.Server.Sink = nameof(AuditingSettingsData);
             return new LoggerContext(mockArgs.Object);
         }

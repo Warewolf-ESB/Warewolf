@@ -22,6 +22,7 @@ Scenario: Creating New Elasticsearch Source
 	Given I type HostName as a valid anonymous Elasticsearch server
 	Then server port is "9200"
 	And I type port number as "9200"
+	And I type search index as "warewolflogs"
 	Then "New Elasticsearch Source *" tab is opened
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled" 
@@ -49,6 +50,7 @@ Scenario: Creating New Elasticsearch Source under password
 	Given I open New Elasticsearch Source
 	And I type HostName as a valid Elasticsearch server
 	And I type port number as "9200"
+	Then I type search index as "warewolflogs"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And I Select Authentication Type as "Password"
@@ -73,6 +75,7 @@ Scenario: Incorrect Elasticsearch hostname anonymous auth type not allowing save
 	Given I open New Elasticsearch Source
 	And I type HostName as "sdfsdfd"
 	And I type port number as "9200"
+	Then I type search index as "warewolflogs"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And I Select Authentication Type as "Anonymous"
@@ -95,6 +98,7 @@ Scenario: Testing Elasticsearch Auth type as Anonymous and swaping it resets the
 	And "Save" is "Disabled"
 	And I type HostName as a valid Elasticsearch server
 	And I type port number as "9200"
+	Then I type search index as "warewolflogs"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And I Select Authentication Type as "Password"
@@ -128,6 +132,7 @@ Scenario: Editing saved Elasticsearch Source
 	And title is "Test-Elasticsearch"
 	And HostName is "http://rsaklfwynand"
 	And I type port number as "9200"
+	And I type search index as "warewolflogs"
 	And "Save" is "Enabled"
 	And "Test Connection" is "Enabled"
 	And Select Authentication Type as "Anonymous"

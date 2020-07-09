@@ -20,7 +20,7 @@ namespace Dev2.Studio.Interfaces.Enums
         Service,
         SourceManager,
 
-        //TODO: Remove
+        //TODO: Remove once Triggers is the only entry point.
         [Description("Scheduler")]
         Scheduler,
 

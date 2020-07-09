@@ -112,6 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -128,20 +131,15 @@
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
+      <Name>Warewolf.Interfaces</Name>
+      <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Name>Warewolf.Parser.Interop</Name>
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Private>True</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="FSharp.Core.3" Version="0.0.2" />
-    <PackageReference Include="FsLexYacc" Version="6.1.0" />
-    <PackageReference Include="FsLexYacc.Runtime" Version="6.1.0" />
   </ItemGroup>
 </Project>

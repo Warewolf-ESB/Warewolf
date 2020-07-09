@@ -28,6 +28,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class MultiAssignObjectActivityTest : BaseActivityUnitTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithValue()
@@ -48,6 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfMultiAssignObjectActivity_GetOutputs")]
         public void DsfMultiAssignObjectActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -64,6 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectTopLevelJSONAssign()
         {
@@ -86,6 +89,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithSpecialCharsInValue()
@@ -106,6 +110,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithNewValue()
@@ -127,6 +132,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithMultipleValues()
@@ -156,6 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithAnEmptyField()
@@ -175,6 +182,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MutiAssignObjectInvalidJsonObjectLeft()
@@ -193,6 +201,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MutiAssignObjectInvalidJsonObjectRight()
@@ -211,6 +220,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithValue4LayersDeap()
@@ -231,6 +241,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithCalculatedValue()
@@ -251,6 +262,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithCalculatedValueFromJson()
@@ -276,6 +288,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectArrayWithMultipleValues()
@@ -305,6 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithCalculatedValueFromJsonArray()
@@ -330,6 +344,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithJsonArrayMultiplePropertiesAtSameLevel()
@@ -390,6 +405,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfMultiAssignObjectActivity_UpdateForEachInputs")]
         public void DsfMultiAssignObjectActivity_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
         {
@@ -416,6 +432,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfMultiAssignObjectActivity_UpdateForEachOutputs")]
         public void DsfMultiAssignObjectActivity_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
         {
@@ -442,6 +459,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfMultiAssignActivity_GetForEachInputs")]
         public void DsfMultiAssignActivity_GetForEachInputs_Normal_UpdateSuccessful()
         {
@@ -464,6 +482,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
         public void DsfMultiAssignActivity_GetForEachOutputs_Normal_UpdateSuccessful()
         {
@@ -486,6 +505,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
         public void DsfMultiAssignObjectActivity_GetState_Returns_Inputs_And_Outputs()
         {
@@ -526,6 +546,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithJsonArrayMultiplePropertiesWithoutIndex()
@@ -564,6 +585,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithJsonArrayMultiplePropertiesWithIndex()

@@ -56,6 +56,7 @@ namespace Dev2.Tests.Activities
         #region CreateWorkflow
 
         [TestMethod]
+        [Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowHelperCreateWorkflowWithNullDisplayNameExpectedThrowsArgumentNullException()
         {
@@ -63,6 +64,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void WorkflowHelperCreateWorkflowWithDisplayNameExpectedReturnsActivityBuilderWithFlowChartImplementation()
         {
             const string DisplayName = "TestResource";
@@ -81,6 +83,7 @@ namespace Dev2.Tests.Activities
         #region SerializeWorkflow
 
         [TestMethod]
+        [Timeout(60000)]
         public void WorkflowHelperSerializeWorkflowWithNullModelServiceExpectedReturnsEmptyString()
         {
             var result = new WorkflowHelper().SerializeWorkflow(null);
@@ -88,6 +91,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void WorkflowHelperSerializeWorkflowWithModelServiceExpectedReturnsActivityXaml()
         {
             var modelService = CreateModelService();

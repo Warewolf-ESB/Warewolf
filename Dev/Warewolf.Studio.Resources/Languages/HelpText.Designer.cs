@@ -1741,6 +1741,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Encrypt the Logging Data Source in the Auditing Settings File.
+        /// </summary>
+        public static string LoggingViewEncryptHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewEncryptHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events&lt;br /&gt;	Server Pulse Data&lt;br /&gt;	Server System Activity.
         /// </summary>
         public static string LoggingViewServerEventLogDebugHelpText {
@@ -3113,6 +3122,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If selected it returns the content of the file in base64 format..
+        /// </summary>
+        public static string ReadFileHelpIsResultBase64 {
+            get {
+                return ResourceManager.GetString("ReadFileHelpIsResultBase64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string ReadFileHelpPassword {
@@ -3563,7 +3581,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The search index that will be used to index the data..
+        ///   Looks up a localized string similar to The search index that will be used to index the data. &lt;br/&gt;&lt;br/&gt;
+        ///     Elasticsearch Index only supports: &lt;br/&gt;
+        ///     Lowercase&lt;br/&gt;
+        ///     Cannot be . or ..&lt;br/&gt;
+        ///     Cannot start with -, _, +&lt;br/&gt;
+        ///     Cannot include \ /  *  ?  &quot; | , # spaces&lt;br/&gt;
+        ///     Cannot include special characters&lt;br/&gt;
+        ///     Cannot be longer than 255 characters&lt;br/&gt;
+        ///    .
         /// </summary>
         public static string SearchIndexHelp {
             get {

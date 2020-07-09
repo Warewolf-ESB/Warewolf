@@ -9,6 +9,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
     public class DsfExecuteCommandLineActivityComparerTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
         {
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
             Assert.IsTrue(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
         {
@@ -40,6 +42,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_DisplayName_IsEqual()
         {
@@ -56,6 +59,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_DisplayName_Is_Not_Equal()
         {
@@ -71,6 +75,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_CommandFileName_IsEqual()
         {
@@ -87,6 +92,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_CommandFileName_Different_Casing_IsNotEqual()
         {
@@ -103,6 +109,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_CommandFileName_Is_Not_Equal()
         {
@@ -118,6 +125,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
             Assert.IsFalse(@equals);
         }    
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_CommandResult_IsEqual()
         {
@@ -134,6 +142,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_CommandFileName_CommandResult_Casing_IsNotEqual()
         {
@@ -150,6 +159,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_CommandResult_Is_Not_Equal()
         {
@@ -165,6 +175,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
             Assert.IsFalse(@equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_CommandFileName_CommandPriority_IsNotEqual()
         {
@@ -181,6 +192,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ExecuteCommand
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_CommandPriority_Is_Not_Equal()
         {

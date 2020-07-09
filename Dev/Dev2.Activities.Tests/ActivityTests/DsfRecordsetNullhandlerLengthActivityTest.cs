@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CountRecordset
     public class DsfRecordsetNullhandlerLengthActivityTest : BaseActivityUnitTest
     {
         [TestMethod]
+        [Timeout(60000)]
         [TestCategory("DsfRecordsetNullhandlerLength")]
         [Owner("Candice Daniel")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]

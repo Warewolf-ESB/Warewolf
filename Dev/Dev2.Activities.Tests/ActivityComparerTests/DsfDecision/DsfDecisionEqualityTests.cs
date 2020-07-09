@@ -11,6 +11,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
     public class DsfDecisionEqualityTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDEquals_EmptyAssigns_IsEqual()
         {
@@ -27,6 +28,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDSame_EmptyAssigns_IsEqual()
         {
@@ -43,6 +45,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void UniqueIDDifferent_EmptyAssigns_IsEqual()
         {
@@ -60,6 +63,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Same_Object_IsEqual()
         {
@@ -76,6 +80,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void TrueArm_Same_Object_IsEqual()
         {
@@ -121,6 +126,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void TrueArm_Different_Object_Is_Equal()
         {
@@ -175,6 +181,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void FalseArm_Same_Object_IsEqual()
         {
@@ -226,6 +233,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Conditions_Same_Object_IsEqual()
         {
@@ -331,6 +339,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DisplayText_Same_Object_IsEqual()
         {
@@ -400,6 +409,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DisplayText_Different_Object_Is_Not_Equal()
         {
@@ -469,6 +479,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void FalseArmText_Different_Object_Is_Not_Equal()
         {
@@ -539,6 +550,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void FalseArmText_Same_Object_Is_Equal()
         {
@@ -608,6 +620,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Mode_Same_Object_Is_Equal()
         {
@@ -666,6 +679,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Mode_Different_Object_Is_Not_Equal()
         {
@@ -723,6 +737,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Conditions_Different_Object_Is_Not_Equal()
         {
@@ -829,6 +844,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Conditions_Null_Object_Is_Equal()
         {
@@ -876,6 +892,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void FalseArm_Different_Object_Is_Equal()
         {
@@ -930,6 +947,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal()
         {
@@ -946,6 +964,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -961,6 +980,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             Assert.IsFalse(equals);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Different_Object_Is_Not_Equal()
         {
@@ -977,6 +997,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Result_Different_Object_Is_Not_Equal_CaseSensitive()
         {
@@ -993,6 +1014,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfFlowDecisionActivity_GetState")]
         public void DsfFlowDecisionActivity_GetState_ReturnsStateVariable()

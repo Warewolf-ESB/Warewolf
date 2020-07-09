@@ -12,6 +12,7 @@ namespace Dev2.Tests.Activities
     public class ForEachBootstrapTOTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ForEachBootstrapTO_Constructor")]
         public void ForEachBootstrapTO_Constructor_IsNewCsvNoValue_AddError()
@@ -28,6 +29,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ForEachBootstrapTO_Constructor")]
         public void ForEachBootstrapTO_Constructor_IsNewCsvValue_NoError()
@@ -45,6 +47,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ForEachBootstrapTO_Constructor")]
         public void ForEachBootstrapTO_Constructor_IsNewRecordSetNoValue_AddError()
@@ -60,6 +63,7 @@ namespace Dev2.Tests.Activities
             Assert.AreEqual(1, errors.FetchErrors().Count);
         }
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ForEachBootstrapTO_Constructor")]
         public void ForEachBootstrapTO_Constructor_IsNewRecordSetNoValueNoInVaribaleList_AddError()
@@ -78,6 +82,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ForEachBootstrapTO_Constructor")]
         public void ForEachBootstrapTO_Constructor_IsNewRecordSetValue_NoError()
@@ -95,6 +100,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ForEachBootstrapTO_Constructor")]
         public void ForEachBootstrapTO_Constructor_IsNewInRangeNoValue_AddError()
@@ -111,6 +117,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ForEachBootstrapTO_Constructor")]
         public void ForEachBootstrapTO_Constructor_IsNewInRangeMinValueOnly_AddError()
@@ -127,6 +134,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ForEachBootstrapTO_Constructor")]
         public void ForEachBootstrapTO_Constructor_IsNewInRangeMinAndMax_NoError()

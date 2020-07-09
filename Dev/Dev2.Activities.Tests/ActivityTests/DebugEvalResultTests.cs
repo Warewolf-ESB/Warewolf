@@ -9,6 +9,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class DebugEvalResultTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DebugEvalResult_GivenIsNew_ShouldSetValues()
         {
@@ -29,6 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DebugEvalResult_GivenIsNewAndIsJSonArray_ShouldSetObjectArray()
         {
@@ -49,6 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DebugEvalResult_GivenObjectIsJSonArray_ShouldSetObjectArray()
         {

@@ -22,6 +22,7 @@ namespace Dev2.Tests.Activities.TOTests
     public class DataMergeTOTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataMergeDTO_Constructor")]
         public void DataMergeDTO_Constructor_FullConstructor_DefaultValues()
@@ -41,6 +42,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanAdd Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataMergeDTO_CanAdd")]
         public void DataMergeDTO_CanAdd_WithNewLineMergeTypeAndNoOtherValues_ReturnTrue()
@@ -53,6 +55,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataMergeDTO_CanAdd")]
         public void DataMergeDTO_CanAdd_WithNoInputVarButValueForAt_ReturnTrue()
@@ -65,6 +68,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataMergeDTO_CanAdd")]
         public void DataMergeDTO_CanAdd_WithNoInputVarAndNoAt_ReturnFalse()
@@ -77,6 +81,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataMergeDTO_CanAdd")]
         public void DataMergeDTO_CanAdd_WithIndexMergeTypeAndNoOtherValues_ReturnFalse()
@@ -93,6 +98,7 @@ namespace Dev2.Tests.Activities.TOTests
         #region CanRemove Tests
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataMergeDTO_CanRemove")]
         public void DataMergeDTO_CanRemove_WithNoInputVarButValueForAt_ReturnFalse()
@@ -105,6 +111,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataMergeDTO_CanRemove")]
         public void DataMergeDTO_CanRemove_WithNoInputVarAndNoAt_ReturnTrue()
@@ -117,6 +124,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataMergeDTO_CanRemove")]
         public void DataMergeDTO_CanRemove_WithNewLineTypeAndNoInputVar_ReturnFalse()
@@ -129,6 +137,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataMergeDTO_CanRemove")]
         public void DataMergeDTO_CanRemove_WithNewLineInputTypeAndVar_ReturnFalse()
@@ -144,6 +153,7 @@ namespace Dev2.Tests.Activities.TOTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_IsEmpty")]
         public void DataMergeDTO_IsEmpty_PropertiesAreEmpty_True()
@@ -166,6 +176,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Robin van den Heever")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSetOutputVariable_ExpressionIsInvalid_ValidateRulesReturnsFalse()
@@ -180,6 +191,7 @@ namespace Dev2.Tests.Activities.TOTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_IsEmpty")]
         public void DataMergeDTO_IsEmpty_PropertiesAreNotEmpty_False()
@@ -195,6 +207,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_ClearRow")]
         public void DataMergeDTO_ClearRow_PropertiesAreEmpty()
@@ -212,6 +225,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_IsEmptyIsTrue_ValidateRulesReturnsTrue()
@@ -225,6 +239,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_PaddingExpressionIsInvalid_ValidateRulesReturnsFalse()
@@ -237,6 +252,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_PaddingExpressionIsValid_ValidateRulesReturnsTrue()
@@ -249,6 +265,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_PaddingIsNotSingleChar_ValidateRulesReturnsFalse()
@@ -261,6 +278,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_PaddingIsSingleChar_ValidateRulesReturnsTrue()
@@ -273,6 +291,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_PaddingIsEmpty_ValidateRulesReturnsTrue()
@@ -285,6 +304,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_AtExpressionIsInvalid_ValidateRulesReturnsFalse()
@@ -297,6 +317,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_AtExpressionIsValid_ValidateRulesReturnsTrue()
@@ -309,6 +330,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_AtIsNullOrEmpty_ValidateRulesReturnsFalse()
@@ -321,6 +343,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_AtIsNotNullOrEmpty_ValidateRulesReturnsTrue()
@@ -333,6 +356,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_AtIsNotPositiveNumber_ValidateRulesReturnsFalse()
@@ -345,6 +369,7 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_GetRuleSet")]
         public void DataMergeDTO_GetRuleSet_AtIsPositiveNumber_ValidateRulesReturnsTrue()

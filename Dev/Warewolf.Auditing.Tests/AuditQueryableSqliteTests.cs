@@ -40,23 +40,12 @@ namespace Warewolf.Auditing.Tests
             var logger = new LoggerConfiguration().WriteTo.SQLite(testDBPath, testTableName).CreateLogger();
         }
         
-        private IAuditQueryable GetAuditQueryable(string sink,string connectionString)
-        {
-            if (sink == "AuditingSettingsData")
-            {
-                return new AuditQueryableElastic();
-            }
-            else
-            {
-                return new AuditQueryableSqlite(connectionString);
-            }
-        }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
         public void AuditQueryableSqlite_QueryTriggerData()
         {
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var query = new Dictionary<string, StringBuilder>();
             var result = auditQueryable.QueryTriggerData(query);
             _ = result.ToArray();
@@ -69,7 +58,7 @@ namespace Warewolf.Auditing.Tests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_NoParameters()
         {
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var query = new Dictionary<string, StringBuilder>();
 
             var results = auditQueryable.QueryLogData(query);
@@ -91,7 +80,7 @@ namespace Warewolf.Auditing.Tests
                 {"ExecutionID", executionID.ToString().ToStringBuilder()},
                 {"EventLevel", "Debug".ToStringBuilder()}
             };
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
             
@@ -108,7 +97,7 @@ namespace Warewolf.Auditing.Tests
             {
                 {"EventLevel", "Wrong".ToStringBuilder()}
             };
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToList();
             
@@ -126,7 +115,7 @@ namespace Warewolf.Auditing.Tests
             {
                 {"ExecutionID", executionID.ToString().ToStringBuilder()}
             };
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
             
@@ -144,7 +133,7 @@ namespace Warewolf.Auditing.Tests
                 {"EventLevel", "Debug".ToStringBuilder()}
             };
 
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
             
@@ -159,10 +148,10 @@ namespace Warewolf.Auditing.Tests
         {
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel", "Information".ToStringBuilder()}
+                {"EventLevel", "Info".ToStringBuilder()}
             };
 
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
 
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToList();
@@ -178,10 +167,10 @@ namespace Warewolf.Auditing.Tests
         {
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel", "Warning".ToStringBuilder()}
+                {"EventLevel", "Warn".ToStringBuilder()}
             };
 
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
 
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
@@ -200,7 +189,7 @@ namespace Warewolf.Auditing.Tests
                 {"EventLevel", "Error".ToStringBuilder()}
             };
 
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query).ToList();
             _ = results.ToList();
             
@@ -218,7 +207,7 @@ namespace Warewolf.Auditing.Tests
                 {"EventLevel", "Fatal".ToStringBuilder()}
             };
 
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToList();
             
@@ -239,7 +228,7 @@ namespace Warewolf.Auditing.Tests
                 {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
             };
 
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
             
@@ -261,7 +250,7 @@ namespace Warewolf.Auditing.Tests
                 {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
             };
 
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
             
@@ -284,7 +273,7 @@ namespace Warewolf.Auditing.Tests
                 {"StartDateTime", StartDateTime.ToString().ToStringBuilder()},
                 {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
             };
-            var auditQueryable = GetAuditQueryable("LegacySettingsData",connstring);
+            var auditQueryable = new AuditQueryableSqlite(connstring);
             var results = auditQueryable.QueryLogData(query);
             _ = results.ToArray();
             
@@ -309,7 +298,7 @@ namespace Warewolf.Auditing.Tests
                 {"CompletedDateTime", CompletedDateTime.ToString().ToStringBuilder()}
             };
 
-            var audit = GetAuditQueryable("LegacySettingsData",connstring);
+            var audit = new AuditQueryableSqlite(connstring);
             var results = audit.QueryLogData(query);
             _ = results.ToArray();
             
