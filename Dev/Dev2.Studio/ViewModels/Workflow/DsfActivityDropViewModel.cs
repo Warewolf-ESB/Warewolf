@@ -89,14 +89,19 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var explorerItemModel = SingleEnvironmentExplorerViewModel.SelectedItem;
 
-            if (explorerItemModel is EnvironmentViewModel environmentViewModel)
-            {
-                isMatched |= environmentViewModel.IsSelected;
-            }
-            else if (explorerItemModel != null)
+            // TODO: This will be reintroduced when we allow folder and server selection
+            // if (explorerItemModel is EnvironmentViewModel environmentViewModel)
+            // {
+            //     isMatched |= environmentViewModel.IsSelected;
+            // }
+            // else if (explorerItemModel != null)
+            // {
+            //     isMatched = explorerItemModel.IsService;
+            //     isMatched |= explorerItemModel.IsFolder;
+            // }
+            if (explorerItemModel != null)
             {
                 isMatched = explorerItemModel.IsService;
-                isMatched |= explorerItemModel.IsFolder;
             }
 
             return explorerItemModel != null && isMatched;
