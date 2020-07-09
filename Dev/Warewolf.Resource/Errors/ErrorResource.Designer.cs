@@ -2896,6 +2896,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redis Source Has Been Removed.
+        /// </summary>
+        public static string RedisSourceHasBeenRemoved {
+            get {
+                return ResourceManager.GetString("RedisSourceHasBeenRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remote Server ID Empty.
         /// </summary>
         public static string RemoteServerIDNull {

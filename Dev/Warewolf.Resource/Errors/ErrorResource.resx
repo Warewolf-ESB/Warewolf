@@ -1349,4 +1349,7 @@ Please contact your Windows System Administrator.</value>
   <data name="ErrorCreatingDirectory" xml:space="preserve">
     <value>failed creating directory '{0}' : {1}</value>
   </data>
+  <data name="RedisSourceHasBeenRemoved" xml:space="preserve">
+    <value>Redis Source Has Been Removed</value>
+  </data>
 </root>
