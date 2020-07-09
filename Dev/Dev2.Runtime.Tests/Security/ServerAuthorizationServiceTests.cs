@@ -159,6 +159,7 @@ namespace Dev2.Tests.Runtime.Security
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [DoNotParallelize]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedNoResultsPendingAndHubConnect_AuthorizationCalculatedAndNotCachedIsFalse()
         {
             //------------Setup for test--------------------------

@@ -31,72 +31,38 @@ using Warewolf.Logging;
 using Warewolf.Storage;
 using Warewolf.UnitTestAttributes;
 
-[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Warewolf.Auditing.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class AuditQueryableElasticTests
     {
-        static Depends _dependancy;
-        static Depends _anonymousDependancy;
-        static Guid _debugResourceId;
-        static Guid _debugExecutionId;
-        static Guid _infoResourceId;
-        static Guid _infoExecutionId;
-        static Guid _dateTimeexecutionId;
-        static Guid _urlEncodedDateTimeexecutionId;
-        static Guid _executionHistoryResourceId;
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext tstctx)
-        {
-            _debugResourceId = Guid.NewGuid();
-            _debugExecutionId = Guid.NewGuid();
-            _infoResourceId = Guid.NewGuid();
-            _infoExecutionId = Guid.NewGuid();
-            _dateTimeexecutionId = Guid.NewGuid();
-            _urlEncodedDateTimeexecutionId = Guid.NewGuid();
-            _executionHistoryResourceId = Guid.NewGuid();
-            _anonymousDependancy = new Depends(Depends.ContainerType.AnonymousElasticsearch, false);
-            _dependancy = new Depends(Depends.ContainerType.Elasticsearch, false);
-            LoadLogsintoElastic(Guid.NewGuid(), Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Info, _dependancy);
-            LoadLogsintoElastic(_debugExecutionId, _debugResourceId, "LogAdditionalDetail", "details", LogLevel.Debug, _anonymousDependancy);
-            LoadLogsintoElastic(_infoExecutionId, _infoResourceId, "LogAdditionalDetail", "details", LogLevel.Info, _anonymousDependancy);
-            LoadLogsintoElastic(Guid.NewGuid(), Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Debug, _dependancy);
-            LoadLogsintoElastic(Guid.NewGuid(), Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Info, _dependancy);
-            LoadLogsintoElastic(Guid.NewGuid(), Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Warn, _dependancy);
-            LoadLogsintoElastic(Guid.NewGuid(), Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Error, _dependancy);
-            LoadLogsintoElastic(Guid.NewGuid(), Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Fatal, _dependancy);
-            LoadLogsintoElastic(Guid.NewGuid(), Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Info, _dependancy);
-            LoadLogsintoElastic(Guid.NewGuid(), Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Debug, _dependancy);
-            LoadLogsintoElastic(_dateTimeexecutionId, Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Debug, _anonymousDependancy);
-            LoadLogsintoElastic(_urlEncodedDateTimeexecutionId, Guid.NewGuid(), "LogAdditionalDetail", "details", LogLevel.Debug, _anonymousDependancy);
-            LoadExecutionHistoryintoElastic(Guid.NewGuid(), _executionHistoryResourceId, "QueryTriggerData", "details", "Info", _anonymousDependancy);
-        }
-        
-        IAuditQueryable GetAuditQueryable(string sink)
+        private IAuditQueryable GetAuditQueryable(string sink)
         {
             if (sink == "AuditingSettingsData")
             {
-                _anonymousDependancy = _anonymousDependancy ?? new Depends(Depends.ContainerType.AnonymousElasticsearch, false);
-                var hostName = "http://" + _anonymousDependancy.Container.IP;
-                return new AuditQueryableElastic(hostName, _anonymousDependancy.Container.Port, "warewolftestlogs", AuthenticationType.Anonymous, "", "");
+                var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch, false);
+                var hostName = "http://" + dependency.Container.IP;
+                return new AuditQueryableElastic(hostName, dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous, "", "");
             }
-
-            return new AuditQueryableSqlite();
+            else
+            {
+                return new AuditQueryableSqlite();
+            }
         }
 
-        IAuditQueryable GetAuditQueryablePasswordAuthentication()
+        private IAuditQueryable GetAuditQueryablePasswordAuthentication()
         {
-            _dependancy = _dependancy ?? new Depends(Depends.ContainerType.Elasticsearch, false);
-            var hostName = "http://" + _dependancy.Container.IP;
-            return new AuditQueryableElastic(hostName, _dependancy.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "WarewolfUser", "$3@R(h");
+            var dependency = new Depends(Depends.ContainerType.Elasticsearch, false);
+            var hostName = "http://" + dependency.Container.IP;
+            return new AuditQueryableElastic(hostName, dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "WarewolfUser", "$3@R(h");
         }
 
-        static void LoadLogsintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, LogLevel eventLevel, Depends elasticSearchDependancy)
+        private void LoadLogsintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, LogLevel eventLevel)
         {
-            var hostName = "http://" + elasticSearchDependancy.Container.IP;
-            var port = elasticSearchDependancy.Container.Port;
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch, false);
+            var hostName = "http://" + dependency.Container.IP;
+            var port = dependency.Container.Port;
             var loggerSource = new SerilogElasticsearchSource
             {
                 Port = port,
@@ -153,10 +119,11 @@ namespace Warewolf.Auditing.Tests
             Task.Delay(225).Wait();
         }
 
-        static void LoadExecutionHistoryintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, string eventLevel, Depends _dependency)
+        private void LoadExecutionHistoryintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, string eventLevel)
         {
-            var hostName = "http://" + _dependency.Container.IP;
-            var port = _dependency.Container.Port;
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch, false);
+            var hostName = "http://" + dependency.Container.IP;
+            var port = dependency.Container.Port;
             var loggerSource = new SerilogElasticsearchSource
             {
                 Port = port,
@@ -195,7 +162,7 @@ namespace Warewolf.Auditing.Tests
             Task.Delay(225).Wait();
         }
 
-        static Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId, Guid resourceId)
+        Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId, Guid resourceId)
         {
             var mockedDataObject = new Mock<IDSFDataObject>();
             mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
@@ -209,7 +176,7 @@ namespace Warewolf.Auditing.Tests
             return mockedDataObject;
         }
 
-        static Mock<IDSFDataObject> SetupDataObjectWithAssignedInputsAndError(Guid executionId, Guid resourceId)
+        Mock<IDSFDataObject> SetupDataObjectWithAssignedInputsAndError(Guid executionId, Guid resourceId)
         {
             var errors = new HashSet<string>();
             errors.Add("Error Message");
@@ -232,7 +199,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(Elasticsearch.Net.ElasticsearchClientException))]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
             var auditQueryable = new AuditQueryableElastic("http://invalid-elastic-source", string.Empty, string.Empty, AuthenticationType.Anonymous, string.Empty, string.Empty);
@@ -262,21 +229,23 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [DoNotParallelize]
         public void AuditQueryableElastic_QueryTriggerData_FilterBy_ResourceId()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadExecutionHistoryintoElastic(executionId, resourceId, "QueryTriggerData", "details", "Info");
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ResourceId", _executionHistoryResourceId.ToString().ToStringBuilder()}
+                {"ResourceId", resourceId.ToString().ToStringBuilder()}
             };
             var result = auditQueryable.QueryTriggerData(query);
             var jsonQuery = new JObject
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.ResourceId"] = _executionHistoryResourceId
+                    ["fields.Data.ResourceId"] = resourceId
                 }
             };
             Assert.AreEqual(jsonQuery.ToString(), auditQueryable.Query);
@@ -289,9 +258,12 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_NoParameters()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Info);
+            //
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
             var query = new Dictionary<string, StringBuilder>();
-
             var results = auditQueryable.QueryLogData(query);
             var match_all = new JObject
             {
@@ -308,16 +280,23 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId_EventLevel_Debug()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ExecutionID", _debugExecutionId.ToString().ToStringBuilder()},
+                {"ExecutionID", executionId.ToString().ToStringBuilder()},
                 {"EventLevel", "Debug".ToStringBuilder()}
             };
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
+            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
+            var results = auditQueryable.QueryLogData(query);
+            Assert.IsTrue(results.Any());
+
             var jsonQueryexecutionId = new JObject
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.ExecutionID"] = _debugExecutionId.ToString()
+                    ["fields.Data.ExecutionID"] = executionId.ToString()
                 }
             };
             var jsonLevel = new JObject
@@ -337,11 +316,7 @@ namespace Warewolf.Auditing.Tests
             var obj = new JObject();
             obj.Add("bool", objMust);
 
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
-            Assert.IsTrue(results.Any());
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
         }
 
         [TestMethod]
@@ -350,9 +325,14 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Info);
+            //
+
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ExecutionID", _infoExecutionId.ToString().ToStringBuilder()}
+                {"ExecutionID", executionId.ToString().ToStringBuilder()}
             };
 
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
@@ -362,7 +342,7 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.ExecutionID"] = _infoExecutionId.ToString()
+                    ["fields.Data.ExecutionID"] = executionId.ToString()
                 }
             };
             jArray.Add(json);
@@ -371,7 +351,7 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
             Assert.IsTrue(results.Any());
         }
 
@@ -381,6 +361,11 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Debug()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
+            //
+
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Debug".ToStringBuilder()}
@@ -403,7 +388,7 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
             Assert.IsTrue(results.Any());
         }
 
@@ -413,13 +398,16 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Information()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Information".ToStringBuilder()}
             };
-
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Info);
             var auditQueryable = GetAuditQueryable("AuditingSettingsData");
             var results = auditQueryable.QueryLogData(query);
+            Assert.IsTrue(results.Any());
             var jArray = new JArray();
             var json = new JObject
             {
@@ -434,8 +422,7 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
-            Assert.IsTrue(results.Any());
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
         }
 
         [TestMethod]
@@ -444,6 +431,10 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Warning()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Warn);
+            //
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Warning".ToStringBuilder()}
@@ -465,16 +456,21 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
             Assert.IsTrue(results.Any());
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [DoNotParallelize]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Error()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Error);
+            //
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Error".ToStringBuilder()}
@@ -497,7 +493,7 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
             Assert.IsTrue(results.Any());
         }
 
@@ -507,6 +503,10 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Fatal()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Fatal);
+            //
             var query = new Dictionary<string, StringBuilder>
             {
                 {"EventLevel", "Fatal".ToStringBuilder()}
@@ -528,7 +528,7 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
             Assert.IsTrue(results.Any());
         }
 
@@ -538,6 +538,10 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Info);
+            //
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
             var StartDateTime = DateTime.Now.AddDays(-1);
             var CompletedDateTime = DateTime.Now.AddMinutes(10);
@@ -569,7 +573,7 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
             Assert.IsTrue(results.Any());
         }
 
@@ -579,6 +583,10 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_DateTime_EventLevel()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
+            //
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
             var StartDateTime = DateTime.Now.AddDays(-1);
             var CompletedDateTime = DateTime.Now.AddMinutes(10);
@@ -619,7 +627,7 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
             Assert.IsTrue(results.Any());
         }
 
@@ -629,13 +637,17 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_EventLevel_executionID()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
+
             var dtFormat = "yyyy-MM-ddTHH:mm:ss";
             var StartDateTime = DateTime.Now.AddDays(-1);
             var CompletedDateTime = DateTime.Now.AddMinutes(10);
 
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ExecutionID", _dateTimeexecutionId.ToString().ToStringBuilder()},
+                {"ExecutionID", executionId.ToString().ToStringBuilder()},
                 {"EventLevel", "Debug".ToStringBuilder()},
                 {"StartDateTime", StartDateTime.ToString(dtFormat).ToStringBuilder()},
                 {"CompletedDateTime", CompletedDateTime.ToString(dtFormat).ToStringBuilder()}
@@ -653,7 +665,7 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.ExecutionID"] = _dateTimeexecutionId.ToString()
+                    ["fields.Data.ExecutionID"] = executionId.ToString()
                 }
             };
 
@@ -680,7 +692,7 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query, $"Audit queriable {auditQueryable.Query} not equal to expected value of {obj.ToString()}");
+            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
 
             Assert.IsTrue(results.Any());
         }
@@ -691,12 +703,16 @@ namespace Warewolf.Auditing.Tests
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_On_UrlEncoded_DateTime_EventLevel_and_executionID_Should_Not_Break()
         {
             //setup
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
+            //
             var StartDateTime = "2020%2F01%2F01+01%3A40%3A18";
             var CompletedDateTime = "2028%2F10%2F03+01%3A40%3A18";
 
             var query = new Dictionary<string, StringBuilder>
             {
-                {"ExecutionID", _urlEncodedDateTimeexecutionId.ToString().ToStringBuilder()},
+                {"ExecutionID", executionId.ToString().ToStringBuilder()},
                 {"EventLevel", "Debug".ToStringBuilder()},
                 {"StartDateTime", StartDateTime.ToStringBuilder()},
                 {"CompletedDateTime", CompletedDateTime.ToStringBuilder()}
@@ -714,7 +730,7 @@ namespace Warewolf.Auditing.Tests
             {
                 ["match"] = new JObject
                 {
-                    ["fields.Data.ExecutionID"] = _urlEncodedDateTimeexecutionId.ToString()
+                    ["fields.Data.ExecutionID"] = executionId.ToString()
                 }
             };
 
@@ -741,7 +757,7 @@ namespace Warewolf.Auditing.Tests
 
             var obj = new JObject();
             obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), audit.Query, $"Audit queriable {audit.Query} not equal to expected value of {obj.ToString()}");
+            Assert.AreEqual(obj.ToString(), audit.Query);
             Assert.IsTrue(results.Any());
         }
     }

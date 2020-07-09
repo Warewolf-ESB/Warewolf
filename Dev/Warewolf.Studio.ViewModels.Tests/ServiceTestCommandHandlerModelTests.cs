@@ -434,9 +434,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestCommandHandlerModel))]
+        [DoNotParallelize]
         public void ServiceTestCommandHandlerModel_ResourceModelTest_ShouldUpdateTestWithResourceDeletedResult()
         {
             //------------Setup for test--------------------------
