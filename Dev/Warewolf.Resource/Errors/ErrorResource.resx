@@ -1340,6 +1340,9 @@ Please contact your Windows System Administrator.</value>
   <data name="TokenNotAuthorizedToExecuteOuterWorkflowException" xml:space="preserve">
     <value>Invalid Authentication Token or invalid permissions to Execute resource {1}.</value>
   </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>Internal Server Error.</value>
+  </data>
   <data name="NotXmlResults" xml:space="preserve">
     <value>Invalid command sent to ExecuteXmlReader.  The command must return an Xml result.</value>
   </data>

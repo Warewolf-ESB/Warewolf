@@ -35,7 +35,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 {
                     if (!TryOverrideByToken(ref user))
                     {
-                        throw new HttpException(401,
+                        throw new HttpException((int)HttpStatusCode.Unauthorized,
                             Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
                     }
                 }
