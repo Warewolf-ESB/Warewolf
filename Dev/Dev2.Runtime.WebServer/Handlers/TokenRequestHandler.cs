@@ -180,10 +180,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 var json = JsonConvert.DeserializeObject<UserGroupsResponse>(resp.Content);
-
-
+                var userGroups = json?.UserGroups.ToList();
                 bool hasInvalidOutputs = false;
-                foreach (var o in (json?.UserGroups))
+                hasInvalidOutputs = userGroups.Count == 0;
+                foreach (var o in (userGroups))
                 {
                     if (string.IsNullOrEmpty(o.Name) || string.IsNullOrWhiteSpace(o.Name))
                     {
