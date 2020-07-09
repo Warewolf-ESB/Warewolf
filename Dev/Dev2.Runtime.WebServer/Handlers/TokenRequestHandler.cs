@@ -11,9 +11,11 @@
 using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Principal;
 using System.Threading;
-using System.Web;
+using System.Web.Http;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
@@ -49,6 +51,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             : this(resourceCatalog, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, new JwtManager(securitySettings))
         {
         }
+
         private TokenRequestHandler(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IJwtManager jwtManager)
             : base(resourceCatalog, TestCatalog.Instance, TestCoverageCatalog.Instance, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, jwtManager)
         {
@@ -103,6 +106,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
         private static INamedGuid OverrideResource { get; set; }
+
         private void LoadSecuritySettings()
         {
             var securitySettings = _securitySettings.ReadSettingsFile(new ResourceNameProvider());
@@ -115,6 +119,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 serviceName += ".json";
             }
+
             var a = new Executor(_workspaceRepository, _resourceCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
             a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
             var response = a.BuildResponse(webRequest, serviceName);
@@ -165,15 +170,27 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     throw executionDto.DataObject.ExecutionException;
                 }
+
                 var executionDtoExtensions = new ExecutionDtoExtensions(executionDto);
                 var resp = executionDtoExtensions.CreateResponse();
                 var content = resp.Content;
                 if (!content.Contains("UserGroups"))
                 {
-                    throw new HttpException(500, "internal server error");
+                    ThrowInternalServerError();
                 }
+
                 var json = JsonConvert.DeserializeObject<UserGroupsResponse>(resp.Content);
-                var hasInvalidOutputs = json?.UserGroups?.Any(o => string.IsNullOrWhiteSpace(o.Name)) ?? false;
+
+
+                bool hasInvalidOutputs = false;
+                foreach (var o in (json?.UserGroups))
+                {
+                    if (string.IsNullOrEmpty(o.Name) || string.IsNullOrWhiteSpace(o.Name))
+                    {
+                        hasInvalidOutputs = true;
+                        break;
+                    }
+                }
 
                 return hasInvalidOutputs
                     ? ThrowInternalServerError()
@@ -183,13 +200,19 @@ namespace Dev2.Runtime.WebServer.Handlers
             private static IResponseWriter ThrowInternalServerError()
             {
                 Dev2Logger.Warn("invalid login override workflow selected: outputs not valid", GlobalConstants.WarewolfWarn);
-                throw new HttpException(500, "internal server error");
+
+                var response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+                throw new HttpResponseException(response);
             }
 
             public class UserGroup
             {
                 public string Name { get; set; }
             }
+
             public class UserGroupsResponse
             {
                 public UserGroup[] UserGroups { get; set; }
@@ -205,7 +228,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     return rs.New(encryptedPayload, "application/json");
                 }
 
-                throw new HttpException(500, "internal server error");
+                return ThrowInternalServerError();
             }
         }
     }
