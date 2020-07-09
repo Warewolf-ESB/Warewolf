@@ -353,7 +353,9 @@ namespace Warewolf.Studio.Views
                 {
                     var environmentViewModel = item as IEnvironmentViewModel;
                     singleEnvironmentExplorerViewModel.SelectedEnvironment = environmentViewModel;
+                    // TODO: This will be reintroduced when we allow folder and server selection
                     singleEnvironmentExplorerViewModel.SelectedItem = environmentViewModel;
+                    singleEnvironmentExplorerViewModel.SelectedItem = null;
                 }
             }
             else if (treeView?.DataContext is MergeServiceViewModel mergeServiceViewModel)

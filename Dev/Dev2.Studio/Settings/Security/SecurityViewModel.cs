@@ -395,24 +395,28 @@ namespace Dev2.Settings.Security
                 return;
             }
 
-            string resourceName;
-            string resourcePath;
-            Guid resourceId;
-            if (resourceModel is IEnvironmentViewModel environmentViewModel)
-            {
-                resourceName = environmentViewModel.ResourceName.Replace(" (Connected)", "");
-                resourceId = environmentViewModel.ResourceId;
-                resourcePath = environmentViewModel.ResourcePath;
-            }
-            else
-            {
-                resourceId = resourceModel.ResourceId;
-                resourceName = resourceModel.ResourcePath;
-                resourcePath = resourceModel.ResourcePath;
-            }
-            permission.ResourceID = resourceId;
-            permission.ResourceName = resourceName;
-            permission.ResourcePath = resourcePath;
+            // TODO: This will be reintroduced when we allow folder and server selection
+            // string resourceName;
+            // string resourcePath;
+            // Guid resourceId;
+            // if (resourceModel is IEnvironmentViewModel environmentViewModel)
+            // {
+            //     resourceName = environmentViewModel.ResourceName.Replace(" (Connected)", "");
+            //     resourceId = environmentViewModel.ResourceId;
+            //     resourcePath = environmentViewModel.ResourcePath;
+            // }
+            // else
+            // {
+            //     resourceId = resourceModel.ResourceId;
+            //     resourceName = resourceModel.ResourcePath;
+            //     resourcePath = resourceModel.ResourcePath;
+            // }
+            // permission.ResourceID = resourceId;
+            // permission.ResourceName = resourceName;
+            // permission.ResourcePath = resourcePath;
+            permission.ResourceID = resourceModel.ResourceId;
+            permission.ResourceName = resourceModel.ResourcePath;
+            permission.ResourcePath = resourceModel.ResourcePath;
         }
 
         private IExplorerTreeItem PickResource(IWindowsGroupPermission permission)
