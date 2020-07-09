@@ -29,6 +29,7 @@ namespace Dev2.Tests.Activities
     public class ServiceTestHelperTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_NotServiceTestExecution_DoesNothing()
@@ -47,6 +48,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_NullServiceSteps_DoesNothing()
@@ -60,6 +62,7 @@ namespace Dev2.Tests.Activities
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_MockServiceSteps_DoesNothing()
@@ -78,6 +81,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertStepIDNotMatching_DoesNothing()
@@ -96,6 +100,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertStepForEach_DoesNothing()
@@ -114,6 +119,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertStepSelectAndApply_DoesNothing()
@@ -132,6 +138,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertStepSequence_DoesNothing()
@@ -150,6 +157,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertStepNullOutputs_DoesNothing()
@@ -168,6 +176,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertStepNoOutputs_DoesNothing()
@@ -186,6 +195,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertNoDebugItems_NullResult_SetResultInvalid()
@@ -213,6 +223,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertNoDebugItems_Result_SetResultInvalid()
@@ -241,6 +252,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertNoDebugStates_NullResult_SetResultInvalid()
@@ -270,6 +282,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertNoDebugStates_Result_SetResultInvalid()
@@ -300,6 +313,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_Result_SetResultPassed()
@@ -335,6 +349,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_MultipleValuesForCriteria_Result_SetResultPassed()
@@ -372,6 +387,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_DebugDataObject_AssertWithStates_Result_SetResultPassed()
@@ -411,6 +427,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_DebugDataObject_NoVariable_AssertWithStates_Result_SetResultPassed()
@@ -449,6 +466,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_NullStepOutputs_AssertWithStates_Result_SetResultPassed()
@@ -478,6 +496,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_Result_SetOutputResultPassed()
@@ -513,6 +532,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_Result_SetResultFailed()
@@ -548,6 +568,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_Result_SetOutputResultFailed()
@@ -583,6 +604,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariable_SetResultInvalid()
@@ -618,6 +640,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariable_SetOutputResultInvalid()
@@ -653,6 +676,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyValue_SetResultInvalid()
@@ -688,6 +712,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyValue_SetOutputResultInvalid()
@@ -723,6 +748,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariableWithValue_SetResultInvalid()
@@ -758,6 +784,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariableWithValue_SetOutputResultInvalid()
@@ -793,6 +820,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariableEmptyValue_SetResultInvalid()
@@ -828,6 +856,7 @@ namespace Dev2.Tests.Activities
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestHelper_UpdateDebugStateWithAssertions")]
         public void TestHelper_UpdateDebugStateWithAssertions_AssertWithStates_EmptyVariableEmptyValue_SetOutputResultInvalid()

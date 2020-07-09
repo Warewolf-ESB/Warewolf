@@ -14,9 +14,9 @@ namespace Warewolf.UnitTestAttributes
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
-            "t004124.premier.local",
             "RSAKLFSVRHST1.premier.local",
-            "rsaklfwynand",
+            "t004124.premier.local",
+            "rsaklfwynand.premier.local",
             "PIETER.premier.local",
             "localhost"
         };
@@ -26,7 +26,6 @@ namespace Warewolf.UnitTestAttributes
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
         static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
-        static readonly string BackupCIRemotePort = "3142";
         static readonly bool EnableDocker = true;
 
         public enum ContainerType
@@ -81,7 +80,7 @@ namespace Warewolf.UnitTestAttributes
 
         public Depends() => throw new ArgumentNullException("Missing type of the container.");
 
-        public Depends(ContainerType type)
+        public Depends(ContainerType type, bool performSourceInjection = true)
         {
             _containerType = type;
             if (EnableDocker)
@@ -102,9 +101,9 @@ namespace Warewolf.UnitTestAttributes
                         }
                         catch (WebException)
                         {
-                            retryCount++;
+                            //Retry another Rig Ops host
                         }
-                        if (result == "" || result.Contains("\"IP\": \"\""))
+                        if (result == "" || result.Contains("\"ID\": \"\""))
                         {
                             retryCount++;
                         }
@@ -126,10 +125,14 @@ namespace Warewolf.UnitTestAttributes
             }
             else
             {
-                Container.IP = BackupServer;
-                Container.Port = GetBackupPort(_containerType);
+                Container = new Container()
+                {
+                    IP = BackupServer,
+                    Port=GetBackupPort(_containerType)
+                };
             }
 
+            if (!performSourceInjection) return;
             switch (_containerType)
             {
                 case ContainerType.MySQL:
@@ -158,7 +161,7 @@ namespace Warewolf.UnitTestAttributes
             switch (type)
             {
                 case ContainerType.CIRemote:
-                    return BackupCIRemotePort;
+                    return "3144";
                 case ContainerType.MSSQL:
                     return "1433";
                 case ContainerType.MySQL:
@@ -185,7 +188,7 @@ namespace Warewolf.UnitTestAttributes
 
         public void Dispose()
         {
-            //Ashley: Stop containers when they are not in use as an optimization.
+            //TODO: Stop containers when they are not in use as an optimization.
         }
 
         void Stop()

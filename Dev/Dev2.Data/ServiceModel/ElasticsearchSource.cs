@@ -22,11 +22,11 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class ElasticsearchSource : Resource, IDisposable, IResourceSource, IElasticsearchSource,IAuditingSource
+    public class ElasticsearchSource : Resource, IDisposable, IResourceSource, IElasticsearchSource, IAuditingSource
     {
         const string DefaultPort = "9200";
         const string DefaultSearchIndex = "warewolflogs";
-        private const string DefaultHostname = "http://localhost";
+        const string DefaultHostname = "http://localhost";
         public string HostName { get; set; }
         public string Password { get; set; }
         public string Username { get; set; }

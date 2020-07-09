@@ -17,6 +17,7 @@ using System.Windows;
 namespace Warewolf.Studio.ViewModels.Tests.Search
 {
     [TestClass]
+    [DoNotParallelize]//CustomContainer.Register
     public class SearchViewModelTests
     {
         private SearchViewModel _target;

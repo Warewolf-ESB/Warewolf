@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateDropBoxActivity_GivenIsNew_ShouldNotBeNull()
         {
@@ -36,6 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTask_GivenDropBoxDownload_ShouldReturnFileMetadata()
         {
@@ -50,6 +52,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
         public void CreateNewDropboxUpload_GivenMissingToPath_ShouldBeInValid()
@@ -63,6 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         } 
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewDropboxDownload_GivenMissingToPath_ShouldBeValid()
         {
@@ -75,6 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Ashley Lewis")]
         public void ExecuteDropboxDownload_Throws_ShouldReturnFailedResult()
         {

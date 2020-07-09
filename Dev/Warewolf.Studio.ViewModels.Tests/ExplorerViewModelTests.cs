@@ -16,6 +16,7 @@ using Moq;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class ExplorerViewModelTests
     {
         ExplorerViewModel _target;

@@ -38,6 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region GetDebugInputs/Outputs
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfPathDelete_Execution")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -59,6 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathDelete_UpdateForEachInputs")]
         public void DsfPathDelete_UpdateForEachInputs_NullUpdates_DoesNothing()
@@ -75,6 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathDelete_UpdateForEachInputs")]
         public void DsfPathDelete_UpdateForEachInputs_MoreThan1Updates_DoesNotUpdates()
@@ -94,6 +97,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathDelete_UpdateForEachInputs")]
         public void DsfPathDelete_UpdateForEachInputs_1Update_Updates()
@@ -112,6 +116,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathDelete_UpdateForEachOutputs")]
         public void DsfPathDelete_UpdateForEachOutputs_NullUpdates_DoesNothing()
@@ -127,6 +132,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathDelete_UpdateForEachOutputs")]
         public void DsfPathDelete_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
@@ -145,6 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathDelete_UpdateForEachOutputs")]
         public void DsfPathDelete_UpdateForEachOutputs_1Updates_UpdateResult()
@@ -162,6 +169,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathDelete_GetForEachInputs")]
         public void DsfPathDelete_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -180,6 +188,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathDelete_GetForEachOutputs")]
         public void DsfPathDelete_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
@@ -198,6 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("DsfPathDelete_GetState")]
         public void DsfPathDelete_GetState_ReturnsStateVariable()

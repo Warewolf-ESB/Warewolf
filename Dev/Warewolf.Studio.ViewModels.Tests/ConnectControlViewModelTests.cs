@@ -30,6 +30,7 @@ using Warewolf.Testing;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class ConnectControlViewModelTests
     {
         Mock<IServer> _serverMock;

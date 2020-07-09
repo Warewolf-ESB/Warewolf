@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -165,6 +166,68 @@ namespace Warewolf.Auditing.Tests
             //------------------------------Assert---------------------------------
             Assert.AreEqual(expected: expectedException.Message, actual: actualAudit.Exception.Message);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(IStateAuditLogger))]
+        public void IStateAuditLogger_IsValidLogLevels()
+        {
+
+            var log = new StateAuditLogger();
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.TRACE, "Error"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.TRACE, "Fatal"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.TRACE, "Warn"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.TRACE, "Info"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.TRACE, "Debug"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.TRACE, "Trace"));
+            //=======================================================================
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.OFF, "Error"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.OFF, "Debug"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.OFF, "Fatal"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.OFF, "Warn"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.OFF, "Trace"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.OFF, "Info"));
+            //=======================================================================
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.DEBUG, "Error"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.DEBUG, "Debug"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.DEBUG, "Fatal"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.DEBUG, "Warn"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.DEBUG, "Info"));
+
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.DEBUG, "Trace"));
+            //=======================================================================
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.INFO, "Error"));            
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.INFO, "Fatal"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.INFO, "Warn"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.INFO, "Info"));
+
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.INFO, "Debug"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.INFO, "Trace"));
+            //=======================================================================
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.WARN, "Error"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.WARN, "Fatal"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.WARN, "Warn"));
+
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.WARN, "Info"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.WARN, "Debug"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.WARN, "Trace"));
+            //=======================================================================
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.ERROR, "Error"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.ERROR, "Fatal"));
+
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.ERROR, "Warn"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.ERROR, "Info"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.ERROR, "Debug"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.ERROR, "Trace"));
+            //=======================================================================
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.FATAL, "Error"));
+            Assert.IsTrue(log.IsValidLogLevel(LogLevel.FATAL, "Fatal"));
+
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.FATAL, "Warn"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.FATAL, "Info"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.FATAL, "Debug"));
+            Assert.IsFalse(log.IsValidLogLevel(LogLevel.FATAL, "Trace"));
+           
+        }
 
         IStateAuditLogger GetIAuditStateLogger(IWebSocketPool webSocketPool) => new StateAuditLogger(webSocketPool);
 
@@ -183,6 +246,7 @@ namespace Warewolf.Auditing.Tests
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => workflowName);
             mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);
             mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId);
+
             var principal = new Mock<IPrincipal>();
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
@@ -199,6 +263,7 @@ namespace Warewolf.Auditing.Tests
             mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Some Workflow");
             mockedDataObject.Setup(o => o.ResourceID).Returns(() => Guid.NewGuid());
+
             var principal = new Mock<IPrincipal>();
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);

@@ -10,6 +10,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
     public class DsfXPathActivityComparerTests
     {
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void UniqueIDEquals_EmptyXpathTools_AreEqual()
         {
@@ -26,6 +27,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void UniqueIDEquals_Given_DifferentXpathToolIds_AreNotEqual()
         {
@@ -43,6 +45,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SamexPathTool_IsEqual()
         {
@@ -59,6 +62,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentxPathTools_Is_Not_Equal()
         {
@@ -75,6 +79,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_SourceString_Value_IsEqual()
         {
@@ -91,6 +96,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Different_SourceString_Value_IsNOT_Equal()
         {
@@ -107,6 +113,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Same_SourceString_Value_Different_Casing_IsNotEqual()
         {
@@ -123,6 +130,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_Empty_ResultCollection_IsEqual()
         {
@@ -140,6 +148,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_ResultCollection_With_Same_Items_IsEqual()
         {
@@ -161,6 +170,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_ResultCollection_With_Empty_Items_IsEqual()
         {
@@ -178,6 +188,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_ResultCollection_With_Different_Items_IsNotEqual()
         {
@@ -207,6 +218,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_ResultCollection_With_Same_Items_In_Different_Indexes_IsNotEqual()
         {
@@ -247,6 +259,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyXpathDtos_AreEqual()
         {
@@ -263,6 +276,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameXPath_XpathDtos_AreEqual()
         {
@@ -279,6 +293,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentXPath_XpathDtos_AreNotEqual()
         {
@@ -295,6 +310,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameOutputVariable_XpathDtos_AreEqual()
         {
@@ -311,6 +327,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentOutputVariable_XpathDtos_AreNotEqual()
         {
@@ -327,6 +344,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameIndexNumber_XpathDtos_AreEqual()
         {
@@ -343,6 +361,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentIndexNumber_XpathDtos_AreNotEqual()
         {
@@ -359,6 +378,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameInserted_XpathDtos_AreEqual()
         {
@@ -375,6 +395,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentInserted_XpathDtos_AreNotEqual()
         {
@@ -391,6 +412,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameIsXpathVariableFocused_XpathDtos_AreEqual()
         {
@@ -407,6 +429,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentIsXpathVariableFocused_XpathDtos_AreNotEqual()
         {
@@ -423,6 +446,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
         
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameIsOutputVariableFocused_XpathDtos_AreEqual()
         {
@@ -439,6 +463,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentIsOutputVariableFocused_XpathDtos_AreNotEqual()
         {
@@ -455,6 +480,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_SameWatermarkTextVariable_XpathDtos_AreEqual()
         {
@@ -471,6 +497,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentWatermarkTextVariable_XpathDtos_AreNotEqual()
         {
@@ -487,6 +514,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void Equals_Given_DifferentRefType_XpathDtos_AreNotEqual()
         {
@@ -503,6 +531,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Rory McGuire")]
         public void Equals_Given_DifferentTypes_XpathDto_AreNotEqual()
         {

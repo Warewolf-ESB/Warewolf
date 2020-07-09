@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Massimo Guerrera")]
         [TestCategory("DsfCalculateActivity_OnExecute")]
         public void AggregateCalculateActivity_OnExecute_GetCurrentDateTime_ResultContainsMilliseconds()
@@ -55,6 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_ValidFunction_Expected_EvalPerformed()
         {
 
@@ -76,6 +78,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfAggregateCalculateActivity_GetOutputs")]
         public void DsfAggregateCalculateActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
@@ -90,6 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_SimpleFunctionHandling_Expected_EvalPerformed()
         {
 
@@ -111,6 +115,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         // SN - 07-09-2012 - Commented out until intellisense issue is patched up
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_CommaSeperatedArgs_Expected_EvalPerformed()
         {
 
@@ -133,6 +138,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         //Bug 6438
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_ConcatenateScalar_Expected_EvalPerformed()
         {
             TestStartNode = new FlowStep
@@ -152,6 +158,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_RightScalar_Expected_EvalPerformed()
         {
             TestStartNode = new FlowStep
@@ -171,6 +178,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_LeftScalar_Expected_EvalPerformed()
         {
             TestStartNode = new FlowStep
@@ -191,6 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_ConcatenateRecSet_Expected_EvalPerformed()
         {
             TestStartNode = new FlowStep
@@ -212,6 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         // Bug 8467 - Travis.Frisinger
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_RecordsetWithStar_Expected_SumOf10()
         {
             TestStartNode = new FlowStep
@@ -232,6 +242,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_MultRecordsetWithStar_Expected_SumOf20()
         {
             TestStartNode = new FlowStep
@@ -252,6 +263,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         public void CalculateActivity_MultRecordsetWithStar_WhenMissingValuesError_Expected_SumOf20()
         {
             TestStartNode = new FlowStep
@@ -274,6 +286,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_GetForEachInputs")]
         public void DsfCalculateActivity_GetForEachInputs_NullContext_EmptyList()
@@ -287,6 +300,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_GetForEachInputs")]
         public void DsfCalculateActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
@@ -303,6 +317,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]
         public void DsfCalculateActivity_UpdateForEachInputs_GivenNullUpdates_DoNothing()
@@ -318,6 +333,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]
         public void DsfCalculateActivity_UpdateForEachInputs_GivenMoreThanOneUpdates_DoNothing()
@@ -335,6 +351,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]
         public void DsfCalculateActivity_UpdateForEachInputs_GivenOneUpdate_UpdatesExpressionToItem2InTuple()
@@ -351,6 +368,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
         public void DsfCalculateActivity_UpdateForEachOutputs_GivenNullUpdates_DoNothing()
@@ -366,6 +384,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
         public void DsfCalculateActivity_UpdateForEachOutputs_GivenMoreThanOneUpdates_DoNothing()
@@ -383,6 +402,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
         public void DsfCalculateActivity_UpdateForEachOutputs_GivenOneUpdate_UpdatesExpressionToItem2InTuple()
@@ -399,6 +419,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
         public void DsfCalculateActivity_GetState_Returns_Inputs_And_Outputs()

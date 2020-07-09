@@ -174,7 +174,6 @@ namespace Dev2.Core.Tests
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
             resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
-
             var envConn = SetupMockConnection();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
@@ -197,9 +196,8 @@ namespace Dev2.Core.Tests
 
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
 
-
             // FetchResourceDefinitionService
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
 
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()));
 
@@ -208,7 +206,6 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(expected);
         }
 
-        // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithDifferentEnvID()
         {
@@ -247,7 +244,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.ActiveServer).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
 
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
 
@@ -257,7 +254,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
         {
             var workspaceID = Guid.NewGuid();
@@ -302,7 +298,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
 
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.AtLeastOnce());
 
@@ -339,7 +335,6 @@ namespace Dev2.Core.Tests
         #region Close Context
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceSaved_RemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved()
         {
             CreateFullExportsAndVm();
@@ -359,7 +354,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceNotSavedPopupOk_RemoveWorkspaceItemCalledAndContextRemovedAndSaveResourceEventAggregatorMessage()
         {
             CreateFullExportsAndVm();
@@ -914,7 +908,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Description("Makes sure that new workflow only calls TempSave, not save on the resource repository")]
         [Owner("Jurie Smit")]
-        [DoNotParallelize]
         public void MainViewModel_Regression_NewWorkFlowCommand_DoesNotSaveRepository()
         {
             //Setup
@@ -1213,7 +1206,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
             var serverID = Guid.NewGuid();
 
@@ -1272,7 +1265,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.Source).Returns(env.Object);
             envRepo.Setup(e => e.Get(It.IsAny<Guid>())).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
             var serverID = Guid.NewGuid();
 
@@ -1335,7 +1328,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
 
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
             var serverID = Guid.NewGuid();
 
@@ -1400,7 +1393,7 @@ namespace Dev2.Core.Tests
             CustomContainer.DeRegister<IServerRepository>();
             CustomContainer.Register(envRepo.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
 
             #region Setup WorkSurfaceContextViewModel1
@@ -1461,7 +1454,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
 
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object);
+            var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object);
             var resourceID = Guid.NewGuid();
 
             #region Setup WorkSurfaceContextViewModel1
@@ -1499,7 +1492,6 @@ namespace Dev2.Core.Tests
         #region OnDeactivate
 
         [TestMethod]
-        [DoNotParallelize]
         public void MainViewModelOnDeactivateWithTrueExpectedSavesWorkspaceItems()
         {
             var wsiRepo = new Mock<IWorkspaceItemRepository>();
@@ -1522,7 +1514,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(mock => mock.Source).Returns(env.Object);
 
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
 
             viewModel.TestClose();
             wsiRepo.Verify(r => r.Write());
@@ -1569,11 +1561,10 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
             envRepo.Setup(e => e.Source).Returns(env.Object);
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
+            var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, new Mock<IPopupController>().Object, asyncWorker.Object, false);
             viewModel.Items.Add(contextViewModel);
 
             viewModel.TestClose();
-
         }
 
         [TestMethod]
@@ -2005,7 +1996,6 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditSqlServerSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditSqlServerSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2037,7 +2027,6 @@ namespace Dev2.Core.Tests
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditMySqlSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2068,7 +2057,6 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditPostgreSqlSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditPostgreSqlSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2099,7 +2087,6 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditOracleSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditOracleSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2130,7 +2117,6 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditOdbcSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
-        [DoNotParallelize]
         public void MainViewModel_EditOdbcSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -3059,7 +3045,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
         [Owner("Leon Rajindrapersadh")]
-        [DoNotParallelize]
         public void MainViewModel_OnStudioClosing_ClosesRemoteEnvironmants()
         {
             var viewModel = new Mock<IShellViewModel>();

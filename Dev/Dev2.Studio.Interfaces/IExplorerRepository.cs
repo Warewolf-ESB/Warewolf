@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Warewolf.Data;
 
@@ -41,6 +42,6 @@ namespace Dev2.Studio.Interfaces
         ICollection<IVersionInfo> GetVersions(Guid id);
         StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId);
 
-        IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, IDependencyGraphGenerator graphGenerator, IExecuteMessage dep);
+        IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, IDependencyGraphGenerator graphGenerator, IExecuteMessage dep, IPopupController popupController);
     }
 }

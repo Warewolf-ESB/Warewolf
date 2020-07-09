@@ -51,6 +51,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         #endregion
 
         [TestMethod]
+        [Timeout(60000)]
         public void GetActivityFieldsOffDsfActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             var expectedOnError = new List<string> { "[[ErrorVar]]", "http://ServerName:77/Services/LogErrors?Error=[[ErrorMsg]]" };

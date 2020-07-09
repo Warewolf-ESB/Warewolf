@@ -8,7 +8,7 @@ using System.Configuration;
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Instrumentation.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class RevulyticsTrackerTests
     {
         private RevulyticsTracker GetRevulyticsTracker()
@@ -20,7 +20,6 @@ namespace Dev2.Instrumentation.Tests
             tracker.AppName = ConfigurationManager.AppSettings["AppName"];
             tracker.ProductUrl = ConfigurationManager.AppSettings["ProductUrl"];
             tracker.AesHexKey = ConfigurationManager.AppSettings["AesHexKey"];
-
             return tracker;
         }
 
@@ -42,10 +41,9 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod()]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(RevulyticsTracker))]
-        [DoNotParallelize]
         public void RevulyticsTracker_CreateRevulyticsConfigTestSdkException()
         {
-            var tracker = RevulyticsTracker.GetTrackerInstance();
+            var tracker = new RevulyticsTracker();
             var result = tracker.CreateRevulyticsConfig();
             Assert.AreEqual(result, RUIResult.ok);
         }
@@ -55,7 +53,7 @@ namespace Dev2.Instrumentation.Tests
         [TestCategory(nameof(RevulyticsTracker))]
         public void RevulyticsTracker_CreateRevulyticsConfigTest()
         {
-            var tracker = GetRevulyticsTracker();
+            var tracker = new RevulyticsTracker();
             var configResult = tracker.CreateRevulyticsConfig();
             Assert.AreEqual(configResult, RUIResult.ok, "configNotCreated");
         }
@@ -65,7 +63,7 @@ namespace Dev2.Instrumentation.Tests
         [TestCategory(nameof(RevulyticsTracker))]
         public void RevulyticsTracker_StartSdkTest()
         {
-            var tracker = GetRevulyticsTracker();
+            var tracker = new RevulyticsTracker();
             tracker.CreateRevulyticsConfig();
             var startSdkResult = tracker.StartSdk();
             Assert.AreEqual(startSdkResult, RUIResult.ok, "sdkNotStarted");
@@ -76,7 +74,7 @@ namespace Dev2.Instrumentation.Tests
         [TestCategory(nameof(RevulyticsTracker))]
         public void RevulyticsTracker_StopSdkTest()
         {
-            var tracker = GetRevulyticsTracker();
+            var tracker = new RevulyticsTracker();
             tracker.CreateRevulyticsConfig();
             tracker.StartSdk();
             var stopResult = tracker.StopSdk();
@@ -88,7 +86,7 @@ namespace Dev2.Instrumentation.Tests
         [TestCategory(nameof(RevulyticsTracker))]
         public void RevulyticsTracker_StartSessionTest()
         {
-            var tracker = GetRevulyticsTracker();
+            var tracker = new RevulyticsTracker();
             tracker.CreateRevulyticsConfig();
             tracker.StartSdk();
             tracker.Username = "windows\\raju";
@@ -101,7 +99,7 @@ namespace Dev2.Instrumentation.Tests
         [TestCategory(nameof(RevulyticsTracker))]
         public void RevulyticsTracker_StopSessionTest()
         {
-            var tracker = GetRevulyticsTracker();
+            var tracker = new RevulyticsTracker();
             tracker.CreateRevulyticsConfig();
             tracker.StartSdk();
             tracker.Username = "windows\\raju";
@@ -116,7 +114,7 @@ namespace Dev2.Instrumentation.Tests
         [TestCategory(nameof(RevulyticsTracker))]
         public void RevulyticsTracker_SetProductVersionTest()
         {
-            var tracker = GetRevulyticsTracker();
+            var tracker = new RevulyticsTracker();
             tracker.CreateRevulyticsConfig();
             tracker.StartSdk();
             tracker.ProductVersion = "0.0.0.1";
@@ -129,7 +127,7 @@ namespace Dev2.Instrumentation.Tests
         [TestCategory(nameof(RevulyticsTracker))]
         public void RevulyticsTracker_EnableAppplicationTrackerSdkException()
         {
-            var tracker = GetRevulyticsTracker();
+            var tracker = new RevulyticsTracker();
             tracker.CreateRevulyticsConfig();
             tracker.StartSdk();
             tracker.InformationalVersion = "Git Commit ID, branch name, etc...";
@@ -140,7 +138,7 @@ namespace Dev2.Instrumentation.Tests
         [TestMethod]
         public void EnableApplicationTrackerSdkException()
         {
-            var tracker = RevulyticsTracker.GetTrackerInstance();
+            var tracker = new RevulyticsTracker();
             const string productVersion = "1.0.0.0";
             const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
@@ -174,7 +172,7 @@ namespace Dev2.Instrumentation.Tests
         [TestCategory(nameof(RevulyticsTracker))]
         public void RevulyticsTracker_EnableApplicationTrackerTestWithCorrectConfig()
         {
-            var tracker = GetRevulyticsTracker();
+            var tracker = new RevulyticsTracker();
             const string productVersion = "1.0.0.0";
             const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
@@ -232,7 +230,7 @@ namespace Dev2.Instrumentation.Tests
         [TestCategory(nameof(RevulyticsTracker))]
         public void RevulyticsTracker_DisableAppplicationTrackerTest()
         {
-            var tracker = GetRevulyticsTracker();
+            var tracker = new RevulyticsTracker();
             const string productVersion = "1.0.0.0";
             const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
