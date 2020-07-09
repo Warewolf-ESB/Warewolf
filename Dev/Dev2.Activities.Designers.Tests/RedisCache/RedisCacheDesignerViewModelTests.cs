@@ -316,7 +316,7 @@ namespace Dev2.Activities.Designers.Tests.RedisCache
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisCacheDesignerViewModel))]
-        public void SelectAndApplyDesignerViewModel_ActivityFuncIcon()
+        public void RedisCacheDesignerViewModel_ActivityFuncIcon()
         {
             var expectedId = Guid.NewGuid();
             var redisSource = new RedisSource
@@ -328,6 +328,8 @@ namespace Dev2.Activities.Designers.Tests.RedisCache
                 AuthenticationType = Runtime.ServiceModel.Data.AuthenticationType.Anonymous
             };
 
+            var key = "redisKey";
+            var ttl = 30;
             var redisSources = new List<RedisSource> { redisSource };
 
             var mockResourceRepository = new Mock<IResourceRepository>();
@@ -336,17 +338,16 @@ namespace Dev2.Activities.Designers.Tests.RedisCache
             mockServer.Setup(server => server.ResourceRepository).Returns(mockResourceRepository.Object);
 
             var mockShellViewModel = new Mock<IShellViewModel>();
+            var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
+            mockApplicationAdapter.Setup(p => p.TryFindResource(It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(mockApplicationAdapter.Object);
 
             //------------Execute Test---------------------------
-            var RedisCacheDesignerViewModel = new RedisCacheDesignerViewModel(CreateModelItem(), mockServer.Object, mockShellViewModel.Object);
+            var RedisCacheDesignerViewModel = new RedisCacheDesignerViewModel(CreateModelItem(key, ttl), mockServer.Object, mockShellViewModel.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(RedisCacheDesignerViewModel.HasLargeView);
             Assert.AreEqual("Assign", RedisCacheDesignerViewModel.ActivityFuncDisplayName);
-            Assert.IsNull(RedisCacheDesignerViewModel.ActivityFuncDisplayName);
-
+            Assert.IsNull(RedisCacheDesignerViewModel.ActivityFuncIcon);
         }
-
-      
-
     }
 }
