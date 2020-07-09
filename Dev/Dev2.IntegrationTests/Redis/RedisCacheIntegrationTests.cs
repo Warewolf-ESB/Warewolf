@@ -83,7 +83,7 @@ namespace Dev2.Integration.Tests.Redis
                 AssertDebugItems(debugInputs, 2, 1, null, "[[objectId2]]", "=", "ObjectName2");
 
                 AssertDebugItems(debugInputs, 3, 0, "1", null, "", "");
-                AssertDebugItems(debugInputs, 3, 1, null, isCalValue, "=", isCalValue);
+
             }
             catch (Exception e)
             {
