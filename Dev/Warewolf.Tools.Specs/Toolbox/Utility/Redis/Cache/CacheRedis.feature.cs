@@ -244,13 +244,13 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Input Variable Keys Are Less Then Cached Data Variable Keys", new string[] {
                         "RedisCache"});
-#line 58
+#line 57
 this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 58
  testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 59
  testRunner.And("I have \"key1\" of \"MyData\" with GUID and \"ttl1\" of \"15\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 60
  testRunner.And("I have \"key2\" of \"MyData\" with GUID and \"ttl2\" of \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2782 = new TechTalk.SpecFlow.Table(new string[] {
@@ -262,7 +262,7 @@ this.ScenarioSetup(scenarioInfo);
             table2782.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
-#line 62
+#line 61
  testRunner.And("an assign \"dataToStore1\" into \"DsfMultiAssignActivity1\" with", ((string)(null)), table2782, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2783 = new TechTalk.SpecFlow.Table(new string[] {
@@ -271,9 +271,9 @@ this.ScenarioSetup(scenarioInfo);
             table2783.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test21\""});
-#line 66
+#line 65
  testRunner.And("an assign \"dataToStore2\" into \"DsfMultiAssignActivity2\" with", ((string)(null)), table2783, "And ");
-#line 69
+#line 68
  testRunner.Then("the assigned \"key1\", \"ttl1\" and innerActivity \"DsfMultiAssignActivity1\" is execut" +
                     "ed by \"RedisActivity1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -286,9 +286,9 @@ this.ScenarioSetup(scenarioInfo);
             table2784.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
-#line 70
+#line 69
  testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2784, "And ");
-#line 74
+#line 73
  testRunner.Then("the assigned \"key2\", \"ttl2\" and innerActivity \"DsfMultiAssignActivity2\" is execut" +
                     "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -322,7 +322,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Var4]]",
                         "=",
                         "\"Test24\""});
-#line 75
+#line 74
  testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2785, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -331,16 +331,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Input Variable Keys Are Greater Then Cached Data Variable Keys")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RedisCache")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RedisCache")]
         public virtual void InputVariableKeysAreGreaterThenCachedDataVariableKeys()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Input Variable Keys Are Greater Then Cached Data Variable Keys", ((string[])(null)));
-#line 84
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Input Variable Keys Are Greater Then Cached Data Variable Keys", new string[] {
+                        "RedisCache"});
+#line 83
 this.ScenarioSetup(scenarioInfo);
-#line 85
+#line 84
  testRunner.Given("valid Redis source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 86
+#line 85
  testRunner.And("I have \"key1\" of \"MyData\" with GUID and \"ttl1\" of \"15\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 86
  testRunner.And("I have \"key2\" of \"MyData\" with GUID and \"ttl2\" of \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2786 = new TechTalk.SpecFlow.Table(new string[] {
@@ -352,7 +354,7 @@ this.ScenarioSetup(scenarioInfo);
             table2786.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
-#line 88
+#line 87
  testRunner.And("an assign \"dataToStore1\" into \"DsfMultiAssignActivity1\" with", ((string)(null)), table2786, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2787 = new TechTalk.SpecFlow.Table(new string[] {
@@ -370,9 +372,21 @@ this.ScenarioSetup(scenarioInfo);
             table2787.AddRow(new string[] {
                         "[[Var4]]",
                         "\"Test24\""});
-#line 92
+            table2787.AddRow(new string[] {
+                        "[[bank(1).name]]",
+                        "\"FNB\""});
+            table2787.AddRow(new string[] {
+                        "[[bank(1).id]]",
+                        "\"100\""});
+            table2787.AddRow(new string[] {
+                        "[[bank(2).name]]",
+                        "\"discovery\""});
+            table2787.AddRow(new string[] {
+                        "[[bank(2).id]]",
+                        "\"200\""});
+#line 91
  testRunner.And("an assign \"dataToStore2\" into \"DsfMultiAssignActivity2\" with", ((string)(null)), table2787, "And ");
-#line 98
+#line 101
  testRunner.Then("the assigned \"key1\", \"ttl1\" and innerActivity \"DsfMultiAssignActivity1\" is execut" +
                     "ed by \"RedisActivity1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -385,9 +399,9 @@ this.ScenarioSetup(scenarioInfo);
             table2788.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
-#line 99
+#line 102
  testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2788, "And ");
-#line 103
+#line 106
  testRunner.Then("the assigned \"key2\", \"ttl2\" and innerActivity \"DsfMultiAssignActivity2\" is execut" +
                     "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -421,7 +435,27 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Var4]]",
                         "=",
                         "\"Test24\""});
-#line 104
+            table2789.AddRow(new string[] {
+                        "null",
+                        "[[bank(1).name]]",
+                        "=",
+                        "\"FNB\""});
+            table2789.AddRow(new string[] {
+                        "null",
+                        "[[bank(1).id]]",
+                        "=",
+                        "\"100\""});
+            table2789.AddRow(new string[] {
+                        "null",
+                        "[[bank(2).name]]",
+                        "=",
+                        "\"discovery\""});
+            table2789.AddRow(new string[] {
+                        "null",
+                        "[[bank(2).id]]",
+                        "=",
+                        "\"200\""});
+#line 107
  testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2789, "Then ");
 #line hidden
             this.ScenarioCleanup();

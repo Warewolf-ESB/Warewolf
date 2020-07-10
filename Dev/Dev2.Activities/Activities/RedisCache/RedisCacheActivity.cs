@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -39,22 +38,24 @@ using WarewolfParserInterop;
 using System.Globalization;
 using Dev2.Data.Interfaces.Enums;
 using Warewolf.Data;
+using Warewolf.Exceptions;
 
 namespace Dev2.Activities.RedisCache
 {
-    [ToolDescriptorInfo("RedisCache", "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_RedisCache")]
+    [ToolDescriptorInfo(nameof(RedisCache), "Redis Cache", ToolType.Native, "416eb671-64df-4c82-c6f0-43e48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_RedisCache")]
     public class RedisCacheActivity : DsfBaseActivity, IEquatable<RedisCacheActivity>
     {
         string _result = "Success";
         private readonly ISerializer _serializer;
-
+        private string _key;
+        private IDSFDataObject _dataObject;
         private RedisCacheBase _redisCache;
-        internal List<string> _messages = new List<string>();
+        internal readonly List<string> _messages = new List<string>();
+
 
         public RedisCacheActivity()
-             : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
+            : this(Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
-
         }
 
         public RedisCacheActivity(IResourceCatalog resourceCatalog, RedisCacheBase redisCache)
@@ -76,64 +77,72 @@ namespace Dev2.Activities.RedisCache
             };
 
             _serializer = new Dev2JsonSerializer();
-
         }
 
         public Guid SourceId { get; set; }
 
-        public IDev2Activity _innerActivity { get; private set; }
+        private IDev2Activity _innerActivity;
+        private int _update;
 
         [Inputs("Key")]
         [FindMissing]
-        public string Key { get; set; }
+        public string Key
+        {
+            get => _key;
+            set => _key = value;
+        }
 
-        [FindMissing]
-        public string Response { get; set; }
+        private string KeyValue
+        {
+            get
+            {
+                var expr = _dataObject.Environment.EvalToExpression(_key, _update);
+                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update, false, true));
+                return varValue == _key ? _key : varValue;
+            }
+        }
 
-        [FindMissing]
-        public int TTL { get; set; } = 5;
+        [FindMissing] public string Response { get; set; }
 
-        public bool ShouldSerializeConsumer() => false;
+        [FindMissing] public int TTL { get; set; } = 5;
 
-        public bool ShouldSerializeConnectionFactory() => false;
+        private IRedisConnection Connection { get; set; }
 
-        internal IRedisConnection Connection { get; set; }
-
-        public bool ShouldSerializeConnection() => false;
+        public static bool ShouldSerializeConnection() => false;
 
         public ActivityFunc<string, bool> ActivityFunc { get; set; }
 
         public override IEnumerable<StateVariable> GetState()
         {
-            return new[] {
+            return new[]
+            {
                 new StateVariable
                 {
-                    Name = "Key",
+                    Name = nameof(Key),
                     Value = Key,
                     Type = StateVariable.StateType.Input
                 },
                 new StateVariable
                 {
-                    Name = "TTL",
+                    Name = nameof(TTL),
                     Value = TTL.ToString(),
                     Type = StateVariable.StateType.Input
                 },
                 new StateVariable
                 {
-                    Name="Result",
+                    Name = nameof(Result),
                     Value = Result,
                     Type = StateVariable.StateType.Output
-                }
-                ,
+                },
                 new StateVariable
                 {
-                    Name="Response",
+                    Name = nameof(Response),
                     Value = Response,
                     Type = StateVariable.StateType.Output
                 },
                 new StateVariable
                 {
-                    Name = "SourceId",
+                    Name = nameof(SourceId),
                     Value = SourceId.ToString(),
                     Type = StateVariable.StateType.Input
                 }
@@ -142,23 +151,14 @@ namespace Dev2.Activities.RedisCache
 
         public RedisSource RedisSource { get; set; }
 
-        private TimeSpan CacheTTL
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(TTL);
-            }
-        }
+        private TimeSpan CacheTTL => TimeSpan.FromSeconds(TTL);
 
-        private IDSFDataObject DataObject
-        {
-            get; set;
-        }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            DataObject = dataObject;
-            base.ExecuteTool(dataObject, update);
+            _dataObject = dataObject;
+            _update = update;
+            base.ExecuteTool(_dataObject, update);
         }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
@@ -173,63 +173,44 @@ namespace Dev2.Activities.RedisCache
                     _messages.Add(ErrorResource.RedisSourceHasBeenRemoved);
                     return _messages;
                 }
+
                 _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
-
-                var cacheTTL = TimeSpan.FromSeconds(TTL);
-
                 _innerActivity = ActivityFunc.Handler as IDev2Activity;
                 if (_innerActivity is null)
                 {
                     _errorsTo.AddError($"Activity drop box cannot be null");
                 }
+
                 if (_innerActivity.GetOutputs().Count() <= 0)
                 {
                     _errorsTo.AddError($"{_innerActivity.GetDisplayName()} activity must have at least one output variable.");
                 }
 
-                IDictionary<string, string> cachedData = GetCachedOutputs();
+                var keyValue = KeyValue;
+                var cachedData = GetCachedOutputs(keyValue);
                 if (cachedData != null)
                 {
-                    base._debugOutputs.Clear();
+                    _debugOutputs.Clear();
 
                     var debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + Key + " } found"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } found"), debugItem);
                     _debugOutputs.Add(debugItem);
 
-                    var outputIndex = 1;
-                    var outputVars = _innerActivity.GetOutputs();
-                    foreach (var outputVar in outputVars)
-                    {
-                        if (cachedData.ContainsKey(outputVar))
-                        {
-                            var item = cachedData[outputVar];
-                            DataObject.Environment.Assign(outputVar, item, 0);
-                            if (!string.IsNullOrWhiteSpace(outputVar))
-                            {
-                                debugItem = new DebugItem();
-                                debugItem = TryCreateDebugItem(DataObject.Environment, outputIndex++, new AssignValue(outputVar, item), 0);
-                                _debugOutputs.Add(debugItem);
-                            }
-                        }
-                        else
-                        {
-                            _errorsTo.AddError("cached data missing key: " + outputVar);
-                        }
-                    }
+                    LoadCacheIntoEnvironment(cachedData);
                 }
                 else
                 {
-                    base._debugOutputs.Clear();
-
+                    _debugOutputs.Clear();
                     var debugItem = new DebugItem();
 
-                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + Key + " } not found"), debugItem);
-                    _debugInputs.Add(debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("", "Redis key { " + keyValue + " } not found"), debugItem);
+                    _debugOutputs.Add(debugItem);
 
-                    _innerActivity.Execute(DataObject, 0);
+                    _innerActivity.Execute(_dataObject, _update);
 
-                    CacheOutputs();
+                    CacheOutputs(keyValue);
                 }
+
                 return new List<string> { _result };
             }
             catch (Exception ex)
@@ -242,43 +223,206 @@ namespace Dev2.Activities.RedisCache
                 if (_errorsTo.HasErrors())
                 {
                     var errorString = _errorsTo.MakeDisplayReady();
-                    DataObject.Environment.AddError(errorString);
+                    _dataObject.Environment.AddError(errorString);
                 }
             }
         }
 
-        private IDictionary<string, string> GetCachedOutputs()
+        private void LoadCacheIntoEnvironment(IDictionary<string, string> cachedData)
         {
-            var cachedData = _redisCache.Get(Key);
+            var outputs = _innerActivity.GetOutputs();
+            foreach (var outputVar in outputs)
+            {
+                if (outputVar.Length > 0)
+                {
+                    var key = outputVar;
+                    var value = cachedData.Where(kvp => kvp.Key == key).Select(kvp => kvp.Value).FirstOrDefault();
+                    var assignValuesList = _serializer.Deserialize<List<AssignValue>>(value);
+                    var counter = 1;
+                    foreach (var assignValue in assignValuesList)
+                    {
+                        _dataObject.Environment.AssignWithFrame(assignValue, _update);
+                        if (_dataObject.IsDebugMode())
+                        {
+                            AddSingleDebugOutputItem(_dataObject.Environment, counter, assignValue, _update);
+                        }
+
+                        counter++;
+                    }
+                }
+            }
+        }
+
+        private IDictionary<string, string> GetCachedOutputs(string keyValue)
+        {
+            var cachedData = _redisCache.Get(keyValue);
             if (cachedData is null)
             {
                 return null;
             }
+
             var outputs = _serializer.Deserialize<IDictionary<string, string>>(cachedData);
             return outputs;
         }
 
-        private void CacheOutputs()
+        private void CacheOutputs(string keyValue)
         {
             var data = new Dictionary<string, string>();
-            var innerCount = 1;
-
-            foreach (var output in _innerActivity.GetOutputs())
+            var activityOutputs = _innerActivity.GetOutputs();
+            var outputCounter = 1;
+            foreach (var output in activityOutputs)
             {
-                var key = output;
-                var value = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(output, 0));
+                if (output.Length > 0)
+                {
+                    if (NewRecordsetField(data, output))
+                    {
+                        outputCounter = 1;
+                    }
 
-                var debugItem = TryCreateDebugItem(DataObject.Environment, innerCount++, new AssignValue(key, value), 0);
-                _debugInputs.Add(debugItem);
-
-                data.Add(key, value);
+                    ProcessCache(output, data, outputCounter);
+                    outputCounter++;
+                }
             }
 
-            _redisCache.Set(Key, _serializer.Serialize<Dictionary<string, string>>(data), CacheTTL);
+            _redisCache.Set(keyValue, _serializer.Serialize(data), CacheTTL);
+        }
+
+        private static bool NewRecordsetField(IDictionary<string, string> data, string output)
+        {
+            if (DataListUtil.IsValueRecordset(output))
+            {
+                foreach (var cacheItem in data)
+                {
+                    var exists = DataListUtil.ExtractRecordsetNameFromValue(cacheItem.Key) == DataListUtil.ExtractRecordsetNameFromValue(output);
+                    exists = DataListUtil.ExtractFieldNameOnlyFromValue(cacheItem.Key) == DataListUtil.ExtractFieldNameOnlyFromValue(output);
+                    if (exists)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private void ProcessCache(string key, Dictionary<string, string> data, int outputCounter)
+        {
+
+            var starKey = key;
+
+            if (DataListUtil.IsValueRecordset(key) && DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Blank)
+            {
+                starKey = DataListUtil.ReplaceRecordBlankWithStar(key);
+            }
+
+            var result = _dataObject.Environment.Eval(starKey, _update);
+            var assignValueList = new List<AssignValue>();
+
+            if (result.IsWarewolfAtomListresult)
+            {
+                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
+                var atomListResult = x?.ToList();
+                var idxCounter = 1;
+                foreach (var item in atomListResult)
+                {
+                    var idxKey = key;
+                    if (DataListUtil.GetRecordsetIndexType(idxKey) == enRecordsetIndexType.Star)
+                    {
+                        idxKey = idxKey.Replace(GlobalConstants.StarExpression, idxCounter.ToString(CultureInfo.InvariantCulture));
+                    }
+
+                    if (DataListUtil.GetRecordsetIndexType(idxKey) == enRecordsetIndexType.Blank)
+                    {
+                        idxKey = idxKey.Replace("()", "(" + idxCounter.ToString(CultureInfo.InvariantCulture) + ")");
+                    }
+
+                    var assignValue = new AssignValue(idxKey, item.ToString());
+                    assignValueList.Add(assignValue);
+
+                    if (_dataObject.IsDebugMode())
+                    {
+                        AddSingleDebugOutputItem(_dataObject.Environment, idxCounter, assignValue, _update);
+                    }
+
+                    idxCounter++;
+                }
+
+                data.Add(key, _serializer.Serialize(assignValueList));
+            }
+
+            if (result.IsWarewolfAtomResult)
+            {
+                var value = ExecutionEnvironment.WarewolfEvalResultToString(result);
+                var assignKey = key;
+                if (DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Blank)
+                {
+                    assignKey = key.Replace("()", "(" + outputCounter.ToString(CultureInfo.InvariantCulture) + ")");
+                }
+
+                if (DataListUtil.GetRecordsetIndexType(key) == enRecordsetIndexType.Star)
+                {
+                    assignKey = key.Replace(GlobalConstants.StarExpression, outputCounter.ToString(CultureInfo.InvariantCulture));
+                }
+
+                var assignValue = new AssignValue(assignKey, value);
+
+                assignValueList.Add(assignValue);
+                if (_dataObject.IsDebugMode())
+                {
+                    AddSingleDebugOutputItem(_dataObject.Environment, outputCounter, assignValue, _update);
+                }
+
+                data.Add(assignKey, _serializer.Serialize(assignValueList));
+            }
+
+        }
+
+        void AddSingleDebugOutputItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
+        {
+            const string VariableLabelText = "";
+            const string NewFieldLabelText = "";
+            var debugItem = new DebugItem();
+
+            try
+            {
+                if (!DataListUtil.IsEvaluated(assignValue.Value))
+                {
+                    AddDebugItem(environment, innerCount, assignValue, update, VariableLabelText, NewFieldLabelText, debugItem);
+                }
+                else
+                {
+                    AddEvaluatedDebugItem(environment, innerCount, assignValue, update, VariableLabelText, NewFieldLabelText, debugItem);
+                }
+            }
+            catch (NullValueInVariableException)
+            {
+                AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+            }
+
+            _debugOutputs.Add(debugItem);
+        }
+
+        void AddDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string VariableLabelText, string NewFieldLabelText, DebugItem debugItem)
+        {
+            var evalResult = environment.Eval(assignValue.Name, update);
+            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
+            if (evalResult.IsWarewolfAtomResult)
+            {
+                if (evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
+                {
+                    AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
+                }
+            }
+            else
+            {
+                if (evalResult.IsWarewolfAtomListresult && evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recSetResult)
+                {
+                    AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, "", "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
+                }
+            }
         }
 
         public override List<string> GetOutputs() => new List<string> { Response, Result };
-
 
         private void AddEvaluatedDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, string VariableLabelText, string NewFieldLabelText, DebugItem debugItem)
         {
@@ -294,134 +438,17 @@ namespace Dev2.Activities.RedisCache
                 var evalResult2 = environment.Eval(assignValue.Value, update);
                 if (evalResult.IsWarewolfAtomListresult && evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recSetResult)
                 {
-
                     AddDebugItem(DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank ? new DebugItemWarewolfAtomListResult(recSetResult, evalResult2, "", assignValue.Name, VariableLabelText, NewFieldLabelText, "=") : new DebugItemWarewolfAtomListResult(recSetResult, environment.EvalToExpression(assignValue.Value, update), "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
                 }
             }
         }
 
-        DebugItem TryCreateDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
-        {
-            var debugItem = new DebugItem();
-            const string VariableLabelText = "";
-            const string NewFieldLabelText = "";
-
-            try
-            {
-                CreateDebugInput(environment, innerCount, assignValue, update, debugItem, VariableLabelText, NewFieldLabelText);
-            }
-            catch (Exception e)
-            {
-                if (e.Message.Contains("ParseError"))
-                {
-                    AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
-                    return debugItem;
-                }
-                if (!ExecutionEnvironment.IsValidVariableExpression(assignValue.Name, out string errorMessage, update))
-                {
-                    return null;
-                }
-                AddErrorDebugItem(environment, innerCount, assignValue, update, debugItem, VariableLabelText, NewFieldLabelText);
-            }
-            return debugItem;
-        }
-
-        void CreateDebugInput(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string VariableLabelText, string NewFieldLabelText)
-        {
-            if (!DataListUtil.IsEvaluated(assignValue.Value))
-            {
-                var evalResult = environment.Eval(assignValue.Name, update);
-                AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
-                if (evalResult.IsWarewolfAtomResult)
-                {
-                    if (evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
-                    {
-                        AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
-                    }
-                }
-                else
-                {
-                    AddWarewolfAtomListDebugResult(environment, assignValue, update, debugItem, VariableLabelText, NewFieldLabelText, evalResult);
-                }
-            }
-            else
-            {
-                if (DataListUtil.IsEvaluated(assignValue.Value))
-                {
-                    AddEvaluatedDebugItem(environment, innerCount, assignValue, update, NewFieldLabelText, VariableLabelText, debugItem);
-                }
-            }
-        }
-
-        void AddWarewolfAtomListDebugResult(IExecutionEnvironment environment, IAssignValue assignValue, int update, DebugItem debugItem, string VariableLabelText, string NewFieldLabelText, CommonFunctions.WarewolfEvalResult evalResult)
-        {
-            if (evalResult.IsWarewolfAtomListresult)
-            {
-                if (DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
-                {
-                    AddDebugItem(new DebugItemWarewolfAtomListResult(null, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
-                }
-                else
-                {
-                    if (evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recSetResult)
-                    {
-                        AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
-                    }
-                }
-            }
-        }
-
-
-        private void AddErrorDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string VariableLabelText, string NewFieldLabelText)
-        {
-            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
-            if (DataListUtil.IsEvaluated(assignValue.Value))
-            {
-                var newValueResult = environment.Eval(assignValue.Value, update);
-
-                if (newValueResult.IsWarewolfAtomResult)
-                {
-                    if (newValueResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult valueResult)
-                    {
-                        AddDebugItem(new DebugItemWarewolfAtomResult("", ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), environment.EvalToExpression(assignValue.Name, update), assignValue.Value, VariableLabelText, NewFieldLabelText, "="), debugItem);
-                    }
-                }
-                else
-                {
-                    if (newValueResult.IsWarewolfAtomListresult)
-                    {
-                        AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, environment.EvalToExpression(assignValue.Value, update), assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
-                    }
-                }
-            }
-            else
-            {
-                AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
-            }
-        }
-
-
-        private List<AssignValue> GetAssignValue(List<string> outputVars)
-        {
-            var data = new List<AssignValue>();
-            foreach (var output in outputVars)
-            {
-                if (!string.IsNullOrWhiteSpace(output))
-                {
-                    var key = output;
-                    var value = ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(output, 0));
-                    data.Add(new AssignValue(key, value));
-                }
-            }
-
-            return data;
-        }
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             base.GetDebugOutputs(env, update);
             return _debugOutputs?.Any() ?? false ? _debugOutputs : new List<DebugItem>();
         }
-        IDictionary<string, string> CachedData;
+
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (update == 0 && _debugInputs.Count > 1)
@@ -452,12 +479,12 @@ namespace Dev2.Activities.RedisCache
             }
 
             return base.Equals(other)
-                && string.Equals(Result, other.Result)
-                && TTL == other.TTL
-                && SourceId.Equals(other.SourceId)
-                && string.Equals(Key, other.Key)
-                && string.Equals(DisplayName, other.DisplayName)
-                && string.Equals(Response, other.Response);
+                   && string.Equals(Result, other.Result)
+                   && TTL == other.TTL
+                   && SourceId.Equals(other.SourceId)
+                   && string.Equals(Key, other.Key)
+                   && string.Equals(DisplayName, other.DisplayName)
+                   && string.Equals(Response, other.Response);
         }
 
         public override bool Equals(object obj)
@@ -492,7 +519,7 @@ namespace Dev2.Activities.RedisCache
                 hashCode = (hashCode * 397) ^ SourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (TTL != null ? TTL.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ TTL.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Connection != null ? Connection.GetHashCode() : 0);
                 return hashCode;
             }

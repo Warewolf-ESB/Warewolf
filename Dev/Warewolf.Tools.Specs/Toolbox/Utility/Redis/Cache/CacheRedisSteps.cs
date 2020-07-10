@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 
 using Dev2.Activities.RedisCache;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Serializers;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -29,6 +28,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Driver.Redis;
 using Warewolf.Storage;
 using Warewolf.UnitTestAttributes;
+using WarewolfParserInterop;
 
 namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
 {
@@ -56,7 +56,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
         public void GivenValidRedisSource()
         {
             _containerOps = new Depends(Depends.ContainerType.AnonymousRedis);
-            SetUpRedisClientConnection(_containerOps.Container.IP, "", 6380);
+            SetUpRedisClientConnection(_containerOps.Container.IP, "", int.Parse(_containerOps.Container.Port));
         }
 
         [Given(@"I have a key ""(.*)"" and ttl of ""(.*)"" milliseconds")]
@@ -473,7 +473,11 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.Redis.Cache
 
                 foreach (var item in actualData)
                 {
-                    activities.Add(new SpecAssignValue {  Name = item.Key, Value = item.Value });
+                    var assignValuesList = serializer.Deserialize<List<AssignValue>>(item.Value);
+                    foreach (var assignValue in assignValuesList)
+                    {
+                        activities.Add(new SpecAssignValue { Name = item.Key, Value = assignValue.Value });
+                    }
                 }
             }
             return activities;
