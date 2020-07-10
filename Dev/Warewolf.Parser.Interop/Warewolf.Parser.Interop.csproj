@@ -10,6 +10,7 @@
     <RootNamespace>WarewolfParserInterop</RootNamespace>
     <AssemblyName>WarewolfParserInterop</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFramework>.NETFramework,Version=v4.8</TargetFramework>
     <RuntimeIdentifier>win</RuntimeIdentifier>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
