@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,11 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Runtime.CompilerServices;
 using Warewolf.Auditing;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 using Warewolf.Streams;
 
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] 
 namespace QueueWorker
 {
     internal class NetworkLogger : ILoggerPublisher

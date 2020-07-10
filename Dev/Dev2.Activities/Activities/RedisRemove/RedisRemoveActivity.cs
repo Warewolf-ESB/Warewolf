@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -18,6 +19,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Dev2.Diagnostics;
+using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -25,6 +27,7 @@ using Warewolf.Core;
 using Warewolf.Driver.Redis;
 using Warewolf.Interfaces;
 using Warewolf.Resource.Errors;
+using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.RedisRemove
@@ -36,9 +39,13 @@ namespace Dev2.Activities.RedisRemove
 
         private RedisCacheBase _redisCache;
         internal readonly List<string> _messages = new List<string>();
+        private string _key;
+        private IDSFDataObject _dataObject;
+        private int _update;
 
+        [ExcludeFromCodeCoverage]
         public RedisRemoveActivity()
-             : this(Dev2.Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
+             : this(Runtime.Hosting.ResourceCatalog.Instance, new ResponseManager(), null)
         {
 
         }
@@ -60,11 +67,24 @@ namespace Dev2.Activities.RedisRemove
 
         [Inputs("Key")]
         [FindMissing]
-        public string Key { get; set; }
-
+        public string Key
+        {
+            get => _key;
+            set => _key = value;
+        }
+        private string KeyValue
+        {
+            get
+            {
+                var expr = _dataObject.Environment.EvalToExpression(_key, _update);
+                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update,false,true));
+                return varValue == _key ? _key : varValue;
+            }
+        }
         [FindMissing]
         public string Response { get; set; }
 
+        // TODO: This variable should be used to set up the Redis Connection, which we can Mock.
         internal IRedisConnection Connection { get; set; }
 
         public override IEnumerable<StateVariable> GetState()
@@ -98,7 +118,15 @@ namespace Dev2.Activities.RedisRemove
             };
         }
 
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            _dataObject = dataObject;
+            _update = update;
+            base.ExecuteTool(dataObject, update);
+        }
+        //TODO: Suggestion to use IRedisSource so that we can Mock the values
         public RedisSource RedisSource { get; set; }
+
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
@@ -109,12 +137,15 @@ namespace Dev2.Activities.RedisRemove
                     _messages.Add(ErrorResource.RedisSourceHasBeenRemoved);
                     return _messages;
                 }
+                //TODO: We need to set this up where it passes IRedisConnection so that we can Mock the values.
+                //      This is creating a real connection when trying to test this
                 _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
-                if (!_redisCache.Remove(Key))
+                var keyValue = KeyValue;
+                if (!_redisCache.Remove(keyValue))
                 {
                     _result = "Failure";
                 }
-                Dev2Logger.Debug($"Cache {Key} removed: {_result}", GlobalConstants.WarewolfDebug);
+                Dev2Logger.Debug($"Cache {keyValue} removed: {_result}", GlobalConstants.WarewolfDebug);
                 Response = _result;
                 return new List<string> { _result };
             }
