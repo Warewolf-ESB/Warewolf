@@ -65,9 +65,6 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
         public List<IServer> Load(IServerRepository serverRepository)
         {
-            // PBI 6597 : TWR
-            // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
-
             if(serverRepository == null)
             {
                 throw new ArgumentNullException("serverRepository");
@@ -82,9 +79,6 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
         public List<IServer> ReloadServers(IServerRepository serverRepository)
         {
-            // PBI 6597 : TWR
-            // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
-
             if (serverRepository == null)
             {
                 throw new ArgumentNullException("serverRepository");

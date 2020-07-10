@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,6 +24,19 @@ using System.Collections.Concurrent;
 
 namespace Dev2.Runtime.Hosting
 {
+    public interface ITriggersCatalogFactory
+    {
+        ITriggersCatalog New();
+    }
+
+    public class TriggersCatalogFactory : ITriggersCatalogFactory
+    {
+        public ITriggersCatalog New()
+        {
+            return TriggersCatalog.Instance;
+        }
+    }
+
     public class TriggersCatalog : ITriggersCatalog
     {
         readonly IDirectory _directoryWrapper;
@@ -41,7 +54,7 @@ namespace Dev2.Runtime.Hosting
         public event TriggerChangeEvent OnCreated;
         private static readonly ConcurrentDictionary<string, bool> FileChangedConnectionPool = new ConcurrentDictionary<string, bool>();
 
-        public static string PathFromResourceId(string triggerId) => Path.Combine(EnvironmentVariables.QueueTriggersPath, triggerId +".bite");
+        public string PathFromResourceId(string triggerId) => Path.Combine(EnvironmentVariables.QueueTriggersPath, triggerId +".bite"); //TODO: refactor, us FilePathWapper
 
         public static ITriggersCatalog Instance => _lazyCat.Value;
 

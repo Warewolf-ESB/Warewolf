@@ -42,6 +42,7 @@ using Warewolf.Auditing;
 namespace Warewolf.Trigger.Queue.Tests
 {
     [TestClass]
+    [DoNotParallelize]//Ashley: Use of DI containers to decouple the UI
     public class TriggerQueueViewTests
     {
         Mock<IResource> _mockQueueSource;
