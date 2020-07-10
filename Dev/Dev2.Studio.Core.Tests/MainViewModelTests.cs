@@ -192,6 +192,8 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
             envRepo.Setup(r => r.Source).Returns(env.Object);
 
+            CustomContainer.Register(envRepo.Object);
+
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
 
             // FetchResourceDefinitionService
