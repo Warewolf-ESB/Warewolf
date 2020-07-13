@@ -4,8 +4,6 @@
     <TargetFramework>net48</TargetFramework>
 
     <IsPackable>false</IsPackable>
-
-    <Configurations>Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -225,7 +225,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("DebugStateTreeViewItemViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
-        [DoNotParallelize]//Studio event aggregation with EventPublishers.Studio
         public void DebugStateTreeViewItemViewModel_Constructor_ActivityTypeIsNotWorkflow_PublishesSelectionEventWithActivitySelectionTypeAdd()
         {
             Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Step, ActivitySelectionType.Add, 2);
@@ -234,7 +233,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("DebugStateTreeViewItemViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
-        [DoNotParallelize]
         public void DebugStateTreeViewItemViewModel_Constructor_ActivityTypeIsWorkflow_DoesNotPublishSelectionEventWithActivitySelectionTypeAdd()
         {
             Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Workflow, ActivitySelectionType.Add, 0);
@@ -276,7 +274,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("DebugStateTreeViewItemViewModel_IsSelected")]
         [Owner("Trevor Williams-Ros")]
-        [DoNotParallelize]//Studio event aggregation with EventPublishers.Studio
         public void DebugStateTreeViewItemViewModel_IsSelected_PublishesSelectionEventWithSameActivitySelectionType()
         {
             Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.None, 2, true);

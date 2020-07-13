@@ -114,7 +114,7 @@ namespace Dev2.Studio.ViewModels
 
         private AuthorizeCommand _settingsCommand;
 
-        //TODO: Remove
+        //TODO: Remove once the Tasks command is the only command in use.
         private AuthorizeCommand _schedulerCommand;
         private AuthorizeCommand _queueEventsCommand;
         private AuthorizeCommand _tasksCommand;
@@ -1360,12 +1360,10 @@ namespace Dev2.Studio.ViewModels
 
             if (contextualResourceModel != null)
             {
-                //TODO: Replace with RunCoverage, add tests for these changes
                 _worksurfaceContextManager.RunAllTestCoverageForService(contextualResourceModel);
             }
             else
             {
-                //TODO: Replace with RunCoverage, add tests for these changes
                 var secureResourcePath = environmentModel?.Connection.WebServerUri + "secure/" + resourcePath;
                 _worksurfaceContextManager.RunAllTestCoverageForFolder(secureResourcePath, processExecutor);
             }

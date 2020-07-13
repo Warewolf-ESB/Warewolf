@@ -14,6 +14,19 @@ using Dev2.Studio.Interfaces;
 
 namespace Warewolf.EsbClient
 {
+    public interface IResourceCatalogProxyFactory
+    {
+        IResourceCatalogProxy New(IEnvironmentConnection environmentConnection);
+    }
+
+    public class ResourceCatalogProxyFactory : IResourceCatalogProxyFactory
+    {
+        public IResourceCatalogProxy New(IEnvironmentConnection environmentConnection)
+        {
+            return new ResourceCatalogProxy(environmentConnection);
+        }
+    }
+
     public interface IResourceCatalogProxy
     {
         T GetResourceById<T>(Guid workspaceId, Guid resourceId) where T : class;

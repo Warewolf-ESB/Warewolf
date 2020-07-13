@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,8 +27,6 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using System.ComponentModel;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Providers.Validation.Rules;
 using Dev2.Activities.Designers2.RedisValidator;
 
 namespace Dev2.Activities.Designers2.RedisCache
@@ -74,6 +72,7 @@ namespace Dev2.Activities.Designers2.RedisCache
             {
                 TTL = int.Parse(modelItem.Properties["TTL"]?.ComputedValue.ToString());
             }
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_RedisCache;
         }
 
         public ObservableCollection<RedisSource> RedisSources { get; private set; }

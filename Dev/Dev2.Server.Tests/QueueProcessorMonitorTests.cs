@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -168,6 +168,11 @@ namespace Dev2.Server.Tests
         public void SaveTriggerQueue(ITriggerQueue triggerQueue)
         {
 
+        }
+
+        public string PathFromResourceId(string triggerId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

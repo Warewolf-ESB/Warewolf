@@ -69,7 +69,6 @@ using Warewolf.Options;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [DoNotParallelize]
     public class MainViewModelTests : MainViewModelBase
     {
         [TestInitialize]
@@ -193,6 +192,8 @@ namespace Dev2.Core.Tests
             mockEnvRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
             mockEnvRepo.Setup(r => r.Source).Returns(env.Object);
 
+            CustomContainer.Register(env.Object);
+
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
 
             CustomContainer.Register<IServerRepository>(mockEnvRepo.Object);
@@ -254,7 +255,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]//Studio event aggregation with EventPublishers.Studio
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
         {
             var workspaceID = Guid.NewGuid();

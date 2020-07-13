@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,7 @@
 
 using Dev2.Common;
 using Dev2.Common.Interfaces.Resources;
-using Dev2.Runtime.Hosting;
+using Dev2.Common.Interfaces.Wrappers;
 using System;
 using System.IO;
 using System.Linq;
@@ -26,26 +26,43 @@ using RabbitMQSource = Dev2.Data.ServiceModel.RabbitMQSource;
 
 namespace QueueWorker
 {
+    internal interface IWorkerContextFactory
+    {
+        IWorkerContext New(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy, ITriggersCatalog triggerCatalog, IFilePath filePath);
+    }
+
+    internal class WorkerContextFactory : IWorkerContextFactory
+    {
+        public IWorkerContext New(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy, ITriggersCatalog triggerCatalog, IFilePath filePath)
+        {
+            return new WorkerContext(processArgs, resourceCatalogProxy, triggerCatalog, filePath);
+        }
+    }
+
     internal class WorkerContext : IWorkerContext
     {
         readonly Uri _serverUri;
         readonly ITriggerQueue _triggerQueue;
         readonly IResourceCatalogProxy _resourceCatalogProxy;
         readonly string _path;
+        readonly IFilePath _filePath;
 
-        public WorkerContext(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy, ITriggersCatalog triggerCatalog)
+
+        public WorkerContext(IArgs processArgs, IResourceCatalogProxy resourceCatalogProxy, ITriggersCatalog triggersCatalog, IFilePath filePath)
         {
-            var catalog = triggerCatalog;
-            _path = TriggersCatalog.PathFromResourceId(processArgs.TriggerId);
+            var catalog = triggersCatalog;
+            _path = triggersCatalog.PathFromResourceId(processArgs.TriggerId);
             _serverUri = processArgs.ServerEndpoint;
             _triggerQueue = catalog.LoadQueueTriggerFromFile(_path);
             _resourceCatalogProxy = resourceCatalogProxy;
+
+            _filePath = filePath;
         }
 
         public void WatchTriggerResource(IFileSystemWatcher watcher)
         {
-            var path = Path.GetDirectoryName(_path);
-            var filename = Path.GetFileName(_path);
+            var path = _filePath.GetDirectoryName(_path);
+            var filename = _filePath.GetFileName(_path);
 
             watcher.EnableRaisingEvents = false;
 
@@ -81,6 +98,7 @@ namespace QueueWorker
         }
 
         IQueueSource _deadLetterSink;
+
         public IQueueSource DeadLetterSink
         {
             get

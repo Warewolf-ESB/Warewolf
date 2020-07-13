@@ -37,7 +37,6 @@ namespace Warewolf.Studio.ViewModels.Tests
     partial class ServiceTestViewModelTests
     {
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
@@ -46,7 +45,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             contextualResourceModel.DataList = "<DataList/>";
@@ -54,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(contextualResourceModel.ID);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
             var server = new Mock<IServer>();
@@ -77,7 +75,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
@@ -86,7 +83,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             contextualResourceModel.DataList = "<DataList/>";
@@ -94,7 +90,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(contextualResourceModel.ID);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
             var server = new Mock<IServer>();
@@ -119,7 +115,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
@@ -128,7 +123,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             contextualResourceModel.DataList = "<DataList/>";
@@ -136,7 +130,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockResourceModel.Setup(model => model.ID).Returns(contextualResourceModel.ID);
             var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
             mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
             var server = new Mock<IServer>();
@@ -172,7 +166,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -181,7 +174,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var dsfDecision = new DsfDecision();
@@ -217,13 +209,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -232,7 +223,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -264,7 +254,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
             Assert.AreEqual(StepType.Assert, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].Type);
@@ -272,7 +262,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -281,7 +270,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -313,7 +301,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             var testSteps = new ObservableCollection<IServiceTestStep>();
@@ -331,7 +319,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStatesWithMockAssign.json", "JsonResources")]
@@ -340,7 +327,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -372,14 +358,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, null, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.PrepopulateTestsUsingDebug(newTestFromDebugMessage.RootItems);
             Assert.AreEqual(2, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -388,7 +373,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -418,7 +402,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             var serviceTestStep = new Mock<IServiceTestStep>();
@@ -438,7 +422,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -447,7 +430,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -479,7 +461,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             var testSteps = new ObservableCollection<IServiceTestStep>() { };
@@ -511,7 +493,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -521,7 +502,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -555,7 +535,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             var testSteps = new ObservableCollection<IServiceTestStep>() { };
@@ -576,7 +556,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -585,7 +564,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -622,7 +600,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("SwitchFromDebug", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -635,7 +613,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DotnetllDebugStates.json", "JsonResources")]
@@ -645,7 +622,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -681,7 +657,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 seq
             };
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("EnhancedDotNetDllFromDebug", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -697,7 +673,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -708,7 +683,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -742,7 +716,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
             seq.Children.Add(itemViewModel1);
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
             var testSteps = new ObservableCollection<IServiceTestStep>() { };
@@ -754,7 +728,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -763,7 +736,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -782,7 +754,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Inputs.Add(new ServiceTestInput("Name", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetInputs", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -796,7 +768,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -805,7 +776,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -825,7 +795,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(IDebugState) }, null);
@@ -839,7 +809,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -848,7 +817,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -873,7 +841,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(IDebugState) }, null);
             //---------------Assert Precondition----------------
@@ -889,7 +857,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void TestPassingResult_GivenIsSet_ShouldFirePropertyChanges()
@@ -897,7 +864,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -913,7 +879,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var wasCalled = false;
@@ -934,7 +900,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void OnStepOutputPropertyChanges_GivenIsInvoked_ShouldFirePropertyChanges()
@@ -942,7 +907,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -958,7 +922,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("OnStepOutputPropertyChanges", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -981,7 +945,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStepGetParentType_GivenSequence_ShouldSetupServiceTestStep()
@@ -989,7 +952,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1003,7 +965,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ServiceTestStepGetParentType", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -1026,7 +988,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStepGetParentType_GivenDsfForEachActivity_ShouldSetupServiceTestStep()
@@ -1034,7 +995,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1048,7 +1008,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ServiceTestStepGetParentType", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -1071,7 +1031,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStepGetParentType_GivenDsfSelectAndApplyActivity_ShouldSetupServiceTestStep()
@@ -1079,7 +1038,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1093,7 +1051,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ServiceTestStepGetParentType", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -1117,7 +1075,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddOutputsIfHasVariable_GivenListsOutputsAndServiceTestStep_ShouldBuildServiceTestOutputs()
@@ -1125,7 +1082,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1139,7 +1095,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddOutputsIfHasVariable", BindingFlags.NonPublic | BindingFlags.Static);
@@ -1157,7 +1113,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddEnhancedDotNetDllMethod_GivenPluginActionAndStep_ShouldMap()
@@ -1165,7 +1120,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1179,7 +1133,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             IPluginAction pluginAction = new PluginAction();
@@ -1202,7 +1156,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         //private void AddEnhancedDotNetDll(DsfEnhancedDotNetDllActivity dotNetDllActivity, ServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddEnhancedDotNetDll_GivenActions_ShouldAddChildrens()
@@ -1210,7 +1163,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1224,7 +1176,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             IPluginAction pluginAction = new PluginAction();
@@ -1266,7 +1218,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddOutputs_GivenNoOutputNotNull()
@@ -1274,7 +1225,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1288,7 +1238,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             IPluginAction pluginAction = new PluginAction();
@@ -1316,7 +1266,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void AddOutputs_GivenOutputNotNull()
@@ -1324,7 +1273,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1338,7 +1286,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             IPluginAction pluginAction = new PluginAction();
@@ -1366,7 +1314,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStepWithOutputs_GivenBuildCorrectly()
@@ -1374,7 +1321,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1388,7 +1334,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ServiceTestStepWithOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -1407,7 +1353,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RunSelectedTestInBrowser_GivenIsInvoked_ShouldFirePropertyChanges()
@@ -1415,7 +1360,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1432,7 +1376,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mock = new Mock<IExternalProcessExecutor>();
             mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("RunSelectedTestInBrowser", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -1446,7 +1390,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void MarkChildrenPending_GivenIsInvoked_ShouldSetAsPending()
@@ -1472,7 +1415,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -1481,7 +1423,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1500,7 +1441,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ProcessInputsAndOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
@@ -1515,7 +1456,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -1524,7 +1464,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             var resourceId = Guid.NewGuid();
@@ -1543,7 +1482,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ProcessInputsAndOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
             testFrameworkViewModel.SelectedServiceTest.Inputs.Add(new ServiceTestInput("Name", ""));
@@ -1560,7 +1499,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -1569,7 +1507,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var contextualResourceModel = CreateResourceModel();
             contextualResourceModel.DataList = "<DataList/>";
@@ -1589,7 +1526,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
 
 
-            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("ProcessInputsAndOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
@@ -1606,7 +1543,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
@@ -1615,7 +1551,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var resourceId = Guid.NewGuid();
             var dsfDecision = new DsfDecision();
@@ -1642,7 +1577,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var synchronousAsyncWorker = new SynchronousAsyncWorker();
-            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), synchronousAsyncWorker, new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), synchronousAsyncWorker, new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             //---------------Test Result -----------------------
             Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
@@ -1650,7 +1585,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void PrepopulateTestsUsingDebug_GivenInCorrectMessage_ShouldThrowException()
@@ -1658,7 +1592,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register(popupController.Object);
             var mockResourceModel = CreateMockResourceModel();
             var resourceId = Guid.NewGuid();
             var dsfDecision = new DsfDecision();
@@ -1673,7 +1606,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             var synchronousAsyncWorker = new SynchronousAsyncWorker();
             
-            new ServiceTestViewModel(CreateResourceModel(), synchronousAsyncWorker, new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage, new Mock<IPopupController>().Object);
+            new ServiceTestViewModel(CreateResourceModel(), synchronousAsyncWorker, new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null);
             var exceptions = synchronousAsyncWorker.Exceptions.Count;
             Assert.AreEqual(1, exceptions);
 
@@ -1681,7 +1614,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void RefreshCommands_ShouldUpdateDisplayName()
@@ -1694,7 +1626,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message, null);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var wasCalled = false;
             testViewModel.PropertyChanged += (sender, args) =>
@@ -1713,7 +1645,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceID_GivenResourceModel_ShouldReturnCorrectly()
@@ -1727,7 +1658,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message, null);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
 
 
@@ -1736,12 +1667,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceID = testViewModel.ResourceID;
             //---------------Test Result -----------------------
             Assert.AreEqual(resourceID, testViewModel.ResourceModel.ID);
-
-
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Stoptest_GivenServiceTests_ShouldSetValuesCorrectly()
@@ -1757,7 +1685,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message, null);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("StopTest", BindingFlags.NonPublic | BindingFlags.Instance);
             var propertyInfo = typeof(ServiceTestViewModel).GetProperty("ServiceTestCommandHandler", BindingFlags.Public | BindingFlags.Instance);
@@ -1771,12 +1699,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(testViewModel.SelectedServiceTest.IsTestRunning);
             Assert.IsTrue(testViewModel.SelectedServiceTest.TestPending);
             handler.Verify(commandHandler => commandHandler.StopTest(resourceModel.Object));
-
-
         }
 
         [TestMethod]
-        [DoNotParallelize]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void SetStepIcon_GiventypeName_ShouldSetValuesCorrectly_PassThrouth()
@@ -1792,7 +1717,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
             resourceModel.Setup(model => model.Environment.Connection).Returns(con.Object);
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
-            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message, new Mock<IPopupController>().Object);
+            var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, new Mock<IPopupController>().Object, message, null);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetStepIcon", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.Any, new[] { typeof(string), typeof(ServiceTestStep) }, new[] { new ParameterModifier(2), });
             //---------------Assert Precondition----------------

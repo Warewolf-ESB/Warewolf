@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,6 +33,19 @@ using Warewolf.Esb;
 
 namespace Dev2.Network
 {
+    public interface IServerProxyFactory
+    {
+        IEnvironmentConnection New(Uri serverUri);
+    }
+
+    public class ServerProxyFactory : IServerProxyFactory
+    {
+        public IEnvironmentConnection New(Uri serverUri)
+        {
+            return new ServerProxy(serverUri);
+        }
+    }
+
     public class ServerProxy :  IEnvironmentConnection
     {
         readonly IEnvironmentConnection _wrappedConnection;
