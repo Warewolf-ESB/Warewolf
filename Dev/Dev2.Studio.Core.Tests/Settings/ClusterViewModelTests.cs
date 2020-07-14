@@ -17,9 +17,11 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Settings.Clusters;
+using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Client;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Options;
@@ -130,7 +132,22 @@ namespace Dev2.Core.Tests.Settings
         {
             var mockPopupController = new Mock<IPopupController>();
             
+            var mockHubProxyWrapper = new Mock<IHubProxyWrapper>();
+            var mockSubscriptionWrapper = new Mock<ISubscriptionWrapper>();
+            mockHubProxyWrapper.Setup(o => o.Subscribe("Notify")).Returns(mockSubscriptionWrapper.Object);
+
+            var mockHubConnectionWrapper = new Mock<IHubConnectionWrapper>();
+            mockHubConnectionWrapper.Setup(o => o.CreateHubProxy(It.IsAny<string>()))
+                .Returns(mockHubProxyWrapper.Object);
+
+            var listClient = new ObservableDistributedListClient<ServerFollower>(mockHubConnectionWrapper.Object, "");
+
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(o => o.ServerFollowerList)
+                .Returns(listClient);
+
             var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.Connection).Returns(mockEnvironmentConnection.Object);
 
             var leaderServerResource = new NamedGuid {Name = "test", Value = Guid.NewGuid(),};
             var clusterSettingsData = new ClusterSettingsData
@@ -197,7 +214,22 @@ namespace Dev2.Core.Tests.Settings
         {
             var mockPopupController = new Mock<IPopupController>();
             
+            var mockHubProxyWrapper = new Mock<IHubProxyWrapper>();
+            var mockSubscriptionWrapper = new Mock<ISubscriptionWrapper>();
+            mockHubProxyWrapper.Setup(o => o.Subscribe("Notify")).Returns(mockSubscriptionWrapper.Object);
+
+            var mockHubConnectionWrapper = new Mock<IHubConnectionWrapper>();
+            mockHubConnectionWrapper.Setup(o => o.CreateHubProxy(It.IsAny<string>()))
+                .Returns(mockHubProxyWrapper.Object);
+
+            var listClient = new ObservableDistributedListClient<ServerFollower>(mockHubConnectionWrapper.Object, "");
+
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(o => o.ServerFollowerList)
+                .Returns(listClient);
+
             var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.Connection).Returns(mockEnvironmentConnection.Object);
 
             var leaderServerResource = new NamedGuid {Name = "test", Value = Guid.NewGuid(),};
             var leaderServerResource2 = new NamedGuid {Name = "test2", Value = Guid.NewGuid(),};
@@ -230,8 +262,23 @@ namespace Dev2.Core.Tests.Settings
         public void ClusterViewModel_ClusterSettings_IsDirty()
         {
             var mockPopupController = new Mock<IPopupController>();
-            
+
+            var mockHubProxyWrapper = new Mock<IHubProxyWrapper>();
+            var mockSubscriptionWrapper = new Mock<ISubscriptionWrapper>();
+            mockHubProxyWrapper.Setup(o => o.Subscribe("Notify")).Returns(mockSubscriptionWrapper.Object);
+
+            var mockHubConnectionWrapper = new Mock<IHubConnectionWrapper>();
+            mockHubConnectionWrapper.Setup(o => o.CreateHubProxy(It.IsAny<string>()))
+                .Returns(mockHubProxyWrapper.Object);
+
+            var listClient = new ObservableDistributedListClient<ServerFollower>(mockHubConnectionWrapper.Object, "");
+
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(o => o.ServerFollowerList)
+                .Returns(listClient);
+
             var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.Connection).Returns(mockEnvironmentConnection.Object);
 
             var leaderServerResource = new NamedGuid {Name = "test", Value = Guid.NewGuid(),};
             var leaderServerResource2 = new NamedGuid {Name = "test2", Value = Guid.NewGuid(),};
