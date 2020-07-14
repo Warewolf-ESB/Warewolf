@@ -1,3 +1,14 @@
+Monday 13 July 2020
+======================
+Bug Fixes
+---------
+- Fixed a bug with the Redis Cache tool where the output of a recordset was not caching correctly.
+
+ 
+Features
+--------
+- Added more logging to the Trigger Queue
+
 Monday 29 June 2020
 ======================
 Features

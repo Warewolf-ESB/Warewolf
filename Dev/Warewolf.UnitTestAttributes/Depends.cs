@@ -75,6 +75,50 @@ namespace Warewolf.UnitTestAttributes
             throw new ArgumentOutOfRangeException();
         }
 
+        string GitURL(ContainerType containerType)
+        {
+            string getUrl;
+            switch (containerType)
+            {
+                case ContainerType.MySQL:
+                    getUrl = "https://gitlab.com/warewolf/mysql-connector-testing";
+                    break;
+                case ContainerType.MSSQL:
+                    getUrl = "https://gitlab.com/warewolf/mssql-connector-testing";
+                    break;
+                case ContainerType.PostGreSQL:
+                    getUrl = "https://gitlab.com/warewolf/postgres-connector-testing";
+                    break;
+                case ContainerType.Warewolf:
+                    getUrl = "https://gitlab.com/warewolfdevelopers/warewolf";
+                    break;
+                case ContainerType.RabbitMQ:
+                    getUrl = "https://gitlab.com/warewolf/rabbitmq-connector-testing";
+                    break;
+                case ContainerType.CIRemote:
+                    getUrl = "https://gitlab.com/warewolf/remote-warewolf-connector-testing";
+                    break;
+                case ContainerType.Redis:
+                    getUrl = "https://gitlab.com/warewolf/redis-connector-testing";
+                    break;
+                case ContainerType.AnonymousRedis:
+                    getUrl = "https://gitlab.com/warewolf/anonymous-redis-connector-testing";
+                    break;
+                case ContainerType.AnonymousWarewolf:
+                    getUrl = "https://gitlab.com/warewolf/anonymous-remote-warewolf-connector-testing";
+                    break;
+                case ContainerType.Elasticsearch:
+                    getUrl = "https://gitlab.com/warewolf/elasticsearch-connector-testing";
+                    break;
+                case ContainerType.AnonymousElasticsearch:
+                    getUrl = "https://gitlab.com/warewolf/anonymous-elasticsearch-connector-testing";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            return Uri.EscapeDataString(getUrl);
+        }
+
         public Container Container;
 
         public Depends() => throw new ArgumentNullException("Missing type of the container.");
@@ -89,11 +133,11 @@ namespace Warewolf.UnitTestAttributes
                 {
                     var result = "";
                     var retryCount = 0;
-                    var containerType = ConvertToString(_containerType);
+                    var containerUrl = GitURL(_containerType);
                     do
                     {
                         SelectedHost = RigOpsHosts.ElementAt(retryCount);
-                        var address = $"http://{SelectedHost}:3142/public/Container/Async/Start/{containerType}.json";
+                        var address = $"http://{SelectedHost}:3142/public/Container/Run%20From%20Git.json?RepoURL={containerUrl}&ScriptPath={(_containerType==ContainerType.Warewolf?"Dev%5CDev2.Server%5CDockerfile.deploy.bat":"")}";
                         try
                         {
                             result = client.DownloadString(address);
