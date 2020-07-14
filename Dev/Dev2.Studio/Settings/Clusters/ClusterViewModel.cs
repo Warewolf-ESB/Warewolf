@@ -296,7 +296,7 @@ namespace Dev2.Settings.Clusters
         {
             if (MemberwiseClone() is ClusterViewModel clone)
             {
-                clone.LeaderServerOptions = clusterViewModel.LeaderServerOptions.Clone();
+                clone.LeaderServerOptions = this.LeaderServerOptions.Clone();
                 clone.ClusterSettings = this.ClusterSettings.Clone();
 
                 return clone;
