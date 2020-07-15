@@ -158,7 +158,12 @@ namespace Dev2.Tests.Runtime
             Assert.IsTrue(names.Remove("TestClusterConnection"));
             Assert.IsTrue(names.Remove("ClusterJoinRequest"));
             Assert.IsTrue(names.Remove("TestClusterLeaderConnection"));
-            
+            Assert.IsTrue(names.Remove("SaveAuditingSettings"));
+            Assert.IsTrue(names.Remove("TestElasticsearchSource"));
+            Assert.IsTrue(names.Remove("FetchElasticsearchServiceSources"));
+            Assert.IsTrue(names.Remove("SaveElasticsearchSource"));
+            Assert.IsTrue(names.Remove("GetAuditingSettings"));
+
             // We expect that all services were found and so were able to be removed
             // And we expect that there are no other services
             Assert.AreEqual(0, names.Count, "unexpected internal services encountered");
