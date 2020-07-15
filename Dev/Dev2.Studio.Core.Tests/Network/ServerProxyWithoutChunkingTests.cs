@@ -22,6 +22,7 @@ namespace Dev2.Core.Tests.Network
     {
         [TestMethod]
         [Timeout(16000)]
+        [Ignore] // TODO: Test is set up to create real connection, should move to integration tests
         public void ServerProxyWithoutChunking_GivenServerAvailable_ExpectConnected()
         {
             var depend = new Depends(Depends.ContainerType.Warewolf);
@@ -39,13 +40,24 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [Timeout(16000)]
+        [Ignore] // TODO: Test is set up to create real connection, should move to integration tests
         public void ServerProxyWithoutChunking_GivenServerAvailable_AndConnect_WhenDisconnectRequest_ExpectDisconnect()
         {
             var proxy = new ServerProxyWithoutChunking(new Uri("http://localhost:3142"));
-            Assert.AreEqual(ConnState.Disconnected, proxy.StateController.Current);
+
+            var stateControllerCurrent = proxy.StateController.Current;
+
+            var disconnected = stateControllerCurrent == ConnState.Disconnected;
+            Assert.IsTrue(disconnected);
+
+            Assert.AreEqual(ConnState.Disconnected, stateControllerCurrent);
             Assert.AreEqual(ConnState.Disconnected, proxy.State);
+            // When creating a new connection, what ensures that the MoveToState has a guid to compare?
             proxy.Connect(Guid.NewGuid());
-            while (proxy.HubConnection.State != SignalR.Wrappers.ConnectionStateWrapped.Connected) { System.Threading.Thread.Sleep(1000); }
+            while (proxy.HubConnection.State != SignalR.Wrappers.ConnectionStateWrapped.Connected)
+            {
+                System.Threading.Thread.Sleep(1000);
+            }
             Assert.AreEqual(ConnState.Connected, proxy.StateController.Current);
             Assert.AreEqual(ConnState.Connected, proxy.State);
 
