@@ -529,10 +529,10 @@ namespace Dev2.Runtime.WebServer
             var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, catalog);
 
             var workflowTestResults = new WorkflowTestResults();
-            foreach (var testId in coverageData.CoverageReportResourceIds)
+            foreach (var testFolderId in coverageData.CoverageReportResourceIds)
             {
-                var test = testCatalog.Fetch(testId).FirstOrDefault();
-                if (test != null)
+                var testsInSelectedFolder = testCatalog.Fetch(testFolderId);
+                foreach (var test in testsInSelectedFolder)
                 {
                     workflowTestResults.Add(test);
                 }
@@ -741,7 +741,7 @@ namespace Dev2.Runtime.WebServer
                 {
                     TestName = result.TestName,
                     Message = IsTestInValid(result) ? "Test has no selected nodes" : result.FailureMessage,
-                    RunTestResult = IsTestInValid(result) ? RunResult.TestInvalid : result.TestFailing ? RunResult.TestFailed : RunResult.TestPassed,
+                    RunTestResult = IsTestInValid(result) ? RunResult.TestInvalid : IsTestFailing(result) ? RunResult.TestFailed : RunResult.TestPassed,
                 }
             });
         }
