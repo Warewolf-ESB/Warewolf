@@ -86,7 +86,7 @@ namespace Dev2.Studio.Interfaces
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
     }
 
-    public interface IShellViewModel : IShellViewModelEdit, IShellViewModelNew, IShellViewModelOpen
+    public interface IShellViewModel : IShellViewModelEdit, IShellViewModelNew, IShellViewModelOpen, IWarewolfCommands
     {
         bool ShouldUpdateActiveState { get; set; }
         void ShowPopup(IPopupMessage getDuplicateMessage);
@@ -117,42 +117,13 @@ namespace Dev2.Studio.Interfaces
         void SetRefreshExplorerState(bool refresh);
         void ResetMainView();
         void OnActiveServerChanged();
-        ICommand DeployCommand { get; }
-        ICommand MergeCommand { get; }
-        ICommand ExitCommand { get; }
         IServer ActiveServer { get; set; }
         IContextualResourceModel DeployResource { get; set; }
         void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
         bool MenuExpanded { get; set; }
         double MenuPanelWidth { get; set; }
-        IAuthorizeCommand SaveCommand { get; }
-        IAuthorizeCommand DebugCommand { get; }
-        IAuthorizeCommand SettingsCommand { get; }
-        ICommand SearchCommand { get; }
-        ICommand AddWorkflowCommand { get; }
-        ICommand RunCoverageCommand { get; }
-        ICommand RunAllTestsCommand { get; }
-        IAuthorizeCommand SchedulerCommand { get; }
-        IAuthorizeCommand QueueEventsCommand { get; }
-        IAuthorizeCommand TasksCommand { get; }
         IToolboxViewModel ToolboxViewModel { get; }
         IHelpWindowViewModel HelpViewModel { get; }
-        ICommand ShowStartPageCommand { get; }
-        IAuthorizeCommand<string> NewServiceCommand { get; }
-        IAuthorizeCommand<string> NewPluginSourceCommand { get; }
-        IAuthorizeCommand<string> NewSqlServerSourceCommand { get; }
-        IAuthorizeCommand<string> NewMySqlSourceCommand { get; }
-        IAuthorizeCommand<string> NewPostgreSqlSourceCommand { get; }
-        IAuthorizeCommand<string> NewOracleSourceCommand { get; }
-        IAuthorizeCommand<string> NewOdbcSourceCommand { get; }
-        IAuthorizeCommand<string> NewWebSourceCommand { get; }
-        IAuthorizeCommand<string> NewServerSourceCommand { get; }
-        IAuthorizeCommand<string> NewEmailSourceCommand { get; }
-        IAuthorizeCommand<string> NewExchangeSourceCommand { get; }
-        IAuthorizeCommand<string> NewRabbitMQSourceCommand { get; }
-        IAuthorizeCommand<string> NewSharepointSourceCommand { get; }
-        IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
-        IAuthorizeCommand<string> NewWcfSourceCommand { get; }
         IExplorerViewModel ExplorerViewModel { get; set; }
         IPopupController PopupProvider { get; set; }
         IServer LocalhostServer { get; }
@@ -169,5 +140,39 @@ namespace Dev2.Studio.Interfaces
         IResource CreateResourceFromStreamContent(string resourceContent);
         IResource GetResource(string resourceId);
         List<IServiceInputBase> GetInputsFromWorkflow(Guid resourceId);
+    }
+
+    public interface IWarewolfCommands
+    {
+        IAuthorizeCommand<string> NewServiceCommand { get; }
+        IAuthorizeCommand<string> NewPluginSourceCommand { get; }
+        IAuthorizeCommand<string> NewSqlServerSourceCommand { get; }
+        IAuthorizeCommand<string> NewMySqlSourceCommand { get; }
+        IAuthorizeCommand<string> NewPostgreSqlSourceCommand { get; }
+        IAuthorizeCommand<string> NewOracleSourceCommand { get; }
+        IAuthorizeCommand<string> NewOdbcSourceCommand { get; }
+        IAuthorizeCommand<string> NewWebSourceCommand { get; }
+        IAuthorizeCommand<string> NewServerSourceCommand { get; }
+        IAuthorizeCommand<string> NewEmailSourceCommand { get; }
+        IAuthorizeCommand<string> NewExchangeSourceCommand { get; }
+        IAuthorizeCommand<string> NewRabbitMQSourceCommand { get; }
+        IAuthorizeCommand<string> NewSharepointSourceCommand { get; }
+        IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
+        IAuthorizeCommand<string> NewWcfSourceCommand { get; }
+        IAuthorizeCommand SchedulerCommand { get; }
+        IAuthorizeCommand QueueEventsCommand { get; }
+        IAuthorizeCommand TasksCommand { get; }
+        IAuthorizeCommand SettingsCommand { get; }
+        ICommand DeployCommand { get; }
+        ICommand RunCoverageCommand { get; }
+        ICommand RunAllTestsCommand { get; }
+        ICommand AddWorkflowCommand { get; }
+        ICommand SearchCommand { get; }
+        ICommand ShowCommunityPageCommand { get; }
+        ICommand ShowStartPageCommand { get; }
+        ICommand ExitCommand { get; }
+        ICommand MergeCommand { get; }
+        IAuthorizeCommand SaveCommand { get; }
+        IAuthorizeCommand DebugCommand { get; }
     }
 }

@@ -232,6 +232,7 @@
     <Compile Include="ViewModels\Merge\Utils\ConflictRowListBuilder.cs" />
     <Compile Include="ViewModels\Merge\Utils\MergePreviewWorkflowStateApplier.cs" />
     <Compile Include="ViewModels\SearchModel.cs" />
+    <Compile Include="ViewModels\WarewolfCommands.cs" />
     <Compile Include="ViewModels\Workflow\MergePreviewWorkflowDesignerViewModel.cs" />
     <Compile Include="WorkflowDesignerWrapper.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">

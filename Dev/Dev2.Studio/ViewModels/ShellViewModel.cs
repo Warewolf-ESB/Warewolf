@@ -91,26 +91,6 @@ namespace Dev2.Studio.ViewModels
     {
         IWorkSurfaceContextViewModel _previousActive;
         bool _disposed;
-        private AuthorizeCommand<string> _newServiceCommand;
-        private AuthorizeCommand<string> _newPluginSourceCommand;
-        private AuthorizeCommand<string> _newSqlServerSourceCommand;
-        private AuthorizeCommand<string> _newMySqlSourceCommand;
-        private AuthorizeCommand<string> _newPostgreSqlSourceCommand;
-        private AuthorizeCommand<string> _newOracleSourceCommand;
-        private AuthorizeCommand<string> _newOdbcSourceCommand;
-        private AuthorizeCommand<string> _newWebSourceCommand;
-        private AuthorizeCommand<string> _newRedisSourceCommand;
-        private AuthorizeCommand<string> _newElasticsearchSourceCommand;
-        private AuthorizeCommand<string> _newServerSourceCommand;
-        private AuthorizeCommand<string> _newEmailSourceCommand;
-        private AuthorizeCommand<string> _newExchangeSourceCommand;
-        private AuthorizeCommand<string> _newRabbitMQSourceCommand;
-        private AuthorizeCommand<string> _newSharepointSourceCommand;
-        private AuthorizeCommand<string> _newDropboxSourceCommand;
-        private AuthorizeCommand<string> _newWcfSourceCommand;
-        private ICommand _deployCommand;
-        private ICommand _mergeCommand;
-        private ICommand _exitCommand;
 
         private AuthorizeCommand _settingsCommand;
 
@@ -118,9 +98,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand _schedulerCommand;
         private AuthorizeCommand _queueEventsCommand;
         private AuthorizeCommand _tasksCommand;
-        private ICommand _searchCommand;
         private ICommand _showCommunityPageCommand;
-        private ICommand _addWorkflowCommand;
         readonly IAsyncWorker _asyncWorker;
         readonly IViewFactory _factory;
         readonly IFile _file;
@@ -271,58 +249,9 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public IAuthorizeCommand DebugCommand
-        {
-            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.DebugCommand;
-        }
-
-        public IAuthorizeCommand QuickDebugCommand
-        {
-            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.QuickDebugCommand;
-        }
-
-        public IAuthorizeCommand QuickViewInBrowserCommand
-        {
-            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.QuickViewInBrowserCommand;
-        }
-
-        public IAuthorizeCommand ViewInBrowserCommand
-        {
-            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.ViewInBrowserCommand;
-        }
-
-        public ICommand ShowStartPageCommand
-        {
-            get => _showStartPageCommand ?? (_showStartPageCommand = new DelegateCommand(param => ShowStartPageAsync()));
-        }
-
-        public ICommand ShowCommunityPageCommand
-        {
-            get => _showCommunityPageCommand ?? (_showCommunityPageCommand = new DelegateCommand(param => ShowCommunityPage()));
-        }
-
-        public IAuthorizeCommand SettingsCommand
-        {
-            get
-            {
-                return _settingsCommand ?? (_settingsCommand =
-                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
-            }
-        }
-
-        public ICommand SearchCommand
-        {
-            get { return _searchCommand ?? (_searchCommand = new DelegateCommand(param => ShowSearchWindow())); }
-        }
-
         IResourcePickerDialog _currentResourcePicker;
 
-        public ICommand AddWorkflowCommand
-        {
-            get => _addWorkflowCommand ?? (_addWorkflowCommand = new DelegateCommand(param => OpenResourcePicker(param)));
-        }
-
-        private void OpenResourcePicker(object item)
+        public void OpenResourcePicker(object item)
         {
             if (_currentResourcePicker is null)
             {
@@ -401,10 +330,7 @@ namespace Dev2.Studio.ViewModels
             return null;
         }
 
-        private ICommand _runCoverageCommand;
-        public ICommand RunCoverageCommand => _runCoverageCommand ?? (_runCoverageCommand = new DelegateCommand(RunCoverage));
-
-        private void RunCoverage(object explorerObj)
+        public void RunCoverage(object explorerObj)
         {
             var resourcePath = "";
             var resourceId = Guid.Empty;
@@ -427,116 +353,36 @@ namespace Dev2.Studio.ViewModels
             RunCoverage(resourcePath, resourceId);
         }
 
-        public IAuthorizeCommand SchedulerCommand
-        {
-            get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand QueueEventsCommand
-        {
-            get => _queueEventsCommand ?? (_queueEventsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddQueuesWorkSurface(), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand TasksCommand
-        {
-            get => _tasksCommand ?? (_tasksCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddTriggersWorkSurface(), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewServiceCommand
-        {
-            get => _newServiceCommand ?? (_newServiceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewService(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewPluginSourceCommand
-        {
-            get => _newPluginSourceCommand ?? (_newPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewSqlServerSourceCommand
-        {
-            get => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewMySqlSourceCommand
-        {
-            get => _newMySqlSourceCommand ?? (_newMySqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewPostgreSqlSourceCommand
-        {
-            get => _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewOracleSourceCommand
-        {
-            get => _newOracleSourceCommand ?? (_newOracleSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewOdbcSourceCommand
-        {
-            get => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewWebSourceCommand
-        {
-            get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewRedisSourceCommand
-        {
-            get => _newRedisSourceCommand ?? (_newRedisSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRedisSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewElasticsearchSourceCommand
-        {
-            get => _newElasticsearchSourceCommand ?? (_newElasticsearchSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewElasticsearchSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewServerSourceCommand
-        {
-            get => _newServerSourceCommand ?? (_newServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewServerSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewEmailSourceCommand
-        {
-            get => _newEmailSourceCommand ?? (_newEmailSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewEmailSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewExchangeSourceCommand
-        {
-            get => _newExchangeSourceCommand ?? (_newExchangeSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewExchangeSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewRabbitMQSourceCommand
-        {
-            get => _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRabbitMQSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewSharepointSourceCommand
-        {
-            get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewDropboxSourceCommand
-        {
-            get => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public IAuthorizeCommand<string> NewWcfSourceCommand
-        {
-            get => _newWcfSourceCommand ?? (_newWcfSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWcfSource(@""), param => IsActiveServerConnected()));
-        }
-
-        public ICommand ExitCommand
-        {
-            get => _exitCommand ?? (_exitCommand = new RelayCommand(param => Application.Current.Shutdown(), param => true));
-        }
-
-        public ICommand DeployCommand
-        {
-            get => _deployCommand ?? (_deployCommand = new RelayCommand(param => AddDeploySurface(new List<IExplorerTreeItem>())));
-        }
-
+        public IAuthorizeCommand<string> NewServiceCommand => WarewolfCommands.NewServiceCommand;
+        public IAuthorizeCommand<string> NewPluginSourceCommand => WarewolfCommands.NewPluginSourceCommand;
+        public IAuthorizeCommand<string> NewSqlServerSourceCommand => WarewolfCommands.NewSqlServerSourceCommand;
+        public IAuthorizeCommand<string> NewMySqlSourceCommand => WarewolfCommands.NewMySqlSourceCommand;
+        public IAuthorizeCommand<string> NewPostgreSqlSourceCommand => WarewolfCommands.NewPostgreSqlSourceCommand;
+        public IAuthorizeCommand<string> NewOracleSourceCommand => WarewolfCommands.NewOracleSourceCommand;
+        public IAuthorizeCommand<string> NewOdbcSourceCommand => WarewolfCommands.NewOdbcSourceCommand;
+        public IAuthorizeCommand<string> NewWebSourceCommand => WarewolfCommands.NewWebSourceCommand;
+        public IAuthorizeCommand<string> NewRedisSourceCommand => WarewolfCommands.NewRedisSourceCommand;
+        public IAuthorizeCommand<string> NewElasticsearchSourceCommand => WarewolfCommands.NewElasticsearchSourceCommand;
+        public IAuthorizeCommand<string> NewServerSourceCommand => WarewolfCommands.NewServerSourceCommand;
+        public IAuthorizeCommand<string> NewEmailSourceCommand => WarewolfCommands.NewEmailSourceCommand;
+        public IAuthorizeCommand<string> NewExchangeSourceCommand => WarewolfCommands.NewExchangeSourceCommand;
+        public IAuthorizeCommand<string> NewRabbitMQSourceCommand => WarewolfCommands.NewRabbitMQSourceCommand;
+        public IAuthorizeCommand<string> NewSharepointSourceCommand => WarewolfCommands.NewSharepointSourceCommand;
+        public IAuthorizeCommand<string> NewDropboxSourceCommand => WarewolfCommands.NewDropboxSourceCommand;
+        public IAuthorizeCommand<string> NewWcfSourceCommand => WarewolfCommands.NewWcfSourceCommand;
+        public IAuthorizeCommand SchedulerCommand => WarewolfCommands.SchedulerCommand;
+        public IAuthorizeCommand QueueEventsCommand => WarewolfCommands.QueueEventsCommand;
+        public IAuthorizeCommand TasksCommand => WarewolfCommands.TasksCommand;
+        public IAuthorizeCommand SettingsCommand => WarewolfCommands.SettingsCommand;
+        public ICommand DeployCommand => WarewolfCommands.DeployCommand;
+        public ICommand RunCoverageCommand => WarewolfCommands.RunCoverageCommand;
+        public ICommand RunAllTestsCommand => WarewolfCommands.RunAllTestsCommand;
+        public ICommand AddWorkflowCommand => WarewolfCommands.AddWorkflowCommand;
+        public ICommand SearchCommand => WarewolfCommands.SearchCommand;
+        public ICommand ShowCommunityPageCommand => WarewolfCommands.ShowCommunityPageCommand;
+        public ICommand ShowStartPageCommand => WarewolfCommands.ShowStartPageCommand;
+        public ICommand ExitCommand => WarewolfCommands.ExitCommand;
+        private ICommand _mergeCommand;
         public ICommand MergeCommand
         {
             get => _mergeCommand ?? (_mergeCommand = new RelayCommand(param =>
@@ -546,6 +392,22 @@ namespace Dev2.Studio.ViewModels
                 OpenMergeConflictsView(ActiveItem as IExplorerItemViewModel, resourceId, ActiveServer);
             }));
         }
+
+        public IAuthorizeCommand DebugCommand => ActiveItem == null ?
+            new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false)
+            : ActiveItem.DebugCommand;
+
+        public IAuthorizeCommand QuickDebugCommand => ActiveItem == null ?
+            new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false)
+            : ActiveItem.QuickDebugCommand;
+
+        public IAuthorizeCommand QuickViewInBrowserCommand => ActiveItem == null ?
+            new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false)
+            : ActiveItem.QuickViewInBrowserCommand;
+
+        public IAuthorizeCommand ViewInBrowserCommand => ActiveItem == null ?
+            new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false)
+            : ActiveItem.ViewInBrowserCommand;
 
         public IVersionChecker Version { get; }
 
@@ -590,6 +452,7 @@ namespace Dev2.Studio.ViewModels
             _asyncWorker = asyncWorker;
             _factory = factory;
             _worksurfaceContextManager = new WorksurfaceContextManager(createDesigners, this);
+            var warewolfCommands = new WarewolfCommands(createDesigners, this);
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController();
             if (popupController == null)
             {
@@ -1342,10 +1205,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private ICommand _runAllTestsCommand;
-        public ICommand RunAllTestsCommand => _runAllTestsCommand ?? (_runAllTestsCommand = new DelegateCommand(RunAllTests));
-
-        private void RunAllTests(object explorerObj)
+        public void RunAllTests(object explorerObj)
         {
             var resourcePath = "";
             var resourceId = Guid.Empty;
@@ -1651,7 +1511,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void ShowSearchWindow()
+        public void ShowSearchWindow(object obj)
         {
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SearchViewer);
             workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
