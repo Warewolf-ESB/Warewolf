@@ -16,7 +16,16 @@ namespace Warewolf.Configuration
 {
     public class LegacySettingsData : AuditSettingsDataBase, IEquatable<LegacySettingsData>, IHasChanged
     {
-        public string AuditFilePath { get; set; }
+        public LegacySettingsData()
+        {
+            PropertyChanged += (sender, args) => HasChanged = true;
+        }
+        private string _auditFilePath;
+        public string AuditFilePath
+        {
+            get => _auditFilePath;
+            set => SetProperty(ref _auditFilePath, value);
+        }
 
         public bool Equals(LegacySettingsData other)
         {
