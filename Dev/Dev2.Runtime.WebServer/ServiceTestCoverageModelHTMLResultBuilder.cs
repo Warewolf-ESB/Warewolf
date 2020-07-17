@@ -138,7 +138,7 @@ namespace Dev2.Runtime.WebServer
         }
 
 
-        internal static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, string className, AllCoverageReports allCoverageReports, ICoverageDataObject coverageData)
+        internal static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, string className, ICoverageDataObject coverageData)
         {
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
