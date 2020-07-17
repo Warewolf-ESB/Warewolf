@@ -23,14 +23,13 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Execution;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-
-
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -140,26 +139,35 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [Owner("Rory McGuire")]
         public void InternalServiceContainer_CanExecute_GivenAllowedService_ShouldAllowExecute()
         {
-            // TODO: This test seems to be missing a setup to allow the CanExecute to pass, else Execute will never be reached
-            var allowCanExecute = true;
-            var endpointAuthorizationLevel = AuthorizationContext.Any;
+            const bool allowCanExecute = true;
+            const AuthorizationContext endpointAuthorizationLevel = AuthorizationContext.Any;
+            const bool isInRole = true;
+            var mockPrincipal = new Mock<IPrincipal>();
+            var mockIdentity = new Mock<IIdentity>();
+            mockIdentity.Setup(o => o.Name).Returns("bob");
+            mockIdentity.Setup(o => o.IsAuthenticated).Returns(isInRole);
+            mockPrincipal.Setup(o => o.Identity).Returns(mockIdentity.Object);
+            mockPrincipal.Setup(o => o.IsInRole(It.IsAny<string>())).Returns(isInRole);
+            Common.Utilities.OrginalExecutingUser = mockPrincipal.Object;
 
             var mockEsbManagementEndpoint = new Mock<IEsbManagementEndpoint>();
             mockEsbManagementEndpoint.Setup(o => o.CanExecute(It.IsAny<CanExecuteArg>())).Returns(allowCanExecute);
-            var resourceID = Guid.NewGuid();
-            var requestArgs = new Dictionary<string, StringBuilder>();
-            requestArgs.Add("ResourceID", new StringBuilder(resourceID.ToString()));
-            mockEsbManagementEndpoint.Setup(o => o.GetResourceID(requestArgs)).Returns(resourceID);
+            var resourceId = Guid.NewGuid();
+            var requestArgs = new Dictionary<string, StringBuilder>
+            {
+                {"ResourceID", new StringBuilder(resourceId.ToString())}
+            };
+            mockEsbManagementEndpoint.Setup(o => o.GetResourceID(requestArgs)).Returns(resourceId);
             mockEsbManagementEndpoint.Setup(o => o.GetAuthorizationContextForService())
                 .Returns(endpointAuthorizationLevel);
 
             var esbExecuteRequest = new EsbExecuteRequest();
-            var errorResultTO = InternalServiceContainer_CanExecute_GivenAllowedService(mockEsbManagementEndpoint.Object, esbExecuteRequest);
+            var errorResultTo = InternalServiceContainer_CanExecute_GivenAllowedService(mockEsbManagementEndpoint.Object, esbExecuteRequest);
 
             mockEsbManagementEndpoint.Verify(o => o.CanExecute(It.IsAny<CanExecuteArg>()), Times.Once);
             mockEsbManagementEndpoint.Verify(o => o.Execute(It.IsAny<Dictionary<string,StringBuilder>>(), It.IsAny<IWorkspace>()), Times.Once);
 
-            Assert.AreEqual(0, errorResultTO.FetchErrors().Count);
+            Assert.AreEqual(0, errorResultTo.FetchErrors().Count);
 
             Assert.IsNull(esbExecuteRequest.ExecuteResult);
         }
@@ -314,11 +322,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         private ErrorResultTO InternalServiceContainer_CanExecute_GivenAllowedService(IEsbManagementEndpoint esbManagementEndpoint, EsbExecuteRequest esbExecuteRequest)
         {
-            var p = new Mock<IPrincipal>();
-            var i = new Mock<IIdentity>();
-            i.Setup(o => o.Name).Returns("bob");
-            p.Setup(o => o.Identity).Returns(i.Object);
-            Common.Utilities.OrginalExecutingUser = p.Object;
             //---------------Set up test pack-------------------
             const string datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             var serviceAction = new ServiceAction() { DataListSpecification = new StringBuilder(datalist) , ServiceName = "name", Name = "Name"};
