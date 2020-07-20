@@ -528,12 +528,15 @@ namespace Dev2.Runtime.WebServer
         public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
         {
             var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, catalog);
-            var allTests = testCatalog.FetchAllTests();
 
             var workflowTestResults = new WorkflowTestResults();
-            foreach (var test in allTests)
+            foreach (var testFolderId in coverageData.CoverageReportResourceIds)
             {
-                workflowTestResults.Add(test);
+                var testsInSelectedFolder = testCatalog.Fetch(testFolderId);
+                foreach (var test in testsInSelectedFolder)
+                {
+                    workflowTestResults.Add(test);
+                }
             }
 
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
@@ -543,7 +546,7 @@ namespace Dev2.Runtime.WebServer
             using (var writer = new HtmlTextWriter(stringWriter))
             {
                 writer.SetupNavBarHtml("nav-bar-row", "Coverage Summary");
-                workflowTestResults.Results.SetupCountSummaryHtml(writer, "count-summary row", allCoverageReports, coverageData);
+                workflowTestResults.Results.SetupCountSummaryHtml(writer, "count-summary row", coverageData);
 
                 allCoverageReports.AllCoverageReportsSummary
                     .Where(o => o.HasTestReports)
@@ -739,7 +742,7 @@ namespace Dev2.Runtime.WebServer
                 {
                     TestName = result.TestName,
                     Message = IsTestInValid(result) ? "Test has no selected nodes" : result.FailureMessage,
-                    RunTestResult = IsTestInValid(result) ? RunResult.TestInvalid : result.TestFailing ? RunResult.TestFailed : RunResult.TestPassed,
+                    RunTestResult = IsTestInValid(result) ? RunResult.TestInvalid : IsTestFailing(result) ? RunResult.TestFailed : RunResult.TestPassed,
                 }
             });
         }
