@@ -150,6 +150,7 @@
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
+    <Compile Include="Services\GetDependanciesOnListTests.cs" />
     <Compile Include="Services\SaveAuditingSettingsTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
@@ -372,6 +373,10 @@
     <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
       <Project>{FF3115B2-370E-4E40-99C5-7D239BC28679}</Project>
       <Name>Dev2.Services.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149e8e-fef2-47c0-8391-80dcce86d26d}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
       <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
