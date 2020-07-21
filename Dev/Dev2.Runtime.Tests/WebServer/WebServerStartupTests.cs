@@ -22,6 +22,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerStartup_Configuration")]
+        [Ignore]
         public void WebServerStartup_Configuration_HttpListener_InitializedCorrectly()
         {
             //------------Setup for test--------------------------
