@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod]
+      /*  [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(GetDependanciesOnList))]
         public void GetDependanciesOnList_Execute_ExpectList()
@@ -133,6 +133,6 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             repo.Verify(a => a.Fetch(It.IsAny<Guid>()));
             Assert.AreEqual(listOfTests[0].TestName, testModels[0].TestName);
-        }
+        }*/
     }
 }
