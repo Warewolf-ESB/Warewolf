@@ -326,6 +326,8 @@
     <Compile Include="Resources\IAuditingSource.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
+    <Compile Include="IServiceTestCoverageModelTo.cs" />
+    <Compile Include="ISingleTestNodesCovered.cs" />
     <Compile Include="Scheduler\Interfaces\IClientSchedulerFactory.cs" />
     <Compile Include="Scheduler\Interfaces\IEventInfo.cs" />
     <Compile Include="Scheduler\Interfaces\IResourceHistory.cs" />
@@ -474,5 +476,6 @@
       <Version>2.5.20</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

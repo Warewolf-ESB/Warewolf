@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Dev2.Runtime.Hosting;
-using Warewolf.Data;
+using Dev2.Data;
 
 namespace Dev2.Runtime
 {
@@ -227,15 +227,16 @@ namespace Dev2.Runtime
         }
     }
 
+
+    //TODO: still need to MOVE after coverage calculation refactor
+    public class CoverageArgs
+    {
+        public string OldReportName { get; set; }
+        public string ReportName { get; set; }
+    }
     public interface IServiceTestCoverageModelToFactory
     {
         IServiceTestCoverageModelTo New(Guid workflowId, CoverageArgs args, List<IServiceTestModelTO> serviceTestModelTos);
-    }
-
-    public class CoverageArgs
-    {
-        public string OldReportName { get; set; } 
-        public string ReportName { get; set; }
     }
 
     internal class ServiceTestCoverageModelToFactory : IServiceTestCoverageModelToFactory
@@ -258,6 +259,7 @@ namespace Dev2.Runtime
                 LastRunDate = DateTime.Now,
                 AllTestNodesCovered = allTestNodesCovered,
             };
+            //TODO: Refactor to class, this coverage calculation can be reused
             var coveredNodes = allTestNodesCovered.SelectMany(o => o.TestNodesCovered);
 
             var workflow = _resourceCatalog.GetWorkflow(workflowId);
@@ -272,76 +274,5 @@ namespace Dev2.Runtime
 
             return result;
         }
-    }
-
-
-    public class WorkflowNode : IWorkflowNode
-    {
-        public Guid ActivityID { get; set; }
-        public Guid UniqueID { get; set; }
-        public string StepDescription { get; set; }
-        public bool MockSelected { get; set; }
-        public List<IWorkflowNode> NextNodes { get; set; } = new List<IWorkflowNode>();
-
-        public void Add(IWorkflowNode node)
-        {
-            NextNodes.Add(node);
-        }
-    }
-
-    public interface IServiceTestCoverageModelTo
-    {
-        SingleTestNodesCovered[] AllTestNodesCovered { get; }
-        string OldReportName { get; }
-        string ReportName { get; }
-        Guid WorkflowId { get; }
-        double CoveragePercentage { get; }
-        DateTime LastRunDate { get; }
-        double TotalCoverage { get; }
-    }
-
-    public class ServiceTestCoverageModelTo : IServiceTestCoverageModelTo
-    {
-        public ServiceTestCoverageModelTo()
-        {
-            // Used during json deserialization
-        }
-
-        public SingleTestNodesCovered[] AllTestNodesCovered { get; set; }
-
-        public string OldReportName { get; set; }
-
-        public string ReportName { get; set; }
-
-        public Guid WorkflowId { get; set; }
-
-        public DateTime LastRunDate { get; set; }
-
-        public double CoveragePercentage { get; set; }
-        public double TotalCoverage { get; set; }
-}
-
-    public interface ISingleTestNodesCovered
-    {
-        string TestName { get; }
-        List<IWorkflowNode> TestNodesCovered { get; }
-    }
-
-    public class SingleTestNodesCovered : ISingleTestNodesCovered
-    {
-        public SingleTestNodesCovered(string testName, IEnumerable<IServiceTestStep> testSteps)
-        {
-            TestName = testName;
-            TestNodesCovered = testSteps?.Select(step => new WorkflowNode
-            {
-                ActivityID = step.ActivityID,
-                UniqueID = step.UniqueID,
-                StepDescription = step.StepDescription,
-                MockSelected = step.MockSelected
-            }).ToList<IWorkflowNode>() ?? new List<IWorkflowNode>();
-        }
-
-        public string TestName { get; }
-        public List<IWorkflowNode> TestNodesCovered { get; }
     }
 }
