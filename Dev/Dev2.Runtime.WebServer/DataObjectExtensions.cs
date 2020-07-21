@@ -558,6 +558,7 @@ namespace Dev2.Runtime.WebServer
                             resourcePath = filePath.Path;
                         }
 
+                        //TODO: move this to the extenstion class:ServiceTestCoverageModelHTMLResultBuilder 
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
                         writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#333");
                         writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
@@ -645,120 +646,6 @@ namespace Dev2.Runtime.WebServer
             allCoverageReports.EndTime = DateTime.Now;
 
             return allCoverageReports;
-        }
-    }
-
-    internal class AllCoverageReports
-    {
-        public List<WorkflowCoverageReports> AllCoverageReportsSummary { get; } = new List<WorkflowCoverageReports>();
-        public JToken StartTime { get; internal set; }
-        public JToken EndTime { get; internal set; }
-
-        internal void Add(WorkflowCoverageReports item)
-        {
-            AllCoverageReportsSummary.Add(item);
-        }
-    }
-
-    internal class WorkflowCoverageReports
-    {
-        public WorkflowCoverageReports(IWarewolfWorkflow resource)
-        {
-            Resource = resource;
-        }
-
-        public List<IServiceTestCoverageModelTo> Reports { get; } = new List<IServiceTestCoverageModelTo>();
-        public bool HasTestReports => Reports.Count > 0;
-        public IWarewolfWorkflow Resource { get; }
-
-        internal void Add(IServiceTestCoverageModelTo coverage)
-        {
-            Reports.Add(coverage);
-        }
-
-        public (double TotalCoverage, List<IWorkflowNode> AllWorkflowNodes, IWorkflowNode[] CoveredNodes) GetTotalCoverage()
-        {
-            var coveredNodes = Reports
-                .SelectMany(o => o.AllTestNodesCovered)
-                .SelectMany(o => o.TestNodesCovered)
-                .GroupBy(n => n.ActivityID)
-                .Select(o => o.First()).ToArray();
-
-            var accum = coveredNodes
-                .Where(o => o.MockSelected is false)
-                .Select(o => o.ActivityID)
-                .Distinct().ToList();
-            var allWorkflowNodes = Resource.WorkflowNodes;
-            var accum2 = allWorkflowNodes.Select(o=> o.UniqueID).ToList();
-            var activitiesExistingInTests = accum2.Intersect(accum).ToList();
-            var total = Math.Round(activitiesExistingInTests.Count / (double)accum2.Count, 2);
-            return (total, allWorkflowNodes, coveredNodes);
-        }
-    }
-
-    public class TestResults
-    {
-        public TestResults()
-        {
-            StartTime = DateTime.Now;
-        }
-
-        public DateTime StartTime { get; }
-        public DateTime EndTime { get; set; }
-        public List<WorkflowTestResults> Results { get; } = new List<WorkflowTestResults>();
-
-        public void Add(WorkflowTestResults taskResult)
-        {
-            Results.Add(taskResult);
-        }
-    }
-
-    public class WorkflowTestResults
-    {
-        public WorkflowTestResults()
-        {
-        }
-
-        public WorkflowTestResults(IWarewolfResource res)
-        {
-            Resource = res;
-        }
-
-        public IWarewolfResource Resource { get; }
-        public List<IServiceTestModelTO> Results { get; } = new List<IServiceTestModelTO>();
-        public bool HasTestResults => Results.Count > 0;
-
-        public void Add(IServiceTestModelTO result)
-        {
-            Results.Add(new ServiceTestModelTO
-            {
-                OldTestName = result.OldTestName,
-                TestName = result.TestName,
-                TestPassed = IsTestPassed(result),
-                TestInvalid = IsTestInValid(result),
-                TestFailing = IsTestFailing(result),
-                Result = new TestRunResult
-                {
-                    TestName = result.TestName,
-                    Message = IsTestInValid(result) ? "Test has no selected nodes" : result.FailureMessage,
-                    RunTestResult = IsTestInValid(result) ? RunResult.TestInvalid : IsTestFailing(result) ? RunResult.TestFailed : RunResult.TestPassed,
-                }
-            });
-        }
-
-        private bool IsTestFailing(IServiceTestModelTO test)
-        {
-            return IsTestInValid(test) is false && IsTestPassed(test) is false;
-        }
-
-        private bool IsTestPassed(IServiceTestModelTO test)
-        {
-            return IsTestInValid(test) is false && test.TestFailing is false;
-        }
-
-        private bool IsTestInValid(IServiceTestModelTO test)
-        {
-            return test.TestSteps is null || test.TestSteps.Count is 0;
         }
     }
 }
