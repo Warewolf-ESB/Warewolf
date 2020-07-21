@@ -19,16 +19,57 @@ namespace Dev2.Runtime.WebServer
 {
     public static class ServiceTestCoverageModelHTMLResultBuilder
     {
-        public static void SetupNavBarHtml(this HtmlTextWriter writer, string classValue, string resourcePath)
+        public static void SetupNavBarHtml(this HtmlTextWriter writer)
         {
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontFamily, "Roboto sans-serif");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "28px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, classValue);
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "nav-bar-row");
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.Write("Coverage Summary");
+            writer.RenderEndTag();
+        }
+
+        public static void SetupWorkflowRowHtml(this HtmlTextWriter writer, string resourcePath, ICoverageDataObject coverageData, WorkflowCoverageReports coverageReports)
+        {
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#333");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "20%");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.Write(resourcePath);
+            writer.RenderEndTag();
+
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml-link");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
+            var testUrl = coverageData.GetTestUrl(resourcePath);
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, testUrl);
+            writer.RenderBeginTag(HtmlTextWriterTag.A);
+            writer.Write("Run Tests");
+            writer.RenderEndTag();
+            writer.RenderEndTag();
+
+            var (totalCoverage, workflowNodes, coveredNodes) = coverageReports.GetTotalCoverage();
+
+            writer.SetupWorkflowReportsHtml(totalCoverage, nameof(SetupWorkflowReportsHtml));
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+            workflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, coveredNodes));
+
             writer.RenderEndTag();
         }
 
@@ -84,7 +125,7 @@ namespace Dev2.Runtime.WebServer
         }
 
 
-        public static void SetupWorkflowNodeHtml(this IWorkflowNode workflowNode, HtmlTextWriter writer, string className, IWorkflowNode[] coveredNodes)
+        public static void SetupWorkflowNodeHtml(this IWorkflowNode workflowNode, HtmlTextWriter writer, IWorkflowNode[] coveredNodes)
         {
             if (IsNodeCovered(coveredNodes, workflowNode))
             {
@@ -138,11 +179,11 @@ namespace Dev2.Runtime.WebServer
         }
 
 
-        internal static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, string className, ICoverageDataObject coverageData)
+        internal static void SetupCountSummaryHtml(this List<IServiceTestModelTO> allTests, HtmlTextWriter writer, ICoverageDataObject coverageData)
         {
             writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "10px 10px 20px 10px");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "5px");
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, className);
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "count-summary row");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
             writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 -15px 0 -15px");
