@@ -86,6 +86,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="AllCoverageReports.cs" />
     <Compile Include="ApisJsonBuilder.cs" />
     <Compile Include="CommunicationContextExtensions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="ServiceTestExecutor.cs" />
     <Compile Include="ServiceTestModelTRXResultBuilder.cs" />
     <Compile Include="ServiceTestModelJObjectResultBuilder.cs" />
+    <Compile Include="TestResults.cs" />
     <Compile Include="TransferObjects\WebRequestTO.cs" />
     <Compile Include="WebRequestExtentions.cs" />
     <Compile Include="WebServerContext.cs" />
@@ -133,6 +135,8 @@
     <Compile Include="WebServerStartup.cs" />
     <Compile Include="Controllers\WebServerController.cs" />
     <Compile Include="Handlers\AbstractWebRequestHandler.cs" />
+    <Compile Include="WorkflowCoverageReports.cs" />
+    <Compile Include="WorkflowTestResults.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
