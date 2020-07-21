@@ -1,10 +1,15 @@
+Friday 17 July 2020
+======================
+Bug Fixes
+---------
+- Test Coverage Summary counts are now updated for the selected folder
+
 Monday 13 July 2020
 ======================
 Bug Fixes
 ---------
-- Fixed a bug with the Redis Cache tool where the output of a recordset was not caching correctly.
+- Redis Cache tool - Resolved recordset output not caching correctly.
 
- 
 Features
 --------
 - Added more logging to the Trigger Queue
