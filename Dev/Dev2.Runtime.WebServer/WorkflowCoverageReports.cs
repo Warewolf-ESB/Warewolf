@@ -17,7 +17,7 @@ using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal class WorkflowCoverageReports
+    public class WorkflowCoverageReports
     {
         public WorkflowCoverageReports(IWarewolfWorkflow resource)
         {

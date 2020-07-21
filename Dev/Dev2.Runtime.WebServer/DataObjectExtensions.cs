@@ -544,8 +544,8 @@ namespace Dev2.Runtime.WebServer
 
             using (var writer = new HtmlTextWriter(stringWriter))
             {
-                writer.SetupNavBarHtml("nav-bar-row", "Coverage Summary");
-                workflowTestResults.Results.SetupCountSummaryHtml(writer, "count-summary row", coverageData);
+                writer.SetupNavBarHtml();
+                workflowTestResults.Results.SetupCountSummaryHtml(writer, coverageData);
 
                 allCoverageReports.AllCoverageReportsSummary
                     .Where(o => o.HasTestReports)
@@ -558,46 +558,7 @@ namespace Dev2.Runtime.WebServer
                             resourcePath = filePath.Path;
                         }
 
-                        //TODO: move this to the extenstion class:ServiceTestCoverageModelHTMLResultBuilder 
-                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#333");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "20%");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.Padding, "8px 16px 16px 8px");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-                        writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                        writer.Write(resourcePath);
-                        writer.RenderEndTag();
-
-                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml-link");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100px");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "bold");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "12px");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "inline-block");
-                        writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                        writer.AddAttribute(HtmlTextWriterAttribute.Target, "_new");
-                        var testUrl = coverageData.GetTestUrl(resourcePath);
-                        writer.AddAttribute(HtmlTextWriterAttribute.Href, testUrl);
-                        writer.RenderBeginTag(HtmlTextWriterTag.A);
-                        writer.Write("Run Tests");
-                        writer.RenderEndTag();
-                        writer.RenderEndTag();
-
-                        var (totalCoverage, workflowNodes, coveredNodes) = oo.GetTotalCoverage();
-
-                        writer.SetupWorkflowReportsHtml(totalCoverage, "SetupWorkflowReportsHtml");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.FontWeight, "500");
-                        writer.AddStyleAttribute(HtmlTextWriterStyle.Margin, "0 0 0 35px");
-                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "workflow-nodes-row");
-                        writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-
-
-                        workflowNodes.ForEach(node => node.SetupWorkflowNodeHtml(writer, "workflow-nodes", coveredNodes));
-
-                        writer.RenderEndTag();
+                        writer.SetupWorkflowRowHtml(resourcePath, coverageData, oo);
                     });
             }
 
