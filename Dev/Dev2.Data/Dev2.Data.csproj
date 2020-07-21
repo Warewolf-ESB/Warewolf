@@ -145,6 +145,8 @@
     <Compile Include="PathOperations\ValidateAuthorization.cs" />
     <Compile Include="ServiceModel\ElasticsearchSource.cs" />
     <Compile Include="ServiceModel\RedisSource.cs" />
+    <Compile Include="ServiceTestCoverageModelTo.cs" />
+    <Compile Include="SingleTestNodesCovered.cs" />
     <Compile Include="Util\OperationsHelper.cs" />
     <Compile Include="IComplexObject.cs" />
     <Compile Include="IDataListModel.cs" />
