@@ -21,7 +21,7 @@ if ($WarewolfServerProcess) {
         Write-Host Starting Warewolf server as $Username
         Write-Host 1. Create Warewolf Administrators group.
         NET localgroup "Warewolf Administrators" /ADD
-        if ($Password -eq 'W@rEw0lf@dm1n') {
+        if ($Password -eq 'W@rEw0lf@dm1n' -or $Password -eq '') {
             $Password = [String]'wW'[(ForEach-Object { Get-Random -Maximum 2 })]
             $Password += [String]'aA@'[(ForEach-Object { Get-Random -Maximum 3 })]
             $Password += [String]'rR'[(ForEach-Object { Get-Random -Maximum 2 })]
