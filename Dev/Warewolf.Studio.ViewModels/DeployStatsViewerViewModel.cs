@@ -29,6 +29,7 @@ namespace Warewolf.Studio.ViewModels
         int _services;
         int _sources;
         int _tests;
+        int _triggers;
         int _unknown;
         int _newResources;
         int _overrides;
@@ -102,6 +103,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _tests = value;
                 OnPropertyChanged(() => Tests);
+            }
+        }
+
+        public int Triggers
+        {
+            get => _triggers;
+            set
+            {
+                _triggers = value;
+                OnPropertyChanged(() => Triggers);
             }
         }
 
@@ -208,6 +219,7 @@ namespace Warewolf.Studio.ViewModels
                 Services = 0;
                 Sources = 0;
                 Tests = 0;
+                Triggers = 0;
                 Unknown = 0;
                 _conflicts = new List<Conflict>();
                 _new = new List<IExplorerTreeItem>();
@@ -237,6 +249,11 @@ namespace Warewolf.Studio.ViewModels
             Tests = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
                                         //TODO: LoadResourceTestsForDeploy(a.ResourceId) to get tests count
                                         //&& a.ResourceType == @"Test"
+                                        && a.IsResourceChecked == true
+                                        );
+            Triggers = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
+                                        //TODO: LoadResourceTriggersForDeploy(a.ResourceId) to get triggers count
+                                        //&& a.ResourceType == @"Trigger"
                                         && a.IsResourceChecked == true
                                         );
 
