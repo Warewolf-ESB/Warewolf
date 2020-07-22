@@ -512,6 +512,7 @@
     <EmbeddedResource Include="key.opk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Decision.feature.cs</LastGenOutput>
