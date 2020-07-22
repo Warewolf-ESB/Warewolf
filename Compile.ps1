@@ -311,17 +311,17 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll") {
 					Remove-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
 				}
-				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.0.0\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll") {
-					Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.0.0\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
+				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll") {
+					Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" -Force
 				}
-				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.0.0\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") {
-					Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.0.0\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
+				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll") {
+					Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" -Force
 				}
-				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.0.0\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll") {
-					Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.0.0\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
+				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll") {
+					Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" -Force
 				}
-				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.0.0\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll") {
-					Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.0.0\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
+				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll") {
+					Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
 				}
             }
         }
