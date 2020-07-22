@@ -434,8 +434,8 @@
     <PackageReference Include="Dropbox.Api">
       <Version>4.2.4</Version>
     </PackageReference>
-    <PackageReference Include="FSharp.Core.3">
-      <Version>0.0.2</Version>
+    <PackageReference Include="FSharp.Core">
+      <Version>4.7.2</Version>
     </PackageReference>
     <PackageReference Include="FsLexYacc">
       <Version>6.1.0</Version>
