@@ -112,8 +112,8 @@
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
-    <PackageReference Include="FSharp.Core.3">
-      <Version>0.0.2</Version>
+    <PackageReference Include="FSharp.Core">
+      <Version>4.7.2</Version>
     </PackageReference>
     <PackageReference Include="Moq">
       <Version>4.13.1</Version>
