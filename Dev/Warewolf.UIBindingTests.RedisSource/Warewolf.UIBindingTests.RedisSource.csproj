@@ -60,6 +60,7 @@
     <Compile Include="RedisSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Redis Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Redis Source.feature.cs</LastGenOutput>

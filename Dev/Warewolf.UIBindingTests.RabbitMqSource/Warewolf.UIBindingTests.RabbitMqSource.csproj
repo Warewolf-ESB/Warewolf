@@ -113,6 +113,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="RabbitMq Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>RabbitMq Source.feature.cs</LastGenOutput>

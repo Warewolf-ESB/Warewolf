@@ -61,6 +61,7 @@
     </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="PluginSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PluginSource.feature.cs</LastGenOutput>

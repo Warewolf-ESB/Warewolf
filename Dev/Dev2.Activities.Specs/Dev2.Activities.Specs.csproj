@@ -305,6 +305,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="BrowserDebug\BrowserDebug.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BrowserDebug.feature.cs</LastGenOutput>

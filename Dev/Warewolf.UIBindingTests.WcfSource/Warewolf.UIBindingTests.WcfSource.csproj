@@ -58,6 +58,7 @@
     <Compile Include="WcfSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Wcf Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Wcf Source.feature.cs</LastGenOutput>
