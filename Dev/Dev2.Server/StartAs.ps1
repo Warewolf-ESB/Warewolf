@@ -15,7 +15,13 @@ $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyCont
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
 if ($WarewolfServerProcess) {
 	Sleep 30
-	Invoke-WebRequest -Uri http://localhost:3142/Public/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -UseDefaultCredentials -UseBasicParsing
+	$pair = "$($Username):$($Password)"
+	$encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
+	$basicAuthValue = "Basic $encodedCreds"
+	$Headers = @{
+		Authorization = $basicAuthValue
+	}
+	Invoke-WebRequest -Uri http://localhost:3142/Secure/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -Headers $Headers-UseBasicParsing
 } else {
 	if ($Username) {
 		Write-Host Starting Warewolf server as $Username
