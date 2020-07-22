@@ -154,7 +154,7 @@
 
                     <StackPanel Grid.Row="2"
                                 HorizontalAlignment="Left"
-                                Orientation="Horizontal"
+                                Orientation="Vertical"
                                 IsEnabled="{Binding DeployInProgress, Converter={StaticResource BoolToEnabledConverterNegative}}">
                         <Button AutomationProperties.AutomationId="UI_SelectDepbtn_AutoID"
                                 x:Name="Dependencies"
@@ -168,8 +168,18 @@
                                 <core:HelpSetter Text="{x:Static languages:HelpText.DeploySelectDependenciesHelp}" DataContext="{Binding}"/>
                             </i:Interaction.Behaviors>
                         </Button>
-                        <TextBlock Text="Also Deploy Tests?" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
-                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding Destination.DeployTests}" IsEnabled="{Binding CanDeployTests}" />
+                        <CheckBox VerticalAlignment="Center"
+                                  Content="Also Deploy Tests?"
+                                  Foreground="White"
+                                  FontSize="{StaticResource FontSize-Medium}"
+                                  IsChecked="{Binding Destination.DeployTests}"
+                                  IsEnabled="{Binding CanDeployTests}" />
+                        <CheckBox VerticalAlignment="Center"
+                                  Content="Also Deploy Triggers?"
+                                  Foreground="White"
+                                  FontSize="{StaticResource FontSize-Medium}"
+                                  IsChecked="{Binding Destination.DeployTriggers}"
+                                  IsEnabled="{Binding CanDeployTests}" />
                     </StackPanel>
                 </Grid>
 

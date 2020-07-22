@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -10,7 +10,6 @@
 
 using Dev2.Studio.Interfaces;
 
-
 namespace Dev2.Studio.Core.InterfaceImplementors
 {
     /// <summary>
@@ -18,8 +17,6 @@ namespace Dev2.Studio.Core.InterfaceImplementors
     /// </summary>
     public class DeployService : IDeployService
     {
-        #region Deploy
-
         /// <summary>
         /// Deploys the <see cref="IResourceModel" />'s represented by the given DTO.
         /// </summary>
@@ -50,12 +47,14 @@ namespace Dev2.Studio.Core.InterfaceImplementors
                         var models = sourceEnviroment.ResourceRepository.LoadResourceTestsForDeploy(resourceModel.ID);
                         server.ResourceRepository.SaveTests(resourceModel, models);
                     }
+
+                    if (deployDto.DeployTriggers)
+                    {
+                        //TODO: Load the triggers link to the resource
+                        //var models = sourceEnviroment.ResourceRepository.LoadResourceTriggersForDeploy(resourceModel.ID);
+                    }
                 }
             }
         }
-
-
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -28,7 +28,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Threading;
 using System.Globalization;
 
 namespace Warewolf.Studio.ViewModels
@@ -330,11 +329,11 @@ namespace Warewolf.Studio.ViewModels
             if (supportsDirectServerDeploy)
             {
                 var destConnection = CreateNewConnection(destEnv);
-                deployResponse = sourceEnv?.Server?.UpdateRepository?.Deploy(notfolders, Destination.DeployTests, destConnection);
+                deployResponse = sourceEnv?.Server?.UpdateRepository?.Deploy(notfolders, Destination.DeployTests, Destination.DeployTriggers, destConnection);
             }
             if (!supportsDirectServerDeploy || deployResponse.Any(r => r.HasError))
             {
-                _shell.DeployResources(sourceEnv.Server.EnvironmentID, destEnv.EnvironmentID, notfolders, Destination.DeployTests);
+                _shell.DeployResources(sourceEnv.Server.EnvironmentID, destEnv.EnvironmentID, notfolders, Destination.DeployTests, Destination.DeployTriggers);
             }
             Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceChecked = false);
             Source.SelectedEnvironment.IsResourceChecked = false;
