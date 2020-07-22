@@ -135,16 +135,17 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
 
-                        <TextBlock Grid.Column="0" Grid.Row="1" Text="Services" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
-                        <TextBlock Grid.Column="1" Grid.Row="1" x:Name="WorkflowsCount" Text="{Binding ServicesCount}" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Services" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
+                        <TextBlock Grid.Column="1" Grid.Row="0" x:Name="WorkflowsCount" Text="{Binding ServicesCount}" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
 
-                        <TextBlock Grid.Column="0" Grid.Row="2" Text="Sources" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
-                        <TextBlock Grid.Column="1" Grid.Row="2" x:Name="SourcesCount" Text="{Binding SourcesCount}" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Text="Sources" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
+                        <TextBlock Grid.Column="1" Grid.Row="1" x:Name="SourcesCount" Text="{Binding SourcesCount}" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
 
+                        <TextBlock Grid.Column="0" Grid.Row="2" Text="Tests" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
+                        <TextBlock Grid.Column="1" Grid.Row="2" x:Name="TestsCount" Text="{Binding TestsCount}" Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
                     </Grid>
 
                     <StackPanel Grid.Row="2"

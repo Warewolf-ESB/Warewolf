@@ -28,6 +28,7 @@ namespace Warewolf.Studio.ViewModels
         int _connectors;
         int _services;
         int _sources;
+        int _tests;
         int _unknown;
         int _newResources;
         int _overrides;
@@ -91,6 +92,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _sources = value;
                 OnPropertyChanged(() => Sources);
+            }
+        }
+
+        public int Tests
+        {
+            get => _tests;
+            set
+            {
+                _tests = value;
+                OnPropertyChanged(() => Tests);
             }
         }
 
@@ -196,6 +207,7 @@ namespace Warewolf.Studio.ViewModels
                 Connectors = 0;
                 Services = 0;
                 Sources = 0;
+                Tests = 0;
                 Unknown = 0;
                 _conflicts = new List<Conflict>();
                 _new = new List<IExplorerTreeItem>();
@@ -221,6 +233,12 @@ namespace Warewolf.Studio.ViewModels
             Sources = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
                                         && IsSource(a.ResourceType)
                                         && a.IsResourceChecked == true);
+
+            Tests = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
+                                        //TODO: LoadResourceTestsForDeploy(a.ResourceId) to get tests count
+                                        //&& a.ResourceType == @"Test"
+                                        && a.IsResourceChecked == true
+                                        );
 
             Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
 

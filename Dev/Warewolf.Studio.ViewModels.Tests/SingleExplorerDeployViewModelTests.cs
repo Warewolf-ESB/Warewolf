@@ -1157,6 +1157,33 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SingleExplorerDeployViewModel))]
+        public void SingleExplorerDeployViewModel_SourcesCount_GivenCalculateAction_AreEqualTo_StatViewTests()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _statsView.Setup(model => model.Tests).Returns(25);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNull(singleExplorerDeployViewModel.TestsCount);
+            //---------------Execute Test ----------------------
+            _statsView.Object.CalculateAction.Invoke();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(singleExplorerDeployViewModel.TestsCount, _statsView.Object.Tests.ToString());
+        }
+
+        [TestMethod,Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void ConflictItems_GivenCalculateAction_AreEqualToStatViewConflictItems()
         {
@@ -1204,6 +1231,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _statsView.Setup(model => model.New).Returns(explorerTreeItems);
             _statsView.Setup(model => model.Services).Returns(5);
             _statsView.Setup(model => model.Sources).Returns(2);
+            _statsView.Setup(model => model.Tests).Returns(6);
             _statsView.Setup(model => model.NewResources).Returns(3);
             _statsView.Setup(model => model.Overrides).Returns(1);
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
@@ -1212,11 +1240,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(singleExplorerDeployViewModel);
             Assert.AreEqual("5", singleExplorerDeployViewModel.ServicesCount);
             Assert.AreEqual("2", singleExplorerDeployViewModel.SourcesCount);
+            Assert.AreEqual("6", singleExplorerDeployViewModel.TestsCount);
             Assert.AreEqual("3", singleExplorerDeployViewModel.NewResourcesCount);
             Assert.AreEqual("1", singleExplorerDeployViewModel.OverridesCount);
             //---------------Execute Test ----------------------
             _statsView.Setup(model => model.Services).Returns(50);
             _statsView.Setup(model => model.Sources).Returns(20);
+            _statsView.Setup(model => model.Tests).Returns(60);
             _statsView.Setup(model => model.NewResources).Returns(30);
             _statsView.Setup(model => model.Overrides).Returns(10);
             var privateObject = new PrivateObject(singleExplorerDeployViewModel);
@@ -1225,6 +1255,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(singleExplorerDeployViewModel.ShowConflicts);
             Assert.AreEqual("50", singleExplorerDeployViewModel.ServicesCount);
             Assert.AreEqual("20", singleExplorerDeployViewModel.SourcesCount);
+            Assert.AreEqual("60", singleExplorerDeployViewModel.TestsCount);
             Assert.AreEqual("30", singleExplorerDeployViewModel.NewResourcesCount);
             Assert.AreEqual("10", singleExplorerDeployViewModel.OverridesCount);
         }

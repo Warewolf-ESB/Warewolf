@@ -26,6 +26,7 @@ namespace Dev2.Studio.Interfaces.Deploy
         int Connectors { get; set; }
         int Services { get; set; }
         int Sources { get; set; }
+        int Tests { get; set; }
         int Unknown { get; set; }
         int NewResources { get; set; }
         int Overrides { get; set; }
