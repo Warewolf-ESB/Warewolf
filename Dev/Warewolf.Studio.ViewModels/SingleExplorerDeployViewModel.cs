@@ -42,6 +42,7 @@ namespace Warewolf.Studio.ViewModels
         IConnectControlViewModel _destinationConnectControlViewModel;
         string _sourcesCount;
         private string _testsCount;
+        private string _triggersCount;
         string _servicesCount;
         string _newResourcesCount;
         string _overridesCount;
@@ -84,6 +85,7 @@ namespace Warewolf.Studio.ViewModels
                 ServicesCount = _stats.Services.ToString();
                 SourcesCount = _stats.Sources.ToString();
                 TestsCount = _stats.Tests.ToString();
+                TriggersCount = _stats.Triggers.ToString();
                 NewResourcesCount = _stats.NewResources.ToString();
                 OverridesCount = _stats.Overrides.ToString();
                 ConflictItems = _stats.Conflicts;
@@ -173,6 +175,7 @@ namespace Warewolf.Studio.ViewModels
             ServicesCount = _stats.Services.ToString();
             SourcesCount = _stats.Sources.ToString();
             TestsCount = _stats.Tests.ToString();
+            TriggersCount = _stats.Triggers.ToString();
             NewResourcesCount = _stats.NewResources.ToString();
             OverridesCount = _stats.Overrides.ToString();
             var environmentViewModel = Destination?.Environments?.FirstOrDefault(model => model.ResourceId == environmentid);
@@ -646,6 +649,20 @@ namespace Warewolf.Studio.ViewModels
                     _testsCount = value;
                     ErrorMessage = string.Empty;
                     OnPropertyChanged(() => TestsCount);
+                }
+            }
+        }
+
+        public string TriggersCount
+        {
+            get => _triggersCount;
+            set
+            {
+                if (_triggersCount != value)
+                {
+                    _triggersCount = value;
+                    ErrorMessage = string.Empty;
+                    OnPropertyChanged(() => TriggersCount);
                 }
             }
         }

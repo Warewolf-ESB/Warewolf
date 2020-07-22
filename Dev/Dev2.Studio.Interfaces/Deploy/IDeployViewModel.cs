@@ -48,6 +48,7 @@ namespace Dev2.Studio.Interfaces.Deploy
 
         string SourcesCount { get; set; }
         string TestsCount { get; set; }
+        string TriggersCount { get; set; }
         string ServicesCount { get; set; }
         string OverridesCount { get; set; }
         string NewResourcesCount { get; set; }
