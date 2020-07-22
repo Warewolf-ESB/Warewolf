@@ -59,6 +59,7 @@
     <Compile Include="ServiceTestViewSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Service Test View.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Service Test View.feature.cs</LastGenOutput>
