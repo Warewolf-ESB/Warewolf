@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -101,10 +101,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var proxy = Connections.CreateHubProxy(destination);
                 var roles = new StringBuilder("*");
                 values.TryGetValue("deployTests", out StringBuilder deployTests);
+                values.TryGetValue("deployTriggers", out StringBuilder deployTriggers);
 
                 if (deployTests == null)
                 {
                     toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder("deployTests is null") }, "An Error has occurred"));
+                }
+                if (deployTriggers == null)
+                {
+                    toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder("deployTriggers is null") }, "An Error has occurred"));
                 }
                 else
                 {

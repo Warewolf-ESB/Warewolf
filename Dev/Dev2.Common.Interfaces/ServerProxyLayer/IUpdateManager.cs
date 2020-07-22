@@ -1,12 +1,21 @@
 #pragma warning disable
- using Dev2.Common.Interfaces.DB;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.WebServices;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
 {
@@ -56,6 +65,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
     /// </summary>
     public interface IUpdateManager : IUpdateManagerSave, IUpdateManagerTest
     {
-        List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironmentId);
+        List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, bool deployTriggers, IConnection destinationEnvironmentId);
     }
 }

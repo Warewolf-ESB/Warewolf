@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -24,14 +24,7 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class DeployServiceTest
     {
-        #region Test Variables
-
         int _numModels = 3;
-        
-
-        #endregion Test Variables
-
-        #region Deploy Tests
 
         [TestMethod]
         public void DeployToEnvironmentWithZeroModels()
@@ -53,10 +46,6 @@ namespace Dev2.Core.Tests
             _numModels = -1;
             Run();
         }
-
-        #endregion Deploy Tests
-
-        #region Run
 
         void Run()
         {
@@ -87,6 +76,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DeployService))]
         public void Deploy_GivenFalse_ShouldDeployResourcesOnly()
         {
             //---------------Set up test pack-------------------
@@ -108,6 +98,7 @@ namespace Dev2.Core.Tests
             var dtoMock = new Mock<IDeployDto>();
             dtoMock.Setup(d => d.ResourceModels).Returns(CreateModels(envMock.Object));
             dtoMock.Setup(d => d.DeployTests).Returns(false);
+            dtoMock.Setup(d => d.DeployTriggers).Returns(false);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -122,7 +113,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Deploy_Giventrue_ShouldDeployResourcesAndTests()
+        [TestCategory(nameof(DeployService))]
+        public void Deploy_GivenTrue_ShouldDeployResourcesAndTests()
         {
             //---------------Set up test pack-------------------
             var eventPublisher = new EventPublisher();
@@ -143,6 +135,7 @@ namespace Dev2.Core.Tests
             var dtoMock = new Mock<IDeployDto>();
             dtoMock.Setup(d => d.ResourceModels).Returns(CreateModels(envMock.Object));
             dtoMock.Setup(d => d.DeployTests).Returns(true);
+            dtoMock.Setup(d => d.DeployTriggers).Returns(false);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -155,9 +148,42 @@ namespace Dev2.Core.Tests
 
         }
 
-        #endregion
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DeployService))]
+        public void DeployService_GivenTrue_ShouldDeployResourcesAndTestsAndTriggers()
+        {
+            //---------------Set up test pack-------------------
+            var eventPublisher = new EventPublisher();
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
+            connection.Setup(e => e.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
-        #region CreateModels
+            var envMock = new Mock<IServer>();
+            envMock.Setup(e => e.Connection).Returns(connection.Object);
+            envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>())).Verifiable();
+            envMock.Setup(e => e.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
+            envMock.Setup(e => e.IsConnected).Returns(true);
+
+            var sourceMock = new Mock<IServer>();
+            sourceMock.Setup(e => e.Connection).Returns(connection.Object);
+            sourceMock.Setup(e => e.ResourceRepository.LoadResourceTestsForDeploy(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>()).Verifiable();
+            sourceMock.Setup(e => e.IsConnected).Returns(true);
+            var dtoMock = new Mock<IDeployDto>();
+            dtoMock.Setup(d => d.ResourceModels).Returns(CreateModels(envMock.Object));
+            dtoMock.Setup(d => d.DeployTests).Returns(true);
+            dtoMock.Setup(d => d.DeployTriggers).Returns(true);
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var ds = new DeployService();
+            ds.Deploy(dtoMock.Object, sourceMock.Object, envMock.Object);
+            //---------------Test Result -----------------------
+            sourceMock.Verify(e => e.ResourceRepository.LoadResourceTestsForDeploy(It.IsAny<Guid>()), Times.AtLeastOnce );
+            envMock.Verify(e => e.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()), Times.AtLeastOnce);
+            envMock.Verify(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>()), Times.AtLeastOnce);
+            Assert.Fail("TODO: Validate the Deploy Triggers method is executed");
+        }
 
         IList<IResourceModel> CreateModels(IServer environment)
         {
@@ -177,7 +203,5 @@ namespace Dev2.Core.Tests
             }
             return result;
         }
-
-        #endregion
     }
 }
