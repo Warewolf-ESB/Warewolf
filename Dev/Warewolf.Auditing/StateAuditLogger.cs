@@ -56,6 +56,11 @@ namespace Warewolf.Auditing
                 };
                 string json = JsonConvert.SerializeObject(auditCommand);
                 _ws.SendMessage(json);
+                if (_ws != null)
+                {
+                    _webSocketFactory.Release(_ws);
+                    _ws = null;
+                }
             }
         }
 
