@@ -1,12 +1,12 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Options;
 
 namespace Warewolf.Data.Options.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class ConditionExpressionTests
     {
-        [Test]
+        [TestMethod]
         public void ConditionExpression_GivenMatchExpression()
         {
             var condition = new ConditionExpression
@@ -23,7 +23,7 @@ namespace Warewolf.Data.Options.Tests
             Assert.AreEqual("[[a]] = bob", result);
         }
         
-        [Test]
+        [TestMethod]
         public void ConditionExpression_GivenBetweenExpression()
         {
             var condition = new ConditionExpression
@@ -41,7 +41,7 @@ namespace Warewolf.Data.Options.Tests
             Assert.AreEqual("[[a]] is greater than 2 and less than 10", result);
         }
         
-        [Test]
+        [TestMethod]
         public void ConditionExpression_GivenNotBetweenExpression()
         {
             var condition = new ConditionExpression
@@ -59,7 +59,7 @@ namespace Warewolf.Data.Options.Tests
             Assert.AreEqual("[[a]] is less than 2 and more than 10", result);
         }
         
-        [Test]
+        [TestMethod]
         public void ConditionExpression_GivenIsSingleOperand()
         {
             var condition = new ConditionExpression
@@ -76,7 +76,7 @@ namespace Warewolf.Data.Options.Tests
             Assert.AreEqual("[[a]] Is NULL", result);
         }
 
-        [Test]
+        [TestMethod]
         public void ConditionExpression_ToOptions()
         {
             var condition = new ConditionExpression

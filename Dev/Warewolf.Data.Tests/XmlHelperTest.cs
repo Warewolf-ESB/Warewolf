@@ -4,20 +4,21 @@
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  OwnerS <http://warewolf.io/Owners.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
 
-using NUnit.Framework;
+using System.ComponentModel;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.Data.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class XmlHelperTest
     {
-        [Test]
-        [Author("Candice Daniel")]
+        [TestMethod]
+        [Owner("Candice Daniel")]
         [Category(nameof(XmlHelper))]
         public void XmlHelper_IsXml_GivenValidXml_ShouldReturnTrue()
         {
@@ -41,8 +42,8 @@ Procedure:
             Assert.IsTrue(isXml);
         }
 
-        [Test]
-        [Author("Candice Daniel")]
+        [TestMethod]
+        [Owner("Candice Daniel")]
         [Category(nameof(XmlHelper))]
         public void XmlHelper_IsXml_GivenValidIvalidXml_ShouldReturnFalse()
         {
@@ -53,8 +54,8 @@ Procedure:
             Assert.IsFalse(isXml);
         }
 
-        [Test]
-        [Author("Candice Daniel")]
+        [TestMethod]
+        [Owner("Candice Daniel")]
         [Category(nameof(XmlHelper))]
         public void XmlHelper_IsXml_TryProcessAllNodes_IsHtml()
         {
@@ -65,8 +66,8 @@ Procedure:
             Assert.IsFalse(isXml);
         }
 
-        [Test]
-        [Author("Candice Daniel")]
+        [TestMethod]
+        [Owner("Candice Daniel")]
         [Category(nameof(XmlHelper))]
         public void XmlHelper_ToCleanXml_GivenDirtXmlWithToStripTags_ShouldReuturnCleanXml()
         {
@@ -78,8 +79,8 @@ Procedure:
             Assert.AreEqual("Hello world", cleanXml);
         }
 
-        [Test]
-        [Author("Candice Daniel")]
+        [TestMethod]
+        [Owner("Candice Daniel")]
         [Category(nameof(XmlHelper))]
         public void XmlHelper_ToCleanXml_GivenDirtXmlWithnaughtyTags_ShouldReuturnNoData()
         {
@@ -91,8 +92,8 @@ Procedure:
             Assert.AreEqual("", cleanXml);
         }
 
-        [Test]
-        [Author("Candice Daniel")]
+        [TestMethod]
+        [Owner("Candice Daniel")]
         [Category(nameof(XmlHelper))]
         public void XmlHelper_ToCleanXml_GivenDirtXmlWithnaughtyTagsAndValid_ShouldReuturnCleanXml()
         {
@@ -104,8 +105,8 @@ Procedure:
             Assert.AreEqual("<Person></Person>", cleanXml);
         }
 
-        [Test]
-        [Author("Candice Daniel")]
+        [TestMethod]
+        [Owner("Candice Daniel")]
         [Category(nameof(XmlHelper))]
         public void XmlHelper_ToCleanXml_NotisXml_NotisFragment_NotisHtml_ShouldReuturnCleanXml()
         {

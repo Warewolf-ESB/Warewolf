@@ -10,15 +10,15 @@
 
 using System;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Options;
 
 namespace Warewolf.Data.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class ConvertorTests
     {
-        [Test]
+        [TestMethod]
         public void OptionConvertor_GivenSimpleClass_ExpectListOfIOptions()
         {
             var result = ConvertDataToOptionsList();
@@ -27,7 +27,7 @@ namespace Warewolf.Data.Tests
         }
 
 
-        [Test]
+        [TestMethod]
         public void OptionConvertor_GivenSimpleClass_ExpectIntOption_Success()
         {
             var result = ConvertDataToOptionsList();
@@ -36,7 +36,7 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(12, ((OptionInt)result[0]).Value);
         }
 
-        [Test]
+        [TestMethod]
         public void OptionConvertor_GivenSimpleClass_ExpectStringOption_Success()
         {
             var result = ConvertDataToOptionsList();
@@ -48,7 +48,7 @@ namespace Warewolf.Data.Tests
             Assert.IsTrue(expected.SequenceEqual(suggestions));
         }
 
-        [Test]
+        [TestMethod]
         public void OptionConvertor_GivenSimpleClass_ExpectBoolOption_Success()
         {
             var result = ConvertDataToOptionsList();
@@ -57,8 +57,7 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(true, ((OptionBool)result[2]).Value);
         }
 
-        [Test]
-
+        [TestMethod]
         public void OptionConvertor_GivenSimpleClass_ExpectedEnumOption_Success()
         {
             //----------------------Arrange----------------------
@@ -69,7 +68,7 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual(0, ((OptionInt)actual[3]).Value);
         }
 
-        [Test]
+        [TestMethod]
 
         public void OptionConvertor_Given_MultiDataProvider_WithEnum_ReturnSuccess()
         {
@@ -91,7 +90,7 @@ namespace Warewolf.Data.Tests
             Assert.AreEqual("Temperature", oatsBreakfast[1].Name);
         }
 
-        [Test]
+        [TestMethod]
 
         public void OptionConvertor_Given_NamedGuid_ReturnSuccess()
         {

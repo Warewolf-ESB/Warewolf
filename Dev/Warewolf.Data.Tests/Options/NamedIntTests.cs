@@ -11,14 +11,14 @@
 
 using Warewolf.Options;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.Data.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class NamedIntTests
     {
-        [Test]
+        [TestMethod]
         public void NamedInt_()
         {
             var opts = NamedInt.GetAll(typeof(enDecisionType));
@@ -146,31 +146,24 @@ namespace Warewolf.Data.Tests
         }
 
 
-        [Test]
+        [TestMethod]
         public void NamedInt_GivenTestEnum_ShouldProceed()
         {
             var list = NamedInt.GetAll(typeof(MyTestEnum));
-
             Assert.AreEqual(3, list.Count());
         }
 
-        [Test]
-        public void NamedInt_GivenBrokenTestEnum_ExpectSuccess()
-        {
-            Assert.Throws<IndexAttributeException>(() => NamedInt.GetAll(typeof(MyBrokenEnumOne)), "mixed use of enum IndexAttributes in A");
-        }
+        [TestMethod]
+        [ExpectedException(typeof(IndexAttributeException))]
+        public void NamedInt_GivenBrokenTestEnum_ExpectSuccess() => NamedInt.GetAll(typeof(MyBrokenEnumOne));
 
-        [Test]
-        public void NamedInt_GivenBrokenTestEnumTwo_ShouldProceed()
-        {
-            Assert.Throws<IndexAttributeException>(() => NamedInt.GetAll(typeof(MyBrokenEnumTwo)), "mixed use of enum IndexAttributes in A");
-        }
+        [TestMethod]
+        [ExpectedException(typeof(IndexAttributeException))]
+        public void NamedInt_GivenBrokenTestEnumTwo_ShouldProceed() => NamedInt.GetAll(typeof(MyBrokenEnumTwo));
 
-        [Test]
-        public void NamedInt_GivenBrokenTestEnumThree_ShouldProceed()
-        {
-            Assert.Throws<IndexAttributeException>(() => NamedInt.GetAll(typeof(MyBrokenEnumThree)), "mixed use of enum IndexAttributes in A");
-        }
+        [TestMethod]
+        [ExpectedException(typeof(IndexAttributeException))]
+        public void NamedInt_GivenBrokenTestEnumThree_ShouldProceed() => NamedInt.GetAll(typeof(MyBrokenEnumThree));
     }
 
     enum MyTestEnum
