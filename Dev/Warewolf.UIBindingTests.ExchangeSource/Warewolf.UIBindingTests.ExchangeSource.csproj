@@ -60,6 +60,7 @@
     <Compile Include="ExchangeSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Exchange Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Exchange Source.feature.cs</LastGenOutput>

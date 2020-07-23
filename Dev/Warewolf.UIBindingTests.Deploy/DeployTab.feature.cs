@@ -17,35 +17,33 @@ namespace Warewolf.UIBindingTests.Deploy
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("DeployTab")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-        "1.dll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
-        "ll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
-    [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll")]
-    [NUnit.Framework.CategoryAttribute("DeployTab")]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class DeployTabFeature
     {
         
-        private TechTalk.SpecFlow.ITestRunner testRunner;
+        private static TechTalk.SpecFlow.ITestRunner testRunner;
+        
+        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
 #line 1 "DeployTab.feature"
 #line hidden
         
-        [NUnit.Framework.OneTimeSetUpAttribute()]
-        public virtual void FeatureSetup()
+        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
         {
-            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
+            get
+            {
+                return this._testContext;
+            }
+            set
+            {
+                this._testContext = value;
+            }
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
+        public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
+        {
+            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DeployTab", "\tIn order to Deploy resource.\r\n\tAs a warewolf user\r\n\tI want to Deploy aresource f" +
                     "rom one server to another server.", ProgrammingLanguage.CSharp, new string[] {
                         "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll",
@@ -66,19 +64,24 @@ namespace Warewolf.UIBindingTests.Deploy
             testRunner.OnFeatureStart(featureInfo);
         }
         
-        [NUnit.Framework.OneTimeTearDownAttribute()]
-        public virtual void FeatureTearDown()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
+        public static void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
         
-        [NUnit.Framework.SetUpAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public virtual void TestInitialize()
         {
+            if (((testRunner.FeatureContext != null) 
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "DeployTab")))
+            {
+                global::Warewolf.UIBindingTests.Deploy.DeployTabFeature.FeatureSetup(null);
+            }
         }
         
-        [NUnit.Framework.TearDownAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
@@ -87,6 +90,7 @@ namespace Warewolf.UIBindingTests.Deploy
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(TestContext);
         }
         
         public virtual void ScenarioCleanup()
@@ -94,8 +98,22 @@ namespace Warewolf.UIBindingTests.Deploy
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploy Tab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy Tab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void DeployTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Tab", ((string[])(null)));
@@ -119,8 +137,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploy is successfull")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy is successfull")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void DeployIsSuccessfull()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy is successfull", ((string[])(null)));
@@ -148,8 +180,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conflicting resources on Source and Destination server cancel deploy")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Conflicting resources on Source and Destination server cancel deploy")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void ConflictingResourcesOnSourceAndDestinationServerCancelDeploy()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server cancel deploy", ((string[])(null)));
@@ -186,8 +232,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conflicting resources on Source and Destination server OK deploy")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Conflicting resources on Source and Destination server OK deploy")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void ConflictingResourcesOnSourceAndDestinationServerOKDeploy()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server OK deploy", ((string[])(null)));
@@ -226,8 +286,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Conflicting resources on Source and Destination server deploy is not successful")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Conflicting resources on Source and Destination server deploy is not successful")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void ConflictingResourcesOnSourceAndDestinationServerDeployIsNotSuccessful()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server deploy is not successful", ((string[])(null)));
@@ -255,8 +329,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploying a connector with a source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploying a connector with a source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void DeployingAConnectorWithASource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying a connector with a source", ((string[])(null)));
@@ -298,8 +386,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Selected for deploy items type is showing on deploy tab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Selected for deploy items type is showing on deploy tab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void SelectedForDeployItemsTypeIsShowingOnDeployTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selected for deploy items type is showing on deploy tab", ((string[])(null)));
@@ -333,8 +435,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploy Summary is showing new and overiding resources")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy Summary is showing new and overiding resources")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void DeploySummaryIsShowingNewAndOveridingResources()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Summary is showing new and overiding resources", ((string[])(null)));
@@ -378,8 +494,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploying items from one server to the next with the same name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploying items from one server to the next with the same name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void DeployingItemsFromOneServerToTheNextWithTheSameName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying items from one server to the next with the same name", ((string[])(null)));
@@ -408,8 +538,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Warning message no longer appears")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Warning message no longer appears")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void WarningMessageNoLongerAppears()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Warning message no longer appears", ((string[])(null)));
@@ -441,8 +585,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploying to an Older server version")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploying to an Older server version")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void DeployingToAnOlderServerVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying to an Older server version", ((string[])(null)));
@@ -475,8 +633,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploy Based on permission Deploy To")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy Based on permission Deploy To")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void DeployBasedOnPermissionDeployTo()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Based on permission Deploy To", ((string[])(null)));
@@ -506,8 +678,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploy Based on permission Deploy From")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy Based on permission Deploy From")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void DeployBasedOnPermissionDeployFrom()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Based on permission Deploy From", ((string[])(null)));
@@ -533,8 +719,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deploy resource Tests message")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy resource Tests message")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DataPresenter.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("InfragisticsWPF4.DockManager.v15.1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf Studio.exe")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Newtonsoft.Json.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Microsoft.Practices.Prism.SharedInterfaces.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("Warewolf.Studio.Themes.Luna.dll")]
         public virtual void DeployResourceTestsMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy resource Tests message", ((string[])(null)));

@@ -61,6 +61,7 @@
     </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Email Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Email Source.feature.cs</LastGenOutput>
