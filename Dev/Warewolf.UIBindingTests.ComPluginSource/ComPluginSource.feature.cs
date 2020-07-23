@@ -17,40 +17,57 @@ namespace Warewolf.UIBindingTests.ComPluginSource
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("ComPluginSource")]
-    [NUnit.Framework.CategoryAttribute("ComPluginSource")]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class ComPluginSourceFeature
     {
         
-        private TechTalk.SpecFlow.ITestRunner testRunner;
+        private static TechTalk.SpecFlow.ITestRunner testRunner;
+        
+        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
 #line 1 "ComPluginSource.feature"
 #line hidden
         
-        [NUnit.Framework.OneTimeSetUpAttribute()]
-        public virtual void FeatureSetup()
+        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
         {
-            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
+            get
+            {
+                return this._testContext;
+            }
+            set
+            {
+                this._testContext = value;
+            }
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
+        public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
+        {
+            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ComPluginSource", "\tIn order to create plugins\r\n\tAs a Warewolf User\r\n\tI want to be able to select dl" +
                     "ls as a source to be used", ProgrammingLanguage.CSharp, new string[] {
                         "ComPluginSource"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
-        [NUnit.Framework.OneTimeTearDownAttribute()]
-        public virtual void FeatureTearDown()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
+        public static void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
         
-        [NUnit.Framework.SetUpAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public virtual void TestInitialize()
         {
+            if (((testRunner.FeatureContext != null) 
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "ComPluginSource")))
+            {
+                global::Warewolf.UIBindingTests.ComPluginSource.ComPluginSourceFeature.FeatureSetup(null);
+            }
         }
         
-        [NUnit.Framework.TearDownAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
@@ -59,6 +76,7 @@ namespace Warewolf.UIBindingTests.ComPluginSource
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(TestContext);
         }
         
         public virtual void ScenarioCleanup()
@@ -66,15 +84,10 @@ namespace Warewolf.UIBindingTests.ComPluginSource
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("New COMPlugin Source File")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-            "1.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("New COMPlugin Source File")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ComPluginSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ComPluginSource")]
         public virtual void NewCOMPluginSourceFile()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New COMPlugin Source File", new string[] {
@@ -122,15 +135,10 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Change Plugin Source Assembly Input")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-            "1.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Plugin Source Assembly Input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ComPluginSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ComPluginSource")]
         public virtual void ChangePluginSourceAssemblyInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Plugin Source Assembly Input", new string[] {
@@ -159,15 +167,10 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("load all dependancies after filter cleared")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-            "1.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("load all dependancies after filter cleared")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ComPluginSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ComPluginSource")]
         public virtual void LoadAllDependanciesAfterFilterCleared()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("load all dependancies after filter cleared", new string[] {
