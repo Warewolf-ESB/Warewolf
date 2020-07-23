@@ -12,6 +12,7 @@
 using System;
 using System.Threading;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer.TransferObjects;
 

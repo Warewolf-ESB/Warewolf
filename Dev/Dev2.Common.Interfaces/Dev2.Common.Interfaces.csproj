@@ -328,6 +328,8 @@
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
     <Compile Include="IServiceTestCoverageModelTo.cs" />
     <Compile Include="ISingleTestNodesCovered.cs" />
+    <Compile Include="Runtime\Services\ITestCoverageCatalog.cs" />
+    <Compile Include="Runtime\WebServer\IWorkflowCoverageReports.cs" />
     <Compile Include="Scheduler\Interfaces\IClientSchedulerFactory.cs" />
     <Compile Include="Scheduler\Interfaces\IEventInfo.cs" />
     <Compile Include="Scheduler\Interfaces\IResourceHistory.cs" />

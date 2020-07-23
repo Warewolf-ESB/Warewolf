@@ -401,6 +401,7 @@
     <Compile Include="Configuration\SettingsProvider.cs" />
     <Compile Include="ServiceModel\RabbitMQSources.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
+    <Compile Include="ServiceTestCoverageModelToFactory.cs" />
     <Compile Include="TestCatalog.cs" />
     <Compile Include="TestCoverageCatalog.cs" />
     <Compile Include="Utilities.cs" />

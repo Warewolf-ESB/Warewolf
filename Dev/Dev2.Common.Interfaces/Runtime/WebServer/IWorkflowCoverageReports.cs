@@ -8,22 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Runtime.WebServer;
-using Newtonsoft.Json.Linq;
+
 using System.Collections.Generic;
+using Warewolf.Data;
 
-namespace Dev2.Runtime.WebServer
+namespace Dev2.Common.Interfaces.Runtime.WebServer
 {
-    internal class AllCoverageReports
+    public interface IWorkflowCoverageReports
     {
-        public List<IWorkflowCoverageReports> AllCoverageReportsSummary { get; } = new List<IWorkflowCoverageReports>();
-        public JToken StartTime { get; internal set; }
-        public JToken EndTime { get; internal set; }
+        IWarewolfWorkflow Resource { get; }
+        bool HasTestReports { get; }
+        List<IServiceTestCoverageModelTo> Reports { get; }
 
-        internal void Add(IWorkflowCoverageReports item)
-        {
-            AllCoverageReportsSummary.Add(item);
-        }
+        (double TotalCoverage, List<IWorkflowNode> WorkflowNodes, IWorkflowNode[] CoveredNodes) GetTotalCoverage();
     }
-
 }

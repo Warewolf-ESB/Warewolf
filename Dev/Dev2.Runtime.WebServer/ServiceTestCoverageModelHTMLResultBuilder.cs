@@ -14,6 +14,7 @@ using System.Linq;
 using System.Web.UI;
 using Dev2.Interfaces;
 using Warewolf.Data;
+using Dev2.Common.Interfaces.Runtime.WebServer;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -32,7 +33,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
         }
 
-        public static void SetupWorkflowRowHtml(this HtmlTextWriter writer, string resourcePath, ICoverageDataObject coverageData, WorkflowCoverageReports coverageReports)
+        public static void SetupWorkflowRowHtml(this HtmlTextWriter writer, string resourcePath, ICoverageDataObject coverageData, IWorkflowCoverageReports coverageReports)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "SetupWorkflowPathHtml");
             writer.AddStyleAttribute(HtmlTextWriterStyle.Color, "#333");
@@ -59,7 +60,7 @@ namespace Dev2.Runtime.WebServer
             writer.RenderEndTag();
             writer.RenderEndTag();
 
-            var (totalCoverage, workflowNodes, coveredNodes) = coverageReports.GetTotalCoverage();
+            (double totalCoverage, List<IWorkflowNode> workflowNodes, IWorkflowNode[] coveredNodes) = coverageReports.GetTotalCoverage();
 
             writer.SetupWorkflowReportsHtml(totalCoverage, nameof(SetupWorkflowReportsHtml));
             writer.AddStyleAttribute(HtmlTextWriterStyle.FontSize, "16px");

@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
@@ -18,8 +19,23 @@ namespace Dev2.Common.Interfaces
         string OldReportName { get; }
         string ReportName { get; }
         Guid WorkflowId { get; }
-        double CoveragePercentage { get; }
+        double TotalCoverage { get; set; }
         DateTime LastRunDate { get; }
-        double TotalCoverage { get; }
+    }
+
+    public interface ICoverageArgs
+    {
+        string OldReportName { get; set; }
+        string ReportName { get; set; }
+    }
+    public class CoverageArgs : ICoverageArgs
+    {
+        public string OldReportName { get; set; }
+        public string ReportName { get; set; }
+    }
+
+    public interface IServiceTestCoverageModelToFactory
+    {
+        IServiceTestCoverageModelTo New(Guid workflowId, ICoverageArgs args, List<IServiceTestModelTO> serviceTestModelTos);
     }
 }
