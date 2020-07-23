@@ -15,7 +15,6 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework.Internal;
 using System;
 
 namespace Dev2.Runtime.WebServer.Tests
