@@ -57,6 +57,7 @@
     <Compile Include="NewDatabaseSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="New Oracle Database Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>New Oracle Database Source.feature.cs</LastGenOutput>

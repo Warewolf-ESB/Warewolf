@@ -17,40 +17,57 @@ namespace Warewolf.UIBindingTests.Odbc
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("New ODBC Source")]
-    [NUnit.Framework.CategoryAttribute("DbSource")]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class NewODBCSourceFeature
     {
         
-        private TechTalk.SpecFlow.ITestRunner testRunner;
+        private static TechTalk.SpecFlow.ITestRunner testRunner;
+        
+        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
 #line 1 "New ODBC Database Source.feature"
 #line hidden
         
-        [NUnit.Framework.OneTimeSetUpAttribute()]
-        public virtual void FeatureSetup()
+        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
         {
-            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
+            get
+            {
+                return this._testContext;
+            }
+            set
+            {
+                this._testContext = value;
+            }
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
+        public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
+        {
+            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "New ODBC Source", "\tIn order to avoid silly mistakes\r\n\tAs a math idiot\r\n\tI want to be told the sum o" +
                     "f two numbers\t", ProgrammingLanguage.CSharp, new string[] {
                         "DbSource"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
-        [NUnit.Framework.OneTimeTearDownAttribute()]
-        public virtual void FeatureTearDown()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
+        public static void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
         
-        [NUnit.Framework.SetUpAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public virtual void TestInitialize()
         {
+            if (((testRunner.FeatureContext != null) 
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "New ODBC Source")))
+            {
+                global::Warewolf.UIBindingTests.Odbc.NewODBCSourceFeature.FeatureSetup(null);
+            }
         }
         
-        [NUnit.Framework.TearDownAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
@@ -59,6 +76,7 @@ namespace Warewolf.UIBindingTests.Odbc
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(TestContext);
         }
         
         public virtual void ScenarioCleanup()
@@ -66,15 +84,11 @@ namespace Warewolf.UIBindingTests.Odbc
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Creating New DB Source General Testing")]
-        [NUnit.Framework.CategoryAttribute("ODBCSource")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-            "1.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source General Testing")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New ODBC Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ODBCSource")]
         public virtual void CreatingNewDBSourceGeneralTesting()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source General Testing", new string[] {
@@ -129,15 +143,11 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Cancel DB Source Test")]
-        [NUnit.Framework.CategoryAttribute("ODBCSource")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-            "1.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel DB Source Test")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New ODBC Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ODBCSource")]
         public virtual void CancelDBSourceTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel DB Source Test", new string[] {
@@ -170,15 +180,11 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Creating New ODBC DB Source as Windows Auth")]
-        [NUnit.Framework.CategoryAttribute("ODBCSource")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-            "1.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Warewolf_Studio.exe")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Newtonsoft.Json.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll")]
-        [NUnit.Framework.CategoryAttribute("MSTest:DeploymentItem:System.Windows.Interactivity.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New ODBC DB Source as Windows Auth")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New ODBC Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ODBCSource")]
         public virtual void CreatingNewODBCDBSourceAsWindowsAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New ODBC DB Source as Windows Auth", new string[] {
