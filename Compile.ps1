@@ -267,7 +267,7 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
 		$FullPath = $ProjectDir.FullName
 		$ProjectName = $ProjectDir.Name
 		if (Test-Path "$FullPath\$ProjectName.csproj") {
-			&"$PSScriptRoot\Dev\packages\SpecFlow.2.3.2\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
+			&"$env:userprofile\.nuget\packages\specflow\2.3.2\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
 		} else {
             Write-Warning -Message "Project file not found in folder $FullPath`nExpected it to be $FullPath\$ProjectName.csproj"
         }
