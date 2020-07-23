@@ -31,7 +31,6 @@ namespace Dev2.Data
 
         public DateTime LastRunDate { get; set; }
 
-        public double CoveragePercentage { get; set; }
         public double TotalCoverage { get; set; }
     }
 

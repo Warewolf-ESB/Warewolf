@@ -23,6 +23,7 @@ using System.Collections.ObjectModel;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Common.Serializers;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Common.Interfaces.Runtime.Services;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -67,10 +68,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var report = sut.FetchReport(_workflowId, _falseBranchTest.TestName);
 
-            Assert.AreEqual(.5, coverage.CoveragePercentage);
+            Assert.AreEqual(.5, coverage.TotalCoverage);
 
             Assert.AreEqual(_falseBranchTest.TestName, report.ReportName);
-            Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
+            Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
         }
 
         [TestMethod]
@@ -85,7 +86,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var coverage = sut.GenerateSingleTestCoverage(_workflowId, tests);
 
-            Assert.AreEqual(.33, Math.Round(coverage.CoveragePercentage, 2));
+            Assert.AreEqual(.33, Math.Round(coverage.TotalCoverage, 2));
         }
 
         [TestMethod]
@@ -101,10 +102,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(.5, coverage.CoveragePercentage);
+            Assert.AreEqual(.5, coverage.TotalCoverage);
 
             Assert.AreEqual(_workflowName, report.ReportName);
-            Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
+            Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
         }
 
         [TestMethod]
@@ -120,10 +121,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(.125, report.CoveragePercentage);
+            Assert.AreEqual(.125, report.TotalCoverage);
 
             Assert.AreEqual(_workflowName, report.ReportName);
-            Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
+            Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
         }
 
         [TestMethod]
@@ -140,10 +141,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var report = sut.FetchReport(_workflowId, _workflowName);
 
-            Assert.AreEqual(.5, coverage.CoveragePercentage);
+            Assert.AreEqual(.5, coverage.TotalCoverage);
 
             Assert.AreEqual(_workflowName, report.ReportName);
-            Assert.AreEqual(coverage.CoveragePercentage, report.CoveragePercentage);
+            Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
 
             //Act
             sut.DeleteCoverageReport(_workflowId, _falseBranchTest.TestName);

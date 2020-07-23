@@ -10,14 +10,15 @@
 
 
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Runtime.WebServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Data;
 
-namespace Dev2.Runtime.WebServer
+namespace Dev2.Data
 {
-    public class WorkflowCoverageReports
+    public class WorkflowCoverageReports : IWorkflowCoverageReports
     {
         public WorkflowCoverageReports(IWarewolfWorkflow resource)
         {
@@ -28,12 +29,12 @@ namespace Dev2.Runtime.WebServer
         public bool HasTestReports => Reports.Count > 0;
         public IWarewolfWorkflow Resource { get; }
 
-        internal void Add(IServiceTestCoverageModelTo coverage)
+        public void Add(IServiceTestCoverageModelTo coverage)
         {
             Reports.Add(coverage);
         }
 
-        public (double TotalCoverage, List<IWorkflowNode> AllWorkflowNodes, IWorkflowNode[] CoveredNodes) GetTotalCoverage()
+        public (double TotalCoverage, List<IWorkflowNode> WorkflowNodes, IWorkflowNode[] CoveredNodes) GetTotalCoverage()
         {
             var coveredNodes = Reports
                 .SelectMany(o => o.AllTestNodesCovered)

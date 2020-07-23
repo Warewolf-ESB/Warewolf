@@ -135,7 +135,6 @@
     <Compile Include="WebServerStartup.cs" />
     <Compile Include="Controllers\WebServerController.cs" />
     <Compile Include="Handlers\AbstractWebRequestHandler.cs" />
-    <Compile Include="WorkflowCoverageReports.cs" />
     <Compile Include="WorkflowTestResults.cs" />
   </ItemGroup>
   <ItemGroup>

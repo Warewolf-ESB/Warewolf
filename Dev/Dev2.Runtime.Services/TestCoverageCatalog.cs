@@ -22,18 +22,10 @@ using System.Linq;
 using System.Threading;
 using Dev2.Runtime.Hosting;
 using Dev2.Data;
+using Dev2.Common.Interfaces.Runtime.Services;
 
 namespace Dev2.Runtime
 {
-    public interface ITestCoverageCatalog
-    {
-        IServiceTestCoverageModelTo GenerateSingleTestCoverage(Guid resourceID, IServiceTestModelTO test);
-        IServiceTestCoverageModelTo GenerateAllTestsCoverage(string resourceName, Guid resourceId, List<IServiceTestModelTO> serviceTestModelTos);
-        IServiceTestCoverageModelTo FetchReport(Guid workflowId, string reportName);
-        void ReloadAllReports();
-        void DeleteAllCoverageReports(Guid workflowId);
-        List<IServiceTestCoverageModelTo> Fetch(Guid coverageResourceId);
-    }
 
     public class TestCoverageCatalog : ITestCoverageCatalog
     {
@@ -224,55 +216,6 @@ namespace Dev2.Runtime
             });
             // note: list is duplicated in order to avoid concurrent modifications of the list during test runs
             return result.ToList();
-        }
-    }
-
-
-    //TODO: still need to MOVE after coverage calculation refactor
-    public class CoverageArgs
-    {
-        public string OldReportName { get; set; }
-        public string ReportName { get; set; }
-    }
-    public interface IServiceTestCoverageModelToFactory
-    {
-        IServiceTestCoverageModelTo New(Guid workflowId, CoverageArgs args, List<IServiceTestModelTO> serviceTestModelTos);
-    }
-
-    internal class ServiceTestCoverageModelToFactory : IServiceTestCoverageModelToFactory
-    {
-        private readonly IResourceCatalog _resourceCatalog;
-
-        public ServiceTestCoverageModelToFactory(IResourceCatalog resourceCatalog)
-        {
-            _resourceCatalog = resourceCatalog;
-        }
-        public IServiceTestCoverageModelTo New(Guid workflowId, CoverageArgs args, List<IServiceTestModelTO> serviceTestModelTos)
-        {
-            var allTestNodesCovered = serviceTestModelTos.Select(test => new SingleTestNodesCovered(test.TestName, test.TestSteps)).ToArray();
-
-            var result = new ServiceTestCoverageModelTo
-            {
-                WorkflowId = workflowId,
-                OldReportName = args?.OldReportName,
-                ReportName = args?.ReportName,
-                LastRunDate = DateTime.Now,
-                AllTestNodesCovered = allTestNodesCovered,
-            };
-            //TODO: Refactor to class, this coverage calculation can be reused
-            var coveredNodes = allTestNodesCovered.SelectMany(o => o.TestNodesCovered);
-
-            var workflow = _resourceCatalog.GetWorkflow(workflowId);
-            var workflowNodes = workflow.WorkflowNodes;
-            var testedNodes = coveredNodes.GroupBy(i => i.ActivityID).Select(o => o.First())
-                .Where(o => o.MockSelected is false)
-                .Select(u => u.ActivityID);
-            var n = testedNodes.Intersect(workflowNodes.Select(o => o.UniqueID)).Count();
-            double totalNodes = workflowNodes.Count;
-            result.CoveragePercentage = n / totalNodes;
-            result.TotalCoverage = n / totalNodes;
-
-            return result;
         }
     }
 }

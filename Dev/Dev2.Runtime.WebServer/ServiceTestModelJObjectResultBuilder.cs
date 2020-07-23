@@ -66,7 +66,7 @@ namespace Dev2.Runtime.WebServer
                 {"Report Name", report.ReportName},
                 {"OldReportName", report.OldReportName},
                 {"WorkflowId", report.WorkflowId},
-                {"CoveragePercentage", Math.Round(report.CoveragePercentage * 100)},
+                {"CoveragePercentage", Math.Round(report.TotalCoverage * 100)},
                 {
                     "AllTestNodesCovered",
                     new JArray(report.AllTestNodesCovered.Select(node => node.BuildTestResultJSONForWebRequest()))

@@ -34,6 +34,7 @@ using Enum = System.Enum;
 using System.IO;
 using System.Web.UI;
 using Dev2.Data;
+using Dev2.Common.Interfaces.Runtime.Services;
 
 namespace Dev2.Runtime.WebServer
 {

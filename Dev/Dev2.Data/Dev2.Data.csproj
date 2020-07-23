@@ -301,6 +301,7 @@
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="WarewolfAtomComparer.cs" />
     <Compile Include="WarewolfIterator.cs" />
+    <Compile Include="WorkflowCoverageReports.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
