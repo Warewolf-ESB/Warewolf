@@ -20,6 +20,8 @@ using Warewolf.Studio.Core;
 using Dev2.ConnectionHelpers;
 using Dev2.Studio.Interfaces.Deploy;
 using System.Collections.ObjectModel;
+using Dev2.Common.Interfaces;
+using Dev2.Data;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -322,6 +324,45 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(treeItem.CanDeploy);
             Assert.IsNull(deployStatsViewerViewModel.Status);
             Assert.IsNull(deployStatsViewerViewModel.RenameErrors);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_TryCalculate_Tests()
+        {
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+
+            var guid = Guid.NewGuid();
+
+            var serviceTestModelTo = new ServiceTestModelTO {ResourceId = guid};
+
+            var serviceTestModelTos = new List<IServiceTestModelTO> {serviceTestModelTo};
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadResourceTestsForDeploy(guid)).Returns(serviceTestModelTos);
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModel.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerItemViewModel.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(o => o.ResourceId).Returns(guid);
+            mockExplorerTreeItem.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerTreeItem.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerTreeItem.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var explorerTreeItems = new List<IExplorerTreeItem> { mockExplorerTreeItem.Object };
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(explorerTreeItems, mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.TryCalculate(explorerTreeItems);
+
+            Assert.AreEqual(1, deployStatsViewerViewModel.Services);
+            Assert.AreEqual(1, deployStatsViewerViewModel.Tests);
         }
 
         private static Mock<IEnvironmentConnection> SetupMockConnection()
