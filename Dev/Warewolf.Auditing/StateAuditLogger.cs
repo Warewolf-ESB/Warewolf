@@ -28,10 +28,11 @@ namespace Warewolf.Auditing
         private readonly IWebSocketPool _webSocketFactory;
 
         public IStateListener NewStateListener(IExecutionContext dataObject) => new StateListener(this, dataObject);
+
         public StateAuditLogger()
         {
-
         }
+
         public StateAuditLogger(IWebSocketPool webSocketFactory)
         {
             _webSocketFactory = webSocketFactory;
@@ -41,26 +42,34 @@ namespace Warewolf.Auditing
 
         public void LogAuditState(Object logEntry)
         {
-            Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
-            if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
+            try
             {
-                if (!_ws.IsOpen())
+                Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
+                if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
                 {
                     _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
-                    _ws.Connect();
+                    if (!_ws.IsOpen())
+                    {
+                        _ws.Connect();
+                    }
+
+                    var auditCommand = new AuditCommand
+                    {
+                        Audit = auditLog,
+                        Type = "LogEntry"
+                    };
+                    string json = JsonConvert.SerializeObject(auditCommand);
+                    _ws.SendMessage(json);
                 }
-                var auditCommand = new AuditCommand
-                {
-                    Audit = auditLog,
-                    Type = "LogEntry"
-                };
-                string json = JsonConvert.SerializeObject(auditCommand);
-                _ws.SendMessage(json);
-                if (_ws != null)
-                {
-                    _webSocketFactory.Release(_ws);
-                    _ws = null;
-                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("LogAuditState", e.Message);
+            }
+            finally
+            {
+                _webSocketFactory.Release(_ws);
+                _ws = null;
             }
         }
 
