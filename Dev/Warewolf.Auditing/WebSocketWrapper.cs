@@ -77,7 +77,7 @@ namespace Warewolf.Auditing
 
             if (_clientWebSocket.State == WebSocketState.None)
             {
-                _clientWebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
+                _clientWebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(60);
             }
         }
         public WebSocketState State => _clientWebSocket.State;
