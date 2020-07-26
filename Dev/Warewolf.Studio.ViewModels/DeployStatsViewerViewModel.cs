@@ -16,7 +16,6 @@ using System.Linq;
 using System.Text;
 using Dev2;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.Mvvm;
@@ -251,11 +250,9 @@ namespace Warewolf.Studio.ViewModels
                                         && item.IsResourceChecked is true
                                         && item.ResourceType == @"WorkflowService").Sum(CountResourceTests);
 
-            Triggers = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                        //TODO: LoadResourceTriggersForDeploy(a.ResourceId) to get triggers count
-                                        //&& a.ResourceType == @"Trigger"
-                                        && a.IsResourceChecked == true
-                                        );
+            Triggers = items.Where(item => !string.IsNullOrEmpty(item.ResourceType)
+                                           && item.IsResourceChecked is true
+                                           && item.ResourceType == @"WorkflowService").Sum(CountResourceTriggerQueues);
 
             Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
 
@@ -268,6 +265,11 @@ namespace Warewolf.Studio.ViewModels
         private static int CountResourceTests(IExplorerTreeItem item)
         {
             return item.Server?.ResourceRepository?.LoadResourceTestsForDeploy(item.ResourceId).Count ?? 0;
+        }
+
+        private static int CountResourceTriggerQueues(IExplorerTreeItem item)
+        {
+            return item.Server?.ResourceRepository?.LoadResourceTriggersForDeploy(item.ResourceId).Count ?? 0;
         }
 
         private void CalculateNewItems(IList<IExplorerTreeItem> items)

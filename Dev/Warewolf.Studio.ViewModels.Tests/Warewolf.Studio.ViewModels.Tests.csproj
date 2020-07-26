@@ -266,6 +266,10 @@
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Trigger.Queue\Warewolf.Trigger.Queue.csproj">
+      <Project>{542f1212-aed0-4537-94aa-6d6442acded5}</Project>
+      <Name>Warewolf.Trigger.Queue</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro">

@@ -50,8 +50,11 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
                     if (deployDto.DeployTriggers)
                     {
-                        //TODO: Load the triggers link to the resource
-                        //var models = sourceEnviroment.ResourceRepository.LoadResourceTriggersForDeploy(resourceModel.ID);
+                        var queues = sourceEnviroment.ResourceRepository.LoadResourceTriggersForDeploy(resourceModel.ID);
+                        foreach (var queue in queues)
+                        {
+                            server.ResourceRepository.SaveQueue(queue);
+                        }
                     }
                 }
             }

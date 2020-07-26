@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,6 +22,8 @@ using Dev2.Studio.Interfaces.Deploy;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
+using Warewolf.Trigger.Queue;
+using Warewolf.Triggers;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -363,6 +365,45 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             Assert.AreEqual(1, deployStatsViewerViewModel.Services);
             Assert.AreEqual(1, deployStatsViewerViewModel.Tests);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_TryCalculate_TriggerQueues()
+        {
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+
+            var guid = Guid.NewGuid();
+
+            var triggerQueue = new TriggerQueue {ResourceId = guid};
+
+            var triggerQueues = new List<ITriggerQueue> {triggerQueue};
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadResourceTriggersForDeploy(guid)).Returns(triggerQueues);
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModel.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerItemViewModel.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(o => o.ResourceId).Returns(guid);
+            mockExplorerTreeItem.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerTreeItem.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerTreeItem.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var explorerTreeItems = new List<IExplorerTreeItem> { mockExplorerTreeItem.Object };
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(explorerTreeItems, mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.TryCalculate(explorerTreeItems);
+
+            Assert.AreEqual(1, deployStatsViewerViewModel.Services);
+            Assert.AreEqual(1, deployStatsViewerViewModel.Triggers);
         }
 
         private static Mock<IEnvironmentConnection> SetupMockConnection()
