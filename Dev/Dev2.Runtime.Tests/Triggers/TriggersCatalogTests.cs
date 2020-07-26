@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -194,6 +194,67 @@ namespace Dev2.Tests.Runtime.Triggers
 
             mockSerializer.Verify(o => o.Deserialize<ITriggerQueue>(decryptedTrigger), Times.Once);
             Assert.AreEqual(expectedTrigger, actual);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_LoadQueuesByResourceId_ExpectNone()
+        {
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+            const string fileName = "somefile.bite";
+            mockDirectoryWrapper.Setup(o => o.GetFiles(It.IsAny<string>())).Returns(new[] {fileName});
+
+            var mockFileWrapper = new Mock<IFile>();
+            var mockSerializer = new Mock<ISerializer>();
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
+
+            var decryptedTrigger = "serialized queue data";
+            var expected = DpapiWrapper.Encrypt(decryptedTrigger);
+            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
+            var expectedTrigger = new TriggerQueue();
+            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
+
+            var catalog = GetTriggersCatalog(mockDirectoryWrapper.Object, mockFileWrapper.Object, "some path", mockSerializer.Object, mockFileSystemWatcher.Object);
+            var triggerQueue = catalog.LoadQueueTriggerFromFile(fileName);
+
+            mockSerializer.Verify(o => o.Deserialize<ITriggerQueue>(decryptedTrigger), Times.Exactly(2));
+            Assert.AreEqual(expectedTrigger, triggerQueue);
+
+            var triggerQueues = catalog.LoadQueuesByResourceId(Guid.NewGuid());
+
+            Assert.AreEqual(0, triggerQueues.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_LoadQueuesByResourceId_ExpectQueue()
+        {
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+            const string fileName = "somefile.bite";
+            mockDirectoryWrapper.Setup(o => o.GetFiles(It.IsAny<string>())).Returns(new[] {fileName});
+
+            var mockFileWrapper = new Mock<IFile>();
+            var mockSerializer = new Mock<ISerializer>();
+            var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
+
+            var expectedResourceId = Guid.NewGuid();
+            var decryptedTrigger = "serialized queue data";
+            var expected = DpapiWrapper.Encrypt(decryptedTrigger);
+            mockFileWrapper.Setup(o => o.ReadAllText("somefile.bite")).Returns(expected);
+            var expectedTrigger = new TriggerQueue {ResourceId = expectedResourceId};
+            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
+
+            var catalog = GetTriggersCatalog(mockDirectoryWrapper.Object, mockFileWrapper.Object, "some path", mockSerializer.Object, mockFileSystemWatcher.Object);
+            var triggerQueue = catalog.LoadQueueTriggerFromFile("somefile.bite");
+
+            mockSerializer.Verify(o => o.Deserialize<ITriggerQueue>(decryptedTrigger), Times.Exactly(2));
+            Assert.AreEqual(expectedTrigger, triggerQueue);
+
+            var triggerQueues = catalog.LoadQueuesByResourceId(expectedResourceId);
+
+            Assert.AreEqual(1, triggerQueues.Count);
         }
 
         [TestMethod]
