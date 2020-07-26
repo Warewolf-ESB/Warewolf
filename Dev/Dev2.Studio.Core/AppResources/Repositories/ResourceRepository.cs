@@ -20,7 +20,6 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -39,7 +38,6 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
-using Warewolf.Auditing;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Options;
@@ -884,6 +882,35 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             else
             {
                 throw new NullReferenceException("Cannot delete resource test. Cannot get Communication Controller.");
+            }
+        }
+
+        public List<ITriggerQueue> LoadResourceTriggersForDeploy(Guid resourceId)
+        {
+            if (GetCommunicationController != null)
+            {
+                var controller = GetCommunicationController?.Invoke("FetchTriggersForDeploy");
+                controller.AddPayloadArgument("resourceID", resourceId.ToString());
+                var executeCommand = controller.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                var message = executeCommand.GetDecompressedMessage();
+                if (executeCommand.HasError)
+                {
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
+
+                var triggerQueues = serializer.Deserialize<List<ITriggerQueue>>(message);
+                if (triggerQueues != null)
+                {
+                    return triggerQueues;
+                }
+
+                return new List<ITriggerQueue>();
+            }
+            else
+            {
+                throw new NullReferenceException("Cannot load resource trigger queues for deploy. Cannot get Communication Controller.");
             }
         }
 

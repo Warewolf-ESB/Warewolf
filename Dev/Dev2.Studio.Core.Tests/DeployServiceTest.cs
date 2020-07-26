@@ -18,6 +18,8 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Trigger.Queue;
+using Warewolf.Triggers;
 
 namespace Dev2.Core.Tests
 {
@@ -163,11 +165,14 @@ namespace Dev2.Core.Tests
             envMock.Setup(e => e.Connection).Returns(connection.Object);
             envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>())).Verifiable();
             envMock.Setup(e => e.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Verifiable();
+            envMock.Setup(e => e.ResourceRepository.SaveQueue(It.IsAny<ITriggerQueue>())).Verifiable();
             envMock.Setup(e => e.IsConnected).Returns(true);
 
             var sourceMock = new Mock<IServer>();
             sourceMock.Setup(e => e.Connection).Returns(connection.Object);
             sourceMock.Setup(e => e.ResourceRepository.LoadResourceTestsForDeploy(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>()).Verifiable();
+            var triggerQueues = new List<ITriggerQueue> {new TriggerQueue {QueueName = "Queue 1"}};
+            sourceMock.Setup(e => e.ResourceRepository.LoadResourceTriggersForDeploy(It.IsAny<Guid>())).Returns(triggerQueues).Verifiable();
             sourceMock.Setup(e => e.IsConnected).Returns(true);
             var dtoMock = new Mock<IDeployDto>();
             dtoMock.Setup(d => d.ResourceModels).Returns(CreateModels(envMock.Object));
@@ -182,7 +187,8 @@ namespace Dev2.Core.Tests
             sourceMock.Verify(e => e.ResourceRepository.LoadResourceTestsForDeploy(It.IsAny<Guid>()), Times.AtLeastOnce );
             envMock.Verify(e => e.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()), Times.AtLeastOnce);
             envMock.Verify(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>(), It.IsAny<string>()), Times.AtLeastOnce);
-            Assert.Fail("TODO: Validate the Deploy Triggers method is executed");
+            sourceMock.Verify(e => e.ResourceRepository.LoadResourceTriggersForDeploy(It.IsAny<Guid>()), Times.AtLeastOnce );
+            envMock.Verify(e => e.ResourceRepository.SaveQueue(It.IsAny<ITriggerQueue>()), Times.AtLeastOnce);
         }
 
         IList<IResourceModel> CreateModels(IServer environment)
