@@ -29,17 +29,19 @@ namespace Warewolf.Auditing
         {
             var pool = WebSocketConnectionPool.GetOrAdd(new Uri(endpoint), CreateObjectPool);
             var clientWebSocket = pool.AcquireObject();
-
+            Console.WriteLine("WebSocketPool:   Acquire   " );
             return clientWebSocket;
         }
         public void Release(IWebSocketWrapper webSocketWrapper)
         {
             var pool = WebSocketConnectionPool.GetOrAdd(webSocketWrapper.Uri, CreateObjectPool);
             pool.ReleaseObject(webSocketWrapper);
+            Console.WriteLine("WebSocketPool:   Release ");
         }
 
         private static IObjectPool<IWebSocketWrapper> CreateObjectPool(Uri endpoint)
         {
+            Console.WriteLine("WebSocketPool:   CreateObjectPool    " + endpoint.ToString());
             IWebSocketWrapper CreateObject()
             {
                 return new WebSocketWrapper(new System.Net.WebSockets.Managed.ClientWebSocket(), endpoint).Connect();
@@ -86,6 +88,7 @@ namespace Warewolf.Auditing
         {
             if (!IsOpen())
             {
+                Console.WriteLine("WebSocketWrapper:   ConnectAsync    ");
                 var task = ConnectAsync();
                 task.Wait();
                 return this;
@@ -105,12 +108,14 @@ namespace Warewolf.Auditing
         public IWebSocketWrapper Close()
         {
             var task = _clientWebSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", _cancellationToken);
+            Console.WriteLine("WebSocketWrapper:   Close    ");
             task.Wait();
             return this;
         }
 
         public IWebSocketWrapper OnDisconnect(Action<IWebSocketWrapper> onDisconnect)
         {
+            Console.WriteLine("WebSocketWrapper:   OnDisconnect    ");
             _onDisconnected = onDisconnect;
             return this;
         }
