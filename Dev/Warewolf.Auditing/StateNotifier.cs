@@ -22,7 +22,6 @@ namespace Warewolf.Auditing
             {
                 var stateNotifier = new StateNotifier();
                 var listener = new StateAuditLogger(new WebSocketPool());
-                
                 stateNotifier.Subscribe(listener.NewStateListener(dataObject));
                 return stateNotifier;
             }
@@ -86,6 +85,7 @@ namespace Warewolf.Auditing
         readonly IList<IStateListener> _stateListeners = new List<IStateListener>();
         public void Subscribe(IStateListener listener)
         {
+            Console.WriteLine("_stateListeners.Add    " + _stateListeners.Count);
             _stateListeners.Add(listener);
         }
     }
