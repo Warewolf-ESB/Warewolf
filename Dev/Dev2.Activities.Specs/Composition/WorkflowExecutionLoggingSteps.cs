@@ -281,6 +281,7 @@ namespace Dev2.Activities.Specs.Composition
             activityParserMock.Setup(o => o.Parse(It.IsAny<DynamicActivity>())).Returns(activityMock.Object);
             CustomContainer.Register<IActivityParser>(activityParserMock.Object);
             _scenarioContext.Add("activityMock", activityMock.Object);
+            _scenarioContext.Add("expectException", expectException);
         }
 
         [When(@"a workflow execution has an exception")]
