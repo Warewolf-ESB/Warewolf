@@ -331,9 +331,52 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DeployStatsViewerViewModel))]
-        public void DeployStatsViewerViewModel_TryCalculate_Tests()
+        public void DeployStatsViewerViewModel_TryCalculate_DeployTests_False_Expect_None()
         {
             var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            mockDeployDestinationExplorerViewModel.Setup(o => o.DeployTests).Returns(false);
+
+            var guid = Guid.NewGuid();
+
+            var serviceTestModelTo = new ServiceTestModelTO {ResourceId = guid};
+
+            var serviceTestModelTos = new List<IServiceTestModelTO> {serviceTestModelTo};
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadResourceTestsForDeploy(guid)).Returns(serviceTestModelTos);
+            mockResourceRepository.Setup(o => o.LoadResourceTriggersForDeploy(guid)).Returns(new List<ITriggerQueue>());
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModel.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerItemViewModel.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(o => o.ResourceId).Returns(guid);
+            mockExplorerTreeItem.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerTreeItem.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerTreeItem.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var explorerTreeItems = new List<IExplorerTreeItem> { mockExplorerTreeItem.Object };
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(explorerTreeItems, mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.TryCalculate(explorerTreeItems);
+
+            Assert.AreEqual(1, deployStatsViewerViewModel.Services);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Tests);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Triggers);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_TryCalculate_DeployTests_True_Expect_Result()
+        {
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            mockDeployDestinationExplorerViewModel.Setup(o => o.DeployTests).Returns(true);
 
             var guid = Guid.NewGuid();
 
@@ -372,9 +415,52 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DeployStatsViewerViewModel))]
-        public void DeployStatsViewerViewModel_TryCalculate_TriggerQueues()
+        public void DeployStatsViewerViewModel_TryCalculate_DeployTriggers_Expect_None()
         {
             var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            mockDeployDestinationExplorerViewModel.Setup(o => o.DeployTriggers).Returns(false);
+
+            var guid = Guid.NewGuid();
+
+            var triggerQueue = new TriggerQueue {ResourceId = guid};
+
+            var triggerQueues = new List<ITriggerQueue> {triggerQueue};
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadResourceTriggersForDeploy(guid)).Returns(triggerQueues);
+            mockResourceRepository.Setup(o => o.LoadResourceTestsForDeploy(guid)).Returns(new List<IServiceTestModelTO>());
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModel.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerItemViewModel.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(o => o.ResourceId).Returns(guid);
+            mockExplorerTreeItem.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerTreeItem.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerTreeItem.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var explorerTreeItems = new List<IExplorerTreeItem> { mockExplorerTreeItem.Object };
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(explorerTreeItems, mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.TryCalculate(explorerTreeItems);
+
+            Assert.AreEqual(1, deployStatsViewerViewModel.Services);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Triggers);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Tests);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_TryCalculate_DeployTriggers_Expect_Result()
+        {
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            mockDeployDestinationExplorerViewModel.Setup(o => o.DeployTriggers).Returns(true);
 
             var guid = Guid.NewGuid();
 
