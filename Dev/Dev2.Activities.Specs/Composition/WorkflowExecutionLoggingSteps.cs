@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going bac
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -43,7 +43,6 @@ namespace Dev2.Activities.Specs.Composition
         private readonly IPrincipal _principal;
         private IExecutionEnvironment _environment;
         private WarewolfPerformanceCounterManager _performanceCounterLocater;
-        private bool _expectException;
         private readonly Exception _falseException = new Exception("False exception from WorkflowExecutionLoggingSteps");
 
         public WorkflowExecutionLoggingSteps(ScenarioContext scenarioContext, FeatureContext featureContext)
@@ -53,7 +52,6 @@ namespace Dev2.Activities.Specs.Composition
             _performanceCounterLocater = featureContext.Get<WarewolfPerformanceCounterManager>("performanceCounterLocater");
             _principal = featureContext.Get<IPrincipal>("principal");
             _environment = BuildExecutionEnvironmet();
-            _expectException = false;
         }
 
         [Given(@"an existing workflow ""(.*)""")]
@@ -283,8 +281,6 @@ namespace Dev2.Activities.Specs.Composition
             activityParserMock.Setup(o => o.Parse(It.IsAny<DynamicActivity>())).Returns(activityMock.Object);
             CustomContainer.Register<IActivityParser>(activityParserMock.Object);
             _scenarioContext.Add("activityMock", activityMock.Object);
-
-            var expectException = _expectException = true;
             _scenarioContext.Add("expectException", expectException);
         }
 
