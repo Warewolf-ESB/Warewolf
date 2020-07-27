@@ -21,6 +21,7 @@ namespace Warewolf.Auditing
         readonly IWarewolfLogWriter _logWriter;
         public StateListener(IWarewolfLogWriter logWriter, IExecutionContext dsfDataObject)
         {
+            Console.WriteLine("StateListener");
             _dsfDataObject = dsfDataObject;
             _logWriter = logWriter;
         }
