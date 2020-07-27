@@ -343,6 +343,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(o => o.LoadResourceTestsForDeploy(guid)).Returns(serviceTestModelTos);
+            mockResourceRepository.Setup(o => o.LoadResourceTriggersForDeploy(guid)).Returns(new List<ITriggerQueue>());
 
             var mockServer = new Mock<IServer>();
             mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
@@ -365,6 +366,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             Assert.AreEqual(1, deployStatsViewerViewModel.Services);
             Assert.AreEqual(1, deployStatsViewerViewModel.Tests);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Triggers);
         }
 
         [TestMethod]
@@ -382,6 +384,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(o => o.LoadResourceTriggersForDeploy(guid)).Returns(triggerQueues);
+            mockResourceRepository.Setup(o => o.LoadResourceTestsForDeploy(guid)).Returns(new List<IServiceTestModelTO>());
 
             var mockServer = new Mock<IServer>();
             mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
@@ -404,6 +407,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             Assert.AreEqual(1, deployStatsViewerViewModel.Services);
             Assert.AreEqual(1, deployStatsViewerViewModel.Triggers);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Tests);
         }
 
         private static Mock<IEnvironmentConnection> SetupMockConnection()
