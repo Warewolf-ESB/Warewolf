@@ -296,6 +296,7 @@ namespace Dev2.Tests.Runtime.Services
             inputs.Add("resourceIDsToDeploy", serializer.SerializeToBuilder(new List<Guid> { resourceID }));
             inputs.Add("destinationEnvironmentId", serializer.SerializeToBuilder(new Data.ServiceModel.Connection { Address = "ABC", UserName = "admin", Password = "password", AuthenticationType = AuthenticationType.Anonymous }));
             inputs.Add("deployTests", serializer.SerializeToBuilder(true));
+            inputs.Add("deployTriggers", serializer.SerializeToBuilder(true));
             directDeploy.TestCatalog = testCatalogMock.Object;
             directDeploy.ResourceCatalog = resourceCatalog.Object;
             //------------Execute Test---------------------------
