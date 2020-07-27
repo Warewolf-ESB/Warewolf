@@ -42,6 +42,9 @@ namespace Dev2.Studio.Interfaces.Deploy
         string RenameErrors { get; }
 
         void ReCalculate();
+        void CalculateTestsCount();
+        void CalculateTriggersCount();
+        void UpdateStatsArea();
 
         void CheckDestinationPermissions();
     }

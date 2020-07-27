@@ -225,6 +225,10 @@ namespace Warewolf.Studio.ViewModels
                 _new = new List<IExplorerTreeItem>();
             }
 
+            UpdateStatsArea();
+        }
+        public void UpdateStatsArea()
+        {
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
@@ -246,13 +250,8 @@ namespace Warewolf.Studio.ViewModels
                                         && IsSource(a.ResourceType)
                                         && a.IsResourceChecked == true);
 
-            Tests = items.Where(item => !string.IsNullOrEmpty(item.ResourceType)
-                                        && item.IsResourceChecked is true
-                                        && item.ResourceType == @"WorkflowService").Sum(CountResourceTests);
-
-            Triggers = items.Where(item => !string.IsNullOrEmpty(item.ResourceType)
-                                           && item.IsResourceChecked is true
-                                           && item.ResourceType == @"WorkflowService").Sum(CountResourceTriggerQueues);
+            CalculateTestsCount();
+            CalculateTriggersCount();
 
             Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
 
@@ -260,6 +259,23 @@ namespace Warewolf.Studio.ViewModels
 
             Overrides = Conflicts.Count;
             NewResources = New.Count;
+        }
+
+        public void CalculateTestsCount()
+        {
+            Tests = _destination.DeployTests ? _items.Where(IsServiceResource).Sum(CountResourceTests) : 0;
+        }
+
+        public void CalculateTriggersCount()
+        {
+            Triggers = _destination.DeployTriggers ? _items.Where(IsServiceResource).Sum(CountResourceTriggerQueues) : 0;
+        }
+
+        private static bool IsServiceResource(IExplorerTreeItem item)
+        {
+            return !string.IsNullOrEmpty(item.ResourceType)
+                   && item.IsResourceChecked is true
+                   && item.ResourceType == @"WorkflowService";
         }
 
         private static int CountResourceTests(IExplorerTreeItem item)

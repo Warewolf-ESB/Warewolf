@@ -106,6 +106,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 _deployTests = value;
                 OnPropertyChanged(()=> DeployTests);
+                StatsArea?.CalculateTestsCount();
+                StatsArea?.UpdateStatsArea();
             }
         }
 
@@ -116,6 +118,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 _deployTriggers = value;
                 OnPropertyChanged(()=> DeployTriggers);
+                StatsArea?.CalculateTriggersCount();
+                StatsArea?.UpdateStatsArea();
             }
         }
     }
