@@ -14,7 +14,7 @@ using Warewolf.Interfaces.Pooling;
 
 namespace Warewolf.Pooling
 {
-    public class ObjectPool<T> : IObjectPool<T> where T:class
+    public class ObjectPool<T> : IObjectPool<T> where T : class
     {
         private readonly ConcurrentBag<T> objects = new ConcurrentBag<T>();
         private readonly Func<T> objectGenerator;
@@ -23,6 +23,7 @@ namespace Warewolf.Pooling
         {
             this.objectGenerator = objectGenerator ?? throw new ArgumentNullException(nameof(objectGenerator));
             this.objectValidator = objectValidator ?? throw new ArgumentNullException(nameof(objectValidator));
+            Console.WriteLine("Pooling.ObjectPool   " + objectGenerator.ToString());
         }
 
         public T AcquireObject()
@@ -30,12 +31,14 @@ namespace Warewolf.Pooling
             if (objects.TryTake(out T concrete))
             {
                 objectValidator.Invoke(concrete);
+                Console.WriteLine("Pooling.ObjectPool:  AcquireObjectTryTake   " + objects.Count.ToString());
                 return concrete;
             }
             else
             {
                 concrete = objectGenerator.Invoke();
                 objectValidator.Invoke(concrete);
+                Console.WriteLine("Pooling.ObjectPool:  AcquireObject   " + objects.Count.ToString());
                 return concrete;
             }
         }
@@ -43,6 +46,7 @@ namespace Warewolf.Pooling
         public void ReleaseObject(T concrete)
         {
             objects.Add(concrete);
+            Console.WriteLine("Pooling.ObjectPool:  ReleaseObject   " + objects.Count.ToString());
         }
 
         public void Dispose()
