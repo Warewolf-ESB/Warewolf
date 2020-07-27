@@ -17,133 +17,139 @@ using System;
 using System.Collections.Generic;
 using Dev2.Runtime.Interfaces;
 using Warewolf.Data;
-using Dev2.Runtime.ServiceModel.Data;
-using System.Activities.Statements;
-using System.Collections.ObjectModel;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Common.Serializers;
-using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Interfaces.Runtime.Services;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Communication;
+using System.IO;
+using System.Linq;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
-    [DoNotParallelize]
     public class TestCoverageCatalogTests
     {
-        public Mock<IResourceCatalog> GetMockResourceCatalog(IWarewolfWorkflow warewolfWorkflow)
-        {
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            mockResourceCatalog.Setup(o => o.GetWorkflow(_workflowId)).Returns(warewolfWorkflow);
-
-            return mockResourceCatalog;
-        }
-
-        private Mock<IWarewolfWorkflow> GetMockWorkflowBuilder()
-        {
-            var workflowNodes = GetWorkflowNodes();
-
-            var mockWorkflowBuilder = new Mock<IWarewolfWorkflow>();
-            mockWorkflowBuilder.Setup(o => o.ResourceID).Returns(_workflowId);
-            mockWorkflowBuilder.Setup(o => o.Name).Returns(_workflowName);
-            mockWorkflowBuilder.Setup(o => o.WorkflowNodes).Returns(workflowNodes);
-            return mockWorkflowBuilder;
-        }
-
         private static readonly Guid _workflowId = Guid.Parse("99c23a82-aaf8-46a5-8746-4ff2d251daf2");
         private static readonly string _workflowName = "wf-send-cached-client-an-email";
         private static readonly ITestCoverageCatalog _testCoverageCatalog = TestCoverageCatalog.Instance;
 
+        private static readonly string _testCoveragePath = EnvironmentVariables.TestCoveragePath;
+        private static readonly string _reportPath = _testCoveragePath + "\\" + _workflowId.ToString();
+        private static readonly string _oldReportPath = _reportPath + "\\old_report_name.coverage";
+        private static readonly string _newReportPath = _reportPath + "\\False branch test.coverage";
+
+
+        private readonly ServiceTestCoverageModelTo _testCoverageModelTo = new ServiceTestCoverageModelTo
+        {
+            OldReportName = "old_report_name",
+            ReportName = "False branch test"
+        };
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
-        public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_ExpectPartialCoverageReport()
+        public void TestCoverageCatalog_Given_GenerateSingleTestCoverage_Executed_ExpectCoverageReport_On_FetchReport()
         {
-            var mockResourceCatalog = GetMockResourceCatalog(GetMockWorkflowBuilder().Object);
+
+            SetupMocks(_testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize);
+
             var test = GetFalseBranchTest();
 
-            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
+            var sut = new TestCoverageCatalog(mockServiceTestCoverageModelToFactory.Object, mockFilePath.Object, new Mock<IFile>().Object, mockDirectory.Object, mockStreamWriterFactory.Object, new Mock<IStreamReaderFactory>().Object, mockSerialize.Object);
 
-            var coverage = sut.GenerateSingleTestCoverage(_workflowId, test);
+            var result = sut.GenerateSingleTestCoverage(_workflowId, test);
 
-            var report = sut.FetchReport(_workflowId, _falseBranchTest.TestName);
+            var report = sut.FetchReport(_workflowId, "False branch test");
 
-            Assert.AreEqual(.5, coverage.TotalCoverage);
+            Assert.AreEqual(.0, result.TotalCoverage);
+            Assert.AreEqual("False branch test", report.ReportName);
+            Assert.AreEqual(result.TotalCoverage, report.TotalCoverage);
 
-            Assert.AreEqual(_falseBranchTest.TestName, report.ReportName);
-            Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
+            mockDirectory.Verify(o => o.CreateIfNotExists(_reportPath), Times.Once);
+            mockStreamWriterFactory.Verify(o => o.New(_newReportPath, false), Times.Exactly(2));
+            mockServiceTestCoverageModelToFactory.Verify(o => o.New(_workflowId, It.IsAny<ICoverageArgs>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
+            mockFilePath.Verify(o => o.Combine(_testCoveragePath, _workflowId.ToString()), Times.Once);
+            mockFilePath.Verify(o => o.Combine(_reportPath, "old_report_name.coverage"), Times.Once);
+            mockFilePath.Verify(o => o.Combine(_reportPath, "False branch test.coverage"), Times.Once);
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
-        public void TestCoverageCatalog_GenerateSingleTestCoverage_With_MockNodes_ExpectPartialCoverage()
+        public void TestCoverageCatalog_Given_GenerateSingleTestCoverage_Executed_OnExistingReport_ExpectCoverageReport_On_FetchReport()
         {
-            var mockResourceCatalog = GetMockResourceCatalog(GetMockWorkflowBuilder().Object);
-            var tests = GetTrueBranchTest();
 
-            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
+            SetupMocks(_testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize);
 
-            var coverage = sut.GenerateSingleTestCoverage(_workflowId, tests);
+            var test = GetFalseBranchTest();
 
-            Assert.AreEqual(.33, Math.Round(coverage.TotalCoverage, 2));
+            var sut = new TestCoverageCatalog(mockServiceTestCoverageModelToFactory.Object, mockFilePath.Object, new Mock<IFile>().Object, mockDirectory.Object, mockStreamWriterFactory.Object, new Mock<IStreamReaderFactory>().Object, mockSerialize.Object);
+            
+            sut.TestCoverageReports.GetOrAdd(_workflowId, new List<IServiceTestCoverageModelTo> { _testCoverageModelTo });
+
+            var result = sut.GenerateSingleTestCoverage(_workflowId, test);
+
+            var report = sut.FetchReport(_workflowId, "False branch test");
+
+            Assert.AreEqual(.0, result.TotalCoverage);
+            Assert.AreEqual("False branch test", report.ReportName);
+            Assert.AreEqual(result.TotalCoverage, report.TotalCoverage);
+
+            mockDirectory.Verify(o => o.CreateIfNotExists(_reportPath), Times.Once);
+            mockStreamWriterFactory.Verify(o => o.New(_newReportPath, false), Times.Exactly(2));
+            mockServiceTestCoverageModelToFactory.Verify(o => o.New(_workflowId, It.IsAny<ICoverageArgs>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
+            mockFilePath.Verify(o => o.Combine(_testCoveragePath, _workflowId.ToString()), Times.Once);
+            mockFilePath.Verify(o => o.Combine(_reportPath, "old_report_name.coverage"), Times.Once);
+            mockFilePath.Verify(o => o.Combine(_reportPath, "False branch test.coverage"), Times.Once);
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
-        public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_When_FetchReport_ExpectFullCoverageReport()
+        public void TestCoverageCatalog_Given_GenerateAllTestsCoverage_Executed_ExpectCoverageReport_On_FetchReport()
         {
-            var mockResourceCatalog = GetMockResourceCatalog(GetMockWorkflowBuilder().Object);
+            SetupMocks(_testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize);
+
             var tests = GetTests();
 
-            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
-            var coverage = sut.GenerateAllTestsCoverage(_workflowName, _workflowId, tests);
+            var sut = new TestCoverageCatalog(mockServiceTestCoverageModelToFactory.Object, mockFilePath.Object, new Mock<IFile>().Object, mockDirectory.Object, mockStreamWriterFactory.Object, new Mock<IStreamReaderFactory>().Object, mockSerialize.Object);
 
-            var report = sut.FetchReport(_workflowId, _workflowName);
+            var coverage = sut.GenerateAllTestsCoverage("False branch test", _workflowId, tests);
 
-            Assert.AreEqual(.5, coverage.TotalCoverage);
+            var report = sut.FetchReport(_workflowId, "False branch test");
 
-            Assert.AreEqual(_workflowName, report.ReportName);
+            Assert.AreEqual(.0, coverage.TotalCoverage);
+
+            Assert.AreEqual("False branch test", report.ReportName);
             Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
+
+            mockStreamWriterFactory.Verify(o => o.New(_newReportPath, false), Times.Exactly(1));
+            mockServiceTestCoverageModelToFactory.Verify(o => o.New(_workflowId, It.IsAny<ICoverageArgs>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
+
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
-        public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_Using_FlowSwitch_HaveMockedNode_When_FetchReport_ExpectCoverageWitoutMockedNode()
+        public void TestCoverageCatalog_Given_GenerateAllTestsCoverage_Executed_When_DeleteCoverageReport_ExpectCoverageReportRemoved()
         {
-            var workflowMock = GetMockResourceCatalog(GetRealWorkflowBuilder());
-            var tests = GetRealWorkflowTests();
+            SetupMocks(_testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize);
 
-            var sut = new TestCoverageCatalog(workflowMock.Object);
-            var coverage = sut.GenerateAllTestsCoverage(_workflowName, _workflowId, tests);
+            var mockFileWrapper = new Mock<IFile>();
+            mockFileWrapper.Setup(o => o.Exists(_newReportPath)).Returns(true);
 
-            var report = sut.FetchReport(_workflowId, _workflowName);
-
-            Assert.AreEqual(.125, report.TotalCoverage);
-
-            Assert.AreEqual(_workflowName, report.ReportName);
-            Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(TestCoverageCatalog))]
-        public void TestCoverageCatalog_GivenGenerateAllTestsCoverageExecuted_When_DeleteCoverageReport_ExpectFullCoverageRemoved()
-        {
-            var mockResourceCatalog = GetMockResourceCatalog(GetMockWorkflowBuilder().Object);
             //Arrange
             var tests = GetTests();
 
-            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
-            var coverage = sut.GenerateAllTestsCoverage(_workflowName, _workflowId, tests);
+            var sut = new TestCoverageCatalog(mockServiceTestCoverageModelToFactory.Object, mockFilePath.Object, mockFileWrapper.Object, mockDirectory.Object, mockStreamWriterFactory.Object, new Mock<IStreamReaderFactory>().Object, mockSerialize.Object);
 
-            var report = sut.FetchReport(_workflowId, _workflowName);
+            var coverage = sut.GenerateAllTestsCoverage(_testCoverageModelTo.ReportName, _workflowId, tests);
 
-            Assert.AreEqual(.5, coverage.TotalCoverage);
+            var report = sut.FetchReport(_workflowId, _testCoverageModelTo.ReportName);
 
-            Assert.AreEqual(_workflowName, report.ReportName);
+            Assert.AreEqual(.0, coverage.TotalCoverage);
+
+            Assert.AreEqual(_testCoverageModelTo.ReportName, report.ReportName);
             Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
 
             //Act
@@ -152,17 +158,54 @@ namespace Dev2.Tests.Runtime.Hosting
             //Assert
             var afterDeleteReport = sut.FetchReport(_workflowId, _falseBranchTest.TestName);
             Assert.IsNull(afterDeleteReport);
+
+            mockFileWrapper.Verify(o => o.Delete(_newReportPath), Times.Once);
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(TestCoverageCatalog))]
-        public void TestCoverageCatalog_GivenTestCoverage_When_ReloadAllReports_ExpectFullCoverageRemoved()
+        public void TestCoverageCatalog_Given_GenerateAllTestsCoverage_Executed_When_DeleteAllCoverageReports_ExpectCoverageReportRemoved()
         {
-            var mockResourceCatalog = GetMockResourceCatalog(GetMockWorkflowBuilder().Object);
+            SetupMocks(_testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize);
+
+            var mockFileWrapper = new Mock<IFile>();
+            mockFileWrapper.Setup(o => o.Exists(_newReportPath)).Returns(true);
 
             //Arrange
-            var sut = new TestCoverageCatalog(mockResourceCatalog.Object);
+            var tests = GetTests();
+
+            var sut = new TestCoverageCatalog(mockServiceTestCoverageModelToFactory.Object, mockFilePath.Object, mockFileWrapper.Object, mockDirectory.Object, mockStreamWriterFactory.Object, new Mock<IStreamReaderFactory>().Object, mockSerialize.Object);
+
+            var coverage = sut.GenerateAllTestsCoverage(_testCoverageModelTo.ReportName, _workflowId, tests);
+
+            var report = sut.FetchReport(_workflowId, _testCoverageModelTo.ReportName);
+
+            Assert.AreEqual(.0, coverage.TotalCoverage);
+
+            Assert.AreEqual(_testCoverageModelTo.ReportName, report.ReportName);
+            Assert.AreEqual(coverage.TotalCoverage, report.TotalCoverage);
+
+            //Act
+            sut.DeleteAllCoverageReports(_workflowId);
+
+            //Assert
+            var afterDeleteReport = sut.FetchReport(_workflowId, _falseBranchTest.TestName);
+            Assert.IsNull(afterDeleteReport);
+
+            mockDirectory.Verify(o => o.Delete(_reportPath, true), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(TestCoverageCatalog))]
+        public void TestCoverageCatalog_GivenTestCoverage_When_ReloadAllReports_ExpectCoverageRemoved()
+        {
+            SetupMocks(_testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize);
+
+            //Arrange
+            var sut = new TestCoverageCatalog(mockServiceTestCoverageModelToFactory.Object, mockFilePath.Object, new Mock<IFile>().Object, mockDirectory.Object, mockStreamWriterFactory.Object, new Mock<IStreamReaderFactory>().Object, mockSerialize.Object);
+
             Assert.AreEqual(0, sut.TestCoverageReports.Count);
 
             _ = sut.GenerateSingleTestCoverage(_workflowId, _falseBranchTest);
@@ -171,183 +214,60 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //Assert
             Assert.IsTrue(sut.TestCoverageReports.Count > 0);
+
         }
 
 
-        private IWarewolfWorkflow GetRealWorkflowBuilder()
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(TestCoverageCatalog))]
+        public void TestCoverageCatalog_GivenTestCoverage_When_ReloadAllReports_GetReportList_ExpectCoverageRemoved()
         {
-            var jsonSerializer = new Dev2JsonSerializer();
-            var dev2DecisionStackParent = GetDecisionStackParent();
-            var dev2DecisionStackChild = GetDecisionChild();
+            SetupMocks(_testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize);
+            
+            var derivedTestPath = _newReportPath.Replace(EnvironmentVariables.TestCoveragePath, EnvironmentVariables.TestPath).Replace(".coverage", ".test");
+            var mockFile = new Mock<IFile>();
+            mockFile.Setup(o => o.Exists(derivedTestPath)).Returns(true);
 
-            var switchId = Guid.Parse("0d723deb-402d-43ec-bdbc-97c645a3a8f1");
-            var flowSwitch = new FlowSwitch<string>()
-            {
-                Expression = new DsfFlowSwitchActivity
-                {
-                    ActivityId = switchId,
-                    UniqueID = switchId.ToString(),
-                    DisplayName = "Switch (dsf)",
-                }
-            };
-            flowSwitch.Cases
-                .Add("Case1", new FlowStep
-                {
-                    Action = new DsfMultiAssignActivity
-                    {
-                        ActivityId = Guid.Parse("f8aec437-38c3-47c8-be1c-e5f408efa3bc"),
-                        UniqueID = Guid.Parse("f8aec437-38c3-47c8-be1c-e5f408efa3bc").ToString(),
-                        DisplayName = "Assign (case 1)"
-                    }
-                });
-            flowSwitch.Cases
-                .Add("Case2", new FlowStep
-                {
-                    Action = new DsfMultiAssignActivity
-                    {
-                        ActivityId = Guid.Parse("a8c186a2-bb5e-4382-84a6-699622034e8d"),
-                        UniqueID = Guid.Parse("a8c186a2-bb5e-4382-84a6-699622034e8d").ToString(),
-                        DisplayName = "Assign (case 2)"
-                    }
-                });
-            flowSwitch.Cases
-                .Add("Case3", new FlowDecision()
-                {
-                    Condition = new DsfFlowDecisionActivity
-                    {
-                        ExpressionText = jsonSerializer.Serialize(dev2DecisionStackParent)
-                    },
-                    DisplayName = "Decision (parent)",
-                    True = new FlowStep
-                    {
-                        Action = new DsfMultiAssignActivity
-                        {
-                            DisplayName = "Assign (success)"
-                        }
-                    },
-                    False = new FlowDecision()
-                    {
-                        Condition = new DsfFlowDecisionActivity
-                        {
-                            ExpressionText = jsonSerializer.Serialize(dev2DecisionStackChild)
-                        },
-                        DisplayName = "Decision (child)",
-                        True = new FlowStep
-                        {
-                            Action = new DsfMultiAssignActivity
-                            {
-                                DisplayName = "Assign (Decision child)-True Arm"
-                            }
-                        },
-                        False = new FlowStep
-                        {
-                            Action = new DsfMultiAssignActivity
-                            {
-                                DisplayName = "Assign (Decision child)-False Arm"
-                            }
-                        }
-                    }
-                });
-            flowSwitch.Default = new FlowStep();
+            var mockStreamReaderFactory = new Mock<IStreamReaderFactory>();
+            //Arrange
+            var sut = new TestCoverageCatalog(mockServiceTestCoverageModelToFactory.Object, mockFilePath.Object, mockFile.Object, mockDirectory.Object, mockStreamWriterFactory.Object, mockStreamReaderFactory.Object, mockSerialize.Object);
 
-            var flowNodes = new Collection<FlowNode>
-            {
-                flowSwitch
-            };
+            Assert.AreEqual(0, sut.TestCoverageReports.Count);
 
-            return new Workflow(flowNodes);
+            _ = sut.GenerateSingleTestCoverage(_workflowId, _falseBranchTest);
+            //Act
+            sut.ReloadAllReports();
+
+            //Assert
+            var results = sut.TestCoverageReports;
+            Assert.IsTrue(results.Count > 0);
+            Assert.AreEqual(_workflowId, results.First().Key);
+
+            mockStreamReaderFactory.Verify(o => o.New(_newReportPath), Times.Once);
+            mockSerialize.Verify(o => o.Deserialize<ServiceTestCoverageModelTo>(It.IsAny<StreamReader>()), Times.Once);
         }
 
-        private static Dev2DecisionStack GetDecisionChild()
-        {
-            return new Dev2DecisionStack
-            {
-                TheStack = new List<Dev2Decision>
-                {
-                    new Dev2Decision
-                    {
-                        Cols1 = new List<DataStorage.WarewolfAtom>
-                        {
-                            DataStorage.WarewolfAtom.NewDataString("aChild")
-                        }
-                    },
-                    new Dev2Decision
-                    {
-                        Cols1 = new List<DataStorage.WarewolfAtom>
-                        {
-                            DataStorage.WarewolfAtom.NewDataString("aChild")
-                        }
-                    }
-                },
-                DisplayText = "aChild",
-                FalseArmText = "ErrorArm",
-                TrueArmText = "true Arm",
-                Version = "2",
-                Mode = Dev2DecisionMode.AND
-            };
-        }
 
-        private static Dev2DecisionStack GetDecisionStackParent()
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(TestCoverageCatalog))]
+        public void TestCoverageCatalog_Given_GenerateSingleTestCoverage_Executed_When_Fetch_ExpectCoverageReport()
         {
-            return new Dev2DecisionStack
-            {
-                TheStack = new List<Dev2Decision>
-                {
-                    new Dev2Decision
-                    {
-                        Cols1 = new List<DataStorage.WarewolfAtom>
-                        {
-                            DataStorage.WarewolfAtom.NewDataString("a")
-                        }
-                    },
-                    new Dev2Decision
-                    {
-                        Cols1 = new List<DataStorage.WarewolfAtom>
-                        {
-                            DataStorage.WarewolfAtom.NewDataString("a")
-                        }
-                    }
-                },
-                DisplayText = "a",
-                FalseArmText = "ErrorArm",
-                TrueArmText = "true Arm",
-                Version = "2",
-                Mode = Dev2DecisionMode.AND
-            };
-        }
+            SetupMocks(_testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize);
 
-        private readonly IServiceTestModelTO _flowSwitch_Case1_Test = new ServiceTestModelTO
-        {
-            ResourceId = _workflowId,
-            TestName = "Flow Switch Case 1 test",
-            Password = "p@ssw0rd",
-            TestSteps = new List<IServiceTestStep>
-            {
-                new ServiceTestStepTO
-                {
-                    ActivityID = Guid.Parse("0d723deb-402d-43ec-bdbc-97c645a3a8f1"),
-                    UniqueID = Guid.Parse("0d723deb-402d-43ec-bdbc-97c645a3a8f1"),
-                    StepDescription = "Switch (dsf)",
-                    Type = StepType.Assert
-                },
-                new ServiceTestStepTO
-                {
-                    ActivityID = Guid.Parse("f8aec437-38c3-47c8-be1c-e5f408efa3bc"),
-                    UniqueID = Guid.Parse("f8aec437-38c3-47c8-be1c-e5f408efa3bc"),
-                    StepDescription = "Assign (case 1)",
-                    Type = StepType.Mock
-                }
-            }
-        };
+            //Arrange
+            var sut = new TestCoverageCatalog(mockServiceTestCoverageModelToFactory.Object, mockFilePath.Object, new Mock<IFile>().Object, mockDirectory.Object, mockStreamWriterFactory.Object, new Mock<IStreamReaderFactory>().Object, mockSerialize.Object);
 
-        private List<IServiceTestModelTO> GetRealWorkflowTests()
-        {
-            var tests = new List<IServiceTestModelTO>
-            {
-                _flowSwitch_Case1_Test
-            };
+            Assert.AreEqual(0, sut.TestCoverageReports.Count);
 
-            return tests;
+            _ = sut.GenerateSingleTestCoverage(_workflowId, _falseBranchTest);
+            //Act
+            var result = sut.Fetch(_workflowId);
+
+            //Assert
+            Assert.IsTrue(result.Count > 0);
+
         }
 
         private IServiceTestModelTO GetFalseBranchTest()
@@ -509,10 +429,50 @@ namespace Dev2.Tests.Runtime.Hosting
             return tests;
         }
 
-        [TestCleanup]
-        public void Cleanup()
+
+        public Mock<IResourceCatalog> GetMockResourceCatalog(IWarewolfWorkflow warewolfWorkflow)
         {
-            _testCoverageCatalog.DeleteAllCoverageReports(_workflowId);
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(o => o.GetWorkflow(_workflowId)).Returns(warewolfWorkflow);
+
+            return mockResourceCatalog;
+        }
+
+        private Mock<IWarewolfWorkflow> GetMockWorkflowBuilder()
+        {
+            var workflowNodes = GetWorkflowNodes();
+
+            var mockWorkflowBuilder = new Mock<IWarewolfWorkflow>();
+            mockWorkflowBuilder.Setup(o => o.ResourceID).Returns(_workflowId);
+            mockWorkflowBuilder.Setup(o => o.Name).Returns(_workflowName);
+            mockWorkflowBuilder.Setup(o => o.WorkflowNodes).Returns(workflowNodes);
+            return mockWorkflowBuilder;
+        }
+
+
+        private void SetupMocks(ServiceTestCoverageModelTo testCoverageModelTo, out Mock<IDirectory> mockDirectory, out Mock<IStreamWriterFactory> mockStreamWriterFactory, out Mock<IServiceTestCoverageModelToFactory> mockServiceTestCoverageModelToFactory, out Mock<IFilePath> mockFilePath, out Mock<ISerializer> mockSerialize)
+        {
+            mockDirectory = new Mock<IDirectory>();
+            mockDirectory.Setup(o => o.CreateIfNotExists(It.IsAny<string>())).Returns(_newReportPath);
+            mockDirectory.Setup(o => o.GetDirectories(_testCoveragePath)).Returns(new string[] { _reportPath });
+            mockDirectory.Setup(o => o.GetDirectoryName(_reportPath)).Returns(_workflowId.ToString());
+            mockDirectory.Setup(o => o.GetFiles(_reportPath)).Returns(new string[] { _newReportPath });
+            mockDirectory.Setup(o => o.Exists(_reportPath)).Returns(true);
+
+            mockStreamWriterFactory = new Mock<IStreamWriterFactory>();
+            mockServiceTestCoverageModelToFactory = new Mock<IServiceTestCoverageModelToFactory>();
+            mockServiceTestCoverageModelToFactory.Setup(o => o.New(_workflowId, It.IsAny<ICoverageArgs>(), It.IsAny<List<IServiceTestModelTO>>()))
+            .Returns(testCoverageModelTo);
+
+            mockFilePath = new Mock<IFilePath>();
+            mockFilePath.Setup(o => o.Combine(_testCoveragePath, _workflowId.ToString())).Returns(_reportPath);
+            mockFilePath.Setup(o => o.Combine(_testCoveragePath, testCoverageModelTo.OldReportName+ ".coverage")).Returns(_oldReportPath);
+            mockFilePath.Setup(o => o.Combine(_testCoveragePath, testCoverageModelTo.ReportName+ ".coverage")).Returns(_newReportPath);
+
+            mockSerialize = new Mock<ISerializer>();
+            var streamWriterFactory = mockStreamWriterFactory.Object;
+            mockSerialize.Setup(o => o.Serialize(streamWriterFactory.New(_newReportPath, false), testCoverageModelTo));
+            mockSerialize.Setup(o => o.Deserialize<ServiceTestCoverageModelTo>(It.IsAny<StreamReader>())).Returns(_testCoverageModelTo);
         }
     }
 }

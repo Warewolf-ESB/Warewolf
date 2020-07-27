@@ -23,6 +23,9 @@ using System.Threading;
 using Dev2.Runtime.Hosting;
 using Dev2.Data;
 using Dev2.Common.Interfaces.Runtime.Services;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Interfaces.Communication;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Runtime
 {
@@ -36,22 +39,39 @@ namespace Dev2.Runtime
         }, LazyThreadSafetyMode.PublicationOnly);
 
 
-        private readonly DirectoryWrapper _directoryWrapper;
-        private readonly FileWrapper _fileWrapper;
+        private readonly IFile _fileWrapper;
+        private readonly IFilePath _filePathWapper;
+        private readonly IDirectory _directoryWrapper;
+        public static ITestCoverageCatalog Instance => LazyCat.Value;
+
+        private readonly ISerializer _serializer;
+        private readonly IServiceTestCoverageModelToFactory _serviceAllTestsCoverageModelToFactory;
+        private readonly IStreamWriterFactory _streamWriterFactory;
+        private readonly IStreamReaderFactory _streamReaderFactory;
 
         public TestCoverageCatalog(IResourceCatalog resourceCatalog)
         {
             _directoryWrapper = new DirectoryWrapper();
             _fileWrapper = new FileWrapper();
+            _filePathWapper = new FilePathWrapper();
             _directoryWrapper.CreateIfNotExists(EnvironmentVariables.TestCoveragePath);
             _serializer = new Dev2JsonSerializer();
+            _streamWriterFactory = new StreamWriterFactory();
+            _streamReaderFactory = new StreamReaderFactory();
             _serviceAllTestsCoverageModelToFactory = CustomContainer.Get<IServiceTestCoverageModelToFactory>() ?? new ServiceTestCoverageModelToFactory(resourceCatalog);
         }
 
-        public static ITestCoverageCatalog Instance => LazyCat.Value;
-
-        private readonly Dev2JsonSerializer _serializer;
-        private readonly IServiceTestCoverageModelToFactory _serviceAllTestsCoverageModelToFactory;
+        [ExcludeFromCodeCoverage] //This CTOR is used by tests
+        public TestCoverageCatalog(IServiceTestCoverageModelToFactory serviceTestCoverageModelToFactory, IFilePath filePath, IFile fileWrapper, IDirectory directory, IStreamWriterFactory streamWriterFactory, IStreamReaderFactory streamReaderFactory, ISerializer serializer)
+        {
+            _serviceAllTestsCoverageModelToFactory = serviceTestCoverageModelToFactory;
+            _filePathWapper = filePath;
+            _fileWrapper = fileWrapper;
+            _directoryWrapper = directory;
+            _streamWriterFactory = streamWriterFactory;
+            _streamReaderFactory = streamReaderFactory;
+            _serializer = serializer;
+        }
 
         public ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>> TestCoverageReports { get; } = new ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>>();
 
@@ -119,13 +139,12 @@ namespace Dev2.Runtime
             }
         }
 
-        static string GetTestCoveragePathForResourceId(Guid resourceId) => Path.Combine(EnvironmentVariables.TestCoveragePath, resourceId.ToString());
+        private string GetTestCoveragePathForResourceId(Guid resourceId) => _filePathWapper.Combine(EnvironmentVariables.TestCoveragePath, resourceId.ToString());
 
         public IServiceTestCoverageModelTo GenerateAllTestsCoverage(string resourceName, Guid resourceId, List<IServiceTestModelTO> serviceTestModelTos)
         {
             var coverageArgs = new CoverageArgs { OldReportName = "", ReportName = resourceName };
             var serviceTestCoverageModelTo = _serviceAllTestsCoverageModelToFactory.New(resourceId, coverageArgs, serviceTestModelTos);
-
 
             UpdateTestCoverageReports(resourceId, serviceTestCoverageModelTo);
 
@@ -140,11 +159,11 @@ namespace Dev2.Runtime
 
             if (!string.Equals(serviceTestCoverageModelTo.OldReportName, serviceTestCoverageModelTo.ReportName, StringComparison.InvariantCultureIgnoreCase))
             {
-                var oldFilePath = Path.Combine(dirPath, $"{serviceTestCoverageModelTo.OldReportName}.coverage");
+                var oldFilePath = _filePathWapper.Combine(dirPath, $"{serviceTestCoverageModelTo.OldReportName}.coverage");
                 _fileWrapper.Delete(oldFilePath);
             }
-            var filePath = Path.Combine(dirPath, $"{serviceTestCoverageModelTo.ReportName}.coverage");
-            var sw = new StreamWriter(filePath, false);
+            var filePath = _filePathWapper.Combine(dirPath, $"{serviceTestCoverageModelTo.ReportName}.coverage");
+            var sw = _streamWriterFactory.New(filePath, false);
 
             _serializer.Serialize(sw, serviceTestCoverageModelTo);
         }
@@ -195,7 +214,7 @@ namespace Dev2.Runtime
                 }
                 try
                 {
-                    var reader = new StreamReader(file);
+                    var reader = _streamReaderFactory.New(file);
                     var testModel = _serializer.Deserialize<ServiceTestCoverageModelTo>(reader);
                     serviceTestCoverageModelTos.Add(testModel);
                 }
