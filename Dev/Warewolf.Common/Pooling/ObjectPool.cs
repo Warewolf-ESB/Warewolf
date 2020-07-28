@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,7 @@ using Warewolf.Interfaces.Pooling;
 
 namespace Warewolf.Pooling
 {
-    public class ObjectPool<T> : IObjectPool<T> where T:class
+    public class ObjectPool<T> : IObjectPool<T> where T : class
     {
         private readonly ConcurrentBag<T> objects = new ConcurrentBag<T>();
         private readonly Func<T> objectGenerator;
