@@ -120,6 +120,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(0, stat.Overrides);
             Assert.AreEqual(0, stat.New.Count);
             Assert.AreEqual(0, stat.Conflicts.Count);
+            Assert.AreEqual(0, stat.TestsConflicts.Count);
+            Assert.AreEqual(0, stat.TriggersConflicts.Count);
             Assert.AreEqual(0, stat.Connectors);
             Assert.IsNull(stat.CalculateAction);
             Assert.IsNull(stat.Status);
@@ -591,6 +593,103 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, deployStatsViewerViewModel.Services);
             Assert.AreEqual(1, deployStatsViewerViewModel.Triggers);
             Assert.AreEqual(0, deployStatsViewerViewModel.Tests);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_DeployTriggers_UpdateTriggersStatsArea_TriggersOverrides()
+        {
+            var guid = Guid.NewGuid();
+            var triggerQueue = new TriggerQueue {ResourceId = guid, TriggerId = guid};
+            var triggerQueues = new List<ITriggerQueue> {triggerQueue};
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadResourceTriggersForDeploy(guid)).Returns(triggerQueues);
+            mockResourceRepository.Setup(o => o.LoadResourceTestsForDeploy(guid)).Returns(new List<IServiceTestModelTO>());
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModel.Setup(o => o.ResourceId).Returns(guid);
+            mockExplorerItemViewModel.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerItemViewModel.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(o => o.ResourceId).Returns(guid);
+            mockExplorerTreeItem.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerTreeItem.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerTreeItem.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var mockExplorerItem = new Mock<IExplorerItemViewModel>();
+            mockExplorerItem.Setup(o => o.ResourceId).Returns(guid);
+            mockExplorerItem.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerItem.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerItem.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var explorerTreeItems = new List<IExplorerTreeItem> { mockExplorerTreeItem.Object };
+            var explorerItems = new ObservableCollection<IExplorerItemViewModel> { mockExplorerItem.Object };
+
+            var mockEnvironmentViewModel = new Mock<IEnvironmentViewModel>();
+            mockEnvironmentViewModel.Setup(o => o.UnfilteredChildren).Returns(explorerItems);
+
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment)
+                .Returns(mockEnvironmentViewModel.Object);
+            mockDeployDestinationExplorerViewModel.Setup(o => o.DeployTriggers).Returns(true);
+
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(explorerTreeItems, mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.UpdateTriggersStatsArea();
+
+            Assert.AreEqual(1, deployStatsViewerViewModel.OverridesTriggers);
+            Assert.AreEqual(0, deployStatsViewerViewModel.NewTriggers);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DeployStatsViewerViewModel))]
+        public void DeployStatsViewerViewModel_DeployTriggers_UpdateTriggersStatsArea_ExpectNone()
+        {
+            var guid = Guid.NewGuid();
+            var triggerQueue = new TriggerQueue {ResourceId = guid};
+            var triggerQueues = new List<ITriggerQueue> {triggerQueue};
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            mockResourceRepository.Setup(o => o.LoadResourceTriggersForDeploy(guid)).Returns(triggerQueues);
+            mockResourceRepository.Setup(o => o.LoadResourceTestsForDeploy(guid)).Returns(new List<IServiceTestModelTO>());
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(o => o.ResourceRepository).Returns(mockResourceRepository.Object);
+
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModel.Setup(o => o.ResourceId).Returns(guid);
+            mockExplorerItemViewModel.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerItemViewModel.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerItemViewModel.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItem.Setup(o => o.ResourceId).Returns(guid);
+            mockExplorerTreeItem.Setup(o => o.ResourceType).Returns(@"WorkflowService");
+            mockExplorerTreeItem.Setup(o => o.IsResourceChecked).Returns(true);
+            mockExplorerTreeItem.Setup(o => o.Server).Returns(mockServer.Object);
+
+            var explorerTreeItems = new List<IExplorerTreeItem> { mockExplorerTreeItem.Object };
+            var mockEnvironmentViewModel = new Mock<IEnvironmentViewModel>();
+
+            var mockDeployDestinationExplorerViewModel = new Mock<IDeployDestinationExplorerViewModel>();
+            mockDeployDestinationExplorerViewModel.Setup(o => o.SelectedEnvironment)
+                .Returns(mockEnvironmentViewModel.Object);
+            mockDeployDestinationExplorerViewModel.Setup(o => o.DeployTriggers).Returns(true);
+
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(explorerTreeItems, mockDeployDestinationExplorerViewModel.Object);
+            //-------------------------Act--------------------------------
+            deployStatsViewerViewModel.UpdateTriggersStatsArea();
+
+            Assert.AreEqual(0, deployStatsViewerViewModel.OverridesTriggers);
+            Assert.AreEqual(0, deployStatsViewerViewModel.NewTriggers);
         }
 
         private static Mock<IEnvironmentConnection> SetupMockConnection()

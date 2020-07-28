@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Triggers;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -34,14 +35,18 @@ namespace Warewolf.Studio.ViewModels
         int _unknown;
         int _newResources;
         int _newTests;
+        int _newTriggers;
         int _overrides;
         int _overridesTests;
+        int _overridesTriggers;
         string _status;
         public string RenameErrors { get; private set; }
         List<Conflict> _conflicts;
         List<Conflict> _testsConflicts;
+        List<Conflict> _triggersConflicts;
         IEnumerable<IExplorerTreeItem> _new;
         IEnumerable<IExplorerTreeItem> _testsNew;
+        IEnumerable<IExplorerTreeItem> _triggersNew;
         IList<IExplorerTreeItem> _items;
         ICollection<IExplorerItemViewModel> _destinationItems;
 
@@ -151,6 +156,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public int NewTriggers
+        {
+            get => _newTriggers;
+            set
+            {
+                _newTriggers = value;
+                OnPropertyChanged(() => NewTriggers);
+            }
+        }
+
         public int Overrides
         {
             get => _overrides;
@@ -167,6 +182,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _overridesTests = value;
                 OnPropertyChanged(() => OverridesTests);
+            }
+        }
+
+        public int OverridesTriggers
+        {
+            get => _overridesTriggers;
+            set
+            {
+                _overridesTriggers = value;
+                OnPropertyChanged(() => OverridesTriggers);
             }
         }
 
@@ -247,9 +272,11 @@ namespace Warewolf.Studio.ViewModels
                 Unknown = 0;
                 _conflicts = new List<Conflict>();
                 _testsConflicts = new List<Conflict>();
+                _triggersConflicts = new List<Conflict>();
 
                 _new = new List<IExplorerTreeItem>();
                 _testsNew = new List<IExplorerTreeItem>();
+                _triggersNew = new List<IExplorerTreeItem>();
             }
 
             UpdateStatsArea();
@@ -266,6 +293,13 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => TestsConflicts);
             OnPropertyChanged(() => NewTests);
             CalculateNewTests();
+            CalculateAction?.Invoke();
+        }
+        public void UpdateTriggersStatsArea()
+        {
+            OnPropertyChanged(() => TriggersConflicts);
+            OnPropertyChanged(() => NewTriggers);
+            CalculateNewTriggers();
             CalculateAction?.Invoke();
         }
 
@@ -319,7 +353,7 @@ namespace Warewolf.Studio.ViewModels
 
         private static int CountResourceTriggerQueues(IExplorerTreeItem item)
         {
-            return item.Server?.ResourceRepository?.LoadResourceTriggersForDeploy(item.ResourceId).Count ?? 0;
+            return LoadResourceTriggersForDeploy(item)?.Count ?? 0;
         }
 
         private void CalculateNewItems(IList<IExplorerTreeItem> items)
@@ -416,6 +450,62 @@ namespace Warewolf.Studio.ViewModels
             return explorerTreeItem.Server?.ResourceRepository?.LoadResourceTestsForDeploy(explorerTreeItem.ResourceId);
         }
 
+        private void CalculateNewTriggers()
+        {
+            if (_destination.SelectedEnvironment?.UnfilteredChildren != null && _destination.DeployTriggers)
+            {
+                var triggers = SetAllTriggersConflictsAndGetTreeItems();
+                _triggersNew = _items.Where(p => p.IsResourceChecked == true
+                                              && TriggersConflicts.All(c => p.ResourceId != c.SourceId)).Except(triggers);
+            }
+            else
+            {
+                _triggersConflicts = new List<Conflict>();
+                _triggersNew = new List<IExplorerTreeItem>();
+            }
+            OverridesTriggers = TriggersConflicts.Count;
+            NewTriggers = TriggersNew.Count;
+        }
+
+        private IEnumerable<IExplorerItemViewModel> SetAllTriggersConflictsAndGetTreeItems()
+        {
+            var sourceTriggers = new List<ITriggerQueue>();
+
+            var services = _items.Where(IsServiceResource).ToList();
+            foreach (var triggersForDeploy in services.Select(LoadResourceTriggersForDeploy).Where(triggersForDeploy => triggersForDeploy != null))
+            {
+                sourceTriggers.AddRange(triggersForDeploy);
+            }
+
+            var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
+            var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
+
+            var treeItems = services.Select(item => explorerTreeItems.First(o => o.ResourceId == item.ResourceId)).Where(treeItem => treeItem != null).Cast<IExplorerTreeItem>().ToList();
+
+            var destinationTriggers = new List<ITriggerQueue>();
+
+            foreach (var triggersForDeploy in treeItems.Select(LoadResourceTriggersForDeploy).Where(triggersForDeploy => triggersForDeploy != null))
+            {
+                destinationTriggers.AddRange(triggersForDeploy);
+            }
+
+            var allConflicts = (from source in sourceTriggers
+                let destination = destinationTriggers.First(o => o.ResourceId == source.ResourceId)
+                where destination != null
+                select new Conflict
+                {
+                    SourceName = source.QueueName, DestinationName = destination.QueueName, DestinationId = destination.TriggerId, SourceId = source.TriggerId,
+                }).ToList();
+
+            _triggersConflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
+            return explorerTreeItems;
+        }
+
+        private static List<ITriggerQueue> LoadResourceTriggersForDeploy(IExplorerTreeItem explorerTreeItem)
+        {
+            return explorerTreeItem.Server?.ResourceRepository?.LoadResourceTriggersForDeploy(explorerTreeItem.ResourceId);
+        }
+
         private static bool IsValidConflicts(IExplorerTreeItem b, IExplorerTreeItem treeItem)
         {
             return b.ResourceType != @"Folder" && treeItem.ResourceType != @"Folder" && treeItem.IsResourceChecked.HasValue && treeItem.IsResourceChecked.Value;
@@ -450,6 +540,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IList<Conflict> Conflicts => _conflicts.ToList();
         public IList<Conflict> TestsConflicts => _testsConflicts.ToList();
+        public IList<Conflict> TriggersConflicts => _triggersConflicts.ToList();
 
         public IList<IExplorerTreeItem> New
         {
@@ -464,6 +555,14 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 var explorerTreeItems = _testsNew.Where(a => a.ResourceType != @"Folder").ToList();
+                return explorerTreeItems;
+            }
+        }
+        public IList<IExplorerTreeItem> TriggersNew
+        {
+            get
+            {
+                var explorerTreeItems = _triggersNew.Where(a => a.ResourceType != @"Folder").ToList();
                 return explorerTreeItems;
             }
         }

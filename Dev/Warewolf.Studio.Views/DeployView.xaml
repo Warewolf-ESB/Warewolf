@@ -209,6 +209,8 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <!-- RESOURCES SUMMARY -->
@@ -248,6 +250,26 @@
                                 <Hyperlink x:Name="TestsOverridesCountView" Command="{Binding OverridesTestsViewCommand}"
                                            ToolTip="{x:Static languages:HelpText.DeployOverridesTestsCountViewHelp}" >
                                     <TextBlock Text="{Binding OverridesTestsCount}" FontSize="28"/>
+                                </Hyperlink>
+                            </TextBlock>
+
+                            <!-- TRIGGERS SUMMARY -->
+                            <TextBlock Grid.Column="0" Grid.Row="4" Text="New Triggers" Margin="{StaticResource ElementBorder}"
+                                       Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
+                            <TextBlock Grid.Column="1" Grid.Row="4" Text="Override Triggers" Margin="{StaticResource ElementBorder}"
+                                       Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="5" HorizontalAlignment="Center" >
+                                <Hyperlink x:Name="NewTriggersView" Command="{Binding NewTriggersViewCommand}"
+                                           ToolTip="{x:Static languages:HelpText.DeployNewTriggersViewHelp}" >
+                                    <TextBlock Text="{Binding NewTriggersCount}" FontSize="28" />
+                                </Hyperlink>
+                            </TextBlock>
+
+                            <TextBlock Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" >
+                                <Hyperlink x:Name="TriggersOverridesCountView" Command="{Binding OverridesTriggersViewCommand}"
+                                           ToolTip="{x:Static languages:HelpText.DeployOverridesTriggersCountViewHelp}" >
+                                    <TextBlock Text="{Binding OverridesTriggersCount}" FontSize="28"/>
                                 </Hyperlink>
                             </TextBlock>
                         </Grid>

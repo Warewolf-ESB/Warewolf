@@ -31,13 +31,17 @@ namespace Dev2.Studio.Interfaces.Deploy
         int Unknown { get; set; }
         int NewResources { get; set; }
         int NewTests { get; set; }
+        int NewTriggers { get; set; }
         int Overrides { get; set; }
         int OverridesTests { get; set; }
+        int OverridesTriggers { get; set; }
         string Status { get; set; }
 
         void TryCalculate( IList<IExplorerTreeItem> items);
 
         IList<Conflict> Conflicts { get; }
+        IList<Conflict> TestsConflicts { get; }
+        IList<Conflict> TriggersConflicts { get; }
 
         IList<IExplorerTreeItem> New { get; }
         Action CalculateAction { get; set; }
@@ -48,6 +52,7 @@ namespace Dev2.Studio.Interfaces.Deploy
         void CalculateTriggersCount();
         void UpdateStatsArea();
         void UpdateTestsStatsArea();
+        void UpdateTriggersStatsArea();
 
         void CheckDestinationPermissions();
     }
