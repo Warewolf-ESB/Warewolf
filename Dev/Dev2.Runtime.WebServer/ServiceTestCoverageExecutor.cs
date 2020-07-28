@@ -67,7 +67,7 @@ namespace Dev2.Runtime.WebServer
             {
                 if (coverageObject.ReturnType == EmitionTypes.CoverJson)
                 {
-                    formatter = coverageObject.RunCoverageAndReturnJSON(testCoverageCatalog, resourceCatalog, workspaceGuid, serializer, out executePayload);
+                    formatter = coverageObject.RunCoverageAndReturnJSON(testCoverageCatalog, testCatalog, resourceCatalog, workspaceGuid, serializer, out executePayload);
                 }
                 else if (coverageObject.ReturnType == EmitionTypes.Cover)
                 {

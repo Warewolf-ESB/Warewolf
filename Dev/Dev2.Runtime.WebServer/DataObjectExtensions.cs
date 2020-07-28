@@ -491,9 +491,9 @@ namespace Dev2.Runtime.WebServer
             return result;
         }
 
-        public static DataListFormat RunCoverageAndReturnJSON(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
+        public static DataListFormat RunCoverageAndReturnJSON(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
-            var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, catalog);
+            var (allCoverageReports, _) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
 
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
@@ -527,17 +527,7 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunCoverageAndReturnHTML(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, out string executePayload)
         {
-            var allCoverageReports = RunListOfCoverage(coverageData, testCoverageCatalog, workspaceGuid, catalog);
-
-            var workflowTestResults = new WorkflowTestResults();
-            foreach (var testFolderId in coverageData.CoverageReportResourceIds)
-            {
-                var testsInSelectedFolder = testCatalog.Fetch(testFolderId);
-                foreach (var test in testsInSelectedFolder)
-                {
-                    workflowTestResults.Add(test);
-                }
-            }
+            var (allCoverageReports, allTestResults) = RunListOfCoverage(coverageData, testCoverageCatalog, testCatalog, workspaceGuid, catalog);
 
             var formatter = DataListFormat.CreateFormat("HTML", EmitionTypes.Cover, "text/html; charset=utf-8");
 
@@ -546,7 +536,11 @@ namespace Dev2.Runtime.WebServer
             using (var writer = new HtmlTextWriter(stringWriter))
             {
                 writer.SetupNavBarHtml();
-                workflowTestResults.Results.SetupCountSummaryHtml(writer, coverageData);
+                
+                allTestResults.Results
+                    .SelectMany(o => o.Results)
+                    .ToList()
+                    .SetupCountSummaryHtml(writer, coverageData);
 
                 allCoverageReports.AllCoverageReportsSummary
                     .Where(o => o.HasTestReports)
@@ -567,8 +561,11 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        private static AllCoverageReports RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, Guid workspaceGuid, IResourceCatalog catalog)
+        //TODO: move to own class
+        private static (AllCoverageReports AllCoverageReports, TestResults AllTestResults) RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, Guid workspaceGuid, IResourceCatalog catalog)
         {
+            var allTestResults = new TestResults();
+
             var allCoverageReports = new AllCoverageReports
             {
                 StartTime = DateTime.Now
@@ -577,8 +574,9 @@ namespace Dev2.Runtime.WebServer
             var resources = catalog.GetResources<IWarewolfWorkflow>(workspaceGuid);
             var selectedResources = resources.Where(resource => coverageData.CoverageReportResourceIds.Contains(resource.ResourceID)).ToArray();
 
-            testCoverageCatalog.ReloadAllReports();
+            var testResultsTemp = new List<WorkflowTestResults>();
             var coverageReportsTemp = new List<WorkflowCoverageReports>();
+
             foreach (var coverageResourceId in coverageData.CoverageReportResourceIds)
             {
                 var res = selectedResources.FirstOrDefault(o => o.ResourceID == coverageResourceId);
@@ -586,28 +584,28 @@ namespace Dev2.Runtime.WebServer
                 {
                     continue;
                 }
+
+                var workflowTestResults = new WorkflowTestResults();
+                testCatalog.Fetch(coverageResourceId)
+                    ?.ForEach(o => workflowTestResults.Add(o));
+
+                testResultsTemp.Add(workflowTestResults);
+
                 var coverageReports = new WorkflowCoverageReports(res);
+                testCoverageCatalog.Fetch(coverageResourceId)
+                    ?.ForEach(o => coverageReports.Add(o));
 
-                var allWorkflowReports = testCoverageCatalog.Fetch(coverageResourceId);
-                if (allWorkflowReports?.Count > 0)
-                {
-                    foreach (var workflowReport in allWorkflowReports)
-                    {
-                        coverageReports.Add(workflowReport);
-                    }
-
-                    coverageReportsTemp.Add(coverageReports);
-                }
+                coverageReportsTemp.Add(coverageReports);
             }
 
-            foreach (var item in coverageReportsTemp)
-            {
-                allCoverageReports.Add(item);
-            }
+            testResultsTemp.ForEach(o => allTestResults.Add(o));
 
+            coverageReportsTemp.ForEach(o => allCoverageReports.Add(o));
+
+            allTestResults.EndTime = DateTime.Now;
             allCoverageReports.EndTime = DateTime.Now;
 
-            return allCoverageReports;
+            return (allCoverageReports, allTestResults);
         }
     }
 }
