@@ -45,8 +45,10 @@ namespace Warewolf.Studio.ViewModels
         string _servicesCount;
         string _newResourcesCount;
         string _newTestsCount;
+        string _newTriggersCount;
         string _overridesCount;
         string _overridesTestsCount;
+        string _overridesTriggersCount;
         bool _showConflicts;
         bool _isDeploying;
         bool _deployInProgress;
@@ -89,8 +91,10 @@ namespace Warewolf.Studio.ViewModels
                 TriggersCount = _stats.Triggers.ToString();
                 NewResourcesCount = _stats.NewResources.ToString();
                 NewTestsCount = _stats.NewTests.ToString();
+                NewTriggersCount = _stats.NewTriggers.ToString();
                 OverridesCount = _stats.Overrides.ToString();
                 OverridesTestsCount = _stats.OverridesTests.ToString();
+                OverridesTriggersCount = _stats.OverridesTriggers.ToString();
                 ConflictItems = _stats.Conflicts;
                 NewItems = _stats.New;
                 ShowConflicts = false;
@@ -106,8 +110,10 @@ namespace Warewolf.Studio.ViewModels
             SelectDependenciesCommand = new DelegateCommand(SelectDependencies, () => CanSelectDependencies);
             NewResourcesViewCommand = new DelegateCommand(ViewNewResources);
             NewTestsViewCommand = new DelegateCommand(ViewNewTests);
+            NewTriggersViewCommand = new DelegateCommand(ViewNewTriggers);
             OverridesViewCommand = new DelegateCommand(ViewOverrides);
-            OverridesTestsViewCommand = new DelegateCommand(ViewOverrides);
+            OverridesTestsViewCommand = new DelegateCommand(ViewOverridesTests);
+            OverridesTriggersViewCommand = new DelegateCommand(ViewOverridesTriggers);
             Destination.ServerStateChanged += DestinationServerStateChanged;
             Destination.PropertyChanged += DestinationOnPropertyChanged;
             ShowConflicts = false;
@@ -210,6 +216,15 @@ namespace Warewolf.Studio.ViewModels
             ShowConflictItemsList = true;
         }
 
+        void ViewOverridesTriggers()
+        {
+            //TODO: Complete once list is created
+            ShowConflicts = true;
+            ConflictNewResourceText = "List of Overrides";
+            ShowNewItemsList = false;
+            ShowConflictItemsList = true;
+        }
+
         public bool ShowConflictItemsList
         {
             get => _showConflictItemsList;
@@ -262,7 +277,16 @@ namespace Warewolf.Studio.ViewModels
         {
             //TODO: Complete once list is created
             ShowConflicts = true;
-            ConflictNewResourceText = "List of New Resources";
+            ConflictNewResourceText = "List of New Tests";
+            ShowNewItemsList = true;
+            ShowConflictItemsList = false;
+        }
+
+        void ViewNewTriggers()
+        {
+            //TODO: Complete once list is created
+            ShowConflicts = true;
+            ConflictNewResourceText = "List of New Triggers";
             ShowNewItemsList = true;
             ShowConflictItemsList = false;
         }
@@ -625,6 +649,21 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string OverridesTriggersCount
+        {
+            get => _overridesTriggersCount;
+            set
+            {
+                if (_overridesTriggersCount != value)
+                {
+                    _overridesTriggersCount = value;
+                    ErrorMessage = string.Empty;
+                    RaiseCanExecuteDependencies();
+                    OnPropertyChanged(() => OverridesTriggersCount);
+                }
+            }
+        }
+
         void RaiseCanExecuteDependencies()
         {
             var delegateCommand = SelectDependenciesCommand as DelegateCommand;
@@ -660,6 +699,21 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = string.Empty;
                     RaiseCanExecuteDependencies();
                     OnPropertyChanged(() => NewTestsCount);
+                }
+            }
+        }
+
+        public string NewTriggersCount
+        {
+            get => _newTriggersCount;
+            set
+            {
+                if (_newTriggersCount != value)
+                {
+                    _newTriggersCount = value;
+                    ErrorMessage = string.Empty;
+                    RaiseCanExecuteDependencies();
+                    OnPropertyChanged(() => NewTriggersCount);
                 }
             }
         }
@@ -787,12 +841,14 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public ICommand NewResourcesViewCommand { get; private set; }
         public ICommand NewTestsViewCommand { get; private set; }
+        public ICommand NewTriggersViewCommand { get; private set; }
         /// <summary>
         /// Overrides Hyperlink Clicked
         /// Must show list of Override conflicts
         /// </summary>
         public ICommand OverridesViewCommand { get; private set; }
         public ICommand OverridesTestsViewCommand { get; private set; }
+        public ICommand OverridesTriggersViewCommand { get; private set; }
         /// <summary>
         /// Deploy Button Clicked
         /// Must bring up conflict screen. Conflict screen can modify collection

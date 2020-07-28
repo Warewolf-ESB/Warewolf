@@ -119,7 +119,7 @@ namespace Warewolf.Studio.ViewModels
                 _deployTriggers = value;
                 OnPropertyChanged(()=> DeployTriggers);
                 StatsArea?.CalculateTriggersCount();
-                StatsArea?.UpdateStatsArea();
+                StatsArea?.UpdateTriggersStatsArea();
             }
         }
     }
