@@ -30,7 +30,9 @@ namespace Dev2.Studio.Interfaces.Deploy
         int Triggers { get; set; }
         int Unknown { get; set; }
         int NewResources { get; set; }
+        int NewTests { get; set; }
         int Overrides { get; set; }
+        int OverridesTests { get; set; }
         string Status { get; set; }
 
         void TryCalculate( IList<IExplorerTreeItem> items);
@@ -45,6 +47,7 @@ namespace Dev2.Studio.Interfaces.Deploy
         void CalculateTestsCount();
         void CalculateTriggersCount();
         void UpdateStatsArea();
+        void UpdateTestsStatsArea();
 
         void CheckDestinationPermissions();
     }

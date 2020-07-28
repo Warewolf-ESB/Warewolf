@@ -107,7 +107,7 @@ namespace Warewolf.Studio.ViewModels
                 _deployTests = value;
                 OnPropertyChanged(()=> DeployTests);
                 StatsArea?.CalculateTestsCount();
-                StatsArea?.UpdateStatsArea();
+                StatsArea?.UpdateTestsStatsArea();
             }
         }
 

@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using Dev2;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.Mvvm;
@@ -32,11 +33,15 @@ namespace Warewolf.Studio.ViewModels
         int _triggers;
         int _unknown;
         int _newResources;
+        int _newTests;
         int _overrides;
+        int _overridesTests;
         string _status;
         public string RenameErrors { get; private set; }
         List<Conflict> _conflicts;
+        List<Conflict> _testsConflicts;
         IEnumerable<IExplorerTreeItem> _new;
+        IEnumerable<IExplorerTreeItem> _testsNew;
         IList<IExplorerTreeItem> _items;
         ICollection<IExplorerItemViewModel> _destinationItems;
 
@@ -136,6 +141,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public int NewTests
+        {
+            get => _newTests;
+            set
+            {
+                _newTests = value;
+                OnPropertyChanged(() => NewTests);
+            }
+        }
+
         public int Overrides
         {
             get => _overrides;
@@ -143,6 +158,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 _overrides = value;
                 OnPropertyChanged(() => Overrides);
+            }
+        }
+        public int OverridesTests
+        {
+            get => _overridesTests;
+            set
+            {
+                _overridesTests = value;
+                OnPropertyChanged(() => OverridesTests);
             }
         }
 
@@ -222,7 +246,10 @@ namespace Warewolf.Studio.ViewModels
                 Triggers = 0;
                 Unknown = 0;
                 _conflicts = new List<Conflict>();
+                _testsConflicts = new List<Conflict>();
+
                 _new = new List<IExplorerTreeItem>();
+                _testsNew = new List<IExplorerTreeItem>();
             }
 
             UpdateStatsArea();
@@ -233,6 +260,13 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
             CheckDestinationPermissions();
+        }
+        public void UpdateTestsStatsArea()
+        {
+            OnPropertyChanged(() => TestsConflicts);
+            OnPropertyChanged(() => NewTests);
+            CalculateNewTests();
+            CalculateAction?.Invoke();
         }
 
         void Calculate(IList<IExplorerTreeItem> items)
@@ -280,7 +314,7 @@ namespace Warewolf.Studio.ViewModels
 
         private static int CountResourceTests(IExplorerTreeItem item)
         {
-            return item.Server?.ResourceRepository?.LoadResourceTestsForDeploy(item.ResourceId).Count ?? 0;
+            return LoadResourceTestsForDeploy(item)?.Count ?? 0;
         }
 
         private static int CountResourceTriggerQueues(IExplorerTreeItem item)
@@ -290,7 +324,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void CalculateNewItems(IList<IExplorerTreeItem> items)
         {
-            if (_destination.SelectedEnvironment != null && _destination.SelectedEnvironment.UnfilteredChildren != null)
+            if (_destination.SelectedEnvironment?.UnfilteredChildren != null)
             {
                 var explorerTreeItems = SetAllConflictsAndGetTreeItems(items);
 
@@ -311,18 +345,84 @@ namespace Warewolf.Studio.ViewModels
             var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
             var idConflicts = from b in explorerTreeItems
                               join explorerTreeItem in items on b.ResourceId equals explorerTreeItem.ResourceId
-                              where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
-                              select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
+                              where IsValidConflicts(b, explorerTreeItem)
+                              select CreateConflict(explorerTreeItem, b);
 
             var pathConflicts = from b in explorerTreeItems
                                 join explorerTreeItem in items on b.ResourcePath equals explorerTreeItem.ResourcePath
-                                where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
-                                select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
+                                where IsValidConflicts(b, explorerTreeItem)
+                                select CreateConflict(explorerTreeItem, b);
+
             var allConflicts = new List<Conflict>();
             allConflicts.AddRange(idConflicts);
             allConflicts.AddRange(pathConflicts);
             _conflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
             return explorerTreeItems;
+        }
+
+        private void CalculateNewTests()
+        {
+            if (_destination.SelectedEnvironment?.UnfilteredChildren != null && _destination.DeployTests)
+            {
+                var tests = SetAllTestsConflictsAndGetTreeItems();
+                _testsNew = _items.Where(p => p.IsResourceChecked == true
+                                              && TestsConflicts.All(c => p.ResourceId != c.SourceId)).Except(tests);
+            }
+            else
+            {
+                _testsConflicts = new List<Conflict>();
+                _testsNew = new List<IExplorerTreeItem>();
+            }
+            OverridesTests = TestsConflicts.Count;
+            NewTests = TestsNew.Count;
+        }
+
+        private IEnumerable<IExplorerItemViewModel> SetAllTestsConflictsAndGetTreeItems()
+        {
+            var sourceTests = new List<IServiceTestModelTO>();
+
+            var services = _items.Where(IsServiceResource).ToList();
+            foreach (var testsForDeploy in services.Select(LoadResourceTestsForDeploy).Where(testsForDeploy => testsForDeploy != null))
+            {
+                sourceTests.AddRange(testsForDeploy);
+            }
+
+            var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
+            var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
+
+            var treeItems = services.Select(item => explorerTreeItems.First(o => o.ResourceId == item.ResourceId)).Where(treeItem => treeItem != null).Cast<IExplorerTreeItem>().ToList();
+
+            var destinationTests = new List<IServiceTestModelTO>();
+
+            foreach (var testsForDeploy in treeItems.Select(LoadResourceTestsForDeploy).Where(testsForDeploy => testsForDeploy != null))
+            {
+                destinationTests.AddRange(testsForDeploy);
+            }
+
+            var allConflicts = (from source in sourceTests
+            let destination = destinationTests.First(o => o.ResourceId == source.ResourceId)
+            where destination != null
+            select new Conflict
+            {
+                SourceName = source.TestName, DestinationName = destination.TestName, DestinationId = destination.ResourceId, SourceId = source.ResourceId,
+            }).ToList();
+
+            _testsConflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
+            return explorerTreeItems;
+        }
+
+        private static List<IServiceTestModelTO> LoadResourceTestsForDeploy(IExplorerTreeItem explorerTreeItem)
+        {
+            return explorerTreeItem.Server?.ResourceRepository?.LoadResourceTestsForDeploy(explorerTreeItem.ResourceId);
+        }
+
+        private static bool IsValidConflicts(IExplorerTreeItem b, IExplorerTreeItem treeItem)
+        {
+            return b.ResourceType != @"Folder" && treeItem.ResourceType != @"Folder" && treeItem.IsResourceChecked.HasValue && treeItem.IsResourceChecked.Value;
+        }
+        private static Conflict CreateConflict(IExplorerTreeItem explorerTreeItem, IExplorerTreeItem b)
+        {
+            return new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
         }
 
         private void CalculateRenameErrors(IList<IExplorerTreeItem> treeItems, IExplorerItemViewModel[] viewModels)
@@ -349,12 +449,21 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();
+        public IList<Conflict> TestsConflicts => _testsConflicts.ToList();
 
         public IList<IExplorerTreeItem> New
         {
             get
             {
                 var explorerTreeItems = _new.Where(a => a.ResourceType != @"Folder").ToList();
+                return explorerTreeItems;
+            }
+        }
+        public IList<IExplorerTreeItem> TestsNew
+        {
+            get
+            {
+                var explorerTreeItems = _testsNew.Where(a => a.ResourceType != @"Folder").ToList();
                 return explorerTreeItems;
             }
         }

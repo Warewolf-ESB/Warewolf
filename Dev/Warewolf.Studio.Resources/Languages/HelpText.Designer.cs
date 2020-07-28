@@ -1057,11 +1057,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to These are the new tests that will be found on the remote server after deploy..
+        /// </summary>
+        public static string DeployNewTestsViewHelp {
+            get {
+                return ResourceManager.GetString("DeployNewTestsViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to These resources will be overwritten on the destination server.
         /// </summary>
         public static string DeployOverridesCountViewHelp {
             get {
                 return ResourceManager.GetString("DeployOverridesCountViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These tests will be overwritten on the destination server.
+        /// </summary>
+        public static string DeployOverridesTestsCountViewHelp {
+            get {
+                return ResourceManager.GetString("DeployOverridesTestsCountViewHelp", resourceCulture);
             }
         }
         
