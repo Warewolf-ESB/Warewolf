@@ -747,8 +747,14 @@
   <data name="DeployNewResourcesViewHelp" xml:space="preserve">
     <value>These are the new resources that will be found on the remote server after deploy.</value>
   </data>
+  <data name="DeployNewTestsViewHelp" xml:space="preserve">
+    <value>These are the new tests that will be found on the remote server after deploy.</value>
+  </data>
   <data name="DeployOverridesCountViewHelp" xml:space="preserve">
     <value>These resources will be overwritten on the destination server</value>
+  </data>
+  <data name="DeployOverridesTestsCountViewHelp" xml:space="preserve">
+    <value>These tests will be overwritten on the destination server</value>
   </data>
   <data name="DeploySelectDependenciesHelp" xml:space="preserve">
     <value>Automatically include everything that this resource would need to execute at the destination.&lt;br/&gt;	&lt;br/&gt;	&lt;b&gt;Warning: &lt;b/&gt;Deploying Sources that are already on the destination Server, will overwrite their connection strings. </value>
