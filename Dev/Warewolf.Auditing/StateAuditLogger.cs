@@ -36,8 +36,6 @@ namespace Warewolf.Auditing
         public StateAuditLogger(IWebSocketPool webSocketFactory)
         {
             _webSocketFactory = webSocketFactory;
-            _ws = webSocketFactory.Acquire(Config.Auditing.Endpoint);
-            _ws.Connect();
         }
 
         public void LogAuditState(Object logEntry)
@@ -48,10 +46,7 @@ namespace Warewolf.Auditing
                 if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
                 {
                     _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
-                    if (!_ws.IsOpen())
-                    {
-                        _ws.Connect();
-                    }
+                    _ws.Connect();
 
                     var auditCommand = new AuditCommand
                     {
