@@ -170,6 +170,11 @@ namespace Dev2.Server.Tests
             return null;
         }
 
+        public void SaveTriggers(Guid resourceId, List<ITriggerQueue> triggerQueues)
+        {
+
+        }
+
         public void SaveTriggerQueue(ITriggerQueue triggerQueue)
         {
 

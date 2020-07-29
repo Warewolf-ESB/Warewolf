@@ -15,6 +15,7 @@ using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Warewolf.OS.IO;
 using Warewolf.Security.Encryption;
@@ -53,6 +54,38 @@ namespace Dev2.Tests.Runtime.Triggers
             new TriggersCatalog(directory, file, queueTriggersPath, serializerInstance, fileSystemWatcherWrapper);
             //------------Assert Results-------------------------
             mockDirectory.Verify(o => o.CreateIfNotExists(queueTriggersPath), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(TriggersCatalog))]
+        public void TriggersCatalog_SaveTriggerQueues_ShouldSave()
+        {
+            var queueTriggersPath = QueueTriggersPath;
+            var contents = "";
+            var triggerId = Guid.NewGuid();
+            var resourceId = Guid.NewGuid();
+            var path = queueTriggersPath + "\\" + triggerId + ".bite";
+
+            var serializerInstance = new Mock<IBuilderSerializer>();
+            serializerInstance.Setup(serializer => serializer.Serialize(It.IsAny<ITriggerQueue>())).Returns(contents);
+            var directory = new Mock<IDirectory>().Object;
+            var mockFile = new Mock<IFile>();
+            mockFile.Setup(file => file.WriteAllText(path, It.IsAny<string>()));
+            var fileSystemWatcherWrapper = new Mock<IFileSystemWatcher>().Object;
+
+            var triggerCatalog = GetTriggersCatalog(directory, mockFile.Object, queueTriggersPath, serializerInstance.Object, fileSystemWatcherWrapper);
+
+            var triggerQueue = SaveRandomTriggerQueue(triggerCatalog, triggerId);
+            mockFile.Verify(file => file.WriteAllText(path, It.IsAny<string>()), Times.Once);
+
+            var triggerQueue1 = SaveRandomTriggerQueue(triggerCatalog, triggerId);
+            mockFile.Verify(file => file.WriteAllText(path, It.IsAny<string>()), Times.Exactly(2));
+
+            var triggerQueues = new List<ITriggerQueue> {triggerQueue, triggerQueue1};
+
+            triggerCatalog.SaveTriggers(resourceId, triggerQueues);
+            mockFile.Verify(file => file.WriteAllText(path, It.IsAny<string>()), Times.Exactly(4));
         }
 
         [TestMethod]

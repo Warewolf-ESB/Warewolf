@@ -25,6 +25,7 @@ using Microsoft.AspNet.SignalR.Client;
 using Dev2.Runtime.Interfaces;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
+using Warewolf.Triggers;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -34,6 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         IConnections _connections;
         IResourceCatalog _resourceCatalog;
         ITestCatalog _testCatalog;
+        ITriggersCatalog _triggersCatalog;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -181,6 +183,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             set => _testCatalog = value;
         }
 
+        public ITriggersCatalog TriggersCatalog
+        {
+            private get => _triggersCatalog ?? Hosting.TriggersCatalog.Instance;
+            set => _triggersCatalog = value;
+        }
+
         public IResourceCatalog ResourceCatalog
         {
             private get => _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
@@ -219,25 +227,24 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (doTriggerDeploy)
             {
-                //TODO: In Debug the code comes here
-                //  var triggersToDeploy = sourceEnviroment.ResourceRepository.LoadResourceTriggersForDeploy(resourceId);
-                //  var message = new CompressedExecuteMessage();
-                //   message.SetMessage(serializer.Serialize(triggersToDeploy));
-                //   var triggerDeployRequest = new EsbExecuteRequest {ServiceName = "SaveQueue"};
-                //  triggerDeployRequest.AddArgument("resourceID", resourceId.ToString().ToStringBuilder());
-                //  triggerDeployRequest.AddArgument("resourcePath", savePath);
-                //   triggerDeployRequest.AddArgument("testDefinitions", serializer.SerializeToBuilder(message));
-                //   var deployEnvelope = new Envelope
-                //     {
-                //        Content = serializer.SerializeToBuilder(triggerDeployRequest).ToString(),
-                //       PartID = 0,
-                //      Type = typeof(Envelope)
-                //  };
-                //   var deployMessageId = Guid.NewGuid();
-                //  await proxy.Invoke<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
-                //  var deployFragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt {PartID = 0, RequestID = deployMessageId}).ConfigureAwait(false);
-                //  var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult) ?? new ExecuteMessage {HasError = true, Message = new StringBuilder("Trigger Deploy Failed")};
-                //  toReturn.Add(new DeployResult(deployExecResult, $"{resource.ResourceName} Triggers"));
+                var triggersToDeploy = TriggersCatalog.LoadQueuesByResourceId(resourceId);
+                var message = new CompressedExecuteMessage();
+                message.SetMessage(serializer.Serialize(triggersToDeploy));
+                var triggerDeployRequest = new EsbExecuteRequest {ServiceName = "SaveTriggers"};
+                triggerDeployRequest.AddArgument("resourceID", resourceId.ToString().ToStringBuilder());
+                triggerDeployRequest.AddArgument("resourcePath", savePath);
+                triggerDeployRequest.AddArgument("triggerDefinitions", serializer.SerializeToBuilder(message));
+                var deployEnvelope = new Envelope
+                {
+                    Content = serializer.SerializeToBuilder(triggerDeployRequest).ToString(),
+                    PartID = 0,
+                    Type = typeof(Envelope),
+                };
+                var deployMessageId = Guid.NewGuid();
+                await proxy.Invoke<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
+                var deployFragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt {PartID = 0, RequestID = deployMessageId}).ConfigureAwait(false);
+                var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult) ?? new ExecuteMessage {HasError = true, Message = new StringBuilder("Trigger Deploy Failed")};
+                toReturn.Add(new DeployResult(deployExecResult, $"{resource.ResourceName} Triggers"));
             }
 
             if (doTestDeploy)

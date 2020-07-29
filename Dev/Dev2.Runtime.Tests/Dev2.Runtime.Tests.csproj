@@ -247,6 +247,7 @@
     <Compile Include="Services\DirectDeployTest.cs" />
     <Compile Include="Services\SaveServerSettingsTest.cs" />
     <Compile Include="Services\SaveTestsTest.cs" />
+    <Compile Include="Services\SaveTriggersTests.cs" />
     <Compile Include="Services\SchedulerTestBase.cs" />
     <Compile Include="Services\SecurityReadTests.cs" />
     <Compile Include="Services\SecurityWriteTests.cs" />

@@ -130,6 +130,7 @@
     <Compile Include="ESB\Management\Services\SaveRedisSource.cs" />
     <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggerQueueService.cs" />
+    <Compile Include="ESB\Management\Services\SaveTriggers.cs" />
     <Compile Include="ESB\Management\Services\TestElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\TestRedisSource.cs" />
     <Compile Include="ESB\Management\Services\WorkflowResume.cs" />
