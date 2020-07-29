@@ -171,7 +171,7 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 				    } else {
 					    Write-Host Double checking with hard coded integration manager repo...
 					    # Check tag against hard coded integration manager repo
-					    $originTag = git -C "$PSScriptRoot" ls-remote --tags "https://gitlab.com/warewolfdevelopers/warewolf" $FullVersionString
+					    $originTag = git -C "$PSScriptRoot" ls-remote --tags "https://gitlab.com/warewolf/warewolf" $FullVersionString
 					    if ($originTag.length -ne 0) {
 						    Write-Host Hard coded integration manager repo has tag `"$originTag`".
 					    } else {
