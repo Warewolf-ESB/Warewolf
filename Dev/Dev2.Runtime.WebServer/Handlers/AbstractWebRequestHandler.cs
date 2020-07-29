@@ -32,6 +32,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
+using Dev2.InterfaceImplementors;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;

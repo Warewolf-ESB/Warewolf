@@ -132,6 +132,7 @@
     <Compile Include="ExtMethods\ObjExtTests.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="InterfaceImplementorsTests\CoverageDataContextTests.cs" />
     <Compile Include="MathOperationTest\InfragisticsEvaluationTest.cs" />
     <Compile Include="TestModelItemUtil.cs" />
     <Compile Include="TestUtils.cs" />
