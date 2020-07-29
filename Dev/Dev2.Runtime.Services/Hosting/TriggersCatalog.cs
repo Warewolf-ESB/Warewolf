@@ -233,6 +233,17 @@ namespace Dev2.Runtime.Hosting
             return triggerQueue;
         }
 
+        public void SaveTriggers(Guid resourceId, List<ITriggerQueue> triggerQueues)
+        {
+            if (triggerQueues != null && triggerQueues.Count > 0)
+            {
+                foreach (var triggerQueue in triggerQueues)
+                {
+                    SaveTriggerQueue(triggerQueue);
+                }
+            }
+        }
+
         public void SaveTriggerQueue(ITriggerQueue triggerQueue)
         {
             if(triggerQueue.TriggerId == Guid.Empty)
