@@ -469,36 +469,41 @@ namespace Warewolf.Studio.ViewModels
 
         private IEnumerable<IExplorerItemViewModel> SetAllTriggersConflictsAndGetTreeItems()
         {
-            var sourceTriggers = new List<ITriggerQueue>();
 
-            var services = _items.Where(IsServiceResource).ToList();
-            foreach (var triggersForDeploy in services.Select(LoadResourceTriggersForDeploy).Where(triggersForDeploy => triggersForDeploy != null))
-            {
-                sourceTriggers.AddRange(triggersForDeploy);
-            }
+                var sourceTriggers = new List<ITriggerQueue>();
 
-            var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
-            var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
-
-            var treeItems = services.Select(item => explorerTreeItems.First(o => o.ResourceId == item.ResourceId)).Where(treeItem => treeItem != null).Cast<IExplorerTreeItem>().ToList();
-
-            var destinationTriggers = new List<ITriggerQueue>();
-
-            foreach (var triggersForDeploy in treeItems.Select(LoadResourceTriggersForDeploy).Where(triggersForDeploy => triggersForDeploy != null))
-            {
-                destinationTriggers.AddRange(triggersForDeploy);
-            }
-
-            var allConflicts = (from source in sourceTriggers
-                let destination = destinationTriggers.First(o => o.ResourceId == source.ResourceId)
-                where destination != null
-                select new Conflict
+                var services = _items.Where(IsServiceResource).ToList();
+                foreach (var triggersForDeploy in services.Select(LoadResourceTriggersForDeploy).Where(triggersForDeploy => triggersForDeploy != null))
                 {
-                    SourceName = source.QueueName, DestinationName = destination.QueueName, DestinationId = destination.TriggerId, SourceId = source.TriggerId,
-                }).ToList();
+                    sourceTriggers.AddRange(triggersForDeploy);
+                }
 
-            _triggersConflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
-            return explorerTreeItems;
+                var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
+                var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
+
+                var treeItems = services.Select(item => explorerTreeItems.First(o => o.ResourceId == item.ResourceId)).Where(treeItem => treeItem != null).Cast<IExplorerTreeItem>().ToList();
+
+                var destinationTriggers = new List<ITriggerQueue>();
+
+                foreach (var triggersForDeploy in treeItems.Select(LoadResourceTriggersForDeploy).Where(triggersForDeploy => triggersForDeploy != null))
+                {
+                    destinationTriggers.AddRange(triggersForDeploy);
+                }
+
+                var allConflicts = (from source in sourceTriggers
+                    let destination = destinationTriggers.First(o => o.ResourceId == source.ResourceId)
+                    where destination != null
+                    select new Conflict
+                    {
+                        SourceName = source.QueueName,
+                        DestinationName = destination.QueueName,
+                        DestinationId = destination.ResourceId,
+                        SourceId = source.ResourceId,
+                        TriggerId = source.TriggerId
+                    }).ToList();
+
+                _triggersConflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
+                return explorerTreeItems;
         }
 
         private static List<ITriggerQueue> LoadResourceTriggersForDeploy(IExplorerTreeItem explorerTreeItem)
@@ -512,7 +517,13 @@ namespace Warewolf.Studio.ViewModels
         }
         private static Conflict CreateConflict(IExplorerTreeItem explorerTreeItem, IExplorerTreeItem b)
         {
-            return new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
+            return new Conflict
+            {
+                SourceName = explorerTreeItem.ResourcePath,
+                DestinationName = b.ResourcePath,
+                DestinationId = b.ResourceId,
+                SourceId = explorerTreeItem.ResourceId
+            };
         }
 
         private void CalculateRenameErrors(IList<IExplorerTreeItem> treeItems, IExplorerItemViewModel[] viewModels)

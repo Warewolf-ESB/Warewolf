@@ -19,6 +19,7 @@ namespace Dev2.Studio.Interfaces.Deploy
         public string DestinationName { get; set; }
         public Guid SourceId { get; set; }
         public Guid DestinationId { get; set; }
+        public Guid TriggerId { get; set; }
         
     }
     public interface IDeployStatsViewerViewModel
