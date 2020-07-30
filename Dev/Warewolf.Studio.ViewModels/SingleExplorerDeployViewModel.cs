@@ -109,11 +109,7 @@ namespace Warewolf.Studio.ViewModels
             DeployCommand = new DelegateCommand(Deploy, () => CanDeploy);
             SelectDependenciesCommand = new DelegateCommand(SelectDependencies, () => CanSelectDependencies);
             NewResourcesViewCommand = new DelegateCommand(ViewNewResources);
-            NewTestsViewCommand = new DelegateCommand(ViewNewTests);
-            NewTriggersViewCommand = new DelegateCommand(ViewNewTriggers);
             OverridesViewCommand = new DelegateCommand(ViewOverrides);
-            OverridesTestsViewCommand = new DelegateCommand(ViewOverridesTests);
-            OverridesTriggersViewCommand = new DelegateCommand(ViewOverridesTriggers);
             Destination.ServerStateChanged += DestinationServerStateChanged;
             Destination.PropertyChanged += DestinationOnPropertyChanged;
             ShowConflicts = false;
@@ -207,24 +203,6 @@ namespace Warewolf.Studio.ViewModels
             ShowConflictItemsList = true;
         }
 
-        void ViewOverridesTests()
-        {
-            //TODO: Complete once list is created
-            ShowConflicts = true;
-            ConflictNewResourceText = "List of Overrides";
-            ShowNewItemsList = false;
-            ShowConflictItemsList = true;
-        }
-
-        void ViewOverridesTriggers()
-        {
-            //TODO: Complete once list is created
-            ShowConflicts = true;
-            ConflictNewResourceText = "List of Overrides";
-            ShowNewItemsList = false;
-            ShowConflictItemsList = true;
-        }
-
         public bool ShowConflictItemsList
         {
             get => _showConflictItemsList;
@@ -269,24 +247,6 @@ namespace Warewolf.Studio.ViewModels
         {
             ShowConflicts = true;
             ConflictNewResourceText = "List of New Resources";
-            ShowNewItemsList = true;
-            ShowConflictItemsList = false;
-        }
-
-        void ViewNewTests()
-        {
-            //TODO: Complete once list is created
-            ShowConflicts = true;
-            ConflictNewResourceText = "List of New Tests";
-            ShowNewItemsList = true;
-            ShowConflictItemsList = false;
-        }
-
-        void ViewNewTriggers()
-        {
-            //TODO: Complete once list is created
-            ShowConflicts = true;
-            ConflictNewResourceText = "List of New Triggers";
             ShowNewItemsList = true;
             ShowConflictItemsList = false;
         }
@@ -840,15 +800,11 @@ namespace Warewolf.Studio.ViewModels
         /// Must show list of New Resources conflicts
         /// </summary>
         public ICommand NewResourcesViewCommand { get; private set; }
-        public ICommand NewTestsViewCommand { get; private set; }
-        public ICommand NewTriggersViewCommand { get; private set; }
         /// <summary>
         /// Overrides Hyperlink Clicked
         /// Must show list of Override conflicts
         /// </summary>
         public ICommand OverridesViewCommand { get; private set; }
-        public ICommand OverridesTestsViewCommand { get; private set; }
-        public ICommand OverridesTriggersViewCommand { get; private set; }
         /// <summary>
         /// Deploy Button Clicked
         /// Must bring up conflict screen. Conflict screen can modify collection

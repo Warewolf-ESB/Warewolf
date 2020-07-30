@@ -232,46 +232,6 @@
                                     <TextBlock Text="{Binding OverridesCount}" FontSize="28"/>
                                 </Hyperlink>
                             </TextBlock>
-
-                            <!-- TESTS SUMMARY -->
-                            <TextBlock Grid.Column="0" Grid.Row="2" Text="New Tests" Margin="{StaticResource ElementBorder}"
-                                       Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
-                            <TextBlock Grid.Column="1" Grid.Row="2" Text="Override Tests" Margin="{StaticResource ElementBorder}"
-                                       Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
-
-                            <TextBlock Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" >
-                                <Hyperlink x:Name="NewTestsView" Command="{Binding NewTestsViewCommand}"
-                                           ToolTip="{x:Static languages:HelpText.DeployNewTestsViewHelp}" >
-                                    <TextBlock Text="{Binding NewTestsCount}" FontSize="28" />
-                                </Hyperlink>
-                            </TextBlock>
-
-                            <TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" >
-                                <Hyperlink x:Name="TestsOverridesCountView" Command="{Binding OverridesTestsViewCommand}"
-                                           ToolTip="{x:Static languages:HelpText.DeployOverridesTestsCountViewHelp}" >
-                                    <TextBlock Text="{Binding OverridesTestsCount}" FontSize="28"/>
-                                </Hyperlink>
-                            </TextBlock>
-
-                            <!-- TRIGGERS SUMMARY -->
-                            <TextBlock Grid.Column="0" Grid.Row="4" Text="New Triggers" Margin="{StaticResource ElementBorder}"
-                                       Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
-                            <TextBlock Grid.Column="1" Grid.Row="4" Text="Override Triggers" Margin="{StaticResource ElementBorder}"
-                                       Foreground="White" FontSize="{StaticResource FontSize-Medium}"/>
-
-                            <TextBlock Grid.Column="0" Grid.Row="5" HorizontalAlignment="Center" >
-                                <Hyperlink x:Name="NewTriggersView" Command="{Binding NewTriggersViewCommand}"
-                                           ToolTip="{x:Static languages:HelpText.DeployNewTriggersViewHelp}" >
-                                    <TextBlock Text="{Binding NewTriggersCount}" FontSize="28" />
-                                </Hyperlink>
-                            </TextBlock>
-
-                            <TextBlock Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" >
-                                <Hyperlink x:Name="TriggersOverridesCountView" Command="{Binding OverridesTriggersViewCommand}"
-                                           ToolTip="{x:Static languages:HelpText.DeployOverridesTriggersCountViewHelp}" >
-                                    <TextBlock Text="{Binding OverridesTriggersCount}" FontSize="28"/>
-                                </Hyperlink>
-                            </TextBlock>
                         </Grid>
                     </StackPanel>
 

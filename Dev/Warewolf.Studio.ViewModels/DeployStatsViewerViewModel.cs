@@ -288,20 +288,6 @@ namespace Warewolf.Studio.ViewModels
             CalculateAction?.Invoke();
             CheckDestinationPermissions();
         }
-        public void UpdateTestsStatsArea()
-        {
-            OnPropertyChanged(() => TestsConflicts);
-            OnPropertyChanged(() => NewTests);
-            CalculateNewTests();
-            CalculateAction?.Invoke();
-        }
-        public void UpdateTriggersStatsArea()
-        {
-            OnPropertyChanged(() => TriggersConflicts);
-            OnPropertyChanged(() => NewTriggers);
-            CalculateNewTriggers();
-            CalculateAction?.Invoke();
-        }
 
         void Calculate(IList<IExplorerTreeItem> items)
         {
@@ -394,116 +380,9 @@ namespace Warewolf.Studio.ViewModels
             return explorerTreeItems;
         }
 
-        private void CalculateNewTests()
-        {
-            if (_destination.SelectedEnvironment?.UnfilteredChildren != null && _destination.DeployTests)
-            {
-                var tests = SetAllTestsConflictsAndGetTreeItems();
-                _testsNew = _items.Where(p => p.IsResourceChecked == true
-                                              && TestsConflicts.All(c => p.ResourceId != c.SourceId)).Except(tests);
-            }
-            else
-            {
-                _testsConflicts = new List<Conflict>();
-                _testsNew = new List<IExplorerTreeItem>();
-            }
-            OverridesTests = TestsConflicts.Count;
-            NewTests = TestsNew.Count;
-        }
-
-        private IEnumerable<IExplorerItemViewModel> SetAllTestsConflictsAndGetTreeItems()
-        {
-            var sourceTests = new List<IServiceTestModelTO>();
-
-            var services = _items.Where(IsServiceResource).ToList();
-            foreach (var testsForDeploy in services.Select(LoadResourceTestsForDeploy).Where(testsForDeploy => testsForDeploy != null))
-            {
-                sourceTests.AddRange(testsForDeploy);
-            }
-
-            var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
-            var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
-
-            var treeItems = services.Select(item => explorerTreeItems.First(o => o.ResourceId == item.ResourceId)).Where(treeItem => treeItem != null).Cast<IExplorerTreeItem>().ToList();
-
-            var destinationTests = new List<IServiceTestModelTO>();
-
-            foreach (var testsForDeploy in treeItems.Select(LoadResourceTestsForDeploy).Where(testsForDeploy => testsForDeploy != null))
-            {
-                destinationTests.AddRange(testsForDeploy);
-            }
-
-            var allConflicts = (from source in sourceTests
-            let destination = destinationTests.First(o => o.ResourceId == source.ResourceId)
-            where destination != null
-            select new Conflict
-            {
-                SourceName = source.TestName, DestinationName = destination.TestName, DestinationId = destination.ResourceId, SourceId = source.ResourceId,
-            }).ToList();
-
-            _testsConflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
-            return explorerTreeItems;
-        }
-
         private static List<IServiceTestModelTO> LoadResourceTestsForDeploy(IExplorerTreeItem explorerTreeItem)
         {
             return explorerTreeItem.Server?.ResourceRepository?.LoadResourceTestsForDeploy(explorerTreeItem.ResourceId);
-        }
-
-        private void CalculateNewTriggers()
-        {
-            if (_destination.SelectedEnvironment?.UnfilteredChildren != null && _destination.DeployTriggers)
-            {
-                var triggers = SetAllTriggersConflictsAndGetTreeItems();
-                _triggersNew = _items.Where(p => p.IsResourceChecked == true
-                                              && TriggersConflicts.All(c => p.ResourceId != c.SourceId)).Except(triggers);
-            }
-            else
-            {
-                _triggersConflicts = new List<Conflict>();
-                _triggersNew = new List<IExplorerTreeItem>();
-            }
-            OverridesTriggers = TriggersConflicts.Count;
-            NewTriggers = TriggersNew.Count;
-        }
-
-        private IEnumerable<IExplorerItemViewModel> SetAllTriggersConflictsAndGetTreeItems()
-        {
-
-                var sourceTriggers = new List<ITriggerQueue>();
-
-                var services = _items.Where(IsServiceResource).ToList();
-                foreach (var triggersForDeploy in services.Select(LoadResourceTriggersForDeploy).Where(triggersForDeploy => triggersForDeploy != null))
-                {
-                    sourceTriggers.AddRange(triggersForDeploy);
-                }
-
-                var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
-                var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
-
-                var treeItems = services.Select(item => explorerTreeItems.First(o => o.ResourceId == item.ResourceId)).Where(treeItem => treeItem != null).Cast<IExplorerTreeItem>().ToList();
-
-                var destinationTriggers = new List<ITriggerQueue>();
-
-                foreach (var triggersForDeploy in treeItems.Select(LoadResourceTriggersForDeploy).Where(triggersForDeploy => triggersForDeploy != null))
-                {
-                    destinationTriggers.AddRange(triggersForDeploy);
-                }
-
-                var allConflicts = (from source in sourceTriggers
-                    let destination = destinationTriggers.First(o => o.ResourceId == source.ResourceId)
-                    where destination != null
-                    select new Conflict
-                    {
-                        SourceName = source.QueueName,
-                        DestinationName = destination.QueueName,
-                        DestinationId = destination.ResourceId,
-                        SourceId = source.ResourceId,
-                        TriggerId = source.TriggerId
-                    }).ToList();
-
-                _triggersConflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
-                return explorerTreeItems;
         }
 
         private static List<ITriggerQueue> LoadResourceTriggersForDeploy(IExplorerTreeItem explorerTreeItem)
