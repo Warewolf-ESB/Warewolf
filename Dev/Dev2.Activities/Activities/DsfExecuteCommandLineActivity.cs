@@ -245,6 +245,7 @@ namespace Dev2.Activities
             _process = new Process();
             using (_process)
             {
+                Dev2Logger.Info($"Creating commandline process for value:\n{val}", GlobalConstants.WarewolfInfo);
                 var processStartInfo = CreateProcessStartInfo(val);
                 _process.StartInfo = processStartInfo ?? throw new ArgumentNullException("processStartInfo");
                 var processStarted = _process.Start();
