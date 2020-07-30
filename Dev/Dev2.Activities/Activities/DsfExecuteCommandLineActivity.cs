@@ -147,9 +147,8 @@ namespace Dev2.Activities
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
+            Dev2Logger.Debug($"Executing commandline tool with CommandFileName:\n{CommandFileName}", GlobalConstants.WarewolfDebug);
             var exeToken = dataObject.ExecutionToken;
-
-
             var allErrors = new ErrorResultTO();
 
             InitializeDebug(dataObject);
@@ -454,10 +453,10 @@ namespace Dev2.Activities
             }
             foreach(var t in updates)
             {
-
                 if (t.Item1 == CommandFileName)
                 {
                     CommandFileName = t.Item2;
+                    Dev2Logger.Debug($"Got CommandFileName for commandline tool:\n{CommandFileName}", GlobalConstants.WarewolfDebug);
                 }
                 else
                 {
