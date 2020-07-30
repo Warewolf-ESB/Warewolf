@@ -41,9 +41,6 @@ namespace Dev2.Studio.Interfaces.Deploy
         void TryCalculate( IList<IExplorerTreeItem> items);
 
         IList<Conflict> Conflicts { get; }
-        IList<Conflict> TestsConflicts { get; }
-        IList<Conflict> TriggersConflicts { get; }
-
         IList<IExplorerTreeItem> New { get; }
         Action CalculateAction { get; set; }
         string RenameErrors { get; }
@@ -52,9 +49,6 @@ namespace Dev2.Studio.Interfaces.Deploy
         void CalculateTestsCount();
         void CalculateTriggersCount();
         void UpdateStatsArea();
-        void UpdateTestsStatsArea();
-        void UpdateTriggersStatsArea();
-
         void CheckDestinationPermissions();
     }
 }
