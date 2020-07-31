@@ -91,7 +91,7 @@ namespace Warewolf.UnitTestAttributes
                     getUrl = "https://gitlab.com/warewolf/postgres-connector-testing";
                     break;
                 case ContainerType.Warewolf:
-                    getUrl = "https://gitlab.com/warewolfdevelopers/warewolf";
+                    getUrl = "https://gitlab.com/warewolf/warewolf";
                     break;
                 case ContainerType.RabbitMQ:
                     getUrl = "https://gitlab.com/warewolf/rabbitmq-connector-testing";

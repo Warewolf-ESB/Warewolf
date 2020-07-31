@@ -1,8 +1,8 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -28,7 +28,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Threading;
 using System.Globalization;
 
 namespace Warewolf.Studio.ViewModels
@@ -41,9 +40,15 @@ namespace Warewolf.Studio.ViewModels
         IConnectControlViewModel _sourceconnectControlViewModel;
         IConnectControlViewModel _destinationConnectControlViewModel;
         string _sourcesCount;
+        private string _testsCount;
+        private string _triggersCount;
         string _servicesCount;
         string _newResourcesCount;
+        string _newTestsCount;
+        string _newTriggersCount;
         string _overridesCount;
+        string _overridesTestsCount;
+        string _overridesTriggersCount;
         bool _showConflicts;
         bool _isDeploying;
         bool _deployInProgress;
@@ -82,8 +87,14 @@ namespace Warewolf.Studio.ViewModels
                 IsDeployLoading = true;
                 ServicesCount = _stats.Services.ToString();
                 SourcesCount = _stats.Sources.ToString();
+                TestsCount = _stats.Tests.ToString();
+                TriggersCount = _stats.Triggers.ToString();
                 NewResourcesCount = _stats.NewResources.ToString();
+                NewTestsCount = _stats.NewTests.ToString();
+                NewTriggersCount = _stats.NewTriggers.ToString();
                 OverridesCount = _stats.Overrides.ToString();
+                OverridesTestsCount = _stats.OverridesTests.ToString();
+                OverridesTriggersCount = _stats.OverridesTriggers.ToString();
                 ConflictItems = _stats.Conflicts;
                 NewItems = _stats.New;
                 ShowConflicts = false;
@@ -170,6 +181,8 @@ namespace Warewolf.Studio.ViewModels
             ShowConflicts = false;
             ServicesCount = _stats.Services.ToString();
             SourcesCount = _stats.Sources.ToString();
+            TestsCount = _stats.Tests.ToString();
+            TriggersCount = _stats.Triggers.ToString();
             NewResourcesCount = _stats.NewResources.ToString();
             OverridesCount = _stats.Overrides.ToString();
             var environmentViewModel = Destination?.Environments?.FirstOrDefault(model => model.ResourceId == environmentid);
@@ -324,11 +337,11 @@ namespace Warewolf.Studio.ViewModels
             if (supportsDirectServerDeploy)
             {
                 var destConnection = CreateNewConnection(destEnv);
-                deployResponse = sourceEnv?.Server?.UpdateRepository?.Deploy(notfolders, Destination.DeployTests, destConnection);
+                deployResponse = sourceEnv?.Server?.UpdateRepository?.Deploy(notfolders, Destination.DeployTests, Destination.DeployTriggers, destConnection);
             }
             if (!supportsDirectServerDeploy || deployResponse.Any(r => r.HasError))
             {
-                _shell.DeployResources(sourceEnv.Server.EnvironmentID, destEnv.EnvironmentID, notfolders, Destination.DeployTests);
+                _shell.DeployResources(sourceEnv.Server.EnvironmentID, destEnv.EnvironmentID, notfolders, Destination.DeployTests, Destination.DeployTriggers);
             }
             Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceChecked = false);
             Source.SelectedEnvironment.IsResourceChecked = false;
@@ -558,7 +571,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsDeployLoading
         {
-            get { return _isDeployLoading; }
+            get => _isDeployLoading;
             set
             {
                 _isDeployLoading = value;
@@ -577,6 +590,36 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = string.Empty;
                     RaiseCanExecuteDependencies();
                     OnPropertyChanged(() => OverridesCount);
+                }
+            }
+        }
+
+        public string OverridesTestsCount
+        {
+            get => _overridesTestsCount;
+            set
+            {
+                if (_overridesTestsCount != value)
+                {
+                    _overridesTestsCount = value;
+                    ErrorMessage = string.Empty;
+                    RaiseCanExecuteDependencies();
+                    OnPropertyChanged(() => OverridesTestsCount);
+                }
+            }
+        }
+
+        public string OverridesTriggersCount
+        {
+            get => _overridesTriggersCount;
+            set
+            {
+                if (_overridesTriggersCount != value)
+                {
+                    _overridesTriggersCount = value;
+                    ErrorMessage = string.Empty;
+                    RaiseCanExecuteDependencies();
+                    OnPropertyChanged(() => OverridesTriggersCount);
                 }
             }
         }
@@ -605,6 +648,36 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public string NewTestsCount
+        {
+            get => _newTestsCount;
+            set
+            {
+                if (_newTestsCount != value)
+                {
+                    _newTestsCount = value;
+                    ErrorMessage = string.Empty;
+                    RaiseCanExecuteDependencies();
+                    OnPropertyChanged(() => NewTestsCount);
+                }
+            }
+        }
+
+        public string NewTriggersCount
+        {
+            get => _newTriggersCount;
+            set
+            {
+                if (_newTriggersCount != value)
+                {
+                    _newTriggersCount = value;
+                    ErrorMessage = string.Empty;
+                    RaiseCanExecuteDependencies();
+                    OnPropertyChanged(() => NewTriggersCount);
+                }
+            }
+        }
+
         public string SourcesCount
         {
             get => _sourcesCount;
@@ -629,6 +702,34 @@ namespace Warewolf.Studio.ViewModels
                     _servicesCount = value;
                     ErrorMessage = string.Empty;
                     OnPropertyChanged(() => ServicesCount);
+                }
+            }
+        }
+
+        public string TestsCount
+        {
+            get => _testsCount;
+            set
+            {
+                if (_testsCount != value)
+                {
+                    _testsCount = value;
+                    ErrorMessage = string.Empty;
+                    OnPropertyChanged(() => TestsCount);
+                }
+            }
+        }
+
+        public string TriggersCount
+        {
+            get => _triggersCount;
+            set
+            {
+                if (_triggersCount != value)
+                {
+                    _triggersCount = value;
+                    ErrorMessage = string.Empty;
+                    OnPropertyChanged(() => TriggersCount);
                 }
             }
         }
