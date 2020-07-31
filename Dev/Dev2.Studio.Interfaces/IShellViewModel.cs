@@ -20,7 +20,6 @@ using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Data;
 using Warewolf.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -96,7 +95,7 @@ namespace Dev2.Studio.Interfaces
         void Debug();
         void ShowAboutBox();
         void ShowDependencies(Guid resourceId, IServer server, bool isSource);
-        void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
+        void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests, bool deployTriggers);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);
         void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer, IContextualResourceModel contextualResourceModel);

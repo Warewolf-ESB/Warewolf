@@ -1447,11 +1447,16 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
         }
 
-        public void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests)
+        public void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests, bool deployTriggers)
         {
             var environmentModel = ServerRepository.Get(destinationEnvironmentId);
             var sourceEnvironmentModel = ServerRepository.Get(sourceEnvironmentId);
-            var dto = new DeployDto {ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList(), DeployTests = deployTests};
+            var dto = new DeployDto
+            {
+                ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList(),
+                DeployTests = deployTests,
+                DeployTriggers = deployTriggers,
+            };
             environmentModel?.ResourceRepository?.DeployResources(sourceEnvironmentModel, environmentModel, dto);
             ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);
