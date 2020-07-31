@@ -77,9 +77,7 @@ namespace Dev2.Activities
 
         [Outputs("CommandResult")]
         [FindMissing]
-        
         public string CommandResult
-        
         {
             get
             {
@@ -90,7 +88,6 @@ namespace Dev2.Activities
                 _commandResult = value;
             }
         }
-
 
         public override List<string> GetOutputs() => new List<string> { CommandResult };
         #region Overrides of DsfNativeActivity<string>
