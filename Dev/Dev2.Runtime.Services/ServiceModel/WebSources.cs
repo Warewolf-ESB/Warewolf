@@ -259,7 +259,7 @@ namespace Dev2.Runtime.ServiceModel
                 source.Client.Headers.Add("user-agent", GlobalConstants.UserAgentString);
                 AddHeaders(source, headers);
                 ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             }
         }
 

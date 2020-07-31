@@ -29,6 +29,7 @@ using Dev2;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class SingleExplorerDeployViewModelTests
     {
         Mock<IDeployDestinationExplorerViewModel> _destView;
