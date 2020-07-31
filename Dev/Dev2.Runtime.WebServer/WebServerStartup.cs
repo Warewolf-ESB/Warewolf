@@ -55,6 +55,7 @@ namespace Dev2.Runtime.WebServer
             {
                 startOptions.Urls.Add(endpoint.Url);
             }
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
             return WebApp.Start<WebServerStartup>(startOptions);
         }
 

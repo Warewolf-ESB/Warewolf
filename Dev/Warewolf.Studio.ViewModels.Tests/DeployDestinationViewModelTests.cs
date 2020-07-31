@@ -1,4 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
@@ -14,8 +24,6 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class DeployDestinationViewModelTests
     {
-        #region Fields
-
         DeployDestinationViewModel _target;
 
         Mock<IShellViewModel> _shellViewModelMock;
@@ -23,10 +31,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         Mock<IEventAggregator> _eventAggregatorMock;
         Mock<IStudioUpdateManager> _studioUpdateManagerMock;
         Mock<IExplorerItem> _explorerItemMock;
-
-        #endregion Fields
-
-        #region Test initialize
 
         [TestInitialize]
         public void TestInitialize()
@@ -71,12 +75,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             return mockEnvironmentConnection;
         }
 
-        #endregion Test initialize
-
-        #region Test properties
-
         [TestMethod,Timeout(60000)]
-        public void TestMinSupportedVersion()
+        [TestCategory(nameof(DeployDestinationViewModel))]
+        public void DeployDestinationViewModel_TestMinSupportedVersion()
         {
             //arrange
             var selectedEnvironmentMock = new Mock<IEnvironmentViewModel>();
@@ -94,7 +95,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
-        public void TestServerVersion()
+        [TestCategory(nameof(DeployDestinationViewModel))]
+        public void DeployDestinationViewModel_TestServerVersion()
         {
             //arrange
             var selectedEnvironmentMock = new Mock<IEnvironmentViewModel>();
@@ -112,7 +114,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod,Timeout(60000)]
-        public void TestIsLoading()
+        [TestCategory(nameof(DeployDestinationViewModel))]
+        public void DeployDestinationViewModel_TestIsLoading()
         {
             //arrange
             var isIsLoadingChanged = false;
@@ -132,7 +135,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void DeployTests_GivenIsSet_ShouldFireOnPropertyChanged()
+        [TestCategory(nameof(DeployDestinationViewModel))]
+        public void DeployDestinationViewModel_DeployTests_GivenIsSet_ShouldFireOnPropertyChanged()
         {
             //---------------Set up test pack-------------------
             var wasCalled = false;
@@ -150,6 +154,27 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsTrue(wasCalled);
         }
-        #endregion Test properties
+
+        [TestMethod,Timeout(60000)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DeployDestinationViewModel))]
+        public void DeployDestinationViewModel_DeployTriggers_GivenIsSet_ShouldFireOnPropertyChanged()
+        {
+            //---------------Set up test pack-------------------
+            var wasCalled = false;
+            _target.IsLoading = false;
+            _target.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == "DeployTriggers")
+                {
+                    wasCalled = true;
+                }
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            _target.DeployTriggers = true;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(wasCalled);
+        }
     }
 }

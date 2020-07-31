@@ -18,6 +18,8 @@ namespace Warewolf.Triggers
     {
         string PathFromResourceId(string triggerId);
         IList<ITriggerQueue> Queues { get; }
+        List<ITriggerQueue> LoadQueuesByResourceId(Guid resourceId);
+        void SaveTriggers(Guid resourceId, List<ITriggerQueue> triggerQueues);
         void SaveTriggerQueue(ITriggerQueue triggerQueue);
         void DeleteTriggerQueue(ITriggerQueue triggerQueue);
         ITriggerQueue LoadQueueTriggerFromFile(string filename);
