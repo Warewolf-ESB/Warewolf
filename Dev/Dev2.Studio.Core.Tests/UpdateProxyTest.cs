@@ -890,7 +890,7 @@ namespace Dev2.Core.Tests
             mockConnection.Setup(con => con.UserName).Returns("username");
             mockConnection.Setup(con => con.Password).Returns("password");
 
-            updateProxyTest.Deploy(new List<Guid> { Guid.NewGuid() }, false, mockConnection.Object);
+            updateProxyTest.Deploy(new List<Guid> { Guid.NewGuid() }, false, false, mockConnection.Object);
             //------------Assert Results-------------------------
             controller.Verify(a => a.ExecuteCommand<List<IDeployResult>>(env.Object, It.IsAny<Guid>()));
         }

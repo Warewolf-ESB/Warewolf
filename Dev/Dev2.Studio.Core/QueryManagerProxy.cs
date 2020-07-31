@@ -423,7 +423,7 @@ namespace Dev2.Studio.Core
             }
             
             var serializer = new Dev2JsonSerializer();
-            var comsController = CommunicationControllerFactory.CreateController("GetDependanciesOnListService");
+            var comsController = CommunicationControllerFactory.CreateController(nameof(Warewolf.Service.GetDependanciesOnList));
             comsController.AddPayloadArgument("ResourceIds", serializer.SerializeToBuilder(enumerable.Select(a => a.ToString()).ToList()));
             comsController.AddPayloadArgument("GetDependsOnMe", "false");
             var res = comsController.ExecuteCommand<List<string>>(Connection, GlobalConstants.ServerWorkspaceID).Where(a =>
@@ -435,7 +435,7 @@ namespace Dev2.Studio.Core
 
             if (result == null)
             {
-                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "GetDependanciesOnListService"));
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, nameof(Warewolf.Service.GetDependanciesOnList)));
             }
 
             return result;
