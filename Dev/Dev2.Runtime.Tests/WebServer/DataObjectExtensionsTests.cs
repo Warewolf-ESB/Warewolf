@@ -11,18 +11,21 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Security.Principal;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Communication;
 using Dev2.Data;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Data;
+using static Dev2.Runtime.WebServer.DataObjectExtensions;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -276,7 +279,7 @@ namespace Dev2.Tests.Runtime.WebServer
                     TestFailing = true,
                     TestSteps = new List<IServiceTestStep>
                     {
-                        new ServiceTestStepTO(_testStepOne, "Activity", new System.Collections.ObjectModel.ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
+                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
                     },
                     Result = new TestRunResult
                     {
@@ -297,16 +300,211 @@ namespace Dev2.Tests.Runtime.WebServer
             StringAssert.Contains(executePayload, "Tests Invalid: 0");
         }
 
+        
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DataObjectExtensions))]
+        public void DataObjectExtensions_RunMultipleTestBatchesAndReturnJSON_TestInvalid()
+        {
+            var serializer = new Dev2JsonSerializer();
+
+            var mockTestCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            mockTestCoverageCatalog.Setup(o => o.Fetch(_workflowOne))
+            .Returns(new List<IServiceTestCoverageModelTo> { _serviceTestCoverageModelTo });
+            mockTestCoverageCatalog.Setup(o => o.FetchReport(It.IsAny<Guid>(), It.IsAny<string>()))
+                .Returns(new ServiceTestCoverageModelTo
+                {
+                });
+
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            mockTestCatalog.Setup(o => o.Fetch(_workflowTwo))
+                .Returns(new List<IServiceTestModelTO> { _serviceTestModelTO });
+
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.TestsResourceIds)
+                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+            mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+
+            var mockResource = new Mock<IResource>();
+            mockResource.SetupGet(r => r.ResourceID).Returns(_workflowTwo);
+            mockResource.Setup(r => r.ResourceName).Returns(_reportName);
+            mockResource.Setup(r => r.GetResourcePath(_workspaceGuid)).Returns("test/folder/" + _reportName);
+            mockResourceCatalog.Setup(o => o.GetResources(It.IsAny<Guid>()))
+               .Returns(new List<IResource>
+               {
+                    mockResource.Object
+               });
+
+            var mockServiceTestExecutorWrapper = new Mock<IServiceTestExecutorWrapper>();
+            mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
+                .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO
+                {
+                    TestName = "test one re-ran",
+                    TestFailing = true,
+                    FailureMessage = "test: failure mesage",
+                    TestSteps = new List<IServiceTestStep>
+                    {
+                        //Empty TestSteps makes the report Invalid and override the TestFailing = true
+                    },
+                    Result = new TestRunResult
+                    {
+                        RunTestResult = RunResult.TestInvalid,
+                    }
+                } as IServiceTestModelTO));
+
+
+            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnJSON(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object, mockServiceTestExecutorWrapper.Object);
+
+            Assert.IsNotNull(executePayload);
+            Assert.AreEqual("application/json", sut.ContentType);
+            StringAssert.Contains(executePayload, " \"Test Name\": \"test one re-ran\",\r\n");
+            StringAssert.Contains(executePayload, "\"Result\": \"Invalid\",\r\n");
+            StringAssert.Contains(executePayload, "\"Message\": \"Test has no selected nodes\"\r\n");
+        }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DataObjectExtensions))]
+        public void DataObjectExtensions_RunMultipleTestBatchesAndReturnJSON_TestFailed()
+        {
+            var serializer = new Dev2JsonSerializer();
+
+            var mockTestCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            mockTestCoverageCatalog.Setup(o => o.FetchReport(It.IsAny<Guid>(), It.IsAny<string>()))
+                .Returns(_serviceTestCoverageModelTo);
+
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            mockTestCatalog.Setup(o => o.Fetch(_workflowTwo))
+                .Returns(new List<IServiceTestModelTO> { new ServiceTestModelTO
+                {
+                    TestName = "test one saved",
+                    TestFailing = true,
+                    TestSteps = new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
+                    },
+                    Result = new TestRunResult
+                    {
+                        RunTestResult = RunResult.TestFailed
+                    }
+                }});
+
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.TestsResourceIds)
+                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+            mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+
+            var mockResource = new Mock<IResource>();
+            mockResource.SetupGet(r => r.ResourceID).Returns(_workflowTwo);
+            mockResource.Setup(r => r.ResourceName).Returns(_reportName);
+            mockResource.Setup(r => r.GetResourcePath(_workspaceGuid)).Returns("test/folder/" + _reportName);
+            mockResourceCatalog.Setup(o => o.GetResources(It.IsAny<Guid>()))
+               .Returns(new List<IResource>
+               {
+                    mockResource.Object
+               });
+
+            var mockServiceTestExecutorWrapper = new Mock<IServiceTestExecutorWrapper>();
+            mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
+                .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO 
+                {
+                    TestName = "test one re-ran",
+                    TestFailing = true,
+                    FailureMessage = "test: failure mesage",
+                    TestSteps = new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
+                    },
+                    Result = new TestRunResult
+                    {
+                        RunTestResult = RunResult.TestFailed,
+                    }
+                } as IServiceTestModelTO));
+
+            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnJSON(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object, mockServiceTestExecutorWrapper.Object);
+
+            Assert.IsNotNull(executePayload);
+            Assert.AreEqual("application/json", sut.ContentType);
+            StringAssert.Contains(executePayload, " \"Test Name\": \"test one re-ran\",\r\n");
+            StringAssert.Contains(executePayload, "\"Result\": \"Failed\",\r\n");
+            StringAssert.Contains(executePayload, "\"Message\": \"test: failure mesage\"\r\n");
+        }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DataObjectExtensions))]
+        public void DataObjectExtensions_RunMultipleTestBatchesAndReturnJSON_TestPassed()
+        {
+            var serializer = new Dev2JsonSerializer();
+
+            var mockTestCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            mockTestCoverageCatalog.Setup(o => o.FetchReport(It.IsAny<Guid>(), It.IsAny<string>()))
+                .Returns(_serviceTestCoverageModelTo);
+
+
+            var mockTestCatalog = new Mock<ITestCatalog>();
+            mockTestCatalog.Setup(o => o.Fetch(_workflowTwo))
+                .Returns(new List<IServiceTestModelTO> { _serviceTestModelTO });
+
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.TestsResourceIds)
+                .Returns(new Guid[] { _workflowOne, _workflowTwo });
+            mockDSFDataObject.Setup(o => o.Clone()).Returns(new DsfDataObject(string.Empty, Guid.NewGuid()));
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+
+            var mockResource = new Mock<IResource>();
+            mockResource.SetupGet(r => r.ResourceID).Returns(_workflowTwo);
+            mockResource.Setup(r => r.ResourceName).Returns(_reportName);
+            mockResource.Setup(r => r.GetResourcePath(_workspaceGuid)).Returns("test/folder/" + _reportName);
+            mockResourceCatalog.Setup(o => o.GetResources(It.IsAny<Guid>()))
+               .Returns(new List<IResource>
+               {
+                    mockResource.Object
+               });
+
+            var mockServiceTestExecutorWrapper = new Mock<IServiceTestExecutorWrapper>();
+            mockServiceTestExecutorWrapper.Setup(o => o.ExecuteTestAsync(It.IsAny<string>(), It.IsAny<IPrincipal>(), It.IsAny<Guid>(), It.IsAny<Dev2JsonSerializer>(), It.IsAny<IDSFDataObject>()))
+                .Returns(System.Threading.Tasks.Task.FromResult(new ServiceTestModelTO
+                {
+                    TestName = "test one re-ran",
+                    TestPassed = true,
+                    TestSteps = new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
+                    },
+                    Result = new TestRunResult
+                    {
+                        RunTestResult = RunResult.TestPassed,
+                    }
+                } as IServiceTestModelTO));
+
+            var sut = DataObjectExtensions.RunMultipleTestBatchesAndReturnJSON(mockDSFDataObject.Object, new Mock<IPrincipal>().Object, _workspaceGuid, serializer, mockResourceCatalog.Object, mockTestCatalog.Object, out string executePayload, mockTestCoverageCatalog.Object, mockServiceTestExecutorWrapper.Object);
+
+            Assert.IsNotNull(executePayload);
+            Assert.AreEqual("application/json", sut.ContentType);
+            StringAssert.Contains(executePayload, " \"Test Name\": \"test one re-ran\",\r\n");
+            StringAssert.Contains(executePayload, "\"Result\": \"Passed\"\r\n");
+        }
+
+
         private static void MockSetup(out Mock<ICoverageDataObject> mockCoverageDataObject, out Mock<IResourceCatalog> mockResourceCatalog)
         {
             mockCoverageDataObject = new Mock<ICoverageDataObject>();
             mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds)
                 .Returns(new Guid[] { _workflowOne, _workflowTwo });
-            
+
 
             var mockWarewolfWorkflow = new Mock<IWarewolfWorkflow>();
             mockWarewolfWorkflow.Setup(o => o.ResourceID).Returns(_workflowOne);
-            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes).Returns(new List<IWorkflowNode> 
+            mockWarewolfWorkflow.Setup(o => o.WorkflowNodes).Returns(new List<IWorkflowNode>
             {
                 new WorkflowNode
                 {
@@ -314,10 +512,47 @@ namespace Dev2.Tests.Runtime.WebServer
                     UniqueID = _testStepOne
                 }
             });
-            
+
             mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(o => o.GetResources<IWarewolfWorkflow>(_workspaceGuid))
                 .Returns(new List<IWarewolfWorkflow> { mockWarewolfWorkflow.Object });
+
         }
+
+        private readonly IServiceTestModelTO _serviceTestModelTO = new ServiceTestModelTO
+        {
+            TestName = "test one saved",
+            TestFailing = true,
+            TestSteps = new List<IServiceTestStep>
+                    {
+                        new ServiceTestStepTO(_testStepOne, "Activity", new ObservableCollection<IServiceTestOutput>(), StepType.Assert){ }
+                    },
+            Result = new TestRunResult
+            {
+                RunTestResult = RunResult.TestFailed
+            }
+        };
+
+        private readonly IServiceTestCoverageModelTo _serviceTestCoverageModelTo = new ServiceTestCoverageModelTo
+        {
+            WorkflowId = _workflowOne,
+            OldReportName = "test 1",
+            ReportName = _reportName,
+            TotalCoverage = 0.3,
+            AllTestNodesCovered = new ISingleTestNodesCovered[]
+            {
+                new SingleTestNodesCovered(_reportName, new List<IServiceTestStep>
+                {
+                    new ServiceTestStepTO
+                    {
+                        ActivityID = _testStepOne,
+                        UniqueID = _testStepOne,
+                        Type = StepType.Assert,
+                        StepDescription = "StepType Assert",
+                    }
+                })
+            }
+        };
     }
+
 }

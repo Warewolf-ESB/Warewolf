@@ -23,6 +23,7 @@ using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Interfaces;
 using Dev2.Web;
 using Newtonsoft.Json.Linq;
+using static Dev2.Runtime.WebServer.DataObjectExtensions;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -81,11 +82,11 @@ namespace Dev2.Runtime.WebServer
             {
                 if (dataObject.ReturnType == EmitionTypes.TEST)
                 {
-                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload, testCoverageCatalog);
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload, testCoverageCatalog, new ServiceTestExecutorWrapper());
                 }
                 if (dataObject.ReturnType == EmitionTypes.TRX)
                 {
-                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload, testCoverageCatalog);
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, out executePayload, testCoverageCatalog, new ServiceTestExecutorWrapper());
                 }
                 dataObject.ResourceID = Guid.Empty;
             }
