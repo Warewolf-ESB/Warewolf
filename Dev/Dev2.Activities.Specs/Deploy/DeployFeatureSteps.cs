@@ -150,7 +150,7 @@ namespace Dev2.Activities.Specs.Deploy
                 UserName = remoteServer.Connection.UserName,
                 Password = remoteServer.Connection.Password
             };
-            var DeployResults = localhost.UpdateRepository.Deploy(new List<Guid> { resourceId }, false, destConnection);
+            var DeployResults = localhost.UpdateRepository.Deploy(new List<Guid> { resourceId }, false, false, destConnection);
             if (DeployResults != null)
             {
                 foreach (var result in DeployResults)

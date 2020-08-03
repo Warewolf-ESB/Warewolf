@@ -1555,6 +1555,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Internal Server Error..
+        /// </summary>
+        public static string InternalServerError {
+            get {
+                return ResourceManager.GetString("InternalServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid {0}.
         /// </summary>
         public static string Invalid {
@@ -3407,6 +3416,15 @@ namespace Warewolf.Resource.Errors {
         public static string ToAddressRequired {
             get {
                 return ResourceManager.GetString("ToAddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Authentication Token or invalid permissions to Execute resource {1}..
+        /// </summary>
+        public static string TokenNotAuthorizedToExecuteOuterWorkflowException {
+            get {
+                return ResourceManager.GetString("TokenNotAuthorizedToExecuteOuterWorkflowException", resourceCulture);
             }
         }
         

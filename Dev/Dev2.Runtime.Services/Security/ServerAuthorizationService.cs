@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,13 +19,16 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
+using Warewolf.Data;
 using Warewolf;
 
 namespace Dev2.Runtime.Security
 {
     public class ServerAuthorizationService : AuthorizationServiceBase
     {
-        static ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
+        static ConcurrentDictionary<AuthorizationRequestKey, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<AuthorizationRequestKey, Tuple<bool, DateTime>>();
 
         static Lazy<ServerAuthorizationService> _theInstance = new Lazy<ServerAuthorizationService>(() => new ServerAuthorizationService(new ServerSecurityService()));
 
@@ -42,6 +45,7 @@ namespace Dev2.Runtime.Security
 
         readonly TimeSpan _timeOutPeriod;
         readonly IPerformanceCounter _perfCounter;
+        private static readonly IResourceCatalog _resourceCatalog = ResourceCatalog.Instance;
 
         protected ServerAuthorizationService(ISecurityService securityService)
             : base(securityService, true)
@@ -59,57 +63,31 @@ namespace Dev2.Runtime.Security
 
         public int CachedRequestCount => _cachedRequests.Count;
 
-        protected static void ClearCaches()
+        public static void ClearCaches()
         {
-            _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
+            _cachedRequests = new ConcurrentDictionary<AuthorizationRequestKey, Tuple<bool, DateTime>>();
         }
 
-        public sealed override bool IsAuthorized(AuthorizationContext context, string resource)
+        public override bool IsAuthorized(AuthorizationContext context, IWarewolfResource resource)
         {
-            var authorized = InnerIsAuthorized(context, resource);
-            if (!authorized)
-            {
-                _perfCounter?.Increment();
-            }
-            return authorized;
+            return IsAuthorized(context, resource?.ResourceID ?? Guid.Empty);
         }
-        private bool InnerIsAuthorized(AuthorizationContext context, string resource)
+
+        public sealed override bool IsAuthorized(AuthorizationContext context, Guid resourceId)
         {
-            VerifyArgument.IsNotNull("resource", resource);
+            bool authorized;
+
+            VerifyArgument.IsNotNull("resourceId", resourceId);
 
             var user = Common.Utilities.OrginalExecutingUser ?? ClaimsPrincipal.Current;
 
-            var requestKey = new Tuple<string, string,AuthorizationContext>(user.Identity.Name, resource,context);
+            authorized = IsAuthorized(user, context, resourceId);
 
             if (IsAuthorizedCheck(context, resource, requestKey, user))
             {
-                var cacheForResourceRequests = resource != Guid.Empty.ToString();
-                if (cacheForResourceRequests)
+                if (ResultsCache.Instance.ContainsPendingRequestForUser(user.Identity.Name))
                 {
-                    var authorizedRequest = new Tuple<bool, DateTime>(true, DateTime.Now);
-                    _cachedRequests.AddOrUpdate(requestKey, authorizedRequest, (tuple, tuple1) => authorizedRequest);
-                }
-
-                return true;
-            }
-            // TODO: is this necessary? surely a request that was able to be executed means the user has access
-            if (ResultsCache.Instance.ContainsPendingRequestForUser(user.Identity.Name))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool IsAuthorizedCheck(AuthorizationContext context, string resource, Tuple<string, string, AuthorizationContext> requestKey, IPrincipal user)
-        {
-            var haveCachedAuthorizedResult = _cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest);
-            if (haveCachedAuthorizedResult)
-            {
-                var cachedAuthorizedValueStillValid = DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod;
-                if (cachedAuthorizedValueStillValid)
-                {
-                    return authorizedRequest.Item1;
+                    authorized = true;
                 }
             }
 
@@ -168,13 +146,20 @@ namespace Dev2.Runtime.Security
                     result = IsAuthorized(request.User, authorizationContext, GetResource(request));
                     break;
 
-                case WebServerRequestType.WebExecuteService:
-                case WebServerRequestType.WebExecuteSecureWorkflow:
-                case WebServerRequestType.WebExecutePublicWorkflow:
-                case WebServerRequestType.WebBookmarkWorkflow:
+                case WebServerRequestType.WebExecuteLoginWorkflow:
+                case WebServerRequestType.WebExecutePublicTokenWorkflow:
                     result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
                     break;
 
+                case WebServerRequestType.WebExecuteSecureWorkflow:
+                case WebServerRequestType.WebExecutePublicWorkflow:
+                    result = IsAuthorized(request.User, AuthorizationContext.Execute, request);
+                    break;
+                case WebServerRequestType.WebExecuteService:
+                case WebServerRequestType.WebBookmarkWorkflow:
+                    result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
+                    break;
+                
                 case WebServerRequestType.WebExecuteInternalService:
                     result = IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
                     break;
@@ -226,89 +211,85 @@ namespace Dev2.Runtime.Security
             return result;
         }
 
-        static string GetResource(IAuthorizationRequest request)
+        static WebName GetResource(IAuthorizationRequest request)
         {
-            var resource = request.QueryString["rid"];
-            if (string.IsNullOrEmpty(resource))
+            WebName resource = new WebNameResourceId(request.QueryString["rid"]);
+            if (resource.IsValid)
             {
-                switch (request.RequestType)
-                {
-                    case WebServerRequestType.WebExecuteService:
-                        resource = GetWebExecuteName(request.Url.AbsolutePath);
-                        break;
-
-                    case WebServerRequestType.WebBookmarkWorkflow:
-                        resource = GetWebBookmarkName(request.Url.AbsolutePath);
-                        break;
-
-                    case WebServerRequestType.WebExecuteInternalService:
-                        resource = GetWebExecuteName(request.Url.AbsolutePath);
-                        break;
-                    case WebServerRequestType.Unknown:
-                        break;
-                    case WebServerRequestType.WebGetDecisions:
-                        break;
-                    case WebServerRequestType.WebGetDialogs:
-                        break;
-                    case WebServerRequestType.WebGetServices:
-                        break;
-                    case WebServerRequestType.WebGetSources:
-                        break;
-                    case WebServerRequestType.WebGetSwitch:
-                        break;
-                    case WebServerRequestType.WebGet:
-                        break;
-                    case WebServerRequestType.WebGetContent:
-                        break;
-                    case WebServerRequestType.WebGetImage:
-                        break;
-                    case WebServerRequestType.WebGetScript:
-                        break;
-                    case WebServerRequestType.WebGetView:
-                        break;
-                    case WebServerRequestType.WebInvokeService:
-                        break;
-                    case WebServerRequestType.WebExecuteSecureWorkflow:
-                        break;
-                    case WebServerRequestType.WebExecutePublicWorkflow:
-                        break;
-                    case WebServerRequestType.WebExecuteGetLogFile:
-                        break;
-                    case WebServerRequestType.WebExecuteGetRootLevelApisJson:
-                        break;
-                    case WebServerRequestType.WebExecuteGetApisJsonForFolder:
-                        break;
-                    case WebServerRequestType.HubConnect:
-                        break;
-                    case WebServerRequestType.EsbOnConnected:
-                        break;
-                    case WebServerRequestType.EsbOnDisconnected:
-                        break;
-                    case WebServerRequestType.EsbOnReconnected:
-                        break;
-                    case WebServerRequestType.EsbAddDebugWriter:
-                        break;
-                    case WebServerRequestType.EsbFetchExecutePayloadFragment:
-                        break;
-                    case WebServerRequestType.EsbExecuteCommand:
-                        break;
-                    case WebServerRequestType.EsbAddItemMessage:
-                        break;
-                    case WebServerRequestType.EsbSendMemo:
-                        break;
-                    case WebServerRequestType.EsbFetchResourcesAffectedMemo:
-                        break;
-                    case WebServerRequestType.EsbSendDebugState:
-                        break;
-                    case WebServerRequestType.EsbWrite:
-                        break;
-                    case WebServerRequestType.ResourcesSendMemo:
-                        break;
-                    default:
-                        break;
-                }
+                return resource;
             }
-            return string.IsNullOrEmpty(resource) ? null : resource;
+
+            switch (request.RequestType)
+            {
+                case WebServerRequestType.WebExecuteService:
+                    return GetWebExecuteName(request.Url.AbsolutePath);
+                case WebServerRequestType.WebBookmarkWorkflow:
+                    return GetWebBookmarkName(request.Url.AbsolutePath);
+                case WebServerRequestType.WebExecuteInternalService:
+                    return GetWebExecuteName(request.Url.AbsolutePath);
+                case WebServerRequestType.Unknown:
+                    return null;
+                case WebServerRequestType.WebGetDecisions:
+                    return null;
+                case WebServerRequestType.WebGetDialogs:
+                    return null;
+                case WebServerRequestType.WebGetServices:
+                    return null;
+                case WebServerRequestType.WebGetSources:
+                    return null;
+                case WebServerRequestType.WebGetSwitch:
+                    return null;
+                case WebServerRequestType.WebGet:
+                    return null;
+                case WebServerRequestType.WebGetContent:
+                    return null;
+                case WebServerRequestType.WebGetImage:
+                    return null;
+                case WebServerRequestType.WebGetScript:
+                    return null;
+                case WebServerRequestType.WebGetView:
+                    return null;
+                case WebServerRequestType.WebInvokeService:
+                    return null;
+                case WebServerRequestType.WebExecuteSecureWorkflow:
+                    return null;
+                case WebServerRequestType.WebExecutePublicWorkflow:
+                    return null;
+                case WebServerRequestType.WebExecuteGetLogFile:
+                    return null;
+                case WebServerRequestType.WebExecuteGetRootLevelApisJson:
+                    return null;
+                case WebServerRequestType.WebExecuteGetApisJsonForFolder:
+                    return null;
+                case WebServerRequestType.HubConnect:
+                    return null;
+                case WebServerRequestType.EsbOnConnected:
+                    return null;
+                case WebServerRequestType.EsbOnDisconnected:
+                    return null;
+                case WebServerRequestType.EsbOnReconnected:
+                    return null;
+                case WebServerRequestType.EsbAddDebugWriter:
+                    return null;
+                case WebServerRequestType.EsbFetchExecutePayloadFragment:
+                    return null;
+                case WebServerRequestType.EsbExecuteCommand:
+                    return null;
+                case WebServerRequestType.EsbAddItemMessage:
+                    return null;
+                case WebServerRequestType.EsbSendMemo:
+                    return null;
+                case WebServerRequestType.EsbFetchResourcesAffectedMemo:
+                    return null;
+                case WebServerRequestType.EsbSendDebugState:
+                    return null;
+                case WebServerRequestType.EsbWrite:
+                    return null;
+                case WebServerRequestType.ResourcesSendMemo:
+                    return null;
+                default:
+                    return null;
+            }
         }
 
         protected override void RaisePermissionsChanged()
@@ -317,13 +298,50 @@ namespace Dev2.Runtime.Security
             base.RaisePermissionsChanged();
         }
 
-        static string GetWebExecuteName(string absolutePath)
+        static WebNameSimple GetWebExecuteName(string absolutePath)
         {
             var startIndex = GetNameStartIndex(absolutePath);
-            return startIndex.HasValue ? HttpUtility.UrlDecode(absolutePath.Substring(startIndex.Value, absolutePath.Length - startIndex.Value)) : null;
+            return new WebNameSimple(startIndex.HasValue ? HttpUtility.UrlDecode(absolutePath.Substring(startIndex.Value, absolutePath.Length - startIndex.Value)) : null);
         }
 
-        static string GetWebBookmarkName(string absolutePath)
+        class WebNameResourceId : WebName
+        {
+            string _resource;
+
+            public WebNameResourceId(string resourceId)
+            {
+                _resource = resourceId;
+            }
+            public override bool IsValid { get => string.IsNullOrEmpty(_resource); }
+            public override T Value<T>()
+            {
+                T tresource = default;
+                if (_resource is T || _resource is null)
+                {
+                    return tresource;
+                }
+                throw new NotImplementedException("unsupported type for WebName");
+            }
+        }
+        class BookMarkName : WebName
+        {
+            string _resource;
+
+            public BookMarkName(string resource)
+            {
+                _resource = resource;
+            }
+            public override bool IsValid { get => string.IsNullOrEmpty(_resource); }
+            public override T Value<T>()
+            {
+                if (_resource is T tresource)
+                {
+                    return tresource;
+                }
+                throw new NotImplementedException("unsupported type for WebName");
+            }
+        }
+        static BookMarkName GetWebBookmarkName(string absolutePath)
         {
             var startIndex = GetNameStartIndex(absolutePath);
             if (startIndex.HasValue)
@@ -331,7 +349,7 @@ namespace Dev2.Runtime.Security
                 var endIndex = absolutePath.IndexOf("/instances/", startIndex.Value, StringComparison.InvariantCultureIgnoreCase);
                 if (endIndex != -1)
                 {
-                    return HttpUtility.UrlDecode(absolutePath.Substring(startIndex.Value, endIndex - startIndex.Value));
+                    return new BookMarkName(HttpUtility.UrlDecode(absolutePath.Substring(startIndex.Value, endIndex - startIndex.Value)));
                 }
             }
 

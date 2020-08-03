@@ -263,7 +263,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(75, properties.Length);
+            Assert.AreEqual(76, properties.Length);
 
             // now check each value to ensure it was cloned
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);

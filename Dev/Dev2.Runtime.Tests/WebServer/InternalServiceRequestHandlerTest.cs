@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var executingUser = new Mock<IPrincipal>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty)).Returns(true);
             var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
             //------------Execute Test---------------------------
             var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString(), null);
@@ -196,7 +196,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var executingUser = new Mock<IPrincipal>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString())).Returns(false);
+            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty)).Returns(false);
             var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
             //------------Execute Test---------------------------
             var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString(), null);

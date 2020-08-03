@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Core {
@@ -376,6 +376,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Elasticsearch Source.
+        /// </summary>
+        public static string ElasticsearchNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("ElasticsearchNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email Address.
         /// </summary>
         public static string EmailAddressLabel {
@@ -435,6 +444,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Error_Opening_Windows_Group_Picker {
             get {
                 return ResourceManager.GetString("Error_Opening_Windows_Group_Picker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occured while trying to set the Authorisation Override Workflow. Make sure the workflow is public and confirm that it has a recordset with the name [[UserGroups(*).Name]] set to output..
+        /// </summary>
+        public static string Error_Security_Auth_Override_Workflow {
+            get {
+                return ResourceManager.GetString("Error_Security_Auth_Override_Workflow", resourceCulture);
             }
         }
         
@@ -1585,12 +1603,6 @@ namespace Warewolf.Studio.Resources.Languages {
             get {
                 return ResourceManager.GetString("WebserviceNewHeaderLabel", resourceCulture);
             }
-        }
-
-        public static string ElasticsearchNewHeaderLabel {  
-            get {
-                return ResourceManager.GetString("ElasticsearchNewHeaderLabel", resourceCulture);
-                } 
         }
     }
 }

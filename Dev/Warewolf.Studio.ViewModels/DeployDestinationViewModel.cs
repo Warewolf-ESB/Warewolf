@@ -22,6 +22,7 @@ namespace Warewolf.Studio.ViewModels
     {
         bool _isLoading;
         bool _deployTests;
+        private bool _deployTriggers;
         Version _serverVersion;
         public IDeployStatsViewerViewModel StatsArea { private get; set; }
 
@@ -105,6 +106,20 @@ namespace Warewolf.Studio.ViewModels
             {
                 _deployTests = value;
                 OnPropertyChanged(()=> DeployTests);
+                StatsArea?.CalculateTestsCount();
+                StatsArea?.UpdateStatsArea();
+            }
+        }
+
+        public bool DeployTriggers
+        {
+            get => _deployTriggers;
+            set
+            {
+                _deployTriggers = value;
+                OnPropertyChanged(()=> DeployTriggers);
+                StatsArea?.CalculateTriggersCount();
+                StatsArea?.UpdateStatsArea();
             }
         }
     }

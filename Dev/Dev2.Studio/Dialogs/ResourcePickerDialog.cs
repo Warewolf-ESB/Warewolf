@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -119,21 +119,30 @@ namespace Dev2.Dialogs
         }
 
         public bool ShowDialog(out DsfActivityDropViewModel dropViewModel)
-        {            
+        {
             dropViewModel = new DsfActivityDropViewModel(SingleEnvironmentExplorerViewModel, _activityType);
-         
-            var selected = SelectedResource;
-            if (SelectedResource != null && selected != null)
+            try
             {
-                dropViewModel.SelectedResourceModel = _server.ResourceRepository.FindSingle(c => c.ID == selected.ResourceId, true) as IContextualResourceModel;    
+                var selected = SelectedResource;
+                if (SelectedResource != null && selected != null)
+                {
+                    dropViewModel.SelectedResourceModel =
+                        _server.ResourceRepository.FindSingle(c => c.ID == selected.ResourceId, true) as
+                            IContextualResourceModel;
+                }
+
+                var dropWindow = CreateDialog(dropViewModel);
+                dropWindow.ShowDialog();
+                if (dropViewModel.DialogResult == ViewModelDialogResults.Okay)
+                {
+                    var model = dropViewModel;
+                    SelectedResource = model.SelectedExplorerItemModel;
+                    return true;
+                }
             }
-            var dropWindow = CreateDialog(dropViewModel);
-            dropWindow.ShowDialog();
-            if(dropViewModel.DialogResult == ViewModelDialogResults.Okay)
+            catch (Exception ex)
             {
-                var model = dropViewModel;
-                SelectedResource = model.SelectedExplorerItemModel;
-                return true;
+                Dev2Logger.Error(ex.Message, GlobalConstants.WarewolfError);
             }
             SelectedResource = null;
             return false;

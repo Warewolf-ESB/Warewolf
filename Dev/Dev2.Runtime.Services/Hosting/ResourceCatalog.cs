@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -44,20 +44,23 @@ namespace Dev2.Runtime.Hosting
     public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
+        static readonly object _lazyLock = new object();
         ResourceCatalogBuilder Builder { get; set; }
 
         ResourceCatalogPluginContainer _catalogPluginContainer;
         static readonly Lazy<IResourceCatalog> _instance = new Lazy<IResourceCatalog>(() =>
         {
-            var resourceCatalog = CustomContainer.Get<IResourceCatalog>();
-            if (resourceCatalog is null)
+            lock (_lazyLock)
             {
-                var newResourceCatalog = new ResourceCatalog(new DynamicService[] { });
-                CustomContainer.Register<IResourceCatalog>(newResourceCatalog);
-
-                newResourceCatalog.Initialize(EsbManagementServiceLocator.GetServices());
+                var resourceCatalog = CustomContainer.Get<IResourceCatalog>();
+                if (resourceCatalog is null)
+                {
+                    resourceCatalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
+                    CustomContainer.Register<IResourceCatalog>(resourceCatalog);
+                }
+                return resourceCatalog;
             }
-            return resourceCatalog;
+
         }, LazyThreadSafetyMode.PublicationOnly);
 
         public static IResourceCatalog Instance => _instance.Value;

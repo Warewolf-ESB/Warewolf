@@ -1,8 +1,8 @@
 #pragma warning disable
- 
+
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,9 +18,14 @@ using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
+using Warewolf;
 
 namespace Dev2.Runtime.Security
 {
+    /**
+     * Read and write security settings to config files
+     * and monitor the file for changes
+     */
     public class ServerSecurityService : SecurityServiceBase
     {
         bool _disposing;
@@ -34,7 +39,6 @@ namespace Dev2.Runtime.Security
         public ServerSecurityService(string fileName)
         {
             InitializeConfigWatcher(fileName);
-
         }
 
         protected override List<WindowsGroupPermission> ReadPermissions()
@@ -44,25 +48,28 @@ namespace Dev2.Runtime.Security
             var serializer = new Dev2JsonSerializer();
             var securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
             TimeOutPeriod = securitySettingsTO.CacheTimeout;
+            OverrideResource = securitySettingsTO.AuthenticationOverrideWorkflow;
+            SecretKey = securitySettingsTO.SecretKey;
             return securitySettingsTO.WindowsGroupPermissions;
         }
 
-        protected override void WritePermissions(List<WindowsGroupPermission> permissions)
+        protected override void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource, string secretKey)
         {
-            SecurityWrite.Write(new SecuritySettingsTO(permissions));
+            SecurityWrite.Write(new SecuritySettingsTO(permissions, overrideResource, secretKey));
         }
 
         public void InitializeConfigWatcher(string fileName)
         {
-            if(_configWatcher == null)
+            if (_configWatcher == null)
             {
                 _configWatcher = new FileSystemWatcher();
             }
+
             _configWatcher.Path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. 
             _configWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-                                          | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+                                                                   | NotifyFilters.FileName | NotifyFilters.DirectoryName;
             // Only watch secure.config
             _configWatcher.Filter = fileName;
 
@@ -117,8 +124,6 @@ namespace Dev2.Runtime.Security
             _disposing = true;
             if (_configWatcher != null && !_isDisposed)
             {
-                
-              
                 _configWatcher.EnableRaisingEvents = false;
                 _configWatcher.Changed -= OnFileChanged;
                 _configWatcher.Created -= OnFileChanged;
@@ -130,14 +135,14 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        protected override void LogStart([CallerMemberName]string methodName = null)
+        protected override void LogStart([CallerMemberName] string methodName = null)
         {
-            Dev2Logger.Info("SecurityService"+ methodName, GlobalConstants.WarewolfInfo);
+            Dev2Logger.Info("SecurityService" + methodName, GlobalConstants.WarewolfInfo);
         }
 
-        protected override void LogEnd([CallerMemberName]string methodName = null)
+        protected override void LogEnd([CallerMemberName] string methodName = null)
         {
-            Dev2Logger.Info("SecurityService"+ methodName, GlobalConstants.WarewolfInfo);
+            Dev2Logger.Info("SecurityService" + methodName, GlobalConstants.WarewolfInfo);
         }
     }
 }

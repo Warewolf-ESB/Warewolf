@@ -119,6 +119,7 @@
     <Compile Include="ESB\Management\Services\Esb\ClusterJoinService.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
     <Compile Include="ESB\Management\Services\FetchElasticsearchServiceSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchTriggersForDeploy.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
@@ -136,6 +137,8 @@
     <Compile Include="ESB\Management\Services\TestClusterLeaderConnectionService.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveTriggerQueueService.cs" />
+    <Compile Include="ESB\Management\Services\SaveTriggers.cs" />
     <Compile Include="ESB\Management\Services\TestElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\TestRedisSource.cs" />
     <Compile Include="ESB\Management\Services\WorkflowResume.cs" />
@@ -252,7 +255,6 @@
     <Compile Include="ESB\Management\Services\SaveWebService.cs" />
     <Compile Include="ESB\Management\Services\SaveRabbitMQServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebserviceSource.cs" />
-    <Compile Include="ESB\Management\Services\SecurityEncryption.cs" />
     <Compile Include="ESB\Management\Services\SecurityRead.cs" />
     <Compile Include="ESB\Management\Services\SecurityWrite.cs" />
     <Compile Include="ESB\Management\Services\SettingsRead.cs" />
@@ -325,6 +327,7 @@
     <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDuplicateProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceNameProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceRenameProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSaveProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSyncProvider.cs" />

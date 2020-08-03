@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Dev2.Services.Security;
+using Warewolf;
 
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
@@ -27,15 +28,15 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             return ReadPermissionsResults;
         }
 
-        protected override void WritePermissions(List<WindowsGroupPermission> permissions)
+        protected override void WritePermissions(List<WindowsGroupPermission> permissions, INamedGuid overrideResource,string secretKey)
         {
         }
 
-        protected override void LogStart([CallerMemberName]string methodName = null)
+        protected override void LogStart([CallerMemberName] string methodName = null)
         {
         }
 
-        protected override void LogEnd([CallerMemberName]string methodName = null)
+        protected override void LogEnd([CallerMemberName] string methodName = null)
         {
         }
     }
