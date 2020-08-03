@@ -560,6 +560,9 @@ The window will be reloaded when you click OK.</value>
   <data name="Error_Opening_Windows_Group_Picker" xml:space="preserve">
     <value>An error occured while trying to open the Windows Group Picker dialog. Please ensure that you are part of a Domain to use this feature.</value>
   </data>
+  <data name="Error_Security_Auth_Override_Workflow" xml:space="preserve">
+    <value>An error occured while trying to set the Authorisation Override Workflow. Make sure the workflow is public and confirm that it has a recordset with the name [[UserGroups(*).Name]] set to output.</value>
+  </data>
   <data name="ComPluginSourceNewHeaderLabel" xml:space="preserve">
     <value>New COM Plugin Source</value>
   </data>

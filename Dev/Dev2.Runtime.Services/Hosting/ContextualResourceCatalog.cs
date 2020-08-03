@@ -42,7 +42,7 @@ namespace Dev2.Runtime.Hosting
         public IEnumerable<IWarewolfResource> GetExecutableResources(string path)
         {
             return GetResources(path)
-                .Where(resource => resource.IsExecutable(_authService.IsAuthorized));
+                .Where(resource => _authService.IsAuthorized(AuthorizationContext.Execute, resource));
         }
     }
 
@@ -55,12 +55,6 @@ namespace Dev2.Runtime.Hosting
                 return true;
             }
             return resource.GetResourcePath(serverWorkspaceId).StartsWith(path);
-        }
-        public delegate bool  IsAuthorizedCallback(AuthorizationContext authorizationContext, string s);
-        public static bool IsExecutable(this IWarewolfResource resource, IsAuthorizedCallback isAuthorized)
-        {
-            VerifyArgument.IsNotNull(nameof(isAuthorized), isAuthorized);
-            return isAuthorized.Invoke(AuthorizationContext.Execute, resource.ResourceID.ToString());
         }
     }
 }

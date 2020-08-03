@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -44,13 +44,11 @@ namespace Dev2.Services.Security
         RelayCommand _removeRow;
         bool _enableCellEditing;
         bool _canChangeName;
+        private string _resourcePath;
 
         public bool IsServer
         {
-            get
-            {
-                return _isServer;
-            }
+            get => _isServer;
             set
             {
                 OnPropertyChanged(ref _isServer, value);
@@ -58,7 +56,8 @@ namespace Dev2.Services.Security
             }
         }
 
-        
+        public string ResourcePath { get => _resourcePath; set => OnPropertyChanged(ref _resourcePath, value); }
+
         public Guid ResourceID { get => _resourceId; set => OnPropertyChanged(ref _resourceId, value); }
 
 
@@ -66,30 +65,24 @@ namespace Dev2.Services.Security
 
         public string WindowsGroup
         {
-            get
-            {
-                return _windowsGroup;
-            }
+            get => _windowsGroup;
             set
             {
                 OnPropertyChanged(ref _windowsGroup, value);
-                OnPropertyChanged("EnableCellEditing");
-                OnPropertyChanged("CanRemove");
-                OnPropertyChanged("CanChangeName");
+                OnPropertyChanged(nameof(EnableCellEditing));
+                OnPropertyChanged(nameof(CanRemove));
+                OnPropertyChanged(nameof(CanChangeName));
                 RemoveRow.RaiseCanExecuteChanged();
             }
         }
 
         public bool IsDeleted
         {
-            get
-            {
-                return _isDeleted;
-            }
+            get => _isDeleted;
             set
             {
                 OnPropertyChanged(ref _isDeleted, value);
-                OnPropertyChanged("CanChangeName");
+                OnPropertyChanged(nameof(CanChangeName));
             }
         }
 
@@ -103,10 +96,7 @@ namespace Dev2.Services.Security
                 }
                 return _canChangeName;
             }
-            set
-            {
-                _canChangeName = value;
-            }
+            set => _canChangeName = value;
         }
 
         public bool EnableCellEditing
@@ -119,11 +109,7 @@ namespace Dev2.Services.Security
                 }
                 return _enableCellEditing;
             }
-            set
-            {
-                
-                OnPropertyChanged(ref _enableCellEditing, value);
-            }
+            set => OnPropertyChanged(ref _enableCellEditing, value);
         }
 
         public RelayCommand RemoveRow => _removeRow ??

@@ -1,8 +1,8 @@
 #pragma warning disable
-﻿/*
+ /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -15,15 +15,13 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Data.Util;
 using Dev2.Util;
 
-
-
 namespace Warewolf.Core
 {
     public class ServiceOutputMapping : ObservableObject, IServiceOutputMapping, IEquatable<ServiceOutputMapping>
     {
-        string _mappedFrom;
-        string _mappedTo;
-        string _recordSetName;
+        private string _mappedFrom;
+        private string _mappedTo;
+        private string _recordSetName;
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -88,10 +86,7 @@ namespace Warewolf.Core
 
         public string MappedFrom
         {
-            get
-            {
-                return _mappedFrom;
-            }
+            get => _mappedFrom;
             set
             {
                 _mappedFrom = value;
@@ -102,10 +97,7 @@ namespace Warewolf.Core
         [FindMissing]
         public string MappedTo
         {
-            get
-            {
-                return _mappedTo;
-            }
+            get => _mappedTo;
             set
             {
                 _mappedTo = value;
@@ -116,10 +108,7 @@ namespace Warewolf.Core
 
         public string RecordSetName
         {
-            get
-            {
-                return _recordSetName;
-            }
+            get => _recordSetName;
             set
             {
                 UpdateMappedToValue(value);
@@ -167,7 +156,7 @@ namespace Warewolf.Core
                         _recordSetName = DataListUtil.ExtractRecordsetNameFromValue(newMappedTo);
                     }
                 }
-                OnPropertyChanged("RecordSetName");
+                OnPropertyChanged(nameof(RecordSetName));
             }
         }
     }

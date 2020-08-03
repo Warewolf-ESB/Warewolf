@@ -72,6 +72,22 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
+        <Style x:Key="OverrideResourceGridResourceButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Content" Value="..." />
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+            <Setter Property="Command" Value="{Binding DataContext.PickOverrideResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="CommandParameter" Value="{Binding}" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipResource}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SecurityResourcePermissionsDisabledTooltip}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
     </UserControl.Resources>
     <Grid Margin="{StaticResource ElementBorderTop}">
@@ -80,9 +96,11 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
+            <RowDefinition Height="30*"/>
             <RowDefinition Height="8" />
-            <RowDefinition Height="50*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="8" />
+            <RowDefinition Height="30*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -92,7 +110,6 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" 
-                            Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
@@ -354,7 +371,6 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" 
-                            Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
@@ -558,6 +574,47 @@
                     <ig:SortingSettings AllowSorting="True" AllowMultipleColumnSorting="True" ShowSortIndicator="False"/>
                 </ig:XamGrid.SortingSettings>
             </ig:XamGrid>
+        </Grid>
+        
+        <GridSplitter Grid.Row="3"
+                      Background="#C1C3C5"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center"
+                      Height="8" />
+        
+        <Grid Grid.Row="4"
+              Grid.Column="0"
+              VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0" 
+                        Background="{StaticResource WareWolfMenuBrush}" 
+                        HorizontalAlignment="Stretch" 
+                        Orientation="Horizontal">
+                <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Authentication Override</TextBlock>
+            </StackPanel>
+            
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0"
+                         Text="{Binding OverrideResource.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         ToolTip="Public workflow to associate a username and password">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityOverrideAuthHelpText}"
+                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+                <Button Grid.Column="1"
+                        Style="{StaticResource OverrideResourceGridResourceButtonStyle}">
+                </Button>
+            </Grid>
+            
         </Grid>
     </Grid>
 </UserControl>

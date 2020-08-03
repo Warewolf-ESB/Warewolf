@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,16 +17,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Runtime.WebServer.Security;
 
 namespace Dev2.Tests.Runtime.Security
 {
     [TestClass]
     public class ServerAuthorizationServiceTests
     {
-        
-
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_Instance")]
@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.Security
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new AuthorizationRequestKey("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.Unknown);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.Security
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
 
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new AuthorizationRequestKey("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.HubConnect);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -138,7 +138,7 @@ namespace Dev2.Tests.Runtime.Security
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
 
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new AuthorizationRequestKey("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.EsbFetchExecutePayloadFragment);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -171,7 +171,7 @@ namespace Dev2.Tests.Runtime.Security
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
 
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new AuthorizationRequestKey("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.HubConnect);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -203,7 +203,7 @@ namespace Dev2.Tests.Runtime.Security
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
 
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new AuthorizationRequestKey("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.EsbWrite);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -234,7 +234,7 @@ namespace Dev2.Tests.Runtime.Security
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new AuthorizationRequestKey("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -261,7 +261,7 @@ namespace Dev2.Tests.Runtime.Security
             var authorizationService = new TestServerAuthorizationService(securityService.Object);
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new AuthorizationRequestKey("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
@@ -290,7 +290,7 @@ namespace Dev2.Tests.Runtime.Security
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new AuthorizationRequestKey("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
             authorizationService.IsAuthorized(request.Object);
@@ -318,7 +318,7 @@ namespace Dev2.Tests.Runtime.Security
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new AuthorizationRequestKey("User", "Url",AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
             authorizationService.IsAuthorized(request.Object);
@@ -531,6 +531,27 @@ namespace Dev2.Tests.Runtime.Security
             //------------Assert Results-------------------------
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(AuthorizationRequest))]
+        public void AuthorizationRequest_ResourcePath_GivenValidURL_ExpectSuccess()
+        {
+            var auth = new AuthorizationRequest();
 
+            auth.Url = new Uri("http://localhost:1234/public/path/workflow.json?Name=bob");
+            Assert.AreEqual("/path/workflow", auth.ResourcePath);
+
+            auth.Url = new Uri("http://localhost:1234/public/some/path/to/workflow.json?Name=bob");
+            Assert.AreEqual("/some/path/to/workflow", auth.ResourcePath);
+
+            auth.Url = new Uri("http://localhost:1234/public/workflow.json?Name=bob");
+            Assert.AreEqual("/workflow", auth.ResourcePath);
+
+            auth.Url = new Uri("http://localhost:1234/public/some/path/workflow.coverage.json?Name=bob");
+            Assert.AreEqual("/some/path/workflow", auth.ResourcePath);
+
+            auth.Url = new Uri("http://localhost:1234/public/workflow.woot.ext.json?Name=bob");
+            Assert.AreEqual("/workflow", auth.ResourcePath);
+        }
     }
 }

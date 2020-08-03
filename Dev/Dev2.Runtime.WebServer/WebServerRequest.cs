@@ -1,8 +1,7 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -13,6 +12,8 @@ using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Principal;
 using System.Text;
 
@@ -20,12 +21,12 @@ namespace Dev2.Runtime.WebServer
 {
     public class WebServerRequest : ICommunicationRequest
     {
-        readonly HttpRequestMessage _request;
+        private readonly HttpRequestMessage _request;
 
         public WebServerRequest(HttpRequestMessage request, NameValueCollection boundVariables)
         {
-            VerifyArgument.IsNotNull("request", request);
-            VerifyArgument.IsNotNull("boundVariables", boundVariables);
+            VerifyArgument.IsNotNull(nameof(request), request);
+            VerifyArgument.IsNotNull(nameof(boundVariables), boundVariables);
             _request = request;
 
             Method = _request.Method.ToString();
@@ -40,39 +41,42 @@ namespace Dev2.Runtime.WebServer
         
         public WebServerRequest(HttpRequestMessage request)
         {
-            VerifyArgument.IsNotNull("request", request);
+            VerifyArgument.IsNotNull(nameof(request), request);
             _request = request;
 
             Method = _request.Method.ToString();
             Uri = _request.RequestUri;
             ContentEncoding = _request.Content.GetContentEncoding();
+            Headers = request.Headers;
 
             InitializeContentLength();
             InitializeContentType();
             InitializeQueryString();
         }
 
-        public string Method { get; private set; }
-        public Uri Uri { get; private set; }
+        public string Method { get; }
+        public Uri Uri { get; }
         public IPrincipal User { get; set; }
         public int ContentLength { get; private set; }
         public string ContentType { get; private set; }
-        public Encoding ContentEncoding { get; private set; }
+        public Encoding ContentEncoding { get; }
         public Stream InputStream => ReadInputStream();
         public NameValueCollection QueryString { get; private set; }
-        public NameValueCollection BoundVariables { get; private set; }
+        public NameValueCollection BoundVariables { get; }
+        public HttpRequestHeaders Headers { get; }
+        public bool IsTokenAuthentication => !string.IsNullOrEmpty(Headers?.Authorization?.Parameter);
 
-        void InitializeContentLength()
+        private void InitializeContentLength()
         {
-            ContentLength = (int)(_request.Content.Headers.ContentLength ?? 0L);
+            ContentLength = (int)(_request?.Content?.Headers?.ContentLength ?? 0L);
         }
 
-        void InitializeContentType()
+        private void InitializeContentType()
         {
             ContentType = _request.Content.Headers.ContentType?.MediaType;
         }
 
-        void InitializeQueryString()
+        private void InitializeQueryString()
         {
             QueryString = new NameValueCollection();
             foreach(var kvp in _request.GetQueryNameValuePairs())
@@ -81,7 +85,7 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        Stream ReadInputStream()
+        private Stream ReadInputStream()
         {
             if(_request.Content == null)
             {
