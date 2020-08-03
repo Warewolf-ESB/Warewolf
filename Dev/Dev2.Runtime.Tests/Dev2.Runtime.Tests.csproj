@@ -90,6 +90,7 @@
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -150,6 +151,8 @@
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="ServiceModel\TestDbSourceServiceTests.cs" />
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
+    <Compile Include="Services\FetchTriggersForDeployTests.cs" />
+    <Compile Include="Services\GetDependanciesOnListTests.cs" />
     <Compile Include="Services\SaveAuditingSettingsTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
@@ -245,6 +248,7 @@
     <Compile Include="Services\DirectDeployTest.cs" />
     <Compile Include="Services\SaveServerSettingsTest.cs" />
     <Compile Include="Services\SaveTestsTest.cs" />
+    <Compile Include="Services\SaveTriggersTests.cs" />
     <Compile Include="Services\SchedulerTestBase.cs" />
     <Compile Include="Services\SecurityReadTests.cs" />
     <Compile Include="Services\SecurityWriteTests.cs" />
@@ -278,6 +282,7 @@
     <Compile Include="WebServer\Hubs\EsbHubTests.cs" />
     <Compile Include="WebServer\Hubs\ResultsCacheTest.cs" />
     <Compile Include="WebServer\InternalServiceRequestHandlerTest.cs" />
+    <Compile Include="WebServer\JwtManagerTests.cs" />
     <Compile Include="WebServer\Responses\StaticFileResponseWriterTests.cs" />
     <Compile Include="WebServer\Responses\StatusResponseWriterTests.cs" />
     <Compile Include="WebServer\Responses\DynamicFileResponseWriterTests.cs" />
@@ -292,6 +297,7 @@
     <Compile Include="Security\TestServerAuthorizationService.cs" />
     <Compile Include="Security\TestAuthorizationRequest.cs" />
     <Compile Include="WebServer\ApisJsonBuilderTests.cs" />
+    <Compile Include="WebServer\TokenRequestHandlerTests.cs" />
     <Compile Include="WebServer\WebGetRequestHandlerTest.cs" />
     <Compile Include="WebServer\WebPostRequestHandlerTest.cs" />
     <Compile Include="WebServer\WebServerStartupTests.cs" />
@@ -373,6 +379,10 @@
       <Project>{FF3115B2-370E-4E40-99C5-7D239BC28679}</Project>
       <Name>Dev2.Services.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149e8e-fef2-47c0-8391-80dcce86d26d}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
       <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
       <Name>Dev2.TaskScheduler.Wrappers</Name>
@@ -397,6 +407,10 @@
       <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
       <Name>Warewolf.COMIPC.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj">
+      <Project>{bc059e85-358e-49cf-a2e8-e79249c9bf51}</Project>
+      <Name>Warewolf.Common.Framework48</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
       <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
       <Name>Warewolf.Data</Name>
@@ -413,10 +427,6 @@
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Name>Warewolf.Parser.Interop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
-      <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
-      <Name>Warewolf.Security</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>
@@ -428,6 +438,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
+      <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
+      <Name>Warewolf.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj">
       <Project>{76F7A7F3-1153-49C0-BE56-77973867F974}</Project>

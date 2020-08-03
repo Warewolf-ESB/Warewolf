@@ -58,6 +58,7 @@
     <Reference Include="DEV2.MultiPartFormPasser">
       <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Configuration" />
@@ -93,6 +94,7 @@
     <Compile Include="ExecutionDto.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
+    <Compile Include="Handlers\TokenRequestHandler.cs" />
     <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
     <Compile Include="Handlers\IRequestHandler.cs" />
@@ -147,6 +149,10 @@
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
       <Name>Dev2.Data</Name>
@@ -170,6 +176,10 @@
     <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
       <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
       <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj">
+      <Project>{bc059e85-358e-49cf-a2e8-e79249c9bf51}</Project>
+      <Name>Warewolf.Common.Framework48</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
@@ -236,6 +246,9 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt">
+      <Version>5.1.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

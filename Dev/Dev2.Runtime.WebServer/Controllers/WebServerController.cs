@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,13 +31,13 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("Services/{*__name__}")]
-        public HttpResponseMessage ExecuteService(string __name__) => ExecuteWorkflow(__name__, false);
+        public HttpResponseMessage ExecuteService(string __name__) => ExecuteWorkflow(__name__, false, false);
 
-        HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic)
+        HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic, bool isUrlWithTokenPrefix)
         {
             if (__name__.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
             {
-                var path = __name__.Split(new[] { "/apis.json" }, StringSplitOptions.RemoveEmptyEntries);
+                var path = __name__.Split(new[] {"/apis.json"}, StringSplitOptions.RemoveEmptyEntries);
                 if (path.Any() && path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
                 {
                     path[0] = null;
@@ -46,43 +46,36 @@ namespace Dev2.Runtime.WebServer.Controllers
                 var requestVar = new NameValueCollection
                 {
                     {"path", path[0]},
-                    {"isPublic",isPublic.ToString()}
+                    {"isPublic", isPublic.ToString()}
                 };
-                return ProcessRequest<GetApisJsonServiceHandler>(requestVar);
+                return ProcessRequest<GetApisJsonServiceHandler>(requestVar, isUrlWithTokenPrefix);
             }
-            if (__name__.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var requestVar = new NameValueCollection
-                {
-                    {"isPublic",isPublic.ToString()},
-                    {"IsDebug",true.ToString() },
-                    {"servicename",__name__ }
-                };
-                return Request.Method == HttpMethod.Post
-                        ? ProcessRequest<WebPostRequestHandler>(requestVar)
-                        : ProcessRequest<WebGetRequestHandler>(requestVar);
-            }
+
             var requestVariables = new NameValueCollection
             {
-                { "servicename", __name__ }
+                {"servicename", __name__},
             };
-
+            if (__name__.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
+            {
+                requestVariables.Add("isPublic", isPublic.ToString());
+                requestVariables.Add("IsDebug", true.ToString());
+            }
 
             return Request.Method == HttpMethod.Post
-                ? ProcessRequest<WebPostRequestHandler>(requestVariables)
-                : ProcessRequest<WebGetRequestHandler>(requestVariables);
+                ? ProcessRequest<WebPostRequestHandler>(requestVariables, isUrlWithTokenPrefix)
+                : ProcessRequest<WebGetRequestHandler>(requestVariables, isUrlWithTokenPrefix);
         }
 
         public HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
         {
             var requestVariables = new NameValueCollection
             {
-                { "path", __url__ },
-                {"isPublic",isPublic.ToString()},
-                {"servicename","*" }
+                {"path", __url__},
+                {"isPublic", isPublic.ToString()},
+                {"servicename", "*"}
             };
 
-            var httpResponseMessage = ProcessRequest<WebGetRequestHandler>(requestVariables);
+            var httpResponseMessage = ProcessRequest<WebGetRequestHandler>(requestVariables, false);
             return httpResponseMessage;
         }
 
@@ -98,12 +91,14 @@ namespace Dev2.Runtime.WebServer.Controllers
                 {
                     return ExecuteFolderTests(requestUri.ToString(), false);
                 }
+
                 if (requestUri.ToString().EndsWith("/.coverage", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.json", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.coverage.trx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return ExecuteFolderTests(requestUri.ToString(), false);
                 }
             }
-            return ExecuteWorkflow(__name__, false);
+
+            return ExecuteWorkflow(__name__, false, false);
         }
 
         [HttpGet]
@@ -119,7 +114,28 @@ namespace Dev2.Runtime.WebServer.Controllers
                     return ExecuteFolderTests(requestUri.ToString(), true);
                 }
             }
-            return ExecuteWorkflow(__name__, true);
+
+            return ExecuteWorkflow(__name__, true, false);
+        }
+
+        [HttpGet]
+        [HttpPost]
+        [Route("Token/{*__name__}")]
+        public HttpResponseMessage ExecutePublicTokenWorkflow(string __name__)
+        {
+            return ExecuteWorkflow(__name__, false, true);
+        }
+
+        [HttpGet]
+        [HttpPost]
+        [Route("login")]
+        public HttpResponseMessage ExecuteLoginWorkflow()
+        {
+            var requestVariables = new NameValueCollection();
+            var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
+            var handler = CreateHandler<TokenRequestHandler>();
+            handler.ProcessRequest(context);
+            return context.ResponseMessage;
         }
 
         [HttpGet]
@@ -133,7 +149,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         public HttpResponseMessage ExecuteGetRootLevelApisJson()
         {
             var requestVariables = new NameValueCollection();
-            return ProcessRequest<GetApisJsonServiceHandler>(requestVariables);
+            return ProcessRequest<GetApisJsonServiceHandler>(requestVariables, false);
         }
     }
 }

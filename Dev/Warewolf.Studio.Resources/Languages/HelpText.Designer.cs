@@ -1057,11 +1057,47 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to These are the new tests that will be found on the remote server after deploy..
+        /// </summary>
+        public static string DeployNewTestsViewHelp {
+            get {
+                return ResourceManager.GetString("DeployNewTestsViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These are the new triggers that will be found on the remote server after deploy..
+        /// </summary>
+        public static string DeployNewTriggersViewHelp {
+            get {
+                return ResourceManager.GetString("DeployNewTriggersViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to These resources will be overwritten on the destination server.
         /// </summary>
         public static string DeployOverridesCountViewHelp {
             get {
                 return ResourceManager.GetString("DeployOverridesCountViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These tests will be overwritten on the destination server.
+        /// </summary>
+        public static string DeployOverridesTestsCountViewHelp {
+            get {
+                return ResourceManager.GetString("DeployOverridesTestsCountViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These triggers will be overwritten on the destination server.
+        /// </summary>
+        public static string DeployOverridesTriggersCountViewHelp {
+            get {
+                return ResourceManager.GetString("DeployOverridesTriggersCountViewHelp", resourceCulture);
             }
         }
         
@@ -4246,6 +4282,20 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SettingsPerfCounterServerHelpWfNotFound {
             get {
                 return ResourceManager.GetString("SettingsPerfCounterServerHelpWfNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use a public workflow to associate a username and password with a set of group names that that user belongs to.
+        ///      &lt;br/&gt;&lt;br/&gt;
+        ///      Make sure the workflow has a recordset with the name [[UserGroups(*).Name]] containing these group names set to output.
+        ///      &lt;br/&gt;&lt;br/&gt;
+        ///      Any request that contains the resulting hashed token will be considered to be in these groups.
+        ///    .
+        /// </summary>
+        public static string SettingsSecurityOverrideAuthHelpText {
+            get {
+                return ResourceManager.GetString("SettingsSecurityOverrideAuthHelpText", resourceCulture);
             }
         }
         

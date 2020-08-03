@@ -1,4 +1,14 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,8 +69,8 @@ namespace Dev2.Runtime.WebServer
             {
                 if (isPublic)
                 {
-                    var publicCanExecute = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.Execute, resource.ResourceID.ToString());
-                    var publicCanView = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.View, resource.ResourceID.ToString());
+                    var publicCanExecute = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.Execute, resource);
+                    var publicCanView = AuthorizationService.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.View, resource);
                     if (publicCanExecute && publicCanView)
                     {
                         apiJson.Apis.Add(CreateSingleApiForResource(resource, true));
@@ -68,8 +78,8 @@ namespace Dev2.Runtime.WebServer
                 }
                 else
                 {
-                    var canExecute = AuthorizationService.IsAuthorized(AuthorizationContext.Execute, resource.ResourceID.ToString());
-                    var canView = AuthorizationService.IsAuthorized(AuthorizationContext.View, resource.ResourceID.ToString());
+                    var canExecute = AuthorizationService.IsAuthorized(AuthorizationContext.Execute, resource);
+                    var canView = AuthorizationService.IsAuthorized(AuthorizationContext.View, resource);
                     if (canView && canExecute)
                     {
                         apiJson.Apis.Add(CreateSingleApiForResource(resource, false));
