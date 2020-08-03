@@ -202,6 +202,7 @@ namespace Dev2.Activities
 
                 if (!string.IsNullOrEmpty(_fullPath))
                 {
+                    Dev2Logger.Debug($"Deleting file:\n{_fullPath}", GlobalConstants.WarewolfDebug);
                     File.Delete(_fullPath);
                     var tmpFile = _fullPath.Replace(".bat", "");
                     if (File.Exists(tmpFile))
@@ -241,9 +242,9 @@ namespace Dev2.Activities
             _process = new Process();
             using (_process)
             {
-                Dev2Logger.Debug($"Creating commandline process for value:\n{val}", GlobalConstants.WarewolfDebug);
                 var processStartInfo = CreateProcessStartInfo(val);
                 _process.StartInfo = processStartInfo ?? throw new ArgumentNullException("processStartInfo");
+                Dev2Logger.Debug($"Creating file:\n{_fullPath}", GlobalConstants.WarewolfDebug);
                 var processStarted = _process.Start();
 
                 var reader = outputReader;
