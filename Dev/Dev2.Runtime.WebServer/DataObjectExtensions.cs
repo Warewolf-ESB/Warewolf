@@ -377,9 +377,10 @@ namespace Dev2.Runtime.WebServer
         public static DataListFormat RunMultipleTestBatchesAndReturnJSON(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
             Dev2JsonSerializer serializer,
             IResourceCatalog catalog, ITestCatalog testCatalog,
-            out string executePayload, ITestCoverageCatalog testCoverageCatalog)
+            out string executePayload, ITestCoverageCatalog testCoverageCatalog,
+            IServiceTestExecutorWrapper serviceTestExecutorWrapper)
         {
-            var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog, testCoverageCatalog);
+            var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog, testCoverageCatalog, serviceTestExecutorWrapper);
             var formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
 
             var objArray = testResults.Results
@@ -414,82 +415,98 @@ namespace Dev2.Runtime.WebServer
         public static DataListFormat RunMultipleTestBatchesAndReturnTRX(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
             Dev2JsonSerializer serializer,
             IResourceCatalog catalog, ITestCatalog testCatalog,
-            out string executePayload, ITestCoverageCatalog testCoverageCatalog)
+            out string executePayload, ITestCoverageCatalog testCoverageCatalog,
+            IServiceTestExecutorWrapper serviceTestExecutorWrapper)
         {
-            var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog, testCoverageCatalog);
+            var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog, testCoverageCatalog, serviceTestExecutorWrapper);
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             executePayload = ServiceTestModelTRXResultBuilder.BuildTestResultTRX(dataObject.ServiceName, testResults.Results.SelectMany(o => o.Results).ToList());
             return formatter;
         }
 
-        static TestResults RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog)
+        static TestResults RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IServiceTestExecutorWrapper serviceTestExecutorWrapper)
         {
             var result = new TestResults();
 
-            testCoverageCatalog.ReloadAllReports();
-
             var selectedResources = catalog.GetResources(workspaceGuid)
-                .Where(resource => dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
+                ?.Where(resource => dataObject.TestsResourceIds.Contains(resource.ResourceID)).ToArray();
 
-            var workflowTaskList = new List<Task<WorkflowTestResults>>();
-            foreach (var testsResourceId in dataObject.TestsResourceIds)
+            if (selectedResources != null)
             {
-                var workflowTask = Task<WorkflowTestResults>.Factory.StartNew(() =>
+                var workflowTaskList = new List<Task<WorkflowTestResults>>();
+                foreach (var testsResourceId in dataObject.TestsResourceIds)
                 {
-                    var workflowTestTaskList = new List<Task<IServiceTestModelTO>>();
-                    var res = selectedResources.First(o => o.ResourceID == testsResourceId);
-                    var resourcePath = res.GetResourcePath(workspaceGuid).Replace("\\", "/");
-                    var workflowTestResults = new WorkflowTestResults(res);
-
-                    var allTests = testCatalog.Fetch(testsResourceId);
-                    foreach (var test in allTests)
+                    var workflowTask = Task<WorkflowTestResults>.Factory.StartNew(() =>
                     {
-                        var dataObjectClone = dataObject.Clone();
-                        dataObjectClone.Environment = new ExecutionEnvironment();
-                        dataObjectClone.TestName = test.TestName;
-                        dataObjectClone.ServiceName = res.ResourceName;
-                        dataObjectClone.ResourceID = res.ResourceID;
-                        var lastTask = ServiceTestExecutor.ExecuteTestAsync(resourcePath, userPrinciple, workspaceGuid,
-                            serializer, dataObjectClone);
-                        workflowTestTaskList.Add(lastTask);
-
-                        var report = testCoverageCatalog.FetchReport(res.ResourceID, test.TestName);
-                        var lastTestCoverageRun = report?.LastRunDate;
-                        if (report is null || test.LastRunDate > lastTestCoverageRun)
+                        var workflowTestTaskList = new List<Task<IServiceTestModelTO>>();
+                        var res = selectedResources.FirstOrDefault(o => o.ResourceID == testsResourceId);
+                        if (res is null)
                         {
-                            testCoverageCatalog.GenerateSingleTestCoverage(res.ResourceID, lastTask.Result);
+                            return null;
                         }
-                    }
+                        else
+                        {
+                            var resourcePath = res.GetResourcePath(workspaceGuid).Replace("\\", "/");
+                            var workflowTestResults = new WorkflowTestResults(res);
 
-                    Task.WaitAll(workflowTestTaskList.Cast<Task>().ToArray());
-                    foreach (var task in workflowTestTaskList)
+                            var allTests = testCatalog.Fetch(testsResourceId);
+                            foreach (var (test, dataObjectClone) in from test in allTests
+                                                                    let dataObjectClone = dataObject.Clone()
+                                                                    select (test, dataObjectClone))
+                            {
+                                dataObjectClone.Environment = new ExecutionEnvironment();
+                                dataObjectClone.TestName = test.TestName;
+                                dataObjectClone.ServiceName = res.ResourceName;
+                                dataObjectClone.ResourceID = res.ResourceID;
+                                var lastTask = serviceTestExecutorWrapper.ExecuteTestAsync(resourcePath, userPrinciple, workspaceGuid,
+                                               serializer, dataObjectClone);
+                                workflowTestTaskList.Add(lastTask);
+                                var report = testCoverageCatalog.FetchReport(res.ResourceID, test.TestName);
+                                var lastTestCoverageRun = report?.LastRunDate;
+                                if (report is null || test.LastRunDate > lastTestCoverageRun)
+                                {
+                                    testCoverageCatalog.GenerateSingleTestCoverage(res.ResourceID, lastTask.Result);
+                                }
+                            }
+
+                            Task.WaitAll(workflowTestTaskList.Cast<Task>().ToArray());
+                            foreach (var task in workflowTestTaskList)
+                            {
+                                workflowTestResults.Add(task.Result);
+                            }
+
+                            var testResults = workflowTestResults.Results;
+                            if (testResults.Count > 0)
+                            {
+                                testCoverageCatalog.GenerateAllTestsCoverage(res.ResourceName, res.ResourceID, testResults);
+                            }
+
+                            return workflowTestResults;
+                        }
+                    });
+
+                    if (workflowTask != null)
                     {
-                        workflowTestResults.Add(task.Result);
+                        workflowTaskList.Add(workflowTask);
                     }
+                }
 
-                    var testResults = workflowTestResults.Results;
-                    if (testResults.Count > 0)
+                Task.WaitAll(workflowTaskList.Cast<Task>().ToArray());
+
+                foreach (var task in workflowTaskList)
+                {
+                    if (task.Result != null)
                     {
-                        testCoverageCatalog.GenerateAllTestsCoverage(res.ResourceName, res.ResourceID, testResults);
+                        result.Add(task.Result);
                     }
-
-                    return workflowTestResults;
-                });
-
-                workflowTaskList.Add(workflowTask);
+                }
             }
-
-            Task.WaitAll(workflowTaskList.Cast<Task>().ToArray());
-
-            foreach (var task in workflowTaskList)
-            {
-                result.Add(task.Result);
-            }
-
+            
             result.EndTime = DateTime.Now;
 
             return result;
         }
+
 
         public static DataListFormat RunCoverageAndReturnJSON(this ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, IResourceCatalog catalog, Guid workspaceGuid, Dev2JsonSerializer serializer, out string executePayload)
         {
@@ -561,7 +578,6 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        //TODO: move to own class
         private static (AllCoverageReports AllCoverageReports, TestResults AllTestResults) RunListOfCoverage(ICoverageDataObject coverageData, ITestCoverageCatalog testCoverageCatalog, ITestCatalog testCatalog, Guid workspaceGuid, IResourceCatalog catalog)
         {
             var allTestResults = new TestResults();
@@ -606,6 +622,18 @@ namespace Dev2.Runtime.WebServer
             allCoverageReports.EndTime = DateTime.Now;
 
             return (allCoverageReports, allTestResults);
+        }
+
+        public interface IServiceTestExecutorWrapper
+        {
+            Task<IServiceTestModelTO> ExecuteTestAsync(string resourcePath, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IDSFDataObject dataObjectClone);
+        }
+        public class ServiceTestExecutorWrapper : IServiceTestExecutorWrapper
+        {
+            public Task<IServiceTestModelTO> ExecuteTestAsync(string resourcePath, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IDSFDataObject dataObjectClone)
+            {
+                return ServiceTestExecutor.ExecuteTestAsync(resourcePath, userPrinciple, workspaceGuid, serializer, dataObjectClone);
+            }
         }
     }
 }
