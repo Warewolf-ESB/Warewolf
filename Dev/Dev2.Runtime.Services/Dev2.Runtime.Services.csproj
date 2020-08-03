@@ -247,7 +247,6 @@
     <Compile Include="ESB\Management\Services\SaveWebService.cs" />
     <Compile Include="ESB\Management\Services\SaveRabbitMQServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebserviceSource.cs" />
-    <Compile Include="ESB\Management\Services\SecurityEncryption.cs" />
     <Compile Include="ESB\Management\Services\SecurityRead.cs" />
     <Compile Include="ESB\Management\Services\SecurityWrite.cs" />
     <Compile Include="ESB\Management\Services\SettingsRead.cs" />
@@ -320,6 +319,7 @@
     <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDuplicateProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceNameProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceRenameProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSaveProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSyncProvider.cs" />

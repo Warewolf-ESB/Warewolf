@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -37,17 +37,17 @@ namespace Dev2.Tests.Runtime.WebServer
             { "rid", "resourceid" }
         };
 
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
-        {
-            //------------Setup for test-------------------------
-            var handler = new GetApisJsonServiceHandler();
-            //------------Execute Test---------------------------
-            handler.ProcessRequest(null);
-            //------------Assert Results-------------------------
-        }
+            [TestMethod]
+            [Owner("Sanele Mthembu")]
+            [ExpectedException(typeof(ArgumentNullException))]
+            public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
+            {
+                //------------Setup for test-------------------------
+                var handler = new GetApisJsonServiceHandler();
+                //------------Execute Test---------------------------
+                handler.ProcessRequest(null);
+                //------------Assert Results-------------------------
+            }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]

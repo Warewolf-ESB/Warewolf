@@ -23,6 +23,8 @@ using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Data;
 using Warewolf.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Data;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -168,5 +170,6 @@ namespace Dev2.Studio.Interfaces
         IResource CreateResourceFromStreamContent(string resourceContent);
         IResource GetResource(string resourceId);
         List<IServiceInputBase> GetInputsFromWorkflow(Guid resourceId);
+        OptomizedObservableCollection<IDataListItem> GetOutputsFromWorkflow(Guid resourceId);
     }
 }

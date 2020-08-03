@@ -75,6 +75,8 @@ using Dev2.Dialogs;
 using Dev2.Studio.Enums;
 using Warewolf.Data;
 using Dev2.Data;
+using Dev2.Data.Interfaces;
+using Dev2.DataList.Contract;
 using Warewolf.Core;
 
 namespace Dev2.Studio.ViewModels
@@ -360,6 +362,16 @@ namespace Dev2.Studio.ViewModels
                 return serviceTestInput.As<IServiceInputBase>();
             }).ToList();
             return inputs;
+        }
+
+        public OptomizedObservableCollection<IDataListItem> GetOutputsFromWorkflow(Guid resourceId)
+        {
+            var contextualResourceModel = ServerRepository.ActiveServer.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var dataList = new DataListModel();
+            var dataListConversionUtils = new DataListConversionUtils();
+            dataList.Create(contextualResourceModel.DataList, contextualResourceModel.DataList);
+            var outputs = dataListConversionUtils.GetOutputs(dataList);
+            return outputs;
         }
 
         IResourcePickerDialog CreateResourcePickerDialog()

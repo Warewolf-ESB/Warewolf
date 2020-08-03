@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -71,8 +81,8 @@ namespace Dev2.Tests.Runtime.WebServer
             EnvironmentVariables.DnsName = "http://localhost/";
             EnvironmentVariables.Port = 3142;
             var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<string>())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<IResource>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<IResource>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
             var resource1 = new Resource { ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
@@ -103,8 +113,8 @@ namespace Dev2.Tests.Runtime.WebServer
             EnvironmentVariables.DnsName = "http://localhost/";
             EnvironmentVariables.Port = 3142;
             var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<string>())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<IResource>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<IResource>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
             var resource1 = new Resource { ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
@@ -136,8 +146,8 @@ namespace Dev2.Tests.Runtime.WebServer
             EnvironmentVariables.DnsName = "http://localhost/";
             EnvironmentVariables.Port = 3142;
             var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<string>())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<string>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, It.IsAny<IResource>())).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, It.IsAny<IResource>())).Returns(true);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var resources = new List<IResource>();
             var resource1 = new Resource { ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
@@ -173,18 +183,20 @@ namespace Dev2.Tests.Runtime.WebServer
             var unAuthortizedResourceID = Guid.NewGuid();
             var authorizedResource1 = Guid.NewGuid();
             var authorizedResource2 = Guid.NewGuid();
-            var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, unAuthortizedResourceID.ToString())).Returns(false);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, unAuthortizedResourceID.ToString())).Returns(false);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, authorizedResource1.ToString())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, authorizedResource1.ToString())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, authorizedResource2.ToString())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, authorizedResource2.ToString())).Returns(true);
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var resources = new List<IResource>();
+
             var resource1 = new Resource { ResourceID = unAuthortizedResourceID, ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
             var resource2 = new Resource { ResourceID = authorizedResource1, ResourceName = "Hello World", FilePath = EnvironmentVariables.ResourcePath + "\\Hello World.xml", ResourceType = "WorkflowService" };
             var resource3 = new Resource { ResourceID = authorizedResource2, ResourceName = "9139Local", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\9139Local.xml", ResourceType = "WorkflowService" };
+
+            var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, resource1)).Returns(false);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, resource1)).Returns(false);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, resource2)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, resource2)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, resource3)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, resource3)).Returns(true);
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var resources = new List<IResource>();
 
             resources.Add(resource1);
             resources.Add(resource2);
@@ -212,20 +224,22 @@ namespace Dev2.Tests.Runtime.WebServer
             var publicAuthorizedResourceID = Guid.NewGuid();
             var authorizedResource1 = Guid.NewGuid();
             var authorizedResource2 = Guid.NewGuid();
-            var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, publicAuthorizedResourceID.ToString())).Returns(false);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, publicAuthorizedResourceID.ToString())).Returns(false);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, authorizedResource1.ToString())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, authorizedResource1.ToString())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, authorizedResource2.ToString())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, authorizedResource2.ToString())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.View, publicAuthorizedResourceID.ToString())).Returns(true);
-            mockAuthorizationService.Setup(service => service.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.Execute, publicAuthorizedResourceID.ToString())).Returns(true);
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var resources = new List<IResource>();
+
             var resource1 = new Resource { ResourceID = publicAuthorizedResourceID, ResourceName = "Execution Engine Test", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\Execution Engine\\Execution Engine Test.xml", ResourceType = "WorkflowService" };
             var resource2 = new Resource { ResourceID = authorizedResource1, ResourceName = "Hello World", FilePath = EnvironmentVariables.ResourcePath + "\\Hello World.xml", ResourceType = "WorkflowService" };
             var resource3 = new Resource { ResourceID = authorizedResource2, ResourceName = "9139Local", FilePath = EnvironmentVariables.ResourcePath + "\\Acceptance Testing Resources\\9139Local.xml", ResourceType = "WorkflowService" };
+
+            var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, resource1)).Returns(false);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, resource1)).Returns(false);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, resource2)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, resource2)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.View, resource3)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Execute, resource3)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.View, resource1)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(GlobalConstants.GenericPrincipal, AuthorizationContext.Execute, resource1)).Returns(true);
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var resources = new List<IResource>();
 
             resources.Add(resource1);
             resources.Add(resource2);
