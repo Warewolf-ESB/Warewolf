@@ -244,7 +244,6 @@ namespace Dev2.Activities
             {
                 var processStartInfo = CreateProcessStartInfo(val);
                 _process.StartInfo = processStartInfo ?? throw new ArgumentNullException("processStartInfo");
-                Dev2Logger.Debug($"Creating file:\n{_fullPath}", GlobalConstants.WarewolfDebug);
                 var processStarted = _process.Start();
 
                 var reader = outputReader;
@@ -431,6 +430,7 @@ namespace Dev2.Activities
         static ProcessStartInfo ExecuteSystemCommand(string val)
         {
             _fullPath = Path.Combine(GlobalConstants.TempLocation, Path.GetTempFileName() + ".bat");
+            Dev2Logger.Debug($"Creating file:\n{_fullPath}", GlobalConstants.WarewolfDebug);
             File.Create(_fullPath).Close();
             File.WriteAllText(_fullPath, val);
             if (File.Exists(_fullPath))
