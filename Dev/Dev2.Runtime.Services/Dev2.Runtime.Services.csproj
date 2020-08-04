@@ -137,7 +137,6 @@
     <Compile Include="ESB\Management\Services\TestClusterLeaderConnectionService.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />
-    <Compile Include="ESB\Management\Services\SaveTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggers.cs" />
     <Compile Include="ESB\Management\Services\TestElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\TestRedisSource.cs" />
