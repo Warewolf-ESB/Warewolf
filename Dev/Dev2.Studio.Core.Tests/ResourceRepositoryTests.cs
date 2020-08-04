@@ -1792,7 +1792,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var message = new CompressedExecuteMessage();
             message.SetMessage(payload);
             var msgResult = jsonSerializer.Serialize(message);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<int>())).Returns(msgResult.ToStringBuilder);
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);
@@ -1828,7 +1828,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var message = new CompressedExecuteMessage();
             message.SetMessage(payload);
             var msgResult = jsonSerializer.Serialize(message);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<int>())).Returns(msgResult.ToStringBuilder);
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);
@@ -1857,7 +1857,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var stringBuilder = new StringBuilder("An error occured");
             message.SetMessage(jsonSerializer.Serialize(stringBuilder));
             var msgResult = jsonSerializer.Serialize(message);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<int>())).Returns(msgResult.ToStringBuilder);
 
             //------------Execute Test---------------------------
             var result = new ResourceRepository(env.Object);

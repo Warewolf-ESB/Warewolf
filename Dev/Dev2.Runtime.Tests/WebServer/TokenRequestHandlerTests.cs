@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TokenRequestHandler))]
-        [ExpectedException(typeof(UnauthorizedAccessException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void TokenRequestHandler_ProcessRequest_GiveNullCommunicationContext_ThrowsException()
         {
             //------------Setup for test-------------------------
