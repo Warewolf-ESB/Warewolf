@@ -16,13 +16,11 @@ using Dev2.Services.Security;
 using System;
 using System.Collections.Concurrent;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Web;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Warewolf.Data;
-using Warewolf;
 
 namespace Dev2.Runtime.Security
 {
@@ -39,7 +37,7 @@ namespace Dev2.Runtime.Security
                 var serverAuthorizationService = _theInstance.Value;
                 serverAuthorizationService.SecurityService.PermissionsChanged += (s, e) => ClearCaches();
                 serverAuthorizationService.SecurityService.PermissionsModified += (s, e) => ClearCaches();
-                return serverAuthorizationService;        
+                return serverAuthorizationService;
             }
         }
 
@@ -50,7 +48,7 @@ namespace Dev2.Runtime.Security
         protected ServerAuthorizationService(ISecurityService securityService)
             : base(securityService, true)
         {
-            _timeOutPeriod = securityService.TimeOutPeriod;            
+            _timeOutPeriod = securityService.TimeOutPeriod;
             try
             {
                 _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of Not Authorised errors");
@@ -83,7 +81,7 @@ namespace Dev2.Runtime.Security
 
             authorized = IsAuthorized(user, context, resourceId);
 
-            if (IsAuthorizedCheck(context, resource, requestKey, user))
+            if (!authorized)
             {
                 if (ResultsCache.Instance.ContainsPendingRequestForUser(user.Identity.Name))
                 {
@@ -91,7 +89,11 @@ namespace Dev2.Runtime.Security
                 }
             }
 
-            return IsAuthorized(user, context, resource);
+            if (!authorized)
+            {
+                _perfCounter?.Increment();
+            }
+            return authorized;
         }
 
         public sealed override bool IsAuthorized(IAuthorizationRequest request)
@@ -159,7 +161,7 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.WebBookmarkWorkflow:
                     result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
                     break;
-                
+
                 case WebServerRequestType.WebExecuteInternalService:
                     result = IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
                     break;

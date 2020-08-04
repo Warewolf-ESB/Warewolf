@@ -24,12 +24,12 @@ using Warewolf.Triggers;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class SaveTriggers : IEsbManagementEndpoint
+    public class SaveTriggers : EsbManagementEndpointBase
     {
         private ITriggersCatalog _triggersCatalog;
         private IResourceCatalog _resourceCatalog;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public override Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("resourceID", out StringBuilder tmp);
             if (tmp != null && Guid.TryParse(tmp.ToString(), out var resourceId))
@@ -39,9 +39,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        public override AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             try
@@ -112,7 +112,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             set => _resourceCatalog = value;
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var newDs = new DynamicService { Name = HandlesType() };
             var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
@@ -121,6 +121,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public string HandlesType() => nameof(SaveTriggers);
+        public override string HandlesType() => nameof(SaveTriggers);
     }
 }

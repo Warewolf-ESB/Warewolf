@@ -44,23 +44,20 @@ namespace Dev2.Runtime.Hosting
     public class ResourceCatalog : IResourceCatalog, IDisposable
     {
         readonly object _loadLock = new object();
-        static readonly object _lazyLock = new object();
         ResourceCatalogBuilder Builder { get; set; }
 
         ResourceCatalogPluginContainer _catalogPluginContainer;
         static readonly Lazy<IResourceCatalog> _instance = new Lazy<IResourceCatalog>(() =>
         {
-            lock (_lazyLock)
+            var resourceCatalog = CustomContainer.Get<IResourceCatalog>();
+            if (resourceCatalog is null)
             {
-                var resourceCatalog = CustomContainer.Get<IResourceCatalog>();
-                if (resourceCatalog is null)
-                {
-                    resourceCatalog = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
-                    CustomContainer.Register<IResourceCatalog>(resourceCatalog);
-                }
-                return resourceCatalog;
-            }
+                var newResourceCatalog = new ResourceCatalog(new DynamicService[] { });
+                CustomContainer.Register<IResourceCatalog>(newResourceCatalog);
 
+                newResourceCatalog.Initialize(EsbManagementServiceLocator.GetServices());
+            }
+            return resourceCatalog;
         }, LazyThreadSafetyMode.PublicationOnly);
 
         public static IResourceCatalog Instance => _instance.Value;
