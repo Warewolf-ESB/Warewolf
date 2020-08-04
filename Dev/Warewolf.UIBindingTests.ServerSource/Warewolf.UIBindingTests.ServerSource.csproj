@@ -61,7 +61,7 @@
     </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="NewServerSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>NewServerSource.feature.cs</LastGenOutput>

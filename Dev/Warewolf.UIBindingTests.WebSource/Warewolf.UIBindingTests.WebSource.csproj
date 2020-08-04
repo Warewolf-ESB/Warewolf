@@ -61,7 +61,7 @@
     <Compile Include="WebSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="Web Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Web Source.feature.cs</LastGenOutput>

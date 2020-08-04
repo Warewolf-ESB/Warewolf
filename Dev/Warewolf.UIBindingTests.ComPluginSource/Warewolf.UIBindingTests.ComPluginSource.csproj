@@ -64,7 +64,7 @@
     <Compile Include="ComPluginSourceSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="ComPluginSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ComPluginSource.feature.cs</LastGenOutput>

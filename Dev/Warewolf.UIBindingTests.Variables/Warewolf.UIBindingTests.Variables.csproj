@@ -61,7 +61,7 @@
     <Compile Include="VariableListSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="VariableList.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>VariableList.feature.cs</LastGenOutput>
