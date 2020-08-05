@@ -199,6 +199,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         [ExpectedException(typeof(Elasticsearch.Net.ElasticsearchClientException))]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
@@ -212,6 +213,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_PasswordAuthentication()
         {
             var auditQueryable = GetAuditQueryablePasswordAuthentication();
@@ -229,6 +231,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryTriggerData_FilterBy_ResourceId()
         {
             //setup
@@ -255,6 +258,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_NoParameters()
         {
             //setup
@@ -277,6 +281,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId_EventLevel_Debug()
         {
             //setup
@@ -322,6 +327,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId()
         {
             //setup
@@ -358,6 +364,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Debug()
         {
             //setup
@@ -395,6 +402,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Information()
         {
             //setup
@@ -428,6 +436,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Warning()
         {
             //setup
@@ -463,6 +472,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         [DoNotParallelize]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Error()
         {
@@ -500,6 +510,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Fatal()
         {
             //setup
@@ -535,6 +546,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime()
         {
             //setup
@@ -580,6 +592,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_DateTime_EventLevel()
         {
             //setup
@@ -634,6 +647,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_EventLevel_executionID()
         {
             //setup
@@ -700,6 +714,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
+        [Timeout(30000)]
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_On_UrlEncoded_DateTime_EventLevel_and_executionID_Should_Not_Break()
         {
             //setup
