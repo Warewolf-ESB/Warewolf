@@ -34,6 +34,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
+        [Timeout(30000)]
         public void IStateAuditLogger_SubscribeToEventNotifications_Tests()
         {
             TestSetup(out _fileWrapper, out _directoryWrapper, out _activity);
@@ -66,6 +67,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
+        [Timeout(30000)]
         public void IStateAuditLogger_LogExecuteCompleteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -85,6 +87,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
+        [Timeout(30000)]
         public void IStateAuditLogger_LogPreExecuteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -104,6 +107,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
+        [Timeout(30000)]
         public void IStateAuditLogger_LogStopExecutionState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -123,6 +127,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
+        [Timeout(30000)]
         public void IStateAuditLogger_LogAdditionalDetail_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -143,6 +148,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(IStateAuditLogger))]
+        [Timeout(30000)]
         public void IStateAuditLogger_LogExecuteException_LogsTheGivenException_Success()
         {
             //------------------------------Arrange--------------------------------
@@ -166,9 +172,11 @@ namespace Warewolf.Auditing.Tests
             //------------------------------Assert---------------------------------
             Assert.AreEqual(expected: expectedException.Message, actual: actualAudit.Exception.Message);
         }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(IStateAuditLogger))]
+        [Timeout(30000)]
         public void IStateAuditLogger_IsValidLogLevels()
         {
 
