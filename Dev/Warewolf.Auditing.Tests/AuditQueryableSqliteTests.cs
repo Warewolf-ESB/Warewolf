@@ -43,6 +43,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         public void AuditQueryableSqlite_QueryTriggerData()
         {
             var auditQueryable = new AuditQueryableSqlite(connstring);
@@ -55,6 +56,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_NoParameters()
         {
@@ -70,6 +72,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_ExecutionId_EventLevel()
         {
@@ -90,6 +93,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_IncorrectLevel()
         {
@@ -107,6 +111,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_ExecutionId()
         {
@@ -125,6 +130,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Debug()
         {
@@ -143,6 +149,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Information()
         {
@@ -162,6 +169,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Warning()
         {
@@ -181,6 +189,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Error()
         {
@@ -199,6 +208,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_QueryLogData_FilterBy_EventLevel_Fatal()
         {
@@ -217,6 +227,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_AuditQueryableSqlite_QueryLogData_FilterBy_DateTime()
         {
@@ -238,6 +249,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_AuditQueryableSqlite_QueryLogData_DateTime_EventLevel()
         {
@@ -260,6 +272,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_AuditQueryableSqlite_QueryLogData_FilterBy_DateTime_EventLevel_executionID()
         {
@@ -283,6 +296,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableSqlite))]
+        [Timeout(30000)]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AuditQueryableSqlite_AuditQueryableSqlite_QueryLogData_FilterBy_DateTime_On_UrlEncoded_DateTime_EventLevel_and_executionID_Should_Not_Break()
         {
