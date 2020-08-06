@@ -1,20 +1,20 @@
 @echo off
-if "%Username%"=="" (
+if "%WarewolfContainerUsername%"=="" (
     echo.
     echo Please enter any username: (for example: WarewolfAdmin)
-    set /p Username=
+    set /p WarewolfContainerUsername=
 )
-if "%Password%"=="" (
+if "%WarewolfContainerPassword%"=="" (
     echo.
     echo Please enter any password greater than 8 upper, lower, number and symbol characters: (for example: W@rEw0lf@dm1n)
-    set /p Password=
+    set /p WarewolfContainerPassword=
 )
-if "%Port%"=="" (
+if "%WarewolfContainerPort%"=="" (
     echo.
     echo Please enter any valid port number:
-    set /p Port=
+    set /p WarewolfContainerPort=
 )
-set /A SecurePort=%Port%+1
+set /A WarewolfContainerSecurePort=%WarewolfContainerPort%+1
 @echo on
 
-docker run -d -m 4g -e SERVER_USERNAME=%Username% -e SERVER_PASSWORD=%Password% -p %SecurePort%:3142 -p %Port%:3143 warewolfserver/warewolfserver
+docker run -d -m 4g -e SERVER_USERNAME=%WarewolfContainerUsername% -e SERVER_PASSWORD=%WarewolfContainerPassword% -p %WarewolfContainerPort%:3142 -p %WarewolfContainerSecurePort%:3143 warewolfserver/warewolfserver
