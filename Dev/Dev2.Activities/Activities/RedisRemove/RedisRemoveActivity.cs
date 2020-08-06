@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -25,7 +24,6 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Driver.Redis;
-using Warewolf.Interfaces;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -70,22 +68,22 @@ namespace Dev2.Activities.RedisRemove
         public string Key
         {
             get => _key;
-            set => _key = value;
-        }
-        private string KeyValue
-        {
-            get
+            set 
             {
-                var expr = _dataObject.Environment.EvalToExpression(_key, _update);
-                var varValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update,false,true));
-                return varValue == _key ? _key : varValue;
+                if (_key != value)
+                {
+                    _key = value;
+                }
             }
         }
+
         [FindMissing]
         public string Response { get; set; }
-
-        // TODO: This variable should be used to set up the Redis Connection, which we can Mock.
-        internal IRedisConnection Connection { get; set; }
+        
+        //Note: this is nolonger in use, 
+        //TODO: make a new tool to deprecate this one, after removing this variable.
+        [ExcludeFromCodeCoverage]
+        public RedisSource RedisSource { get; set; }
 
         public override IEnumerable<StateVariable> GetState()
         {
@@ -124,23 +122,20 @@ namespace Dev2.Activities.RedisRemove
             _update = update;
             base.ExecuteTool(dataObject, update);
         }
-        //TODO: Suggestion to use IRedisSource so that we can Mock the values
-        public RedisSource RedisSource { get; set; }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
             {
-                RedisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
-                if (RedisSource == null || RedisSource.ResourceType != enSourceType.RedisSource.ToString())
+                var redisSource = ResourceCatalog.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, SourceId);
+                if (redisSource == null || redisSource.ResourceType != enSourceType.RedisSource.ToString())
                 {
                     _messages.Add(ErrorResource.RedisSourceHasBeenRemoved);
                     return _messages;
                 }
-                //TODO: We need to set this up where it passes IRedisConnection so that we can Mock the values.
-                //      This is creating a real connection when trying to test this
-                _redisCache = new RedisCacheImpl(RedisSource.HostName, Convert.ToInt32(RedisSource.Port), RedisSource.Password);
-                var keyValue = KeyValue;
+
+                _redisCache = _redisCache ?? new RedisCacheImpl(()=> new RedisConnection(redisSource.HostName, Convert.ToInt32(redisSource.Port), redisSource.Password));
+                var keyValue = GetKeyValue();
                 if (!_redisCache.Remove(keyValue))
                 {
                     _result = "Failure";
@@ -155,6 +150,12 @@ namespace Dev2.Activities.RedisRemove
                 throw new Exception(ex.GetAllMessages());
             }
         }
+        
+        private string GetKeyValue()
+        {
+            var expr = _dataObject.Environment.EvalToExpression(_key, _update);
+            return ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update, false, true));
+        }
 
         public override List<string> GetOutputs() => new List<string> { Response, Result };
 
@@ -162,26 +163,19 @@ namespace Dev2.Activities.RedisRemove
         {
             base.GetDebugOutputs(env, update);
 
-            return _debugOutputs?.Any() ?? false ? _debugOutputs : new List<DebugItem>();
+            return _debugOutputs;
         }
 
-
-
-#pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(RedisRemoveActivity other)
-#pragma warning restore S1541 // Methods and properties should not be too complex
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return base.Equals(other)
+            return ReferenceEquals(this, other)
+                ? true
+                : base.Equals(other)
                 && string.Equals(Result, other.Result)
                 && SourceId.Equals(other.SourceId)
                 && string.Equals(Key, other.Key)
@@ -191,7 +185,7 @@ namespace Dev2.Activities.RedisRemove
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -201,14 +195,8 @@ namespace Dev2.Activities.RedisRemove
                 return true;
             }
 
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((RedisRemoveActivity)obj);
+            return obj.GetType() != GetType() ? false : Equals((RedisRemoveActivity)obj);
         }
-
 #pragma warning disable S1541 // Methods and properties should not be too complex
         public override int GetHashCode()
 #pragma warning restore S1541 // Methods and properties should not be too complex
@@ -221,7 +209,6 @@ namespace Dev2.Activities.RedisRemove
                 hashCode = (hashCode * 397) ^ SourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Connection != null ? Connection.GetHashCode() : 0);
                 return hashCode;
             }
         }
