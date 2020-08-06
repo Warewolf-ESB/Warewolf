@@ -1,12 +1,12 @@
 @echo off
 if "%WarewolfContainerUsername%"=="" (
     echo.
-    echo Please enter any username: \(for example: WarewolfAdmin\)
+    echo Please enter any username: ^(for example: WarewolfAdmin^)
     set /p WarewolfContainerUsername=
 )
 if "%WarewolfContainerPassword%"=="" (
     echo.
-    echo Please enter any password greater than 8 upper, lower, number and symbol characters: \(for example: W@rEw0lf@dm1n\)
+    echo Please enter any password greater than 8 upper, lower, number and symbol characters: ^(for example: W@rEw0lf@dm1n^)
     set /p WarewolfContainerPassword=
 )
 if "%WarewolfContainerPort%"=="" (
