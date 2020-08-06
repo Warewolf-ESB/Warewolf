@@ -474,12 +474,6 @@
       <DependentUpon>CacheRedis.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\Redis\SpecExecutionEnvironmentErrors.cs" />
-    <Compile Include="Toolbox\Utility\Redis\Remove\RemoveRedis.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RemoveRedis.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Utility\Redis\Remove\RemoveRedisSteps.cs" />
     <Compile Include="Toolbox\Utility\Redis\Cache\CacheRedisSteps.cs" />
     <Compile Include="Toolbox\Utility\Redis\Source\RedisSource.feature.cs">
       <AutoGen>True</AutoGen>
@@ -785,10 +779,6 @@
     <None Include="Toolbox\Utility\Random\Random.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Random.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Utility\Redis\Remove\RemoveRedis.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>RemoveRedis.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Redis\Cache\CacheRedis.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
