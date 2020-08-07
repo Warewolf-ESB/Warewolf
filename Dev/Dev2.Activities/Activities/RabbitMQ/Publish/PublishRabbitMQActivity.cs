@@ -158,13 +158,13 @@ namespace Dev2.Activities.RabbitMQ.Publish
                         RabbitMQSourceResourceId);
                 if (RabbitMQSource == null)
                 {
-                    return new List<string> {ErrorResource.RabbitSourceHasBeenDeleted};
+                    return new List<string> { ErrorResource.RabbitSourceHasBeenDeleted };
                 }
 
                 if (!evaluatedValues.TryGetValue("QueueName", out string queueName) ||
                     !evaluatedValues.TryGetValue("Message", out string message))
                 {
-                    return new List<string> {ErrorResource.RabbitQueueNameAndMessageRequired};
+                    return new List<string> { ErrorResource.RabbitQueueNameAndMessageRequired };
                 }
 
                 ConnectionFactory.HostName = RabbitMQSource.HostName;
@@ -190,7 +190,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
                 Dev2Logger.Debug($"Message published to queue {queueName} CorrelationId: {CorrelationID} ",
                     GlobalConstants.WarewolfDebug);
-                return new List<string> {"Success"};
+                return new List<string> { "Success" };
             }
             catch (Exception ex)
             {
@@ -199,11 +199,12 @@ namespace Dev2.Activities.RabbitMQ.Publish
             }
         }
 
-        public string GetCorrelationID()
+        private string GetCorrelationID()
         {
             if (BasicProperties.AutoCorrelation is Manual properties)
             {
-                return properties.CorrelationID;
+                var expr = DataObject.Environment.EvalToExpression(properties.CorrelationID, 0);
+                return Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(expr, 0, false, true));
             }
             else
             {
@@ -220,6 +221,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 return DataObject.ExecutionID.ToString();
             }
         }
+
 #pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(PublishRabbitMQActivity other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
@@ -263,7 +265,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 return false;
             }
 
-            return Equals((PublishRabbitMQActivity) obj);
+            return Equals((PublishRabbitMQActivity)obj);
         }
 
         public override int GetHashCode()
