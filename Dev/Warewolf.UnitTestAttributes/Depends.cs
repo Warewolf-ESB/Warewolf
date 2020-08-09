@@ -270,7 +270,7 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Remote Connection Integration.xml"
             };
             UpdateSourcesConnectionStrings(
-                $"AppServerUri=http://{Container.IP}:{Container.Port}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=Dev2@dmin123;",
+                $"AppServerUri=http://{Container.IP}:{Container.Port}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;",
                 knownServerSources);
         }
 
