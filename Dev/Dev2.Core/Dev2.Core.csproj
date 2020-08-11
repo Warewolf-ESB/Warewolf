@@ -175,6 +175,7 @@
     <Compile Include="ExecutionEnvironmentUtils.cs" />
     <Compile Include="IActivityParser.cs" />
     <Compile Include="IDev2Activity.cs" />
+    <Compile Include="InterfaceImplementors\CoverageDataContext.cs" />
     <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
     <Compile Include="Interfaces\IDev2EmailSender.cs" />
     <Compile Include="Interfaces\IDSFDataObject.cs" />
