@@ -902,7 +902,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void DataObjectExtensions_CanExecuteCurrentResource_EmitionTypes_IsNot_TRX_ExpectTrue()
         {
             var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(o => o.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<Guid>()))
+            mockAuthorizationService.Setup(o => o.IsAuthorized(It.IsAny<IPrincipal>(), It.IsAny<AuthorizationContext>(), It.IsAny<IWarewolfResource>() ))
                 .Returns(true);
 
             var sut = DataObjectExtensions.CanExecuteCurrentResource(new Mock<IDSFDataObject>().Object, new Mock<IWarewolfResource>().Object, mockAuthorizationService.Object);
@@ -916,9 +916,9 @@ namespace Dev2.Tests.Runtime.WebServer
         public void DataObjectExtensions_CanExecuteCurrentResource_EmitionTypes_IsNot_TRX_ExpectFalse()
         {
             var mockAuthorizationService = new Mock<IAuthorizationService>();
-            mockAuthorizationService.Setup(o => o.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.View, It.IsAny<Guid>()))
+            mockAuthorizationService.Setup(o => o.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.View, It.IsAny<IWarewolfResource>()))
                 .Returns(true);
-            mockAuthorizationService.Setup(o => o.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, It.IsAny<Guid>()))
+            mockAuthorizationService.Setup(o => o.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, It.IsAny<IWarewolfResource>()))
                 .Returns(false);
 
             var sut = DataObjectExtensions.CanExecuteCurrentResource(new Mock<IDSFDataObject>().Object, new Mock<IWarewolfResource>().Object, mockAuthorizationService.Object);
