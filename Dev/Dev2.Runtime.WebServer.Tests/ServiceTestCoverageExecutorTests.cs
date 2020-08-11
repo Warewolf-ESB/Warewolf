@@ -10,6 +10,7 @@
 
 
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Web;
@@ -28,7 +29,96 @@ namespace Dev2.Runtime.WebServer.Tests
         [TestCategory(nameof(ServiceTestCoverageExecutor))]
         public void ServiceTestCoverageExecutor_GetTestCoverageReports_ShouldReturnBlank()
         {
-            var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(new Mock<ICoverageDataObject>().Object, Guid.NewGuid(), new Communication.Dev2JsonSerializer(), new Mock<ITestCoverageCatalog>().Object, new Mock<ITestCatalog>().Object, new Mock<IResourceCatalog>().Object, out string executePayload);
+            var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(new Mock<ICoverageDataObject>().Object,Guid.NewGuid(),
+                                                                        new Communication.Dev2JsonSerializer(),
+                                                                        new Mock<ITestCoverageCatalog>().Object,
+                                                                        new Mock<ITestCatalog>().Object,
+                                                                        new Mock<IResourceCatalog>().Object,
+                                                                        out string executePayload);
+
+            Assert.IsNull(executePayload);
+            Assert.AreEqual("HTML", sut.FormatName);
+            Assert.AreEqual("text/html; charset=utf-8", sut.ContentType);
+            Assert.AreEqual(EmitionTypes.Cover, sut.PublicFormatName);
+        }
+
+        [TestMethod]
+        [TestCategory("Siphamandla Dube")]
+        [TestCategory(nameof(ServiceTestCoverageExecutor))]
+        public void ServiceTestCoverageExecutor_RunCoverageAndReturnJSON_ShouldReturnBlank()
+        {
+            var mockCoverageDataObject = new Mock<ICoverageDataObject>();
+            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new Guid[] { Guid.NewGuid() });
+            mockCoverageDataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.CoverJson);
+
+            var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(mockCoverageDataObject.Object, Guid.NewGuid(),
+                                                                         new Communication.Dev2JsonSerializer(),
+                                                                         new Mock<ITestCoverageCatalog>().Object,
+                                                                         new Mock<ITestCatalog>().Object,
+                                                                         new Mock<IResourceCatalog>().Object,
+                                                                         out string executePayload);
+
+            Assert.IsNotNull(executePayload);
+            Assert.AreEqual("JSON", sut.FormatName);
+            Assert.AreEqual("application/json", sut.ContentType);
+            Assert.AreEqual(EmitionTypes.JSON, sut.PublicFormatName);
+        }
+
+        [TestMethod]
+        [TestCategory("Siphamandla Dube")]
+        [TestCategory(nameof(ServiceTestCoverageExecutor))]
+        public void ServiceTestCoverageExecutor_RunCoverageAndReturnHTML_ShouldReturnBlank()
+        {
+            var mockCoverageDataObject = new Mock<ICoverageDataObject>();
+            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new Guid[] { Guid.NewGuid() });
+            mockCoverageDataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.Cover);
+
+            var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(mockCoverageDataObject.Object, Guid.NewGuid(),
+                                                                         new Communication.Dev2JsonSerializer(),
+                                                                         new Mock<ITestCoverageCatalog>().Object,
+                                                                         new Mock<ITestCatalog>().Object,
+                                                                         new Mock<IResourceCatalog>().Object,
+                                                                         out string executePayload);
+
+            Assert.IsNotNull(executePayload);
+            Assert.AreEqual("HTML", sut.FormatName);
+            Assert.AreEqual("text/html; charset=utf-8", sut.ContentType);
+            Assert.AreEqual(EmitionTypes.Cover, sut.PublicFormatName);
+        }
+
+        [TestMethod]
+        [TestCategory("Siphamandla Dube")]
+        [TestCategory(nameof(ServiceTestCoverageExecutor))]
+        public void ServiceTestCoverageExecutor_EmitionTypesCoverJson_With_CoverageReportResourceIds_ShouldReturnBlank()
+        {
+            var mockCoverageDataObject = new Mock<ICoverageDataObject>();
+            mockCoverageDataObject.Setup(o => o.CoverageReportResourceIds).Returns(new Guid[] { Guid.NewGuid() });
+
+            var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(mockCoverageDataObject.Object, Guid.NewGuid(),
+                                                                         new Communication.Dev2JsonSerializer(),
+                                                                         new Mock<ITestCoverageCatalog>().Object,
+                                                                         new Mock<ITestCatalog>().Object,
+                                                                         new Mock<IResourceCatalog>().Object,
+                                                                         out string executePayload);
+
+            Assert.IsNull(executePayload);
+            Assert.AreEqual("HTML", sut.FormatName);
+            Assert.AreEqual("text/html; charset=utf-8", sut.ContentType);
+            Assert.AreEqual(EmitionTypes.Cover, sut.PublicFormatName);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Siphamandla Dube")]
+        [TestCategory(nameof(ServiceTestCoverageExecutor))]
+        public void ServiceTestCoverageExecutor_EmitionTypesCoverJson_Without_CoverageReportResourceIds_ShouldReturnBlank()
+        {
+            var sut = ServiceTestCoverageExecutor.GetTestCoverageReports(new Mock<ICoverageDataObject>().Object, Guid.NewGuid(),
+                                                                         new Communication.Dev2JsonSerializer(),
+                                                                         new Mock<ITestCoverageCatalog>().Object,
+                                                                         new Mock<ITestCatalog>().Object,
+                                                                         new Mock<IResourceCatalog>().Object,
+                                                                         out string executePayload);
 
             Assert.IsNull(executePayload);
             Assert.AreEqual("HTML", sut.FormatName);

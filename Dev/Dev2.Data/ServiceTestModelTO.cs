@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Warewolf.Data;
 
 namespace Dev2.Data
 {
