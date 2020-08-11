@@ -1,3 +1,14 @@
+Friday 31 July 2020
+======================
+Features
+---------
+- Allow triggers to be deployed from the studio.
+- Added counts for Tests and Triggers per resource selection to the deploy view.
+
+Enhancements
+---------
+- Warewolf Logger memory usage improvements.
+
 Friday 17 July 2020
 ======================
 Bug Fixes

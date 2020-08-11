@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,6 +19,7 @@ namespace Dev2.Studio.Interfaces.Deploy
         public string DestinationName { get; set; }
         public Guid SourceId { get; set; }
         public Guid DestinationId { get; set; }
+        public Guid TriggerId { get; set; }
         
     }
     public interface IDeployStatsViewerViewModel
@@ -26,21 +27,28 @@ namespace Dev2.Studio.Interfaces.Deploy
         int Connectors { get; set; }
         int Services { get; set; }
         int Sources { get; set; }
+        int Tests { get; set; }
+        int Triggers { get; set; }
         int Unknown { get; set; }
         int NewResources { get; set; }
+        int NewTests { get; set; }
+        int NewTriggers { get; set; }
         int Overrides { get; set; }
+        int OverridesTests { get; set; }
+        int OverridesTriggers { get; set; }
         string Status { get; set; }
 
         void TryCalculate( IList<IExplorerTreeItem> items);
 
         IList<Conflict> Conflicts { get; }
-
         IList<IExplorerTreeItem> New { get; }
         Action CalculateAction { get; set; }
         string RenameErrors { get; }
 
         void ReCalculate();
-
+        void CalculateTestsCount();
+        void CalculateTriggersCount();
+        void UpdateStatsArea();
         void CheckDestinationPermissions();
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,27 +10,44 @@
 
 using System;
 using System.Collections.Generic;
+using Warewolf;
+using Warewolf.Data;
 
 namespace Dev2.Services.Security
 {
-    
     public class SecuritySettingsTO
 
     {
         public SecuritySettingsTO()
         {
             WindowsGroupPermissions = new List<WindowsGroupPermission>();
+            AuthenticationOverrideWorkflow = new NamedGuid();
+            SecretKey = "";
+        }
+
+        public SecuritySettingsTO(IEnumerable<WindowsGroupPermission> permissions, INamedGuid authenticationOverrideWorkflow, string secretKey)
+            : this()
+        {
+            if (permissions != null)
+            {
+                WindowsGroupPermissions.AddRange(permissions);
+            }
+
+            AuthenticationOverrideWorkflow = authenticationOverrideWorkflow;
+            SecretKey = secretKey;
         }
 
         public SecuritySettingsTO(IEnumerable<WindowsGroupPermission> permissions)
             : this()
         {
-            if(permissions != null)
+            if (permissions != null)
             {
                 WindowsGroupPermissions.AddRange(permissions);
             }
         }
 
+        public string SecretKey { get; set; }
+        public INamedGuid AuthenticationOverrideWorkflow { get; set; }
         public List<WindowsGroupPermission> WindowsGroupPermissions { get; private set; }
         public TimeSpan CacheTimeout { get; set; }
     }

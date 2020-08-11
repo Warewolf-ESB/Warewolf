@@ -568,13 +568,14 @@ namespace Dev2.Studio.Core
 
         #region Implementation of IUpdateManager
 
-        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironmentId)
+        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, bool deployTriggers, IConnection destinationEnvironmentId)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("DirectDeploy");
             var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("resourceIDsToDeploy", serialiser.SerializeToBuilder(resourceIDsToDeploy));
             comsController.AddPayloadArgument("deployTests", new StringBuilder(deployTests.ToString()));
+            comsController.AddPayloadArgument("deployTriggers", new StringBuilder(deployTriggers.ToString()));
             comsController.AddPayloadArgument("destinationEnvironmentId", serialiser.SerializeToBuilder(destinationEnvironmentId));
             var output = comsController.ExecuteCommand<List<IDeployResult>>(con, GlobalConstants.ServerWorkspaceID);
             return output;

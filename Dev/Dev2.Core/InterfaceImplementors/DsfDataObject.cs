@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -28,6 +28,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Web;
 using Warewolf.Auditing;
+using Warewolf.Data;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -258,6 +259,8 @@ namespace Dev2.DynamicServices
         public bool IsOnDemandSimulation { get; set; }
         public Guid ServerID { get; set; }
         public Guid ResourceID { get; set; }
+
+        public IWarewolfResource Resource { get; set; }
 
 
 

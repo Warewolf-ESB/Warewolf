@@ -347,6 +347,7 @@ namespace Dev2.Runtime.WebServer
             }
 
             resource = localResource;
+            dataObject.Resource = resource;
         }
 
         static void MapServiceToDataObjects(IDSFDataObject dataObject, IWarewolfResource localResource)
@@ -366,8 +367,8 @@ namespace Dev2.Runtime.WebServer
             var canExecute = true;
             if (service != null && dataObject.ReturnType != EmitionTypes.TRX)
             {
-                var hasView = service.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.View, dataObject.ResourceID.ToString());
-                var hasExecute = service.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.ResourceID.ToString());
+                var hasView = service.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.View, resource);
+                var hasExecute = service.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resource);
                 canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource.ResourceType == "ReservedService");
             }
 

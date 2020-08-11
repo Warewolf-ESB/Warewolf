@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -22,9 +22,7 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -52,9 +50,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
+using Warewolf.Data;
 using Warewolf.Options;
 using Warewolf.Service;
 using Warewolf.Studio.ViewModels;
+using Warewolf.Trigger.Queue;
 using Warewolf.Triggers;
 
 namespace BusinessDesignStudio.Unit.Tests
@@ -1774,6 +1774,103 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         #endregion
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_LoadResourceTriggersForDeploy_WhenNoTriggersToFetch_ExpectNothing()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var serviceTestModel = new List<IServiceTestModelTO>();
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(serviceTestModel);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            var serviceTestModels = result.LoadResourceTriggersForDeploy(Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, serviceTestModels.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_LoadResourceTriggersForDeploy_WhenTriggerFound_ExpectTriggers()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+            const string plainText = "pass.word1";
+            var decrypt = SecurityEncryption.Encrypt(plainText);
+            var triggerQueues = new List<ITriggerQueue>
+            {
+                new TriggerQueue
+                {
+                    QueueName = "Queue 1",
+                    Inputs = new List<IServiceInputBase>(),
+                    UserName = "bob",
+                    Password = decrypt
+                }
+            };
+            var jsonSerializer = new Dev2JsonSerializer();
+            var payload = jsonSerializer.Serialize(triggerQueues);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(payload);
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            var serviceTestModels = result.LoadResourceTriggersForDeploy(Guid.NewGuid());
+            //------------Assert Results-------------------------
+            var isEncrypted = serviceTestModels.Single().Password == decrypt;
+            var old = SecurityEncryption.Decrypt(serviceTestModels.Single().Password);
+
+            Assert.IsTrue(isEncrypted);
+            Assert.IsTrue(old.Contains(plainText));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ResourceRepository))]
+        public void ResourceRepository_LoadResourceTriggersForDeploy_WhenError_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(c => c.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+
+            var jsonSerializer = new Dev2JsonSerializer();
+            var message = new CompressedExecuteMessage { HasError = true };
+            var stringBuilder = new StringBuilder("An error occured");
+            message.SetMessage(jsonSerializer.Serialize(stringBuilder));
+            var msgResult = jsonSerializer.Serialize(message);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
+
+            //------------Execute Test---------------------------
+            var result = new ResourceRepository(env.Object);
+            try
+            {
+                result.LoadResourceTriggersForDeploy(Guid.NewGuid());
+            }
+            catch (Exception ex)
+            {
+                //------------Assert Results-------------------------
+                Assert.AreEqual("An error occured", ex.Message);
+            }
+        }
 
         #region FindSourcesByType
 

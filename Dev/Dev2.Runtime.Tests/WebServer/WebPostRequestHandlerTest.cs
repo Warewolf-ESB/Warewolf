@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -9,16 +9,34 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Interfaces;
 using Dev2.PerformanceCounters.Counters;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
+using Dev2.Runtime.WebServer.Responses;
+using Dev2.Runtime.WebServer.TransferObjects;
+using Dev2.Services.Security;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Warewolf.Data;
+using Warewolf.Security.Encryption;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -26,7 +44,7 @@ namespace Dev2.Tests.Runtime.WebServer
     /// Summary description for WebPostRequestHandlerTest
     /// </summary>
     [TestClass]
-    [TestCategory("Runtime WebServer")]
+    [TestCategory(nameof(WebPostRequestHandler))]
     public class WebPostRequestHandlerTest
     {
         [ClassInitialize]
@@ -38,6 +56,7 @@ namespace Dev2.Tests.Runtime.WebServer
             pCounter.Setup(locater => locater.GetCounter(It.IsAny<string>())).Returns(new EmptyCounter());
             CustomContainer.Register(pCounter.Object);
         }
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -46,7 +65,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WebPostRequestHandler_ProcessRequest")]
+        [TestCategory(nameof(WebPostRequestHandler))]
         public void WebPostRequestHandler_ProcessRequest_WhenValidUserContext_ExpectExecution()
         {
             //------------Setup for test--------------------------
@@ -62,11 +81,12 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 Common.Utilities.OrginalExecutingUser = principle.Object;
             }
+
             ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
             ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
             var ctx = new Mock<ICommunicationContext>();
-            var boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
-            var queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
+            var boundVariables = new NameValueCollection {{"servicename", "ping"}, {"instanceid", ""}, {"bookmark", ""}};
+            var queryString = new NameValueCollection {{GlobalConstants.DLID, Guid.Empty.ToString()}, {"wid", Guid.Empty.ToString()}};
             ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
@@ -81,5 +101,6 @@ namespace Dev2.Tests.Runtime.WebServer
             mockIdentity.VerifyGet(identity => identity.Name, Times.AtLeast(1));
             Common.Utilities.OrginalExecutingUser = old;
         }
+
     }
 }
