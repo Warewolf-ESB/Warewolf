@@ -21,19 +21,14 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Dev2.Runtime.Hosting;
-using Warewolf.Data;
+using Dev2.Data;
+using Dev2.Common.Interfaces.Runtime.Services;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Interfaces.Communication;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Runtime
 {
-    public interface ITestCoverageCatalog
-    {
-        IServiceTestCoverageModelTo GenerateSingleTestCoverage(Guid resourceID, IServiceTestModelTO test);
-        IServiceTestCoverageModelTo GenerateAllTestsCoverage(string resourceName, Guid resourceId, List<IServiceTestModelTO> serviceTestModelTos);
-        IServiceTestCoverageModelTo FetchReport(Guid workflowId, string reportName);
-        void ReloadAllReports();
-        void DeleteAllCoverageReports(Guid workflowId);
-        List<IServiceTestCoverageModelTo> Fetch(Guid coverageResourceId);
-    }
 
     public class TestCoverageCatalog : ITestCoverageCatalog
     {
@@ -44,22 +39,39 @@ namespace Dev2.Runtime
         }, LazyThreadSafetyMode.PublicationOnly);
 
 
-        private readonly DirectoryWrapper _directoryWrapper;
-        private readonly FileWrapper _fileWrapper;
+        private readonly IFile _fileWrapper;
+        private readonly IFilePath _filePathWapper;
+        private readonly IDirectory _directoryWrapper;
+        public static ITestCoverageCatalog Instance => LazyCat.Value;
+
+        private readonly ISerializer _serializer;
+        private readonly IServiceTestCoverageModelToFactory _serviceAllTestsCoverageModelToFactory;
+        private readonly IStreamWriterFactory _streamWriterFactory;
+        private readonly IStreamReaderFactory _streamReaderFactory;
 
         public TestCoverageCatalog(IResourceCatalog resourceCatalog)
         {
             _directoryWrapper = new DirectoryWrapper();
             _fileWrapper = new FileWrapper();
+            _filePathWapper = new FilePathWrapper();
             _directoryWrapper.CreateIfNotExists(EnvironmentVariables.TestCoveragePath);
             _serializer = new Dev2JsonSerializer();
+            _streamWriterFactory = new StreamWriterFactory();
+            _streamReaderFactory = new StreamReaderFactory();
             _serviceAllTestsCoverageModelToFactory = CustomContainer.Get<IServiceTestCoverageModelToFactory>() ?? new ServiceTestCoverageModelToFactory(resourceCatalog);
         }
 
-        public static ITestCoverageCatalog Instance => LazyCat.Value;
-
-        private readonly Dev2JsonSerializer _serializer;
-        private readonly IServiceTestCoverageModelToFactory _serviceAllTestsCoverageModelToFactory;
+        [ExcludeFromCodeCoverage] //This CTOR is used by tests
+        public TestCoverageCatalog(IServiceTestCoverageModelToFactory serviceTestCoverageModelToFactory, IFilePath filePath, IFile fileWrapper, IDirectory directory, IStreamWriterFactory streamWriterFactory, IStreamReaderFactory streamReaderFactory, ISerializer serializer)
+        {
+            _serviceAllTestsCoverageModelToFactory = serviceTestCoverageModelToFactory;
+            _filePathWapper = filePath;
+            _fileWrapper = fileWrapper;
+            _directoryWrapper = directory;
+            _streamWriterFactory = streamWriterFactory;
+            _streamReaderFactory = streamReaderFactory;
+            _serializer = serializer;
+        }
 
         public ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>> TestCoverageReports { get; } = new ConcurrentDictionary<Guid, List<IServiceTestCoverageModelTo>>();
 
@@ -127,13 +139,12 @@ namespace Dev2.Runtime
             }
         }
 
-        static string GetTestCoveragePathForResourceId(Guid resourceId) => Path.Combine(EnvironmentVariables.TestCoveragePath, resourceId.ToString());
+        private string GetTestCoveragePathForResourceId(Guid resourceId) => _filePathWapper.Combine(EnvironmentVariables.TestCoveragePath, resourceId.ToString());
 
         public IServiceTestCoverageModelTo GenerateAllTestsCoverage(string resourceName, Guid resourceId, List<IServiceTestModelTO> serviceTestModelTos)
         {
             var coverageArgs = new CoverageArgs { OldReportName = "", ReportName = resourceName };
             var serviceTestCoverageModelTo = _serviceAllTestsCoverageModelToFactory.New(resourceId, coverageArgs, serviceTestModelTos);
-
 
             UpdateTestCoverageReports(resourceId, serviceTestCoverageModelTo);
 
@@ -148,11 +159,11 @@ namespace Dev2.Runtime
 
             if (!string.Equals(serviceTestCoverageModelTo.OldReportName, serviceTestCoverageModelTo.ReportName, StringComparison.InvariantCultureIgnoreCase))
             {
-                var oldFilePath = Path.Combine(dirPath, $"{serviceTestCoverageModelTo.OldReportName}.coverage");
+                var oldFilePath = _filePathWapper.Combine(dirPath, $"{serviceTestCoverageModelTo.OldReportName}.coverage");
                 _fileWrapper.Delete(oldFilePath);
             }
-            var filePath = Path.Combine(dirPath, $"{serviceTestCoverageModelTo.ReportName}.coverage");
-            var sw = new StreamWriter(filePath, false);
+            var filePath = _filePathWapper.Combine(dirPath, $"{serviceTestCoverageModelTo.ReportName}.coverage");
+            var sw = _streamWriterFactory.New(filePath, false);
 
             _serializer.Serialize(sw, serviceTestCoverageModelTo);
         }
@@ -203,7 +214,7 @@ namespace Dev2.Runtime
                 }
                 try
                 {
-                    var reader = new StreamReader(file);
+                    var reader = _streamReaderFactory.New(file);
                     var testModel = _serializer.Deserialize<ServiceTestCoverageModelTo>(reader);
                     serviceTestCoverageModelTos.Add(testModel);
                 }
@@ -225,123 +236,5 @@ namespace Dev2.Runtime
             // note: list is duplicated in order to avoid concurrent modifications of the list during test runs
             return result.ToList();
         }
-    }
-
-    public interface IServiceTestCoverageModelToFactory
-    {
-        IServiceTestCoverageModelTo New(Guid workflowId, CoverageArgs args, List<IServiceTestModelTO> serviceTestModelTos);
-    }
-
-    public class CoverageArgs
-    {
-        public string OldReportName { get; set; } 
-        public string ReportName { get; set; }
-    }
-
-    internal class ServiceTestCoverageModelToFactory : IServiceTestCoverageModelToFactory
-    {
-        private readonly IResourceCatalog _resourceCatalog;
-
-        public ServiceTestCoverageModelToFactory(IResourceCatalog resourceCatalog)
-        {
-            _resourceCatalog = resourceCatalog;
-        }
-        public IServiceTestCoverageModelTo New(Guid workflowId, CoverageArgs args, List<IServiceTestModelTO> serviceTestModelTos)
-        {
-            var allTestNodesCovered = serviceTestModelTos.Select(test => new SingleTestNodesCovered(test.TestName, test.TestSteps)).ToArray();
-
-            var result = new ServiceTestCoverageModelTo
-            {
-                WorkflowId = workflowId,
-                OldReportName = args?.OldReportName,
-                ReportName = args?.ReportName,
-                LastRunDate = DateTime.Now,
-                AllTestNodesCovered = allTestNodesCovered,
-            };
-            var coveredNodes = allTestNodesCovered.SelectMany(o => o.TestNodesCovered);
-
-            var workflow = _resourceCatalog.GetWorkflow(workflowId);
-            var workflowNodes = workflow.WorkflowNodes;
-            var testedNodes = coveredNodes.GroupBy(i => i.ActivityID).Select(o => o.First())
-                .Where(o => o.MockSelected is false)
-                .Select(u => u.ActivityID);
-            var n = testedNodes.Intersect(workflowNodes.Select(o => o.UniqueID)).Count();
-            double totalNodes = workflowNodes.Count;
-            result.CoveragePercentage = n / totalNodes;
-            result.TotalCoverage = n / totalNodes;
-
-            return result;
-        }
-    }
-
-
-    public class WorkflowNode : IWorkflowNode
-    {
-        public Guid ActivityID { get; set; }
-        public Guid UniqueID { get; set; }
-        public string StepDescription { get; set; }
-        public bool MockSelected { get; set; }
-        public List<IWorkflowNode> NextNodes { get; set; } = new List<IWorkflowNode>();
-
-        public void Add(IWorkflowNode node)
-        {
-            NextNodes.Add(node);
-        }
-    }
-
-    public interface IServiceTestCoverageModelTo
-    {
-        SingleTestNodesCovered[] AllTestNodesCovered { get; }
-        string OldReportName { get; }
-        string ReportName { get; }
-        Guid WorkflowId { get; }
-        double CoveragePercentage { get; }
-        DateTime LastRunDate { get; }
-        double TotalCoverage { get; }
-    }
-
-    public class ServiceTestCoverageModelTo : IServiceTestCoverageModelTo
-    {
-        public ServiceTestCoverageModelTo()
-        {
-            // Used during json deserialization
-        }
-
-        public SingleTestNodesCovered[] AllTestNodesCovered { get; set; }
-
-        public string OldReportName { get; set; }
-
-        public string ReportName { get; set; }
-
-        public Guid WorkflowId { get; set; }
-
-        public DateTime LastRunDate { get; set; }
-
-        public double CoveragePercentage { get; set; }
-        public double TotalCoverage { get; set; }
-}
-
-    public interface ISingleTestNodesCovered
-    {
-        string TestName { get; }
-        List<IWorkflowNode> TestNodesCovered { get; }
-    }
-
-    public class SingleTestNodesCovered : ISingleTestNodesCovered
-    {
-        public SingleTestNodesCovered(string testName, IEnumerable<IServiceTestStep> testSteps)
-        {
-            TestName = testName;
-            TestNodesCovered = testSteps?.Select(step => new WorkflowNode
-            {
-                ActivityID = step.ActivityID,
-                UniqueID = step.UniqueID,
-                StepDescription = step.StepDescription,
-                MockSelected = step.MockSelected
-            }).ToList<IWorkflowNode>() ?? new List<IWorkflowNode>();
-        }
-
-        public string TestName { get; }
-        public List<IWorkflowNode> TestNodesCovered { get; }
     }
 }
