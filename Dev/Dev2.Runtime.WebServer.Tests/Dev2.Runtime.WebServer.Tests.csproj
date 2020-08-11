@@ -42,8 +42,10 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractControllerTests.cs" />
     <Compile Include="ExecutionDtoExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceTestCoverageExecutorTests.cs" />
@@ -74,9 +76,17 @@
       <Project>{4d0919c0-8fa4-480c-8629-00eb128ddee9}</Project>
       <Name>Dev2.Runtime.WebServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common.Framework48\Warewolf.Common.Framework48.csproj">
+      <Project>{bc059e85-358e-49cf-a2e8-e79249c9bf51}</Project>
+      <Name>Warewolf.Common.Framework48</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
       <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+      <Name>Warewolf.Resource</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
       <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
@@ -91,19 +101,16 @@
       <Version>4.13.1</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>2.0.0</Version>
+      <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>2.0.0</Version>
+      <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="NUnit">
       <Version>3.12.0</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-      <Version>4.6.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.3</Version>
+      <Version>4.7.1</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.5.0</Version>

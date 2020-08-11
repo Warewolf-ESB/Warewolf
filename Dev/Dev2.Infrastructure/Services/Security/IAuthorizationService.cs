@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
+using Warewolf.Data;
 
 namespace Dev2.Services.Security
 {
@@ -22,13 +23,16 @@ namespace Dev2.Services.Security
         event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
         ISecurityService SecurityService { get; }
 
-        bool IsAuthorized(AuthorizationContext context, string resource);
-        bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource);
+        bool IsAuthorized(AuthorizationContext context, Guid resourceId);
+        bool IsAuthorized(AuthorizationContext context, IWarewolfResource resource);
+        bool IsAuthorized(IPrincipal user, AuthorizationContext context, Guid resourceId);
+        bool IsAuthorized(IPrincipal user, AuthorizationContext context, IWarewolfResource resource);
         bool IsAuthorized(IAuthorizationRequest request);
         Permissions GetResourcePermissions(Guid resourceId);
 
         void Remove(Guid resourceId);
 
         List<WindowsGroupPermission> GetPermissions(IPrincipal user);
+        List<WindowsGroupPermission> GetResourcePermissionsList(Guid resourceResourceId);
     }
 }

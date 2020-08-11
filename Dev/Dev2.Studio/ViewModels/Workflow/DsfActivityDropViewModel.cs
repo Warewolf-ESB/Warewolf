@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -16,6 +16,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -88,6 +89,16 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var explorerItemModel = SingleEnvironmentExplorerViewModel.SelectedItem;
 
+            // TODO: This will be reintroduced when we allow folder and server selection
+            // if (explorerItemModel is EnvironmentViewModel environmentViewModel)
+            // {
+            //     isMatched |= environmentViewModel.IsSelected;
+            // }
+            // else if (explorerItemModel != null)
+            // {
+            //     isMatched = explorerItemModel.IsService;
+            //     isMatched |= explorerItemModel.IsFolder;
+            // }
             if (explorerItemModel != null)
             {
                 isMatched = explorerItemModel.IsService;

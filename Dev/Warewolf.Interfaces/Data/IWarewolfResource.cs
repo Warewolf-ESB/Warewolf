@@ -17,6 +17,7 @@ namespace Warewolf.Data
     {
         Guid ResourceID { get; set; }
         String ResourceName { get; set; }
+        String FilePath { get; }
         string ResourceType { get; set; }
         IVersionInfo VersionInfo { get; set; }
         StringBuilder DataList { get; set; }

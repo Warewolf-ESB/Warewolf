@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -14,7 +14,6 @@ using System.Net.Http;
 using System.Security.Principal;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Controllers;
-using Dev2.Runtime.WebServer.Handlers;
 using Moq;
 
 namespace Dev2.Tests.Runtime.WebServer.Controllers
@@ -33,10 +32,10 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             };
         }
 
-        protected override HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
+        protected override HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables, bool isUrlWithTokenPrefix)
         {
             User = _user;
-            var result = base.ProcessRequest<TRequestHandler>(requestVariables);
+            var result = base.ProcessRequest<TRequestHandler>(requestVariables, isUrlWithTokenPrefix);
             return result;
         }
 

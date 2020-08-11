@@ -141,7 +141,7 @@ namespace Dev2.Core.Tests
             _activeEnvironment.Setup(e => e.IsConnected).Returns(isConnected);
             _activeEnvironment.Setup(e => e.CanStudioExecute).Returns(canStudioExecute);
 
-            _authorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, It.IsAny<string>())).Returns(isAuthorized);
+            _authorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, It.IsAny<Guid>())).Returns(isAuthorized);
 
 
             var actual = _shellViewModel.SettingsCommand.CanExecute(null);
@@ -1791,6 +1791,41 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ShellViewModel))]
+        public void MainViewModel_GetOutputsFromWorkflow()
+        {
+            //------------Setup for test--------------------------
+            var toolboxViewModel = new Mock<IToolboxViewModel>().Object;
+            CustomContainer.Register(toolboxViewModel);
+            CreateFullExportsAndVm();
+
+            var resourceId = Guid.NewGuid();
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(o => o.DataList).Returns("<DataList></DataList>");
+
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            mockResourceRepo.Setup(o => o.LoadContextualResourceModel(resourceId)).Returns(mockResourceModel.Object);
+
+            var env = SetupEnvironment();
+            env.Setup(o => o.ResourceRepository).Returns(mockResourceRepo.Object);
+
+            var mockServerRepository = new Mock<IServerRepository>();
+            mockServerRepository.Setup(o => o.Source).Returns(env.Object);
+            mockServerRepository.Setup(o => o.ActiveServer).Returns(env.Object);
+            mockServerRepository.Setup(o => o.All()).Returns(new List<IServer>());
+
+            //------------Execute Test---------------------------
+
+            _shellViewModel = new ShellViewModelPersistenceMock(mockServerRepository.Object);
+
+            //------------Assert Results-------------------------
+            var outputs = _shellViewModel.GetOutputsFromWorkflow(resourceId);
+            Assert.IsNotNull(outputs);
+            Assert.AreEqual(0, outputs.Count);
+        }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
