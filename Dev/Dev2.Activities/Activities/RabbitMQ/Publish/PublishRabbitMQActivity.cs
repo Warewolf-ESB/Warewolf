@@ -66,6 +66,10 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         [NonSerialized] ConnectionFactory _connectionFactory;
 
+        private IDSFDataObject _dataObject { get; set; }
+        private int _update { get; set; }
+
+
         internal ConnectionFactory ConnectionFactory
         {
             get => _connectionFactory ?? (_connectionFactory = new ConnectionFactory());
@@ -134,17 +138,16 @@ namespace Dev2.Activities.RabbitMQ.Publish
             };
         }
 
-        private IDSFDataObject DataObject { get; set; }
-
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject, _update);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            DataObject = dataObject;
+            _dataObject = dataObject;
+            _update = update;
             base.ExecuteTool(dataObject, update);
         }
 
@@ -203,22 +206,22 @@ namespace Dev2.Activities.RabbitMQ.Publish
         {
             if (BasicProperties.AutoCorrelation is Manual properties)
             {
-                var expr = DataObject.Environment.EvalToExpression(properties.CorrelationID, 0);
-                return Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString(DataObject.Environment.Eval(expr, 0, false, true));
+                var expr = _dataObject.Environment.EvalToExpression(properties.CorrelationID, _update);
+                return Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update, false, true));
             }
             else
             {
-                if (BasicProperties.AutoCorrelation is CustomTransactionID || DataObject.CustomTransactionID.Length > 0)
+                if (BasicProperties.AutoCorrelation is CustomTransactionID || _dataObject.CustomTransactionID.Length > 0)
                 {
-                    return DataObject.CustomTransactionID;
+                    return _dataObject.CustomTransactionID;
                 }
 
                 if (BasicProperties.AutoCorrelation is ExecutionID)
                 {
-                    return DataObject.ExecutionID.ToString();
+                    return _dataObject.ExecutionID.ToString();
                 }
 
-                return DataObject.ExecutionID.ToString();
+                return _dataObject.ExecutionID.ToString();
             }
         }
 
