@@ -229,7 +229,6 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [DoNotParallelize]
         public void AuditQueryableElastic_QueryTriggerData_FilterBy_ResourceId()
         {
             //setup
@@ -278,7 +277,6 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [DoNotParallelize]
         public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId_EventLevel_Debug()
         {
             //setup
@@ -465,7 +463,6 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [DoNotParallelize]
         public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Error()
         {
             //setup
@@ -636,7 +633,6 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [DoNotParallelize]
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_EventLevel_executionID()
         {
             //setup
@@ -703,7 +699,6 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [DoNotParallelize]
         public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_On_UrlEncoded_DateTime_EventLevel_and_executionID_Should_Not_Break()
         {
             //setup
