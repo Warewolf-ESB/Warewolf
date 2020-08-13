@@ -475,6 +475,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     Console.WriteLine($"Error during cleanup {e.Message}");
                 }
+                catch (UnauthorizedAccessException e)
+                {
+                    Console.WriteLine($"Error during cleanup {e.Message}");
+                }
             }
         }
     }
