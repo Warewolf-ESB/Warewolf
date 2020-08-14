@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -35,6 +35,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             return new DirectoryWrapper();
         }
+
         [TestInitialize]
         public void CleanupTestDirectory()
         {
@@ -280,6 +281,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCatalog_DeleteTest")]
+        [DoNotParallelize]
         public void TestCatalog_DeleteTest_WhenResourceIdTestName_ShouldDeleteTest()
         {
             //------------Setup for test--------------------------
