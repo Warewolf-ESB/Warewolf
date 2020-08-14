@@ -438,6 +438,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCatalog_Load")]
+        [DoNotParallelize]
         public void TestCatalog_Reload_ShouldLoadDictionaryWithResourceIdAndTests()
         {
             //------------Setup for test--------------------------
@@ -617,6 +618,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCatalog_Fetch")]
+        [DoNotParallelize]
         public void TestCatalog_Fetch_WhenResourceIdNotLoaded_ShouldReturnListOfTestsForResourceId()
         {
             //------------Setup for test--------------------------
@@ -905,6 +907,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCatalog_UpdateTestsBasedOnIOChange")]
+        [DoNotParallelize]
         public void TestCatalog_UpdateTestsBasedOnIOChange_WhenTestsFound_ShouldUpdateBasedOnChange_RecordSets()
         {
             //------------Setup for test--------------------------
