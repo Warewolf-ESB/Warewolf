@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -103,8 +103,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestInitialize]
         public void Setup()
         {
-            Config.Server.EnableDetailedLogging = false;
-            Config.Server.ExecutionLogLevel = LogLevel.DEBUG.ToString();
+            try
+            {
+                Config.Server.EnableDetailedLogging = false;
+                Config.Server.ExecutionLogLevel = LogLevel.DEBUG.ToString();
+            }
+            catch (IOException e)
+            {
+                //Threadsafety catch
+            }
             TestStartNode = new FlowStep
             {
                 Action = new DsfNumberFormatActivity(),
