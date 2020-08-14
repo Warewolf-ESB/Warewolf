@@ -29,6 +29,7 @@ namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
+    [DoNotParallelize]
     public class TestCatalogTests
     {
         public static IDirectory DirectoryWrapperInstance()
