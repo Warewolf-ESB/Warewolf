@@ -9,8 +9,8 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dev2.Activities.RedisCache;
 using Dev2.Activities.RedisRemove;
 using Dev2.Common;
@@ -18,17 +18,18 @@ using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Driver.Redis;
 using Warewolf.Interfaces;
-using Warewolf.Resource.Errors;
+using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Tests.Activities.ActivityTests.Redis
 {
     [TestClass]
-    public class RedisRemoveActivityNewTests : BaseActivityTests
+    public class RedisRemoveActivityTests : BaseActivityTests
     {
         static RedisRemoveActivity CreateRedisRemoveActivity()
         {
@@ -39,12 +40,32 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
         [Timeout(60000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisRemoveActivity))]
-        public void RedisRemoveActivity_Equal_BothareObjects()
+        public void RedisRemoveActivity_Equal_BothareObjects_ShouldNotBeEqual()
         {
             object RedisRemoveActivity = CreateRedisRemoveActivity();
             var other = new object();
             var redisActivityEqual = RedisRemoveActivity.Equals(other);
             Assert.IsFalse(redisActivityEqual);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RedisRemoveActivity))]
+        public void RedisRemoveActivity_Equal_BothareObjects_ShouldBeEqual()
+        {
+            var uniqueId = Guid.NewGuid();
+
+            object RedisRemoveActivity = new RedisRemoveActivity
+            {
+                UniqueID = uniqueId.ToString()
+            };
+            var redisActivityEqual = RedisRemoveActivity.Equals(new RedisRemoveActivity
+            {
+                UniqueID = uniqueId.ToString()
+            });
+
+            Assert.IsTrue(redisActivityEqual);
         }
 
         [TestMethod]
@@ -249,7 +270,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
             //---------------Set up test pack-------------------
             var uniqId = Guid.NewGuid().ToString();
             var redisRemoveActivity = new RedisRemoveActivity(mockResourceCatalog.Object, null)
-            { 
+            {
                 UniqueID = uniqId,
                 Result = "A",
             };
@@ -398,75 +419,186 @@ namespace Dev2.Tests.Activities.ActivityTests.Redis
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisRemoveActivity))]
-        public void RedisRemoveActivity_ExecuteTool_RedisSource_Null()
+        public void RedisRemoveActivity_ExecuteTool_RedisSource_NotNull_ExpectFailure()
         {
-            RedisSource redisSource = null;
+            var key = "key";
             var sourceId = Guid.NewGuid();
-            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
-            mockExecutionEnvironment.Setup(o => o.HasErrors()).Returns(true);
-            var expectedErrorMsg = ErrorResource.RedisSourceHasBeenRemoved;
-            mockExecutionEnvironment.Setup(o => o.AllErrors).Returns(new HashSet<string> {expectedErrorMsg});
-            mockExecutionEnvironment.Setup(o => o.Errors).Returns(new HashSet<string> {expectedErrorMsg});
+            var redisSource = new RedisSource
+            {
+                HostName = "localhost",
+                Password = "",
+                Port = "1234",
+            };
 
             var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.Environment).Returns(mockExecutionEnvironment.Object);
+            mockDataObject.Setup(o => o.Environment)
+                .Returns(new ExecutionEnvironment());
+
             var mockResourceCatalog = new Mock<IResourceCatalog>();
-            mockResourceCatalog.Setup(o => o.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, sourceId))
+            mockResourceCatalog.Setup(o => o.GetResource<Resource>(GlobalConstants.ServerWorkspaceID, sourceId))
                 .Returns(redisSource);
 
-            var redisRemoveActivity = new RedisRemoveActivity(mockResourceCatalog.Object, null)
+            var mockRedisCache = new Mock<IRedisCache>();
+            mockRedisCache.Setup(o => o.Remove(key))
+                .Returns(false);
+
+            var mockRedisConnection = new Mock<IRedisConnection>();
+            mockRedisConnection.Setup(o => o.Cache)
+                .Returns(mockRedisCache.Object);
+
+            var redisRemoveActivity = new RedisRemoveActivity(mockResourceCatalog.Object, new RedisCacheStub(() => mockRedisConnection.Object))
             {
-                SourceId = sourceId,
+                Key = key,
+                SourceId = sourceId
             };
 
             redisRemoveActivity.Execute(mockDataObject.Object, 0);
 
-            mockExecutionEnvironment.Verify(o => o.HasErrors(), Times.Once);
-            mockExecutionEnvironment.Verify(o => o.AllErrors, Times.Exactly(2));
-            mockExecutionEnvironment.Verify(o => o.Errors, Times.Exactly(2));
+            mockRedisCache.Verify(o => o.Remove(key), Times.Once);
+
+            Assert.AreEqual("Failure", redisRemoveActivity.Response);
         }
 
         [TestMethod]
-        [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisRemoveActivity))]
-        public void RedisRemoveActivity_ExecuteTool_RedisSource_NotNull()
+        public void RedisRemoveActivity_ExecuteTool_RedisSource_NotNull_ExpectRedisSourceHasBeenRemoved()
         {
-            var dependency = new Depends(Depends.ContainerType.AnonymousRedis);
+            var key = "key";
+            var env = new ExecutionEnvironment();
             var redisSource = new RedisSource
             {
-                HostName = dependency.Container.IP,
+                HostName = "localhost",
                 Password = "",
-                Port = dependency.Container.Port,
+                Port = "1234",
             };
-            var sourceId = Guid.NewGuid();
-            const string expression = "qwerty";
-            var evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
-            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
-            mockExecutionEnvironment.Setup(o => o.EvalToExpression(It.IsAny<string>(), 0)).Returns(expression);
-            mockExecutionEnvironment.Setup(o => o.Eval(It.IsAny<string>(), 0, false, true)).Returns(evalResult);
 
             var mockDataObject = new Mock<IDSFDataObject>();
-            mockDataObject.Setup(o => o.Environment).Returns(mockExecutionEnvironment.Object);
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            mockResourceCatalog.Setup(o => o.GetResource<RedisSource>(GlobalConstants.ServerWorkspaceID, sourceId))
-                .Returns(redisSource);
+            mockDataObject.Setup(o => o.Environment)
+                .Returns(env);
+
+            var mockRedisCache = new Mock<IRedisCache>();
+            mockRedisCache.Setup(o => o.Remove(key))
+                .Returns(true);
 
             var mockRedisConnection = new Mock<IRedisConnection>();
-            var redisRemoveActivity = new RedisRemoveActivity(mockResourceCatalog.Object, null)
+            mockRedisConnection.Setup(o => o.Cache)
+                .Returns(mockRedisCache.Object);
+
+            var redisRemoveActivity = new RedisRemoveActivity(new Mock<IResourceCatalog>().Object, new RedisCacheStub(() => mockRedisConnection.Object))
             {
-                SourceId = sourceId,
-                Connection = mockRedisConnection.Object
+                Key = key,
+            };
+
+            var result = redisRemoveActivity.Execute(mockDataObject.Object, 0);
+
+            mockRedisCache.Verify(o => o.Remove(key), Times.Never);
+
+            Assert.IsNull(redisRemoveActivity.Response);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RedisRemoveActivity))]
+        public void RedisRemoveActivity_ExecuteTool_RedisSource_NotNull_ExpectException_As_ExecutionEnvironmentError()
+        {
+            var key = "key";
+            var sourceId = Guid.NewGuid();
+            var exceptionMessage = "test: if the resource is not found";
+
+            var env = new ExecutionEnvironment();
+            env.Assign("[[key]]", key, 0);
+
+            var redisSource = new RedisSource
+            {
+                HostName = "localhost",
+                Password = "",
+                Port = "1234",
+            };
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment)
+                .Returns(env);
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(o => o.GetResource<Resource>(GlobalConstants.ServerWorkspaceID, sourceId))
+                .Throws(new Exception(exceptionMessage));
+
+            var mockRedisCache = new Mock<IRedisCache>();
+            mockRedisCache.Setup(o => o.Remove(key))
+                .Returns(true);
+
+            var mockRedisConnection = new Mock<IRedisConnection>();
+            mockRedisConnection.Setup(o => o.Cache)
+                .Returns(mockRedisCache.Object);
+
+            var redisRemoveActivity = new RedisRemoveActivity(mockResourceCatalog.Object, new RedisCacheStub(() => mockRedisConnection.Object))
+            {
+                Key = key,
+                SourceId = sourceId
             };
 
             redisRemoveActivity.Execute(mockDataObject.Object, 0);
 
-            mockExecutionEnvironment.Verify(o => o.HasErrors(), Times.Once);
-            //TODO: Expand on this test once IRedisConnection is in use for RedisRemoveActivity
-            //mockExecutionEnvironment.Verify(o => o.AllErrors, Times.Exactly(2));
-            //mockExecutionEnvironment.Verify(o => o.Errors, Times.Exactly(2));
+            var builder = new StringBuilder();
+            builder.Append(GlobalConstants.InnerErrorTag);
+            builder.Append(exceptionMessage);
+            builder.Append(GlobalConstants.InnerErrorTagEnd);
+
+            Assert.AreEqual(builder.ToString(), env.FetchErrors());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RedisRemoveActivity))]
+        public void RedisRemoveActivity_ExecuteTool_RedisSource_NotNull_ExpectSuccess()
+        {
+            var key = "key";
+            var sourceId = Guid.NewGuid();
+            var redisSource = new RedisSource
+            {
+                HostName = "localhost",
+                Password = "",
+                Port = "1234",
+            };
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment)
+                .Returns(new ExecutionEnvironment());
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(o => o.GetResource<Resource>(GlobalConstants.ServerWorkspaceID, sourceId))
+                .Returns(redisSource);
+
+            var mockRedisCache = new Mock<IRedisCache>();
+            mockRedisCache.Setup(o => o.Remove(key))
+                .Returns(true);
+
+            var mockRedisConnection = new Mock<IRedisConnection>();
+            mockRedisConnection.Setup(o => o.Cache)
+                .Returns(mockRedisCache.Object);
+
+            var redisRemoveActivity = new RedisRemoveActivity(mockResourceCatalog.Object, new RedisCacheStub(() => mockRedisConnection.Object))
+            {
+                Key = key,
+                SourceId = sourceId
+            };
+
+            redisRemoveActivity.Execute(mockDataObject.Object, 0);
+
+            mockRedisCache.Verify(o => o.Remove(key), Times.Once);
+
+            Assert.AreEqual("Success", redisRemoveActivity.Response);
+        }
+
+    }
+
+    internal class RedisCacheStub : RedisCacheBase
+    {
+        public RedisCacheStub(Func<IRedisConnection> createConnection) : base(createConnection)
+        {
         }
     }
 }
