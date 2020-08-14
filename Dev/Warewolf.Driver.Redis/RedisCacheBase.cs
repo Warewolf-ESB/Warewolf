@@ -61,8 +61,6 @@ namespace Warewolf.Driver.Redis
 
     public class RedisCacheImpl : RedisCacheBase
     {
-        // TODO: Suggestion to implement IRedisConnection redisConnection so that we can Mock the parameters.
-        //       We can use the real connection for Integration testing
         public RedisCacheImpl() { }
         public RedisCacheImpl(string hostName, int port, string password) : this(() => new RedisConnection(hostName, port, password)) { }
         public RedisCacheImpl(Func<IRedisConnection> createConnection) : base(createConnection)

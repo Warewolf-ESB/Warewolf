@@ -182,7 +182,9 @@
                     Command="{Binding CancelTestCommand}" 
                     Content="{x:Static languages:Core.CancelTest}"></Button>
         </StackPanel>
-        <TextBox TextWrapping="WrapWithOverflow" 
+        <TextBox TextWrapping="WrapWithOverflow"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="2"
                  Grid.Row="5"
                  VerticalAlignment="Top"
                  HorizontalAlignment="Left"
