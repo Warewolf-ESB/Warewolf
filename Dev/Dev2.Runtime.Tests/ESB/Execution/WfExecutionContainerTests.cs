@@ -109,7 +109,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 Config.Server.EnableDetailedLogging = false;
                 Config.Server.ExecutionLogLevel = LogLevel.DEBUG.ToString();
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 //Threadsafety catch
             }
