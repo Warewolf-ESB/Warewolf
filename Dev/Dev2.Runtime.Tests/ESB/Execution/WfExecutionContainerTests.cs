@@ -29,6 +29,7 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Runtime;
 using Microsoft.VisualBasic.Activities;
 using Warewolf.Auditing;
+using System.IO;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
