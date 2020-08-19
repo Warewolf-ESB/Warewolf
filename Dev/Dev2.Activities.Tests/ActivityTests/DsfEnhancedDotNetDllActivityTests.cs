@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -31,7 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Constructor_GivenIsNew_ShouldHaveCorrectValues()
+        public void DsfEnhancedDotNetDllActivity_Constructor_GivenIsNew_ShouldHaveCorrectValues()
         {
             //---------------Set up test pack-------------------
             var activity = new DsfEnhancedDotNetDllActivity();
@@ -46,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenNoNamespace_ShouldAddError()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenNoNamespace_ShouldAddError()
         {
             //---------------Set up test pack-------------------
             var activity = new DsfEnhancedDotNetDllActivityMock();
@@ -65,7 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenNoMethod_ShouldAddError()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenNoMethod_ShouldAddError()
         {
             //---------------Set up test pack-------------------
             var activity = new DsfEnhancedDotNetDllActivityMock();
@@ -92,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenNoMethodNameSpace_ShouldPassThough()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenNoMethodNameSpace_ShouldPassThough()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -132,7 +143,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenIsExistingObject_ShouldEvalFromEnvironment()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenIsExistingObject_ShouldEvalFromEnvironment()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -182,7 +193,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenNullValues_ShouldExecuteMethodUsingNulls()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenNullValues_ShouldExecuteMethodUsingNulls()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -258,7 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenEmptyIsNull_ShouldExecuteWithNull()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenEmptyIsNull_ShouldExecuteWithNull()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -329,7 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenEmptyIsNullFalse_ShouldExecuteWithEmptyString()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenEmptyIsNullFalse_ShouldExecuteWithEmptyString()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -402,7 +413,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenNoConstructor_ShouldDefaultEmptyConstructor()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenNoConstructor_ShouldDefaultEmptyConstructor()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -449,7 +460,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenValidArgs_ShouldReturnValidData()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenValidArgs_ShouldReturnValidData()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -497,7 +508,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        public void Execute_GivenValidArgs_ListType_ToObject_ShouldReturnValidData()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenValidArgs_ListType_ToObject_ShouldReturnValidData()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -551,7 +562,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        public void Execute_GivenValidArgs_ListType_ToRecordset_ShouldReturnValidData()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenValidArgs_ListType_ToRecordset_ShouldReturnValidData()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -603,7 +614,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        public void Execute_GivenValidArgs_ListType_ToScalar_ShouldReturnValidData()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenValidArgs_ListType_ToScalar_ShouldReturnValidData()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -653,7 +664,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenExistingObject_ShouldUseExistingObject()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenExistingObject_ShouldUseExistingObject()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -712,7 +723,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenParameters_ShouldUseExistingObject()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenParameters_ShouldUseExistingObject()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -783,7 +794,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void GetFindMissingType_GivenActivity_ShouldReturnDatgrid()
+        public void DsfEnhancedDotNetDllActivity_GetFindMissingType_GivenActivity_ShouldReturnDatgrid()
         {
             //---------------Set up test pack-------------------
             var activity = new DsfEnhancedDotNetDllActivityMock();
@@ -798,7 +809,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildConstructorInputs_GivenConstructor_ShouldConstructorDebug()
+        public void DsfEnhancedDotNetDllActivity_BuildConstructorInputs_GivenConstructor_ShouldConstructorDebug()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -867,7 +878,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildConstructorOutput_GivenConstructorWithOutput_ShouldConstructorDebug()
+        public void DsfEnhancedDotNetDllActivity_BuildConstructorOutput_GivenConstructorWithOutput_ShouldConstructorDebug()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -935,7 +946,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildMethodInputs_GivenActionsWithInputs_ShouldActionsInputDebug()
+        public void DsfEnhancedDotNetDllActivity_BuildMethodInputs_GivenActionsWithInputs_ShouldActionsInputDebug()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -1007,7 +1018,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildMethodOutputs_GivenMethodOutput_ShouldDebugOutput()
+        public void DsfEnhancedDotNetDllActivity_BuildMethodOutputs_GivenMethodOutput_ShouldDebugOutput()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -1082,7 +1093,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildMethodOutputs_GivenMethodIsvoid_ShouldReturnNone()
+        public void DsfEnhancedDotNetDllActivity_BuildMethodOutputs_GivenMethodIsvoid_ShouldReturnNone()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -1163,7 +1174,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenHasIncorrectExistingTypeObjectSelected_ShouldAddCorrectError()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenHasIncorrectExistingTypeObjectSelected_ShouldAddCorrectError()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
@@ -1242,7 +1253,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Candice Daniel")]
-        public void Execute_GivenValidArgs_ListType_ToObject_ShouldReturnValidData_IsServiceTestExecution()
+        public void DsfEnhancedDotNetDllActivity_Execute_GivenValidArgs_ListType_ToObject_ShouldReturnValidData_IsServiceTestExecution()
         {
             //---------------Set up test pack-------------------
             var type = typeof(Human);
