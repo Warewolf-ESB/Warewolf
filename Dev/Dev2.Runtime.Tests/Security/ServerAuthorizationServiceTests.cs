@@ -25,6 +25,7 @@ using Dev2.Runtime.WebServer.Security;
 namespace Dev2.Tests.Runtime.Security
 {
     [TestClass]
+    [DoNotParallelize]
     public class ServerAuthorizationServiceTests
     {
         [TestMethod]
