@@ -24,6 +24,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
+    [DoNotParallelize]
     public class WebSourcesTests
     {
         [TestMethod]
