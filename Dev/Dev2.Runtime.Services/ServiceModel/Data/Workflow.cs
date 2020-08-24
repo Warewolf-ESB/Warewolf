@@ -191,7 +191,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     StepDescription = activity.GetDisplayName(),
                 };
 
-                if (_workflowNodes.All(o => o.UniqueID != workflowNode.UniqueID))
+                if (!_workflowNodes.Any(o => o.UniqueID == workflowNode.UniqueID))
                 {
                     _workflowNodes.Add(workflowNode);
                 }
