@@ -870,7 +870,6 @@
       <Version>1.0.0</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>
       xcopy /Y /Q /R "$(TargetPath)" "C:\Development\DEV2 Studio Tests\BusinessDesignStudio.Unit.Tests\BusinessDesignStudio.Unit.Tests\Test References”

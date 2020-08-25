@@ -752,7 +752,6 @@
     </Content>
     <EmbeddedResource Include="XML\ComPluginService.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if exist "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" copy "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" "$(TargetDir)WarewolfCOMIPC.exe"</PostBuildEvent>
   </PropertyGroup>
