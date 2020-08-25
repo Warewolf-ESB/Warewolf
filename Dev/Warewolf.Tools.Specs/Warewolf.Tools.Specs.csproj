@@ -1005,9 +1005,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(ProjectDir)Toolbox\FileAndFolder\AddGuidToPaths.ps1"</PreBuildEvent>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

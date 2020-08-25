@@ -199,5 +199,4 @@
       <Version>4.6.1055</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
 </Project>

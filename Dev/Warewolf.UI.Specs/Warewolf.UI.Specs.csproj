@@ -207,7 +207,6 @@
       </ItemGroup>
     </When>
   </Choose>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <PropertyGroup>
     <PostBuildEvent>if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Playback.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Playback.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Playback.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Playback.dll"
 if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll"
