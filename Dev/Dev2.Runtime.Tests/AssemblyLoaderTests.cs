@@ -32,7 +32,7 @@ namespace Dev2.Tests.Runtime
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IAssemblyWrapper>();
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime
             var cleanName = load.FullName;
             var dirtyname = MakeDirty(cleanName);
             mock.Setup(wrapper => wrapper.Load(It.IsAny<string>()));
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime
                         Assert.IsNotNull(load1);
                     });
             mock.Setup(wrapper => wrapper.Load("")).Throws(new Exception());
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime
             mock.Setup(wrapper => wrapper.Load(cleanName))
                .Returns(load);
             mock.Setup(wrapper => wrapper.Load("")).Throws(new Exception());
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
@@ -131,7 +131,7 @@ namespace Dev2.Tests.Runtime
             mock.Setup(wrapper => wrapper.Load(cleanName))
                .Returns(load);
             mock.Setup(wrapper => wrapper.Load("")).Throws(new Exception());
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
@@ -161,7 +161,7 @@ namespace Dev2.Tests.Runtime
             {
                 mock.Setup(wrapper => wrapper.Load(assemblyName)).Returns(Assembly.Load(assemblyName));
             }
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             var fieldInfo = typeof(AssemblyLoader).GetField("_loadedAssemblies", BindingFlags.Instance | BindingFlags.NonPublic);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fieldInfo);
@@ -206,7 +206,7 @@ namespace Dev2.Tests.Runtime
             mock.Setup(wrapper => wrapper.GetAssembly(type)).Returns(load);
             mock.Setup(wrapper => wrapper.Load(a1)).Throws(new Exception());
             mock.Setup(wrapper => wrapper.GetReferencedAssemblies(load)).Returns(assemblyNames);
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             var fieldInfo = typeof(AssemblyLoader).GetField("_loadedAssemblies", BindingFlags.Instance | BindingFlags.NonPublic);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fieldInfo);
@@ -235,7 +235,7 @@ namespace Dev2.Tests.Runtime
             var dirtyname = MakeDirty(cleanName);
             mock.Setup(wrapper => wrapper.Load(cleanName)).Throws(new BadImageFormatException());
             mock.Setup(wrapper => wrapper.Load("")).Throws(new BadImageFormatException());
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
@@ -251,7 +251,7 @@ namespace Dev2.Tests.Runtime
         public void TryLoadAssembly_GivenReturnsNull_ShouldNotLoadAssembly()
         {
             //---------------Set up test pack-------------------
-            var assemblyLoader = new AssemblyLoader();
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
@@ -273,7 +273,7 @@ namespace Dev2.Tests.Runtime
             var location = human.GetType().Assembly.Location;
             mock.Setup(wrapper => wrapper.LoadFrom(location)).Throws(new BadImageFormatException());
             mock.Setup(wrapper => wrapper.Load("")).Throws(new BadImageFormatException());
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
@@ -292,7 +292,7 @@ namespace Dev2.Tests.Runtime
             var location = loadedAssembly.Location;
             mock.Setup(wrapper => wrapper.LoadFrom(location)).Throws(new Exception());
             mock.Setup(wrapper => wrapper.UnsafeLoadFrom(location)).Returns(loadedAssembly);
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
@@ -316,7 +316,7 @@ namespace Dev2.Tests.Runtime
             mock.Setup(wrapper => wrapper.LoadFrom(location)).Throws(new Exception());
             mock.Setup(wrapper => wrapper.UnsafeLoadFrom(location)).Throws(new Exception());
             mock.Setup(wrapper => wrapper.GetAssembly(type)).Returns(loadedAssembly);
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
@@ -343,7 +343,7 @@ namespace Dev2.Tests.Runtime
             mock.Setup(wrapper => wrapper.LoadFrom(location)).Throws(new Exception());
             mock.Setup(wrapper => wrapper.UnsafeLoadFrom(location)).Throws(new Exception());
             mock.Setup(wrapper => wrapper.GetAssembly(type)).Throws(new BadImageFormatException());
-            var assemblyLoader = new AssemblyLoader(mock.Object);
+            var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
