@@ -753,13 +753,13 @@
     <EmbeddedResource Include="XML\ComPluginService.xml" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>if exist "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" copy "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" "$(TargetDir)WarewolfCOMIPC.exe"</PostBuildEvent>
+    <PostBuildEvent>if exist "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" copy "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win\WarewolfCOMIPC.exe"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
 taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-if not exist "$(TargetDir)Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\$(ConfigurationName)\Warewolf.COMIPC.exe" "$(TargetDir)"
-if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.pdb" "$(TargetDir)"</PostBuildEvent>
+if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win"
+if "$(ConfigurationName)"=="Debug" if not exist "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Runtime.Tests\bin\Debug\net48\win"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

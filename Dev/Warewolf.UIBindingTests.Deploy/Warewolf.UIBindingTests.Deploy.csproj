@@ -187,9 +187,8 @@
       <Version>2.3.2</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>powershell -ExecutionPolicy Bypass -Command "&amp;'$(ProjectDir)GenerateStudioDeploymentItemAttributes.ps1'"</PreBuildEvent>
+    <PreBuildEvent>powershell -ExecutionPolicy Bypass -Command "&amp;'$(SolutionDir)Warewolf.UIBindingTests.Deploy\GenerateStudioDeploymentItemAttributes.ps1'"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

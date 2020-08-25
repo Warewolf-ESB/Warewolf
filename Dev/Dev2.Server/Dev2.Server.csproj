@@ -497,16 +497,16 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(TargetDir)Resources"
-echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)Resources - Release"
-if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(TargetDir)Resources - ServerTests"
-if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(TargetDir)Resources - UITests"
-if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(TargetDir)Resources - Load"
+    <PostBuildEvent>echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources"
+echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - Release"
+if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - ServerTests"
+if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - UITests"
+if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - Load"
 if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(TargetDir)_PublishedWebsites\Dev2.Web"
 taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
 taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-if not exist "$(TargetDir)Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.exe" "$(TargetDir)"
-if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.pdb" "$(TargetDir)"</PostBuildEvent>
+if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+if "$(ConfigurationName)"=="Debug" if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>if not exist "$(TargetDir)Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
