@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Drawing;
 using System.Windows;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,7 +28,7 @@ namespace Dev2.Tests
             //----------------------Arrange------------------------
             var mockDev2Activity = new Mock<IDev2Activity>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var obj = new object();
 
@@ -46,7 +47,7 @@ namespace Dev2.Tests
             //----------------------Arrange------------------------
             var mockDev2Activity = new Mock<IDev2Activity>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var obj = new object();
             obj = new ConflictTreeNode(mockDev2Activity.Object, point);
@@ -66,7 +67,7 @@ namespace Dev2.Tests
             //----------------------Arrange------------------------
             var mockDev2Activity = new Mock<IDev2Activity>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity.Object, point);
 
@@ -86,8 +87,8 @@ namespace Dev2.Tests
             var mockDev2Activity = new Mock<IDev2Activity>();
             var mockDev2Activity1 = new Mock<IDev2Activity>();
 
-            var point = new Point();
-            var point1 = new Point();
+            var point = new System.Windows.Point();
+            var point1 = new System.Windows.Point();
 
             var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity1.Object, point1);
 
@@ -107,8 +108,8 @@ namespace Dev2.Tests
             var mockDev2Activity = new Mock<IDev2Activity>();
             var mockDev2Activity1 = new Mock<IDev2Activity>();
 
-            var point = new Point();
-            var point1 = new Point();
+            var point = new System.Windows.Point();
+            var point1 = new System.Windows.Point();
 
             var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity1.Object, point1);
             conflictTreeNode1 = null;
@@ -129,8 +130,8 @@ namespace Dev2.Tests
             var mockDev2Activity = new Mock<IDev2Activity>();
             var mockDev2Activity1 = new Mock<IDev2Activity>();
 
-            var point = new Point();
-            var point1 = new Point();
+            var point = new System.Windows.Point();
+            var point1 = new System.Windows.Point();
 
             var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity1.Object, point1);
             conflictTreeNode1 = null;
@@ -151,7 +152,7 @@ namespace Dev2.Tests
             var mockDev2Activity = new Mock<IDev2Activity>();
             var mockConflictTreeNode = new Mock<IConflictTreeNode>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity.Object, point);
             conflictTreeNode1.AddChild(mockConflictTreeNode.Object, "test1");
@@ -182,7 +183,7 @@ namespace Dev2.Tests
             var mockConflictTreeNode = new Mock<IConflictTreeNode>();
             var mockConflictTreeNode1 = new Mock<IConflictTreeNode>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var child = new ConflictTreeNode(mockChildDev2Activity.Object, point)
             {
@@ -224,7 +225,7 @@ namespace Dev2.Tests
             var mockConflictTreeNode = new Mock<IConflictTreeNode>();
             var mockConflictTreeNode1 = new Mock<IConflictTreeNode>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var child = new ConflictTreeNode(mockChildDev2Activity.Object, point)
             {
@@ -266,7 +267,7 @@ namespace Dev2.Tests
             var mockConflictTreeNode = new Mock<IConflictTreeNode>();
             var mockConflictTreeNode1 = new Mock<IConflictTreeNode>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var child = new ConflictTreeNode(mockChildDev2Activity.Object, point)
             {
@@ -308,7 +309,7 @@ namespace Dev2.Tests
             var mockConflictTreeNode = new Mock<IConflictTreeNode>();
             var mockConflictTreeNode1 = new Mock<IConflictTreeNode>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var child = new ConflictTreeNode(mockChildDev2Activity.Object, point)
             {
@@ -347,7 +348,7 @@ namespace Dev2.Tests
             var mockDev2Activity = new Mock<IDev2Activity>();
             var mockConflictTreeNode = new Mock<IConflictTreeNode>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var conflictTreeNode = new ConflictTreeNode(mockDev2Activity.Object, point)
             {
@@ -368,7 +369,7 @@ namespace Dev2.Tests
             //----------------------Arrange------------------------
             var mockDev2Activity = new Mock<IDev2Activity>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var conflictTreeNode = new ConflictTreeNode(mockDev2Activity.Object, point)
             {
@@ -388,7 +389,7 @@ namespace Dev2.Tests
             //----------------------Arrange------------------------
             var mockDev2Activity = new Mock<IDev2Activity>();
 
-            var point = new Point();
+            var point = new System.Windows.Point();
 
             var conflictTreeNode = new ConflictTreeNode(mockDev2Activity.Object, point)
             {
