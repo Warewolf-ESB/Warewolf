@@ -109,7 +109,7 @@ namespace Dev2.Studio.Core
                         popupController?.Show(string.Format(ErrorResource.ServerBusyError, Connection.DisplayName), ErrorResource.ServerBusyHeader, MessageBoxButton.OK,
                                               MessageBoxImage.Warning, "", false, false, true, false, false, false);
                     }
-                },TaskScheduler.FromCurrentSynchronizationContext());
+                },System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
                 var result = await fetchExplorerTask.ConfigureAwait(true);
                 return result;
             }                        
