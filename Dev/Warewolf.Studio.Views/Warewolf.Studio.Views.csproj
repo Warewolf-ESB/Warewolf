@@ -104,9 +104,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="Microsoft.Windows.Design.Extensibility, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Windows.Design.Extensibility.dll</HintPath>
@@ -456,6 +453,9 @@
     </PackageReference>
     <PackageReference Include="Unity">
       <Version>3.5.1404</Version>
+    </PackageReference>
+    <PackageReference Include="Unofficial.Microsoft.mshtml">
+      <Version>7.0.3300</Version>
     </PackageReference>
     <PackageReference Include="WPFTextBoxAutoComplete">
       <Version>1.0.0</Version>
