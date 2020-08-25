@@ -10,12 +10,11 @@
 
 using System;
 using System.IO;
-using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations;
 using Dev2.PathOperations;
-using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Core.Tests;
 
 
 namespace Unlimited.UnitTest.Framework.PathOperationTests
@@ -175,32 +174,18 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
         #region Create Operation EndPoint From IO Path Tests
 
-        /// <summary>
-        /// Create type of the operation end point from IO path expected activity IO operations end point file sysytem 
-        /// provider.
-        /// </summary>
         [TestMethod]
-
         public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FileSysytemProvider_Type()
-
         {
-
             var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "");
             var result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             Assert.IsTrue(result.GetType() == typeof(Dev2FileSystemProvider));
         }
 
-        /// <summary>
-        /// Create type of the operation end point from IO path expected activity IO operations 
-        /// end point FTP provider.
-        /// </summary>
         [TestMethod]
-
         public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FTPProvider_Type()
-
         {
-
             var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
             var result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
