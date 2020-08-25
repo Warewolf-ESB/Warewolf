@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             var source = CreatePluginSource(typeof(DummyClassForPluginTest));
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            var mockAssemblyLoader = new Mock<Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.IAssemblyLoader>();
             Assembly assembly;
             mockAssemblyLoader.Setup(loader => loader.TryLoadAssembly(It.IsAny<string>(), It.IsAny<string>(), out assembly))
                 .Throws(new BadImageFormatException());
@@ -185,7 +185,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             var source = CreatePluginSource(typeof(DummyClassForPluginTest));
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            var mockAssemblyLoader = new Mock<Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.IAssemblyLoader>();
             Assembly assembly;
             mockAssemblyLoader.Setup(loader => loader.TryLoadAssembly(It.IsAny<string>(), It.IsAny<string>(), out assembly))
                 .Throws(new BadImageFormatException());
@@ -193,58 +193,6 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //---------------Test Result -----------------------
             pluginRuntimeHandler.FetchNamespaceListObjectWithJsonObjects(source);
         }
-
-        #endregion
-
-        #region ValidatePlugin
-
-        //[TestMethod]
-        //[Owner("Travis Frisinger")]
-        //[TestCategory("PluginRuntimeHandler_ValidatePlugin")]
-        //public void PluginRuntimeHandler_ValidatePlugin_WhenValidDll_ExpectBlankMessage()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var pluginRuntimeHandler = new PluginRuntimeHandler();
-        //    var source = CreatePluginSource();
-
-        //    //------------Execute Test---------------------------
-        //    var result = pluginRuntimeHandler.ValidatePlugin(source.AssemblyLocation);
-
-        //    //------------Assert Results-------------------------
-        //    StringAssert.Contains(result, string.Empty);
-        //}
-
-        //[TestMethod]
-        //[Owner("Travis Frisinger")]
-        //[TestCategory("PluginRuntimeHandler_ValidatePlugin")]
-        //public void PluginRuntimeHandler_ValidatePlugin_WhenNotADll_ExpectErrorMessage()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var pluginRuntimeHandler = new PluginRuntimeHandler();
-        //    var source = CreatePluginSource();
-
-        //    //------------Execute Test---------------------------
-        //    var result = pluginRuntimeHandler.ValidatePlugin(source.AssemblyLocation + ".foo");
-
-        //    //------------Assert Results-------------------------
-        //    StringAssert.Contains(result, "Not a Dll file");
-        //}
-
-        //[TestMethod]
-        //[Owner("Travis Frisinger")]
-        //[TestCategory("PluginRuntimeHandler_ValidatePlugin")]
-        //public void PluginRuntimeHandler_ValidatePlugin_WhenGacDll_ExpectBlankMessage()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var pluginRuntimeHandler = new PluginRuntimeHandler();
-
-        //    //------------Execute Test---------------------------
-        //    var result = pluginRuntimeHandler.ValidatePlugin("GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-
-        //    //------------Assert Results-------------------------
-        //    StringAssert.Contains(result, string.Empty);
-        //}
-
 
         #endregion
 
@@ -577,7 +525,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 }
             } } }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
-            var mock = new Mock<IAssemblyLoader>();
+            var mock = new Mock<Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.IAssemblyLoader>();
             Assembly loadedAssembly;
 
             var handler = new PluginRuntimeHandler(mock.Object);
@@ -627,7 +575,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 }
             } } }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
-            var mock = new Mock<IAssemblyLoader>();
+            var mock = new Mock<Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.IAssemblyLoader>();
             Assembly loadedAssembly;
 
             var handler = new PluginRuntimeHandler(mock.Object);
@@ -672,7 +620,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 }
             } } }, type, new ServiceConstructor());
             //------------Execute Test---------------------------
-            var mock = new Mock<IAssemblyLoader>();
+            var mock = new Mock<Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.IAssemblyLoader>();
             Assembly loadedAssembly;
 
             var handler = new PluginRuntimeHandler(mock.Object);
@@ -694,7 +642,6 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             {
                 Args = pluginInvokeArgs
             };
-            //var instance = handler.CreateInstance(pluginInvokeArgs);
             var exception = new AccessViolationException("err");
             mock.Setup(loader => loader.TryLoadAssembly(It.IsAny<string>(), It.IsAny<string>(), out loadedAssembly))
                 .Throws(exception);
