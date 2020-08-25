@@ -6,6 +6,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}</ProjectGuid>
     <OutputType>Library</OutputType>
+	<TargetFramework>net48</TargetFramework>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	<EnableDefaultItems>false</EnableDefaultItems>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Activities.Designers.Tests</RootNamespace>
     <AssemblyName>Dev2.Activities.Designers.Tests</AssemblyName>
@@ -64,7 +68,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
-    <None Include="..\Dev2.Core.Tests\TestUtils.cs">
+    <None Include="..\Warewolf.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </None>
     <Compile Include="AdvancedRecordsetTests\AdvancedRecordsetViewModelTests.cs" />
