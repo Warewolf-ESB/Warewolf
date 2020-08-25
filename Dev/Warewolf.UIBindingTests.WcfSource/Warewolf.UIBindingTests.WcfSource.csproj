@@ -1,10 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2F4FD767-6A03-433F-912F-27BFA11B8CBF}</ProjectGuid>
     <OutputType>Library</OutputType>
+	<TargetFramework>net48</TargetFramework>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	<EnableDefaultItems>false</EnableDefaultItems>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.UIBindingTests.WcfSource</RootNamespace>
     <AssemblyName>Warewolf.UIBindingTests.WcfSource</AssemblyName>

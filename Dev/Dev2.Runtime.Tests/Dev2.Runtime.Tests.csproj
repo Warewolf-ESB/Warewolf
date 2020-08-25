@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <DependsOnNETStandard>true</DependsOnNETStandard>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,6 +8,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{85617545-2121-4683-9828-DAEDB5878CE9}</ProjectGuid>
     <OutputType>Library</OutputType>
+	<TargetFramework>net48</TargetFramework>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	<EnableDefaultItems>false</EnableDefaultItems>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Tests.Runtime</RootNamespace>
     <AssemblyName>Dev2.Runtime.Tests</AssemblyName>
@@ -463,6 +466,10 @@
       <Project>{542F1212-AED0-4537-94AA-6D6442ACDED5}</Project>
       <Name>Warewolf.Trigger.Queue</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core.Tests\Warewolf.Core.Tests.csproj">
+      <Project>{8742EC99-037F-4F9A-95F6-6957B37E07CA}</Project>
+      <Name>Warewolf.Core.Tests</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Calculate_RecordSet_Subtract.xml" />
@@ -746,7 +753,6 @@
     </Content>
     <EmbeddedResource Include="XML\ComPluginService.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if exist "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" copy "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.exe" "$(TargetDir)WarewolfCOMIPC.exe"</PostBuildEvent>
   </PropertyGroup>
