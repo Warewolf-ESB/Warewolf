@@ -1,10 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{907D00EB-B773-4D6E-A5DB-CBE1AAF0B477}</ProjectGuid>
     <OutputType>Library</OutputType>
+	<TargetFramework>net48</TargetFramework>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	<EnableDefaultItems>false</EnableDefaultItems>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Services.Execution.Tests</RootNamespace>
     <AssemblyName>Dev2.Services.Execution.Tests</AssemblyName>

@@ -1,10 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{86E580CD-C480-435A-8978-A9C27377C900}</ProjectGuid>
     <OutputType>Library</OutputType>
+	<TargetFramework>net48</TargetFramework>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	<EnableDefaultItems>false</EnableDefaultItems>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Data.Tests</RootNamespace>
     <AssemblyName>Dev2.Data.Tests</AssemblyName>
@@ -215,10 +218,6 @@
       <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Core.Tests\Dev2.Core.Tests.csproj">
-      <Project>{6A65D99B-61C5-4376-B4F7-71A503F9351F}</Project>
-      <Name>Dev2.Core.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
       <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
       <Name>Dev2.Data.Interfaces</Name>
@@ -310,7 +309,6 @@
     </None>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

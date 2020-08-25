@@ -1,10 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{410A057A-BCFC-476B-AF27-46D6E442FA04}</ProjectGuid>
     <OutputType>Library</OutputType>
+	<TargetFramework>net48</TargetFramework>
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	<EnableDefaultItems>false</EnableDefaultItems>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.UIBindingTests.Deploy</RootNamespace>
     <AssemblyName>Warewolf.UIBindingTests.Deploy</AssemblyName>
@@ -185,7 +188,6 @@
     </PackageReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>powershell -ExecutionPolicy Bypass -Command "&amp;'$(ProjectDir)GenerateStudioDeploymentItemAttributes.ps1'"</PreBuildEvent>
   </PropertyGroup>
