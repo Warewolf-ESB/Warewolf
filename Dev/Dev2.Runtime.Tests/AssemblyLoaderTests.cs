@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime
                 mock.Setup(wrapper => wrapper.Load(assemblyName)).Returns(Assembly.Load(assemblyName));
             }
             var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
-            var fieldInfo = typeof(AssemblyLoader).GetField("_loadedAssemblies", BindingFlags.NonPublic && BindingFlags.Instance);
+            var fieldInfo = typeof(Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader).GetField("_loadedAssemblies", BindingFlags.Instance | BindingFlags.NonPublic);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fieldInfo);
             Assert.IsNotNull(assemblyLoader);
@@ -175,7 +175,6 @@ namespace Dev2.Tests.Runtime
             Assert.IsTrue(value.Count > 2);
             mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.AtLeast(2));
             mock.Verify(wrapper => wrapper.GetReferencedAssemblies(load), Times.Once);
-       
         }
 
         [TestMethod]
@@ -207,7 +206,7 @@ namespace Dev2.Tests.Runtime
             mock.Setup(wrapper => wrapper.Load(a1)).Throws(new Exception());
             mock.Setup(wrapper => wrapper.GetReferencedAssemblies(load)).Returns(assemblyNames);
             var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
-            var fieldInfo = typeof(AssemblyLoader).GetField("_loadedAssemblies", BindingFlags.Instance | BindingFlags.NonPublic);
+            var fieldInfo = typeof(Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader).GetField("_loadedAssemblies", BindingFlags.Instance | BindingFlags.NonPublic);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fieldInfo);
             Assert.IsNotNull(assemblyLoader);
