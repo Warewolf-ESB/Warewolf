@@ -24,6 +24,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Common.ExtMethods;
+using Warewolf.Data;
 
 namespace Dev2.Studio.Core.DataList
 {
