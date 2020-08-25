@@ -80,6 +80,7 @@
     <Compile Include="DirectoryEntryFactoryTest.cs" />
     <Compile Include="ExtMethods\StringExtensionTests.cs" />
     <Compile Include="Common\GetComputerNamesTests.cs" />
+    <Compile Include="ExtMethods\StringIsJsonTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="LegacySettingsTests.cs" />
