@@ -509,9 +509,10 @@ if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.exe"
 if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\"
-if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\"
-if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\"</PreBuildEvent>
+    <PreBuildEvent>mkdir "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
