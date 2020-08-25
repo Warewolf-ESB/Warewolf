@@ -63,8 +63,11 @@ namespace Warewolf.Auditing
             }
             finally
             {
-                _webSocketFactory.Release(_ws);
-                _ws = null;
+                if (_ws != null)
+                {
+                    _webSocketFactory.Release(_ws);
+                    _ws = null;
+                }
             }
         }
 
