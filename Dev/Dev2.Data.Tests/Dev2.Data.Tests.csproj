@@ -218,10 +218,6 @@
       <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Core.Tests\Dev2.Core.Tests.csproj">
-      <Project>{6A65D99B-61C5-4376-B4F7-71A503F9351F}</Project>
-      <Name>Dev2.Core.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
       <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
       <Name>Dev2.Data.Interfaces</Name>
