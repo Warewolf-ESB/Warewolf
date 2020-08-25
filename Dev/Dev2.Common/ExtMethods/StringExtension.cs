@@ -81,29 +81,6 @@ namespace Dev2.Common.ExtMethods
         }
         static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
 
-        public static bool IsXml(this string payload)
-        {
-            var result = false;
-            if (string.IsNullOrEmpty(payload))
-            {
-                return false;
-            }
-
-            if (IsXml(payload, out bool isFragment))
-            {
-                result = true;
-            }
-            else
-            {
-                if (isFragment)
-                {
-                    result = true;
-                }
-            }
-
-            return result;
-        }
-
         public static bool IsJSON(this string payload)
         {
             var value = payload.TrimStart();
