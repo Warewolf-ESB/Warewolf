@@ -8,6 +8,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{85617545-2121-4683-9828-DAEDB5878CE9}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Tests.Runtime</RootNamespace>
     <AssemblyName>Dev2.Runtime.Tests</AssemblyName>

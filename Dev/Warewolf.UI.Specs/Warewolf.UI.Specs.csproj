@@ -8,6 +8,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2E592262-E25F-4EE8-80BE-586D2788F927}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.UI.Specs</RootNamespace>
     <AssemblyName>Warewolf.UI.Specs</AssemblyName>
