@@ -37,7 +37,7 @@ namespace Dev2.Tests.DataList
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Dev2StudioSessionBroker")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBroker_InitSessionWithNoDataBaseDirectoryIsNull()
         {
             var to = new DebugTO();
@@ -58,7 +58,7 @@ namespace Dev2.Tests.DataList
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Dev2StudioSessionBroker")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBroker_InitSessionWithNoDataBaseDirectoryIsNullStillInitialises()
         {
             var to = new DebugTO();
@@ -87,7 +87,7 @@ namespace Dev2.Tests.DataList
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Dev2StudioSessionBroker")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBroker_InitSessionWithSingleScalar()
         {
             var to = new DebugTO();
@@ -112,7 +112,7 @@ namespace Dev2.Tests.DataList
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Dev2StudioSessionBroker")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBroker_PersistSessionWithSavedData_ExpectSavedData()
         {
             var to = new DebugTO();
@@ -136,7 +136,7 @@ namespace Dev2.Tests.DataList
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Dev2StudioSessionBroker")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBroker_PersistSessionWithSavedData_ChangedDataList_ExpectPreviousXmlData()
         {
             var to = new DebugTO();
@@ -158,7 +158,7 @@ namespace Dev2.Tests.DataList
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("Dev2StudioSessionBroker")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBrokerNotPersistSessionWithSavedData_ExpectEmptyDataList()
         {
             var to = new DebugTO();

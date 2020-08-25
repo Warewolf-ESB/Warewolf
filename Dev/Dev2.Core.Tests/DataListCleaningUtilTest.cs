@@ -14,9 +14,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Tests
 {
+
+
+    /// <summary>
+    ///This is a test class for DataListUtilTest and is intended
+    ///to contain all DataListUtilTest Unit Tests
+    ///</summary>
     [TestClass]
+    
     public class DataListCleaningUtilTest
     {
+ 
         [TestMethod]
         public void SplitIntoRegionsWithScalarsExpectedSeperateRegions()
         {
