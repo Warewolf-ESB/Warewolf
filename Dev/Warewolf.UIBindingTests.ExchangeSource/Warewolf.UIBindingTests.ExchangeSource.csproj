@@ -1,13 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1F5ED20F-4EEF-4592-B463-7B2911BFB9E0}</ProjectGuid>
     <OutputType>Library</OutputType>
-	<TargetFramework>net48</TargetFramework>
-	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-	<EnableDefaultItems>false</EnableDefaultItems>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.UIBindingTests.ExchangeSource</RootNamespace>
     <AssemblyName>Warewolf.UIBindingTests.ExchangeSource</AssemblyName>
@@ -139,4 +136,5 @@
     </PackageReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

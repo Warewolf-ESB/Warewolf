@@ -25,6 +25,10 @@ namespace Dev2.Common.Tests
     [TestClass]
     public class ExtensionMethodsTest
     {
+
+        // ReturnAsTagSet
+
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory(nameof(ExtensionMethods))]
@@ -823,7 +827,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var escapeString = Dev2.Common.Common.ExtensionMethods.EscapeString(null);
+            var escapeString = ExtensionMethods.EscapeString(null);
             //------------Assert Results-------------------------
             Assert.IsNull(escapeString);
         }
@@ -836,7 +840,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = "<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">";
             //------------Execute Test---------------------------
-            var escapeString =  Dev2.Common.Common.ExtensionMethods.EscapeString(value);
+            var escapeString =  ExtensionMethods.EscapeString(value);
             //------------Assert Results-------------------------
             Assert.AreEqual("&lt;Action Name=&quot;bug11827service&quot; Type=&quot;InvokeWebService&quot; SourceID=&quot;fd54cecb-eebf-485a-aff7-e97835853c93&quot; SourceName=&quot;bug11827src&quot; SourceMethod=&quot;&quot; RequestUrl=&quot;&quot; RequestMethod=&quot;Get&quot; JsonPath=&quot;&quot;&gt;", escapeString);
         }
@@ -848,7 +852,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var escapeString = Dev2.Common.Common.ExtensionMethods.UnescapeString(null);
+            var escapeString = ExtensionMethods.UnescapeString(null);
             //------------Assert Results-------------------------
             Assert.IsNull(escapeString);
         }
@@ -862,7 +866,7 @@ namespace Dev2.Common.Tests
             var value = "<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">";
             var value1 = "&lt;Action Name=&quot;bug11827service&quot; Type=&quot;InvokeWebService&quot; SourceID=&quot;fd54cecb-eebf-485a-aff7-e97835853c93&quot; SourceName=&quot;bug11827src&quot; SourceMethod=&quot;&quot; RequestUrl=&quot;&quot; RequestMethod=&quot;Get&quot; JsonPath=&quot;&quot;&gt;";
             //------------Execute Test---------------------------
-            var unEscapeString = Dev2.Common.Common.ExtensionMethods.UnescapeString(value1);
+            var unEscapeString = ExtensionMethods.UnescapeString(value1);
             //------------Assert Results-------------------------
             Assert.AreEqual(value, unEscapeString);
         }
@@ -875,7 +879,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "rdf" , true);
+            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "rdf" , true);
             //------------Assert Results-------------------------
             Assert.AreEqual(-1, lastIndexOf);
         }
@@ -888,7 +892,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "sdf", true);
+            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "sdf", true);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, lastIndexOf);
         }
@@ -901,7 +905,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "sdf", 1, true);
+            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "sdf", 1, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, lastIndexOf);
         }
@@ -914,7 +918,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "sDf", 1, true);
+            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "sDf", 1, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, lastIndexOf);
         }
@@ -927,7 +931,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "sDf", 1, false);
+            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "sDf", 1, false);
             //------------Assert Results-------------------------
             Assert.AreEqual(-1, lastIndexOf);
         }
@@ -940,7 +944,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee bbb");
             //------------Execute Test---------------------------
-            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "bbb", 8, false);
+            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "bbb", 8, false);
             //------------Assert Results-------------------------
             Assert.AreEqual(4, lastIndexOf);
         }
@@ -952,7 +956,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var isValidXml = Dev2.Common.Common.ExtensionMethods.IsValidXml("invalid xml");
+            var isValidXml = ExtensionMethods.IsValidXml("invalid xml");
             //------------Assert Results-------------------------
             Assert.IsFalse(isValidXml);
         }
@@ -964,7 +968,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var isValidXml = Dev2.Common.Common.ExtensionMethods.IsValidXml("<invalid xml>");
+            var isValidXml = ExtensionMethods.IsValidXml("<invalid xml>");
             //------------Assert Results-------------------------
             Assert.IsFalse(isValidXml);
         }
@@ -982,7 +986,7 @@ namespace Dev2.Common.Tests
                         <Child>Content</Child>  
                     </Root>";
             //------------Execute Test---------------------------
-            var isValidXml = Dev2.Common.Common.ExtensionMethods.IsValidXml(str);
+            var isValidXml = ExtensionMethods.IsValidXml(str);
             //------------Assert Results-------------------------
             Assert.IsTrue(isValidXml);
         }
@@ -1006,7 +1010,7 @@ namespace Dev2.Common.Tests
                             ]
                         }";
             //------------Execute Test---------------------------
-            var isValidJson = Dev2.Common.Common.ExtensionMethods.IsValidJson(str);
+            var isValidJson = ExtensionMethods.IsValidJson(str);
             //------------Assert Results-------------------------
             Assert.IsTrue(isValidJson);
         }
@@ -1030,7 +1034,7 @@ namespace Dev2.Common.Tests
                             ]
                         ";
             //------------Execute Test---------------------------
-            var isValidJson = Dev2.Common.Common.ExtensionMethods.IsValidJson(str);
+            var isValidJson = ExtensionMethods.IsValidJson(str);
             //------------Assert Results-------------------------
             Assert.IsFalse(isValidJson);
         }
@@ -1054,7 +1058,7 @@ namespace Dev2.Common.Tests
                             ]
                         }";
             //------------Execute Test---------------------------
-            var isValidJson = Dev2.Common.Common.ExtensionMethods.IsValidJson(str);
+            var isValidJson = ExtensionMethods.IsValidJson(str);
             //------------Assert Results-------------------------
             Assert.IsFalse(isValidJson);
         }

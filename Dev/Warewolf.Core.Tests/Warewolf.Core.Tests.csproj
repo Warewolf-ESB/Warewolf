@@ -1,13 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8742EC99-037F-4F9A-95F6-6957B37E07CA}</ProjectGuid>
     <OutputType>Library</OutputType>
-	<TargetFramework>net48</TargetFramework>
-	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-	<EnableDefaultItems>false</EnableDefaultItems>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Core.Tests</RootNamespace>
     <AssemblyName>Warewolf.Core.Tests</AssemblyName>
@@ -43,79 +40,9 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
-    <Compile Include="Common\ConflictTreeNodeTests.cs" />
-    <Compile Include="Common\ResourceCriteriaTests.cs" />
-    <Compile Include="ConverterTests\Base\BaseConvertTest.cs" />
-    <Compile Include="ConverterTests\DateTimeTests\DateTimeComparerTests.cs" />
-    <Compile Include="ConverterTests\DateTimeTests\DateTimeFormatterTests.cs" />
-    <Compile Include="ConverterTests\DateTimeTests\DateTimeParserTests.cs" />
-    <Compile Include="ConverterTests\DateTimeTests\StandardDateTimeParserTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\DataBrowserTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableMapperTest.cs" />
-    <Compile Include="ConverterTests\GraphTests\OutputTests\OutputDescriptionSerializationServiceTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\OutputTests\ShapedXmlOutputFormatterTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\PocoTestData.cs" />
-    <Compile Include="ConverterTests\GraphTests\PocoTests\PocoInterrogatorTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\PocoTests\PocoMapperTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\PocoTests\PocoNavigatorTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\PocoTests\PocoPathSegmentTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\PocoTests\PocoPathTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\StringTests\JsonTest\JsonMapperTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\StringTests\JsonTest\JsonNavigatorTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\StringTests\JsonTest\JsonPathSegmentTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\StringTests\JsonTest\JsonPathTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\StringTests\StringInterrogatorTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlMapperTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlNavigatorTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlPathSegmentTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\StringTests\XmlTests\XmlPathTests.cs" />
-    <Compile Include="DataList\DebugToTests.cs" />
-    <Compile Include="DataList\Dev2StudioSessionBrokerTests.cs" />
-    <Compile Include="Diagnostics\DebugDispatcherTest.cs" />
-    <Compile Include="Diagnostics\DebugItemMock.cs" />
-    <Compile Include="Diagnostics\DebugItemTests.cs" />
-    <Compile Include="Diagnostics\DebugStateTests.cs" />
-    <Compile Include="ExtMethods\ObjExtTests.cs" />
-    <Compile Include="InterfaceImplementorsTests\CoverageDataContextTests.cs" />
-    <Compile Include="MathOperationTest\FunctionEvaluatorTest.cs" />
-    <Compile Include="MathOperationTest\FunctionRepositoryTest.cs" />
-    <Compile Include="MathOperationTest\FunctionTest.cs" />
-    <Compile Include="MathOperationTest\InfragisticsEvaluationTest.cs" />
-    <Compile Include="ParserStrings.Designer.cs">
-      <DependentUpon>ParserStrings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Parsing\BitVectorTest.cs" />
-    <Compile Include="Parsing\LanguageParserTest.cs" />
-    <Compile Include="Parsing\TokenizerTest.cs" />
-    <Compile Include="PathOperationTests\ActivityIOFactoryTests.cs" />
-    <Compile Include="TestModelItemUtil.cs" />
-    <Compile Include="TestStrings.Designer.cs">
-      <DependentUpon>TestStrings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="TestUtils.cs" />
-    <Compile Include="TokenizerTest.cs" />
-    <Compile Include="TypeExtentionTest.cs" />
-    <Compile Include="Utils\Dev2XamlCleanerTest.cs" />
-    <Compile Include="Weave\MockByteReaderWriter.cs" />
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
-    <Reference Include="System.Runtime.DurableInstancing" />
-    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Binaries\Weave.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataListCleaningUtilTest.cs" />
-    <Compile Include="DataObjectTest.cs" />
-    <Compile Include="DeleteHelperTest.cs" />
-    <Compile Include="Dev2RandomTests.cs" />
-    <Compile Include="ExecutionEnvironmentUtilsTests.cs" />
-    <Compile Include="GatherSystemInformationTOTests.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ServiceInputTests.cs" />
     <Compile Include="ServiceOutputMappingTests.cs" />
   </ItemGroup>
@@ -134,9 +61,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Moq">
-      <Version>4.14.5</Version>
-    </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
       <Version>2.1.2</Version>
     </PackageReference>
@@ -147,11 +71,8 @@
       <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ParserStrings.resx" />
-    <EmbeddedResource Include="TestStrings.resx" />
-  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
