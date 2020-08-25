@@ -21,8 +21,10 @@ namespace Dev2.Infrastructure.Tests.Providers.Events
         [TestMethod]
         [Description("GetEvent must add a new subject when invoked for the first time for the type.")]
         [TestCategory("UnitTest")]
-        [Owner("Trevor Williams-Ros")]        
+        [Owner("Trevor Williams-Ros")]
+        
         public void EventPublisherGetEvent_UnitTest_FirstTimeForType_New()
+
         {
             var publisher = new EventPublisher();
             Assert.AreEqual(0, publisher.Count);
