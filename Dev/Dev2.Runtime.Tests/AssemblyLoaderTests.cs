@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime
                 mock.Setup(wrapper => wrapper.Load(assemblyName)).Returns(Assembly.Load(assemblyName));
             }
             var assemblyLoader = new Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin.AssemblyLoader(mock.Object);
-            var fieldInfo = typeof(AssemblyLoader).GetField("_loadedAssemblies", BindingFlags.Instance | BindingFlags.NonPublic);
+            var fieldInfo = typeof(AssemblyLoader).GetField("_loadedAssemblies");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fieldInfo);
             Assert.IsNotNull(assemblyLoader);
