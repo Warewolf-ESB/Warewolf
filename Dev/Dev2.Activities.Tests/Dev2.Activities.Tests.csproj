@@ -93,6 +93,7 @@
     <Compile Include="ActivityComparerTests\PathOperations\FileReadWithBase64ComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\PublishRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfEnhancedDotNetDllActivityNewTests.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>

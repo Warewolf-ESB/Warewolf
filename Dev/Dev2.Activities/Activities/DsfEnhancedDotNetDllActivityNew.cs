@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Dev2;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
@@ -41,8 +42,22 @@ using static DataStorage;
 
 namespace Dev2.Activities
 {
-    [Obsolete("DsfEnhancedDotNetDllActivity is deprecated and will be deleted in future releases. Use DsfEnhancedDotNetDllActivityNew.")]
-    public class DsfEnhancedDotNetDllActivity : DsfMethodBasedActivity, IEquatable<DsfEnhancedDotNetDllActivity>, IEnhancedPlugin
+    public interface IDsfEnhancedDotNetDllActivity
+    {
+        IPluginConstructor Constructor { get; set; }
+        List<IServiceInput> ConstructorInputs { get; set; }
+        List<IPluginAction> MethodsToRun { get; set; }
+        INamespaceItem Namespace { get; set; }
+        string ObjectName { get; }
+        string UniqueID { get; }
+        string DisplayName { get; }
+
+        enFindMissingType GetFindMissingType();
+        int GetHashCode();
+    }
+
+    [ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038D", "Dev2.Activities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
+    public class DsfEnhancedDotNetDllActivityNew : DsfMethodBasedActivity, IEquatable<DsfEnhancedDotNetDllActivityNew>, IEnhancedPlugin, IDsfEnhancedDotNetDllActivity
     {
         List<IDebugState> _childStatesToDispatch;
 
@@ -50,7 +65,7 @@ namespace Dev2.Activities
         public IPluginConstructor Constructor { get; set; }
         public List<IPluginAction> MethodsToRun { get; set; }
         public List<IServiceInput> ConstructorInputs { get; set; }
-        public DsfEnhancedDotNetDllActivity()
+        public DsfEnhancedDotNetDllActivityNew()
         {
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
@@ -95,19 +110,20 @@ namespace Dev2.Activities
             else
             {
                 pluginExecutionDto = new PluginExecutionDto(string.Empty);
-            }
-            constructor.Inputs = new List<IConstructorParameter>();
-            foreach (var parameter in ConstructorInputs)
-            {
-                var resultToString = GetEvaluatedResult(dataObject, parameter.Value, parameter.EmptyIsNull, update);
-                constructor.Inputs.Add(new ConstructorParameter()
+
+                constructor.Inputs = new List<IConstructorParameter>();
+                foreach (var parameter in ConstructorInputs)
                 {
-                    TypeName = parameter.TypeName,
-                    Name = parameter.Name,
-                    Value = resultToString,
-                    EmptyToNull = parameter.EmptyIsNull,
-                    IsRequired = parameter.RequiredField
-                });
+                    var resultToString = GetEvaluatedResult(dataObject, parameter.Value, parameter.EmptyIsNull, update);
+                    constructor.Inputs.Add(new ConstructorParameter
+                    {
+                        TypeName = parameter.TypeName,
+                        Name = parameter.Name,
+                        Value = resultToString,
+                        EmptyToNull = parameter.EmptyIsNull,
+                        IsRequired = parameter.RequiredField
+                    });
+                }
             }
 
             var args = BuidlPluginInvokeArgs(update, constructor, namespaceItem, dataObject);
@@ -350,7 +366,10 @@ namespace Dev2.Activities
             }
             else
             {
-                UpdateEnvironment(pluginAction, update, dataObject, methodResult, outputVariable);
+                if (methodResult != null)
+                {
+                    UpdateEnvironment(pluginAction, update, dataObject, methodResult, outputVariable);
+                }
             }
             DispatchDebugStateForMethod(pluginAction, dataObject, update, false, start);
         }
@@ -659,7 +678,7 @@ namespace Dev2.Activities
         IEnumerable<DebugItem> BuildMethodInputs(IExecutionEnvironment env, IPluginAction action, int update, bool isMock)
         {
             var inputs = new List<DebugItem>();
-            if (action.Inputs.Any())
+            if (action.Inputs?.Any() ?? false)
             {
                 foreach (var methodParameter in action.Inputs)
                 {
@@ -696,7 +715,7 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
-        public bool Equals(DsfEnhancedDotNetDllActivity other)
+        public bool Equals(DsfEnhancedDotNetDllActivityNew other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -730,7 +749,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((DsfEnhancedDotNetDllActivity)obj);
+            return Equals((DsfEnhancedDotNetDllActivityNew)obj);
         }
 
         public override int GetHashCode()

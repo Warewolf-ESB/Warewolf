@@ -1,3 +1,14 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
 #pragma warning disable
  using System;
 using System.Activities;
@@ -231,6 +242,10 @@ namespace Warewolf.Studio.ViewModels
                 SwitchFromDebug(debugState, debugItemContent);
             }
             else if (actualType == typeof(DsfEnhancedDotNetDllActivity).Name)
+            {
+                EnhancedDotNetDllFromDebug(debugState, debugItemContent);
+            }
+            else if (actualType == typeof(DsfEnhancedDotNetDllActivityNew).Name)
             {
                 EnhancedDotNetDllFromDebug(debugState, debugItemContent);
             }
@@ -680,7 +695,8 @@ namespace Warewolf.Studio.ViewModels
                 var assertOp = "=";
                 if (debugItemResult.MoreLink != null)
                 {
-                    if (serviceTestStep.ActivityType == typeof(DsfEnhancedDotNetDllActivity).Name)
+                    var activityType = serviceTestStep.ActivityType;
+                    if (activityType == typeof(DsfEnhancedDotNetDllActivity).Name || activityType == typeof(DsfEnhancedDotNetDllActivityNew).Name)
                     {
                         var realValue = WebClient.DownloadString(debugItemResult.MoreLink);
                         value = realValue.TrimEnd(Environment.NewLine.ToCharArray());
@@ -754,7 +770,8 @@ namespace Warewolf.Studio.ViewModels
 
             if (!string.IsNullOrEmpty(debugItemResult.MoreLink))
             {
-                if (outPutState.ActualType == typeof(DsfEnhancedDotNetDllActivity).Name)
+                var actualType = outPutState.ActualType;
+                if (actualType == typeof(DsfEnhancedDotNetDllActivity).Name || actualType == typeof(DsfEnhancedDotNetDllActivityNew).Name)
                 {
                     var realValue = WebClient.DownloadString(debugItemResult.MoreLink);
                     value = realValue.TrimEnd(Environment.NewLine.ToCharArray());
@@ -803,6 +820,10 @@ namespace Warewolf.Studio.ViewModels
                 ProcessGate(modelItem);
             }
             else if (itemType == typeof(DsfEnhancedDotNetDllActivity))
+            {
+                ProcessEnhanchedDotNetDll(modelItem);
+            }
+            else if (itemType == typeof(DsfEnhancedDotNetDllActivityNew))
             {
                 ProcessEnhanchedDotNetDll(modelItem);
             }
@@ -864,7 +885,8 @@ namespace Warewolf.Studio.ViewModels
 
         void ProcessEnhanchedDotNetDll(ModelItem modelItem)
         {
-            var dotNetDllActivity = GetCurrentActivity<DsfEnhancedDotNetDllActivity>(modelItem);
+            var dotNetDllActivity = GetCurrentActivity<IDsfEnhancedDotNetDllActivity>(modelItem);
+            dotNetDllActivity = GetCurrentActivity<IDsfEnhancedDotNetDllActivity>(modelItem);
             var buildParentsFromModelItem = BuildParentsFromModelItem(modelItem);
             if (buildParentsFromModelItem != null)
             {
@@ -1123,7 +1145,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void AddEnhancedDotNetDll(DsfEnhancedDotNetDllActivity dotNetDllActivity, IServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        void AddEnhancedDotNetDll(IDsfEnhancedDotNetDllActivity dotNetDllActivity, IServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
             if (dotNetDllActivity == null)
             {
@@ -1132,7 +1154,7 @@ namespace Warewolf.Studio.ViewModels
             var uniqueId = dotNetDllActivity.UniqueID;
             var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
 
-            var type = typeof(DsfEnhancedDotNetDllActivity);
+            var type = typeof(DsfEnhancedDotNetDllActivityNew);
             var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, dotNetDllActivity.DisplayName);
             SetStepIcon(type, testStep);
             if (exists == null)
@@ -1160,6 +1182,11 @@ namespace Warewolf.Studio.ViewModels
                     AddEnhancedDotNetDllMethodChild(pluginAction, exists);
                 }
             }
+        }
+
+        private object CreateMockChildStep(Guid guid, IServiceTestStep parent, string name, object displayName)
+        {
+            throw new NotImplementedException();
         }
 
         void AddEnhancedDotNetDllMethodChild(IPluginAction pluginAction, IServiceTestStep exists)
@@ -1236,7 +1263,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void AddEnhancedDotNetDllConstructor(DsfEnhancedDotNetDllActivity dotNetConstructor, IServiceTestStep testStep)
+        void AddEnhancedDotNetDllConstructor(IDsfEnhancedDotNetDllActivity dotNetConstructor, IServiceTestStep testStep)
         {
             var serviceTestStep = CreateMockChildStep(dotNetConstructor.Constructor.ID, testStep, testStep.ActivityType, dotNetConstructor.Constructor.ConstructorName);
             var serviceOutputs = new ObservableCollection<IServiceTestOutput>

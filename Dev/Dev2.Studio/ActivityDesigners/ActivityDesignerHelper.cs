@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -177,6 +177,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
                 { typeof(DsfExchangeEmailNewActivity),typeof(Activities.Designers2.ExchangeNewEmail.ExchangeEmailDesigner) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
+                { typeof(DsfEnhancedDotNetDllActivityNew), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },

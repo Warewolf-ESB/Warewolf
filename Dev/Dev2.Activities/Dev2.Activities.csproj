@@ -101,6 +101,7 @@
     <Compile Include="Activities\AdvancedRecordset\AdvancedRecordset.cs" />
     <Compile Include="Activities\AdvancedRecordset\IAdvancedRecordset.cs" />
     <Compile Include="Activities\DropBox2016\DsfDropBoxBaseActivity.cs" />
+    <Compile Include="Activities\DsfEnhancedDotNetDllActivityNew.cs" />
     <Compile Include="Activities\GateActivity.cs" />
     <Compile Include="Activities\Exchange\DsfExchangeEmailNewActivity.cs" />
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />

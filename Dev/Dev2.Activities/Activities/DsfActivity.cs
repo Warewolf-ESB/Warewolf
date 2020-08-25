@@ -574,7 +574,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var results = new List<DebugItem>();
             if (IsObject)
             {
-                if (!string.IsNullOrEmpty(ObjectName) && !(this is DsfEnhancedDotNetDllActivity))
+                if (!string.IsNullOrEmpty(ObjectName) && (!(this is DsfEnhancedDotNetDllActivity)) || !(this is DsfEnhancedDotNetDllActivityNew))
                 {
                     var itemToAdd = new DebugItem();
                     AddDebugItem(new DebugEvalResult(ObjectName, "", environment, update), itemToAdd);

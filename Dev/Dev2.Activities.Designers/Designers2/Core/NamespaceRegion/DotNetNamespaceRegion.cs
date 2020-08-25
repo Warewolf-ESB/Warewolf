@@ -1,3 +1,14 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -9,13 +20,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
-
-
-
-
-
-
-
 
 
 namespace Dev2.Activities.Designers2.Core.NamespaceRegion
@@ -63,7 +67,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                     IsRefreshing = true;
                     if (_source.SelectedSource != null)
                     {
-                        Namespaces = _modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity) ? _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource) : _model.GetNameSpaces(_source.SelectedSource);
+                        Namespaces = (_modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity) || _modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivityNew)) ? _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource) : _model.GetNameSpaces(_source.SelectedSource);
                     }
 
                     IsRefreshing = false;
@@ -131,7 +135,8 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         {
             if (_source?.SelectedSource != null)
             {
-                if (_modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity))
+                var itemType = _modelItem.ItemType;
+                if (itemType == typeof(DsfEnhancedDotNetDllActivity) || itemType == typeof(DsfEnhancedDotNetDllActivityNew))
                 {
                     Namespaces = _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
                     IsNamespaceEnabled = true;

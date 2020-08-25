@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,19 +35,30 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(constructor.AssemblyLocation, constructor.AssemblyName, out Assembly loadedAssembly);
             if (!tryLoadAssembly)
             {
-                throw new Exception(constructor.AssemblyName + "Not found");
+                throw new Exception(constructor?.AssemblyName ?? "Assembly Name" + " Not found");
             }
 
             var constructorArgs = new List<object>();
+
+            if (string.IsNullOrEmpty(constructor?.Fullname))
+            {
+                throw new Exception(constructor?.Fullname ?? "Namespace" + " is invalid");
+            }
+
             var type = loadedAssembly.GetType(constructor.Fullname);
+            if (type is null)
+            {
+                throw new Exception(constructor.Fullname + " is invalid type name");
+            }
             if (type.IsAbstract)//IsStatic
             {
                 return new PluginExecutionDto(string.Empty) { IsStatic = true, Args = constructor };
             }
-            if (constructor.PluginConstructor.Inputs != null)
+
+            var ctor = constructor.PluginConstructor;
+            if (ctor.Inputs != null)
             {
-                
-                foreach (var constructorArg in constructor.PluginConstructor.Inputs)
+                foreach (var constructorArg in ctor.Inputs)
                 {
                     var setupValuesForParameters = SetupValuesForParameters(constructorArg.Value, constructorArg.TypeName, constructorArg.EmptyToNull, loadedAssembly);
                     if (setupValuesForParameters != null && setupValuesForParameters.Any())
@@ -60,7 +71,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var instance = TryBuildInstance(constructor, type, constructorArgs, loadedAssembly);
             var serializeToJsonString = instance.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { type } });
             
-            constructor.PluginConstructor.ReturnObject = serializeToJsonString;
+            ctor.ReturnObject = serializeToJsonString;
             return new PluginExecutionDto(serializeToJsonString)
             {
                 Args = constructor,
@@ -90,14 +101,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         private static object BuildInstance(PluginInvokeArgs setupInfo, Type type, List<object> constructorArgs, Assembly loadedAssembly, object instance)
         {
-            var types = setupInfo.PluginConstructor?.Inputs.Select(parameter => GetTypeFromLoadedAssembly(parameter.TypeName, loadedAssembly));
+            var constructor = setupInfo.PluginConstructor;
+            var types = constructor?.Inputs.Select(parameter => GetTypeFromLoadedAssembly(parameter.TypeName, loadedAssembly));
             if (types != null)
             {
-                var constructorInfo = type.GetConstructor(types.ToArray());
-                if (constructorInfo != null)
+                var constructorInfo = type.GetConstructor(types.ToArray()); //PBA: perhaps throw is ctor not found?
+                if (constructorInfo is null)
                 {
-                    instance = constructorInfo.Invoke(constructorArgs.ToArray());
+                    throw new Exception(""+ type.FullName +" not found.");
                 }
+                instance = constructorInfo.Invoke(constructorArgs.ToArray());
             }
 
             return instance;
@@ -220,11 +233,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     methodToRun = type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
                 }
 
-                var methodsActionResult = invokeMethodsAction?.Invoke(methodToRun, instance, valuedTypeList, type);
-                var knownBinder = new KnownTypesBinder();
-                knownBinder.KnownTypes.Add(type);
-                knownBinder.KnownTypes.Add(methodsActionResult?.GetType());
-                dev2MethodInfo.MethodResult = methodsActionResult.SerializeToJsonString(knownBinder);
+                if (methodToRun != null)
+                {
+                    var methodsActionResult = invokeMethodsAction?.Invoke(methodToRun, instance, valuedTypeList, type);
+                    var knownBinder = new KnownTypesBinder();
+                    knownBinder.KnownTypes.Add(type);
+                    knownBinder.KnownTypes.Add(methodsActionResult?.GetType());
+                    dev2MethodInfo.MethodResult = methodsActionResult.SerializeToJsonString(knownBinder);
+                }
+                else if (methodToRun is null)
+                {
+                    dev2MethodInfo.HasError = true;
+                    dev2MethodInfo.ErrorMessage = dev2MethodInfo.Method + " not found";
+                }
             }
         }
 

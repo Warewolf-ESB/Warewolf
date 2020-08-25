@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -439,6 +439,62 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        public void PluginRuntimeHandler_CreateInstance_WhenHuman_CTOR_Fullname_IsEmpty_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                Assert.ThrowsException<Exception>(()=> isolated.Value.CreateInstance(new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IConstructorParameter>(),
+
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName, 
+                    Fullname = string.Empty,
+
+                }));
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        public void PluginRuntimeHandler_CreateInstance_WhenHuman_Assembly_GetType_ReturnsNull_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                Assert.ThrowsException<Exception>(() => isolated.Value.CreateInstance(new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IConstructorParameter>(),
+
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName,
+                    Fullname = "bad FullName",
+
+                }));
+            }
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
         public void PluginRuntimeHandler_CreateInstance_WhenHuman_ExpectHumanStringObject()
@@ -467,6 +523,42 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
                 var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes) });
                 Assert.IsNotNull(deserializeToObject);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        public void PluginRuntimeHandler_CreateInstance_WhenHuman_CTOR_WithInvalidInputs_ExpectMissingMethodExceptionExeption()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString" } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                Assert.ThrowsException<MissingMethodException>(() => isolated.Value.CreateInstance(new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IConstructorParameter>()
+                        {
+                            new ConstructorParameter()
+                            {
+                                  Name = "name"
+                                , Value = "Jimmy"
+                            }
+                        },
+
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName,
+                    Fullname = type.FullName,
+
+                }));
             }
         }
 

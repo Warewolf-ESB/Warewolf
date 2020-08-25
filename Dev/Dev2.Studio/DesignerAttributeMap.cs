@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -186,6 +186,7 @@ namespace Dev2
                 { typeof(DsfExchangeEmailActivity), typeof(ExchangeEmailDesignerViewModel) },
                 { typeof(DsfExchangeEmailNewActivity), typeof(ExchangeNewEmailDesignerViewModel) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllEnhancedViewModel) },
+                { typeof(DsfEnhancedDotNetDllActivityNew), typeof(DotNetDllEnhancedViewModel) },
                 { typeof(DsfComDllActivity), typeof(ComDllViewModel) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostViewModel) },
