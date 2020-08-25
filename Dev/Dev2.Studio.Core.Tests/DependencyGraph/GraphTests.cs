@@ -3,6 +3,7 @@ using Dev2.Common.DependencyVisualization;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Data;
 
 namespace Dev2.Core.Tests.DependencyGraph
 {
