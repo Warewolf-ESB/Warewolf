@@ -453,6 +453,7 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core.Tests\Warewolf.Core.Tests.csproj" />
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
