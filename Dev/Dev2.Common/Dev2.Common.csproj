@@ -246,11 +246,6 @@
     <None Include="Dev2.Common.ruleset" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DB Support\DB_Helper\" />
-    <Folder Include="DB Support\DB_Sanity\" />
-    <Folder Include="Gates\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Caliburn.Micro">
       <Version>1.4.1</Version>
     </PackageReference>
