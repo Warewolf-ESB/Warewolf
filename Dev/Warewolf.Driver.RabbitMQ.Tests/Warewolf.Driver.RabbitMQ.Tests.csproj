@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;net48</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
 
     <AssemblyName>Warewolf.Driver.RabbitMQ.Tests</AssemblyName>
 
     <Configurations>Debug</Configurations>
+
+    <TargetFramework>net48</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
