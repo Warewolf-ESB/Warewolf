@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -44,6 +44,7 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ProcessMonitor))]
         [Timeout(30000)]
+        [Ignore]
         public void ProcessThread_Start_GivenValid_ExpectNewProcessCreated()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -99,6 +100,7 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ProcessMonitor))]
         [Timeout(30000)]
+        [Ignore]
         public void ProcessThread_Kill_GivenDeadProcess_DoNotThrow()
         {
             var mockConfig = new Mock<IJobConfig>();
