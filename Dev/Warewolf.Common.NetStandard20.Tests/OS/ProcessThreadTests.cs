@@ -39,9 +39,11 @@ namespace Warewolf.OS.Tests
             Assert.IsFalse(processThread.IsAlive);
             Assert.AreEqual(0, processThread.Pid);
         }
+        
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ProcessMonitor))]
+        [Timeout(30000)]
         public void ProcessThread_Start_GivenValid_ExpectNewProcessCreated()
         {
             var mockConfig = new Mock<IJobConfig>();
