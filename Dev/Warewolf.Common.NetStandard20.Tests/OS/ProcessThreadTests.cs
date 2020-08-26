@@ -98,6 +98,7 @@ namespace Warewolf.OS.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ProcessMonitor))]
+        [Timeout(30000)]
         public void ProcessThread_Kill_GivenDeadProcess_DoNotThrow()
         {
             var mockConfig = new Mock<IJobConfig>();
