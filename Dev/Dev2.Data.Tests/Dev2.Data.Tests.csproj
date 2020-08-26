@@ -285,6 +285,10 @@
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
     </None>
+    <None Include="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core.3">
