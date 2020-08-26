@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;netcoreapp2.2</TargetFrameworks>
+    <TargetFramework>net48</TargetFramework>
   </PropertyGroup>
   <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
   <Import Project="..\packages\FsLexYacc.6.0.1\bin\FsLexYacc.targets" Condition="Exists('..\packages\FsLexYacc.6.0.1\bin\FsLexYacc.targets')" />
