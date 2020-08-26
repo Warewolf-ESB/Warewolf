@@ -456,9 +456,6 @@
     <Content Include="Views\Audit\AuditList.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
@@ -543,4 +540,44 @@
   </Target>
   <Target Name="AfterBuild">
   </Target> -->
+  <ItemGroup>
+	<PackageReference Include="Antlr" version="3.5.0.2" />
+	<PackageReference Include="Microsoft.ApplicationInsights" version="2.14.0" />
+	<PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" version="2.14.0" />
+	<PackageReference Include="Microsoft.ApplicationInsights.PerfCounterCollector" version="2.14.0" />
+	<PackageReference Include="Microsoft.ApplicationInsights.Web" version="2.14.0" />
+	<PackageReference Include="Microsoft.ApplicationInsights.WindowsServer" version="2.14.0" />
+	<PackageReference Include="Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel" version="2.14.0" />
+	<PackageReference Include="Microsoft.AspNet.TelemetryCorrelation" version="1.0.7" />
+	<PackageReference Include="System.Buffers" version="4.5.1" />
+	<PackageReference Include="System.Diagnostics.DiagnosticSource" version="4.6.0" />
+	<PackageReference Include="System.Memory" version="4.5.4" />
+	<PackageReference Include="System.Numerics.Vectors" version="4.5.0" />
+	<PackageReference Include="System.Runtime.CompilerServices.Unsafe" version="4.7.1" />
+	<PackageReference Include="bootstrap" version="4.5.0" />
+	<PackageReference Include="codecracker.CSharp" version="1.1.0" />
+	<PackageReference Include="FontAwesome" version="4.7.0" />
+	<PackageReference Include="jQuery" version="3.5.1" />
+	<PackageReference Include="jQuery.UI.Combined" version="1.12.1" />
+	<PackageReference Include="jQuery.Validation" version="1.19.1" />
+	<PackageReference Include="Microsoft.ApplicationInsights.Agent.Intercept" version="2.4.0" />
+	<PackageReference Include="Microsoft.AspNet.Cors" version="5.2.7" />
+	<PackageReference Include="Microsoft.AspNet.Mvc" version="5.2.7" />
+	<PackageReference Include="Microsoft.AspNet.Razor" version="3.2.7" />
+	<PackageReference Include="Microsoft.AspNet.Web.Optimization" version="1.1.3" />
+	<PackageReference Include="Microsoft.AspNet.WebApi.Client" version="5.2.7" />
+	<PackageReference Include="Microsoft.AspNet.WebApi.Core" version="5.2.7" />
+	<PackageReference Include="Microsoft.AspNet.WebApi.Cors" version="5.2.7" />
+	<PackageReference Include="Microsoft.AspNet.WebPages" version="3.2.7" />
+	<PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" version="3.2.6" />
+	<PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" version="3.2.11" />
+	<PackageReference Include="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+	<PackageReference Include="Modernizr" version="2.8.3" />
+	<PackageReference Include="Moment.js" version="2.27.0" />
+	<PackageReference Include="Newtonsoft.Json" version="12.0.3" />
+	<PackageReference Include="Respond" version="1.4.2" />
+	<PackageReference Include="RestSharp" version="106.11.4" />
+	<PackageReference Include="WebGrease" version="1.6.0" />
+	<PackageReference Include="popper.js" version="1.16.0" />
+  </ItemGroup>
 </Project>
