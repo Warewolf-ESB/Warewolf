@@ -56,7 +56,6 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="Program.cs" />
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
