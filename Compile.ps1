@@ -323,10 +323,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (Test-Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll") {
 					Copy-Item -Path "$env:userprofile\.nuget\packages\mstest.testadapter\2.1.2\build\_common\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Microsoft.VisualStudio.TestPlatform.TestFramework.dll" -Force
 				}
-				Copy-Item -ItemType Directory -Path "$PSScriptRoot\dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Resources - Release"
-				Copy-Item -ItemType Directory -Path "$PSScriptRoot\dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Resources - ServerTests"
-				Copy-Item -ItemType Directory -Path "$PSScriptRoot\dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Resources - UITests"
-				Copy-Item -ItemType Directory -Path "$PSScriptRoot\dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName\Resources - Load"
+				Copy-Item -Path "$PSScriptRoot\Dev\Resources - Release" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+				Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+				Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+				Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
             }
         }
     }
