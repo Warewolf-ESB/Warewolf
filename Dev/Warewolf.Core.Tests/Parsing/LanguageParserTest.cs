@@ -8,11 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
-using Dev2.Tests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Core.Tests;
 
 namespace Unlimited.UnitTest.Framework.Parsing
 {
@@ -37,7 +35,6 @@ namespace Unlimited.UnitTest.Framework.Parsing
 
         #region Input Parse Tests
 
-        // Travis Added : PBI 5779
         [TestMethod]
         public void Parse_InputMappingWithEmptyToNullTrue_Expected_InputCreateWithPropertyEmptyToNullSetTrue()
         {
@@ -46,7 +43,6 @@ namespace Unlimited.UnitTest.Framework.Parsing
             Assert.IsTrue(inputs.Count == 2 && inputs[0].EmptyToNull);
         }
 
-        // Travis Added : PBI 5779
         [TestMethod]
         public void InputMappingWithEmptyToNullFalse_Expected_InputCreateWithPropertyEmptyToNullSetFalse()
         {
@@ -55,7 +51,6 @@ namespace Unlimited.UnitTest.Framework.Parsing
             Assert.IsTrue(inputs.Count == 2 && !inputs[0].EmptyToNull);
         }
 
-        // Sashen Added : PBI 5779
         [TestMethod]
         public void Parse_EmptyToNullAttributeNotInXML_InputMappingWithEmptyToFalse()
         {

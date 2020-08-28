@@ -23,12 +23,8 @@ namespace Dev2.Tests.Diagnostics
     [TestClass]
     public class DebugStateTests
     {
-
-
         [TestMethod]
-
         public void Constructor_Expected_InitializesInputsAndOutputsAsEmptyLists()
-
         {
             var debugState = new DebugState();
 
@@ -201,13 +197,9 @@ namespace Dev2.Tests.Diagnostics
             //---------------Test Result -----------------------
             Assert.IsNull(debugState.ParentID);
         }
-
-
-
+        
         [TestMethod]
-
         public void Constructor_With_ByteReaderBase_Expected_InvokesByteReaderBase()
-
         {
             var reader = new Mock<IByteReaderBase>();
             reader.Setup(w => w.ReadInt32()).Verifiable();

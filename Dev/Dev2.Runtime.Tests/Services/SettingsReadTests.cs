@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
 
             //------------Execute Test---------------------------
             var jsonPermissions = settingsRead.Execute(null, null);
-            var settings = serializer.Deserialize<Settings>(jsonPermissions.ToString());
+            var settings = serializer.Deserialize<Data.Settings.Settings>(jsonPermissions.ToString());
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(settings);
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
 
             //------------Execute Test---------------------------
             var jsonPermissions = settingsRead.Execute(null, null);
-            var settings = JsonConvert.DeserializeObject<Settings>(jsonPermissions.ToString());
+            var settings = JsonConvert.DeserializeObject<Data.Settings.Settings>(jsonPermissions.ToString());
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(settings);

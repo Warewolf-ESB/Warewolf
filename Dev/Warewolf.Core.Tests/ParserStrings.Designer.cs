@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Dev2.Tests {
+namespace Warewolf.Core.Tests{
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Dev2.Tests {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dev2.Tests.ParserStrings", typeof(ParserStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Core.Tests.ParserStrings", typeof(ParserStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

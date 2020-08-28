@@ -350,7 +350,6 @@ namespace ActivityUnitTests
 
         protected void GetScalarValueFromEnvironment(IExecutionEnvironment env, string fieldToRetrieve, out string result, out string error)
         {
-
             error = "";
             result = null;
             if (fieldToRetrieve == GlobalConstants.ErrorPayload)
