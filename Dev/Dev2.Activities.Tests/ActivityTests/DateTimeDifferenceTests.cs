@@ -73,7 +73,6 @@ namespace ActivityUnitTests.ActivityTests
 
             var result = ExecuteProcess();
             GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out IList<string> results, out string error);
-            // remove test datalist ;)
 
             Assert.AreEqual("8847", results[0]);
             Assert.AreEqual("9477", results[1]);
@@ -97,8 +96,6 @@ namespace ActivityUnitTests.ActivityTests
             const string expected = "209";
             GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
-            // remove test datalist ;)
-
             Assert.AreEqual(expected, actual,error);
         }
 
@@ -106,9 +103,7 @@ namespace ActivityUnitTests.ActivityTests
         [Timeout(60000)]
         [TestCategory("DateTimeDifferenceUnitTest")]
         [Owner("Massimo Guerrera")]
-
         public void DateTimeDifference_DateTimeDifferenceUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL

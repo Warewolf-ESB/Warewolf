@@ -1625,7 +1625,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual(exprected, actual);
         }
 
-        //Bug 8736
         [TestMethod]
         public void PerformResultInsertionWithPartialRecordsetWithClosedBracketsAndFullRegionExpectedResultInsertsText()
         {
@@ -1643,7 +1642,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual(exprected, actual);
         }
 
-        //Bug 8755
         [TestMethod]
         public void PerformResultInsertionWithPartialRecordsetWithClosedBracketsAndFullRegionAnNumberIndexExpectedResultInsertsText()
         {
@@ -1661,7 +1659,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual(exprected, actual);
         }
 
-        //Bug 8755
         [TestMethod]
         public void PerformResultInsertionWithPartialRecordsetWithClosedBracketsAndFullRegionAnStarIndexExpectedResultInsertsText()
         {
