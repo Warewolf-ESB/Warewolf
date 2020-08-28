@@ -66,6 +66,10 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         [NonSerialized] ConnectionFactory _connectionFactory;
 
+        private IDSFDataObject _dataObject { get; set; }
+        private int _update { get; set; }
+
+
         internal ConnectionFactory ConnectionFactory
         {
             get => _connectionFactory ?? (_connectionFactory = new ConnectionFactory());
@@ -134,17 +138,16 @@ namespace Dev2.Activities.RabbitMQ.Publish
             };
         }
 
-        private IDSFDataObject DataObject { get; set; }
-
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
+            ExecuteTool(dataObject, _update);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            DataObject = dataObject;
+            _dataObject = dataObject;
+            _update = update;
             base.ExecuteTool(dataObject, update);
         }
 
@@ -158,13 +161,13 @@ namespace Dev2.Activities.RabbitMQ.Publish
                         RabbitMQSourceResourceId);
                 if (RabbitMQSource == null)
                 {
-                    return new List<string> {ErrorResource.RabbitSourceHasBeenDeleted};
+                    return new List<string> { ErrorResource.RabbitSourceHasBeenDeleted };
                 }
 
                 if (!evaluatedValues.TryGetValue("QueueName", out string queueName) ||
                     !evaluatedValues.TryGetValue("Message", out string message))
                 {
-                    return new List<string> {ErrorResource.RabbitQueueNameAndMessageRequired};
+                    return new List<string> { ErrorResource.RabbitQueueNameAndMessageRequired };
                 }
 
                 ConnectionFactory.HostName = RabbitMQSource.HostName;
@@ -190,7 +193,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
                 Dev2Logger.Debug($"Message published to queue {queueName} CorrelationId: {CorrelationID} ",
                     GlobalConstants.WarewolfDebug);
-                return new List<string> {"Success"};
+                return new List<string> { "Success" };
             }
             catch (Exception ex)
             {
@@ -199,27 +202,29 @@ namespace Dev2.Activities.RabbitMQ.Publish
             }
         }
 
-        public string GetCorrelationID()
+        private string GetCorrelationID()
         {
             if (BasicProperties.AutoCorrelation is Manual properties)
             {
-                return properties.CorrelationID;
+                var expr = _dataObject.Environment.EvalToExpression(properties.CorrelationID, _update);
+                return Warewolf.Storage.ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(expr, _update, false, true));
             }
             else
             {
-                if (BasicProperties.AutoCorrelation is CustomTransactionID || DataObject.CustomTransactionID.Length > 0)
+                if (BasicProperties.AutoCorrelation is CustomTransactionID || _dataObject.CustomTransactionID.Length > 0)
                 {
-                    return DataObject.CustomTransactionID;
+                    return _dataObject.CustomTransactionID;
                 }
 
                 if (BasicProperties.AutoCorrelation is ExecutionID)
                 {
-                    return DataObject.ExecutionID.ToString();
+                    return _dataObject.ExecutionID.ToString();
                 }
 
-                return DataObject.ExecutionID.ToString();
+                return _dataObject.ExecutionID.ToString();
             }
         }
+
 #pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(PublishRabbitMQActivity other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
@@ -263,7 +268,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 return false;
             }
 
-            return Equals((PublishRabbitMQActivity) obj);
+            return Equals((PublishRabbitMQActivity)obj);
         }
 
         public override int GetHashCode()
