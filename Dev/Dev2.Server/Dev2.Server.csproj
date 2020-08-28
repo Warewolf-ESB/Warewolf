@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -7,6 +6,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{87AEFD04-29F3-45B6-A7C6-4161F9190876}</ProjectGuid>
     <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Warewolf Server</AssemblyName>
@@ -493,23 +496,26 @@
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(TargetDir)Resources"
-echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)Resources - Release"
-if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(TargetDir)Resources - ServerTests"
-if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(TargetDir)Resources - UITests"
-if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(TargetDir)Resources - Load"
-if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(TargetDir)_PublishedWebsites\Dev2.Web"
+    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf Server.exe" (
+  echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources"
+  echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - Release"
+  echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - ServerTests"
+  echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - UITests"
+  echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - Load"
+  if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\_PublishedWebsites\Dev2.Web"
+  if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+  if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+)
 taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
-taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-if not exist "$(TargetDir)Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\$(ConfigurationName)\Warewolf.COMIPC.exe" "$(TargetDir)"
-if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.pdb" "$(TargetDir)"</PostBuildEvent>
+taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>if not exist "$(TargetDir)Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
-if not exist "$(TargetDir)Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
-if not exist "$(TargetDir)Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(TargetDir)"</PreBuildEvent>
+    <PreBuildEvent>if exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win" (
+  if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+  if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+  if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

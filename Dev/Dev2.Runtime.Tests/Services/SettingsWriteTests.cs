@@ -26,6 +26,7 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
+    [DoNotParallelize]
     public class SettingsWriteTests
     {
 
@@ -95,7 +96,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
             var windowsGroupPermissions = new List<WindowsGroupPermission> { permission };
-            var settings = new Settings { Security = new SecuritySettingsTO(windowsGroupPermissions) };
+            var settings = new Data.Settings.Settings { Security = new SecuritySettingsTO(windowsGroupPermissions) };
             var serializeObject = JsonConvert.SerializeObject(settings);
             var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------

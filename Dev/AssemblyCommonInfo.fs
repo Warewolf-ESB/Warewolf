@@ -1,4 +1,4 @@
-﻿//  Warewolf - Once bitten, there's no going back
+//  Warewolf - Once bitten, there's no going back
 //  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 //  Licensed under GNU Affero General Public License 3.0 or later. 
 //  Some rights reserved.
@@ -18,7 +18,7 @@ open System.Reflection;
 
 [<assembly: AssemblyCompany("Warewolf")>]
 [<assembly: AssemblyProduct("Warewolf")>]
-[<assembly: AssemblyCopyright("Copyright Warewolf 2017")>]
+[<assembly: AssemblyCopyright("Copyright Warewolf 2020")>]
 
 
 // Version information for an assembly consists of the following four values:
@@ -30,5 +30,5 @@ open System.Reflection;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[<assembly: AssemblyVersion("0.0.*")>]
+[<assembly: AssemblyVersion("0.0.0.0")>]
 do()

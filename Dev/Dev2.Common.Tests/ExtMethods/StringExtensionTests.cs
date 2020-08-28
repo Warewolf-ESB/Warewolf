@@ -8,10 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.Tests.ExtMethods
 {
@@ -36,6 +36,7 @@ namespace Dev2.Tests.ExtMethods
             string result = "";
             Assert.IsFalse(result.IsNumeric(), "Empty string is not Numeric");
         }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("StringExtension")]
@@ -82,44 +83,6 @@ namespace Dev2.Tests.ExtMethods
             //------------Assert Results-------------------------
             Assert.IsTrue(result, "-123.142 IsNumeric");
         }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("StringExtension")]
-        public void StringExtension_IsJSON_CurlyBrackets_ExpectTrue()
-        {
-            const string fragment = "{}";
-            var result = fragment.IsJSON();
-            Assert.IsTrue(result, "{} is valid JSON");
-        }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("StringExtension")]
-        public void StringExtension_IsJSON_SquareBrackets_ExpectTrue()
-        {
-            const string fragment = "[]";
-            var result = fragment.IsJSON();
-            Assert.IsTrue(result, "[] is valid JSON");
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("StringExtension")]
-        public void StringExtension_IsJSON_WhenValidXML_ExpectFalse()
-        {
-            const string fragment = "<x></x>";
-            var result = fragment.IsJSON();
-            Assert.IsFalse(result, "<x></x> is not valid JSON");
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("StringExtension")]
-        public void StringExtension_IsJSON_WhenValidText_ExpectFalse()
-        {
-            const string fragment = "{ hello } { name }";
-            var result = fragment.IsJSON();
-            Assert.IsFalse(result, "{ hello } { name } is not valid JSON");
-        }
 
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -148,28 +111,7 @@ namespace Dev2.Tests.ExtMethods
             var checkHasUnicodeInText = Text.ContainsUnicodeCharacter();
             Assert.IsFalse(checkHasUnicodeInText, "ContainsUnicodeCharacter is Empty");
         }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("StringExtension")]
-        public void StringExtension_BlankText_IsEmpty() => Assert.IsFalse("".IsDate(), "Blank string is date");
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("StringExtension")]
-        public void StringExtension_BlankText_IsNull()
-        {
-            const string Text = null;
-            Assert.IsFalse(Text.IsDate(), "Null string is not Date");
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("StringExtension")]
-        public void StringExtension_IsDate_isValid()
-        {
-            DateTime today = DateTime.Today;
-            Assert.IsTrue(today.ToString("dd/MM/yyyy").IsDate(), "Date is Valid");
-        }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("StringExtension")]
@@ -184,6 +126,7 @@ namespace Dev2.Tests.ExtMethods
             Assert.AreEqual(true, isFragment);
             Assert.AreEqual(false, result);
         }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("StringExtension")]
@@ -198,6 +141,7 @@ namespace Dev2.Tests.ExtMethods
             Assert.AreEqual(false, isFragment);
             Assert.AreEqual(false, result);
         }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("StringExtension")]
@@ -205,6 +149,7 @@ namespace Dev2.Tests.ExtMethods
         {
             Assert.IsTrue("<xml><frag>ment</frag><ment>frag</ment></xml>".IsXml(), "Is valid XML not a fragment");
         }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("StringExtension")]
@@ -212,6 +157,7 @@ namespace Dev2.Tests.ExtMethods
         {
             Assert.IsFalse("xml><frag>ment</frag><ment>frag</ment></xml>".IsXml(), "Is valid XML not a fragment");
         }
+        
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("StringExtension")]
@@ -237,7 +183,6 @@ namespace Dev2.Tests.ExtMethods
             const string XmlFragment = "";
             Assert.IsFalse(XmlFragment.IsXml(), "Xml Fragment is Empty");
         }
-
 
         [TestMethod]
         [Owner("Candice Daniel")]
