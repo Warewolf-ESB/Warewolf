@@ -245,7 +245,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 
             var getResults = provider.GetIntellisenseResults(context);
             var actualist = getResults.Where(i => !i.IsError).Select(i => i.Name).ToArray();
-            Assert.AreEqual(expectedList.Length, actualist.Length);
+            Assert.AreEqual(expectedList.Length, actualist.Length, "Items not equal. Expected list: \"" + string.Join(",", expectedList) + "\", Actual list: \"" + string.Join(",", actualist) + "\"");
             var all = true;
             foreach (var a in expectedList)
             {

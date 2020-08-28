@@ -180,13 +180,10 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(ActivityIOBrokerMainDriver))]
         public void ActivityIOBrokerMainDriver_WriteToRemoteTempStorage_AppendTop()
         {
-            var somePath = Path.GetTempFileName();
-            File.WriteAllText(somePath, "some text");
             var tmpfile = Path.GetTempFileName();
 
             var mockDst = new Mock<IActivityIOOperationsEndPoint>();
             var mockIoPath = new Mock<IActivityIOPath>();
-            mockIoPath.Setup(o => o.Path).Returns(somePath);
             mockDst.Setup(o => o.IOPath).Returns(mockIoPath.Object);
             mockDst.Setup(o => o.PathExist(mockDst.Object.IOPath)).Returns(true);
             var dstStream = new MemoryStream(new byte[] { 0x32, 0x33, 0x34 });
@@ -212,9 +209,7 @@ namespace Dev2.Data.Tests.PathOperations
             mockDst.VerifyAll();
             mockFile.VerifyAll();
 
-            Assert.IsTrue(File.Exists(somePath));
             Assert.IsTrue(File.Exists(tmpfile));
-            File.Delete(somePath);
             File.Delete(tmpfile);
         }
 
