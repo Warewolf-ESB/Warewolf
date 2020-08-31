@@ -523,7 +523,6 @@ if exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf Server.exe" (
 taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
 taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
   </PropertyGroup>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
