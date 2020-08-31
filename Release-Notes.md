@@ -1,3 +1,10 @@
+Friday 28 August 2020
+======================
+Bug Fixes
+---------
+- Manual CorrelationID can now evaluate Warewolf variables.
+- The log server no longer returns object null error.
+
 Friday 31 July 2020
 ======================
 Features
