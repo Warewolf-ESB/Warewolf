@@ -221,7 +221,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.PluginSource")]
 [assembly: InternalsVisibleTo("Dev2.Utils.Tests")]
-[assembly: InternalsVisibleTo("Dev2.Core.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.Core.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Common.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Designers.Tests")]
