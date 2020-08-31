@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -871,33 +871,16 @@
       <Version>1.0.0</Version>
     </PackageReference>
   </ItemGroup>
-  <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
-    <PostBuildEvent>
-      xcopy /Y /Q /R "$(TargetPath)" "C:\Development\DEV2 Studio Tests\BusinessDesignStudio.Unit.Tests\BusinessDesignStudio.Unit.Tests\Test References”
-      xcopy /Y /Q /R "$(TargetName).pdb" "C:\Development\DEV2 Studio Tests\BusinessDesignStudio.Unit.Tests\BusinessDesignStudio.Unit.Tests\Test References”
-    </PostBuildEvent>
-  </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
+)
+if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win
+)"</PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
-    <PostBuildEvent>ROBOCOPY "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
-REM Visual Studio expects 0 when successful
-set rce=%25errorlevel%25
-if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0
-    </PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>if not exist "$(TargetDir)Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
-if not exist "$(TargetDir)Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
-if not exist "$(TargetDir)Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(TargetDir)"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
