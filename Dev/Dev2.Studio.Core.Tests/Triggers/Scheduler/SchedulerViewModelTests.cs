@@ -1755,7 +1755,7 @@ namespace Dev2.Core.Tests.Triggers.Scheduler
         public void SchedulerViewModel_EditTrigger_ShouldEditTheTrigger()
         {
             //------------Setup for test--------------------------
-
+            CustomContainer.Register(new Mock<IServerRepository>().Object);
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IServer>().Object);
             var resources = new ObservableCollection<IScheduledResource>();
             var mockScheduleTrigger = new Mock<IScheduleTrigger>();
