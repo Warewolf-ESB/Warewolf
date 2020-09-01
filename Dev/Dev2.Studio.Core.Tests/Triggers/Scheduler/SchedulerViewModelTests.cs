@@ -1794,7 +1794,7 @@ namespace Dev2.Core.Tests.Triggers.Scheduler
             Assert.AreEqual(02, schedulerViewModel.SelectedTask.NextRunDate.Hour);
             Assert.AreEqual(21, schedulerViewModel.SelectedTask.NextRunDate.Minute);
             Assert.IsTrue(schedulerViewModel.TriggerText.StartsWith("At"));
-            Assert.IsTrue(schedulerViewModel.TriggerText.EndsWith("AM every day"));
+            Assert.IsTrue(schedulerViewModel.TriggerText.EndsWith("AM every day"), $"TriggerText \"{schedulerViewModel.TriggerText}\" does not end with \"AM every day\"");
 
             schedulerViewModel.SelectedTask = null;
             Assert.AreEqual("", schedulerViewModel.TriggerText);
