@@ -8,26 +8,26 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+
 using System.IO;
 
 namespace Dev2.Common.Interfaces.Runtime.Services
 {
-    public interface IStreamWriterFactory
+    public interface IMemoryStreamFactory
     {
-        StreamWriter New(string path, bool append);
-        StreamWriter New(MemoryStream memoryStream);
+        MemoryStream New();
+        MemoryStream New(byte[] byteArray);
     }
-
-    public class StreamWriterFactory : IStreamWriterFactory
+    public class MemoryStreamFactory : IMemoryStreamFactory
     {
-        public StreamWriter New(string path, bool append)
+        public MemoryStream New()
         {
-            return new StreamWriter(path, append);
+            return new MemoryStream();
         }
 
-        public StreamWriter New(MemoryStream memoryStream)
+        public MemoryStream New(byte[] byteArray)
         {
-            return new StreamWriter(memoryStream);
+            return new MemoryStream(byteArray);
         }
     }
 }

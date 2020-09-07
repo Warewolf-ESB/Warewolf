@@ -331,6 +331,9 @@
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
     <Compile Include="IServiceTestCoverageModelTo.cs" />
     <Compile Include="ISingleTestNodesCovered.cs" />
+    <Compile Include="Runtime\Services\IMemoryStreamFactory.cs" />
+    <Compile Include="Runtime\Services\IMultipartMemoryStreamProviderFactory.cs" />
+    <Compile Include="Runtime\Services\IStreamContentFactory.cs" />
     <Compile Include="Runtime\Services\IStreamReaderFactory.cs" />
     <Compile Include="Runtime\Services\IStreamWriterFactory.cs" />
     <Compile Include="Runtime\Services\ITestCoverageCatalog.cs" />
@@ -466,6 +469,7 @@
     <PackageReference Include="Microsoft.AspNet.SignalR.Client">
       <Version>2.4.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.Exchange.WebServices">
       <Version>2.2.0</Version>
     </PackageReference>

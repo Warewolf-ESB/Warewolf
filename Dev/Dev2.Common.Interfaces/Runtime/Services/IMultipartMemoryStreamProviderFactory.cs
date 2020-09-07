@@ -8,26 +8,21 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.IO;
+
+using System.Net.Http;
 
 namespace Dev2.Common.Interfaces.Runtime.Services
 {
-    public interface IStreamWriterFactory
+    public interface IMultipartMemoryStreamProviderFactory
     {
-        StreamWriter New(string path, bool append);
-        StreamWriter New(MemoryStream memoryStream);
+        MultipartMemoryStreamProvider New();
     }
-
-    public class StreamWriterFactory : IStreamWriterFactory
+    public class MultipartMemoryStreamProviderFactory : IMultipartMemoryStreamProviderFactory
     {
-        public StreamWriter New(string path, bool append)
+        public MultipartMemoryStreamProvider New()
         {
-            return new StreamWriter(path, append);
-        }
-
-        public StreamWriter New(MemoryStream memoryStream)
-        {
-            return new StreamWriter(memoryStream);
+            return new MultipartMemoryStreamProvider();
         }
     }
+
 }

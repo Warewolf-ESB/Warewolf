@@ -30,7 +30,7 @@ namespace Dev2.Runtime.WebServer
         
         public WebServerContext(HttpRequestMessage request)
         {
-            _request = request;
+            _request = request; 
             ResponseMessage = request.CreateResponse();
             Request = new WebServerRequest(request);
             Response = new WebServerResponse(ResponseMessage);
