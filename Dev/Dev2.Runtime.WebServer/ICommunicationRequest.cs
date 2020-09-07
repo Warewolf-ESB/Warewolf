@@ -11,9 +11,11 @@
 using System;
 using System.Collections.Specialized;
 using System.IO;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Dev2.Runtime.WebServer
 {
@@ -31,5 +33,6 @@ namespace Dev2.Runtime.WebServer
         NameValueCollection BoundVariables { get; }
         HttpRequestHeaders Headers { get; }
         bool IsTokenAuthentication { get; }
+        ICommunicationRequestContent Content { get; }
     }
 }
