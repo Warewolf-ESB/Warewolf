@@ -160,6 +160,7 @@
     <Compile Include="Enums\PopulateOptions.cs" />
     <Compile Include="Exchange\IExchangeService.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
+    <Compile Include="Factories\IFileStreamFactory.cs" />
     <Compile Include="FileListing.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />
     <Compile Include="Help\IHelpDescriptorViewModel.cs" />
@@ -486,5 +487,4 @@
       <Version>2.5.20</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
 </Project>
