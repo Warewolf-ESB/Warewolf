@@ -28,6 +28,7 @@ using Dev2.Infrastructure.Tests.Services.Security;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
+    [DoNotParallelize]
     public class SecurityReadTests
     {
         static string _testDir;
@@ -97,7 +98,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityRead_Execute")]
-        [DoNotParallelize]
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithNoGuestPermission_ShouldHaveExistingPermissionsAndGuest()
         {
             //------------Setup for test--------------------------
@@ -155,7 +155,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityRead_Execute")]
-        [DoNotParallelize]
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithGuestPermission_ShouldHaveExistingPermissions()
         {
             //------------Setup for test--------------------------
