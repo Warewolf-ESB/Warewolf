@@ -478,7 +478,7 @@ namespace Dev2.Common.Common
             }
         }
 
-        public static string ToBase64String(this byte[] bytes, Base64FormattingOptions options) => Convert.ToBase64String(bytes, options);
+        public static string ToBase64String(this byte[] bytes, Base64FormattingOptions options = Base64FormattingOptions.None) => Convert.ToBase64String(bytes, options);
 
         public static byte[] Base64StringToByteArray(this string base64String) => GetBase64StringToByteArray(base64String);
 
