@@ -108,7 +108,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (IsResultBase64)
                     {
                         var result = broker.GetBytes(endpoint);
-                        outputs[0].OutputStrings.Add(result.ToBase64String(Base64FormattingOptions.InsertLineBreaks));
+                        outputs[0].OutputStrings.Add(result.ToBase64String());
                     }
                     else
                     {

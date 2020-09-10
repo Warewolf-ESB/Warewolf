@@ -18,9 +18,9 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -545,7 +545,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var reqContentStream = ctx.Request.Content.ReadAsStreamAsync().Result;
                 reqContentStream.CopyTo(tempStream);
 
-                var byteArray = Encoding.ASCII.GetBytes(data);
+                var byteArray = data.Base64StringToByteArray();
                 var stream = _memoryStreamFactory.New(byteArray);
                 stream.CopyTo(tempStream);
                 
@@ -570,7 +570,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var name = contentDisposition.Name.Trim('"');
                     var byteData= content.ReadAsByteArrayAsync().Result;
 
-                    valuePairs.Add(name, Convert.ToBase64String(byteData));
+                    valuePairs.Add(name, byteData.ToBase64String());
                 }
 
                 return valuePairs;
