@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -105,9 +105,11 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.IsFalse(result.HasError);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SaveAuditingSettings))]
+        [DoNotParallelize]
         public void SaveAuditingSettings_Execute_AuditingSettingsData()
         {
             //------------Setup for test--------------------------

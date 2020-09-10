@@ -26,6 +26,7 @@ namespace Dev2.Common.Tests
         {
             Assert.AreEqual(nameof(LegacySettingsData), ServerSettings.DefaultSink);
         }
+
         [TestMethod]
         [TestCategory(nameof(ServerSettings))]
         public void ServerSettingsData_Equals_Valid_Expected()
@@ -147,7 +148,6 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ServerSettings))]
-        [DoNotParallelize]
         public void ServerSettingsData_SinkNotInFile_AuditFilePathIsNotNull_SetSinkEqualLegacySettingsData()
         {
             var serverSettings = Config.Server.Get();
