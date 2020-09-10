@@ -20,7 +20,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
-    // BUG 9500 - 2013.05.31 - TWR - Created
     [TestClass]
     [TestCategory("Runtime Hosting")]
     public class PluginServicesTest
@@ -293,6 +292,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
+        [DoNotParallelize]
         public void PluginServices_Test_WhenTestingPluginReturningPlainString_ExpectValidPaths()
         {
             //------------Setup for test--------------------------
@@ -319,6 +319,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
+        [DoNotParallelize]
         public void PluginServices_Test_WhenTestingPluginReturningXmlString_ExpectValidPaths()
         {
             //------------Setup for test--------------------------
@@ -345,6 +346,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
+        [DoNotParallelize]
         public void PluginServices_Test_WhenTestingPluginReturningJsonString_ExpectValidPaths()
         {
             //------------Setup for test--------------------------

@@ -988,6 +988,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Services_Test")]
+        [DoNotParallelize]
         public void Services_Test_WhenTestingPluginHavingARecordSetFieldNotInOutput_ExpectNotAdded()
         {
             //------------Setup for test--------------------------
