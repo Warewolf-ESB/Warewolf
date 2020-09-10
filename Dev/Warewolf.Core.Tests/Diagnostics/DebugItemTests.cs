@@ -215,13 +215,14 @@ namespace Dev2.Tests.Diagnostics
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DebugItem))]
+        [DoNotParallelize]
         public void DebugItem_SaveFile_With_Contents_Expected_SavesFileToDisk()
         {
             var debugState = new DebugItem();
 
-            debugState.ClearFile("TestFile.txt");
+            debugState.ClearFile("TestDebugItemFile.txt");
             EnvironmentVariables.WebServerUri = "http://localhost:3142";
-            var uri = debugState.SaveFile(LongText, "TestFile.txt");
+            var uri = debugState.SaveFile(LongText, "TestDebugItemFile.txt");
             var path = new Uri(uri).OriginalString.Replace("?DebugItemFilePath=", "").Replace(EnvironmentVariables.WebServerUri + "/Services/FetchDebugItemFileService", "");
             var exists = File.Exists(path);
             Assert.IsTrue(exists);
@@ -237,12 +238,12 @@ namespace Dev2.Tests.Diagnostics
         {
             var debugState = new DebugItem();
 
-            debugState.ClearFile("TestFile.txt");
+            debugState.ClearFile("TestSpecialCharsFile.txt");
             EnvironmentVariables.WebServerUri = "http://localhost:3142";
             const string expeced = "\r\nThis is\r\n the text\\n that we are writing";
             const string textToWrite = "\nThis is\r\n the text\\n that we are writing";
 
-            var uri = debugState.SaveFile(textToWrite, "TestFile.txt");
+            var uri = debugState.SaveFile(textToWrite, "TestSpecialCharsFile.txt");
             var path = new Uri(uri).OriginalString.Replace("?DebugItemFilePath=", "").Replace(EnvironmentVariables.WebServerUri + "/Services/FetchDebugItemFileService", "");
             var exists = File.Exists(path);
             Assert.IsTrue(exists);
