@@ -10,10 +10,13 @@
 */
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Util
 {
@@ -27,17 +30,22 @@ namespace Dev2.Data.Util
 
         public static string Scrub(string text)
         {
+            if (text.IsBase64String(out byte[] bytes))
+            {
+                text = bytes.ReadToString();
+            }
+
             if(string.IsNullOrWhiteSpace(text))
             {
                 return text;
             }
 
             text = text.Trim();
-            var scrubType = text.StartsWith("<") ? ScrubType.Xml : ScrubType.JSon;
-            return Scrub(text, scrubType);
+            var scrubType = text.IsXml() ? ScrubType.Xml : text.IsJSON() ? ScrubType.JSon : text.IsHtml() ? ScrubType.Html : ScrubType.Base64;
+            return Scrub(text, bytes, scrubType);
         }
 
-        public static string Scrub(string text, ScrubType scrubType)
+        public static string Scrub(string text, byte[] bytes, ScrubType scrubType)
         {
             if(string.IsNullOrWhiteSpace(text))
             {
@@ -49,11 +57,26 @@ namespace Dev2.Data.Util
                     return ScrubXml(text);
                 case ScrubType.JSon:
                     return ScrubJson(text);
+                case ScrubType.Html:
+                    return ScrubHtml(text);
+                case ScrubType.Base64:
+                    return ScrubBase64(bytes);
                 default:
                     break;
             }
             return text;
         }
+
+        private static string ScrubHtml(string text)
+        {
+            return text;
+        }
+
+        private static string ScrubBase64(byte[] bytes)
+        {
+            return bytes.ToBase64String();
+        }
+
 
         #endregion
 

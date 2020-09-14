@@ -104,6 +104,11 @@ namespace Dev2.Common.ExtMethods
             return result;
         }
 
+        public static bool IsHtml(this string payload)
+        {
+            return payload.StartsWith(@"<!doctype html>", true, CultureInfo.InvariantCulture);
+        }
+
         public static bool IsJSON(this string payload)
         {
             var value = payload.TrimStart();
@@ -355,5 +360,7 @@ namespace Dev2.Common.ExtMethods
                 stringa != null &&
                 stringa.ToLowerInvariant().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLowerInvariant().ExceptChars(new[] { ' ', '\t', '\n', '\r' }));
         }
+
+        public static byte[] ToBytes(this string stringObj) => Encoding.ASCII.GetBytes(stringObj);
     }
 }
