@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.Util
                 "\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"user\":{\"id\":634794199,\"id_str\":\"634794199\"},\"geo\":null,\"coordinates\":null," +
                 "\"place\":null,\"contributors\":null,\"retweet_count\":0,\"favorite_count\":0,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"}";
             //------------------------Execute---------------------------------------------------------------
-            var scrub = Scrubber.Scrub(JsonData, ScrubType.JSon);
+            var scrub = Scrubber.Scrub(JsonData, new byte[] { }, ScrubType.JSon);
             //------------------------Assert Results---------------------------------------------------
             Assert.AreEqual(JsonData,scrub);
         }
@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.Util
               "\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"user\":{\"id\":634794199,\"id_str\":\"634794199\"},\"geo\":null,\"coordinates\":null," +
               "\"place\":null,\"contributors\":null,\"retweet_count\":0,\"favorite_count\":0,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"}]}";
             //------------Execute Test---------------------------
-            var scrub = Scrubber.Scrub(JsonData, ScrubType.JSon);
+            var scrub = Scrubber.Scrub(JsonData, new byte[] { }, ScrubType.JSon);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedData, scrub);
         }      
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Util
             const string JsonData = "{Colours:[{color: \"red\",value: \"#f00\"},{color: \"green\",value: \"#0f0\"},{color: \"blue\",value: \"#00f\"},{color: \"cyan\",value: \"#0ff\"},{color: \"magenta\",value: \"#f0f\"},{color: \"yellow\",value: \"#ff0\"}," +
                 "{color: \"black\",value: \"#000\"}]}";
             //------------Execute Test---------------------------
-            var scrub = Scrubber.Scrub(JsonData, ScrubType.JSon);
+            var scrub = Scrubber.Scrub(JsonData, new byte[] { }, ScrubType.JSon);
             //------------Assert Results-------------------------
             Assert.AreEqual(JsonData, scrub);            
         }

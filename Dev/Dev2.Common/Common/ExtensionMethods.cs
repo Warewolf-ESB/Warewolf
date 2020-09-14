@@ -491,6 +491,18 @@ namespace Dev2.Common.Common
             return GetBytesFromFailedBase64String(base64String);
         }
 
+        public static string ReadToString(this byte[] bytes) => GetReadToEnd(bytes);
+
+        private static string GetReadToEnd(byte[] bytes)
+        {
+            var text = string.Empty;
+            using (var stream = new StreamReader(new MemoryStream(bytes)))
+            {
+                text = stream.ReadToEnd();
+            }
+            return text;
+        }
+
         public static string ReadToEnd(this Stream stream) => GetReadToEnd(stream);
 
         private static string GetReadToEnd(Stream stream)
