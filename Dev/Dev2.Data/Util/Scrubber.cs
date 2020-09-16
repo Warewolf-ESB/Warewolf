@@ -35,19 +35,19 @@ namespace Dev2.Data.Util
                 text = bytes.ReadToString();
             }
 
-            if(string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(text))
             {
                 return text;
             }
 
             text = text.Trim();
-            var scrubType = text.IsXml() ? ScrubType.Xml : text.IsJSON() ? ScrubType.JSon : text.IsHtml() ? ScrubType.Html : ScrubType.Base64;
-            return Scrub(text, bytes, scrubType);
+            var scrubType = text.StartsWith("<") ? ScrubType.Xml : ScrubType.JSon;
+            return Scrub(text, scrubType);
         }
 
-        public static string Scrub(string text, byte[] bytes, ScrubType scrubType)
+        public static string Scrub(string text, ScrubType scrubType)
         {
-            if(string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(text))
             {
                 return text;
             }
@@ -57,26 +57,11 @@ namespace Dev2.Data.Util
                     return ScrubXml(text);
                 case ScrubType.JSon:
                     return ScrubJson(text);
-                case ScrubType.Html:
-                    return ScrubHtml(text);
-                case ScrubType.Base64:
-                    return ScrubBase64(bytes);
                 default:
                     break;
             }
             return text;
         }
-
-        private static string ScrubHtml(string text)
-        {
-            return text;
-        }
-
-        private static string ScrubBase64(byte[] bytes)
-        {
-            return bytes.ToBase64String();
-        }
-
 
         #endregion
 
@@ -84,7 +69,7 @@ namespace Dev2.Data.Util
 
         static string ScrubJson(string text)
         {
-            if(text.StartsWith("[{"))
+            if (text.StartsWith("[{"))
             {
                 text = "{UnnamedArrayData:" + text + "}";
             }
@@ -111,7 +96,7 @@ namespace Dev2.Data.Util
             {
                 result = RemoveAllNamespaces(XElement.Parse(result)).ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error("Scrubber", ex, GlobalConstants.WarewolfError);
             }
@@ -135,7 +120,7 @@ namespace Dev2.Data.Util
 
         static void AddAttributes(XElement source, XContainer target)
         {
-            foreach(var attribute in source.Attributes().Where(attribute => !attribute.IsNamespaceDeclaration))
+            foreach (var attribute in source.Attributes().Where(attribute => !attribute.IsNamespaceDeclaration))
             {
                 target.Add(new XAttribute(attribute.Name.LocalName, attribute.Value));
             }
