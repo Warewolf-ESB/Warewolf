@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -489,6 +489,18 @@ namespace Dev2.Common.Common
                 return bytes;
             }
             return GetBytesFromFailedBase64String(base64String);
+        }
+
+        public static string ReadToString(this byte[] bytes) => GetReadToEnd(bytes);
+
+        private static string GetReadToEnd(byte[] bytes)
+        {
+            var text = string.Empty;
+            using (var stream = new StreamReader(new MemoryStream(bytes)))
+            {
+                text = stream.ReadToEnd();
+            }
+            return text;
         }
 
         public static string ReadToEnd(this Stream stream) => GetReadToEnd(stream);

@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.Validate();
@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             //------------Execute Test---------------------------
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
@@ -97,7 +97,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
@@ -124,7 +124,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             CustomContainer.Register(mockMainViewModel.Object);
 
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
             var viewModel = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
@@ -171,7 +171,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
@@ -202,7 +202,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
             mod.HasRecError = true;
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
@@ -229,7 +229,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
             mod.IsTextResponse = true;
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
@@ -255,7 +255,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
@@ -286,7 +286,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
@@ -320,7 +320,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivity();
+            var act = new DsfWebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);

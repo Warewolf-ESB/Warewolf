@@ -104,6 +104,7 @@
     <Compile Include="Activities\AdvancedRecordset\AdvancedRecordset.cs" />
     <Compile Include="Activities\AdvancedRecordset\IAdvancedRecordset.cs" />
     <Compile Include="Activities\DropBox2016\DsfDropBoxBaseActivity.cs" />
+    <Compile Include="Activities\DsfWebGetActivity.cs" />
     <Compile Include="Activities\GateActivity.cs" />
     <Compile Include="Activities\Exchange\DsfExchangeEmailNewActivity.cs" />
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
@@ -230,7 +231,7 @@
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebActivityBase.cs" />
     <Compile Include="Activities\DsfWebDeleteActivity.cs" />
-    <Compile Include="Activities\DsfWebGetActivity.cs" />
+    <Compile Include="Activities\DsfWebGetActivityWithBase64.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />

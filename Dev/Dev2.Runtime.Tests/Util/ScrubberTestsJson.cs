@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,20 +20,24 @@ namespace Dev2.Tests.Runtime.Util
     public partial class ScrubberTests
     {
         [TestMethod]
-        public void ScrubberScrubJsonWithNonArrayDefinitionExpectedReturnsSameJson()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Scrubber))]
+        public void Scrubber_Scrub_Json_With_NonArrayDefinition_ExpectSameJson()
         {
             //------------------------Setup ----------------------------------------------------------------------
             const string JsonData = "{\"created_at\":\"Mon Jul 16 21:09:33 +0000 2012\",\"id\":224974074361806848,\"id_str\":\"224974074361806848\",\"text\":\"It works! Many thanks @NeoCat\",\"source\":\"web\",\"truncated\":false," +
                 "\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"user\":{\"id\":634794199,\"id_str\":\"634794199\"},\"geo\":null,\"coordinates\":null," +
                 "\"place\":null,\"contributors\":null,\"retweet_count\":0,\"favorite_count\":0,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"}";
             //------------------------Execute---------------------------------------------------------------
-            var scrub = Scrubber.Scrub(JsonData, ScrubType.JSon);
+            var scrub = Scrubber.Scrub(JsonData);
             //------------------------Assert Results---------------------------------------------------
             Assert.AreEqual(JsonData,scrub);
         }
 
         [TestMethod]
-        public void ScrubberScrubJsonWhereDataIsArrayWithNoNameExpectNamedArray()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Scrubber))]
+        public void Scrubber_Scrub_Json_Where_DataIsArray_With_NoName_ExpectNamedArray()
         {
             //------------Setup for test--------------------------
             const string JsonData = "[{\"created_at\":\"Mon Jul 16 21:09:33 +0000 2012\",\"id\":224974074361806848,\"id_str\":\"224974074361806848\",\"text\":\"It works! Many thanks @NeoCat\",\"source\":\"web\",\"truncated\":false," +
@@ -46,21 +51,56 @@ namespace Dev2.Tests.Runtime.Util
               "\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"user\":{\"id\":634794199,\"id_str\":\"634794199\"},\"geo\":null,\"coordinates\":null," +
               "\"place\":null,\"contributors\":null,\"retweet_count\":0,\"favorite_count\":0,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"}]}";
             //------------Execute Test---------------------------
-            var scrub = Scrubber.Scrub(JsonData, ScrubType.JSon);
+            var scrub = Scrubber.Scrub(JsonData);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedData, scrub);
         }      
         
         [TestMethod]
-        public void ScrubberScrubJsonWhereDataIsArrayWithNameExpectSameJson()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Scrubber))]
+        public void Scrubber_Scrub_Json_Where_DataIsArray_With_Name_ExpectSameJson()
         {
             //------------Setup for test--------------------------
             const string JsonData = "{Colours:[{color: \"red\",value: \"#f00\"},{color: \"green\",value: \"#0f0\"},{color: \"blue\",value: \"#00f\"},{color: \"cyan\",value: \"#0ff\"},{color: \"magenta\",value: \"#f0f\"},{color: \"yellow\",value: \"#ff0\"}," +
                 "{color: \"black\",value: \"#000\"}]}";
             //------------Execute Test---------------------------
-            var scrub = Scrubber.Scrub(JsonData, ScrubType.JSon);
+            var scrub = Scrubber.Scrub(JsonData);
             //------------Assert Results-------------------------
             Assert.AreEqual(JsonData, scrub);            
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Scrubber))]
+        public void Scrubber_Scrub_IsBase64String_Where_DataIsArray_With_Name_ExpectSameJson()
+        {
+            //------------Setup for test--------------------------
+            const string JsonData = "{Colours:[{color: \"red\",value: \"#f00\"},{color: \"green\",value: \"#0f0\"},{color: \"blue\",value: \"#00f\"},{color: \"cyan\",value: \"#0ff\"},{color: \"magenta\",value: \"#f0f\"},{color: \"yellow\",value: \"#ff0\"}," +
+                "{color: \"black\",value: \"#000\"}]}";
+
+            var jsonBytes = JsonData.Base64StringToByteArray();
+            var base64String = jsonBytes.ToBase64String();
+            //------------Execute Test---------------------------
+            var scrub = Scrubber.Scrub(base64String);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(JsonData, scrub);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Scrubber))]
+        public void Scrubber_Scrub_IsBase64String_Where_DataHTML_ExpectSameJson()
+        {
+            //------------Setup for test--------------------------
+            const string HtmlData = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n   <title>Img Align Attribute<\\/title>\r\n <\\/head>\r\n<body>\r\n  <p>This is an example. <img src=\"image.png\" alt=\"Image\" align=\"middle\"> More text right here\r\n  <img src=\"image.png\" alt=\"Image\" width=\"100\"\\/>\r\n  <\\/body>\r\n<\\/html>";
+
+            var jsonBytes = HtmlData.Base64StringToByteArray();
+            var base64String = jsonBytes.ToBase64String();
+            //------------Execute Test---------------------------
+            var scrub = Scrubber.Scrub(base64String);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(HtmlData, scrub);
         }
 
         [TestMethod]

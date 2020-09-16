@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -61,6 +61,31 @@ namespace Dev2.Common.Tests
                     {
                         //------------Assert Results-------------------------
                         Assert.AreEqual(result, r.ReadToEnd());
+                    };
+                };
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_ReadToString_ExpectReadString()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var actual = bytes.ReadToString();
+
+            using (Stream s = new MemoryStream(bytes))
+            {
+                using (var ss = new MemoryStream(bytes))
+                {
+                    using (var r = new StreamReader(ss))
+                    {
+                        var expected = r.ReadToEnd();
+                        //------------Assert Results-------------------------
+                        Assert.AreEqual(expected, actual);
                     };
                 };
             }

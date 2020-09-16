@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,10 +10,13 @@
 */
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Util
 {
@@ -27,6 +30,11 @@ namespace Dev2.Data.Util
 
         public static string Scrub(string text)
         {
+            if (text.IsBase64String(out byte[] bytes))
+            {
+                text = bytes.ReadToString();
+            }
+
             if(string.IsNullOrWhiteSpace(text))
             {
                 return text;
