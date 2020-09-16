@@ -57,6 +57,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\Binaries\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
@@ -255,6 +258,7 @@
     <Compile Include="ActivityTests\AdvancedRecordsetActivityWorkerTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
+    <Compile Include="ActivityTests\Web\DsfWebGetActivityWithBase64Tests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
     <Compile Include="ActivityTests\RecordsetLengthTestNullhandler.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />

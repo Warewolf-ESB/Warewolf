@@ -86,7 +86,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var act = new DsfWebGetActivity { SourceId = id };
+            var act = new DsfWebGetActivityWithBase64 { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
