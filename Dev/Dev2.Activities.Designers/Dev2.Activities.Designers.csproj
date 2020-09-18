@@ -1128,9 +1128,7 @@
     <Compile Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml.cs">
       <DependentUpon>WebDeleteDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs">
-      <DependentUpon>WebGetDesigner.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs" />
     <Compile Include="Designers2\Web Service Get\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>

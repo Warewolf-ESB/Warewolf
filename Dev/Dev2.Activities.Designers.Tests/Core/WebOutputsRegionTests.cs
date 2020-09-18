@@ -310,6 +310,33 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(OutputsRegion))]
+        public void OutputsRegion_IsResponseBase64_GivenIsObjectAndNullObjectResult_ShouldNotFireChanges()
+        {
+            //---------------Set up test pack-------------------
+            var act = new DsfWebGetActivityWithBase64
+            {
+                SourceId = Guid.NewGuid(),
+                Outputs = new List<IServiceOutputMapping>(),
+                IsResponseBase64 = true
+            };
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
+            var wasCalled = false;
+            outputsRegion.PropertyChanged += (sender, args) =>
+            {
+                wasCalled = true;
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(outputsRegion.IsResponseBase64);
+            //---------------Execute Test ----------------------
+            outputsRegion.ObjectName = "a";
+            outputsRegion.IsResponseBase64 = true;
+            //---------------Test Result -----------------------
+            Assert.IsFalse(wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(OutputsRegion))]
         public void OutputsRegion_ObjectName_GivenIsObjectAndObjectResult_ShouldFireChanges()
         {
             //---------------Set up test pack-------------------

@@ -30,14 +30,14 @@ namespace Dev2.Data.Util
 
         public static string Scrub(string text)
         {
-            if (text.IsBase64String(out byte[] bytes))
-            {
-                text = bytes.ReadToString();
-            }
-
             if (string.IsNullOrWhiteSpace(text))
             {
                 return text;
+            }
+
+            if (text.IsBase64String(out byte[] bytes))
+            {
+                text = bytes.ReadToString();
             }
 
             text = text.Trim();

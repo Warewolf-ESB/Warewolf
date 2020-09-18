@@ -526,7 +526,7 @@ namespace Dev2.Common.Common
 
         private static bool GetIsBase64String(string base64String, out byte[] bytes)
         {
-            if (base64String.Replace(" ", "").Length % 4 != 0)
+            if (base64String?.Replace(" ", "").Length % 4 != 0)
             {
                 bytes = GetBytesFromFailedBase64String(base64String);
                 return false;
