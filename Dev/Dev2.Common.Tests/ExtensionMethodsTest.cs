@@ -106,7 +106,8 @@ namespace Dev2.Common.Tests
                 
                 //------------Assert Results-------------------------
                 Assert.IsFalse(result);
-                Assert.IsNull(outputBytes);
+                Assert.IsNotNull(outputBytes);
+                Assert.AreEqual(input, outputBytes.ReadToString());
             }
         }
 

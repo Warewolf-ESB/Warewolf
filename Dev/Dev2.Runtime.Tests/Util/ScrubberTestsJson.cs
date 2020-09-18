@@ -22,6 +22,18 @@ namespace Dev2.Tests.Runtime.Util
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Scrubber))]
+        public void Scrubber_Scrub_EmptyString_ExpectEmptyString()
+        {
+            //------------------------Setup ----------------------------------------------------------------------
+            //------------------------Execute---------------------------------------------------------------
+            var scrub = Scrubber.Scrub(string.Empty);
+            //------------------------Assert Results---------------------------------------------------
+            Assert.AreEqual(string.Empty, scrub);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Scrubber))]
         public void Scrubber_Scrub_Json_With_NonArrayDefinition_ExpectSameJson()
         {
             //------------------------Setup ----------------------------------------------------------------------
