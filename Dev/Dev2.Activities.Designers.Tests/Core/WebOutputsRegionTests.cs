@@ -308,9 +308,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(OutputsRegion))]
-        public void OutputsRegion_IsResponseBase64_GivenIsObjectAndNullObjectResult_ShouldNotFireChanges()
+        public void OutputsRegion_IsResponseBase64_GivenIsObjectAndNullObjectResult_ShouldFireChanges()
         {
             //---------------Set up test pack-------------------
             var act = new DsfWebGetActivityWithBase64
@@ -328,10 +328,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             //---------------Assert Precondition----------------
             Assert.IsTrue(outputsRegion.IsResponseBase64);
             //---------------Execute Test ----------------------
-            outputsRegion.ObjectName = "a";
             outputsRegion.IsResponseBase64 = true;
             //---------------Test Result -----------------------
-            Assert.IsFalse(wasCalled);
+            Assert.IsTrue(wasCalled);
         }
 
         [TestMethod]

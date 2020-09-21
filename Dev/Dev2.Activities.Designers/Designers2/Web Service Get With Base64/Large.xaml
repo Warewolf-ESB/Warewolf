@@ -1,4 +1,4 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.WebServiceGet.Large"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.WebServiceGetWithBase64.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,7 +6,7 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:webServiceGet1="clr-namespace:Dev2.Activities.Designers2.Web_Service_Get"
+                               xmlns:webServiceGetWithBase64="clr-namespace:Dev2.Activities.Designers2.Web_Service_Get_With_Base64"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -21,7 +21,7 @@
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
-                               d:DataContext="{d:DesignInstance webServiceGet1:WebServiceGetViewModel}">
+                               d:DataContext="{d:DesignInstance webServiceGetWithBase64:WebServiceGetViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
@@ -216,7 +216,7 @@
                     </Grid>
                 </Grid>
 
-                <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGrid}"/>
+                <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGridWithBase64}"/>
 
                 <Grid x:Name="ErrorGrid"
                       Grid.Row="3"

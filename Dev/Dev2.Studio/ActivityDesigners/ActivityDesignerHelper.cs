@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -105,6 +105,7 @@ using Dev2.Activities.Designers2.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
+using Dev2.Activities.Designers2.WebServiceGetWithBase64;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -179,7 +180,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
-                { typeof(DsfWebGetActivityWithBase64), typeof(WebServiceGetDesigner) },
+                { typeof(DsfWebGetActivityWithBase64), typeof(WebServiceGetWithBase64Designer) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },

@@ -226,6 +226,15 @@
     <Compile Include="Designers2\Sequence\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Web Service Get\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get With Base64\WebServiceGetViewModel.cs" />
+    <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
+    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs" />
     <Compile Include="Utils\ObservableAwareNameValue.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
@@ -1128,14 +1137,13 @@
     <Compile Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml.cs">
       <DependentUpon>WebDeleteDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs" />
-    <Compile Include="Designers2\Web Service Get\Large.xaml.cs">
+    <Compile Include="Designers2\Web Service Get With Base64\WebServiceGetWithBase64Designer.xaml.cs" />
+    <Compile Include="Designers2\Web Service Get With Base64\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get\Small.xaml.cs">
+    <Compile Include="Designers2\Web Service Get With Base64\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
     <Compile Include="Designers2\Web Service Post\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -2356,6 +2364,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\Web Service Get\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Get\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Get\WebGetDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\Web Service Put\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2380,15 +2400,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Web Service Get\WebGetDesigner.xaml">
+    <Page Include="Designers2\Web Service Get With Base64\WebServiceGetWithBase64Designer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Web Service Get\Large.xaml">
+    <Page Include="Designers2\Web Service Get With Base64\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Web Service Get\Small.xaml">
+    <Page Include="Designers2\Web Service Get With Base64\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
