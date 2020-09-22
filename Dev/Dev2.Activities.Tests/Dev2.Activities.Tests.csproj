@@ -96,6 +96,7 @@
     <Compile Include="Activities\DsfPluginActivityTests.cs" />
     <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivityTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\MockOAuthSource.cs" />
+    <Compile Include="ActivityComparerTests\PathOperations\DsfFileWriteComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\FileReadWithBase64ComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\PublishRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
@@ -162,7 +163,7 @@
     <Compile Include="ActivityComparerTests\Assigns\ActivityDtoEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\MultiAssignComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFileReadComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\PathOperations\DsfFileWriteComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\PathOperations\DsfFileWriteWithBase64ComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFolderReadComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfPathCreateComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfUnZipComparerTests.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="ActivityTests\Exchange\DsfExchangeEmailNewActivityTest.cs" />
     <Compile Include="ActivityTests\AbstractFileActivityTests.cs" />
     <Compile Include="ActivityTests\FileReadWithBase64Tests.cs" />
+    <Compile Include="ActivityTests\FileWriteTests .cs" />
     <Compile Include="ActivityTests\GateActivityTests.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\RabbitMQ\Publish\PublishRabbitMQActivityTests.cs" />
@@ -286,7 +288,7 @@
     <Compile Include="ActivityTests\SqlBulkInsertActivityTests.cs" />
     <Compile Include="ActivityTests\TestActivity.cs" />
     <Compile Include="ActivityTests\FileReadTests.cs" />
-    <Compile Include="ActivityTests\FileWriteTests.cs" />
+    <Compile Include="ActivityTests\FileWriteWithBase64Tests.cs" />
     <Compile Include="ActivityTests\FolderReadTests.cs" />
     <Compile Include="ActivityTests\PathCopyTests.cs" />
     <Compile Include="ActivityTests\PathCreateTests.cs" />

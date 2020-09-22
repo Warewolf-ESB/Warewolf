@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    public class FileWriteTests : BaseActivityUnitTest
+    public class FileWriteWithBase64Tests : BaseActivityUnitTest
     {
 
 
@@ -37,8 +37,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfFileWrite_UpdateForEachInputs")]
-        public void DsfFileWrite_UpdateForEachInputs_NullUpdates_DoesNothing()
+        [TestCategory(nameof(DsfFileWriteWithBase64))]
+        public void DsfFileWriteWithBase64_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
@@ -56,8 +56,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfFileWrite_UpdateForEachInputs")]
-        public void DsfFileWrite_UpdateForEachInputs_MoreThan1Updates_Updates()
+        [TestCategory(nameof(DsfFileWriteWithBase64))]
+        public void DsfFileWriteWithBase64_UpdateForEachInputs_MoreThan1Updates_Updates()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
@@ -78,8 +78,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfFileWrite_UpdateForEachOutputs")]
-        public void DsfFileWrite_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        [TestCategory(nameof(DsfFileWriteWithBase64))]
+        public void DsfFileWriteWithBase64_UpdateForEachOutputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
@@ -94,8 +94,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfFileWrite_UpdateForEachOutputs")]
-        public void DsfFileWrite_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        [TestCategory(nameof(DsfFileWriteWithBase64))]
+        public void DsfFileWriteWithBase64_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
@@ -113,8 +113,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfFileWrite_UpdateForEachOutputs")]
-        public void DsfFileWrite_UpdateForEachOutputs_1Updates_UpdateResult()
+        [TestCategory(nameof(DsfFileWriteWithBase64))]
+        public void DsfFileWriteWithBase64_UpdateForEachOutputs_1Updates_UpdateResult()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
@@ -132,8 +132,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfFileWrite_GetForEachInputs")]
-        public void DsfFileWrite_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        [TestCategory(nameof(DsfFileWriteWithBase64))]
+        public void DsfFileWriteWithBase64_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
@@ -154,8 +154,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfFileWrite_GetForEachOutputs")]
-        public void DsfFileWrite_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        [TestCategory(nameof(DsfFileWriteWithBase64))]
+        public void DsfFileWriteWithBase64_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
@@ -173,8 +173,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Timeout(60000)]
         [Owner("Rory McGuire")]
-        [TestCategory("DsfFileWrite_GetState")]
-        public void DsfFileWrite_GetState_ReturnsStateVariable()
+        [TestCategory(nameof(DsfFileWriteWithBase64))]
+        public void DsfFileWriteWithBase64_GetState_ReturnsStateVariable()
         {
             var act = new DsfFileWriteWithBase64 {
                 OutputPath = "Path",

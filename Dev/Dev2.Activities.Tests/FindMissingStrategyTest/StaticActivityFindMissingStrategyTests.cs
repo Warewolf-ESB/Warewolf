@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Factories;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -41,37 +40,20 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             }
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+       
 
         #region Calculate Activity Tests
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfCalculateActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfCalculate_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfCalculateActivity();
-            activity.Expression = "[[Expression]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfCalculateActivity
+            {
+                Expression = "[[Expression]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -85,11 +67,14 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfCountRecordsetActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfCountRecordset_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var nullHandlerActivity = new DsfCountRecordsetNullHandlerActivity();
-            nullHandlerActivity.RecordsetName = "[[RecordsetName]]";
-            nullHandlerActivity.CountNumber = "[[CountNumber]]";
+            var nullHandlerActivity = new DsfCountRecordsetNullHandlerActivity
+            {
+                RecordsetName = "[[RecordsetName]]",
+                CountNumber = "[[CountNumber]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(nullHandlerActivity);
@@ -99,11 +84,14 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfRecordsetLengthActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfRecordsetLength_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfRecordsetNullhandlerLengthActivity();
-            activity.RecordsetName = "[[RecordsetName]]";
-            activity.RecordsLength = "[[CountNumber]]";
+            var activity = new DsfRecordsetNullhandlerLengthActivity
+            {
+                RecordsetName = "[[RecordsetName]]",
+                RecordsLength = "[[CountNumber]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -118,14 +106,17 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfDateTimeActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfDateTime_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfDateTimeActivity();
-            activity.DateTime = "[[DateTime]]";
-            activity.InputFormat = "[[InputFormat]]";
-            activity.OutputFormat = "[[OutputFormat]]";
-            activity.TimeModifierAmountDisplay = "[[TimeModifierAmountDisplay]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfDateTimeActivity
+            {
+                DateTime = "[[DateTime]]",
+                InputFormat = "[[InputFormat]]",
+                OutputFormat = "[[OutputFormat]]",
+                TimeModifierAmountDisplay = "[[TimeModifierAmountDisplay]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -139,13 +130,16 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfDateTimeDifferenceActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfDateTimeDifference_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfDateTimeDifferenceActivity();
-            activity.Input1 = "[[Input1]]";
-            activity.Input2 = "[[Input2]]";
-            activity.InputFormat = "[[InputFormat]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfDateTimeDifferenceActivity
+            {
+                Input1 = "[[Input1]]",
+                Input2 = "[[Input2]]",
+                InputFormat = "[[InputFormat]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -159,11 +153,14 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfDeleteRecordActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfDeleteRecord_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity();
-            nullHandlerActivity.RecordsetName = "[[RecordsetName]]";
-            nullHandlerActivity.Result = "[[Result]]";
+            var nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity
+            {
+                RecordsetName = "[[RecordsetName]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(nullHandlerActivity);
@@ -177,11 +174,14 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfExecuteCommandLineActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfExecuteCommandLine_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfExecuteCommandLineActivity();
-            activity.CommandFileName = "[[CommandFileName]]";
-            activity.CommandResult = "[[CommandResult]]";
+            var activity = new DsfExecuteCommandLineActivity
+            {
+                CommandFileName = "[[CommandFileName]]",
+                CommandResult = "[[CommandResult]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -196,10 +196,13 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfForEachActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfForEach_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfForEachActivity();
-            activity.ForEachElementName = "[[ForEachElementName]]";
+            var activity = new DsfForEachActivity
+            {
+                ForEachElementName = "[[ForEachElementName]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -213,13 +216,16 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfIndexActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfIndex_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfIndexActivity();
-            activity.InField = "[[InField]]";
-            activity.Characters = "[[Characters]]";
-            activity.Result = "[[Result]]";
-            activity.StartIndex = "[[StartIndex]]";
+            var activity = new DsfIndexActivity
+            {
+                InField = "[[InField]]",
+                Characters = "[[Characters]]",
+                Result = "[[Result]]",
+                StartIndex = "[[StartIndex]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -233,13 +239,16 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfNumberFormatActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfNumberFormat_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfNumberFormatActivity();
-            activity.Expression = "[[Expression]]";
-            activity.RoundingDecimalPlaces = "[[RoundingDecimalPlaces]]";
-            activity.DecimalPlacesToShow = "[[DecimalPlacesToShow]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfNumberFormatActivity
+            {
+                Expression = "[[Expression]]",
+                RoundingDecimalPlaces = "[[RoundingDecimalPlaces]]",
+                DecimalPlacesToShow = "[[DecimalPlacesToShow]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -253,13 +262,16 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfReplaceActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfReplace_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfReplaceActivity();
-            activity.FieldsToSearch = "[[FieldsToSearch]]";
-            activity.Find = "[[Find]]";
-            activity.ReplaceWith = "[[ReplaceWith]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfReplaceActivity
+            {
+                FieldsToSearch = "[[FieldsToSearch]]",
+                Find = "[[Find]]",
+                ReplaceWith = "[[ReplaceWith]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -273,10 +285,13 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfSortRecordsActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfSortRecords_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfSortRecordsActivity();
-            activity.SortField = "[[SortField]]";
+            var activity = new DsfSortRecordsActivity
+            {
+                SortField = "[[SortField]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -292,14 +307,17 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfFileReadActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfFileRead_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfFileRead();
-            activity.InputPath = "[[InputPath]]";
-            activity.Password = "[[Password]]";
-            activity.PrivateKeyFile = "[[KeyFile]]";
-            activity.Username = "[[Username]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfFileRead
+            {
+                InputPath = "[[InputPath]]",
+                Password = "[[Password]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                Username = "[[Username]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -313,19 +331,44 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfFileWriteActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfFileWrite__Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfFileWrite();
-            activity.FileContents = "[[FileContents]]";
-            activity.OutputPath = "[[OutputPath]]";
-            activity.Password = "[[Password]]";
-            activity.PrivateKeyFile = "[[KeyFile]]";
-            activity.Username = "[[Username]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfFileWrite
+            {
+                FileContents = "[[FileContents]]",
+                OutputPath = "[[OutputPath]]",
+                Password = "[[Password]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                Username = "[[Username]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
             var expected = new List<string> { "[[FileContents]]", "[[OutputPath]]", "[[Password]]", "[[Username]]","[[KeyFile]]", "[[Result]]" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfFileWriteWithBase64_Activity_ExpectAllFindMissingFieldsToBeReturned()
+        {
+            var activity = new DsfFileWriteWithBase64
+            {
+                FileContents = "[[FileContents]]",
+                OutputPath = "[[OutputPath]]",
+                Password = "[[Password]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                Username = "[[Username]]",
+                Result = "[[Result]]"
+            };
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
+            var actual = strategy.GetActivityFields(activity);
+            var expected = new List<string> { "[[FileContents]]", "[[OutputPath]]", "[[Password]]", "[[Username]]", "[[KeyFile]]", "[[Result]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -335,14 +378,17 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfFolderReadActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfFolderRead_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfFolderRead();
-            activity.InputPath = "[[InputPath]]";
-            activity.Password = "[[Password]]";
-            activity.PrivateKeyFile = "[[PrivateKey]]";
-            activity.Username = "[[Username]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfFolderRead
+            {
+                InputPath = "[[InputPath]]",
+                Password = "[[Password]]",
+                PrivateKeyFile = "[[PrivateKey]]",
+                Username = "[[Username]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -356,18 +402,21 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfPathCopyActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfPathCopy_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfPathCopy();
-            activity.InputPath = "[[InputPath]]";
-            activity.OutputPath = "[[OutputPath]]";
-            activity.Password = "[[Password]]";
-            activity.PrivateKeyFile = "[[KeyFile]]";
-            activity.Username = "[[Username]]";
-            activity.DestinationPassword = "[[DestPassword]]";
-            activity.DestinationUsername = "[[DestUsername]]";
-            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfPathCopy
+            {
+                InputPath = "[[InputPath]]",
+                OutputPath = "[[OutputPath]]",
+                Password = "[[Password]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                Username = "[[Username]]",
+                DestinationPassword = "[[DestPassword]]",
+                DestinationUsername = "[[DestUsername]]",
+                DestinationPrivateKeyFile = "[[DestKeyFile]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -381,14 +430,17 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfPathCreateActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfPathCreate_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfPathCreate();
-            activity.OutputPath = "[[OutputPath]]";
-            activity.Password = "[[Password]]";
-            activity.Username = "[[Username]]";
-            activity.PrivateKeyFile = "[[KeyFile]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfPathCreate
+            {
+                OutputPath = "[[OutputPath]]",
+                Password = "[[Password]]",
+                Username = "[[Username]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -402,14 +454,17 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfPathDeleteActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfPathDelete_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfPathDelete();
-            activity.InputPath = "[[InputPath]]";
-            activity.Password = "[[Password]]";
-            activity.Username = "[[Username]]";
-            activity.PrivateKeyFile = "[[KeyFile]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfPathDelete
+            {
+                InputPath = "[[InputPath]]",
+                Password = "[[Password]]",
+                Username = "[[Username]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -423,18 +478,21 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfPathMoveActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfPathMove_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfPathMove();
-            activity.InputPath = "[[InputPath]]";
-            activity.OutputPath = "[[OutputPath]]";
-            activity.Password = "[[Password]]";
-            activity.Username = "[[Username]]";
-            activity.PrivateKeyFile = "[[KeyFile]]";
-            activity.DestinationPassword = "[[DestPassword]]";
-            activity.DestinationUsername = "[[DestUsername]]";
-            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfPathMove
+            {
+                InputPath = "[[InputPath]]",
+                OutputPath = "[[OutputPath]]",
+                Password = "[[Password]]",
+                Username = "[[Username]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                DestinationPassword = "[[DestPassword]]",
+                DestinationUsername = "[[DestUsername]]",
+                DestinationPrivateKeyFile = "[[DestKeyFile]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -448,18 +506,21 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfPathRenameActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfPathRename_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfPathRename();
-            activity.InputPath = "[[InputPath]]";
-            activity.OutputPath = "[[OutputPath]]";
-            activity.Password = "[[Password]]";
-            activity.Username = "[[Username]]";
-            activity.PrivateKeyFile = "[[KeyFile]]";
-            activity.DestinationPassword = "[[DestPassword]]";
-            activity.DestinationUsername = "[[DestUsername]]";
-            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfPathRename
+            {
+                InputPath = "[[InputPath]]",
+                OutputPath = "[[OutputPath]]",
+                Password = "[[Password]]",
+                Username = "[[Username]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                DestinationPassword = "[[DestPassword]]",
+                DestinationUsername = "[[DestUsername]]",
+                DestinationPrivateKeyFile = "[[DestKeyFile]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -473,19 +534,22 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfUnZipActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfUnZip_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfUnZip();
-            activity.ArchivePassword = "[[ArchivePassword]]";
-            activity.OutputPath = "[[OutputPath]]";
-            activity.InputPath = "[[InputPath]]";
-            activity.Password = "[[Password]]";
-            activity.Username = "[[Username]]";
-            activity.PrivateKeyFile = "[[KeyFile]]";
-            activity.DestinationPassword = "[[DestPassword]]";
-            activity.DestinationUsername = "[[DestUsername]]";
-            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfUnZip
+            {
+                ArchivePassword = "[[ArchivePassword]]",
+                OutputPath = "[[OutputPath]]",
+                InputPath = "[[InputPath]]",
+                Password = "[[Password]]",
+                Username = "[[Username]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                DestinationPassword = "[[DestPassword]]",
+                DestinationUsername = "[[DestUsername]]",
+                DestinationPrivateKeyFile = "[[DestKeyFile]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
@@ -499,21 +563,24 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        public void GetActivityFieldsOffDsfZipActivityExpectedAllFindMissingFieldsToBeReturned()
+        [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
+        public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfZip_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new DsfZip();
-            activity.ArchiveName = "[[ArchiveName]]";
-            activity.ArchivePassword = "[[ArchivePassword]]";
-            activity.CompressionRatio = "[[CompressionRatio]]";
-            activity.InputPath = "[[InputPath]]";
-            activity.OutputPath = "[[OutputPath]]";
-            activity.Password = "[[Password]]";
-            activity.Username = "[[Username]]";
-            activity.PrivateKeyFile = "[[KeyFile]]";
-            activity.DestinationPassword = "[[DestPassword]]";
-            activity.DestinationUsername = "[[DestUsername]]";
-            activity.DestinationPrivateKeyFile = "[[DestKeyFile]]";
-            activity.Result = "[[Result]]";
+            var activity = new DsfZip
+            {
+                ArchiveName = "[[ArchiveName]]",
+                ArchivePassword = "[[ArchivePassword]]",
+                CompressionRatio = "[[CompressionRatio]]",
+                InputPath = "[[InputPath]]",
+                OutputPath = "[[OutputPath]]",
+                Password = "[[Password]]",
+                Username = "[[Username]]",
+                PrivateKeyFile = "[[KeyFile]]",
+                DestinationPassword = "[[DestPassword]]",
+                DestinationUsername = "[[DestUsername]]",
+                DestinationPrivateKeyFile = "[[DestKeyFile]]",
+                Result = "[[Result]]"
+            };
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.StaticActivity);
             var actual = strategy.GetActivityFields(activity);
