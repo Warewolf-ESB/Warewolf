@@ -136,11 +136,8 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>
-      ..\packages\SpecFlow.2.3.2\tools\specflow.exe generateall Warewolf.UI.Load.Specs.csproj
-      powershell -ExecutionPolicy Bypass -Command "&amp;'.\GenerateCodedUITestAttributes.ps1'"
-	  exit 0
-    </PreBuildEvent>
+    <PreBuildEvent>..\packages\SpecFlow.2.3.2\tools\specflow.exe generateall Warewolf.UI.Load.Specs.csproj
+powershell -ExecutionPolicy Bypass -Command "&amp;'.\GenerateCodedUITestAttributes.ps1'"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\SpecFlow.2.3.2\build\SpecFlow.targets" Condition="Exists('..\packages\SpecFlow.2.3.2\build\SpecFlow.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
