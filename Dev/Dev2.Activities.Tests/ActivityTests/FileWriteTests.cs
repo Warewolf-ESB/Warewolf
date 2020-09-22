@@ -34,8 +34,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         
 
-        
-
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
@@ -46,7 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfFileWrite { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new DsfFileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null);
@@ -65,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfFileWrite { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new DsfFileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             var tuple1 = new Tuple<string, string>(outputPath, "Test");
             var tuple2 = new Tuple<string, string>(inputPath, "Test2");
@@ -86,7 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             const string result = "[[CompanyName]]";
-            var act = new DsfFileWrite { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
+            var act = new DsfFileWriteWithBase64 { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
 
             act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
@@ -102,7 +100,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             const string result = "[[CompanyName]]";
-            var act = new DsfFileWrite { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
+            var act = new DsfFileWriteWithBase64 { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
@@ -122,7 +120,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfFileWrite { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new DsfFileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
             //------------Execute Test---------------------------
@@ -141,7 +139,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfFileWrite { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new DsfFileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
@@ -162,7 +160,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             const string result = "[[CompanyName]]";
-            var act = new DsfFileWrite { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
+            var act = new DsfFileWriteWithBase64 { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachOutputs();
@@ -178,11 +176,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfFileWrite_GetState")]
         public void DsfFileWrite_GetState_ReturnsStateVariable()
         {
-            var act = new DsfFileWrite {
+            var act = new DsfFileWriteWithBase64 {
                 OutputPath = "Path",
                 Overwrite = true,
                 AppendTop = true,
                 AppendBottom = true,
+                FileContentsAsBase64 = true,
                 FileContents = "some file contents",
                 Username = "myuser",
                 Password = "secret",
@@ -192,7 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
-            Assert.AreEqual(8, stateItems.Count());
+            Assert.AreEqual(9, stateItems.Count());
 
             var expectedResults = new[]
             {
@@ -224,6 +223,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     Name = "FileContents",
                     Value = "some file contents",
+                    Type = StateVariable.StateType.InputOutput
+                },
+                new StateVariable
+                {
+                    Name = "FileContentsAsBase64",
+                    Value = "True",
                     Type = StateVariable.StateType.InputOutput
                 },
                 new StateVariable

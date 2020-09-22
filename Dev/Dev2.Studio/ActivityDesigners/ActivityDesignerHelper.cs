@@ -148,6 +148,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfFileRead), typeof(ReadFileDesigner) },
                 { typeof(FileReadWithBase64), typeof(ReadFileWithBase64Designer) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
+                { typeof(DsfFileWriteWithBase64), typeof(WriteFileDesigner) },
                 { typeof(DsfFolderRead), typeof(Activities.Designers2.ReadFolder.ReadFolderDesigner) },
                 { typeof(DsfFolderReadActivity), typeof(Activities.Designers2.ReadFolderNew.ReadFolderDesigner) },
                 { typeof(DsfPathRename), typeof(RenameDesigner) },
