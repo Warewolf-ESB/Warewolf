@@ -117,7 +117,7 @@ namespace Dev2.PathOperations
             return new Dev2ActivityIOBroker(file, common);
         }
 
-        public static Dev2PutRawOperationTO CreatePutRawOperationTO(WriteType writeType, string contents) => new Dev2PutRawOperationTO(writeType, contents);
+        public static Dev2PutRawOperationTO CreatePutRawOperationTO(WriteType writeType, string contents, bool fileContentsAsBase64 = false) => new Dev2PutRawOperationTO(writeType, contents, fileContentsAsBase64);
 
         public static Dev2UnZipOperationTO CreateUnzipTO(string passwd, bool overwrite)
         {

@@ -152,6 +152,7 @@ namespace Dev2
                 { typeof(DsfFileRead), typeof(ReadFileDesignerViewModel) },
                 { typeof(FileReadWithBase64), typeof(ReadFileWithBase64DesignerViewModel) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel) },
+                { typeof(DsfFileWriteWithBase64), typeof(WriteFileDesignerViewModel) },
                 { typeof(DsfFolderRead), typeof(ReadFolderDesignerViewModel) },
                 { typeof(DsfFolderReadActivity), typeof(ReadFolderNewDesignerViewModel) },
                 { typeof(DsfPathRename), typeof(RenameDesignerViewModel) },

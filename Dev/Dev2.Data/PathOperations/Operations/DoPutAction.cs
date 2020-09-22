@@ -101,27 +101,14 @@ namespace Dev2.Data.PathOperations.Operations
             var streamLength = (int)src.Length;
             if (_arguments.Overwrite)
             {
-                var streamRead = src.ReadToEnd();
-                if (streamRead.IsBase64String(out byte[] bytes))
-                {
-                    _fileWrapper.WriteAllBytes(dst.Path, streamRead.Base64StringToByteArray());                    
-                    return streamLength;
-                }
-
-                _fileWrapper.WriteAllBytes(dst.Path, bytes);
+                _fileWrapper.WriteAllBytes(dst.Path, src.ToByteArray());
                 return streamLength;
             }
             if (FileExist(dst, _fileWrapper) || !_arguments.Overwrite)
             {
                 using (var stream = _fileStreamFactory.New(dst.Path, FileMode.Append))
                 {
-                    var streamRead = src.ReadToEnd();
-                    if (streamRead.IsBase64String(out byte[] bytes))
-                    {
-                         _memoryStreamFactory.New(bytes).CopyTo(stream);
-                        return streamLength;
-                    }
-                    _memoryStreamFactory.New(bytes).CopyTo(stream);
+                    _memoryStreamFactory.New(src.ToByteArray()).CopyTo(stream);
                 }
                 return streamLength;
             }

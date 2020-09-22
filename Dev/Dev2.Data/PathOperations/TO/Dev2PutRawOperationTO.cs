@@ -21,10 +21,11 @@ namespace Dev2.PathOperations
     public class Dev2PutRawOperationTO : IDev2PutRawOperationTO
     {
 
-        public Dev2PutRawOperationTO(WriteType writeType, string contents)
+        public Dev2PutRawOperationTO(WriteType writeType, string contents, bool fileContentsAsBase64 = false)
         {
             WriteType = writeType;
             FileContents = contents;
+            FileContentsAsBase64 = fileContentsAsBase64;
         }
 
         public WriteType WriteType { get; set; }
@@ -35,6 +36,10 @@ namespace Dev2.PathOperations
             set;
         }
 
-
+        public bool FileContentsAsBase64 
+        { 
+            get; 
+            set; 
+        }
     }
 }
