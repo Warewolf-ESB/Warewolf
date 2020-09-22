@@ -207,6 +207,7 @@
       </ItemGroup>
     </When>
   </Choose>
+  <PropertyGroup>
     <PreBuildEvent>"$(SolutionDir)packages\SpecFlow.2.3.2\tools\specflow.exe" generateall "$(ProjectPath)"
 powershell -ExecutionPolicy Bypass -Command "&amp;'$(ProjectDir)GenerateCodedUITestAttributes.ps1'"</PreBuildEvent>
   </PropertyGroup>
