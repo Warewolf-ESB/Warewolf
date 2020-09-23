@@ -21,7 +21,7 @@ if ($WarewolfServerProcess) {
 	$Headers = @{
 		Authorization = $basicAuthValue
 	}
-	Invoke-WebRequest -Uri http://localhost:3142/Secure/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -Headers $Headers-UseBasicParsing
+	Invoke-WebRequest -Uri http://localhost:3142/Secure/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -Headers $Headers -UseBasicParsing
 } else {
 	if ($Username) {
 		Write-Host Starting Warewolf server as $Username
