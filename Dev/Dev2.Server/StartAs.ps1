@@ -23,6 +23,24 @@ if ($WarewolfServerProcess) {
 	}
 	Invoke-WebRequest -Uri http://localhost:3142/Secure/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -Headers $Headers -UseBasicParsing
 } else {
+	if (Test-Path "$PSScriptRoot\Warewolf Server.exe") {
+		$BinPath = "$PSScriptRoot\Warewolf Server.exe"
+	} else {
+		if (Test-Path "$PSScriptRoot\bin\Release\Warewolf Server.exe") {
+			$BinPath = "$PSScriptRoot\bin\Release\Warewolf Server.exe"
+		} else {
+			if (Test-Path "$PSScriptRoot\bin\Debug\Warewolf Server.exe") {
+				$BinPath = "$PSScriptRoot\bin\Debug\Warewolf Server.exe"
+			} else {
+				if (Test-Path "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe") {
+					$BinPath = "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe"
+				} else {
+					Write-Error -Message "This script expects a Warewolf Server at either $PSScriptRoot, $PSScriptRoot\bin\Release, $PSScriptRoot\bin\Debug or C:\Program Files (x86)\Warewolf\Server"
+					exit 1
+				}
+			}
+		}
+	}
 	if ($Username) {
 		Write-Host Starting Warewolf server as $Username
 		Write-Host 1. Create Warewolf Administrators group.
@@ -54,31 +72,24 @@ if ($WarewolfServerProcess) {
 		NET localgroup "Warewolf Administrators" "$Username" /ADD
 		Write-Host 5. Grant Warewolf Administrator logon as a batch job rights.
 		Import-Module $PSScriptRoot\UserRights.psm1;Grant-UserRight -Account "$Username" -Right SeServiceLogonRight
-	}
-	if (Test-Path "$PSScriptRoot\Warewolf Server.exe") {
-		$BinPath = "$PSScriptRoot\Warewolf Server.exe"
-	} else {
-		if (Test-Path "$PSScriptRoot\bin\Release\Warewolf Server.exe") {
-			$BinPath = "$PSScriptRoot\bin\Release\Warewolf Server.exe"
+		if ($WarewolfServerService) {
+			sc.exe config "Warewolf Server" start= auto binPath= "$BinPath" obj= ".\$Username" password= $Password
 		} else {
-			if (Test-Path "$PSScriptRoot\bin\Debug\Warewolf Server.exe") {
-				$BinPath = "$PSScriptRoot\bin\Debug\Warewolf Server.exe"
+			sc.exe create "Warewolf Server" start= auto binPath= "$BinPath" obj= ".\$Username" password= $Password
+		}
+		sc.exe start "Warewolf Server"
+	} else {
+		if ($NoExit.IsPresent) {
+			&"$BinPath"
+		} else {
+			if ($WarewolfServerService) {
+				sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
 			} else {
-				if (Test-Path "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe") {
-					$BinPath = "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe"
-				} else {
-					Write-Error -Message "This script expects a Warewolf Server at either $PSScriptRoot, $PSScriptRoot\bin\Release, $PSScriptRoot\bin\Debug or C:\Program Files (x86)\Warewolf\Server"
-					exit 1
-				}
+				sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
 			}
+			sc.exe start "Warewolf Server"
 		}
 	}
-	if ($WarewolfServerService) {
-		sc.exe config "Warewolf Server" start= auto binPath= "$BinPath" obj= ".\$Username" password= $Password
-	} else {
-		sc.exe create "Warewolf Server" start= auto binPath= "$BinPath" obj= ".\$Username" password= $Password
-	}
-	sc.exe start "Warewolf Server"
 }
 if ($NoExit.IsPresent) {
 	if (Test-Path "$PSScriptRoot\pauseloop.exe") {
