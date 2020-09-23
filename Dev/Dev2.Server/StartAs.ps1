@@ -8,7 +8,7 @@ if (Test-Path "$ResourcesPath\Resources") {
 	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
 } else {
 	if ($ResourcesPath) {
-		Write-Error -Message Resources path not found at $ResourcesPath\Resources
+		Write-Error -Message "Resources path not found at $ResourcesPath\Resources"
 	}
 }
 $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
