@@ -2,7 +2,8 @@ Param(
   [switch]$NoExit,
   [string]$Username=$env:SERVER_USERNAME,
   [string]$Password=$env:SERVER_PASSWORD,
-  [string]$ResourcesPath
+  [string]$ResourcesPath,
+  [string]$CoverageConfigPath
 )
 if (Test-Path "$ResourcesPath\Resources") {
 	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
@@ -23,20 +24,27 @@ if ($WarewolfServerProcess) {
 	}
 	Invoke-WebRequest -Uri http://localhost:3142/Secure/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -Headers $Headers -UseBasicParsing
 } else {
-	if (Test-Path "$PSScriptRoot\Warewolf Server.exe") {
-		$BinPath = "$PSScriptRoot\Warewolf Server.exe"
+	if ($CoverageConfigPath) {
+		if (!(Test-Path "C:\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
+			NuGet install JetBrains.dotCover.CommandLineTools -ExcludeVersion -NonInteractive -OutputDirectory C:\.
+		}
+		$BinPath = "\\\"C:\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe\\\" cover \\\"" + $CoverageConfigPath + "\\\" /LogFile=\\\"" + $PSScriptRoot + "\\TestResults\\ServerDotCover.log\\\" --DisableNGen";
 	} else {
-		if (Test-Path "$PSScriptRoot\bin\Release\Warewolf Server.exe") {
-			$BinPath = "$PSScriptRoot\bin\Release\Warewolf Server.exe"
+		if (Test-Path "$PSScriptRoot\Warewolf Server.exe") {
+			$BinPath = "$PSScriptRoot\Warewolf Server.exe"
 		} else {
-			if (Test-Path "$PSScriptRoot\bin\Debug\Warewolf Server.exe") {
-				$BinPath = "$PSScriptRoot\bin\Debug\Warewolf Server.exe"
+			if (Test-Path "$PSScriptRoot\bin\Release\Warewolf Server.exe") {
+				$BinPath = "$PSScriptRoot\bin\Release\Warewolf Server.exe"
 			} else {
-				if (Test-Path "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe") {
-					$BinPath = "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe"
+				if (Test-Path "$PSScriptRoot\bin\Debug\Warewolf Server.exe") {
+					$BinPath = "$PSScriptRoot\bin\Debug\Warewolf Server.exe"
 				} else {
-					Write-Error -Message "This script expects a Warewolf Server at either $PSScriptRoot, $PSScriptRoot\bin\Release, $PSScriptRoot\bin\Debug or C:\Program Files (x86)\Warewolf\Server"
-					exit 1
+					if (Test-Path "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe") {
+						$BinPath = "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe"
+					} else {
+						Write-Error -Message "This script expects a Warewolf Server at either $PSScriptRoot, $PSScriptRoot\bin\Release, $PSScriptRoot\bin\Debug or C:\Program Files (x86)\Warewolf\Server"
+						exit 1
+					}
 				}
 			}
 		}
