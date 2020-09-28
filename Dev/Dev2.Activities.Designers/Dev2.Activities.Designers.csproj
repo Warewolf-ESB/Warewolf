@@ -235,6 +235,17 @@
     <Compile Include="Designers2\Web Service Get With Base64\WebServiceGetViewModel.cs" />
     <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
     <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs" />
+    <Compile Include="Designers2\WriteFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFileWithBase64\WriteFileWithBase64Designer.xaml.cs" />
+    <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
+      <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\WriteFileDesignerViewModel.cs" />
     <Compile Include="Utils\ObservableAwareNameValue.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
@@ -1154,14 +1165,11 @@
       <DependentUpon>WebPostDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Web Service Post\WebServicePostViewModel.cs" />
-    <Compile Include="Designers2\WriteFile\Large.xaml.cs">
+    <Compile Include="Designers2\WriteFileWithBase64\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
-      <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\WriteFile\WriteFileDesignerViewModel.cs" />
-    <Compile Include="Designers2\WriteFile\Small.xaml.cs">
+    <Compile Include="Designers2\WriteFileWithBase64\WriteFileWithBase64DesignerViewModel.cs" />
+    <Compile Include="Designers2\WriteFileWithBase64\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\XPath\Large.xaml.cs">
@@ -2425,14 +2433,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\WriteFile\Large.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\WriteFile\WriteFileDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\WriteFile\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\WriteFileWithBase64\WriteFileWithBase64Designer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\WriteFile\WriteFileDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\WriteFileWithBase64\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WriteFileWithBase64\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

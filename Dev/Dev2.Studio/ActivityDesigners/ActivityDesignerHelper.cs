@@ -106,6 +106,7 @@ using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
 using Dev2.Activities.Designers2.WebServiceGetWithBase64;
+using Dev2.Activities.Designers2.WriteFileWithBase64;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -148,7 +149,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfFileRead), typeof(ReadFileDesigner) },
                 { typeof(FileReadWithBase64), typeof(ReadFileWithBase64Designer) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
-                { typeof(DsfFileWriteWithBase64), typeof(WriteFileDesigner) },
+                { typeof(DsfFileWriteWithBase64), typeof(WriteFileWithBase64Designer) },
                 { typeof(DsfFolderRead), typeof(Activities.Designers2.ReadFolder.ReadFolderDesigner) },
                 { typeof(DsfFolderReadActivity), typeof(Activities.Designers2.ReadFolderNew.ReadFolderDesigner) },
                 { typeof(DsfPathRename), typeof(RenameDesigner) },
