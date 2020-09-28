@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,19 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Data.Interfaces;
+using System.Windows;
 
-namespace Dev2.PathOperations
+namespace Dev2.Activities.Designers2.WriteFileWithBase64
 {
-
-    /// <summary>
-    /// PBI : 1172
-    /// Status : New
-    /// Purpose : To provide a TO for Put operations
-    /// </summary>
-    public class Dev2PutOperationTOFactory
+    public partial class Large
     {
+        public Large()
+        {
+            InitializeComponent();
+        }
 
-        public IFileWrite CreateDev2PutOperationTO(bool append, string content, bool overwrite, bool contentsAsBase64 = false) => new Dev2PutOperationTO(append, content, overwrite, contentsAsBase64);
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }

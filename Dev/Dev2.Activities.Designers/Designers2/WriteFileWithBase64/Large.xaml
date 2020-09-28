@@ -1,0 +1,232 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.WriteFileWithBase64.Large"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.WriteFile"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               MinWidth="315"
+                               Width="315"
+                               MinHeight="420"
+                               MaxHeight="Infinity"
+                               MaxWidth="Infinity"
+                               mc:Ignorable="d"
+                               d:DataContext="{d:DesignInstance local:WriteFileDesignerViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+    
+    <core:ActivityDesignerTemplate.RightButtons>
+        <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Content="Done"
+                                     Margin="0,0,7,12"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
+    </core:ActivityDesignerTemplate.RightButtons>
+
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding OutputPathLabel, Mode=OneWay}" />
+        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                DefaultText="[[PathToWriteTo]]"
+                                AllowUserInsertLine="False"
+                                FilterType="All"
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsOutputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Tooltips.WriteFileToolTipFilename}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpFilename}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.OutputPath"
+                                     SourcePropertyValue="{Binding ModelItem.OutputPath, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Method" />
+        <StackPanel Grid.Column="1"
+                    Grid.Row="1"
+                    ToolTip="{x:Static languages:HelpText.WriteFileHelpMethod}">
+            <RadioButton Margin="0,-2,0,0" IsChecked="{Binding Path=ModelItem.Overwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Overwrite</RadioButton>
+            <RadioButton Margin="0,-2,0,0" IsChecked="{Binding Path=ModelItem.AppendTop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Append Top</RadioButton>
+            <RadioButton Margin="0,-2,0,0" IsChecked="{Binding Path=ModelItem.AppendBottom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Append Bottom</RadioButton>
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpMethod}" DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
+        </StackPanel>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Contents" Margin="0,-2,0,0" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="2"
+                                VerticalAlignment="Stretch"
+                                Margin="0,-2,0,0"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                Height="Auto"
+                                AcceptsTab="True"
+                                Padding="2,5,2,2"
+                                VerticalContentAlignment="Top"
+                                VerticalScrollBarVisibility="Auto"
+                                HorizontalScrollBarVisibility="Auto"
+                                Text="{Binding Path=ModelItem.FileContents, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Tooltips.WriteFileToolTipContents}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding FileHasContent, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Contentstxt_AutoID}">
+            <ui:IntellisenseTextBox.DefaultText>
+                <TextBlock Text="[[logtext]]" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
+            </ui:IntellisenseTextBox.DefaultText>
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpContents}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.FileContents"
+                                     SourcePropertyValue="{Binding  ModelItem.FileContents, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Contents As" Margin="{StaticResource ControlBorderTop}"/>
+        <CheckBox Grid.Column="1"
+                  Grid.Row="3"
+                  Margin="-6,0,0,0"
+                  Content="Base64"
+                  IsChecked="{Binding Path=ModelItem.FileContentsAsBase64, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Tooltips.WriteFileToolTipContentsAsBase64}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpContentsAsBase64}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.FileContentsAsBase64"
+                                     SourcePropertyValue="{Binding ModelItem.FileContentsAsBase64, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+        
+        <TextBlock Grid.Column="0" Grid.Row="4" Margin="{StaticResource ActivityBorderTop}" Text="Username" />
+        <TextBox Grid.Column="1"
+                                Grid.Row="4"
+                                Margin="{StaticResource ActivityBorderTop}"
+                                Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Tooltips.WriteFileToolTipUsername}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpUsername}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Username"
+                                     SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </TextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="5" Margin="{StaticResource ActivityBorderTop}" Text="Password" />
+        <PasswordBox Grid.Column="1"
+                     Grid.Row="5"           
+                     Margin="{StaticResource ActivityBorderTop}"
+                     ToolTip="{x:Static languages:Tooltips.WriteFileToolTipPassword}"                                
+                     attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                     attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpPassword}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Password"
+                                     SourcePropertyValue="{Binding  ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </PasswordBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="6" Margin="{StaticResource ActivityBorderTop}" Text="Private Key" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="6"
+                                DefaultText="[[PathToPrivateKey]]"
+                                FilterType="All"
+                                AllowUserInsertLine="False"
+                                Margin="{StaticResource ActivityBorderTop}" 
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.PrivateKeyFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Tooltips.SftpPrivateKeyValueTooltip}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.CreateSftpPrivateKeyHelp}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.PrivateKeyFile"
+                                     SourcePropertyValue="{Binding  ModelItem.PrivateKeyFile, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="7" Margin="{StaticResource ActivityBorderTop}" Text="Result" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="7"
+                                FilterType="All"
+                                Margin="{StaticResource ActivityBorderTop}"
+                                DefaultText="[[WriteResults]]"
+                                WrapInBrackets="True"
+                                AllowUserInsertLine="False"
+                                Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}"
+                                ToolTip="{x:Static languages:Tooltips.WriteFileToolTipResult}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.WriteFileHelpResult}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Result"
+                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <errors:OnError Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" />
+
+    </Grid>
+</core:ActivityDesignerTemplate>

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -192,6 +193,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
+
+        //Added to implement IFileWrite Chaches, but should be not used.
+        [ExcludeFromCodeCoverage]
+        public bool FileContentsAsBase64 { get; set; }
 
         public override IEnumerable<StateVariable> GetState()
         {
