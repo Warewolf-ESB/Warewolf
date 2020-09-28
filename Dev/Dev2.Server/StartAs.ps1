@@ -1,9 +1,10 @@
 Param(
   [switch]$NoExit,
+  [switch]$Coverage=$false,
   [string]$Username=$env:SERVER_USERNAME,
   [string]$Password=$env:SERVER_PASSWORD,
   [string]$ResourcesPath,
-  [string]$CoverageConfigPath
+  [string]$ServerPath
 )
 if (Test-Path "$ResourcesPath\Resources") {
 	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
@@ -24,30 +25,65 @@ if ($WarewolfServerProcess) {
 	}
 	Invoke-WebRequest -Uri http://localhost:3142/Secure/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -Headers $Headers -UseBasicParsing
 } else {
-	if ($CoverageConfigPath) {
-		if (!(Test-Path "C:\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
-			NuGet install JetBrains.dotCover.CommandLineTools -ExcludeVersion -NonInteractive -OutputDirectory C:\.
-		}
-		$BinPath = "\\\"C:\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe\\\" cover \\\"" + $CoverageConfigPath + "\\\" /LogFile=\\\"" + $PSScriptRoot + "\\TestResults\\ServerDotCover.log\\\" --DisableNGen";
+	if (Test-Path "$PSScriptRoot\Warewolf Server.exe") {
+		$BinPath = "$PSScriptRoot\Warewolf Server.exe"
 	} else {
-		if (Test-Path "$PSScriptRoot\Warewolf Server.exe") {
-			$BinPath = "$PSScriptRoot\Warewolf Server.exe"
+		if (Test-Path "$PSScriptRoot\bin\Release\net48\win\Warewolf Server.exe") {
+			$BinPath = "$PSScriptRoot\bin\Release\net48\win\Warewolf Server.exe"
 		} else {
-			if (Test-Path "$PSScriptRoot\bin\Release\Warewolf Server.exe") {
-				$BinPath = "$PSScriptRoot\bin\Release\Warewolf Server.exe"
+			if (Test-Path "$PSScriptRoot\bin\Debug\net48\win\Warewolf Server.exe") {
+				$BinPath = "$PSScriptRoot\bin\Debug\net48\win\Warewolf Server.exe"
 			} else {
-				if (Test-Path "$PSScriptRoot\bin\Debug\Warewolf Server.exe") {
-					$BinPath = "$PSScriptRoot\bin\Debug\Warewolf Server.exe"
+				if (Test-Path "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe") {
+					$BinPath = "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe"
 				} else {
-					if (Test-Path "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe") {
-						$BinPath = "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe"
+					if ($ServerPath -ne $null -and $ServerPath -ne "" -and (Test-Path "$ServerPath")) {
+						$BinPath = $ServerPath
 					} else {
-						Write-Error -Message "This script expects a Warewolf Server at either $PSScriptRoot, $PSScriptRoot\bin\Release, $PSScriptRoot\bin\Debug or C:\Program Files (x86)\Warewolf\Server"
+						Write-Error -Message "Run this script from the Warewolf Server.exe file directory or use -ServerPath argument."
 						exit 1
 					}
 				}
 			}
 		}
+	}
+	if ($Coverage) {
+		$ServerBinFolderPath = Split-Path -Path "$BinPath" -Parent
+		if (!(Test-Path "$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
+			NuGet install JetBrains.dotCover.CommandLineTools -ExcludeVersion -NonInteractive -OutputDirectory "$ServerBinFolderPath."
+		}
+		if (!(Test-Path "$PSScriptRoot\TestResults")) {
+			New-Item -ItemType Directory "$PSScriptRoot\TestResults"
+		}
+		$CoverageConfigPath = "$PSScriptRoot\TestResults\Server DotCover.config"
+		@"
+<AnalyseParams>
+    <TargetExecutable>$BinPath</TargetExecutable>
+    <Output>$PSScriptRoot\TestResults\Server DotCover.dcvr</Output>
+    <Scope>
+        <ScopeEntry>$ServerBinFolderPath\Warewolf*.dll</ScopeEntry>
+        <ScopeEntry>$ServerBinFolderPath\Warewolf*.exe</ScopeEntry>
+        <ScopeEntry>$ServerBinFolderPath\Dev2.*.dll</ScopeEntry>
+    </Scope>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*tests</ModuleMask>
+                <ModuleMask>*specs</ModuleMask>
+                <ModuleMask>*Tests</ModuleMask>
+                <ModuleMask>*Specs</ModuleMask>
+                <ModuleMask>Warewolf.UIBindingTests*</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
+</AnalyseParams>
+"@ | Out-File -FilePath $CoverageConfigPath
+		$BinPath = "\`"$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe\`" cover \`"$CoverageConfigPath\`" /LogFile=\`"$ServerBinFolderPath\TestResults\Server DotCover.log\`" --DisableNGen";
 	}
 	if ($Username) {
 		Write-Host Starting Warewolf server as $Username
@@ -81,8 +117,10 @@ if ($WarewolfServerProcess) {
 		Write-Host 5. Grant Warewolf Administrator logon as a batch job rights.
 		Import-Module $PSScriptRoot\UserRights.psm1;Grant-UserRight -Account "$Username" -Right SeServiceLogonRight
 		if ($WarewolfServerService) {
+			Write-Host Configuring service to $BinPath
 			sc.exe config "Warewolf Server" start= auto binPath= "$BinPath" obj= ".\$Username" password= $Password
 		} else {
+			Write-Host Creating service for $BinPath
 			sc.exe create "Warewolf Server" start= auto binPath= "$BinPath" obj= ".\$Username" password= $Password
 		}
 		sc.exe start "Warewolf Server"
@@ -91,8 +129,10 @@ if ($WarewolfServerProcess) {
 			&"$BinPath"
 		} else {
 			if ($WarewolfServerService) {
+				Write-Host Configuring service to $BinPath
 				sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
 			} else {
+				Write-Host Creating service for $BinPath
 				sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
 			}
 			sc.exe start "Warewolf Server"
