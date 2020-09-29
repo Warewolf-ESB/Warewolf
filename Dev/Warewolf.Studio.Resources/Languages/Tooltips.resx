@@ -2550,6 +2550,6 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>OptionConditionToolTip</value>
   </data>
   <data name="WriteFileToolTipContentsAsBase64" xml:space="preserve">
-    <value>If selected it reads the content of the file as base64 format.</value>
+    <value>When selected, it reads the content of the file as base64 format.</value>
   </data>
 </root>

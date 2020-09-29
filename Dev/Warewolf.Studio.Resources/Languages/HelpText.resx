@@ -2479,6 +2479,6 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>OptionConditionRightHelpText</value>
   </data>
   <data name="WriteFileHelpContentsAsBase64" xml:space="preserve">
-    <value>If selected it read the content of the file as base64 format.</value>
+    <value>When selected, it reads the content of the file as base64 format.</value>
   </data>
 </root>
