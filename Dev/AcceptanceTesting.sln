@@ -356,6 +356,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.UIBindingTests.Ela
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarewolfStorageActions", "WarewolfStorageActions\WarewolfStorageActions.csproj", "{4FC53512-28C2-4BB4-B7EF-290224D7170D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core.Tests", "Dev2.Core.Tests\Dev2.Core.Tests.csproj", "{6A65D99B-61C5-4376-B4F7-71A503F9351F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1433,6 +1435,14 @@ Global
 		{4FC53512-28C2-4BB4-B7EF-290224D7170D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4FC53512-28C2-4BB4-B7EF-290224D7170D}.Release|x86.ActiveCfg = Release|Any CPU
 		{4FC53512-28C2-4BB4-B7EF-290224D7170D}.Release|x86.Build.0 = Release|Any CPU
+		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Release|x86.ActiveCfg = Debug|Any CPU
+		{6A65D99B-61C5-4376-B4F7-71A503F9351F}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
