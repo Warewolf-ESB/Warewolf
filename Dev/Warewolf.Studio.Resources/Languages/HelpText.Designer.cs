@@ -5809,7 +5809,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If selected it read the content of the file as base64 format..
+        ///   Looks up a localized string similar to When selected, it reads the content of the file as base64 format..
         /// </summary>
         public static string WriteFileHelpContentsAsBase64 {
             get {
