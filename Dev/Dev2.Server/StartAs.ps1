@@ -55,7 +55,7 @@ if ($WarewolfServerProcess) {
 		if (!(Test-Path "$PSScriptRoot\TestResults")) {
 			New-Item -ItemType Directory "$PSScriptRoot\TestResults"
 		}
-		$CoverageConfigPath = "$PSScriptRoot\TestResults\Server DotCover.config"
+		$CoverageConfigPath = "$PSScriptRoot\DotCover Runner.xml"
 		@"
 <AnalyseParams>
     <TargetExecutable>$BinPath</TargetExecutable>
@@ -83,7 +83,7 @@ if ($WarewolfServerProcess) {
     </Filters>
 </AnalyseParams>
 "@ | Out-File -FilePath $CoverageConfigPath
-		$BinPath = "\`"$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe\`" cover \`"$CoverageConfigPath\`" /LogFile=\`"$ServerBinFolderPath\TestResults\Server DotCover.log\`" --DisableNGen";
+		$BinPath = "\`"$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe\`" cover \`"$CoverageConfigPath\`" /LogFile=\`"$ServerBinFolderPath\DotCover.log\`" --DisableNGen";
 	}
 	if ($Username) {
 		Write-Host Starting Warewolf server as $Username
@@ -140,9 +140,14 @@ if ($WarewolfServerProcess) {
 	}
 }
 if ($NoExit.IsPresent) {
-	if (Test-Path "$PSScriptRoot\pauseloop.exe") {
-		&"$PSScriptRoot\pauseloop.exe"
+	if (Test-Path "C:\Windows\System32\pauseloop.exe") {
+		Write-Host Warewolf Server started successfully.
+		&"C:\Windows\System32\pauseloop.exe"
 	} else {
-		ping -t localhost
+		if (Test-Path "$PSScriptRoot\pauseloop.exe") {
+			&"$PSScriptRoot\pauseloop.exe"
+		} else {
+			ping -t localhost
+		}
 	}
 }
