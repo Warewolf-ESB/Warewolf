@@ -59,7 +59,7 @@ if ($WarewolfServerProcess) {
 		@"
 <AnalyseParams>
     <TargetExecutable>$BinPath</TargetExecutable>
-    <Output>$PSScriptRoot\TestResults\DotCover.dcvr</Output>
+    <Output>$PSScriptRoot\DotCover.dcvr</Output>
     <Scope>
         <ScopeEntry>$ServerBinFolderPath\Warewolf*.dll</ScopeEntry>
         <ScopeEntry>$ServerBinFolderPath\Warewolf*.exe</ScopeEntry>
