@@ -17,7 +17,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.WithBase64;
 
 namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
 {
@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
     public class WriteFileWithBase64DesignerViewModelTests
     {
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WriteFileWithBase64DesignerViewModel))]
         public void WriteFileWithBase64DesignerViewModel_Constructor_Properties_Initialized()
         {
@@ -45,7 +45,7 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WriteFileWithBase64DesignerViewModel))]
         public void WriteFileWithBase64DesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
@@ -63,7 +63,7 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WriteFileWithBase64DesignerViewModel))]
         public void WriteFileWithBase64DesignerViewModel_Validate_CorrectFieldsAreValidated()
         {
@@ -84,7 +84,7 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
         }
 
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WriteFileWithBase64DesignerViewModel))]
         public void WriteFileWithBase64DesignerViewModel_Contructor_OverwriteIsSetToTrue()
         {
@@ -100,7 +100,7 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
         public void WriteFileWithBase64DesignerViewModel_FileContentsAsBase64_IsSetToTrue()
         {
             //------------Setup for test-------------------------
-            var viewModel = new TestWriteFileWithBase64DesignerViewModel(ModelItemUtils.CreateModelItem(new DsfFileWriteWithBase64
+            var viewModel = new TestWriteFileWithBase64DesignerViewModel(ModelItemUtils.CreateModelItem(new FileWriteWithBase64
             {
                 FileContentsAsBase64 = true
             }));
@@ -110,7 +110,7 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
 
         static TestWriteFileWithBase64DesignerViewModel WriteFileWithBasse64ViewModel()
         {
-            var viewModel = new TestWriteFileWithBase64DesignerViewModel(ModelItemUtils.CreateModelItem(new DsfFileWriteWithBase64()));
+            var viewModel = new TestWriteFileWithBase64DesignerViewModel(ModelItemUtils.CreateModelItem(new FileWriteWithBase64()));
             return viewModel;
         }
     }
