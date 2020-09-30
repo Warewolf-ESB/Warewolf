@@ -11,23 +11,23 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.WithBase64;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 {
     [TestClass]
-    public class DsfFileWriteWithBase64ComparerTests
+    public class FileWriteWithBase64ComparerTests
     {
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_UniqueIDEquals_EmptyFileRead_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_UniqueIDEquals_EmptyFileRead_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId };
-            var DsfFileWrite = new DsfFileWriteWithBase64() { UniqueID = uniqueId };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId };
+            var DsfFileWrite = new FileWriteWithBase64() { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -38,14 +38,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_UniqueIDDifferent_EmptyFileRead_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_UniqueIDDifferent_EmptyFileRead_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
-            var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64();
-            var fileRead1 = new DsfFileWriteWithBase64();
+            var fileRead = new FileWriteWithBase64();
+            var fileRead1 = new FileWriteWithBase64();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -56,14 +55,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_FileContents_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_FileContents_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, FileContents = "a" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, FileContents = "a" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, FileContents = "a" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, FileContents = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -74,14 +73,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_FileContents_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_FileContents_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, FileContents = "A" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, FileContents = "ass" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, FileContents = "A" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, FileContents = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -92,14 +91,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_FileContents_Different_Object_Is_Not_Equal_CaseSensitive()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_FileContents_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, FileContents = "AAA" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, FileContents = "aaa" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, FileContents = "AAA" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, FileContents = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -110,14 +109,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Equals_Given_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Equals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "a" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "a" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "a" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -128,14 +127,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Equals_Given_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Equals_Given_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "A" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "ass" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "A" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -146,14 +145,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "AAA" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "aaa" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "AAA" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, DisplayName = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -164,14 +163,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_OutputPath_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_OutputPath_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "a" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "a" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "a" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -182,14 +181,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_OutputPath_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_OutputPath_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "A" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "ass" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "A" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -200,14 +199,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_OutputPath_Different_Object_Is_Not_Equal_CaseSensitive()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_OutputPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "AAA" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "aaa" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "AAA" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, OutputPath = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -218,14 +217,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Username_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Username_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Username = "a" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Username = "a" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, Username = "a" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, Username = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -236,14 +235,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Username_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Username_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Username = "A" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Username = "ass" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, Username = "A" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, Username = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -254,14 +253,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Username_Different_Object_Is_Not_Equal_CaseSensitive()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Username_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Username = "AAA" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Username = "aaa" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, Username = "AAA" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, Username = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -272,14 +271,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_PrivateKeyFile_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_PrivateKeyFile_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "a" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "a" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "a" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -290,14 +289,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_PrivateKeyFile_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_PrivateKeyFile_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "A" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "ass" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "A" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -308,14 +307,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_PrivateKeyFile_Different_Object_Is_Not_Equal_CaseSensitive()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_PrivateKeyFile_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "AAA" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "aaa" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "AAA" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, PrivateKeyFile = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -325,14 +324,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Password_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Password_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Password = "a" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Password = "a" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, Password = "a" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, Password = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -343,14 +342,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Password_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Password_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Password = "A" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Password = "ass" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, Password = "A" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, Password = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -361,14 +360,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Password_Different_Object_Is_Not_Equal_CaseSensitive()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Password_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Password = "AAA" };
-            var fileRead1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Password = "aaa" };
+            var fileRead = new FileWriteWithBase64() { UniqueID = uniqueId, Password = "AAA" };
+            var fileRead1 = new FileWriteWithBase64() { UniqueID = uniqueId, Password = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -379,14 +378,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Append_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Append_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -399,14 +398,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Append_Same_Object_Is_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Append_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -418,14 +417,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         }
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Overwrite_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Overwrite_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -438,14 +437,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_Overwrite_Same_Object_Is_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_Overwrite_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -458,14 +457,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_AppendTop_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_AppendTop_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -478,14 +477,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_AppendTop_Same_Object_Is_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_AppendTop_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -498,14 +497,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_AppendBottom_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_AppendBottom_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -519,13 +518,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_IsContentBase64_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_IsContentBase64_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sut_one = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
-            var sut_two = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var sut_one = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A", };
+            var sut_two = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(sut_one.Equals(sut_two));
             //---------------Execute Test ----------------------
@@ -538,14 +537,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_AppendBottom_Same_Object_Is_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_AppendBottom_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -559,13 +558,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_IsContentBase64_Same_Object_Is_Equal()
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_IsContentBase64_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var sut_one = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
-            var sut_two = new DsfFileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var sut_one = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
+            var sut_two = new FileWriteWithBase64() { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(sut_one.Equals(sut_two));
             //---------------Execute Test ----------------------

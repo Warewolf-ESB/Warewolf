@@ -15,6 +15,7 @@ using ActivityUnitTests;
 using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.WithBase64;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -30,21 +31,21 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext { get; set; }
+        private TestContext TestContext { get; set; }
 
         
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_UpdateForEachInputs_NullUpdates_DoesNothing()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfFileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new FileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null);
@@ -55,15 +56,15 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_UpdateForEachInputs_MoreThan1Updates_Updates()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_UpdateForEachInputs_MoreThan1Updates_Updates()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfFileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new FileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             var tuple1 = new Tuple<string, string>(outputPath, "Test");
             var tuple2 = new Tuple<string, string>(inputPath, "Test2");
@@ -77,14 +78,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_UpdateForEachOutputs_NullUpdates_DoesNothing()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_UpdateForEachOutputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             const string result = "[[CompanyName]]";
-            var act = new DsfFileWriteWithBase64 { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
+            var act = new FileWriteWithBase64 { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
 
             act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
@@ -93,14 +94,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             const string result = "[[CompanyName]]";
-            var act = new DsfFileWriteWithBase64 { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
+            var act = new FileWriteWithBase64 { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
@@ -112,15 +113,15 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_UpdateForEachOutputs_1Updates_UpdateResult()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_UpdateForEachOutputs_1Updates_UpdateResult()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfFileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new FileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
             //------------Execute Test---------------------------
@@ -131,15 +132,15 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_GetForEachInputs_WhenHasExpression_ReturnsInputList()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfFileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new FileWriteWithBase64 { FileContents = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
@@ -153,14 +154,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
         {
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             const string result = "[[CompanyName]]";
-            var act = new DsfFileWriteWithBase64 { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
+            var act = new FileWriteWithBase64 { FileContents = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = result };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachOutputs();
@@ -172,11 +173,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(DsfFileWriteWithBase64))]
-        public void DsfFileWriteWithBase64_GetState_ReturnsStateVariable()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(FileWriteWithBase64))]
+        public void FileWriteWithBase64_GetState_ReturnsStateVariable()
         {
-            var act = new DsfFileWriteWithBase64 {
+            var act = new FileWriteWithBase64 {
                 OutputPath = "Path",
                 Overwrite = true,
                 AppendTop = true,

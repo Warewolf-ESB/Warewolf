@@ -31,13 +31,13 @@ using Warewolf.Core;
 using Warewolf.Storage;
 
 
-namespace Unlimited.Applications.BusinessDesignStudio.Activities
+namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.WithBase64
 {
     [ToolDescriptorInfo("FileFolder-Write", "Write File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Write_File")]
-    public class DsfFileWriteWithBase64 : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite, IEquatable<DsfFileWriteWithBase64>
+    public class FileWriteWithBase64 : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite, IEquatable<FileWriteWithBase64>
     {
 
-        public DsfFileWriteWithBase64()
+        public FileWriteWithBase64()
             : base("Write File")
         {
             OutputPath = string.Empty;
@@ -136,7 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DsfFileWriteWithBase64" /> is append.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> is append.
         /// </summary>
         [Inputs("Append")]
         public bool Append
@@ -157,7 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DsfFileWriteWithBase64" /> File Contents As Base64.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> File Contents As Base64.
         /// </summary>
         [Inputs("File Contents As Base64")]
         public bool FileContentsAsBase64
@@ -178,7 +178,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DsfFileWriteWithBase64" /> is overwrite.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> is overwrite.
         /// </summary>
         [Inputs("Overwrite")]
         public bool Overwrite
@@ -188,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DsfFileWriteWithBase64" /> is append top.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> is append top.
         /// </summary>
         [Inputs("Append Top")]
         public bool AppendTop
@@ -198,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DsfFileWriteWithBase64" /> is append bottom.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> is append bottom.
         /// </summary>
         [Inputs("Append Bottom")]
         public bool AppendBottom
@@ -303,7 +303,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
-        public bool Equals(DsfFileWriteWithBase64 other)
+        public bool Equals(FileWriteWithBase64 other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -342,7 +342,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfFileWriteWithBase64)obj);
+            return Equals((FileWriteWithBase64)obj);
         }
 
         public override int GetHashCode()
