@@ -232,7 +232,7 @@
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebActivityBase.cs" />
     <Compile Include="Activities\DsfWebDeleteActivity.cs" />
-    <Compile Include="Activities\DsfWebGetActivityWithBase64.cs" />
+    <Compile Include="Activities\WebGetActivityWithBase64.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />

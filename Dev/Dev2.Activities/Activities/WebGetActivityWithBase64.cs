@@ -33,7 +33,7 @@ using Dev2.Runtime.ServiceModel;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("WebMethods", "GET", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Get")]
-    public class DsfWebGetActivityWithBase64 : DsfActivity, IEquatable<DsfWebGetActivityWithBase64>
+    public class WebGetActivityWithBase64 : DsfActivity, IEquatable<WebGetActivityWithBase64>
     {
 
         public IList<INameValue> Headers { get; set; }
@@ -127,7 +127,7 @@ namespace Dev2.Activities
             return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
         
-        public DsfWebGetActivityWithBase64()
+        public WebGetActivityWithBase64()
         {
             Type = "GET Web Method";
             DisplayName = "GET Web Method";
@@ -135,7 +135,7 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
-        public bool Equals(DsfWebGetActivityWithBase64 other)
+        public bool Equals(WebGetActivityWithBase64 other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -171,7 +171,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((DsfWebGetActivityWithBase64)obj);
+            return Equals((WebGetActivityWithBase64)obj);
         }
 
         public override int GetHashCode()

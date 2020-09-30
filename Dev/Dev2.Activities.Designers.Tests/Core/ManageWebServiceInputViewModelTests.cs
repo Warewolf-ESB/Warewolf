@@ -1,8 +1,18 @@
-﻿using System.Collections.Generic;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System.Collections.Generic;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Get;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
@@ -17,12 +27,12 @@ namespace Dev2.Activities.Designers.Tests.Core
     public class ManageWebServiceInputViewModelTests
     {
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("OutputsRegion_Ctor")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_Ctor()
         {
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivityWithBase64()
+            var act = new WebGetActivityWithBase64()
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
@@ -42,15 +52,15 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("OutputsRegion_Ctor")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_TestAction()
         {
             var called = false;
             var calledOk = false;
 
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivityWithBase64()
+            var act = new WebGetActivityWithBase64()
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
@@ -61,11 +71,13 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
-            var vm = new ManageWebServiceInputViewModel(webget, mod);
-            vm.TestAction = () => { called = true; };
-            vm.OkAction = () =>
+            var vm = new ManageWebServiceInputViewModel(webget, mod)
             {
-                calledOk = true;
+                TestAction = () => { called = true; },
+                OkAction = () =>
+                {
+                    calledOk = true;
+                }
             };
             vm.TestAction();
             vm.OkAction();
@@ -77,18 +89,20 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_TestActionSetSourceAndTest()
         {
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new DsfWebGetActivityWithBase64();
+            var act = new WebGetActivityWithBase64();
            
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.Model = new WebServiceDefinition();
+            var inputview = new ManageWebServiceInputViewModel(webget, mod)
+            {
+                Model = new WebServiceDefinition()
+            };
             //------------Execute Test---------------------------
             inputview.ExecuteTest();
             //------------Assert Results-------------------------
@@ -100,7 +114,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("Webget_MethodName")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_TestActionSetSourceAndTest_ExistingContent()
         {
             //------------Setup for test--------------------------
@@ -109,7 +123,7 @@ namespace Dev2.Activities.Designers.Tests.Core
                 Response = "{\"NormalText\":\"\"}"
             };
 
-            var act = new DsfWebGetActivityWithBase64()
+            var act = new WebGetActivityWithBase64()
             {
                 Headers = new List<INameValue>()
                 {
@@ -118,9 +132,11 @@ namespace Dev2.Activities.Designers.Tests.Core
             };
            
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.Model = new WebServiceDefinition();
+
+            var inputview = new ManageWebServiceInputViewModel(webget, mod)
+            {
+                Model = new WebServiceDefinition()
+            };
             Assert.AreEqual(2, webget.InputArea.Headers.Count);
             //------------Execute Test---------------------------
             inputview.ExecuteTest();
@@ -133,14 +149,14 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_PropertyChangedHandler()
         {
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new DsfWebGetActivityWithBase64();
+            var act = new WebGetActivityWithBase64();
             var called = false;
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod);
@@ -155,18 +171,20 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         }
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void ManageWebServiceInputViewModelCloneRegion_ReturnsNull()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
+        public void ManageWebServiceInputViewModel_CloneRegion_ReturnsNull()
         {
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new DsfWebGetActivityWithBase64();
+            var act = new WebGetActivityWithBase64();
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.Model = new WebServiceDefinition();
-            
+            var inputview = new ManageWebServiceInputViewModel(webget, mod)
+            {
+                Model = new WebServiceDefinition()
+            };
+
             //------------Execute Test---------------------------
             var clone = inputview.CloneRegion();
 
@@ -176,18 +194,22 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void ManageWebServiceInputViewModelTestAction_Exception()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
+        public void ManageWebServiceInputViewModel_TestAction_Exception()
         {
             //------------Setup for test--------------------------
-            var mod = new MyWebModel();
-            mod.HasRecError = true;
+            var mod = new MyWebModel
+            {
+                HasRecError = true
+            };
 
-            var act = new DsfWebGetActivityWithBase64();
+            var act = new WebGetActivityWithBase64();
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.Model = null;
+            var inputview = new ManageWebServiceInputViewModel(webget, mod)
+            {
+                Model = null
+            };
 
             //------------Execute Test---------------------------
             inputview.ExecuteTest();
@@ -198,15 +220,17 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void ManageWebServiceInputViewModelOkAction_Exception()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
+        public void ManageWebServiceInputViewModel_OkAction_Exception()
         {
             //------------Setup for test--------------------------
-            var mod = new MyWebModel();
-            mod.HasRecError = true;
+            var mod = new MyWebModel
+            {
+                HasRecError = true
+            };
 
-            var act = new DsfWebGetActivityWithBase64();
+            var act = new WebGetActivityWithBase64();
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod);
             webget.OutputsRegion.Outputs = null;
@@ -220,17 +244,19 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_RestoreRegion_DoesNothing()
         {
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new DsfWebGetActivityWithBase64();
+            var act = new WebGetActivityWithBase64();
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.Model = new WebServiceDefinition();
+            var inputview = new ManageWebServiceInputViewModel(webget, mod)
+            {
+                Model = new WebServiceDefinition()
+            };
 
             //------------Execute Test---------------------------
             inputview.RestoreRegion(null);
@@ -241,18 +267,20 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_TestActionSetSourceAndTestClickOk()
         {
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new DsfWebGetActivityWithBase64();
+            var act = new WebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.Model = new WebServiceDefinition();
+            var inputview = new ManageWebServiceInputViewModel(webget, mod)
+            {
+                Model = new WebServiceDefinition()
+            };
             inputview.ExecuteTest();
             //------------Execute Test---------------------------
             Assert.IsTrue(inputview.InputArea.IsEnabled);
@@ -272,18 +300,20 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_TestActionSetSourceAndTestClickPaste()
         {
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new DsfWebGetActivityWithBase64();
+            var act = new WebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.Model = new WebServiceDefinition();
+            var inputview = new ManageWebServiceInputViewModel(webget, mod)
+            {
+                Model = new WebServiceDefinition()
+            };
             //------------Execute Test---------------------------
             inputview.ExecutePaste();
 
@@ -292,18 +322,20 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_TestActionSetSourceAndTestClickClose()
         {
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new DsfWebGetActivityWithBase64();
+            var act = new WebGetActivityWithBase64();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.Model = new WebServiceDefinition();
+            var inputview = new ManageWebServiceInputViewModel(webget, mod)
+            {
+                Model = new WebServiceDefinition()
+            };
             inputview.ExecuteClose();
             //------------Execute Ok---------------------------
             Assert.IsNull(inputview.OutputArea.Outputs);
@@ -317,12 +349,12 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("OutputsRegion_Ctor")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
         public void ManageWebServiceInputViewModel_Properties()
         {
             var mod = new MyWebModel();
-            var act = new DsfWebGetActivityWithBase64()
+            var act = new WebGetActivityWithBase64()
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
