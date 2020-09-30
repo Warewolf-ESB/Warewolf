@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -106,9 +106,9 @@ namespace Dev2.FindMissingStrategies
             {
                 return GetDsfWebGetActivityFields(activity);
             }
-            else if (activityType == typeof(DsfWebGetActivityWithBase64))
+            else if (activityType == typeof(WebGetActivityWithBase64))
             {
-                return GetDsfWebGetActivityWithBase64Fields(activity);
+                return GetWebGetActivityWithBase64Fields(activity);
             }
             else if (activityType == typeof(DsfDotNetDllActivity))
             {
@@ -359,12 +359,12 @@ namespace Dev2.FindMissingStrategies
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-        List<string> GetDsfWebGetActivityWithBase64Fields(object activity)
+        List<string> GetWebGetActivityWithBase64Fields(object activity)
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();
-            if (activity is DsfWebGetActivityWithBase64 maAct)
+            if (activity is WebGetActivityWithBase64 maAct)
             {
                 if (maAct.Inputs != null)
                 {

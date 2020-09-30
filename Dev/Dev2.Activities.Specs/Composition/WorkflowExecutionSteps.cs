@@ -766,7 +766,7 @@ namespace Dev2.Activities.Specs.Composition
                 }
                 else if (resource.ServerResourceType == "WebService")
                 {
-                    var updatedActivity = new DsfWebGetActivityWithBase64();
+                    var updatedActivity = new WebGetActivityWithBase64();
                     var xml = resource.ToServiceDefinition(true).ToXElement();
                     var service = new WebService(xml);
                     var source = service.Source as WebSource;
@@ -2417,7 +2417,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var serializer = new Dev2JsonSerializer();
 
-            var dsfWebGetActivity = new DsfWebGetActivityWithBase64
+            var dsfWebGetActivity = new WebGetActivityWithBase64
             {
                 DisplayName = activityName
                 ,

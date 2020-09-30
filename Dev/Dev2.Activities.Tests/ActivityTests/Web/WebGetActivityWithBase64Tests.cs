@@ -33,13 +33,13 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
-    public class DsfWebGetActivityWithBase64Tests
+    public class WebGetActivityWithBase64Tests
     {
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebGetActivityWithBase64_Execute")]
-        public void DsfWebGetActivityWithBase64_Execute_WithValidTextResponse_ShouldSetVariables()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebGetActivityWithBase64))]
+        public void WebGetActivityWithBase64_Execute_WithValidTextResponse_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -54,8 +54,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var dsfWebGetActivity = new TestDsfWebGetActivityWithBase64();
-            dsfWebGetActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var dsfWebGetActivity = new TestWebGetActivityWithBase64
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object
+            };
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Response", "[[Response]]", "") };
             dsfWebGetActivity.Inputs = serviceInputs;
@@ -84,16 +86,18 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebGetActivityWithBase64_Execute")]
-        public void DsfWebGetActivityWithBase64_Execute_ErrorResponse_ShouldSetVariables()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebGetActivityWithBase64))]
+        public void WebGetActivityWithBase64_Execute_ErrorResponse_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Message\":\"Error\"}";
             var environment = new ExecutionEnvironment();
 
-            var dsfWebGetActivity = new TestDsfWebGetActivityWithBase64();
-            dsfWebGetActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var dsfWebGetActivity = new TestWebGetActivityWithBase64
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object
+            };
 
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Message", "[[Message]]", "") };
             dsfWebGetActivity.Outputs = serviceOutputs;
@@ -123,8 +127,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfWebGetActivityWithBase64))]
-        public void DsfWebGetActivityWithBase64_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()
+        [TestCategory(nameof(WebGetActivityWithBase64))]
+        public void WebGetActivityWithBase64_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()
         {
             //-----------------------Arrange-------------------------
             const string response = "{\"Message\":\"TEST Error\"}";
@@ -141,7 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-                var dsfWebGetActivity = new TestDsfWebGetActivityWithBase64{
+                var dsfWebGetActivity = new TestWebGetActivityWithBase64{
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     QueryString = "test Query",
@@ -160,8 +164,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfWebGetActivityWithBase64))]
-        public void DsfWebGetActivityWithBase64_ExecutionImpl_IsResponseBase64_True_And_IsObject_True_Json_WebGetResponse_ExpectJson()
+        [TestCategory(nameof(WebGetActivityWithBase64))]
+        public void WebGetActivityWithBase64_ExecutionImpl_IsResponseBase64_True_And_IsObject_True_Json_WebGetResponse_ExpectJson()
         {
             //-----------------------Arrange-------------------------
             var jsonData = "{color: \"red\",value: \"#f00\"}";
@@ -179,7 +183,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-                var dsfWebGetActivity = new TestDsfWebGetActivityWithBase64{
+                var dsfWebGetActivity = new TestWebGetActivityWithBase64{
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     QueryString = "test Query",
@@ -203,8 +207,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfWebGetActivityWithBase64))]
-        public void DsfWebGetActivityWithBase64_ExecutionImpl_IsResponseBase64_False_And_IsObject_True_Json_WebGetResponse_ExpectJsonBase64()
+        [TestCategory(nameof(WebGetActivityWithBase64))]
+        public void WebGetActivityWithBase64_ExecutionImpl_IsResponseBase64_False_And_IsObject_True_Json_WebGetResponse_ExpectJsonBase64()
         {
             //-----------------------Arrange-------------------------
             var jsonData = "{color: \"red\",value: \"#f00\"}";
@@ -222,7 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-                var dsfWebGetActivity = new TestDsfWebGetActivityWithBase64{
+                var dsfWebGetActivity = new TestWebGetActivityWithBase64{
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     QueryString = "test Query",
@@ -246,8 +250,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfWebGetActivityWithBase64))]
-        public void DsfWebGetActivityWithBase64_ExecutionImpl_IsResponseBase64_False_And_IsObject_False_Html_WebGetResponse_ExpectHtmlString()
+        [TestCategory(nameof(WebGetActivityWithBase64))]
+        public void WebGetActivityWithBase64_ExecutionImpl_IsResponseBase64_False_And_IsObject_False_Html_WebGetResponse_ExpectHtmlString()
         {
             //-----------------------Arrange-------------------------
             const string htmlData = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n   <title>Img Align Attribute<\\/title>\r\n <\\/head>\r\n<body>\r\n  <p>This is an example. <img src=\"image.png\" alt=\"Image\" align=\"middle\"> More text right here\r\n  <img src=\"image.png\" alt=\"Image\" width=\"100\"\\/>\r\n  <\\/body>\r\n<\\/html>";
@@ -265,7 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-                var dsfWebGetActivity = new TestDsfWebGetActivityWithBase64{
+                var dsfWebGetActivity = new TestWebGetActivityWithBase64{
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     QueryString = "test Query",
@@ -288,8 +292,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfWebGetActivityWithBase64))]
-        public void DsfWebGetActivityWithBase64_ExecutionImpl_IsResponseBase64_True_And_IsObject_False_Html_WebGetResponse_ExpectHtmlBase64String()
+        [TestCategory(nameof(WebGetActivityWithBase64))]
+        public void WebGetActivityWithBase64_ExecutionImpl_IsResponseBase64_True_And_IsObject_False_Html_WebGetResponse_ExpectHtmlBase64String()
         {
             //-----------------------Arrange-------------------------
             const string htmlData = @"<!DOCTYPE html>\r\n<html lang=\""en\"">\r\n  <head>\r\n   <title>Img Align Attribute<\\/title>\r\n <\\/head>\r\n<body>\r\n  <p>This is an example. <img src=\""image.png\"" alt=\""Image\"" align=\""middle\""> More text right here\r\n  <img src=\""image.png\"" alt=\""Image\"" width=\""100\""\\/>\r\n  <\\/body>\r\n<\\/html>";
@@ -307,7 +311,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-                var dsfWebGetActivity = new TestDsfWebGetActivityWithBase64
+                var dsfWebGetActivity = new TestWebGetActivityWithBase64
                 {
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
@@ -329,7 +333,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         }
     }
 
-    public class TestDsfWebGetActivityWithBase64 : DsfWebGetActivityWithBase64
+    public class TestWebGetActivityWithBase64 : WebGetActivityWithBase64
     {
         public string HadErrorMessage { get; set; }
 
