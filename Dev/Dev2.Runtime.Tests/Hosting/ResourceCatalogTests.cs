@@ -848,6 +848,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void GetResource_UnitTest_WhereTypeIsProvided_ExpectTypedResourceWorkflow()
         {
             //------------Setup for test--------------------------
@@ -2222,15 +2223,12 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-
-
-
-
         #endregion
 
         #region GetDependants
 
         [TestMethod]
+        [DoNotParallelize]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2372,6 +2370,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2388,6 +2387,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2414,6 +2414,7 @@ namespace Dev2.Tests.Runtime.Hosting
         #region GetDependantsAsResourceForTrees
 
         [TestMethod]
+        [DoNotParallelize]
         public void GetDependantsAsResourceForTreesWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2437,6 +2438,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void GetDependantsAsResourceForTreesWhereNoResourcesExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2453,6 +2455,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [DoNotParallelize]
         public void GetDependantsAsResourceForTreesWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
