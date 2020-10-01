@@ -257,7 +257,7 @@
     <Compile Include="ActivityTests\AdvancedRecordsetActivityWorkerTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
-    <Compile Include="ActivityTests\Web\WebGetActivityWithBase64Tests.cs" />
+    <Compile Include="ActivityTests\Web\WebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
     <Compile Include="ActivityTests\RecordsetLengthTestNullhandler.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />

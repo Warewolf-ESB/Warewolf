@@ -33,11 +33,11 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void WebGetInputRegion_TestInputCtor()
         {
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64 { SourceId = id };
+            var act = new WebGetActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebGetActivityWithBase64()));
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebGetActivity()));
             var region = new WebGetInputRegion( ModelItemUtils.CreateModelItem(act),webSourceRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count,0);
@@ -60,11 +60,11 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void WebGetInputRegion_TestClone()
         {
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64 { SourceId = id };
+            var act = new WebGetActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebGetActivityWithBase64()));
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
@@ -82,11 +82,11 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64 { SourceId = id };
+            var act = new WebGetActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebGetActivityWithBase64()));
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
             var regionToRestore = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion)
             {
@@ -110,12 +110,12 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64 { SourceId = id };
+            var act = new WebGetActivity { SourceId = id };
 
             var mod = new Mock<IWebServiceModel>();
             var  lst = new List<IWebServiceSource> { new WebServiceSourceDefinition(){HostName = "bob",DefaultQuery = "Dave"} , new WebServiceSourceDefinition(){HostName = "f",DefaultQuery = "g"} };
             mod.Setup(a => a.RetrieveSources()).Returns(lst);
-            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebGetActivityWithBase64()));
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion);
 
             webSourceRegion.SelectedSource = lst[0];
@@ -130,7 +130,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
-            var webGetActivity = new WebGetActivityWithBase64
+            var webGetActivity = new WebGetActivity
             { 
                 SourceId = id,
                 Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") },

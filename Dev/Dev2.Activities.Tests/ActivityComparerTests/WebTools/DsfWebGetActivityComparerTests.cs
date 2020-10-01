@@ -29,8 +29,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webGetActivity = new WebGetActivityWithBase64() { UniqueID = uniqueId };
-            var webGetActivity1 = new WebGetActivityWithBase64() { UniqueID = uniqueId };
+            var webGetActivity = new WebGetActivity() { UniqueID = uniqueId };
+            var webGetActivity1 = new WebGetActivity() { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGetActivity);
             //---------------Execute Test ----------------------
@@ -47,8 +47,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var uniqueId2 = Guid.NewGuid().ToString();
-            var webGetActivity = new WebGetActivityWithBase64() { UniqueID = uniqueId };
-            var webGetActivity1 = new WebGetActivityWithBase64() { UniqueID = uniqueId2 };
+            var webGetActivity = new WebGetActivity() { UniqueID = uniqueId };
+            var webGetActivity1 = new WebGetActivity() { UniqueID = uniqueId2 };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGetActivity);
             //---------------Execute Test ----------------------
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webGetActivity = new WebGetActivityWithBase64();
+            var webGetActivity = new WebGetActivity();
             var webGetActivity1 = webGetActivity;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGetActivity);
@@ -81,8 +81,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, DisplayName = "" };
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, DisplayName = "" };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, DisplayName = "" };
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, DisplayName = "" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------
@@ -98,8 +98,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, DisplayName = "A" };
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, DisplayName = "" };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, DisplayName = "A" };
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, DisplayName = "" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------
@@ -115,8 +115,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, DisplayName = "A" };
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, DisplayName = "a" };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, DisplayName = "A" };
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, DisplayName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------
@@ -132,8 +132,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, QueryString = "A" };
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, QueryString = "A" };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, QueryString = "A" };
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, QueryString = "A" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------
@@ -150,8 +150,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, QueryString = "A" };
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, QueryString = "B" };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, QueryString = "A" };
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, QueryString = "B" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------
@@ -168,8 +168,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var outDescr = new OutputDescription();
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, OutputDescription = outDescr };
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, OutputDescription = outDescr };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, OutputDescription = outDescr };
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, OutputDescription = outDescr };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------
@@ -193,8 +193,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             {
                 Format = OutputFormats.ShapedXML
             };
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, OutputDescription = outDescr };
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, OutputDescription = outDescr2 };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, OutputDescription = outDescr };
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, OutputDescription = outDescr2 };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------
@@ -212,8 +212,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             var uniqueId = Guid.NewGuid().ToString();
             var headers = new List<INameValue>();
             var headers2 = new List<INameValue> { new NameValue("a", "x") };
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, Headers = headers };
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, Headers = headers2 };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, Headers = headers };
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, Headers = headers2 };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------
@@ -231,8 +231,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             var uniqueId = Guid.NewGuid().ToString();
             var headers = new List<INameValue> { new NameValue("b", "y"), new NameValue("a", "x") };
             var headers2 = new List<INameValue> { new NameValue("a", "x"), new NameValue("b", "y") };
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, Headers = headers};
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, Headers = headers };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, Headers = headers};
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, Headers = headers };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------
@@ -248,8 +248,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var headers = new List<INameValue> { new NameValue("a", "x") };
-            var webGet = new WebGetActivityWithBase64() { UniqueID = uniqueId, Headers = headers};
-            var webGet1 = new WebGetActivityWithBase64() { UniqueID = uniqueId, Headers = headers };
+            var webGet = new WebGetActivity() { UniqueID = uniqueId, Headers = headers};
+            var webGet1 = new WebGetActivity() { UniqueID = uniqueId, Headers = headers };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webGet);
             //---------------Execute Test ----------------------

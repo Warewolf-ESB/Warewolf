@@ -232,7 +232,7 @@
     <Compile Include="Designers2\Web Service Get\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get With Base64\WebServiceGetViewModel.cs" />
+    <Compile Include="Designers2\Web Service Get With Base64\WebServiceGetActivityViewModel.cs" />
     <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
     <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs" />
     <Compile Include="Designers2\WriteFile\Large.xaml.cs">
@@ -1148,7 +1148,7 @@
     <Compile Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml.cs">
       <DependentUpon>WebDeleteDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get With Base64\WebServiceGetWithBase64Designer.xaml.cs" />
+    <Compile Include="Designers2\Web Service Get With Base64\WebServiceGetActivityDesigner.xaml.cs" />
     <Compile Include="Designers2\Web Service Get With Base64\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -2408,7 +2408,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Web Service Get With Base64\WebServiceGetWithBase64Designer.xaml">
+    <Page Include="Designers2\Web Service Get With Base64\WebServiceGetActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

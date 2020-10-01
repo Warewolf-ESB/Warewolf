@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -33,7 +32,7 @@ using Dev2.Runtime.ServiceModel;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("WebMethods", "GET", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Get")]
-    public class WebGetActivityWithBase64 : DsfActivity, IEquatable<WebGetActivityWithBase64>
+    public class WebGetActivity : DsfActivity, IEquatable<WebGetActivity>
     {
 
         public IList<INameValue> Headers { get; set; }
@@ -59,7 +58,7 @@ namespace Dev2.Activities
             AddDebugItem(new DebugEvalResult(query, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
             debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "Headers"), debugItem);
+            AddDebugItem(new DebugItemStaticDataParams("", nameof(Headers)), debugItem);
             AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
@@ -127,7 +126,7 @@ namespace Dev2.Activities
             return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
         
-        public WebGetActivityWithBase64()
+        public WebGetActivity()
         {
             Type = "GET Web Method";
             DisplayName = "GET Web Method";
@@ -135,9 +134,9 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
-        public bool Equals(WebGetActivityWithBase64 other)
+        public bool Equals(WebGetActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -156,7 +155,7 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -171,7 +170,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((WebGetActivityWithBase64)obj);
+            return Equals((WebGetActivity)obj);
         }
 
         public override int GetHashCode()

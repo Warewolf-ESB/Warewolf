@@ -106,9 +106,9 @@ namespace Dev2.FindMissingStrategies
             {
                 return GetDsfWebGetActivityFields(activity);
             }
-            else if (activityType == typeof(WebGetActivityWithBase64))
+            else if (activityType == typeof(WebGetActivity))
             {
-                return GetWebGetActivityWithBase64Fields(activity);
+                return GetWebGetActivityFields(activity);
             }
             else if (activityType == typeof(DsfDotNetDllActivity))
             {
@@ -359,12 +359,12 @@ namespace Dev2.FindMissingStrategies
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-        List<string> GetWebGetActivityWithBase64Fields(object activity)
+        List<string> GetWebGetActivityFields(object activity)
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();
-            if (activity is WebGetActivityWithBase64 maAct)
+            if (activity is WebGetActivity maAct)
             {
                 if (maAct.Inputs != null)
                 {

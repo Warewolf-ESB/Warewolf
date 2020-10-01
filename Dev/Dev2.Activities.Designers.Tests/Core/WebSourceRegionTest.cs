@@ -37,7 +37,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             var src = new Mock<IWebServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new WebGetActivityWithBase64()));
+            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new WebGetActivity()));
             Assert.AreEqual(1,region.Errors.Count);
             Assert.IsTrue(region.IsEnabled);
         }
@@ -45,7 +45,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void CtorWitSelectedSrc()
         {
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc});
@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ChangeSrcExpectSomethingChanged()
         {
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
             var Evt = false;
@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ChangeSelectedSource_ExpectRegionsRestored()
         {
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id ,HostName = "bob"};
 
@@ -100,7 +100,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ChangeSelectedSource_ExpectRegionsNotRestoredInvalid()
         {
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
 
@@ -126,7 +126,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void CloneRegionExpectClone()
         {
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void Restore_Region_ExpectRestore()
         {
             var id = Guid.NewGuid();
-            var act = new WebGetActivityWithBase64() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
@@ -186,7 +186,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //---------------Set up test pack-------------------
             var webServiceSourceDefinition = new WebServiceSourceDefinition { Name = "bravo" };
-            object differentObject = new WebGetActivityWithBase64
+            object differentObject = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 ActionName = "A"

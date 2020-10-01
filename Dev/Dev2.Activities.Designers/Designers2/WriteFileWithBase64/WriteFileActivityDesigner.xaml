@@ -7,7 +7,7 @@
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.WriteFileWithBase64"
-                       xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                       xmlns:designers2="clr-namespace:Dev2.Activities.Designers2.WriteFileWithBase64"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna" xmlns:local1="clr-namespace:Dev2.Activities.Designers2.WriteFileWithBase64"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:WriteFileActivityDesignerViewModel}"
