@@ -222,7 +222,7 @@
     <Compile Include="ActivityTests\Exchange\DsfExchangeEmailNewActivityTest.cs" />
     <Compile Include="ActivityTests\AbstractFileActivityTests.cs" />
     <Compile Include="ActivityTests\FileReadWithBase64Tests.cs" />
-    <Compile Include="ActivityTests\FileWriteTests .cs" />
+    <Compile Include="ActivityTests\DsfFileWriteTests .cs" />
     <Compile Include="ActivityTests\GateActivityTests.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\RabbitMQ\Publish\PublishRabbitMQActivityTests.cs" />
