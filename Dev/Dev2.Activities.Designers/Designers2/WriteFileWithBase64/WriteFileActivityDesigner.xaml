@@ -1,5 +1,5 @@
-﻿<core:ActivityDesigner x:TypeArguments="local1:WriteFileWithBase64DesignerViewModel"
-                       x:Class="Dev2.Activities.Designers2.WriteFileWithBase64.WriteFileWithBase64Designer"
+﻿<core:ActivityDesigner x:TypeArguments="local1:WriteFileActivityDesignerViewModel"
+                       x:Class="Dev2.Activities.Designers2.WriteFileWithBase64.WriteFileActivityDesigner"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,7 +10,7 @@
                        xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna" xmlns:local1="clr-namespace:Dev2.Activities.Designers2.WriteFileWithBase64"
                        mc:Ignorable="d"
-                       d:DataContext="{d:DesignInstance local:WriteFileWithBase64DesignerViewModel}"
+                       d:DataContext="{d:DesignInstance local:WriteFileActivityDesignerViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>

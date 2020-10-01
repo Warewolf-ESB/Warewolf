@@ -13,9 +13,9 @@ using Dev2.Activities.Designers2.WriteFile;
 
 namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
 {
-    public class TestWriteFileWithBase64DesignerViewModel : WriteFileDesignerViewModel
+    public class TestWriteFileActivityDesignerViewModel : WriteFileDesignerViewModel
     {
-        public TestWriteFileWithBase64DesignerViewModel(ModelItem modelItem)
+        public TestWriteFileActivityDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
         }

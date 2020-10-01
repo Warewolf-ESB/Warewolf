@@ -279,7 +279,7 @@
     <Compile Include="Activities\PathOperations\DsfPathMove.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderRead.cs" />
     <Compile Include="Activities\PathOperations\DsfFileRead.cs" />
-    <Compile Include="Activities\PathOperations\WithBase64\FileWriteWithBase64.cs" />
+    <Compile Include="Activities\PathOperations\FileWriteActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfPathRename.cs" />
     <Compile Include="Activities\PathOperations\DsfUnZip.cs" />
     <Compile Include="Activities\PathOperations\DsfZip.cs" />

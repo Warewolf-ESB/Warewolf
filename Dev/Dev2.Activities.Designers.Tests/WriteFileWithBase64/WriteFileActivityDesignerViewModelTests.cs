@@ -17,23 +17,23 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.WithBase64;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 
 namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
 {
     [TestClass]
     
-    public class WriteFileWithBase64DesignerViewModelTests
+    public class WriteFileActivityDesignerViewModelTests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WriteFileWithBase64DesignerViewModel))]
-        public void WriteFileWithBase64DesignerViewModel_Constructor_Properties_Initialized()
+        [TestCategory(nameof(WriteFileActivityDesignerViewModel))]
+        public void WriteFileActivityDesignerViewModel_Constructor_Properties_Initialized()
         {
             //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
-            var viewModel = WriteFileWithBasse64ViewModel();
+            var viewModel = WriteFileActivityViewModel();
 
             //------------Assert Results-------------------------
             Assert.AreEqual("File Name", viewModel.OutputPathLabel);
@@ -46,8 +46,8 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WriteFileWithBase64DesignerViewModel))]
-        public void WriteFileWithBase64DesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        [TestCategory(nameof(WriteFileActivityDesignerViewModel))]
+        public void WriteFileActivityDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
             var mockMainViewModel = new Mock<IShellViewModel>();
@@ -55,7 +55,7 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = WriteFileWithBasse64ViewModel();
+            var viewModel = WriteFileActivityViewModel();
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
@@ -64,14 +64,14 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WriteFileWithBase64DesignerViewModel))]
-        public void WriteFileWithBase64DesignerViewModel_Validate_CorrectFieldsAreValidated()
+        [TestCategory(nameof(WriteFileActivityDesignerViewModel))]
+        public void WriteFileActivityDesignerViewModel_Validate_CorrectFieldsAreValidated()
         {
             //------------Setup for test-------------------------
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(new ResourceModel(null));
             DataListSingleton.SetDataList(dataListViewModel);
-            var viewModel = WriteFileWithBasse64ViewModel();
+            var viewModel = WriteFileActivityViewModel();
 
             //------------Execute Test---------------------------
             viewModel.Validate();
@@ -85,22 +85,22 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WriteFileWithBase64DesignerViewModel))]
-        public void WriteFileWithBase64DesignerViewModel_Contructor_OverwriteIsSetToTrue()
+        [TestCategory(nameof(WriteFileActivityDesignerViewModel))]
+        public void WriteFileActivityDesignerViewModel_Contructor_OverwriteIsSetToTrue()
         {
             //------------Setup for test-------------------------
-            var viewModel = WriteFileWithBasse64ViewModel();
+            var viewModel = WriteFileActivityViewModel();
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.Overwrite);
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WriteFileWithBase64DesignerViewModel))]
-        public void WriteFileWithBase64DesignerViewModel_FileContentsAsBase64_IsSetToTrue()
+        [TestCategory(nameof(WriteFileActivityDesignerViewModel))]
+        public void WriteFileActivityDesignerViewModel_FileContentsAsBase64_IsSetToTrue()
         {
             //------------Setup for test-------------------------
-            var viewModel = new TestWriteFileWithBase64DesignerViewModel(ModelItemUtils.CreateModelItem(new FileWriteWithBase64
+            var viewModel = new TestWriteFileActivityDesignerViewModel(ModelItemUtils.CreateModelItem(new FileWriteActivity
             {
                 FileContentsAsBase64 = true
             }));
@@ -108,9 +108,9 @@ namespace Dev2.Activities.Designers.Tests.WriteFileWithBase64
             Assert.IsTrue(viewModel.FileContentsAsBase64);
         }
 
-        static TestWriteFileWithBase64DesignerViewModel WriteFileWithBasse64ViewModel()
+        static TestWriteFileActivityDesignerViewModel WriteFileActivityViewModel()
         {
-            var viewModel = new TestWriteFileWithBase64DesignerViewModel(ModelItemUtils.CreateModelItem(new FileWriteWithBase64()));
+            var viewModel = new TestWriteFileActivityDesignerViewModel(ModelItemUtils.CreateModelItem(new FileWriteActivity()));
             return viewModel;
         }
     }

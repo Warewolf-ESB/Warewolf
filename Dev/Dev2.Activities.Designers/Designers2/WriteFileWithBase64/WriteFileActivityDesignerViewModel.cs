@@ -15,11 +15,11 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.WriteFileWithBase64
 {
-    public class WriteFileWithBase64DesignerViewModel : FileActivityDesignerViewModel
+    public class WriteFileActivityDesignerViewModel : FileActivityDesignerViewModel
     {
         readonly ModelItem Modelitem;
 
-        public WriteFileWithBase64DesignerViewModel(ModelItem modelItem)
+        public WriteFileActivityDesignerViewModel(ModelItem modelItem)
             : base(modelItem, string.Empty, "File Name")
         {
             AddTitleBarLargeToggle();
