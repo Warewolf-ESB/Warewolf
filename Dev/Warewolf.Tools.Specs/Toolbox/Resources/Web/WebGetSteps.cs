@@ -58,7 +58,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
         [Then(@"I drag Web Get Request Connector Tool onto the design surface")]
         public void GivenIDragWebGetRequestConnectorToolOntoTheDesignSurface()
         {
-            var activity = new WebGetActivityWithBase64();
+            var activity = new WebGetActivity();
             var modelItem = ModelItemUtils.CreateModelItem(activity);
             var mockServiceInputViewModel = new Mock<IManageWebServiceInputViewModel>();
             var mockServiceModel = new Mock<IWebServiceModel>();

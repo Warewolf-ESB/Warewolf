@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ManageWebServiceInputViewModel_Ctor()
         {
             var mod = new MyWebModel();
-            var act = new WebGetActivityWithBase64()
+            var act = new WebGetActivity()
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var calledOk = false;
 
             var mod = new MyWebModel();
-            var act = new WebGetActivityWithBase64()
+            var act = new WebGetActivity()
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
@@ -96,7 +96,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new WebGetActivityWithBase64();
+            var act = new WebGetActivity();
            
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod)
@@ -123,7 +123,7 @@ namespace Dev2.Activities.Designers.Tests.Core
                 Response = "{\"NormalText\":\"\"}"
             };
 
-            var act = new WebGetActivityWithBase64()
+            var act = new WebGetActivity()
             {
                 Headers = new List<INameValue>()
                 {
@@ -156,7 +156,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new WebGetActivityWithBase64();
+            var act = new WebGetActivity();
             var called = false;
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod);
@@ -178,7 +178,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new WebGetActivityWithBase64();
+            var act = new WebGetActivity();
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod)
             {
@@ -204,7 +204,7 @@ namespace Dev2.Activities.Designers.Tests.Core
                 HasRecError = true
             };
 
-            var act = new WebGetActivityWithBase64();
+            var act = new WebGetActivity();
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod)
             {
@@ -230,7 +230,7 @@ namespace Dev2.Activities.Designers.Tests.Core
                 HasRecError = true
             };
 
-            var act = new WebGetActivityWithBase64();
+            var act = new WebGetActivity();
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod);
             webget.OutputsRegion.Outputs = null;
@@ -251,7 +251,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new WebGetActivityWithBase64();
+            var act = new WebGetActivity();
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod)
             {
@@ -274,7 +274,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new WebGetActivityWithBase64();
+            var act = new WebGetActivity();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod)
@@ -307,7 +307,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new WebGetActivityWithBase64();
+            var act = new WebGetActivity();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod)
@@ -329,7 +329,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Setup for test--------------------------
             var mod = new MyWebModel();
 
-            var act = new WebGetActivityWithBase64();
+            var act = new WebGetActivity();
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageWebServiceInputViewModel(webget, mod)
@@ -354,7 +354,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ManageWebServiceInputViewModel_Properties()
         {
             var mod = new MyWebModel();
-            var act = new WebGetActivityWithBase64()
+            var act = new WebGetActivity()
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },

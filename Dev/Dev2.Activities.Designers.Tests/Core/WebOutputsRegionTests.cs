@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Ctor_ValidModelItem_ExpectVisibleAndValidData()
         {
             //------------Setup for test--------------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>
@@ -57,7 +57,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Ctor_NewModelItem_ExpectVisibleAndValidData()
         {
             //------------Setup for test--------------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = null,
@@ -75,7 +75,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Given_MappedTo_Is_Changed_From_RecordSetTo_Scalar_Sets_RecordSet_To_Empty()
         {
             //------------Setup for test--------------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = null,
@@ -94,7 +94,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Given_MappedTo_Is_Changed_From_Scalar_To_RecordSet_Sets_RecordSet_Name()
         {
             //------------Setup for test--------------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = null,
@@ -115,7 +115,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_AddSomeOutputsExpectHeightChanged()
         {
             //------------Setup for test--------------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = null,
@@ -138,7 +138,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
             //------------Setup for test--------------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = null,
@@ -164,7 +164,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
             //------------Setup for test--------------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = null,
@@ -193,7 +193,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_GivenNull_ShouldUpdatesModelItem()
         {
             //---------------Set up test pack-------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -220,7 +220,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_GivenNull_ShouldAttachEventHandlers()
         {
             //---------------Set up test pack-------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -251,7 +251,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_GivenNull_ShouldRemovedEventHandlers()
         {
             //---------------Set up test pack-------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -287,7 +287,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_ObjectName_GivenIsObjectAndNullObjectResult_ShouldNotFireChanges()
         {
             //---------------Set up test pack-------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -313,7 +313,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_IsResponseBase64_GivenIsObjectAndNullObjectResult_ShouldFireChanges()
         {
             //---------------Set up test pack-------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -339,7 +339,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_ObjectName_GivenIsObjectAndObjectResult_ShouldFireChanges()
         {
             //---------------Set up test pack-------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -373,7 +373,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var shellVm = new Mock<IShellViewModel>();
             shellVm.Setup(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             CustomContainer.Register(shellVm.Object);
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -401,7 +401,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_ObjectName_GivenIsObjectAndNullValues_ShouldUpdateDatalist()
         {
             //---------------Set up test pack-------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -432,7 +432,7 @@ namespace Dev2.Activities.Designers.Tests.Core
                 new ServiceOutputMapping { MappedFrom = "Name", MappedTo = "[[Person().Firstname]]", RecordSetName = "Person"},
                 new ServiceOutputMapping { MappedFrom = "Surname", MappedTo = "[[Person().Surname]]", RecordSetName = "Person" }
             };
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -463,7 +463,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             {
                 new ServiceOutputMapping { MappedFrom = "Name", MappedTo = "[[Person().Firstname]]", RecordSetName = "Person"},
             };
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -497,7 +497,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             {
                 new ServiceOutputMapping { MappedFrom = "Name", MappedTo = "[[Person().Firstname]]", RecordSetName = "Person"},
             };
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -524,7 +524,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Errors_Expect_Parse_Error()
         {
             //---------------Set up test pack-------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),
@@ -547,7 +547,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Errors_Expect_No_Error()
         {
             //---------------Set up test pack-------------------
-            var act = new WebGetActivityWithBase64
+            var act = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 Outputs = new List<IServiceOutputMapping>(),

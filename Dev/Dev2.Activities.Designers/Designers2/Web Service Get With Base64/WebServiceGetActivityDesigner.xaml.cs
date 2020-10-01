@@ -13,13 +13,13 @@ using Dev2.Activities.Designers2.Web_Service_Get_With_Base64;
 
 namespace Dev2.Activities.Designers2.WebServiceGetWithBase64
 {
-    // Interaction logic for WebServiceGetWithBase64Designer.xaml
-    public partial class WebServiceGetWithBase64Designer
+    // Interaction logic for WebServiceGetActivityDesigner.xaml
+    public partial class WebServiceGetActivityDesigner
     {
-        public WebServiceGetWithBase64Designer()
+        public WebServiceGetActivityDesigner()
         {
             InitializeComponent();
         }
-        protected override WebServiceGetViewModel CreateViewModel() => new WebServiceGetViewModel(ModelItem);
+        protected override WebServiceGetActivityViewModel CreateViewModel() => new WebServiceGetActivityViewModel(ModelItem);
     }
 }

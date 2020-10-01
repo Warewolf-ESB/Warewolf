@@ -1,5 +1,5 @@
-﻿<core:ActivityDesigner x:TypeArguments="webServiceGetWithBase64:WebServiceGetViewModel" 
-                       x:Class="Dev2.Activities.Designers2.WebServiceGetWithBase64.WebServiceGetWithBase64Designer"
+﻿<core:ActivityDesigner x:TypeArguments="webServiceGetWithBase64:WebServiceGetActivityViewModel" 
+                       x:Class="Dev2.Activities.Designers2.WebServiceGetWithBase64.WebServiceGetActivityDesigner"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,7 +10,7 @@
                        xmlns:webServiceGetWithBase64="clr-namespace:Dev2.Activities.Designers2.Web_Service_Get_With_Base64"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                        mc:Ignorable="d"
-                       d:DataContext="{d:DesignInstance webServiceGetWithBase64:WebServiceGetViewModel}"
+                       d:DataContext="{d:DesignInstance webServiceGetWithBase64:WebServiceGetActivityViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
     <sap:ActivityDesigner.Resources>
         <ResourceDictionary>

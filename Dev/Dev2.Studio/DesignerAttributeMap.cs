@@ -190,7 +190,7 @@ namespace Dev2
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllEnhancedViewModel) },
                 { typeof(DsfComDllActivity), typeof(ComDllViewModel) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel) },
-                { typeof(WebGetActivityWithBase64), typeof(WebServiceGetViewModel) },
+                { typeof(WebGetActivity), typeof(WebServiceGetViewModel) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostViewModel) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteViewModel) },
                 { typeof(DsfWebPutActivity), typeof(WebServicePutViewModel) },
