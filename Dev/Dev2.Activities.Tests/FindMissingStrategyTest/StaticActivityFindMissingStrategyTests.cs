@@ -13,7 +13,7 @@ using Dev2.Activities;
 using Dev2.Factories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.WithBase64;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 
 namespace Dev2.Tests.Activities.FindMissingStrategyTest
 {
@@ -357,7 +357,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [TestCategory(nameof(Dev2FindMissingStrategyFactory))]
         public void Dev2FindMissingStrategyFactory_GetActivityFieldsOff_DsfFileWriteWithBase64_Activity_ExpectAllFindMissingFieldsToBeReturned()
         {
-            var activity = new FileWriteWithBase64
+            var activity = new FileWriteActivity
             {
                 FileContents = "[[FileContents]]",
                 OutputPath = "[[OutputPath]]",

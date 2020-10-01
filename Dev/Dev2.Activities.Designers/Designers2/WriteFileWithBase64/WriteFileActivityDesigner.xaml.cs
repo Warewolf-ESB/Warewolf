@@ -11,9 +11,9 @@
 
 namespace Dev2.Activities.Designers2.WriteFileWithBase64
 {
-    public partial class WriteFileWithBase64Designer
+    public partial class WriteFileActivityDesigner
     {
-        public WriteFileWithBase64Designer()
+        public WriteFileActivityDesigner()
         {
             InitializeComponent();
         }

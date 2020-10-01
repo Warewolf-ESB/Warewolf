@@ -241,7 +241,7 @@
     <Compile Include="Designers2\WriteFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\WriteFileWithBase64\WriteFileWithBase64Designer.xaml.cs" />
+    <Compile Include="Designers2\WriteFileWithBase64\WriteFileActivityDesigner.xaml.cs" />
     <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
       <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
     </Compile>
@@ -1168,7 +1168,7 @@
     <Compile Include="Designers2\WriteFileWithBase64\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\WriteFileWithBase64\WriteFileWithBase64DesignerViewModel.cs" />
+    <Compile Include="Designers2\WriteFileWithBase64\WriteFileActivityDesignerViewModel.cs" />
     <Compile Include="Designers2\WriteFileWithBase64\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -2440,7 +2440,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\WriteFileWithBase64\WriteFileWithBase64Designer.xaml">
+    <Page Include="Designers2\WriteFileWithBase64\WriteFileActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

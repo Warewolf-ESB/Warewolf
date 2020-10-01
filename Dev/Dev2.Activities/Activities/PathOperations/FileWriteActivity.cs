@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -31,13 +30,13 @@ using Warewolf.Core;
 using Warewolf.Storage;
 
 
-namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.WithBase64
+namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations
 {
     [ToolDescriptorInfo("FileFolder-Write", "Write File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Write_File")]
-    public class FileWriteWithBase64 : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite, IEquatable<FileWriteWithBase64>
+    public class FileWriteActivity : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite, IEquatable<FileWriteActivity>
     {
 
-        public FileWriteWithBase64()
+        public FileWriteActivity()
             : base("Write File")
         {
             OutputPath = string.Empty;
@@ -136,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> is append.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteActivity" /> is append.
         /// </summary>
         [Inputs("Append")]
         public bool Append
@@ -157,7 +156,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> File Contents As Base64.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteActivity" /> File Contents As Base64.
         /// </summary>
         [Inputs("File Contents As Base64")]
         public bool FileContentsAsBase64
@@ -178,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> is overwrite.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteActivity" /> is overwrite.
         /// </summary>
         [Inputs("Overwrite")]
         public bool Overwrite
@@ -188,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> is append top.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteActivity" /> is append top.
         /// </summary>
         [Inputs("Append Top")]
         public bool AppendTop
@@ -198,7 +197,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="FileWriteWithBase64" /> is append bottom.
+        /// Gets or sets a value indicating whether this <see cref="FileWriteActivity" /> is append bottom.
         /// </summary>
         [Inputs("Append Bottom")]
         public bool AppendBottom
@@ -303,9 +302,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
-        public bool Equals(FileWriteWithBase64 other)
+        public bool Equals(FileWriteActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -327,7 +326,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -342,7 +341,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations.
                 return false;
             }
 
-            return Equals((FileWriteWithBase64)obj);
+            return Equals((FileWriteActivity)obj);
         }
 
         public override int GetHashCode()

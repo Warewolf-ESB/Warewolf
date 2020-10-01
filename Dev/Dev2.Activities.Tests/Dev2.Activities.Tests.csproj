@@ -160,7 +160,7 @@
     <Compile Include="ActivityComparerTests\Assigns\ActivityDtoEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Assigns\MultiAssignComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFileReadComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\PathOperations\FileWriteWithBase64ComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\PathOperations\FileWriteActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFolderReadComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfPathCreateComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfUnZipComparerTests.cs" />
@@ -285,7 +285,7 @@
     <Compile Include="ActivityTests\SqlBulkInsertActivityTests.cs" />
     <Compile Include="ActivityTests\TestActivity.cs" />
     <Compile Include="ActivityTests\FileReadTests.cs" />
-    <Compile Include="ActivityTests\FileWriteWithBase64Tests.cs" />
+    <Compile Include="ActivityTests\FileWriteActivityTests.cs" />
     <Compile Include="ActivityTests\FolderReadTests.cs" />
     <Compile Include="ActivityTests\PathCopyTests.cs" />
     <Compile Include="ActivityTests\PathCreateTests.cs" />
