@@ -32,7 +32,7 @@ using Dev2.Runtime.ServiceModel;
 
 namespace Dev2.Activities
 {
-    [Obsolete("DsfWebGetActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use DsfWebGetActivityWithBase64.")]
+    [Obsolete("DsfWebGetActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebGetActivity.")]
     public class DsfWebGetActivity : DsfActivity, IEquatable<DsfWebGetActivity>
     {
 
