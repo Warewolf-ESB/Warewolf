@@ -1,9 +1,0 @@
-
-<Source ID="ea665c67-dd33-4f17-a07e-c85c5f793beb" Name="Examples Files Web Service Source" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAPCaIVakfG0OdBFUSLL0xIQQAAAACAAAAAAADZgAAwAAAABAAAAAT2cwZG9kZ5wwmuVdikca2AAAAAASAAACgAAAAEAAAAAkckw9Cy/CE/jHRXpjf3V7IAAAAVt/89mBh3oEZ4m56j2WnO12zn7nliasx0T+bLk3c11ZdytjNH/p+hRQPr7acXqiXQseRv5V5k2pvDQhvuPRZCmqLBQvBBoa5wsoFuegtiy0ALLTJ8VsMJ1U/vs9Bvn1YWjqmi/A04NflCc2x3+rAqpsqPuVzJwz8CNE229kozOlmu/YFUNMdwc/DqQ2fUGOp868tSzEExNiJT5ACcQWllWTXgBiJhOc/qRJjSEizeLEWCsi33LEPtTrl8jaw9BSOs33Yy3H46swUAAAA4xCisiPC8NuKwKaYVktHm/ba5Ww=" Type="WebSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
-  <DisplayName>Examples Files Web Service Source</DisplayName>
-  <AuthorRoles>
-  </AuthorRoles>
-  <ErrorMessages />
-  <TypeOf>WebSource</TypeOf>
-  <VersionInfo DateTimeStamp="2020-09-29T11:37:09.5702699+02:00" Reason="" User="PREMIER\Siphamandla.Dube" VersionNumber="9" ResourceId="ea665c67-dd33-4f17-a07e-c85c5f793beb" VersionId="ea665c67-dd33-4f17-a07e-c85c5f793beb" />
-</Source>
