@@ -6,7 +6,7 @@ Param(
   [string]$ResourcesPath,
   [string]$ServerPath
 )
-if (Test-Path "$ResourcesPath\Resources") {
+if ($ResourcesPath -and Test-Path "$ResourcesPath\Resources") {
 	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
 } else {
 	if ($ResourcesPath) {
