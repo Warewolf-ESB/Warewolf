@@ -568,9 +568,9 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Rory McGuire")]
+        [Owner("Siphamandla Dube")]
         [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
-        public void DataGridActivityFindMissingStrategy_GetActivityFields_WebGetActivity_ShouldReturnResults_IsObject()
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_DsfWebGetActivity_ShouldReturnResults_IsObject()
         {
             //------------Setup for test--------------------------
             var fac = new Dev2FindMissingStrategyFactory();
@@ -597,7 +597,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
-        public void DataGridActivityFindMissingStrategy_GetActivityFields_WebGetActivityWithBase64_ShouldReturnResults_IsObject()
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_WebGetActivity_ShouldReturnResults_IsObject()
         {
             //------------Setup for test--------------------------
             var fac = new Dev2FindMissingStrategyFactory();
