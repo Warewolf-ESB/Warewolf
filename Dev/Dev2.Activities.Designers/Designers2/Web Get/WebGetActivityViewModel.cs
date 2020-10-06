@@ -32,9 +32,9 @@ using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
 
-namespace Dev2.Activities.Designers2.Web_Service_Get_With_Base64
+namespace Dev2.Activities.Designers2.WebGet
 {
-    public class WebServiceGetActivityViewModel : CustomToolWithRegionBase, IWebServiceGetViewModel
+    public class WebGetActivityViewModel : CustomToolWithRegionBase, IWebServiceGetViewModel
     {
         IOutputsToolRegion _outputsRegion;
         IWebGetInputArea _inputArea;
@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get_With_Base64
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
-        public WebServiceGetActivityViewModel(ModelItem modelItem)
+        public WebGetActivityViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
@@ -122,7 +122,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get_With_Base64
             UpdateWorstError();
         }
 
-        public WebServiceGetActivityViewModel(ModelItem modelItem, IWebServiceModel model)
+        public WebGetActivityViewModel(ModelItem modelItem, IWebServiceModel model)
             : base(modelItem)
         {
             Model = model;
@@ -273,7 +273,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get_With_Base64
             }
         }
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
-            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebServiceGetActivityViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebGetActivityViewModel), new PropertyMetadata(false));
 
         public ErrorType WorstError
         {
@@ -281,7 +281,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get_With_Base64
             private set { SetValue(WorstErrorProperty, value); }
         }
         public static readonly DependencyProperty WorstErrorProperty =
-        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceGetActivityViewModel), new PropertyMetadata(ErrorType.None));
+        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebGetActivityViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
         IServiceInputBuilder _builder;

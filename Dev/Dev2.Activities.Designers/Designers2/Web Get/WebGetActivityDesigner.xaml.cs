@@ -8,18 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Windows;
-
-namespace Dev2.Activities.Designers2.WebServiceGetWithBase64
+namespace Dev2.Activities.Designers2.WebGet
 {
-    public partial class Large
+    // Interaction logic for WebGetActivityDesigner.xaml
+    public partial class WebGetActivityDesigner
     {
-        public Large()
+        public WebGetActivityDesigner()
         {
             InitializeComponent();
-            SetInitialFocus();
         }
-
-        protected override IInputElement GetInitialFocusElement() => MainGrid;
+        protected override WebGetActivityViewModel CreateViewModel() => new WebGetActivityViewModel(ModelItem);
     }
 }

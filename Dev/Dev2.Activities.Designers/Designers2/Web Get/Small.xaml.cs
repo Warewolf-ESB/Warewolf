@@ -8,18 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Activities.Designers2.Web_Service_Get_With_Base64;
+using System.Windows;
 
-
-namespace Dev2.Activities.Designers2.WebServiceGetWithBase64
+namespace Dev2.Activities.Designers2.WebGet
 {
-    // Interaction logic for WebServiceGetActivityDesigner.xaml
-    public partial class WebServiceGetActivityDesigner
+    public partial class Small
     {
-        public WebServiceGetActivityDesigner()
+        public Small()
         {
             InitializeComponent();
         }
-        protected override WebServiceGetActivityViewModel CreateViewModel() => new WebServiceGetActivityViewModel(ModelItem);
+
+        protected override IInputElement GetInitialFocusElement() => null;
     }
 }

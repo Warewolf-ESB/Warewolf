@@ -10,15 +10,16 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.WebServiceGetWithBase64
+namespace Dev2.Activities.Designers2.WebGet
 {
-    public partial class Small
+    public partial class Large
     {
-        public Small()
+        public Large()
         {
             InitializeComponent();
+            SetInitialFocus();
         }
 
-        protected override IInputElement GetInitialFocusElement() => null;
+        protected override IInputElement GetInitialFocusElement() => MainGrid;
     }
 }

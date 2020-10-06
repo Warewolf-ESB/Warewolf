@@ -105,9 +105,9 @@ using Dev2.Activities.Designers2.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
-using Dev2.Activities.Designers2.WebServiceGetWithBase64;
 using Dev2.Activities.Designers2.WriteFileWithBase64;
 using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
+using Dev2.Activities.Designers2.WebGet;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -183,7 +183,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
-                { typeof(WebGetActivity), typeof(WebServiceGetActivityDesigner) },
+                { typeof(WebGetActivity), typeof(WebGetActivityDesigner) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
