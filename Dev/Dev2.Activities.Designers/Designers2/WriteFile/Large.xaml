@@ -1,4 +1,4 @@
-﻿<!--Obsolute: DsfFileWrite is deprecated. It will be deleted in future releases along with this view.-->
+﻿<!--Obsolete: DsfFileWrite is deprecated. It will be deleted in future releases along with this view.-->
     
 <core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.WriteFile.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
