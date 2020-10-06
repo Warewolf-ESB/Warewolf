@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Activities.Designers2.WriteFileWithBase64;
+using Dev2.Activities.Designers2.PathOperations.WriteFile;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;

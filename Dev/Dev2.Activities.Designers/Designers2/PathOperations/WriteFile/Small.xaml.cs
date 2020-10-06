@@ -10,11 +10,11 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.WriteFileWithBase64
+namespace Dev2.Activities.Designers2.PathOperations.WriteFile
 {
-    public partial class Large
+    public partial class Small
     {
-        public Large()
+        public Small()
         {
             InitializeComponent();
         }

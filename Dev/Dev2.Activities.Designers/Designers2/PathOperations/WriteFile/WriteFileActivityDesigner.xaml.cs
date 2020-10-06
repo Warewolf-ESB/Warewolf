@@ -9,7 +9,7 @@
 */
 
 
-namespace Dev2.Activities.Designers2.WriteFileWithBase64
+namespace Dev2.Activities.Designers2.PathOperations.WriteFile
 {
     public partial class WriteFileActivityDesigner
     {

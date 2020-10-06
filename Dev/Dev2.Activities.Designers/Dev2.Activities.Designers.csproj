@@ -241,7 +241,7 @@
     <Compile Include="Designers2\WriteFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\WriteFileWithBase64\WriteFileActivityDesigner.xaml.cs" />
+    <Compile Include="Designers2\PathOperations\WriteFile\WriteFileActivityDesigner.xaml.cs" />
     <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
       <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
     </Compile>
@@ -1165,11 +1165,11 @@
       <DependentUpon>WebPostDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Web Service Post\WebServicePostViewModel.cs" />
-    <Compile Include="Designers2\WriteFileWithBase64\Large.xaml.cs">
+    <Compile Include="Designers2\PathOperations\WriteFile\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\WriteFileWithBase64\WriteFileActivityDesignerViewModel.cs" />
-    <Compile Include="Designers2\WriteFileWithBase64\Small.xaml.cs">
+    <Compile Include="Designers2\PathOperations\WriteFile\WriteFileActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\PathOperations\WriteFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\XPath\Large.xaml.cs">
@@ -2440,7 +2440,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\WriteFileWithBase64\WriteFileActivityDesigner.xaml">
+    <Page Include="Designers2\PathOperations\WriteFile\WriteFileActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -2448,11 +2448,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\WriteFileWithBase64\Large.xaml">
+    <Page Include="Designers2\PathOperations\WriteFile\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\WriteFileWithBase64\Small.xaml">
+    <Page Include="Designers2\PathOperations\WriteFile\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
