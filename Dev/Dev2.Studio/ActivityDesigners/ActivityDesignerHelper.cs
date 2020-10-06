@@ -105,7 +105,7 @@ using Dev2.Activities.Designers2.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
-using Dev2.Activities.Designers2.WriteFileWithBase64;
+using Dev2.Activities.Designers2.PathOperations.WriteFile;
 using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 using Dev2.Activities.Designers2.WebGet;
 

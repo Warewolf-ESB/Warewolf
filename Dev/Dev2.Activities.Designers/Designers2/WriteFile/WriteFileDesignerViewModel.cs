@@ -9,12 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.WriteFile
 {
+    [Obsolete("DsfFileWrite is deprecated. It will be deleted in future releases along with this viewModel.")]
     public class WriteFileDesignerViewModel : FileActivityDesignerViewModel
     {
         readonly ModelItem Modelitem;
