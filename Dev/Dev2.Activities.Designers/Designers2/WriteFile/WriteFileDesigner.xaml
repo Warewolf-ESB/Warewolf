@@ -1,4 +1,4 @@
-﻿<!--Obsolute: DsfFileWrite is deprecated. It will be deleted in future releases along with this view.-->
+﻿<!--Obsolete: DsfFileWrite is deprecated. It will be deleted in future releases along with this view.-->
 
 <core:ActivityDesigner x:TypeArguments="local:WriteFileDesignerViewModel"
                        x:Class="Dev2.Activities.Designers2.WriteFile.WriteFileDesigner"
