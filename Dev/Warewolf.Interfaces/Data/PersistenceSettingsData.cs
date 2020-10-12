@@ -95,6 +95,7 @@ namespace Warewolf.Configuration
             equals &= DashboardEndpoint == obj.DashboardEndpoint;
             equals &= DashboardPort == obj.DashboardPort;
             equals &= DashboardName == obj.DashboardName;
+            equals &= ServerName == obj.ServerName;
             equals &= PrepareSchemaIfNecessary == obj.PrepareSchemaIfNecessary;
             return equals;
         }
