@@ -48,6 +48,11 @@ namespace Warewolf.Service
         public const string ServerSettings = nameof(ServerSettings);
     }
 
+    public static class SavePersistenceSettings
+    {
+        public const string PersistenceSettings = nameof(PersistenceSettings);
+    }
+
     public static class SaveAuditingSettings
     {
         public const string LegacySettings = nameof(LegacySettings);
