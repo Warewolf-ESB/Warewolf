@@ -84,6 +84,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="LegacySettingsTests.cs" />
+    <Compile Include="PersistenceSettingsTests.cs" />
     <Compile Include="ServerSettingsTests.cs" />
     <Compile Include="ComputerNameTests.cs" />
     <Compile Include="RecordSetSearchPayloadTests.cs" />
