@@ -2731,7 +2731,7 @@ this.RenameFileValidation("27", "[[a]]", "C:\\copyfile0.txt", "\"\"", "C:\\renam
         public virtual void RenameFileValidation_28()
         {
 #line 103
-this.RenameFileValidation("28", "[[sourcePath]]", "ftp://SVRPDC.premier.local:1002", "/FORFILERENAMETESTING/renamed25.txt", "C:\\renamefile33.txt", "\"\"", "\"\"", "[[a]][[b]]", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed25.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("28", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002", "/FORFILERENAMETESTING/renamed25.txt", "C:\\renamefile33.txt", "\"\"", "\"\"", "[[a]][[b]]", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed25.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2821,7 +2821,7 @@ this.RenameFileValidation("30", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         public virtual void RenameFileValidation_31()
         {
 #line 103
-this.RenameFileValidation("31", "[[sourcePath]]", "ftp://SVRPDC.premier.local", "1002/FORFILERENAMETESTING/renamed28.txt", "C:\\renamefile36.txt", "\"\"", "\"\"", "[[a]]:[[b]]", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed28.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("31", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local", "1002/FORFILERENAMETESTING/renamed28.txt", "C:\\renamefile36.txt", "\"\"", "\"\"", "[[a]]:[[b]]", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed28.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2851,7 +2851,7 @@ this.RenameFileValidation("31", "[[sourcePath]]", "ftp://SVRPDC.premier.local", 
         public virtual void RenameFileValidation_32()
         {
 #line 103
-this.RenameFileValidation("32", "[[sourcePath]]", "//SVRPDC.premier.local:1002/", "FORTESTING/renamed29.txt", "C:\\renamefile37.txt", "\"\"", "\"\"", "ftp:[[a]][[b]].txt", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed29.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("32", "[[sourcePath]]", "//DEVOPSPDC.premier.local:1002/", "FORTESTING/renamed29.txt", "C:\\renamefile37.txt", "\"\"", "\"\"", "ftp:[[a]][[b]].txt", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed29.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -2941,7 +2941,7 @@ this.RenameFileValidation("34", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         public virtual void RenameFileValidation_35()
         {
 #line 103
-this.RenameFileValidation("35", "[[sourcePath]]", "ftp://SVRPDC.premier.local:1002", "/FORFILERENAMETESTING/renamed32", "C:\\renamefile40.txt", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]].txt", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed32.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("35", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002", "/FORFILERENAMETESTING/renamed32", "C:\\renamefile40.txt", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]].txt", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed32.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -3001,7 +3001,7 @@ this.RenameFileValidation("36", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local
         public virtual void RenameFileValidation_37()
         {
 #line 103
-this.RenameFileValidation("37", "[[sourcePath]]", "//SVRPDC.premier.local:1002/", "FORTESTING/renamed34", "C:\\renamefile42.txt", "\"\"", "\"\"", "ftp:[[rec(1).a]][[rec(2).a]].txt", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed34.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("37", "[[sourcePath]]", "//DEVOPSPDC.premier.local:1002/", "FORTESTING/renamed34", "C:\\renamefile42.txt", "\"\"", "\"\"", "ftp:[[rec(1).a]][[rec(2).a]].txt", "ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed34.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
