@@ -101,7 +101,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettings))]
-        public void PersistenceSettingsData_Equals_ExpectTrue()
+        public void PersistenceSettings_Equals_ExpectTrue()
         {
             var data1 = new PersistenceSettingsData
             {
@@ -143,7 +143,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettings))]
-        public void PersistenceSettingsData_Equals_ExpectFalse()
+        public void PersistenceSettings_Equals_ExpectFalse()
         {
             var data1 = new PersistenceSettingsData();
             data1.PersistenceScheduler = "Hangfire";
@@ -170,7 +170,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettings))]
-        public void PersistenceSettingsData_Clone_Success()
+        public void PersistenceSettings_Clone_Success()
         {
             var data1 = new PersistenceSettingsData
             {
