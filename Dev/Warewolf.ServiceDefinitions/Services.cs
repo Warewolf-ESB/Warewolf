@@ -52,6 +52,10 @@ namespace Warewolf.Service
     {
         public const string PersistenceSettings = nameof(PersistenceSettings);
     }
+    public static class GetPersistenceSettings
+    {
+        public const string PersistenceSettings = nameof(PersistenceSettings);
+    }
 
     public static class SaveAuditingSettings
     {
