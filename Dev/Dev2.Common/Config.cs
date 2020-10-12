@@ -33,8 +33,119 @@ namespace Dev2.Common
         public static StudioSettings Studio = new StudioSettings();
         public static AuditingSettings Auditing = new AuditingSettings();
         public static LegacySettings Legacy = new LegacySettings();
+        public static PersistenceSettings Persistence = new PersistenceSettings();
     }
+    public class PersistenceSettings : ConfigSettingsBase<PersistenceSettingsData>
+    {
 
+        public PersistenceSettings()
+            : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
+        {
+        }
+
+        public PersistenceSettings(string settingsPath, IFile file, IDirectory directoryWrapper)
+            : base(settingsPath, file, directoryWrapper)
+        {
+        }
+
+        public static string SettingsPath => Path.Combine(Config.UserDataPath, "Persistence", "persistence_settings.json");
+
+        public PersistenceSettingsData Get()
+        {
+            var result = new PersistenceSettingsData();
+            foreach (var prop in typeof(PersistenceSettingsData).GetProperties())
+            {
+                var thisProp = this.GetType().GetProperty(prop.Name);
+                var value = thisProp.GetValue(this);
+                prop.SetValue(result, value);
+            }
+
+            return result;
+        }
+        public bool EncryptDataSource
+        {
+            get => _settings.EncryptDataSource;
+            set
+            {
+                _settings.EncryptDataSource = value;
+                Save();
+            }
+        }
+        public NamedGuidWithEncryptedPayload PersistenceDataSource
+        {
+            get => _settings.PersistenceDataSource ?? new NamedGuidWithEncryptedPayload();
+            set
+            {
+                _settings.PersistenceDataSource = value;
+                Save();
+            }
+        }
+        public bool Enable
+        {
+            get => _settings.Enable;
+            set
+            {
+                _settings.Enable = value;
+                Save();
+            }
+        }
+        public string PersistenceScheduler
+        {
+            get => _settings.PersistenceScheduler;
+            set
+            {
+                _settings.PersistenceScheduler = value;
+                Save();
+            }
+        }
+        public bool PrepareSchemaIfNecessary
+        {
+            get => _settings.PrepareSchemaIfNecessary;
+            set
+            {
+                _settings.PrepareSchemaIfNecessary = value;
+                Save();
+            }
+        }
+
+        public string DashboardEndpoint
+        {
+            get => _settings.DashboardEndpoint;
+            set
+            {
+                _settings.DashboardEndpoint = value;
+                Save();
+            }
+        }
+        public string DashboardPort
+        {
+            get => _settings.DashboardPort;
+            set
+            {
+                _settings.DashboardPort = value;
+                Save();
+            }
+        }
+        public string DashboardName
+        {
+            get => _settings.DashboardName;
+            set
+            {
+                _settings.DashboardName = value;
+                Save();
+            }
+        }
+        public string ServerName
+        {
+            get => _settings.ServerName;
+            set
+            {
+                _settings.ServerName = value;
+                Save();
+            }
+        }
+
+    }
     public class ServerSettings : ConfigSettingsBase<ServerSettingsData>
     {
         public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "serverSettings.json");
