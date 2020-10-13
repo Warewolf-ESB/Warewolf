@@ -780,12 +780,6 @@ namespace Dev2.Tests.Runtime.WebServer
             var dataBytes = Encoding.ASCII.GetBytes(data);
             var dataStream = new MemoryStream(dataBytes);
 
-            byte[] fileDataBytes = new UTF8Encoding(true).GetBytes("This is some text in the file.");
-            using (FileStream fs = File.Create(Environment.ExpandEnvironmentVariables(@"%temp%\MyTest" + Guid.NewGuid() + ".txt")))
-            {
-                fs.Write(fileDataBytes, 0, fileDataBytes.Length);
-            }
-
             var mockCommunicationRequestContentHeaders = new Mock<ICommunicationRequestContentHeaders>();
             mockCommunicationRequestContentHeaders.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { { "Content-type", "text/plain" } } }.Headers);
@@ -824,7 +818,7 @@ namespace Dev2.Tests.Runtime.WebServer
                         }
                     },
                     {
-                        new HttpContentStub(fileDataBytes)
+                        new HttpContentStub(new UTF8Encoding(true).GetBytes("This is some text in the file."))
                         {
                             Headers =
                             {
