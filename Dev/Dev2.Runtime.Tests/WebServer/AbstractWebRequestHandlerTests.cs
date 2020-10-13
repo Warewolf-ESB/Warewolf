@@ -1,4 +1,4 @@
-#pragma warning disable
+﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -794,7 +794,6 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
-        [DoNotParallelize]
         public void AbstractWebRequestHandler_GetPostData_GivenPost_FileStreamData_InContext_ShouldReturnBase64RequestBoundVariables()
         {
             //---------------Set up test pack-------------------
