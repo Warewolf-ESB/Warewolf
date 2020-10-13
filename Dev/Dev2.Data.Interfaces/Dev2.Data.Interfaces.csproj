@@ -79,6 +79,7 @@
     <Compile Include="Enums\enPathType.cs" />
     <Compile Include="Enums\enRecordsetIndexType.cs" />
     <Compile Include="Enums\enRoundingType.cs" />
+    <Compile Include="Enums\enSuspendOption.cs" />
     <Compile Include="Enums\enSystemTags.cs" />
     <Compile Include="Enums\enTranslationDepth.cs" />
     <Compile Include="Enums\enTranslationTypes.cs" />

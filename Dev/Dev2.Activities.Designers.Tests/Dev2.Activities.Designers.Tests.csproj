@@ -228,6 +228,7 @@
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
     <Compile Include="SqlServer\TestSqlServerViewModel.cs" />
+    <Compile Include="SuspendExecution\SuspendExecutionDesignerViewModelTests.cs" />
     <Compile Include="Switch\SwitchDesignerViewModelTests.cs" />
     <Compile Include="TestToolBaseViewModel.cs" />
     <Compile Include="UniqueRecords\UniqueRecordsDesignerViewModelTests.cs" />

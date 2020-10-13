@@ -226,6 +226,10 @@
     <Compile Include="Designers2\Sequence\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\SuspendExecution\Large.xaml.cs" />
+    <Compile Include="Designers2\SuspendExecution\SuspendExecutionDesigner.xaml.cs" />
+    <Compile Include="Designers2\SuspendExecution\Small.xaml.cs" />
+    <Compile Include="Designers2\SuspendExecution\SuspendExecutionDesignerViewModel.cs" />
     <Compile Include="Utils\ObservableAwareNameValue.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
@@ -2314,6 +2318,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\SuspendExecution\Large.xaml" />
+    <Page Include="Designers2\SuspendExecution\SuspendExecutionDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SuspendExecution\Small.xaml" />
     <Page Include="Designers2\Switch\ConfigureSwitch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
