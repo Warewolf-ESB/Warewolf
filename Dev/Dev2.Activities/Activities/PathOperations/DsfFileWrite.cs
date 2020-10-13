@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -33,7 +34,7 @@ using Warewolf.Storage;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("FileFolder-Write", "Write File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Write_File")]
+    [Obsolete("DsfFileWrite is deprecated. It will be deleted in future releases.\r\n\r\nPlease use DsfFileWriteWithBase64.")]
     public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite, IEquatable<DsfFileWrite>
     {
 
@@ -89,6 +90,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
                 var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(opath);
+
 
                 try
                 {
@@ -191,6 +193,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
+
+        //Added to implement IFileWrite Chaches, but should be not used.
+        [ExcludeFromCodeCoverage]
+        public bool FileContentsAsBase64 { get; set; }
 
         public override IEnumerable<StateVariable> GetState()
         {

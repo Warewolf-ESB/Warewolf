@@ -1,3 +1,11 @@
+Tuesday 13 October 2020
+======================
+Enhancements
+---------
+- Web Get Method can now download all common media types.
+- Write File Tool can now use a Base64 formatted file content to write a file to a specified destination.
+- Use Cases folder has been added under the Examples folder for more examples of use to the above enhancements.
+
 Friday 28 August 2020
 ======================
 Bug Fixes

@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -10,7 +21,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void UniqueIDEquals_EmptyFileRead_Object_IsEqual()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_UniqueIDEquals_EmptyFileRead_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -27,7 +39,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void UniqueIDDifferent_EmptyFileRead_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_UniqueIDDifferent_EmptyFileRead_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -44,7 +57,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void FileContents_Same_Object_IsEqual()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_FileContents_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -61,7 +75,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void FileContents_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_FileContents_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -78,7 +93,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void FileContents_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_FileContents_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -95,7 +111,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Same_Object_IsEqual()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Equals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -112,7 +129,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Equals_Given_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -129,7 +147,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -146,7 +165,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void OutputPath_Same_Object_IsEqual()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_OutputPath_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -163,7 +183,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void OutputPath_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_OutputPath_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -180,7 +201,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void OutputPath_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_OutputPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -197,7 +219,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Username_Same_Object_IsEqual()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Username_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -214,7 +237,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Username_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Username_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -231,7 +255,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Username_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Username_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -248,7 +273,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void PrivateKeyFile_Same_Object_IsEqual()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_PrivateKeyFile_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -265,7 +291,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void PrivateKeyFile_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_PrivateKeyFile_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -282,7 +309,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void PrivateKeyFile_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_PrivateKeyFile_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -298,7 +326,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Password_Same_Object_IsEqual()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Password_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -315,7 +344,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Password_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Password_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -332,7 +362,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Password_Different_Object_Is_Not_Equal_CaseSensitive()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Password_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -349,7 +380,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Append_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Append_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -368,7 +400,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Append_Same_Object_Is_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Append_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -386,7 +419,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Overwrite_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Overwrite_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -405,7 +439,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void Overwrite_Same_Object_Is_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_Overwrite_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -424,7 +459,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void AppendTop_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_AppendTop_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -443,7 +479,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void AppendTop_Same_Object_Is_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_AppendTop_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -462,7 +499,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void AppendBottom_Different_Object_Is_Not_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_AppendBottom_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -481,7 +519,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         [TestMethod]
         [Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        public void AppendBottom_Same_Object_Is_Equal()
+        [TestCategory(nameof(DsfFileWrite))]
+        public void DsfFileWrite_AppendBottom_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();

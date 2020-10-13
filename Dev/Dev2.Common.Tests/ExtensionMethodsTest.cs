@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,16 +19,11 @@ using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
 namespace Dev2.Common.Tests
 {
     [TestClass]
     public class ExtensionMethodsTest
     {
-
-        // ReturnAsTagSet
-
-        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory(nameof(ExtensionMethods))]
@@ -46,7 +41,192 @@ namespace Dev2.Common.Tests
                 Assert.AreEqual(result.ToString(), bytes.ToString());
             }
         }
-        
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_ReadToEnd_ExpectReadStream()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            using (Stream s = new MemoryStream(bytes))
+            {
+                var result = s.ReadToEnd();
+
+                using (var ss = new MemoryStream(bytes))
+                {
+                    using (var r = new StreamReader(ss))
+                    {
+                        //------------Assert Results-------------------------
+                        Assert.AreEqual(result, r.ReadToEnd());
+                    };
+                };
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_ReadToString_ExpectReadString()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var actual = bytes.ReadToString();
+
+            using (Stream s = new MemoryStream(bytes))
+            {
+                using (var ss = new MemoryStream(bytes))
+                {
+                    using (var r = new StreamReader(ss))
+                    {
+                        var expected = r.ReadToEnd();
+                        //------------Assert Results-------------------------
+                        Assert.AreEqual(expected, actual);
+                    };
+                };
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64Stream_GivenNonBase64StringBytes_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            using (Stream s = new MemoryStream(bytes))
+            {
+                var result = s.IsBase64Stream(out byte[] outputBytes);
+                
+                //------------Assert Results-------------------------
+                Assert.IsFalse(result);
+                Assert.IsNotNull(outputBytes);
+                Assert.AreEqual(input, outputBytes.ReadToString());
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64Stream_GivenBase64StringBytes_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string input = "dGVzdCBtZXNzYWdl";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            using (Stream s = new MemoryStream(bytes))
+            {
+                var result = s.IsBase64Stream(out byte[] outputBytes);
+
+                //------------Assert Results-------------------------
+                Assert.IsTrue(result);
+                Assert.IsNotNull(outputBytes);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_ToBase64String_ExpectBase64String()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var base64String = bytes.ToBase64String(Base64FormattingOptions.InsertLineBreaks);
+            
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Convert.ToBase64String(bytes, Base64FormattingOptions.InsertLineBreaks), base64String);
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_Base64StringToByteArray_InCorrect_ExpectByteArray()
+        {
+            //------------Setup for test--------------------------
+            const string input = "dGVzdCBtZXNzYWdl=3421";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var base64String = bytes.ToBase64String(Base64FormattingOptions.InsertLineBreaks);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(base64String.Base64StringToByteArray().ToString(), Convert.FromBase64String(base64String).ToString());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_Base64StringToByteArray_ExpectByteArray()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var base64String = bytes.ToBase64String(Base64FormattingOptions.InsertLineBreaks);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(base64String.Base64StringToByteArray().ToString(), Convert.FromBase64String(base64String).ToString());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64Stream_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var base64String = bytes.ToBase64String(Base64FormattingOptions.InsertLineBreaks);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(base64String.Base64StringToByteArray().ToString(), Convert.FromBase64String(base64String).ToString());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64String_ExpectFalseCurrentBytes()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            //------------Execute Test---------------------------
+            var result = input.IsBase64String(out byte[] bytes);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+            Assert.AreEqual(Encoding.ASCII.GetBytes(input).ToString(), bytes.ToString());
+            using (var s = new StreamReader(new MemoryStream(bytes)))
+            {
+                Assert.AreEqual(input, s.ReadToEnd());
+            };
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64String_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string input = "dGVzdCBtZXNzYWdl";
+            //------------Execute Test---------------------------
+            var result = input.IsBase64String(out byte[] bytes);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+            Assert.AreEqual(Encoding.ASCII.GetBytes(input).ToString(), bytes.ToString());
+            using (var s = new StreamReader(new MemoryStream(bytes)))
+            {
+                Assert.AreEqual("test message", s.ReadToEnd());
+            };
+
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]

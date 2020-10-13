@@ -38,7 +38,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var bookmark = ctx.GetBookmark();
             var workspaceId = ctx.GetWorkspaceID();
             var requestTo = new WebRequestTO();
-            var xml = SubmittedData.GetPostData(ctx);
+            var xml = new SubmittedData().GetPostData(ctx);
 
             if (!string.IsNullOrEmpty(xml))
             {

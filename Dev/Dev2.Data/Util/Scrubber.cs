@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,10 +10,13 @@
 */
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Util
 {
@@ -27,9 +30,14 @@ namespace Dev2.Data.Util
 
         public static string Scrub(string text)
         {
-            if(string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(text))
             {
                 return text;
+            }
+
+            if (text.IsBase64String(out byte[] bytes))
+            {
+                text = bytes.ReadToString();
             }
 
             text = text.Trim();
@@ -39,7 +47,7 @@ namespace Dev2.Data.Util
 
         public static string Scrub(string text, ScrubType scrubType)
         {
-            if(string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(text))
             {
                 return text;
             }
@@ -61,7 +69,7 @@ namespace Dev2.Data.Util
 
         static string ScrubJson(string text)
         {
-            if(text.StartsWith("[{"))
+            if (text.StartsWith("[{"))
             {
                 text = "{UnnamedArrayData:" + text + "}";
             }
@@ -88,7 +96,7 @@ namespace Dev2.Data.Util
             {
                 result = RemoveAllNamespaces(XElement.Parse(result)).ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error("Scrubber", ex, GlobalConstants.WarewolfError);
             }
@@ -112,7 +120,7 @@ namespace Dev2.Data.Util
 
         static void AddAttributes(XElement source, XContainer target)
         {
-            foreach(var attribute in source.Attributes().Where(attribute => !attribute.IsNamespaceDeclaration))
+            foreach (var attribute in source.Attributes().Where(attribute => !attribute.IsNamespaceDeclaration))
             {
                 target.Add(new XAttribute(attribute.Name.LocalName, attribute.Value));
             }
