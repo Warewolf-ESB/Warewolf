@@ -1,4 +1,5 @@
-﻿<core:ActivityDesigner x:TypeArguments="webServiceGet:WebServiceGetViewModel" 
+﻿<!--Obsolute: DsfWebGetActivity is deprecated. It will be deleted in future releases along with this view designer.-->
+    <core:ActivityDesigner x:TypeArguments="webServiceGet:WebServiceGetViewModel" 
                        x:Class="Dev2.Activities.Designers2.WebServiceGet.WebServiceGetDesigner"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

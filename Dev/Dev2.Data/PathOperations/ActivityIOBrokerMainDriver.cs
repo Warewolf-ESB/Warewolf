@@ -121,7 +121,7 @@ namespace Dev2.PathOperations
 
         public bool WriteDataToFile(IDev2PutRawOperationTO args, IActivityIOOperationsEndPoint dst)
         {
-            var isBase64 = args.FileContents.StartsWith(@"Content-Type:BASE64", StringComparison.InvariantCulture);
+            var isBase64 = args.FileContents.StartsWith(@"Content-Type:BASE64", StringComparison.InvariantCulture) || args.FileContentsAsBase64;
             if (isBase64)
             {
                 var data = GetBytesFromBase64String(args);
