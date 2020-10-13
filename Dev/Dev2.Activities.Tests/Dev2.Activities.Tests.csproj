@@ -253,6 +253,7 @@
     <Compile Include="ActivityTests\Sharepoint\SharepointUpdateListItemActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDotNetGatherSystemInformationActivityTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityWorkerTests.cs" />
+    <Compile Include="ActivityTests\SuspendExecutionActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
