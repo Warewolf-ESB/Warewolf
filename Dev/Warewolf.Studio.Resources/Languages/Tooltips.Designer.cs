@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Tooltips {
@@ -6695,6 +6695,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WriteFileToolTipContents {
             get {
                 return ResourceManager.GetString("WriteFileToolTipContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When selected, it reads the content of the file as base64 format..
+        /// </summary>
+        public static string WriteFileToolTipContentsAsBase64 {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipContentsAsBase64", resourceCulture);
             }
         }
         

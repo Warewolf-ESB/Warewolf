@@ -103,6 +103,8 @@
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
     <Compile Include="Handlers\IRequestHandler.cs" />
     <Compile Include="Handlers\WebPostRequestHandler.cs" />
+    <Compile Include="ICommunicationRequestContent.cs" />
+    <Compile Include="ICommunicationRequestContentHeaders.cs" />
     <Compile Include="Responses\ContentTypes.cs" />
     <Compile Include="Responses\ExceptionResponseWriter.cs" />
     <Compile Include="Responses\FileResponseWriter.cs" />
@@ -136,6 +138,8 @@
     <Compile Include="Responses\StringResponseWriter.cs" />
     <Compile Include="Responses\IResponseWriter.cs" />
     <Compile Include="WebServerRequest.cs" />
+    <Compile Include="WebServerRequestContent.cs" />
+    <Compile Include="WebServerRequestContentHeaders.cs" />
     <Compile Include="WebServerResponse.cs" />
     <Compile Include="WebServerStartup.cs" />
     <Compile Include="Controllers\WebServerController.cs" />

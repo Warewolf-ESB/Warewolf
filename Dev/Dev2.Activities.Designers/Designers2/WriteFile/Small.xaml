@@ -1,4 +1,6 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.WriteFile.Small"
+﻿<!--Obsolete: DsfFileWrite is deprecated. It will be deleted in future releases along with this view.-->
+    
+<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.WriteFile.Small"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

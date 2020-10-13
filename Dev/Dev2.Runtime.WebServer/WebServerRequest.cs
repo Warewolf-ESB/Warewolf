@@ -13,7 +13,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Remoting.Messaging;
 using System.Security.Principal;
 using System.Text;
 
@@ -33,6 +32,8 @@ namespace Dev2.Runtime.WebServer
             Uri = _request.RequestUri;
             BoundVariables = boundVariables;
             ContentEncoding = _request.Content.GetContentEncoding();
+            Headers = request.Headers;
+            Content = new WebServerRequestContent(request.Content);
 
             InitializeContentLength();
             InitializeContentType();
@@ -48,6 +49,7 @@ namespace Dev2.Runtime.WebServer
             Uri = _request.RequestUri;
             ContentEncoding = _request.Content.GetContentEncoding();
             Headers = request.Headers;
+            Content = new WebServerRequestContent(request.Content);
 
             InitializeContentLength();
             InitializeContentType();
@@ -65,6 +67,8 @@ namespace Dev2.Runtime.WebServer
         public NameValueCollection BoundVariables { get; }
         public HttpRequestHeaders Headers { get; }
         public bool IsTokenAuthentication => !string.IsNullOrEmpty(Headers?.Authorization?.Parameter);
+
+        public ICommunicationRequestContent Content { get; }
 
         private void InitializeContentLength()
         {

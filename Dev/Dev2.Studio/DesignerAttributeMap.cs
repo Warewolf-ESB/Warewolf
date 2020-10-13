@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -114,6 +114,7 @@ using Dev2.Activities.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 
 namespace Dev2
 {
@@ -152,6 +153,7 @@ namespace Dev2
                 { typeof(DsfFileRead), typeof(ReadFileDesignerViewModel) },
                 { typeof(FileReadWithBase64), typeof(ReadFileWithBase64DesignerViewModel) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel) },
+                { typeof(FileWriteActivity), typeof(WriteFileDesignerViewModel) },
                 { typeof(DsfFolderRead), typeof(ReadFolderDesignerViewModel) },
                 { typeof(DsfFolderReadActivity), typeof(ReadFolderNewDesignerViewModel) },
                 { typeof(DsfPathRename), typeof(RenameDesignerViewModel) },
@@ -188,6 +190,7 @@ namespace Dev2
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllEnhancedViewModel) },
                 { typeof(DsfComDllActivity), typeof(ComDllViewModel) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel) },
+                { typeof(WebGetActivity), typeof(WebServiceGetViewModel) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostViewModel) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteViewModel) },
                 { typeof(DsfWebPutActivity), typeof(WebServicePutViewModel) },

@@ -1,3 +1,14 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
 #pragma warning disable
 ﻿using System;
 using System.Activities.Presentation.Model;
@@ -23,10 +34,10 @@ using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
 
-
-
 namespace Dev2.Activities.Designers2.Web_Service_Get
 {
+
+    [Obsolete("DsfWebGetActivity is deprecated. It will be deleted in future releases along with this viewModel.")]
     public class WebServiceGetViewModel : CustomToolWithRegionBase, IWebServiceGetViewModel
     {
         IOutputsToolRegion _outputsRegion;

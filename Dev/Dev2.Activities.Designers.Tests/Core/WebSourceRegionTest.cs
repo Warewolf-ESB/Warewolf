@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Activities.Designers2.Core.Source;
@@ -26,7 +37,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             var src = new Mock<IWebServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
+            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new WebGetActivity()));
             Assert.AreEqual(1,region.Errors.Count);
             Assert.IsTrue(region.IsEnabled);
         }
@@ -34,7 +45,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void CtorWitSelectedSrc()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebGetActivity() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc});
@@ -47,7 +58,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ChangeSrcExpectSomethingChanged()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebGetActivity() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
             var Evt = false;
@@ -63,7 +74,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ChangeSelectedSource_ExpectRegionsRestored()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebGetActivity() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id ,HostName = "bob"};
 
@@ -89,7 +100,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ChangeSelectedSource_ExpectRegionsNotRestoredInvalid()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebGetActivity() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
 
@@ -115,7 +126,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void CloneRegionExpectClone()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebGetActivity() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
@@ -129,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void Restore_Region_ExpectRestore()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebGetActivity() { SourceId = id };
+            var act = new WebGetActivity() { SourceId = id };
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
@@ -175,7 +186,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             //---------------Set up test pack-------------------
             var webServiceSourceDefinition = new WebServiceSourceDefinition { Name = "bravo" };
-            object differentObject = new DsfWebGetActivity
+            object differentObject = new WebGetActivity
             {
                 SourceId = Guid.NewGuid(),
                 ActionName = "A"

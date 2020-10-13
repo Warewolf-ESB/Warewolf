@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,10 +20,11 @@ namespace Dev2.PathOperations
     /// </summary>
     public class Dev2PutOperationTO : IFileWrite, IPathOverwrite
     {
-        internal Dev2PutOperationTO(bool append, string contents, bool overwrite)
+        internal Dev2PutOperationTO(bool append, string contents, bool overwrite, bool contentsAsBase64 = false)
         {
             Append = append;
             FileContents = contents;
+            FileContentsAsBase64 = contentsAsBase64;
             Overwrite = overwrite;
         }
 
@@ -32,5 +33,7 @@ namespace Dev2.PathOperations
         public string FileContents { get; set; }
 
         public bool Overwrite { get; set; }
+        
+        public bool FileContentsAsBase64 { get; set; }
     }
 }
