@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -114,6 +114,7 @@ using Dev2.Activities.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
+using Dev2.Activities.Designers2.SuspendExecution;
 
 namespace Dev2
 {
@@ -218,7 +219,8 @@ namespace Dev2
                 { typeof(RedisCacheActivity), typeof(RedisCacheDesigner) },
                 { typeof(RedisRemoveActivity), typeof(RedisRemoveDesigner) },
                 { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
-                { typeof(GateActivity), typeof(GateDesignerViewModel) }
+                { typeof(GateActivity), typeof(GateDesignerViewModel) },
+                { typeof(SuspendExecutionActivity), typeof(SuspendExecutionDesignerViewModel) },
             };
     }
 }

@@ -39,6 +39,7 @@
         <ResourceDictionary Source="Images/ControlFlow-Sequence.xaml" />
         <ResourceDictionary Source="Images/ControlFlow-Switch.xaml" />
         <ResourceDictionary Source="Images/ControlFlow-Gate.xaml" />
+        <ResourceDictionary Source="Images/ControlFlow-SuspendExecution.xaml" />
         <ResourceDictionary Source="Images/Data-Assign.xaml" />
         <ResourceDictionary Source="Images/Data-BaseConversion.xaml" />
         <ResourceDictionary Source="Images/Data-CaseConversion.xaml" />
