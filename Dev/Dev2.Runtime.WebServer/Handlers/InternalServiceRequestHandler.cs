@@ -59,7 +59,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var workspaceId = ctx.GetWorkspaceID();
             var formData = new WebRequestTO();
 
-            var xml = SubmittedData.GetPostData(ctx);
+            var xml = new SubmittedData().GetPostData(ctx);
 
             if (!string.IsNullOrEmpty(xml))
             {

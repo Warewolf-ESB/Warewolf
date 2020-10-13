@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Runtime.Diagnostics;
@@ -169,8 +170,8 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     return PerformMultipartWebRequest(client, address, data);
                 }
-
-                return method == WebRequestMethod.Get ? client.DownloadString(address) : client.UploadString(address, method.ToString().ToUpperInvariant(), data);
+                
+                return method == WebRequestMethod.Get ? client.DownloadData(address).ToBase64String() : client.UploadString(address, method.ToString().ToUpperInvariant(), data); 
             }
             catch (WebException webex) when (webex.Response is HttpWebResponse httpResponse)
             {

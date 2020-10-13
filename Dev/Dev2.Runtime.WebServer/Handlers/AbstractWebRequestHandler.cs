@@ -13,12 +13,14 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -403,16 +405,37 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
         }
 
-        internal static class SubmittedData
+        internal class SubmittedData
         {
-            internal static string GetPostData(ICommunicationContext ctx)
+            private readonly IStreamWriterFactory _streamWriterFactory;
+            private readonly IStreamContentFactory _streamContentFactory;
+            private readonly IMultipartMemoryStreamProviderFactory _multipartMemoryStreamProviderFactory;
+            private readonly IMemoryStreamFactory _memoryStreamFactory;
+
+            public SubmittedData()
+            {
+                _streamContentFactory = new StreamContentFactory();
+                _streamWriterFactory = new StreamWriterFactory();
+                _multipartMemoryStreamProviderFactory = new MultipartMemoryStreamProviderFactory();
+                _memoryStreamFactory = new MemoryStreamFactory();
+            }
+
+            public SubmittedData(IStreamWriterFactory streamWriterFactory, IStreamContentFactory streamContentFactory, IMultipartMemoryStreamProviderFactory streamProviderFactory, IMemoryStreamFactory memoryStreamFactory)
+            {
+                _streamWriterFactory = streamWriterFactory;
+                _streamContentFactory = streamContentFactory;
+                _multipartMemoryStreamProviderFactory = streamProviderFactory;
+                _memoryStreamFactory = memoryStreamFactory;
+            }
+
+            internal string GetPostData(ICommunicationContext ctx)
             {
                 var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
                 baseStr = HttpUtility.UrlDecode(CleanupXml(baseStr));
                 string payload = null;
                 if (baseStr != null)
-                {
-                    var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
+                    {
+                        var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
                     if (startIdx > 0)
                     {
                         payload = baseStr.Substring(startIdx + 1);
@@ -436,7 +459,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         {
                             return ExtractKeyValuePairForPostMethod(ctx, reader);
                         }
-                        catch (Exception ex)
+                        catch (Exception ex)    
                         {
                             Dev2Logger.Error(nameof(AbstractWebRequestHandler), ex, GlobalConstants.WarewolfError);
                         }
@@ -495,7 +518,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
             }
 
-            static string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
+            string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
             {
                 var data = reader.ReadToEnd();
                 if (DataListUtil.IsXml(data) || DataListUtil.IsJson(data))
@@ -503,9 +526,54 @@ namespace Dev2.Runtime.WebServer.Handlers
                     return data;
                 }
 
-                var pairs = ExtractArgumentsFromDataListOrQueryString(ctx, data);
-
+                NameValueCollection pairs;
+                if (ctx.Request.Content.IsMimeMultipartContent("form-data"))
+                {
+                    pairs = ExtractMultipartFormDataArgumentsFromDataList(ctx, data);
+                    return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
+                }
+                
+                pairs = ExtractArgumentsFromDataListOrQueryString(ctx, data);
                 return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
+            }
+
+            private NameValueCollection ExtractMultipartFormDataArgumentsFromDataList(ICommunicationContext ctx, string data)
+            {
+                var provider = _multipartMemoryStreamProviderFactory.New();
+                var tempStream = _memoryStreamFactory.New();
+
+                var reqContentStream = ctx.Request.Content.ReadAsStreamAsync().Result;
+                reqContentStream.CopyTo(tempStream);
+
+                var byteArray = data.Base64StringToByteArray();
+                var stream = _memoryStreamFactory.New(byteArray);
+                stream.CopyTo(tempStream);
+                
+                tempStream.Seek(0, SeekOrigin.End);
+                var writer = _streamWriterFactory.New(tempStream);
+                writer.WriteLine();
+                writer.Flush();
+                tempStream.Position = 0;
+
+                var streamContent = _streamContentFactory.New(tempStream);
+                var requestContentHeaders = ctx.Request.Content.Headers;
+                foreach (var header in requestContentHeaders.Headers)
+                {
+                    streamContent.Headers.Add(header.Key, header.Value);
+                }
+
+                streamContent.ReadAsMultipartAsync(provider).Wait();
+                var valuePairs = new NameValueCollection();
+                foreach (HttpContent content in provider.Contents)
+                {
+                    var contentDisposition = content.Headers.ContentDisposition;
+                    var name = contentDisposition.Name.Trim('"');
+                    var byteData= content.ReadAsByteArrayAsync().Result;
+
+                    valuePairs.Add(name, byteData.ToBase64String());
+                }
+
+                return valuePairs;
             }
 
             private static NameValueCollection ExtractArgumentsFromDataListOrQueryString(ICommunicationContext ctx, string data)

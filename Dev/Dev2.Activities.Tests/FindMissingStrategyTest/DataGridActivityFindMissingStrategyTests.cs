@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,13 +11,11 @@
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.WcfEndPoint;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Factories;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
@@ -106,7 +104,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             //------------Setup for test--------------------------
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
-            var activity = new DsfWebGetActivity
+            var activity = new WebGetActivity
             {
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
@@ -570,14 +568,41 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Rory McGuire")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_DsfWebGetActivity_ShouldReturnResults_IsObject()
+        {
+            //------------Setup for test--------------------------
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
+            var activity = new DsfWebGetActivity
+            {
+                Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
+                QueryString = "[[qstring]]",
+                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                OnErrorVariable = "[[err]]",
+                OnErrorWorkflow = "[[errSvc]]",
+                IsObject = true,
+                ObjectName = "TheObject"
+            };
+            //------------Execute Test---------------------------
+            var fields = strategy.GetActivityFields(activity);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(fields.Contains("TheObject"));
+        }
+
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
         [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
         public void DataGridActivityFindMissingStrategy_GetActivityFields_WebGetActivity_ShouldReturnResults_IsObject()
         {
             //------------Setup for test--------------------------
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
-            var activity = new DsfWebGetActivity
+            var activity = new WebGetActivity
             {
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },

@@ -15,6 +15,7 @@ namespace Dev2.Common.Interfaces.Runtime.Services
     public interface IStreamWriterFactory
     {
         StreamWriter New(string path, bool append);
+        StreamWriter New(MemoryStream memoryStream);
     }
 
     public class StreamWriterFactory : IStreamWriterFactory
@@ -22,6 +23,11 @@ namespace Dev2.Common.Interfaces.Runtime.Services
         public StreamWriter New(string path, bool append)
         {
             return new StreamWriter(path, append);
+        }
+
+        public StreamWriter New(MemoryStream memoryStream)
+        {
+            return new StreamWriter(memoryStream);
         }
     }
 }

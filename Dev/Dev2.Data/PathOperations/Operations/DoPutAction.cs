@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,6 +16,10 @@ using Dev2.PathOperations;
 using System.Threading;
 using Dev2.Common.Common;
 using Dev2.Common.Wrappers;
+using System;
+using Dev2.Common.Interfaces.Factories;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Runtime.Services;
 
 namespace Dev2.Data.PathOperations.Operations
 {
@@ -26,21 +30,25 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _destination;
         protected readonly IFile _fileWrapper;
+        protected readonly IFileStreamFactory _fileStreamFactory;
         protected readonly IFilePath _pathWrapper;
         protected readonly IDev2CRUDOperationTO _arguments;
         protected readonly Stream _currentStream;
         protected readonly string _whereToPut;
+        protected readonly IMemoryStreamFactory _memoryStreamFactory;
 
         public DoPutAction(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut)
-            :this(currentStream, destination, crudArgument, whereToPut, new LogonProvider(), new FileWrapper(), new FilePathWrapper(), ValidateAuthorization.RequiresAuth)
+            :this(currentStream, destination, crudArgument, whereToPut, new LogonProvider(), new FileWrapper(), new FileStreamFactory(), new FilePathWrapper(), new MemoryStreamFactory(), ValidateAuthorization.RequiresAuth)
         { }
 
-        public DoPutAction(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut, IDev2LogonProvider logOnProvider, IFile fileWrapper, IFilePath pathWrapper, ImpersonationDelegate impersonationDelegate)
+        public DoPutAction(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut, IDev2LogonProvider logOnProvider, IFile fileWrapper, IFileStreamFactory fileStreamFactory, IFilePath pathWrapper, IMemoryStreamFactory memoryStreamFactory, ImpersonationDelegate impersonationDelegate)
             :base(impersonationDelegate)
         {
             _logOnProvider = logOnProvider;
             _pathWrapper = pathWrapper;
             _fileWrapper = fileWrapper;
+            _fileStreamFactory = fileStreamFactory;
+            _memoryStreamFactory = memoryStreamFactory;
             _currentStream = currentStream;
             _destination = destination;
             _arguments = crudArgument;
@@ -90,18 +98,19 @@ namespace Dev2.Data.PathOperations.Operations
 
         int WriteData(Stream src, IActivityIOPath dst)
         {
+            var streamLength = (int)src.Length;
             if (_arguments.Overwrite)
             {
-                File.WriteAllBytes(dst.Path, src.ToByteArray());
-                return (int)src.Length;
+                _fileWrapper.WriteAllBytes(dst.Path, src.ToByteArray());
+                return streamLength;
             }
             if (FileExist(dst, _fileWrapper) || !_arguments.Overwrite)
             {
-                using (var stream = new FileStream(dst.Path, FileMode.Append))
+                using (var stream = _fileStreamFactory.New(dst.Path, FileMode.Append))
                 {
-                    src.CopyTo(stream);
+                    _memoryStreamFactory.New(src.ToByteArray()).CopyTo(stream);
                 }
-                return (int)src.Length;
+                return streamLength;
             }
             return -1;
         }

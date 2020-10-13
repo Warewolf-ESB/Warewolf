@@ -49,7 +49,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}",
                 IsUrlWithTokenPrefix = ctx.Request.IsTokenAuthentication
             };
-            var data = SubmittedData.GetPostData(ctx);
+            var data = new SubmittedData().GetPostData(ctx);
 
             if (!string.IsNullOrEmpty(data))
             {

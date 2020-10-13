@@ -66,6 +66,7 @@ namespace Dev2.Activities.Designers2.Core
             Outputs = outputs;
 
             IsObject = _modelItem.GetProperty<bool>("IsObject");
+            IsResponseBase64 = _modelItem.GetProperty<bool>("IsResponseBase64");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
@@ -146,6 +147,7 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isOutputsEmptyRows;
         private bool _outputCountExpandAllowed;
         private bool _isObject;
+        private bool _isResponseBase64;
         private string _objectName;
         private string _objectResult;
         private bool _isObjectOutputUsed;
@@ -290,6 +292,17 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _isObject = value;
                 _modelItem.SetProperty("IsObject", value);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsResponseBase64
+        {
+            get => _isResponseBase64;
+            set
+            {
+                _isResponseBase64 = value;
+                _modelItem.SetProperty("IsResponseBase64", value);
                 OnPropertyChanged();
             }
         }
