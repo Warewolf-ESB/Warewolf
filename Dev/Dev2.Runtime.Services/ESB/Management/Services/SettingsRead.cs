@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,6 +16,7 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
+using Dev2.Services.Persistence;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -34,13 +34,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var securityRead = CreateSecurityReadEndPoint();
                 var loggingSettingsRead = CreateLoggingSettingsReadEndPoint();
+                var persistenceSettingsRead = CreatePersistenceSettingsReadEndPoint();
                 var jsonPermissions = securityRead.Execute(values, theWorkspace);
                 var jsonLoggingSettings = loggingSettingsRead.Execute(values, theWorkspace);
+                var jsonPersistenceSettings =persistenceSettingsRead.Execute(values, theWorkspace);
                 var permissionsRead = CreatePerfCounterReadEndPoint();
                 var perfsettings = permissionsRead.Execute(values, theWorkspace);
 
                 settings.Security = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
                 settings.Logging = JsonConvert.DeserializeObject<LoggingSettingsTo>(jsonLoggingSettings.ToString());
+                settings.Persistence = JsonConvert.DeserializeObject<PersistenceSettingsTo>(jsonPersistenceSettings.ToString());
                 settings.PerfCounters = serializer.Deserialize<IPerformanceCounterTo>(perfsettings.ToString());
             }
             catch(Exception ex)
@@ -59,9 +62,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint() => new SecurityRead();
 
         protected virtual IEsbManagementEndpoint CreateLoggingSettingsReadEndPoint() => new LoggingSettingsRead();
+        protected virtual IEsbManagementEndpoint CreatePersistenceSettingsReadEndPoint() => new PersistenceSettingsRead();
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override string HandlesType() => "SettingsReadService";
+        public override string HandlesType() => nameof(SettingsRead);
     }
 }

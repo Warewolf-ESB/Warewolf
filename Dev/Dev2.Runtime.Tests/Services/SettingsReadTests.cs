@@ -147,7 +147,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var esb = new SettingsRead();
             var result = esb.HandlesType();
-            Assert.AreEqual("SettingsReadService", result);
+            Assert.AreEqual("SettingsRead", result);
         }
 
         #endregion
