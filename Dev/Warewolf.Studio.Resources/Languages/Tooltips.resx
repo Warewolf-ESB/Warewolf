@@ -2482,6 +2482,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewAuditsDataSourceToolTip" xml:space="preserve">
     <value>Auditing Data Source</value>
   </data>
+
   <data name="LoggingViewEncryptToolTip" xml:space="preserve">
     <value>Encrypt the Logging Data Source in the Auditing Settings File</value>
   </data>
@@ -2554,5 +2555,33 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="OptionConditionToolTip" xml:space="preserve">
     <value>OptionConditionToolTip</value>
+  </data>
+
+  <data name="PersistenceDashboardPortTooltip" xml:space="preserve">
+    <value>The default port on which Persistence listens is 5001</value>
+  </data>
+  <data name="PersistenceDashboardHostNameTooltip" xml:space="preserve">
+    <value>The persistence server name to connect to</value>
+  </data>
+  <data name="PersistenceDashboardNameTooltip" xml:space="preserve">
+    <value>The name the url will map to.</value>
+  </data>
+  <data name="PersistenceServerNameTooltip" xml:space="preserve">
+    <value>The server name the scheduled job will be mapped to.</value>
+  </data>
+  <data name="PersistenceViewSchedulerToolTip" xml:space="preserve">
+    <value>Persistence Scheduler</value>
+  </data>
+  <data name="PersistenceViewDataSourceToolTip" xml:space="preserve">
+    <value>Persistence Data Source</value>
+  </data>
+  <data name="PersistenceViewEnableToolTip" xml:space="preserve">
+    <value>Enable the Persistence Server.</value>
+  </data>
+  <data name="PersistenceViewEncryptToolTip" xml:space="preserve">
+    <value>Encrypt the Persistence Data Source in the Persistence Settings File</value>
+  </data>
+  <data name="PersistenceViewPrepareSchemaIfNecessaryToolTip" xml:space="preserve">
+    <value>Create the tables and index in the database if they dont already exist</value>
   </data>
 </root>
