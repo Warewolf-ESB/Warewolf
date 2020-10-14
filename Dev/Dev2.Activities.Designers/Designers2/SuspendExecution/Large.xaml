@@ -30,6 +30,14 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
+    <core:ActivityDesignerTemplate.RightButtons>
+        <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Content="Done"
+                                     Margin="0,0,7,12"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
+    </core:ActivityDesignerTemplate.RightButtons>
 
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
@@ -47,7 +55,7 @@
 
             <ComboBox x:Name="InitialFocusElement"
                       Grid.Column="0"
-                      Width="125"
+                      Width="165"
                       ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
                       IsEditable="False"
                       Margin="{StaticResource ControlBorderRight}"
