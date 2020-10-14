@@ -15,13 +15,14 @@ using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Resources;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class DbSource : Resource, IResourceSource, IDb
+    public class DbSource : Resource, IResourceSource, IDb, IPersistenceSource
     {
         #region CTOR
 
@@ -39,8 +40,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         public DbSource(XElement xml)
             : base(xml)
         {
-
-
             // Setup type include default port
             var attributeSafe = xml.AttributeSafe("ServerType");
             switch (attributeSafe.ToLowerInvariant())
@@ -70,6 +69,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     ServerType = enSourceType.Unknown;
                     break;
             }
+
             var conString = xml.AttributeSafe("ConnectionString");
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
             ResourceType = ServerType.ToString();
@@ -89,6 +89,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public int Port { get; set; }
         public int ConnectionTimeout { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 
@@ -105,10 +106,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var stringBuilder = base.DataList;
                 return stringBuilder?.ToString();
             }
-            set
-            {
-                base.DataList = value.ToStringBuilder();
-            }
+            set { base.DataList = value.ToStringBuilder(); }
         }
 
         #endregion
@@ -124,7 +122,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var portString = string.Empty;
                 switch (ServerType)
-                {                    
+                {
                     case enSourceType.SqlDatabase:
                         var isNamedInstance = Server != null && Server.Contains('\\');
                         if (isNamedInstance && Port == 1433)
@@ -134,8 +132,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                         portString = Port > 0 ? "," + Port : string.Empty;
                         var authString = AuthenticationType == AuthenticationType.Windows
-                                ? "Integrated Security=SSPI;"
-                                : $"User ID={UserID};Password={Password};";
+                            ? "Integrated Security=SSPI;"
+                            : $"User ID={UserID};Password={Password};";
                         return $"Data Source={Server}{portString};Initial Catalog={DatabaseName};{authString};Connection Timeout={ConnectionTimeout}";
 
                     case enSourceType.MySqlDatabase:
@@ -144,7 +142,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     case enSourceType.Oracle:
                         portString = Port > 0 ? $":{Port}" : string.Empty;
-                        var dbString = DatabaseName != null ? $"Database={DatabaseName};":string.Empty;
+                        var dbString = DatabaseName != null ? $"Database={DatabaseName};" : string.Empty;
                         return $"User Id={UserID};Password={Password};Data Source={Server}{portString};{dbString};Connection Timeout={ConnectionTimeout};";
 
                     case enSourceType.ODBC:
@@ -158,6 +156,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                         {
                             DatabaseName = string.Empty;
                         }
+
                         portString = Port > 0 ? $"Port={Port};" : string.Empty;
                         return $"Host={Server};{portString}Username={UserID};Password={Password};Database={DatabaseName};Timeout={ConnectionTimeout}";
                     case enSourceType.WebService:
@@ -191,6 +190,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     default:
                         break;
                 }
+
                 return string.Empty;
             }
 
@@ -255,12 +255,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                             break;
                     }
                 }
+
                 if (!containsTimeout)
                 {
                     ConnectionTimeout = defaultTimeout;
                 }
             }
         }
+
         public string GetConnectionStringWithTimeout(int timeout)
         {
             var oldTimeout = ConnectionTimeout;
