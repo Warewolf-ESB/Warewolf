@@ -26,6 +26,7 @@ using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Perfcounters;
+using Dev2.Settings.Persistence;
 using Dev2.Settings.Security;
 using Dev2.Studio.Interfaces;
 using log4net.Config;
@@ -58,6 +59,8 @@ namespace Dev2.Core.Tests.Settings
             ShowErrorHitCount++;
             base.ShowError(header, description);
         }
+
+        public PersistenceSettingsViewModel ThePersistenceSettingsViewModel { get; set; }
 
         public SecurityViewModel TheSecurityViewModel
         {
@@ -136,6 +139,47 @@ namespace Dev2.Core.Tests.Settings
             env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
             var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, env.Object);
             return logSettingsViewModel;
+        }
+
+        protected override PersistenceSettingsViewModel CreatePersistenceViewModel()
+        {
+            return ThePersistenceSettingsViewModel ?? CreatePersistenceSettingsViewModel();
+        }
+
+        static PersistenceSettingsViewModel CreatePersistenceSettingsViewModel()
+        {
+            var resourceRepo = new Mock<IResourceRepository>();
+            var env = new Mock<IServer>();
+            var selectedPersistedDataSourceId = Guid.NewGuid();
+            var persistenceSettingsData = new PersistenceSettingsData()
+            {
+                EncryptDataSource = true,
+                Enable = true,
+                PrepareSchemaIfNecessary = true,
+                ServerName = "servername",
+                DashboardHostname = "DashboardHostname",
+                DashboardName = "Dashboardname",
+                DashboardPort = "5001",
+                PersistenceDataSource = new NamedGuidWithEncryptedPayload
+                {
+                    Name = "Persistence Data Source",
+                    Value = selectedPersistedDataSourceId,
+                    Payload = "jsonSource"
+                }
+            };
+            resourceRepo.Setup(res => res.GetPersistenceSettings<PersistenceSettingsData>(env.Object)).Returns(persistenceSettingsData);
+
+            var mockPersistenceDataSource = new Mock<IResource>();
+            mockPersistenceDataSource.Setup(source => source.ResourceID).Returns(selectedPersistedDataSourceId);
+            var persistenceDataSources = new Mock<IResource>();
+            var expectedList = new List<IResource>
+            {
+                mockPersistenceDataSource.Object, persistenceDataSources.Object
+            };
+            resourceRepo.Setup(resourceRepository => resourceRepository.FindResourcesByType<IPersistenceSource>(env.Object)).Returns(expectedList);
+            env.Setup(a => a.ResourceRepository).Returns(resourceRepo.Object);
+            var persistenceSettingsViewModel = new PersistenceSettingsViewModel(env.Object);
+            return persistenceSettingsViewModel;
         }
 
         public void CallDeactivate()
