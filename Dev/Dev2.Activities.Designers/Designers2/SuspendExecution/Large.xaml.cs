@@ -20,36 +20,25 @@ namespace Dev2.Activities.Designers2.SuspendExecution
         public Large()
         {
             InitializeComponent();
-            DropPoint.PreviewDrop += DoDrop;
+            DropPoint.PreviewDrop += DropPoint_OnPreviewDrop;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        void DoDrop(object sender, DragEventArgs e)
+        private void DropPoint_OnPreviewDrop(object sender, DragEventArgs e)
         {
-            var dataObject = e.Data;
-            if (_dropEnabledActivityDesignerUtils != null)
+            if (DataContext is SuspendExecutionDesignerViewModel viewModel)
             {
-                var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(dataObject);
-                if (!dropEnabled)
+                if (_dropEnabledActivityDesignerUtils != null)
                 {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-                else
-                {
-                    //if (SuspendExecutionDesignerViewModel.MultipleItemsToSequence(dataObject))
+                    var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
+                    if (!dropEnabled)
                     {
                         e.Effects = DragDropEffects.None;
                         e.Handled = true;
                     }
                 }
             }
-            //var multipleItemsToSequence = SuspendExecutionDesignerViewModel.MultipleItemsToSequence(dataObject);
-            //if (multipleItemsToSequence)
-            {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-            }
+            DropPoint.Item = null;
         }
 
         protected override IInputElement GetInitialFocusElement() => InitialFocusElement;

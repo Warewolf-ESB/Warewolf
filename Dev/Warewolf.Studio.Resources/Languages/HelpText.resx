@@ -924,6 +924,32 @@
   <data name="ForEachHelpForEachType" xml:space="preserve">
     <value>Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],	[[Customer(2).ID]],	[[Customer(3).ID]].	* in Range allows you to input a range of indexes.	* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.	* in Recordset will execute every index in the given recordset.	* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... up to the number you specify.	No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.	Allowed:	na</value>
   </data>
+  <data name="SuspendExecutionSuspendOptionsHelpText" xml:space="preserve">
+    <value>Select an option for when the workflow should be suspended.
+Suspend until:
+Suspend for Seconds:
+Suspend for Minutes:
+Suspend for Hours:
+Suspend for Day(s):
+Suspend for Month(s):
+    </value>
+  </data>
+  <data name="SuspendExecutionPersistValueHelpText" xml:space="preserve">
+    <value>Select an option for when the workflow should be suspended.
+Suspend until: Specified Date Time
+Suspend for Seconds: Value in seconds
+Suspend for Minutes: Value in minutes
+Suspend for Hours: Value in hours
+Suspend for Day(s): Value in days
+Suspend for Month(s): Value in months
+    </value>
+  </data>
+  <data name="SuspendExecutionAllowManualResumptionHelpText" xml:space="preserve">
+    <value>Selecting this will enable the suspended execution of the workflow to be manually resumed.</value>
+  </data>
+  <data name="SuspendExecutionResultHelpText" xml:space="preserve">
+    <value>The result after suspending the execution to be stored.</value>
+  </data>
   <data name="FormatNumberHelpDecimalsToShow" xml:space="preserve">
     <value>How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
@@ -2172,6 +2198,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="Tool_Flow_Decision" xml:space="preserve">
     <value>Use the Decision flow tool to check if something is True or False and execute different branches based on that decision.</value>
+  </data>
+  <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
+    <value>Use the Suspend Execution tool when you need to pause and persist your workflow for a length of time.</value>
   </data>
   <data name="Tool_File_Zip" xml:space="preserve">
     <value>Use the Zip tool to compress a folder or a file into a Zip archive. (File System, UNC, FTP, FTPS, SFTP)</value>

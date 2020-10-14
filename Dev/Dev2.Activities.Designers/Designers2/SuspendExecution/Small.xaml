@@ -42,9 +42,9 @@
                       SelectedValue="{Binding SelectedSuspendOption,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding SuspendOptions}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SuspendOption_AutoID}"
-                      ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
+                      ToolTip="{x:Static languages:Tooltips.SuspendExecutionSuspendOptionsToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SuspendExecutionSuspendOptionsHelpText}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.SuspendOption"
                                          SourcePropertyValue="{Binding ModelItem.SuspendOption, UpdateSourceTrigger=PropertyChanged}"

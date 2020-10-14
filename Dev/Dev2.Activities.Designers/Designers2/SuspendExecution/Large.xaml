@@ -49,9 +49,9 @@
                           SelectedValue="{Binding SelectedSuspendOption,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                           ItemsSource="{Binding SuspendOptions}"
                           AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SuspendOption_AutoID}"
-                          ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
+                          ToolTip="{x:Static languages:Tooltips.SuspendExecutionSuspendOptionsToolTip}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.SuspendExecutionSuspendOptionsHelpText}" DataContext="{Binding}" />
                         <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="ModelItem.SuspendOption"
                                              SourcePropertyValue="{Binding ModelItem.SuspendOption, UpdateSourceTrigger=PropertyChanged}"
@@ -67,9 +67,9 @@
                                         WrapInBrackets="False"
                                         Text="{Binding Path=ModelItem.PersistValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_PersistValue_AutoID}"
-                                        ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
+                                        ToolTip="{x:Static languages:Tooltips.SuspendExecutionPersistValueToolTip}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.SuspendExecutionPersistValueHelpText}" DataContext="{Binding}" />
                         <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="ModelItem.PersistValue"
                                              SourcePropertyValue="{Binding ModelItem.PersistValue, UpdateSourceTrigger=PropertyChanged}"
@@ -82,9 +82,9 @@
                           Style="{StaticResource CheckBoxStyle}"
                           Content="Allow Manual Resumption"
                           IsChecked="{Binding Path=ModelItem.AllowManualResumption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          ToolTip="{x:Static languages:Tooltips.RenameToolTipForceoverwrite}">
+                          ToolTip="{x:Static languages:Tooltips.SuspendExecutionAllowManualResumptionToolTip}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.RenameHelpForceoverwrite}" DataContext="{Binding}" />
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.SuspendExecutionAllowManualResumptionHelpText}" DataContext="{Binding}" />
                         <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="ModelItem.AllowManualResumption"
                                              SourcePropertyValue="{Binding  ModelItem.AllowManualResumption, UpdateSourceTrigger=PropertyChanged}"
@@ -108,9 +108,9 @@
                                         WrapInBrackets="False"
                                         Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                        ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
+                                        ToolTip="{x:Static languages:Tooltips.SuspendExecutionResultToolTip}">
                     <i:Interaction.Behaviors>
-                        <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
+                        <core1:HelpSetter Text="{x:Static languages:HelpText.SuspendExecutionResultHelpText}" DataContext="{Binding}" />
                         <errors:ErrorsSetter Source="{Binding}"
                                              SourcePropertyName="ModelItem.Result"
                                              SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
