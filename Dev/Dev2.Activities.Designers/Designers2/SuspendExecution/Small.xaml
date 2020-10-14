@@ -53,9 +53,8 @@
             </ComboBox>
 
             <ui:IntellisenseTextBox Grid.Column="1"
-                                    Visibility="{Binding FromVisibility}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    DefaultText="{Binding }"
+                                    DefaultText="{Binding SuspendOptionWatermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AcceptsReturn="True"
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False"
