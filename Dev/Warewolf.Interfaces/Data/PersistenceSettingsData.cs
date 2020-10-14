@@ -19,19 +19,19 @@ namespace Warewolf.Configuration
         private bool? _encryptDataSource;
         private bool? _enable;
         private bool? _prepareSchemaIfNecessary;
-        private string _dashboardEndpoint = "http://localhost";
-        private string _dashboardPort = "5001";
-        private string _dashboardName = "HangfireDashboard";
-        private string _serverName = "";
-        private string _persistenceScheduler = "";
+        private string _dashboardHostname;
+        private string _dashboardPort;
+        private string _dashboardName;
+        private string _serverName;
+        private string _persistenceScheduler;
 
-        public bool Enable
+        public bool? Enable
         {
             get => _enable ?? false;
             set => SetProperty(ref _enable, value);
         }
 
-        public bool PrepareSchemaIfNecessary
+        public bool? PrepareSchemaIfNecessary
         {
             get => _prepareSchemaIfNecessary ?? true;
             set => SetProperty(ref _prepareSchemaIfNecessary, value);
@@ -43,7 +43,7 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _persistenceDataSource, value);
         }
 
-        public bool EncryptDataSource
+        public bool? EncryptDataSource
         {
             get => _encryptDataSource ?? true;
             set => SetProperty(ref _encryptDataSource, value);
@@ -62,10 +62,10 @@ namespace Warewolf.Configuration
             return result;
         }
 
-        public string DashboardEndpoint
+        public string DashboardHostname
         {
-            get => _dashboardEndpoint;
-            set => SetProperty(ref _dashboardEndpoint, value);
+            get => _dashboardHostname;
+            set => SetProperty(ref _dashboardHostname, value);
         }
 
         public string DashboardPort
@@ -92,7 +92,7 @@ namespace Warewolf.Configuration
             equals &= EncryptDataSource.Equals(obj.EncryptDataSource);
             equals &= Enable.Equals(obj.Enable);
             equals &= PersistenceScheduler.Equals(obj.PersistenceScheduler);
-            equals &= DashboardEndpoint == obj.DashboardEndpoint;
+            equals &= DashboardHostname == obj.DashboardHostname;
             equals &= DashboardPort == obj.DashboardPort;
             equals &= DashboardName == obj.DashboardName;
             equals &= ServerName == obj.ServerName;

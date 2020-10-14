@@ -35,11 +35,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var updatedPersistenceSettings = serializer.Deserialize<PersistenceSettingsData>(settings);
                 Config.Persistence.PersistenceDataSource = updatedPersistenceSettings.PersistenceDataSource;
-                Config.Persistence.EncryptDataSource = updatedPersistenceSettings.EncryptDataSource;
-                Config.Persistence.Enable = updatedPersistenceSettings.Enable;
-                Config.Persistence.PrepareSchemaIfNecessary = updatedPersistenceSettings.PrepareSchemaIfNecessary;
+                Config.Persistence.EncryptDataSource = updatedPersistenceSettings?.EncryptDataSource ?? false;
+                Config.Persistence.Enable = updatedPersistenceSettings.Enable ?? false;
+                Config.Persistence.PrepareSchemaIfNecessary = updatedPersistenceSettings.PrepareSchemaIfNecessary ?? true;
                 Config.Persistence.PersistenceScheduler = updatedPersistenceSettings.PersistenceScheduler;
-                Config.Persistence.DashboardEndpoint = updatedPersistenceSettings.DashboardEndpoint;
+                Config.Persistence.DashboardHostname = updatedPersistenceSettings.DashboardHostname;
                 Config.Persistence.DashboardName = updatedPersistenceSettings.DashboardName;
                 Config.Persistence.DashboardPort = updatedPersistenceSettings.DashboardPort;
                 Config.Persistence.ServerName = updatedPersistenceSettings.ServerName;

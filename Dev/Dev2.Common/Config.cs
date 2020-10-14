@@ -37,6 +37,10 @@ namespace Dev2.Common
     }
     public class PersistenceSettings : ConfigSettingsBase<PersistenceSettingsData>
     {
+        public static string DefaultDashboardPort => "5001";
+        public static string DefaultDashboardHostname => "http://localhost";
+        public static string DefaultDashboardName = "hangfire";
+        public static string DefaultServerName = "";
 
         public PersistenceSettings()
             : this(SettingsPath, new FileWrapper(), new DirectoryWrapper())
@@ -48,7 +52,7 @@ namespace Dev2.Common
         {
         }
 
-        public static string SettingsPath => Path.Combine(Config.UserDataPath, "Persistence", "persistence_settings.json");
+        public static string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "persistencesettings.json");
 
         public PersistenceSettingsData Get()
         {
@@ -64,7 +68,7 @@ namespace Dev2.Common
         }
         public bool EncryptDataSource
         {
-            get => _settings.EncryptDataSource;
+            get => _settings?.EncryptDataSource ?? false;
             set
             {
                 _settings.EncryptDataSource = value;
@@ -82,7 +86,7 @@ namespace Dev2.Common
         }
         public bool Enable
         {
-            get => _settings.Enable;
+            get => _settings?.Enable ?? false;
             set
             {
                 _settings.Enable = value;
@@ -100,7 +104,7 @@ namespace Dev2.Common
         }
         public bool PrepareSchemaIfNecessary
         {
-            get => _settings.PrepareSchemaIfNecessary;
+            get => _settings?.PrepareSchemaIfNecessary ?? true;
             set
             {
                 _settings.PrepareSchemaIfNecessary = value;
@@ -108,18 +112,18 @@ namespace Dev2.Common
             }
         }
 
-        public string DashboardEndpoint
+        public string DashboardHostname
         {
-            get => _settings.DashboardEndpoint;
+            get => _settings.DashboardHostname ?? DefaultDashboardHostname;
             set
             {
-                _settings.DashboardEndpoint = value;
+                _settings.DashboardHostname = value;
                 Save();
             }
         }
         public string DashboardPort
         {
-            get => _settings.DashboardPort;
+            get => _settings.DashboardPort ?? DefaultDashboardPort;
             set
             {
                 _settings.DashboardPort = value;
@@ -128,7 +132,7 @@ namespace Dev2.Common
         }
         public string DashboardName
         {
-            get => _settings.DashboardName;
+            get => _settings.DashboardName ?? DefaultDashboardName;
             set
             {
                 _settings.DashboardName = value;
@@ -137,7 +141,7 @@ namespace Dev2.Common
         }
         public string ServerName
         {
-            get => _settings.ServerName;
+            get => _settings.ServerName ?? DefaultServerName;
             set
             {
                 _settings.ServerName = value;
