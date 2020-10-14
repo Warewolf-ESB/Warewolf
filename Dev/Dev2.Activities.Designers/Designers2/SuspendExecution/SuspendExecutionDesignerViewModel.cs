@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers2.SuspendExecution
             SuspendOptions = Dev2EnumConverter.ConvertEnumsTypeToStringList<enSuspendOption>();
             SelectedSuspendOption = SuspendOption.GetDescription();
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_LoopConstruct_For_Each;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_SuspendExecution;
             var dataFunc = modelItem.Properties["DataFunc"]?.ComputedValue as ActivityFunc<string, bool>;
             DataFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
             var type = dataFunc?.Handler?.GetType();

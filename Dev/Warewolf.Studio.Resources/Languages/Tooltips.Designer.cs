@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Tooltips {
@@ -5655,6 +5655,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can this suspended execution of the workflow be manually resumed..
+        /// </summary>
+        public static string SuspendExecutionAllowManualResumptionToolTip {
+            get {
+                return ResourceManager.GetString("SuspendExecutionAllowManualResumptionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the value for when the workflow should be suspended..
+        /// </summary>
+        public static string SuspendExecutionPersistValueToolTip {
+            get {
+                return ResourceManager.GetString("SuspendExecutionPersistValueToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The result after suspending the execution to be stored..
+        /// </summary>
+        public static string SuspendExecutionResultToolTip {
+            get {
+                return ResourceManager.GetString("SuspendExecutionResultToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an option for when the workflow should be suspended..
+        /// </summary>
+        public static string SuspendExecutionSuspendOptionsToolTip {
+            get {
+                return ResourceManager.GetString("SuspendExecutionSuspendOptionsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
         ///Returns the type of system information selected..
         /// </summary>
@@ -6021,6 +6057,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Flow_Sequence {
             get {
                 return ResourceManager.GetString("Tool_Flow_Sequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags: suspend stop end pause.
+        /// </summary>
+        public static string Tool_Flow_SuspendExecution {
+            get {
+                return ResourceManager.GetString("Tool_Flow_SuspendExecution", resourceCulture);
             }
         }
         

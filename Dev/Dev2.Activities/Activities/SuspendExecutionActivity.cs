@@ -30,7 +30,7 @@ using Warewolf.Core;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("ControlFlow-SuspendExecution", "Suspend Execution", ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_SuspendExecution")]
-    public class SuspendExecutionActivity : DsfActivityAbstract<string>, IEquatable<SuspendExecutionActivity>
+    public class SuspendExecutionActivity : DsfActivityAbstract<string>, IEquatable<SuspendExecutionActivity>, IStateNotifierRequired
     {
         private IDSFDataObject _dataObject;
         private IStateNotifier _stateNotifier = null;
@@ -40,8 +40,7 @@ namespace Dev2.Activities
             DataFunc = new ActivityFunc<string, bool>
             {
                 DisplayName = "Data Action",
-                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
-
+                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
             };
         }
         public enSuspendOption SuspendOption { get; set; }
@@ -75,12 +74,12 @@ namespace Dev2.Activities
         [ExcludeFromCodeCoverage]
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            throw new NotImplementedException();
+
         }
         [ExcludeFromCodeCoverage]
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            throw new NotImplementedException();
+
         }
         [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachInputs()
@@ -120,6 +119,14 @@ namespace Dev2.Activities
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
+            }
+        }
+
+        public void SetStateNotifier(IStateNotifier stateNotifier)
+        {
+            if (_stateNotifier is null)
+            {
+                _stateNotifier = stateNotifier;
             }
         }
 

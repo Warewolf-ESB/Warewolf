@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class HelpText {
@@ -4714,6 +4714,56 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selecting this will enable the suspended execution of the workflow to be manually resumed..
+        /// </summary>
+        public static string SuspendExecutionAllowManualResumptionHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionAllowManualResumptionHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an option for when the workflow should be suspended.
+        ///Suspend until: Specified Date Time
+        ///Suspend for Seconds: Value in seconds
+        ///Suspend for Minutes: Value in minutes
+        ///Suspend for Hours: Value in hours
+        ///Suspend for Day(s): Value in days
+        ///Suspend for Month(s): Value in months
+        ///    .
+        /// </summary>
+        public static string SuspendExecutionPersistValueHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionPersistValueHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The result after suspending the execution to be stored..
+        /// </summary>
+        public static string SuspendExecutionResultHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionResultHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an option for when the workflow should be suspended.
+        ///Suspend until:
+        ///Suspend for Seconds:
+        ///Suspend for Minutes:
+        ///Suspend for Hours:
+        ///Suspend for Day(s):
+        ///Suspend for Month(s):
+        ///    .
+        /// </summary>
+        public static string SuspendExecutionSuspendOptionsHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionSuspendOptionsHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.	Returns the type of system information selected.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SystemInformationHelpResult {
@@ -5084,6 +5134,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Flow_Sequence {
             get {
                 return ResourceManager.GetString("Tool_Flow_Sequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Suspend Execution tool when you need to pause and persist your workflow for a length of time..
+        /// </summary>
+        public static string Tool_Flow_SuspendExecution {
+            get {
+                return ResourceManager.GetString("Tool_Flow_SuspendExecution", resourceCulture);
             }
         }
         

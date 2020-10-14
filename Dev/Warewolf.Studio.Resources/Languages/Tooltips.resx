@@ -1566,6 +1566,18 @@ To format a number, put the number in here.</value>
 * in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... up to the number you specify.
 No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.</value>
   </data>
+  <data name="SuspendExecutionSuspendOptionsToolTip" xml:space="preserve">
+    <value>Select an option for when the workflow should be suspended.</value>
+  </data>
+  <data name="SuspendExecutionPersistValueToolTip" xml:space="preserve">
+    <value>Enter the value for when the workflow should be suspended.</value>
+  </data>
+  <data name="SuspendExecutionAllowManualResumptionToolTip" xml:space="preserve">
+    <value>Can this suspended execution of the workflow be manually resumed.</value>
+  </data>
+  <data name="SuspendExecutionResultToolTip" xml:space="preserve">
+    <value>The result after suspending the execution to be stored.</value>
+  </data>
   <data name="FindToolTipTo" xml:space="preserve">
     <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.</value>
   </data>
@@ -2332,6 +2344,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="Tool_Flow_Gate" xml:space="preserve">
     <value>Tags: gate retry stop end</value>
+  </data>
+  <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
+    <value>Tags: suspend stop end pause</value>
   </data>
   <data name="Tool_Data_Find_Index" xml:space="preserve">
     <value>Tags: search string position</value>
