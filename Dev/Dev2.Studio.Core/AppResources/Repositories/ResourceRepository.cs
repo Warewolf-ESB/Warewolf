@@ -29,6 +29,7 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Factories;
@@ -996,7 +997,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public Data.Settings.Settings ReadSettings(IServer currentEnv)
         {
-            var comController = new CommunicationController {ServiceName = "SettingsReadService"};
+            var comController = new CommunicationController {ServiceName = nameof(SettingsRead)};
             return comController.ExecuteCommand<Data.Settings.Settings>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
         }
 
@@ -1038,7 +1039,35 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             return output;
         }
-        
+        public ExecuteMessage SavePersistenceSettings(IServer currentEnv, PersistenceSettingsData persistenceSettingsData)
+        {
+            var comController = new CommunicationController {ServiceName = "SavePersistenceSettings"};
+            comController.AddPayloadArgument("PersistenceSettings", _serializer.Serialize(persistenceSettingsData));
+            var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+
+            return output;
+        }
+        public T GetPersistenceSettings<T>(IServer currentEnv) where T : PersistenceSettingsData, new()
+        {
+            var comController = new CommunicationController {ServiceName =nameof(Warewolf.Service.GetPersistenceSettings)};
+            var output = comController.ExecuteCommand<T>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+            return output;
+        }
         public ExecuteMessage SaveAuditingSettings(IServer currentEnv, AuditSettingsDataBase auditingSettingsData)
         {
             var comController = new CommunicationController {ServiceName = nameof(Warewolf.Service.SaveAuditingSettings)};

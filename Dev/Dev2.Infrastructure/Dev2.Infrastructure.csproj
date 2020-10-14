@@ -153,6 +153,7 @@
     <Compile Include="Services\ISubscriptionService.cs" />
     <Compile Include="Communication\DesignValidationMemo.cs" />
     <Compile Include="DisposableObject.cs" />
+    <Compile Include="Services\Persistence\PersistenceSettingsTo.cs" />
     <Compile Include="Services\ResourceDefinationCleaner.cs" />
     <Compile Include="Services\Security\AuthorizationHelpers.cs" />
     <Compile Include="Services\Security\AuthorizationServiceBase.cs" />
