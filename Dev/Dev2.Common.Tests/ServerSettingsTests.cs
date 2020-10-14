@@ -148,6 +148,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ServerSettings))]
+		[DoNotParallelize]
         public void ServerSettingsData_SinkNotInFile_AuditFilePathIsNotNull_SetSinkEqualLegacySettingsData()
         {
             var serverSettings = Config.Server.Get();
