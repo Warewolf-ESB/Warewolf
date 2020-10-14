@@ -58,7 +58,7 @@ namespace Warewolf.Configuration
         public PersistenceSettingsData Clone()
         {
             var result = (PersistenceSettingsData) MemberwiseClone();
-            result.PersistenceDataSource = PersistenceDataSource.Clone();
+            result._persistenceDataSource = PersistenceDataSource.Clone();
             return result;
         }
 
@@ -88,16 +88,21 @@ namespace Warewolf.Configuration
 
         public bool Equals(PersistenceSettingsData obj)
         {
-            var equals = PersistenceDataSource.Equals(obj.PersistenceDataSource);
-            equals &= EncryptDataSource.Equals(obj.EncryptDataSource);
-            equals &= Enable.Equals(obj.Enable);
-            equals &= PersistenceScheduler.Equals(obj.PersistenceScheduler);
-            equals &= DashboardEndpoint == obj.DashboardEndpoint;
-            equals &= DashboardPort == obj.DashboardPort;
-            equals &= DashboardName == obj.DashboardName;
-            equals &= ServerName == obj.ServerName;
-            equals &= PrepareSchemaIfNecessary == obj.PrepareSchemaIfNecessary;
-            return equals;
+            if (obj is PersistenceSettingsData other)
+            {
+                var equals = PersistenceDataSource.Equals(other.PersistenceDataSource);
+                equals &= EncryptDataSource.Equals(other.EncryptDataSource);
+                equals &= Enable.Equals(other.Enable);
+                equals &= PersistenceScheduler.Equals(other.PersistenceScheduler);
+                equals &= DashboardEndpoint == other.DashboardEndpoint;
+                equals &= DashboardPort == other.DashboardPort;
+                equals &= DashboardName == other.DashboardName;
+                equals &= ServerName == other.ServerName;
+                equals &= PrepareSchemaIfNecessary == other.PrepareSchemaIfNecessary;
+                return equals;
+            }
+
+            return false;
         }
     }
 }

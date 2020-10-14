@@ -193,6 +193,7 @@ namespace Dev2.Common.Tests
             var data2 = data1.Clone();
             Assert.AreNotEqual(data1.GetHashCode(), data2.GetHashCode());
             Assert.IsFalse(ReferenceEquals(data1, data2));
+            Assert.IsFalse(ReferenceEquals(data1.PersistenceDataSource, data2.PersistenceDataSource));
 
             Assert.IsTrue(data1.Equals(data2));
             data1.PersistenceDataSource.Payload = "foo2";
