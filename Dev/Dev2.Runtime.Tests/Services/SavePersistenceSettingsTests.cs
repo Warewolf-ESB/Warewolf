@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
                     Payload = "foo"
                 },
                 EncryptDataSource = true,
-                DashboardEndpoint = "DashboardEndpoint",
+                DashboardHostname = "DashboardHostname",
                 DashboardName = "Dashboardname",
                 DashboardPort = "5001",
                 PrepareSchemaIfNecessary = true,

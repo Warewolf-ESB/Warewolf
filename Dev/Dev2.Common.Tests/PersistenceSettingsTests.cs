@@ -33,8 +33,8 @@ namespace Dev2.Common.Tests
             mockDirectory.Setup(o => o.CreateIfNotExists(Path.GetDirectoryName(PersistenceSettings.SettingsPath))).Returns(PersistenceSettings.SettingsPath);
 
             //act
-            var auditSettings = new PersistenceSettings("some path", mockIFile.Object, mockDirectory.Object);
-            auditSettings.SaveIfNotExists();
+            var settings = new PersistenceSettings("some path", mockIFile.Object, mockDirectory.Object);
+            settings.SaveIfNotExists();
 
             //assert
             mockIFile.Verify();
@@ -46,7 +46,7 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(PersistenceSettings))]
         public void PersistenceSettings_Get_Settings()
         {
-            const string expectedDashboardEndpoint = @"http://localhost";
+            const string expectedDashboardHostname = @"http://localhost";
             const string expectedDashboardPort = @"5001";
             const string expectedDashboardName = @"HangfireDashboard";
 
@@ -61,14 +61,14 @@ namespace Dev2.Common.Tests
             hangfireSettings.EncryptDataSource = false;
             hangfireSettings.PrepareSchemaIfNecessary = true;
             hangfireSettings.ServerName = "LocalServer";
-            hangfireSettings.DashboardEndpoint = expectedDashboardEndpoint;
+            hangfireSettings.DashboardHostname = expectedDashboardHostname;
             hangfireSettings.DashboardPort = expectedDashboardPort;
             hangfireSettings.DashboardName = expectedDashboardName;
             hangfireSettings.PersistenceDataSource = new NamedGuidWithEncryptedPayload();
             var result = hangfireSettings.Get();
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(expectedDashboardEndpoint, result.DashboardEndpoint);
+            Assert.AreEqual(expectedDashboardHostname, result.DashboardHostname);
             Assert.AreEqual(expectedDashboardName, result.DashboardName);
             Assert.AreEqual(expectedDashboardPort, result.DashboardPort);
             Assert.AreEqual("Hangfire", result.PersistenceScheduler);
@@ -81,7 +81,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettings))]
-        public void PersistenceSettings_Set_Get_LoggingDataSource()
+        public void PersistenceSettings_Set_Get_PersistenceDataSource()
         {
             var expectedHangfireSettingsData = new PersistenceSettingsData
             {
@@ -114,7 +114,7 @@ namespace Dev2.Common.Tests
                     Payload = "foo"
                 },
                 EncryptDataSource = true,
-                DashboardEndpoint = "DashboardEndpoint",
+                DashboardHostname = "DashboardHostname",
                 DashboardName = "Dashboardname",
                 DashboardPort = "5001",
                 PrepareSchemaIfNecessary = true,
@@ -131,7 +131,7 @@ namespace Dev2.Common.Tests
                     Payload = "foo"
                 },
                 EncryptDataSource = true,
-                DashboardEndpoint = "DashboardEndpoint",
+                DashboardHostname = "DashboardHostname",
                 DashboardName = "Dashboardname",
                 DashboardPort = "5001",
                 PrepareSchemaIfNecessary = true,
@@ -149,7 +149,7 @@ namespace Dev2.Common.Tests
             data1.PersistenceScheduler = "Hangfire";
             data1.PersistenceDataSource.Payload = "foo";
             data1.EncryptDataSource = true;
-            data1.DashboardEndpoint = "DashboardEndpoint";
+            data1.DashboardHostname = "DashboardHostname";
             data1.DashboardName = "Dashboardname";
             data1.DashboardPort = "5001";
             data1.PrepareSchemaIfNecessary = true;
@@ -159,7 +159,7 @@ namespace Dev2.Common.Tests
             data2.PersistenceScheduler = "Hangfire";
             data2.PersistenceDataSource.Payload = "foo2";
             data2.EncryptDataSource = false;
-            data2.DashboardEndpoint = "DashboardEndpoint";
+            data2.DashboardHostname = "DashboardHostname";
             data2.DashboardName = "Dashboardname";
             data2.DashboardPort = "5001";
             data2.PrepareSchemaIfNecessary = true;
@@ -183,7 +183,7 @@ namespace Dev2.Common.Tests
                     Payload = "foo1"
                 },
                 EncryptDataSource = true,
-                DashboardEndpoint = "DashboardEndpoint",
+                DashboardHostname = "DashboardHostname",
                 DashboardName = "Dashboardname",
                 DashboardPort = "5001",
                 PrepareSchemaIfNecessary = true,
