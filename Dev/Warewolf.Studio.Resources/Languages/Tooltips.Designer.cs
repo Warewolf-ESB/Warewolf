@@ -3548,6 +3548,87 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The persistence server name to connect to.
+        /// </summary>
+        public static string PersistenceDashboardHostNameTooltip {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardHostNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name the url will map to..
+        /// </summary>
+        public static string PersistenceDashboardNameTooltip {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default port on which Persistence listens is 5001.
+        /// </summary>
+        public static string PersistenceDashboardPortTooltip {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardPortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server name the scheduled job will be mapped to..
+        /// </summary>
+        public static string PersistenceServerNameTooltip {
+            get {
+                return ResourceManager.GetString("PersistenceServerNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Persistence Data Source.
+        /// </summary>
+        public static string PersistenceViewDataSourceToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewDataSourceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable the Persistence Server..
+        /// </summary>
+        public static string PersistenceViewEnableToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewEnableToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encrypt the Persistence Data Source in the Persistence Settings File.
+        /// </summary>
+        public static string PersistenceViewEncryptToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewEncryptToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create the tables and index in the database if they dont already exist.
+        /// </summary>
+        public static string PersistenceViewPrepareSchemaIfNecessaryToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewPrepareSchemaIfNecessaryToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Persistence Scheduler.
+        /// </summary>
+        public static string PersistenceViewSchedulerToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewSchedulerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select method to execute..
         /// </summary>
         public static string PluginServiceSelectActionToolTip {
