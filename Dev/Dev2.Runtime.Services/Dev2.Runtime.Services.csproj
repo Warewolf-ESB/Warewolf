@@ -129,6 +129,7 @@
     <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
+    <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
     <Compile Include="ESB\Management\Services\SavePersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveRedisSource.cs" />
