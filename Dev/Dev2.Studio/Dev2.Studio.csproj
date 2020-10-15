@@ -220,6 +220,9 @@
     <Compile Include="Factory\CustomGit.cs" />
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Settings\Persistence\IPersistenceSettings.cs" />
+    <Compile Include="Settings\Persistence\PersistenceView.xaml.cs" />
+    <Compile Include="Settings\Persistence\PersistenceSettingsViewModel.cs" />
     <Compile Include="Triggers\QueueEvents\QueueEventsView.xaml.cs">
       <DependentUpon>QueueEventsView.xaml</DependentUpon>
     </Compile>
@@ -454,6 +457,10 @@
     <Page Include="Settings\Perfcounters\PerfCounterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Persistence\PersistenceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Triggers\Scheduler\SchedulerView.xaml">
       <Generator>MSBuild:Compile</Generator>

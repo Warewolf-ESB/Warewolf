@@ -156,6 +156,7 @@
     <Compile Include="ServiceModel\RedisSourcesTests.cs" />
     <Compile Include="Services\FetchTriggersForDeployTests.cs" />
     <Compile Include="Services\GetDependanciesOnListTests.cs" />
+    <Compile Include="Services\GetPersistenceSettingsTests.cs" />
     <Compile Include="Services\SaveAuditingSettingsTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
@@ -246,6 +247,7 @@
     <Compile Include="Services\RollBackToTest.cs" />
     <Compile Include="Services\SaveComPluginSourceTests.cs" />
     <Compile Include="Services\SaveElasticsearchSourceTests.cs" />
+    <Compile Include="Services\SavePersistenceSettingsTests.cs" />
     <Compile Include="Services\SavePluginServiceTests.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
     <Compile Include="Services\DirectDeployTest.cs" />

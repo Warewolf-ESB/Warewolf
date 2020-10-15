@@ -23,15 +23,15 @@ namespace Dev2.Studio.Core {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class StringResources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal StringResources() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Dev2.Studio.Core {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Dev2.Studio.Core {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Warewolf.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("App_Data_Directory", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Unsaved changes.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("CloseHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Closing Service Test Window from Taskbar handle exception. .
         /// </summary>
@@ -86,7 +86,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("CloseTestViewHandledException", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Critical Error.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("CritErrorTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Critical : Warewolf Must Restart. All open tabs will be saved. Please take the time to report this error to the community..
         /// </summary>
@@ -104,7 +104,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("CriticalExceptionMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The data you have entered is invalid. Please correct the data..
         /// </summary>
@@ -113,7 +113,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DataInput_Error", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Did you know?.
         /// </summary>
@@ -122,7 +122,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DataInput_Error_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You have reached maximum limits of input data..
         /// </summary>
@@ -131,7 +131,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DataInput_Warning", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Maximum Input Data.
         /// </summary>
@@ -140,7 +140,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DataInput_Warning_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Please resolve all variable errors, before debugging..
         /// </summary>
@@ -149,7 +149,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Debugging_Error", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error Debugging.
         /// </summary>
@@ -158,7 +158,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Debugging_Error_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to localhost.
         /// </summary>
@@ -167,7 +167,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DefaultEnvironmentName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The resource {0} cannot be deleted because something depends on it..
         /// </summary>
@@ -176,7 +176,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Delete_Error", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error Deleting - {0}.
         /// </summary>
@@ -185,7 +185,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Delete_Error_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Destination server permission Deploy To not allowed..
         /// </summary>
@@ -194,7 +194,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DestinationPermission_Error", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you wish to delete {0} {1}?
         ///
@@ -205,7 +205,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogBody_ConfirmDelete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you wish to delete {0} folder and all its contents?.
         /// </summary>
@@ -214,10 +214,10 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogBody_ConfirmFolderDelete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The workflow &apos;{0}&apos; that you are closing is not saved.
-        ///The workflow is linked to a disconnected server. 
+        ///The workflow is linked to a disconnected server.
         ///To save the workflow, select Cancel and reconnect the server, or select Ok to discard your changes.
         ///-----------------------------------------------------------------
         ///Ok - Discard your changes.
@@ -228,7 +228,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogBody_DisconnectedItemNotSaved", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to This folder cannot be deleted because it contains resources with dependents..
         /// </summary>
@@ -237,7 +237,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogBody_FolderContentsHaveDependencies", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The {0} {1} cannot be deleted because something depends on it..
         /// </summary>
@@ -246,7 +246,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogBody_HasDependencies", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The {0} {1} cannot be renamed because a resource with that name already exists on the same server..
         /// </summary>
@@ -255,7 +255,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogBody_HasDuplicateName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The workflow &apos;{0}&apos; that you are closing is not saved.
         ///Would you like to save the workflow?
@@ -269,7 +269,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogBody_NotSaved", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Confirm delete..
         /// </summary>
@@ -278,7 +278,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogTitle_ConfirmDelete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Folder has dependents.
         /// </summary>
@@ -287,7 +287,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogTitle_FolderHasDependencies", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} has dependents.
         /// </summary>
@@ -296,7 +296,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogTitle_HasDependencies", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} exists.
         /// </summary>
@@ -305,7 +305,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("DialogTitle_HasDuplicateName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Environments.
         /// </summary>
@@ -314,7 +314,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Environments_Directory", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Connection Failed.
         /// </summary>
@@ -323,7 +323,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Error_Connect_Failed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Name not provided.
         /// </summary>
@@ -332,7 +332,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Error_DSF_Name_Not_Provided", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The recordset name is a duplicate of an existing recordset. Recordset names must be unique..
         /// </summary>
@@ -341,7 +341,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("ErrorMessageDuplicateRecordset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Variable names must be unique..
         /// </summary>
@@ -350,7 +350,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("ErrorMessageDuplicateValue", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to This variable name is a duplicate of an existing variable. Variable names must be unique..
         /// </summary>
@@ -359,7 +359,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("ErrorMessageDuplicateVariable", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Recordset must contain one or more field(s)..
         /// </summary>
@@ -368,7 +368,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("ErrorMessageEmptyRecordSet", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Variable name contains invalid character(s)..
         /// </summary>
@@ -377,7 +377,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("ErrorMessageInvalidChar", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error : .
         /// </summary>
@@ -386,7 +386,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("ErrorPrefix", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
@@ -395,10 +395,10 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("ErrorTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to There are incomplete changes.
-        ///Would you like to complete the changes? 
+        ///Would you like to complete the changes?
         ///-----------------------------------------------------------------
         ///Yes - Complete your changes.
         ///No - Discard your changes..
@@ -408,10 +408,10 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("ItemSource_HasChanged_NotTested", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Your changes have not been saved.
-        ///Would you like to save? 
+        ///Would you like to save?
         ///-----------------------------------------------------------------
         ///Yes - Save your changes.
         ///No - Discard your changes.
@@ -422,7 +422,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("ItemSource_NotSaved", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Network Error.
         /// </summary>
@@ -431,7 +431,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("NetworkSettingErrorPrefix", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Unsaved.
         /// </summary>
@@ -440,7 +440,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("NewWorkflowBaseName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png.
         /// </summary>
@@ -449,7 +449,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Pack_Uri_Debug_Image", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStop-32.png.
         /// </summary>
@@ -458,7 +458,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Pack_Uri_Stop_Image", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Queues.
         /// </summary>
@@ -467,7 +467,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("QueueEventsHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
@@ -476,7 +476,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Ribbon_Debug", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
@@ -485,7 +485,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Ribbon_StopExecution", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Save Error.
         /// </summary>
@@ -494,7 +494,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("SaveErrorHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error while saving.
         /// </summary>
@@ -503,7 +503,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("SaveErrorPrefix", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error while saving: Server unreachable..
         /// </summary>
@@ -512,10 +512,10 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("SaveServerNotReachableErrorMsg", resourceCulture);
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to There are duplicate permissions for a resource, 
-        ///    i.e. one resource has permissions set twice with the same group. 
+        ///   Looks up a localized string similar to There are duplicate permissions for a resource,
+        ///    i.e. one resource has permissions set twice with the same group.
         ///    Please clear the duplicates before saving..
         /// </summary>
         public static string SaveSettingsDuplicateResourcePermissions {
@@ -523,10 +523,10 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("SaveSettingsDuplicateResourcePermissions", resourceCulture);
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to There are duplicate server permissions, 
-        ///    i.e. Server permissions have been setup up with the same group twice. 
+        ///   Looks up a localized string similar to There are duplicate server permissions,
+        ///    i.e. Server permissions have been setup up with the same group twice.
         ///    Please clear the duplicates before saving..
         /// </summary>
         public static string SaveSettingsDuplicateServerPermissions {
@@ -534,7 +534,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("SaveSettingsDuplicateServerPermissions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to To save a resource persmission, you must have Resource Name and Windows group entered.
         /// </summary>
@@ -543,7 +543,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("SaveSettingsInvalidPermissionEntry", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error while saving: You don&apos;t have permission to change settings on this server.
         ///You need Administrator permission..
@@ -553,7 +553,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("SaveSettingsPermissionsErrorMsg", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Please resolve the variable(s) errors below, before saving..
         /// </summary>
@@ -562,7 +562,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Saving_Error", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error Saving.
         /// </summary>
@@ -571,7 +571,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("Saving_Error_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scheduler.
         /// </summary>
@@ -580,7 +580,7 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("SchedulerHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to LOGGING.
         /// </summary>
@@ -589,13 +589,22 @@ namespace Dev2.Studio.Core {
                 return ResourceManager.GetString("SettingsLogging", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to PERFORMANCE COUNTERS.
         /// </summary>
         public static string SettingsPerformanceCounters {
             get {
                 return ResourceManager.GetString("SettingsPerformanceCounters", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to PERSISTENCE.
+        /// </summary>
+        public static string SettingsPersistence {
+            get {
+                return ResourceManager.GetString("SettingsPersistence", resourceCulture);
             }
         }
         

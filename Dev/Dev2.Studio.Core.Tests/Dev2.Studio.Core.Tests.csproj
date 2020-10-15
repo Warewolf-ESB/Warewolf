@@ -134,6 +134,7 @@
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Network\WebServerTests.cs" />
+    <Compile Include="Settings\PersistenceSettingsViewModelTests.cs" />
     <Compile Include="Triggers\ClientScheduledResourceTests.cs" />
     <Compile Include="Triggers\QueueEvents\QueueEventsViewModelTests.cs" />
     <Compile Include="Triggers\ResourceHistoryForTest.cs" />
