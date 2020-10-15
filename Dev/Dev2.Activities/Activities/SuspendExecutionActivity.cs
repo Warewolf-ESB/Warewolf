@@ -11,7 +11,8 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -22,18 +23,20 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Util;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Auditing;
 using Warewolf.Core;
+using Warewolf.Driver.Persistence;
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("ControlFlow-SuspendExecution", "Suspend Execution", ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_SuspendExecution")]
-    public class SuspendExecutionActivity : DsfActivityAbstract<string>, IEquatable<SuspendExecutionActivity>, IStateNotifierRequired
+    public class SuspendExecutionActivity : DsfBaseActivity, IEquatable<SuspendExecutionActivity>, IStateNotifierRequired
     {
         private IDSFDataObject _dataObject;
         private IStateNotifier _stateNotifier = null;
+        private int _update;
+        private string _suspensionId = "";
+
         public SuspendExecutionActivity()
         {
             DisplayName = "Suspend Execution";
@@ -43,6 +46,7 @@ namespace Dev2.Activities
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
             };
         }
+
         public enSuspendOption SuspendOption { get; set; }
 
         /// <summary>
@@ -56,63 +60,63 @@ namespace Dev2.Activities
         /// </summary>
         [FindMissing]
         public bool AllowManualResumption { get; set; }
+        [FindMissing] public string Response { get; set; }
 
-        /// <summary>
-        /// The property that holds the result string the user enters into the "Result" box
-        /// </summary>
-        [Outputs("Result")]
-        [FindMissing]
-        public new string Result { get; set; }
         public ActivityFunc<string, bool> DataFunc { get; set; }
 
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject, 0);
-        }
-
-        [ExcludeFromCodeCoverage]
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
-        {
-
-        }
-        [ExcludeFromCodeCoverage]
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
-        {
-
-        }
-        [ExcludeFromCodeCoverage]
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return new List<DsfForEachItem>();
-        }
-        [ExcludeFromCodeCoverage]
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return new List<DsfForEachItem>();
+            _dataObject = dataObject;
+            ExecuteTool(_dataObject, 0);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _dataObject = dataObject;
+            _update = update;
+            base.ExecuteTool(_dataObject, update);
+        }
+
+        protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
+        {
             _errorsTo = new ErrorResultTO();
             try
             {
-                _stateNotifier?.LogActivityExecuteState(this);
+                if (NextNodes is null)
+                {
+                    _suspensionId = "";
+                    const string message = "At least 1 activity is required after Suspend Execution.";
+                    Dev2Logger.Error(message, GlobalConstants.WarewolfError);
+                    throw new Exception(message);
+                }
 
-                var suspensionId = _dataObject.ServiceName + "-SuspendExecution-" + Guid.NewGuid();
+                var activityId = Guid.Parse(NextNodes.First()?.UniqueID ?? throw new Exception("Next node Id not found."));
+                var values = new Dictionary<string, StringBuilder>
+                {
+                    {"resourceID", new StringBuilder(_dataObject.ResourceID.ToString())},
+                    {"environment", new StringBuilder(_dataObject.Environment.ToJson())},
+                    {"startActivityId", new StringBuilder(activityId.ToString())},
+                    {"versionNumber", new StringBuilder(_dataObject.VersionNumber.ToString())}
+                };
+                var persistScheduleValue = PersistSchedulePersistValue();
+                var scheduler = new SuspendExecution();
+                _suspensionId= scheduler.CreateAndScheduleJob(SuspendOption,  persistScheduleValue, values);
+
+                _stateNotifier?.LogActivityExecuteState(this);
 
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Execution Suspended: " + suspensionId, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Execution Suspended: " + _suspensionId, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                     debugItemStaticDataParams = new DebugItemStaticDataParams("Allow Manual Resumption: " + AllowManualResumption, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
 
-                Result = suspensionId;
-                Dev2Logger.Debug($"{_dataObject.ServiceName} execution suspended: Trigger {suspensionId} scheduled: {suspensionId}", GlobalConstants.WarewolfDebug);
+                Response = _suspensionId;
+                Dev2Logger.Debug($"{_dataObject.ServiceName} execution suspended: Trigger {_suspensionId} scheduled: {_suspensionId}", GlobalConstants.WarewolfDebug);
                 _dataObject.StopExecution = true;
+                return new List<string> {_suspensionId};
             }
             catch (Exception ex)
             {
@@ -121,16 +125,27 @@ namespace Dev2.Activities
                 throw new Exception(ex.GetAllMessages());
             }
         }
+        private string PersistSchedulePersistValue()
+        {
+            var debugEvalResult = new DebugEvalResult(PersistValue, "Persist Schedule Value", _dataObject.Environment, _update);
+            AddDebugInputItem(debugEvalResult);
 
-        public void SetStateNotifier(IStateNotifier stateNotifier)
+            var persistValue = string.Empty;
+            var debugItemResults = debugEvalResult.GetDebugItemResult();
+            if (debugItemResults.Count > 0)
+            {
+                persistValue = debugItemResults[0].Value;
+            }
+
+            return persistValue;
+        }
+      public void SetStateNotifier(IStateNotifier stateNotifier)
         {
             if (_stateNotifier is null)
             {
                 _stateNotifier = stateNotifier;
             }
         }
-
-        public override List<string> GetOutputs() => new List<string> { Result };
 
         public override IEnumerable<StateVariable> GetState()
         {
@@ -156,8 +171,8 @@ namespace Dev2.Activities
                 },
                 new StateVariable
                 {
-                    Name = nameof(Result),
-                    Value = Result,
+                    Name = nameof(Response),
+                    Value = Response,
                     Type = StateVariable.StateType.Output
                 },
             };
@@ -180,7 +195,7 @@ namespace Dev2.Activities
             equals &= Equals(SuspendOption, other.SuspendOption);
             equals &= string.Equals(PersistValue, other.PersistValue);
             equals &= Equals(AllowManualResumption, other.AllowManualResumption);
-            equals &= Equals(Result, other.Result);
+            equals &= Equals(Response, other.Response);
             equals &= activityFuncComparer.Equals(DataFunc, other.DataFunc);
 
             return equals;
@@ -203,7 +218,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((SuspendExecutionActivity)obj);
+            return Equals((SuspendExecutionActivity) obj);
         }
 
         public override int GetHashCode()
@@ -211,10 +226,10 @@ namespace Dev2.Activities
             unchecked
             {
                 var hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)SuspendOption;
+                hashCode = (hashCode * 397) ^ (int) SuspendOption;
                 hashCode = (hashCode * 397) ^ (PersistValue != null ? PersistValue.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (AllowManualResumption != null ? AllowManualResumption.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DataFunc != null ? DataFunc.GetHashCode() : 0);
                 return hashCode;
             }
