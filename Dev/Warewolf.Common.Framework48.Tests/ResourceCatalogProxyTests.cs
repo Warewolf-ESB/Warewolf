@@ -28,6 +28,8 @@ namespace Warewolf.Common.Framework48.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ResourceCatalogProxy))]
         public void ResourceCatalogProxy_GetResourceById_ReturnsResource()
         {
             var environmentConnection = GetConnection();
@@ -39,7 +41,20 @@ namespace Warewolf.Common.Framework48.Tests
             Assert.AreEqual("test", resource.UserName);
             Assert.AreEqual("test", resource.Password);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ResourceCatalogProxy))]
+        public void ResourceCatalogProxy_ResumeWorkflowExecution_Executes()
+        {
+            var environmentConnection = GetConnection();
+            var proxy = new ResourceCatalogProxy(environmentConnection);
+            var resourceId = "acb75027-ddeb-47d7-814e-a54c37247ec1";
+            var startActivity = "bd557ca7-113b-4197-afc3-de5d086dfc69";
+            var version = "0";
+            var resource = proxy.ResumeWorkflowExecution(resourceId,"{}",startActivity,version);
 
+            Assert.AreEqual("success", resource);
+        }
         private static ResourceCatalogProxy GetResourceCatalog()
         {
             var environmentConnection = GetConnection();
