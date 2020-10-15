@@ -290,8 +290,10 @@ namespace Dev2.Runtime.ESB.Execution
                     if (dsfDataObject.StopExecution)
                     {
                         dsfDataObject.StateNotifier?.LogStopExecutionState(lastActivity);
-
-                        dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
+                        if (dsfDataObject.Environment.FetchErrors().Length > 1)
+                        {
+                            dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
+                        }
                         break;
                     }
                 }

@@ -1,10 +1,17 @@
-﻿using System.Activities;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.State;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Auditing;
+using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -42,11 +49,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                 PersistValue = "15",
                 AllowManualResumption = true,
                 DataFunc = activityFunction,
-                Result = "[[result]]"
+                Response = "[[result]]"
             };
 
             Assert.AreEqual("Suspend Execution", suspendExecutionActivity.DisplayName);
-            Assert.AreEqual("15",suspendExecutionActivity.PersistValue);
+            Assert.AreEqual("15", suspendExecutionActivity.PersistValue);
             Assert.AreEqual(enSuspendOption.SuspendForDays, suspendExecutionActivity.SuspendOption);
             Assert.IsTrue(suspendExecutionActivity.AllowManualResumption);
             Assert.AreEqual("TestService", suspendExecutionActivity.DataFunc.DisplayName);
@@ -54,7 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = suspendExecutionActivity.GetOutputs();
 
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("[[result]]", result[0]);
+            Assert.AreEqual(null, result[0]);
         }
 
         [TestMethod]
@@ -120,7 +127,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 SuspendOption = enSuspendOption.SuspendForDays,
                 PersistValue = "15",
                 AllowManualResumption = true,
-                Result = "[[result]]",
+                Response = "[[result]]",
             };
             var stateItems = suspendExecutionActivity.GetState();
 
@@ -148,7 +155,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 },
                 new StateVariable
                 {
-                    Name = "Result",
+                    Name = "Response",
                     Value = "[[result]]",
                     Type = StateVariable.StateType.Output
                 },
@@ -168,6 +175,65 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
             }
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_Execute_SuspendForDays_Success()
+        {
+            //------------Setup for test--------------------------
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.ServiceName).Returns(workflowName);
+            dataObject.Setup(o => o.ResourceID).Returns(resourceId);
+            dataObject.Setup(o => o.WorkflowInstanceId).Returns(workflowInstanceId);
+            dataObject.Setup(o => o.WebUrl).Returns(url);
+            dataObject.Setup(o => o.Environment).Returns(env);
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var dev2Activities = new List<IDev2Activity> {mockActivity.Object};
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var suspendExecutionActivity = new SuspendExecutionActivity
+            {
+                SuspendOption = enSuspendOption.SuspendForDays,
+                PersistValue = "15",
+                AllowManualResumption = true,
+                DataFunc = activityFunction,
+                Response = "[[result]]",
+                NextNodes = dev2Activities,
+            };
+
+            suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            var response = suspendExecutionActivity.Execute(dataObject.Object, 0);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(response,suspendExecutionActivity.Response);
+        }
+
+        static IExecutionEnvironment CreateExecutionEnvironment()
+        {
+            return new ExecutionEnvironment();
         }
 
         DsfActivity CreateWorkflow()

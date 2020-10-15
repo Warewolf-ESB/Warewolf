@@ -446,6 +446,7 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Driver.Persistence\Warewolf.Driver.Persistence.csproj" />
     <ProjectReference Include="..\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj">
       <Project>{86DF54BB-E37D-4559-8014-13D6030A2242}</Project>
       <Name>Warewolf.Driver.Redis</Name>
