@@ -1,7 +1,6 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,12 +20,12 @@ using Dev2.Triggers.Scheduler;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Perfcounters;
+using Dev2.Settings.Persistence;
 using Dev2.Settings.Security;
 using Dev2.Studio.Controller;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -54,14 +53,17 @@ namespace Dev2.Settings
 
         SecurityViewModel _securityViewModel;
         LogSettingsViewModel _logSettingsViewModel;
+        PersistenceSettingsViewModel _persistenceSettingsViewModel;
         IServer _currentEnvironment;
         Func<IServer, IServer> _toEnvironmentModel;
         PerfcounterViewModel _perfmonViewModel;
         string _displayName;
+        private bool _showPersistence;
+
 
         // ReSharper disable once MemberCanBeProtected.Global
         public SettingsViewModel()
-            : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow,CustomContainer.Get<IShellViewModel>().ActiveServer, null)
+            : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window) System.Windows.Application.Current.MainWindow, CustomContainer.Get<IShellViewModel>().ActiveServer, null)
         {
         }
 
@@ -71,11 +73,11 @@ namespace Dev2.Settings
             Server = server;
             Server.NetworkStateChanged += ServerNetworkStateChanged;
             Settings = new Data.Settings.Settings();
-            VerifyArgument.IsNotNull("popupController", popupController);
+            VerifyArgument.IsNotNull(nameof(popupController), popupController);
             _popupController = popupController;
-            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+            VerifyArgument.IsNotNull(nameof(asyncWorker), asyncWorker);
             _asyncWorker = asyncWorker;
-            VerifyArgument.IsNotNull("parentWindow", parentWindow);
+            VerifyArgument.IsNotNull(nameof(parentWindow), parentWindow);
             _parentWindow = parentWindow;
 
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
@@ -96,10 +98,7 @@ namespace Dev2.Settings
 
         public override string DisplayName
         {
-            get
-            {
-                return _displayName;
-            }
+            get { return _displayName; }
             set
             {
                 _displayName = value;
@@ -124,10 +123,11 @@ namespace Dev2.Settings
 
         void ServerNetworkStateChanged(INetworkStateChangedEventArgs args, IServer server)
         {
-            if(args.State == ConnectionNetworkState.Connected)
+            if (args.State == ConnectionNetworkState.Connected)
             {
                 LoadSettings();
             }
+
             if (args.State == ConnectionNetworkState.Disconnected)
             {
                 LoadSettings();
@@ -140,14 +140,11 @@ namespace Dev2.Settings
 
         public IServer CurrentEnvironment
         {
-            get
-            {
-                return _currentEnvironment;
-            }
+            get { return _currentEnvironment; }
             set
             {
                 _currentEnvironment = value;
-                if(CurrentEnvironment.IsConnected  )
+                if (CurrentEnvironment.IsConnected)
                 {
                     _currentEnvironment.AuthorizationService?.IsAuthorized(AuthorizationContext.Administrator, null);
                 }
@@ -163,10 +160,11 @@ namespace Dev2.Settings
             get { return _hasErrors; }
             set
             {
-                if(value.Equals(_hasErrors))
+                if (value.Equals(_hasErrors))
                 {
                     return;
                 }
+
                 _hasErrors = value;
                 NotifyOfPropertyChange(() => HasErrors);
                 NotifyOfPropertyChange(() => IsSavedSuccessVisible);
@@ -179,10 +177,11 @@ namespace Dev2.Settings
             get { return _errors; }
             set
             {
-                if(value == _errors)
+                if (value == _errors)
                 {
                     return;
                 }
+
                 _errors = value;
                 NotifyOfPropertyChange(() => Errors);
             }
@@ -193,10 +192,11 @@ namespace Dev2.Settings
             get { return _isSaved; }
             set
             {
-                if(value.Equals(_isSaved))
+                if (value.Equals(_isSaved))
                 {
                     return;
                 }
+
                 _isSaved = value;
                 NotifyOfPropertyChange(() => IsSaved);
                 NotifyOfPropertyChange(() => IsSavedSuccessVisible);
@@ -206,16 +206,14 @@ namespace Dev2.Settings
 
         public bool IsDirty
         {
-            get
-            {
-                return _isDirty;
-            }
+            get { return _isDirty; }
             set
             {
-                if(value.Equals(_isDirty))
+                if (value.Equals(_isDirty))
                 {
                     return;
                 }
+
                 _isDirty = value;
                 NotifyOfPropertyChange(() => IsDirty);
                 NotifyOfPropertyChange(() => IsSavedSuccessVisible);
@@ -236,10 +234,11 @@ namespace Dev2.Settings
             get { return _isLoading; }
             set
             {
-                if(value.Equals(_isLoading))
+                if (value.Equals(_isLoading))
                 {
                     return;
                 }
+
                 _isLoading = value;
                 NotifyOfPropertyChange(() => IsLoading);
             }
@@ -250,10 +249,11 @@ namespace Dev2.Settings
             get { return _showLogging; }
             set
             {
-                if(value.Equals(_showLogging))
+                if (value.Equals(_showLogging))
                 {
                     return;
                 }
+
                 _showLogging = value;
                 OnSelectionChanged();
                 NotifyOfPropertyChange(() => ShowLogging);
@@ -265,13 +265,30 @@ namespace Dev2.Settings
             get { return _showSecurity; }
             set
             {
-                if(value.Equals(_showSecurity))
+                if (value.Equals(_showSecurity))
                 {
                     return;
                 }
+
                 _showSecurity = value;
                 OnSelectionChanged();
                 NotifyOfPropertyChange(() => ShowSecurity);
+            }
+        }
+
+        public bool ShowPersistence
+        {
+            get { return _showPersistence; }
+            set
+            {
+                if (value.Equals(_showPersistence))
+                {
+                    return;
+                }
+
+                _showPersistence = value;
+                OnSelectionChanged();
+                NotifyOfPropertyChange(() => ShowPersistence);
             }
         }
 
@@ -282,10 +299,11 @@ namespace Dev2.Settings
             get { return _securityViewModel; }
             private set
             {
-                if(Equals(value, _securityViewModel))
+                if (Equals(value, _securityViewModel))
                 {
                     return;
                 }
+
                 _securityViewModel = value;
                 NotifyOfPropertyChange(() => SecurityViewModel);
             }
@@ -296,35 +314,54 @@ namespace Dev2.Settings
             get { return _logSettingsViewModel; }
             private set
             {
-                if(Equals(value, _logSettingsViewModel))
+                if (Equals(value, _logSettingsViewModel))
                 {
                     return;
                 }
+
                 _logSettingsViewModel = value;
                 NotifyOfPropertyChange(() => LogSettingsViewModel);
                 NotifyOfPropertyChange(() => HasLogSettings);
             }
         }
+
+        public PersistenceSettingsViewModel PersistenceSettingsViewModel
+        {
+            get { return _persistenceSettingsViewModel; }
+            private set
+            {
+                if (Equals(value, _persistenceSettingsViewModel))
+                {
+                    return;
+                }
+
+                _persistenceSettingsViewModel = value;
+                NotifyOfPropertyChange(() => PersistenceSettingsViewModel);
+            }
+        }
+
         public string SecurityHeader => SecurityViewModel != null && SecurityViewModel.IsDirty ? StringResources.SettingsSecurity + " *" : StringResources.SettingsSecurity;
 
         public string LogHeader => LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? StringResources.SettingsLogging + " *" : StringResources.SettingsLogging;
+        public string PersistenceHeader => _persistenceSettingsViewModel != null && _persistenceSettingsViewModel.IsDirty ? StringResources.SettingsPersistence + " *" : StringResources.SettingsPersistence;
 
         public bool HasLogSettings
         {
             get
             {
-                var hasLogSettings = LogSettingsViewModel!=null && CurrentEnvironment.IsConnected;
+                var hasLogSettings = LogSettingsViewModel != null && CurrentEnvironment.IsConnected;
                 if (!hasLogSettings)
                 {
                     ShowSecurity = true;
                 }
+
                 return hasLogSettings;
             }
         }
 
         void OnSelectionChanged([CallerMemberName] string propertyName = null)
         {
-            if(_selectionChanging)
+            if (_selectionChanging)
             {
                 return;
             }
@@ -332,18 +369,26 @@ namespace Dev2.Settings
             _selectionChanging = true;
             switch (propertyName)
             {
-                case "ShowLogging":
+                case nameof(ShowLogging):
                     ShowLogging = Settings?.Logging != null;
                     ShowSecurity = !ShowLogging;
+                    ShowPersistence= !ShowLogging;
                     break;
 
-                case "ShowSecurity":
+                case nameof(ShowSecurity):
                     ShowSecurity = true;
                     ShowLogging = !ShowSecurity;
+                    ShowPersistence= !ShowSecurity;
+                    break;
+                case nameof(ShowPersistence):
+                    ShowPersistence =  Settings?.Persistence != null;
+                    ShowSecurity =!ShowPersistence;
+                    ShowLogging = !ShowPersistence;
                     break;
                 default:
                     break;
             }
+
             _selectionChanging = false;
         }
 
@@ -352,14 +397,8 @@ namespace Dev2.Settings
 
         public Func<IServer, IServer> ToEnvironmentModel
         {
-            get
-            {
-                return _toEnvironmentModel ?? (a => a.ToEnvironmentModel());
-            }
-            set
-            {
-                _toEnvironmentModel = value;
-            }
+            get { return _toEnvironmentModel ?? (a => a.ToEnvironmentModel()); }
+            set { _toEnvironmentModel = value; }
         }
 
 
@@ -370,33 +409,25 @@ namespace Dev2.Settings
             IsDirty = false;
             IsLoading = true;
 
-            _asyncWorker.Start(() =>
-            {
-     
-                Settings =  CurrentEnvironment.IsConnected ? ReadSettings() : new Data.Settings.Settings { Security = new SecuritySettingsTO() };
-
-            }, () =>
+            _asyncWorker.Start(() => { Settings = CurrentEnvironment.IsConnected ? ReadSettings() : new Data.Settings.Settings {Security = new SecuritySettingsTO()}; }, () =>
             {
                 IsLoading = false;
                 SecurityViewModel = CreateSecurityViewModel();
                 LogSettingsViewModel = CreateLoggingViewModel();
                 PerfmonViewModel = CreatePerfmonViewModel();
-
+                PersistenceSettingsViewModel = CreatePersistenceViewModel();
                 AddPropertyChangedHandlers();
 
-                if(Settings.HasError)
+                if (Settings.HasError)
                 {
                     ShowError("Load Error", Settings.Error);
                 }
-            });            
+            });
         }
 
         public PerfcounterViewModel PerfmonViewModel
         {
-            get
-            {
-                return _perfmonViewModel;
-            }
+            get { return _perfmonViewModel; }
             set
             {
                 _perfmonViewModel = value;
@@ -419,12 +450,25 @@ namespace Dev2.Settings
 
         protected virtual LogSettingsViewModel CreateLoggingViewModel()
         {
-            if(Settings.Logging != null)
+            if (Settings.Logging != null)
             {
                 var logSettingsViewModel = new LogSettingsViewModel(Settings.Logging, CurrentEnvironment);
                 logSettingsViewModel.SetItem(logSettingsViewModel);
                 return logSettingsViewModel;
             }
+
+            return null;
+        }
+
+        protected virtual PersistenceSettingsViewModel CreatePersistenceViewModel()
+        {
+            if (Settings.Persistence != null)
+            {
+                var persistenceSettingsViewModel = new PersistenceSettingsViewModel(CurrentEnvironment);
+                persistenceSettingsViewModel.SetItem(persistenceSettingsViewModel);
+                return persistenceSettingsViewModel;
+            }
+
             return null;
         }
 
@@ -436,29 +480,43 @@ namespace Dev2.Settings
                 isDirtyProperty.AddValueChanged(LogSettingsViewModel, OnIsDirtyPropertyChanged);
                 LogSettingsViewModel.PropertyChanged += (sender, args) =>
                 {
-                    if (args.PropertyName == "IsDirty")
+                    if (args.PropertyName == nameof(IsDirty))
                     {
                         OnIsDirtyPropertyChanged(null, new EventArgs());
                     }
                 };
             }
+
             if (SecurityViewModel != null)
             {
                 isDirtyProperty.AddValueChanged(SecurityViewModel, OnIsDirtyPropertyChanged);
                 SecurityViewModel.PropertyChanged += (sender, args) =>
                 {
-                    if (args.PropertyName == "IsDirty")
+                    if (args.PropertyName == nameof(IsDirty))
                     {
                         OnIsDirtyPropertyChanged(null, new EventArgs());
                     }
                 };
             }
+
             if (PerfmonViewModel != null)
             {
                 isDirtyProperty.AddValueChanged(PerfmonViewModel, OnIsDirtyPropertyChanged);
                 PerfmonViewModel.PropertyChanged += (sender, args) =>
                 {
-                    if (args.PropertyName == "IsDirty")
+                    if (args.PropertyName == nameof(IsDirty))
+                    {
+                        OnIsDirtyPropertyChanged(null, new EventArgs());
+                    }
+                };
+            }
+
+            if (PersistenceSettingsViewModel != null)
+            {
+                isDirtyProperty.AddValueChanged(PersistenceSettingsViewModel, OnIsDirtyPropertyChanged);
+                PersistenceSettingsViewModel.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == nameof(IsDirty))
                     {
                         OnIsDirtyPropertyChanged(null, new EventArgs());
                     }
@@ -468,32 +526,42 @@ namespace Dev2.Settings
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            if (SecurityViewModel != null && LogSettingsViewModel != null)
+            if (SecurityViewModel != null && LogSettingsViewModel != null && PersistenceSettingsViewModel != null)
             {
-                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty || PerfmonViewModel.IsDirty;
+                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty || PerfmonViewModel.IsDirty || PersistenceSettingsViewModel.IsDirty;
             }
+
             NotifyOfPropertyChange(() => SecurityHeader);
             NotifyOfPropertyChange(() => LogHeader);
             NotifyOfPropertyChange(() => PerfmonHeader);
+            NotifyOfPropertyChange(() => PersistenceHeader);
             ClearErrors();
         }
 
         void ResetIsDirtyForChildren()
         {
-            if(SecurityViewModel != null)
+            if (SecurityViewModel != null)
             {
                 SecurityViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => SecurityHeader);
             }
+
             if (LogSettingsViewModel != null)
             {
                 LogSettingsViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => LogHeader);
             }
+
             if (PerfmonViewModel != null)
             {
                 PerfmonViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => PerfmonHeader);
+            }
+
+            if (PersistenceSettingsViewModel != null)
+            {
+                PersistenceSettingsViewModel.IsDirty = false;
+                NotifyOfPropertyChange(() => PersistenceHeader);
             }
         }
 
@@ -510,6 +578,7 @@ namespace Dev2.Settings
                 {
                     return false;
                 }
+
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     return SaveSettings();
@@ -531,10 +600,11 @@ namespace Dev2.Settings
 
         MessageBoxResult GetSaveResult()
         {
-            if(_popupController != null && IsDirty)
+            if (_popupController != null && IsDirty)
             {
                 return _popupController.ShowSettingsCloseConfirmation();
             }
+
             return !IsDirty ? MessageBoxResult.No : MessageBoxResult.None;
         }
 
@@ -548,9 +618,9 @@ namespace Dev2.Settings
         /// <returns></returns>
         bool SaveSettings()
         {
-            if(CurrentEnvironment.IsConnected)
+            if (CurrentEnvironment.IsConnected)
             {
-                if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
+                if (CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
                 {
                     // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
                     ClearErrors();
@@ -558,10 +628,12 @@ namespace Dev2.Settings
                     {
                         return false;
                     }
+
                     if (!ValidateDuplicateServerPermissions())
                     {
                         return false;
                     }
+
                     if (!ValidateResourcePermissions())
                     {
                         return false;
@@ -572,10 +644,17 @@ namespace Dev2.Settings
                     {
                         return false;
                     }
+
+                    if (PersistenceSettingsViewModel.IsDirty)
+                    {
+                        PersistenceSettingsViewModel.Save(Settings.Persistence);
+                    }
+
                     if (PerfmonViewModel.IsDirty)
                     {
                         PerfmonViewModel.Save(Settings.PerfCounters);
                     }
+
                     var isWritten = WriteSettings();
                     if (isWritten)
                     {
@@ -589,12 +668,15 @@ namespace Dev2.Settings
                         IsSaved = false;
                         IsDirty = true;
                     }
+
                     return IsSaved;
                 }
+
                 ShowError(StringResources.SaveErrorPrefix, StringResources.SaveSettingsPermissionsErrorMsg);
                 _popupController.ShowSaveSettingsPermissionsErrorMsg();
                 return false;
             }
+
             ShowError(StringResources.SaveErrorPrefix, StringResources.SaveServerNotReachableErrorMsg);
             _popupController.ShowSaveServerNotReachableErrorMsg();
             return false;
@@ -610,6 +692,7 @@ namespace Dev2.Settings
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -623,6 +706,7 @@ namespace Dev2.Settings
                 _popupController.ShowHasDuplicateServerPermissions();
                 return false;
             }
+
             return true;
         }
 
@@ -636,8 +720,10 @@ namespace Dev2.Settings
                 _popupController.ShowInvalidResourcePermission();
                 return false;
             }
+
             return true;
         }
+
         bool ValidateDuplicateResourcePermissions()
         {
             if (SecurityViewModel.HasDuplicateResourcePermissions())
@@ -648,32 +734,36 @@ namespace Dev2.Settings
                 _popupController.ShowHasDuplicateResourcePermissions();
                 return false;
             }
+
             return true;
         }
 
         bool WriteSettings()
         {
             var payload = CurrentEnvironment.ResourceRepository.WriteSettings(CurrentEnvironment, Settings);
-            if(payload == null)
+            if (payload == null)
             {
-                ShowError(StringResources.NetworkSettingErrorPrefix, string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "WriteSettings"));
+                ShowError(StringResources.NetworkSettingErrorPrefix, string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, nameof(WriteSettings)));
                 return false;
             }
-            if(payload.HasError)
+
+            if (payload.HasError)
             {
                 ShowError(StringResources.SaveErrorHeader, payload.Message.ToString());
                 return false;
             }
+
             return true;
         }
 
         Data.Settings.Settings ReadSettings()
         {
             var payload = CurrentEnvironment.ResourceRepository.ReadSettings(CurrentEnvironment);
-            if(payload == null)
+            if (payload == null)
             {
-                ShowError(StringResources.NetworkSettingErrorPrefix, string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "ReadSettings"));
+                ShowError(StringResources.NetworkSettingErrorPrefix, string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, nameof(ReadSettings)));
             }
+
             return payload;
         }
 
@@ -690,7 +780,6 @@ namespace Dev2.Settings
         }
 
         public string ResourceType => StringResources.SettingsTitle;
-        public string PerfmonHeader => PerfmonViewModel != null && PerfmonViewModel.IsDirty ? StringResources.SettingsPerformanceCounters +  " *" : StringResources.SettingsPerformanceCounters;
+        public string PerfmonHeader => PerfmonViewModel != null && PerfmonViewModel.IsDirty ? StringResources.SettingsPerformanceCounters + " *" : StringResources.SettingsPerformanceCounters;
     }
 }
-

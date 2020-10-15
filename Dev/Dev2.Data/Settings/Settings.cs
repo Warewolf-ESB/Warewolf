@@ -1,7 +1,6 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +10,7 @@
 
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
+using Dev2.Services.Persistence;
 using Dev2.Services.Security;
 
 namespace Dev2.Data.Settings
@@ -30,6 +30,8 @@ namespace Dev2.Data.Settings
             }
         }
         public LoggingSettingsTo Logging { get; set; }
+
+        public PersistenceSettingsTo Persistence { get; set; }
 
         public bool HasError { get; set; }
         public string Error { get; set; }

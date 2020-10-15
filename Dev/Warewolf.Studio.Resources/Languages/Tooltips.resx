@@ -929,6 +929,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="RabbitMQToolTipAutoCustomTransactionIDCorrelationID" xml:space="preserve">
     <value>Use CustomTransactionID from Header as CorrelationID of the Queue you want to consume from.</value>
   </data>
+  
   <data name="RabbitMQToolTipPrefetch" xml:space="preserve">
     <value>Provide number of processes that can run concurrently.</value>
   </data>
@@ -1189,13 +1190,10 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Redis Timeout for stored data</value>
   </data>
   <data name="ElasticsearchSourceHostNameTooltip" xml:space="preserve">
-    <value>The address of the Elasticsearch server name to connect to. </value>
+     <value>The address of the Elasticsearch server name to connect to. </value>
   </data>
   <data name="ElasticsearchSourcePortTooltip" xml:space="preserve">
     <value>The default port on which elasticsearch listens is 9200.</value>
-  </data>
-  <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
-    <value>The Elasticsearch server password</value>
   </data>
   <data name="ElasticsearchUsernameTooltip" xml:space="preserve">
     <value>The Elasticsearch server username</value>
@@ -1203,6 +1201,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ElasticsearchSearchIndexTooltip" xml:space="preserve">
     <value>The Elasticsearch server index that will be used to index the data.</value>
   </data>
+  <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
+    <value>The Elasticsearch server password</value>
+  </data>  
   <data name="ElasticsearchTestTooltip" xml:space="preserve">
     <value>Test the elasticsearch source connection</value>
   </data>
@@ -2495,6 +2496,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewEncryptToolTip" xml:space="preserve">
     <value>Encrypt the Logging Data Source in the Auditing Settings File</value>
   </data>
+
   <data name="RedisTTLToolTip" xml:space="preserve">
     <value>Time in seconds before the key expires. Default is 5 Seconds.</value>
   </data>
@@ -2566,5 +2568,33 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="WriteFileToolTipContentsAsBase64" xml:space="preserve">
     <value>When selected, it reads the content of the file as base64 format.</value>
+  </data>
+
+  <data name="PersistenceDashboardPortTooltip" xml:space="preserve">
+    <value>The default port on which Persistence listens is 5001</value>
+  </data>
+  <data name="PersistenceDashboardHostNameTooltip" xml:space="preserve">
+    <value>The persistence server name to connect to</value>
+  </data>
+  <data name="PersistenceDashboardNameTooltip" xml:space="preserve">
+    <value>The name the url will map to.</value>
+  </data>
+  <data name="PersistenceServerNameTooltip" xml:space="preserve">
+    <value>The server name the scheduled job will be mapped to.</value>
+  </data>
+  <data name="PersistenceViewSchedulerToolTip" xml:space="preserve">
+    <value>Persistence Scheduler</value>
+  </data>
+  <data name="PersistenceViewDataSourceToolTip" xml:space="preserve">
+    <value>Persistence Data Source</value>
+  </data>
+  <data name="PersistenceViewEnableToolTip" xml:space="preserve">
+    <value>Enable the Persistence Server.</value>
+  </data>
+  <data name="PersistenceViewEncryptToolTip" xml:space="preserve">
+    <value>Encrypt the Persistence Data Source in the Persistence Settings File</value>
+  </data>
+  <data name="PersistenceViewPrepareSchemaIfNecessaryToolTip" xml:space="preserve">
+    <value>Create the tables and index in the database if they dont already exist</value>
   </data>
 </root>

@@ -2618,6 +2618,87 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The persistence server name to connect to. The default is the localhost..
+        /// </summary>
+        public static string PersistenceDashboardHostNameHelp {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardHostNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name the url will map to..
+        /// </summary>
+        public static string PersistenceDashboardNameHelp {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default port on which Persistence listens is 5001..
+        /// </summary>
+        public static string PersistenceDashboardPortHelp {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardPortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server name the scheduled job will be mapped to..
+        /// </summary>
+        public static string PersistenceServerNameHelp {
+            get {
+                return ResourceManager.GetString("PersistenceServerNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Data source for the Persistence database. Sql Server is currently supported..
+        /// </summary>
+        public static string PersistenceViewAuditsDataSourceHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewAuditsDataSourceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will start the Persistence Server. Only once this is enabled will persistence occur with the Suspend Execution Tool..
+        /// </summary>
+        public static string PersistenceViewEnableHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewEnableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encrypt the Persistence Data Source in the Persistence Settings File.
+        /// </summary>
+        public static string PersistenceViewEncryptHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewEncryptHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create the tables and index in the database if they dont already exist.
+        /// </summary>
+        public static string PersistenceViewPrepareSchemaIfNecessaryHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewPrepareSchemaIfNecessaryHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Scheduler that will handle the persistence of workflow executions.
+        /// </summary>
+        public static string PersistenceViewSchedulerHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewSchedulerHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the connection string properties of the selected DLL.&lt;br&gt;	&lt;br/&gt;	Change the connection string from, say, a development DLL to a live DLL.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
         /// </summary>
         public static string PluginServiceEditSourceHelp {
