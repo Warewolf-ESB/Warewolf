@@ -4,6 +4,7 @@ Feature: Rename
 	as a Warewolf user
 	I want a tool that will rename a File or Floder at a given location
 
+@FileRenameWithOverwrite
 Scenario Outline: Rename file at location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -52,6 +53,7 @@ Scenario Outline: Rename file at location
 	| 26 | SFTP to SFTP PK | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile41.txt                                                    | dev2          | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/renamed41.txt                                               | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 	| 27 | Local to Local  | [[sourcePath]] | NULL                                                                                            | ""            | ""           | [[destPath]] | C:\renamed0.txt                                                                      | ""                | ""           | True     | [[result]] | ""        | AN           |                      |                           |
 
+@FileRenameWithoutOverwrite
 	Scenario Outline: Rename file at location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
