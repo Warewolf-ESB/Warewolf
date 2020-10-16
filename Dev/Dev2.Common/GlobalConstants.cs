@@ -539,6 +539,8 @@ where pn.nspname = 'public';
         public static string SaveReasonForDeploy { get; } = "Deploy";
         public static string HTTPNewLine { get; } = "\r\n";
         public static string QueueWorkerExe { get; } = "QueueWorker.exe";
+        public static string HangfireServerExe { get; } = "HangfireServer.exe";
+        public static string HangfireServerProcessId { get; } = "HangfireServer";
 
         public static readonly string DefaultLoggingSourceId = "{8f090202-0000-0000-0000-5598abe69001}";
         public static readonly string DropboxPathNotFoundException = "Dropbox location cannot be found";
