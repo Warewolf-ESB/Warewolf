@@ -1,9 +1,10 @@
-﻿@FileAndFolderCopy
+@FileAndFolderCopy
 Feature: Copy
 	In order to be able to Copy File or Folder 
 	as a Warewolf user
 	I want a tool that Copy File or Folder from a given location to another location
 
+@CopyFileWithoutOverwrite
 Scenario Outline: Copy file at location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -53,6 +54,7 @@ Scenario Outline: Copy file at location
 		 | 27 | [[sourcePath]] | sftp://SVRDEV.premier.local/copyfile6.txt                                                   | dev2              | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/copied51.txt                                                  | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |                           |
 		 | 28 | [[sourcePath]] | sftp://SVRDEV.premier.local/copyfile7.txt                                                   | dev2              | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/copied71.txt                                                  | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
            
+@CopyFileWithOverwrite
 Scenario Outline: Copy file at location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
