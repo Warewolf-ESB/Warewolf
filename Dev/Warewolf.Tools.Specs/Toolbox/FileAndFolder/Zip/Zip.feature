@@ -1,9 +1,10 @@
-﻿@Zip
+@Zip
 Feature: Zip
 	In order to be able to Zip File or Folder 
 	as a Warewolf user
 	I want a tool that Zip File or Folder at a given location
 
+@UnzipWithOverwrite
 Scenario Outline: Zip file at location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -53,6 +54,7 @@ Scenario Outline: Zip file at location
 		| 25 | SFTP to SFTP    | [[path]] | sftp://SVRDEV.premier.local/filetozip4.txt                                             | dev2              | Q/ulw&]  | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                               | dev2              | Q/ulw&]      | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 		| 26 | SFTP to SFTP PK | [[path]] | sftp://SVRDEV.premier.local/filetozip41.txt                                            | dev2              | Q/ulw&]  | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                               | dev2              | Q/ulw&]      | True     |                 | None            | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
+@UnzipWithoutOverwrite
 Scenario Outline: Zip file at location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
