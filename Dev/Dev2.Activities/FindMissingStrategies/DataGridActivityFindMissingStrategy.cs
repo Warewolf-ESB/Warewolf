@@ -102,6 +102,10 @@ namespace Dev2.FindMissingStrategies
             {
                 return GetDsfWebPutActivityFields(activity);
             }
+            else if (activityType == typeof(WebPutActivity))
+            {
+                return GetWebPutActivityFields(activity);
+            }
             else if (activityType == typeof(DsfWebGetActivity))
             {
                 return GetDsfWebGetActivityFields(activity);
@@ -471,6 +475,66 @@ namespace Dev2.FindMissingStrategies
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+        List<string> GetWebPutActivityFields(object activity)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            var results = new List<string>();
+            if (activity is WebPutActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.QueryString != null)
+                {
+                    results.Add(maAct.QueryString);
+                }
+                if (maAct.PutData != null)
+                {
+                    results.Add(maAct.PutData);
+                }
+                if (maAct.Headers != null)
+                {
+                    foreach (var nameValue in maAct.Headers)
+                    {
+                        results.Add(nameValue.Name);
+                        results.Add(nameValue.Value);
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if (maAct.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
+                }
+                else
+                {
+
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
+
         List<string> GetDsfWebDeleteActivityFields(object activity)
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex

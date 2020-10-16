@@ -35,7 +35,7 @@ using Warewolf.UnitTestAttributes;
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
-    public class DsfWebPuttActivityTests
+    public class WebPutActivityTests
     {
         const string _userAgent = "user-agent";
         const string _contentType = "Content-Type";
@@ -44,39 +44,39 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebPutActivity_Constructed")]
-        public void DsfWebPutActivity_Constructed_Correctly_ShouldHaveInheritDsfActivity()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Constructed_Correctly_ShouldHaveInheritDsfActivity()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var DsfWebPutActivity = new DsfWebPutActivity();
+            var DsfWebPutActivity = new WebPutActivity();
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(DsfWebPutActivity, typeof(DsfActivity));
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebPutActivity_Constructor")]
-        public void DsfWebPutActivity_Constructor_Correctly_ShouldSetTypeDisplayName()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Constructor_Correctly_ShouldSetTypeDisplayName()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var DsfWebPutActivity = new DsfWebPutActivity();
+            var DsfWebPutActivity = new WebPutActivity();
             //------------Assert Results-------------------------
             Assert.AreEqual("PUT Web Method", DsfWebPutActivity.DisplayName);
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebPutActivity_Constructed")]
-        public void DsfWebPutActivity_Constructed_Correctly_ShouldHaveCorrectProperties()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Constructed_Correctly_ShouldHaveCorrectProperties()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var attributes = typeof(DsfWebPutActivity).GetCustomAttributes(false);
+            var attributes = typeof(WebPutActivity).GetCustomAttributes(false);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, attributes.Length);
             var toolDescriptor = attributes[0] as ToolDescriptorInfo;
@@ -86,9 +86,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebPutActivity_Execute")]
-        public void DsfWebPutActivity_Execute_WithNoOutputDescription_ShouldAddError()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Execute_WithNoOutputDescription_ShouldAddError()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity
+            var DsfWebPutActivity = new TestWebPutActivity
             {
                 ResourceCatalog = new Mock<IResourceCatalog>().Object
             };
@@ -128,9 +128,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebPutActivity_Execute")]
-        public void DsfWebPutActivity_Execute_WithValidWebResponse_ShouldSetVariables()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Execute_WithValidWebResponse_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -145,7 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity
+            var DsfWebPutActivity = new TestWebPutActivity
             {
                 ResourceCatalog = new Mock<IResourceCatalog>().Object
             };
@@ -179,9 +179,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebPutActivity_Execute")]
-        public void DsfWebPutActivity_Execute_WithValidTextResponse_ShouldSetVariables()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Execute_WithValidTextResponse_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -196,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity
+            var DsfWebPutActivity = new TestWebPutActivity
             {
                 ResourceCatalog = new Mock<IResourceCatalog>().Object
             };
@@ -227,12 +227,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
             }
         }
-        
+
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebPutActivity_Execute")]
-        public void DsfWebPutActivity_Execute_WithInValidWebResponse_ShouldError()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Execute_WithInValidWebResponse_ShouldError()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -256,7 +256,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity
+            var DsfWebPutActivity = new TestWebPutActivity
             {
                 ResourceCatalog = new Mock<IResourceCatalog>().Object
             };
@@ -288,9 +288,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebPutActivity_Execute")]
-        public void DsfWebPutActivity_Execute_WithValidXmlEscaped_ShouldSetVariables()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Execute_WithValidXmlEscaped_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response = "<CurrentWeather>" +
@@ -307,7 +307,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity
+            var DsfWebPutActivity = new TestWebPutActivity
             {
                 ResourceCatalog = new Mock<IResourceCatalog>().Object
             };
@@ -341,9 +341,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebPutActivity_Execute")]
-        public void DsfWebPutActivity_Execute_WithInputVariables_ShouldEvalVariablesBeforeExecutingWebRequest()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Execute_WithInputVariables_ShouldEvalVariablesBeforeExecutingWebRequest()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -359,7 +359,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             environment.Assign("[[Post]]", "Some data", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity
+            var DsfWebPutActivity = new TestWebPutActivity
             {
                 Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
@@ -394,11 +394,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void Constructer_GivenHasInstance_ShouldHaveType()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Constructer_GivenHasInstance_ShouldHaveType()
         {
             //---------------Set up test pack-------------------
-            var DsfWebPutActivity = new TestDsfWebPutActivity();
+            var DsfWebPutActivity = new TestWebPutActivity();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(DsfWebPutActivity);
             //---------------Execute Test ----------------------
@@ -409,11 +410,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetFindMissingType_GivenWebPostActivity_ShouldReturnMissingTypeDataGridAcitvity()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_GetFindMissingType_GivenWebPostActivity_ShouldReturnMissingTypeDataGridAcitvity()
         {
             //---------------Set up test pack-------------------
-            var DsfWebPutActivity = new TestDsfWebPutActivity();
+            var DsfWebPutActivity = new TestWebPutActivity();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(DsfWebPutActivity.Type);
             Assert.IsNotNull(DsfWebPutActivity);
@@ -424,11 +426,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetDebugInputs_GivenEnvironmentIsNull_ShouldReturnZeroDebugInputs()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_GetDebugInputs_GivenEnvironmentIsNull_ShouldReturnZeroDebugInputs()
         {
             //---------------Set up test pack-------------------
-            var DsfWebPutActivity = new TestDsfWebPutActivity();
+            var DsfWebPutActivity = new TestWebPutActivity();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var debugInputs = DsfWebPutActivity.GetDebugInputs(null, 0);
@@ -438,8 +441,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetDebugInputs_GivenMockEnvironment_ShouldAddDebugInputItems()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_GetDebugInputs_GivenMockEnvironment_ShouldAddDebugInputItems()
         {
             //---------------Set up test pack-------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -455,7 +459,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             environment.Assign("[[Post]]", "Some data", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity
+            var DsfWebPutActivity = new TestWebPutActivity
             {
                 Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
@@ -489,11 +493,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateClient_GivenNoHeaders_ShouldHaveTwoHeaders()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_CreateClient_GivenNoHeaders_ShouldHaveTwoHeaders()
         {
             //---------------Set up test pack-------------------
-            var DsfWebPutActivity = new TestDsfWebPutActivity
+            var DsfWebPutActivity = new TestWebPutActivity
             {
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PutData = "This is post:[[Post]]"
@@ -510,8 +515,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CleateClient_GivenNoHeaders_ShouldGlobalConstantsUserAgent()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_CleateClient_GivenNoHeaders_ShouldGlobalConstantsUserAgent()
         {
             //---------------Set up test pack-------------------
             var deleteActivityFromBase = CreateWebPutActivityFromBase();
@@ -527,8 +533,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateClient_GivenWebSourceAuthenticationTypeIsUser_ShouldSetWebClientPasswordAndUserName()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_CreateClient_GivenWebSourceAuthenticationTypeIsUser_ShouldSetWebClientPasswordAndUserName()
         {
             //---------------Set up test pack-------------------
             var deleteActivityFromBase = CreateWebPutActivityFromBase();
@@ -546,8 +553,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateClient_GivenAuthenticationTypeIsNotUser_ShouldNotSetCredentials()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_CreateClient_GivenAuthenticationTypeIsNotUser_ShouldNotSetCredentials()
         {
             //---------------Set up test pack-------------------
             var dsfWebPostActivity = CreateWebPutActivityFromBase();
@@ -562,8 +570,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateClient_GivenHeaders_ShouldHaveHeadersAdded()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_CreateClient_GivenHeaders_ShouldHaveHeadersAdded()
         {
             //---------------Set up test pack-------------------
             var deleteActivityFromBase = CreateWebPutActivityFromBase();
@@ -586,13 +595,15 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestMethod]
         [Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPutActivity_Execute")]
-        public void DsfWebPutActivity_Execute_ErrorResponse_ShouldSetVariables()
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Execute_ErrorResponse_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Message\":\"Error\"}";
-            var dsfWebPutActivity = new DsfWebPutActivity();
-            dsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            var dsfWebPutActivity = new WebPutActivity
+            {
+                ResourceID = InArgument<Guid>.FromValue(Guid.Empty)
+            };
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var webSource = new WebSource
             {
@@ -611,8 +622,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             dsfWebPutActivity.SourceId = Guid.Empty;
             dsfWebPutActivity.Headers = new List<INameValue>();
-            var dataObject = new DsfDataObject("", Guid.NewGuid());
-            dataObject.EsbChannel = new MockEsb();
+            var dataObject = new DsfDataObject("", Guid.NewGuid())
+            {
+                EsbChannel = new MockEsb()
+            };
             //------------Execute Test---------------------------
             dsfWebPutActivity.Execute(dataObject, 0);
             //------------Assert Results-------------------------
@@ -622,8 +635,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfWebPutActivity))]
-        public void DsfWebPutActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()
         {
             //-----------------------Arrange-------------------------
             const string response = "{\"Message\":\"TEST Error\"}";
@@ -640,7 +653,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-                var dsfWebGetActivity = new TestDsfWebPutActivity
+                var dsfWebGetActivity = new TestWebPutActivity
                 {
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
@@ -657,20 +670,20 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             }
         }
 
-        static TestDsfWebPutActivity CreateWebPutActivityFromBase()
+        static TestWebPutActivity CreateWebPutActivityFromBase()
         {
             return
-                new TestDsfWebPutActivity();
+                new TestWebPutActivity();
         }
     }
 
-    public class TestDsfWebPutActivity : DsfWebPutActivity
+    public class TestWebPutActivity : WebPutActivity
     {
         public string HasErrorMessage { get; set; }
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData, bool isPutDataBase64)
+        protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData, bool isPutDataBase64 = false)
         {
             Head = head;
             QueryRes = query;
