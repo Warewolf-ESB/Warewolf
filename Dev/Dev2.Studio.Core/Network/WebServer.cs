@@ -66,7 +66,7 @@ namespace Dev2.Studio.Core.Network
             var serDescription = JsonConvert.SerializeObject(description);
             var postData = "{" + string.Format(PayloadFormat, headerVal, serDescription) + "}";
             //make sure to use TLS 1.2 first before trying other version
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.KeepAlive = false;
             request.ProtocolVersion = HttpVersion.Version10;
