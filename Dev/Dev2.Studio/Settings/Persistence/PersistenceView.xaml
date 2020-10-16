@@ -22,21 +22,17 @@
 
     <Grid Margin="{StaticResource ElementBorderTop}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="27*" />
-            <RowDefinition Height="27*" />
-            <RowDefinition Height="46*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0"
                       HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Auto">
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="0,0,0,10">
             <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
@@ -53,9 +49,16 @@
                                 Width="{Binding ElementName=PersistenceDataSourcesTextBlock, Path=ActualWidth}" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="SchedulerTextBlock" Text="Scheduler" Grid.Column="0" />
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="SchedulerTextBlock" Text="Scheduler" Grid.Column="0" Grid.Row="0" />
                         <ComboBox x:Name="PersistenceSchedulersComboBox"
                                   Grid.Column="1"
+                                  Grid.Row="0"
                                   SelectedItem="{Binding SelectedPersistenceScheduler, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   ToolTip="{x:Static languages:Tooltips.PersistenceViewSchedulerToolTip}"
                                   ItemsSource="{Binding PersistenceSchedulers}">
@@ -65,17 +68,12 @@
                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                             </i:Interaction.Behaviors>
                         </ComboBox>
-                    </Grid>
-                    <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition
-                                Width="{Binding ElementName=PersistenceDataSourcesTextBlock, Path=ActualWidth}" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="ServerTextBlock" Text="Server" Grid.Column="0" />
-                        <TextBox x:Name="ServerTextbox"
+
+                        <TextBlock x:Name="ServerTextBlock" Text="Server" Grid.Column="0" Grid.Row="1" Margin="{StaticResource ControlBorderTop}" />
+                        <TextBox x:Name="ServerTextBox"
                                  Grid.Column="1"
-                                 Margin="{StaticResource ElementBorderTop}"
+                                 Grid.Row="1"
+                                 Margin="{StaticResource ControlBorderTop}"
                                  Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}"
                                  ToolTip="{x:Static languages:Tooltips.PersistenceServerNameTooltip}"
                                  Focusable="True">
@@ -84,15 +82,12 @@
                                                  DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
                         </TextBox>
-                    </Grid>
-                    <Grid Grid.Row="3" Margin="{StaticResource ControlBorderTop}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="PersistenceDataSourcesTextBlock" Text="Data Source" Grid.Column="0" />
+
+                        <TextBlock x:Name="PersistenceDataSourcesTextBlock" Text="Data Source" Grid.Column="0" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" />
                         <ComboBox x:Name="PersistenceDataSourcesComboBox"
                                   Grid.Column="1"
+                                  Grid.Row="2"
+                                  Margin="{StaticResource ControlBorderTop}"
                                   DisplayMemberPath="ResourceName"
                                   SelectedItem="{Binding SelectedPersistenceDataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   ToolTip="{x:Static languages:Tooltips.PersistenceViewDataSourceToolTip}"
@@ -103,52 +98,34 @@
                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                             </i:Interaction.Behaviors>
                         </ComboBox>
-                    </Grid>
-                    <Grid Grid.Row="4" Margin="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition
-                                Width="{Binding ElementName=PersistenceDataSourcesTextBlock, Path=ActualWidth}" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Row="0"
-                                  Grid.Column="1"
-                                  Content="Encrypt"
-                                  Margin="-6,0,0,0"
-                                  IsChecked="{Binding EncryptDataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ToolTip="{x:Static languages:Tooltips.PersistenceViewEncryptToolTip}">
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceViewEncryptHelpText}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                            </i:Interaction.Behaviors>
-                        </CheckBox>
-                        <CheckBox Grid.Row="0"
-                                  Grid.Column="2"
-                                  Content="Prepare Schema If Necessary"
-                                  Margin="-6,0,0,0"
-                                  IsChecked="{Binding PrepareSchemaIfNecessary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ToolTip="{x:Static languages:Tooltips.PersistenceViewPrepareSchemaIfNecessaryToolTip}">
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceViewPrepareSchemaIfNecessaryHelpText}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                            </i:Interaction.Behaviors>
-                        </CheckBox>
-                    </Grid>
-                    <Grid Grid.Row="5" Margin="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Row="0"
-                                  Grid.Column="0"
-                                  Content="Enable Server"
-                                  Margin="-6,0,0,0"
-                                  IsChecked="{Binding Enable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ToolTip="{x:Static languages:Tooltips.PersistenceViewEnableToolTip}">
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceViewEnableHelpText}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                            </i:Interaction.Behaviors>
-                        </CheckBox>
+
+                        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+                            <CheckBox Content="Encrypt"
+                                      Margin="-6,0,0,0"
+                                      IsChecked="{Binding EncryptDataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ToolTip="{x:Static languages:Tooltips.PersistenceViewEncryptToolTip}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceViewEncryptHelpText}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
+                            <CheckBox Content="Prepare Schema If Necessary"
+                                      IsChecked="{Binding PrepareSchemaIfNecessary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ToolTip="{x:Static languages:Tooltips.PersistenceViewPrepareSchemaIfNecessaryToolTip}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceViewPrepareSchemaIfNecessaryHelpText}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
+                            <CheckBox Content="Enable Server"
+                                      IsChecked="{Binding Enable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ToolTip="{x:Static languages:Tooltips.PersistenceViewEnableToolTip}">
+                                <i:Interaction.Behaviors>
+                                    <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceViewEnableHelpText}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </StackPanel>
@@ -173,7 +150,7 @@
                     </StackPanel>
                     <Grid Grid.Row="1" Margin="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="{Binding ElementName=PersistenceDataSourcesTextBlock, Path=ActualWidth}" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Host Name"
@@ -198,7 +175,7 @@
                                 </i:Interaction.Behaviors>
                             </TextBox>
                             <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="/" />
-                            <TextBox x:Name="DasboardNameTextbox"
+                            <TextBox x:Name="DashboardNameTextBox"
                                      Grid.Column="2"
                                      MinWidth="500"
                                      Margin="{StaticResource ElementBorderTop}"
@@ -211,7 +188,7 @@
                                 </i:Interaction.Behaviors>
                             </TextBox>
                             <TextBlock Grid.Column="3" HorizontalAlignment="Center" Text=":" />
-                            <TextBox x:Name="DasboardPortTextbox"
+                            <TextBox x:Name="DashboardPortTextBox"
                                      Grid.Column="4"
                                      MinWidth="35"
                                      Margin="{StaticResource ElementBorderTop}"

@@ -66,23 +66,23 @@
                     <TabItem Style="{StaticResource TabItemStyle}">
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal" Cursor="Hand">
-                                <fa:FontAwesome Icon="PauseCircle" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
-                                <TextBlock FontSize="15" Text="{Binding PersistenceHeader}"/>
-                            </StackPanel>
-                        </TabItem.Header>
-                        <TabItem.Content>
-                            <StaticResource ResourceKey="PersistenceSettingsView" />
-                        </TabItem.Content>
-                    </TabItem>
-                    <TabItem Style="{StaticResource TabItemStyle}">
-                        <TabItem.Header>
-                            <StackPanel Orientation="Horizontal" Cursor="Hand">
                                 <fa:FontAwesome Icon="Tachometer" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
                                 <TextBlock FontSize="15" Text="{Binding PerfmonHeader}"/>
                             </StackPanel>
                         </TabItem.Header>
                         <TabItem.Content>
                             <StaticResource ResourceKey="PerfMonView" />
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                <fa:FontAwesome Icon="PauseCircle" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <TextBlock FontSize="15" Text="{Binding PersistenceHeader}"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <StaticResource ResourceKey="PersistenceSettingsView" />
                         </TabItem.Content>
                     </TabItem>
                 </TabControl>
