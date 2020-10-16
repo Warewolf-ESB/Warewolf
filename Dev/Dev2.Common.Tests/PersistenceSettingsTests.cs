@@ -169,8 +169,8 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(PersistenceSettings))]
-        public void PersistenceSettings_Clone_Success()
+        [TestCategory(nameof(PersistenceSettingsData))]
+        public void PersistenceSettingsData_Clone_Success()
         {
             var data1 = new PersistenceSettingsData
             {
@@ -198,6 +198,28 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(data1.Equals(data2));
             data1.PersistenceDataSource.Payload = "foo2";
             Assert.IsFalse(data1.Equals(data2));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceSettingsData))]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void PersistenceSettingsData_Clone_Failure()
+        {
+            var data1 = new PersistenceSettingsData
+            {
+                PersistenceScheduler = "Hangfire",
+                Enable = true,
+                PersistenceDataSource = null,
+                EncryptDataSource = true,
+                DashboardHostname = "DashboardHostname",
+                DashboardName = "Dashboardname",
+                DashboardPort = "5001",
+                PrepareSchemaIfNecessary = true,
+                ServerName = "servername"
+            };
+
+            data1.Clone();
         }
     }
 }
