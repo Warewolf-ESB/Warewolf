@@ -97,6 +97,7 @@
     <Compile Include="ActivityComparerTests\PathOperations\FileReadWithBase64ComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\PublishRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\WebGetActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\DsfWebPutActivityComparerTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
@@ -171,7 +172,7 @@
     <Compile Include="ActivityComparerTests\WebTools\DsfWebGetActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebDeleteActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebPostActivityComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\WebTools\DsfWebPutActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\WebPutActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\XPath\DsfXPathActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointUpdateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMqActivityComparerTests.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
+    <Compile Include="ActivityTests\Web\WebPutActivityTests.cs" />
     <Compile Include="ActivityTests\RecordsetLengthTestNullhandler.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />
     <Compile Include="ActivityTests\DataSplitActivityTest.cs" />

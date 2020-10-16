@@ -1,5 +1,4 @@
-﻿#pragma warning disable
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -17,6 +16,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
@@ -29,16 +29,18 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    [Obsolete("DsfWebPutActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPutActivity.")]
-    public class DsfWebPutActivity : DsfWebActivityBase,IEquatable<DsfWebPutActivity>
+    [ToolDescriptorInfo("WebMethods", "PUT", ToolType.Native, "6C5F6D7E-4B42-4874-8197-DBE86D4A9F2D", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Put")]
+    public class WebPutActivity : DsfWebActivityBase,IEquatable<WebPutActivity>
     {
-        public DsfWebPutActivity()
+        public WebPutActivity()
             : base(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put, "PUT Web Method", "PUT Web Method"))
         {
         }
-
-        public string PutData { get; set; }
         
+        public string PutData { get; set; }
+
+        public bool IsPutDataBase64 { get; set; }
+
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (env == null)
@@ -62,11 +64,18 @@ namespace Dev2.Activities
             var (head, query, putData) = ConfigureHttp(dataObject, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebRequest(head, query, url, putData);
+            var webRequestResult = PerformWebRequest(head, query, url, putData, IsPutDataBase64);
 
             tmpErrors.MergeErrors(_errorsTo);
 
-            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+            ResponseManager = new ResponseManager 
+            { 
+                OutputDescription = OutputDescription, 
+                Outputs = Outputs, 
+                IsObject = IsObject, 
+                ObjectName = ObjectName 
+            };
+
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
 
@@ -97,7 +106,7 @@ namespace Dev2.Activities
             if (source.AuthenticationType == AuthenticationType.User)
             {
                 var byteArray = Encoding.ASCII.GetBytes(String.Format("{0}:{1}", source.UserName, source.Password));
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", byteArray.ToBase64String());
             }
 
             if (head != null)
@@ -112,7 +121,7 @@ namespace Dev2.Activities
             var address = source.Address;
             if (!string.IsNullOrEmpty(query))
             {
-                address = address + query;
+                address += query;
             }
             try
             {
@@ -129,9 +138,9 @@ namespace Dev2.Activities
             return httpClient;
         }
         
-        public bool Equals(DsfWebPutActivity other)
+        public bool Equals(WebPutActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -142,12 +151,13 @@ namespace Dev2.Activities
             }
 
             return base.Equals(other) 
-                && string.Equals(PutData, other.PutData);
+                && string.Equals(PutData, other.PutData)
+                && IsPutDataBase64 == other.IsPutDataBase64;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -162,14 +172,17 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((DsfWebPutActivity) obj);
+            return Equals((WebPutActivity) obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (base.GetHashCode() * 397) ^ (PutData != null ? PutData.GetHashCode() : 0);
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (PutData != null ? PutData.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (IsPutDataBase64.GetHashCode());
+                return hashCode;
             }
         }
     }

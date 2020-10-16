@@ -194,6 +194,7 @@ namespace Dev2
                 { typeof(DsfWebPostActivity), typeof(WebServicePostViewModel) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteViewModel) },
                 { typeof(DsfWebPutActivity), typeof(WebServicePutViewModel) },
+                { typeof(WebPutActivity), typeof(WebServicePutViewModel) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadViewModel) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadViewModel) },
                 { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteViewModel) },
