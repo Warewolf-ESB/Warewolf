@@ -1016,6 +1016,98 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PopupController))]
+        public void PopupController_ShowPersistenceSettingsChanged_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var expectedDescription = "You are about to make changes that will affect suspended executions." + Environment.NewLine
+                + "In doing so, you will need to manually restart the persistence server for the changes to take effect." + Environment.NewLine
+                + "Would you like to continue to save the changes? " + Environment.NewLine +
+                "-----------------------------------------------------------------" +
+                Environment.NewLine +
+                "Yes - Save changes." + Environment.NewLine +
+                "No - Discard your changes." + Environment.NewLine +
+                "Cancel - Returns you to persistence settings.";
+            var imageType = MessageBoxImage.Information;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    imageType = img;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            //------------Execute Test---------------------------
+            popupController.ShowPersistenceSettingsChanged();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.YesNoCancel, buttons);
+            Assert.AreEqual("Persistence settings Has Changes", header);
+            Assert.AreEqual(expectedDescription, description);
+            Assert.AreEqual(MessageBoxImage.Information, imageType);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PopupController))]
+        public void PopupController_ShowPersistenceSourceChange_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var expectedDescription = "You are about to make changes to the source assigned to persist executions." + Environment.NewLine
+                + "In doing so, you will need to manually restart the persistence server for the changes to take effect." + Environment.NewLine
+                + "Would you like to continue to save the changes? " + Environment.NewLine +
+                "-----------------------------------------------------------------" +
+                Environment.NewLine +
+                "Yes - Save changes." + Environment.NewLine +
+                "No - Discard your changes." + Environment.NewLine +
+                $"Cancel - Returns you to persistence settings.";
+            var imageType = MessageBoxImage.Information;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    imageType = img;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            //------------Execute Test---------------------------
+            popupController.ShowPersistenceSourceChange();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.YesNoCancel, buttons);
+            Assert.AreEqual("Persistence source update", header);
+            Assert.AreEqual(expectedDescription, description);
+            Assert.AreEqual(MessageBoxImage.Information, imageType);
+        }
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("PopupController_ShowNotConnected")]
         public void PopupController_ShowNotConnected_SetProperties_AllPropertiesDisplayed()

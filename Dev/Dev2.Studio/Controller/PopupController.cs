@@ -332,7 +332,7 @@ namespace Dev2.Studio.Controller
                                                                                                      "Yes - Save changes." + Environment.NewLine +
                                                                                                      "No - Discard your changes." + Environment.NewLine +
                                                                                                      $"Cancel - Returns you to persistence settings.";
-            AssignCommonValues($"Persistence settings Has Changes", description, MessageBoxButton.YesNoCancel);
+            AssignCommonValues($"Persistence source update", description, MessageBoxButton.YesNoCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
