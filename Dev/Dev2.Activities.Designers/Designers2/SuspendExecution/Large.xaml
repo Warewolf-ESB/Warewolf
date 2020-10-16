@@ -111,11 +111,11 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="Result" Margin="{StaticResource ControlBorderRight}" />
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="SuspensionID" Margin="{StaticResource ControlBorderRight}" />
             <ui:IntellisenseTextBox Grid.Column="1"
                                     Grid.Row="0"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    DefaultText="[[Result]]"
+                                    DefaultText="[[SuspensionID]]"
                                     AcceptsReturn="True"
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False"
