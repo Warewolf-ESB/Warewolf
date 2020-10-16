@@ -1,4 +1,4 @@
-﻿@Unzip
+@Unzip
 Feature: Unzip
 	In order to be able to Unzip File or Folder 
 	as a Warewolf user
@@ -52,8 +52,7 @@ Scenario Outline: Unzip file at location
 	| 25 | SFTP to SFTP    | [[path]] | sftp://SVRDEV.premier.local/test5.zip                                                    | dev2              | Q/ulw&]      | [[path1]]   | sftp://SVRDEV.premier.local/ZIP6                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 	| 26 | SFTP to SFTP PK | [[path]] | sftp://SVRDEV.premier.local/test51.zip                                                   | dev2              | Q/ulw&]      | [[path1]]   | sftp://SVRDEV.premier.local/ZIP61                                                   | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           | C:\Temp\key.opk      | C:\Temp\key.opk           |
 
-
-
+@UnzipValidation
 Scenario Outline: Unzip file validation
     Given I have a variable "[[a]]" with a value "<Val1>"
 	Given I have a variable "[[b]]" with a value "<Val2>"
