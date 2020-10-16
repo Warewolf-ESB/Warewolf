@@ -1,9 +1,10 @@
-﻿@FileAndFolderMove
+@FileAndFolderMove
 Feature: Move
 	In order to be able to Move a File or Folder 
 	as a Warewolf user
 	I want a tool that will Move File(s) or Folder(s) from a given location to another location
 	
+@FileMoveWithOverwrite
 Scenario Outline: Move file at location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -55,6 +56,7 @@ Scenario Outline: Move file at location
 	   | 29 | SFTP to FTPS PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile31.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt                            | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
 	   | 30 | SFTP to SFTP PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile41.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/moved41.txt                                                   | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
+@FileMoveWithoutOverwrite
 Scenario Outline: Move file at location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
