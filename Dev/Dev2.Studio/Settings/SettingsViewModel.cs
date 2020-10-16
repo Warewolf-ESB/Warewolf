@@ -98,7 +98,7 @@ namespace Dev2.Settings
 
         public override string DisplayName
         {
-            get { return _displayName; }
+            get => _displayName;
             set
             {
                 _displayName = value;
@@ -140,7 +140,7 @@ namespace Dev2.Settings
 
         public IServer CurrentEnvironment
         {
-            get { return _currentEnvironment; }
+            get => _currentEnvironment;
             set
             {
                 _currentEnvironment = value;
@@ -157,7 +157,7 @@ namespace Dev2.Settings
 
         public bool HasErrors
         {
-            get { return _hasErrors; }
+            get => _hasErrors;
             set
             {
                 if (value.Equals(_hasErrors))
@@ -174,7 +174,7 @@ namespace Dev2.Settings
 
         public string Errors
         {
-            get { return _errors; }
+            get => _errors;
             set
             {
                 if (value == _errors)
@@ -189,7 +189,7 @@ namespace Dev2.Settings
 
         public bool IsSaved
         {
-            get { return _isSaved; }
+            get => _isSaved;
             set
             {
                 if (value.Equals(_isSaved))
@@ -206,7 +206,7 @@ namespace Dev2.Settings
 
         public bool IsDirty
         {
-            get { return _isDirty; }
+            get => _isDirty;
             set
             {
                 if (value.Equals(_isDirty))
@@ -231,7 +231,7 @@ namespace Dev2.Settings
 
         public bool IsLoading
         {
-            get { return _isLoading; }
+            get => _isLoading;
             set
             {
                 if (value.Equals(_isLoading))
@@ -246,7 +246,7 @@ namespace Dev2.Settings
 
         public bool ShowLogging
         {
-            get { return _showLogging; }
+            get => _showLogging;
             set
             {
                 if (value.Equals(_showLogging))
@@ -262,7 +262,7 @@ namespace Dev2.Settings
 
         public bool ShowSecurity
         {
-            get { return _showSecurity; }
+            get => _showSecurity;
             set
             {
                 if (value.Equals(_showSecurity))
@@ -278,7 +278,7 @@ namespace Dev2.Settings
 
         public bool ShowPersistence
         {
-            get { return _showPersistence; }
+            get => _showPersistence;
             set
             {
                 if (value.Equals(_showPersistence))
@@ -296,7 +296,7 @@ namespace Dev2.Settings
 
         public SecurityViewModel SecurityViewModel
         {
-            get { return _securityViewModel; }
+            get => _securityViewModel;
             private set
             {
                 if (Equals(value, _securityViewModel))
@@ -311,7 +311,7 @@ namespace Dev2.Settings
 
         public LogSettingsViewModel LogSettingsViewModel
         {
-            get { return _logSettingsViewModel; }
+            get => _logSettingsViewModel;
             private set
             {
                 if (Equals(value, _logSettingsViewModel))
@@ -327,7 +327,7 @@ namespace Dev2.Settings
 
         public PersistenceSettingsViewModel PersistenceSettingsViewModel
         {
-            get { return _persistenceSettingsViewModel; }
+            get => _persistenceSettingsViewModel;
             private set
             {
                 if (Equals(value, _persistenceSettingsViewModel))
@@ -427,7 +427,7 @@ namespace Dev2.Settings
 
         public PerfcounterViewModel PerfmonViewModel
         {
-            get { return _perfmonViewModel; }
+            get => _perfmonViewModel;
             set
             {
                 _perfmonViewModel = value;
