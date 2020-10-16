@@ -157,6 +157,7 @@
     <Compile Include="Services\FetchTriggersForDeployTests.cs" />
     <Compile Include="Services\GetDependanciesOnListTests.cs" />
     <Compile Include="Services\GetPersistenceSettingsTests.cs" />
+    <Compile Include="Services\PersistenceSettingsReadTests.cs" />
     <Compile Include="Services\SaveAuditingSettingsTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\FetchResourceDefinitionTests.cs" />
