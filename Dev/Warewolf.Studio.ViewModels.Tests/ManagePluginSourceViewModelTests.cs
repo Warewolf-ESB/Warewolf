@@ -164,7 +164,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(130)]
         public void TestChooseFileSystemDLLCommandCanExecuteDllChooserIsNotNull()
         {
             //arrange
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(220)]
         public void TestChooseGACDLLCommandCanExecuteDllChooserIsNotNull()
         {
             //arrange
