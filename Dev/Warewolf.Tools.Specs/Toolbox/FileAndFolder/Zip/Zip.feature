@@ -1,4 +1,3 @@
-@Zip
 Feature: Zip
 	In order to be able to Zip File or Folder 
 	as a Warewolf user
@@ -104,7 +103,7 @@ Scenario Outline: Zip file at location with overwrite disabled
 		| 25 | SFTP to SFTP    | [[path]] | sftp://SVRDEV.premier.local/filetozip4.txt                                             | dev2              | Q/ulw&]  | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                               | dev2              | Q/ulw&]      | False    |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 		| 26 | SFTP to SFTP PK | [[path]] | sftp://SVRDEV.premier.local/filetozip41.txt                                            | dev2              | Q/ulw&]  | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                               | dev2              | Q/ulw&]      | False    |                 | None            | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
-
+@Zip
 Scenario Outline: Zip file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -127,6 +126,7 @@ Scenario Outline: Zip file at location Null
 		| 5  | FTPS to Local | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip0.txt                  |          | Dev2@dmin123 | [[path1]]   | c:\My New3.zip      | ""                | ""           | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
 		| 6  | SFTP to Local | [[path]] | sftp://SVRDEV.premier.local/filetozip0.txt                               | dev2     | Q/ulw&]  | [[path1]]   | c:\My New4.zip      | ""                | ""           | True     |                 | None            | [[result]] | Error  | NO           |                      |                           |
 		
+@Zip
 Scenario Outline: Zip file at location is compressed at ratio
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
