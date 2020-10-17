@@ -1,4 +1,3 @@
-@FileAndFolderRename
 Feature: Rename
 	In order to be able to Rename File or Folder 
 	as a Warewolf user
@@ -102,6 +101,7 @@ Scenario Outline: Rename file at location
 	| 26 | SFTP to SFTP PK | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile41.txt                                               | dev2              | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed41.txt                                               | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 	| 27 | Local to Local  | [[sourcePath]] | NULL                                                                                    | ""                | ""       | [[destPath]] | C:\renamed0.txt                                                                      | ""                | ""           | False    | [[result]] | ""        | AN           |                      |                           |
 
+@FileAndFolderRename
 Scenario Outline: Rename file validation
     Given I have a variable "[[a]]" with a value "<Val1>"
 	Given I have a variable "[[b]]" with a value "<Val2>"
@@ -207,6 +207,7 @@ Scenario Outline: Rename file validation
 		| 80 | [[sourcePath]]                 | ""                                                            | ""                                      | C:\renamefile77.txt | ""                    | ""       | [[destPath]]                                               | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed77.txt                            | Administrator | Dev2@dmin123     | True     | [[rec"()".a]]          | ""        | AN           | True             | Result - Recordset name [[rec"()"]] contains invalid character(s)                         | 1.Result - Recordset name [[rec"()"]] contains invalid character(s)                   |
 		| 81 | [[sourcePath]]                 | ""                                                            | ""                                      | C:\renamefile78.txt | ""                    | ""       | [[destPath]]                                               | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed78.txt                            | Administrator | Dev2@dmin123     | True     | [[rec([[[[b]]]]).a]]   | ""        | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                              | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                        |
 	
+@FileAndFolderRename
 Scenario Outline: Rename file at location with invalid directories
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
