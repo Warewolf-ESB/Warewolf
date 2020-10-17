@@ -275,23 +275,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("ServerVersion"));
         }
 
-//        [TestMethod]
-        [Timeout(100)]
-//        public void TestServerInformationalVersion()
-//        {
-//            //arrange
-//            var expectedValue = "someResourceName";
-//            _changedProperties.Clear();
-//
-//            //act
-//            _target.ServerInformationalVersion = expectedValue;
-//            var value = _target.ServerInformationalVersion;
-//
-//            //asert
-//            Assert.AreEqual(expectedValue, value);
-//            Assert.IsTrue(_changedProperties.Contains("ServerInformationalVersion"));
-//        }
-
         [TestMethod]
         [Timeout(100)]
         public void TestStudioVersion()
