@@ -118,7 +118,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             return conn;
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEnvironments()
         {
             //arrange
@@ -130,7 +131,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestConstructorExpectedProperties()
         {
             Assert.IsNotNull(_target.MergeConnectControlViewModel);
@@ -138,7 +140,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.MergeConnectControlViewModel.CanCreateServer);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSelectedEnvironmentChanged()
         {
             //arrange
@@ -180,7 +183,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(0, _target.MergeResourceVersions.Count);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public async Task TestOtherServerСonnect()
         {
             //arrange

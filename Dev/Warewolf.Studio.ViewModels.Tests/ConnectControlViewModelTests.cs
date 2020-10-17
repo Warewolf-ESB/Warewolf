@@ -84,7 +84,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.PropertyChanged += Target_PropertyChanged;
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConnectControlViewModelServerNull()
         {
@@ -93,7 +94,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(connectControlViewModel);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConnectControlViewModelEventAggregatorNull()
         {
@@ -102,7 +104,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(connectControlViewModel);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConnectControlViewModelExpectedProperties()
         {
@@ -113,7 +116,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(connectControlViewModel.CanCreateServer);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEditConnectionCommandCantbeExecuted()
         {
             //arrange
@@ -123,7 +127,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.EditConnectionCommand.CanExecute(null));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEditConnectionCommandSelectedConnectionNull()
         {
             //arrange
@@ -133,7 +138,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditConnectionCommand.Execute(null);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestShouldTrackSelectedConnectionWarewolfStore()
         {
             var uri = new Uri("https://store.warewolf.io:3143/dsf");
@@ -158,7 +164,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _applicationTrackerMock.Verify(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestShouldNotTrackSelectedConnectionWarewolfStore()
         {
             var mockEnvironmentConnection = SetupMockConnection();
@@ -177,7 +184,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _applicationTrackerMock.Verify(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEditConnectionCommand()
         {
             //arrange
@@ -189,7 +197,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditConnectionCommand.Execute(null);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestNewConnectionCommand()
         {
             //arrange
@@ -204,7 +213,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.NewConnectionCommand.Execute(null);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSelectedConnectionNonLocalhostLabel()
         {
             //arrange
@@ -244,7 +254,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isCanExecuteChangedRaised, "ConnectControlViewModel EditConnectionCommand CanExecuteChanged event did not execute as expected.");
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSelectedConnectionLocalhostLabel()
         {
             //arrange
@@ -283,7 +294,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isCanExecuteChangedRaised, "Selecting a new target server in the deploy did not raise event 'Can execute changed' on edit connection command.");
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsLoading()
         {
             //arrange
@@ -299,7 +311,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("IsLoading"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestToggleConnectionToolTip()
         {
             //assert
@@ -307,21 +320,24 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEditConnectionToolTip()
         {
             //assert
             Assert.IsTrue(!string.IsNullOrEmpty(_target.EditConnectionToolTip));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestConnectionsToolTip()
         {
             //assert
             Assert.IsTrue(!string.IsNullOrEmpty(_target.ConnectionsToolTip));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestUpdateHelpDescriptor()
         {
@@ -339,7 +355,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             helpViewModelMock.Verify(it => it.UpdateHelpText(HelpText));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestConnectNullArgument()
         {
@@ -351,7 +368,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result.Result);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestConnectException()
         {
@@ -367,7 +385,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result.Result);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sipohamandla Dube")]
         public void ConnectControlViewModel_TestConnectSuccessful()
@@ -422,7 +441,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockShellViewModel.Verify(it => it.SetActiveServer(mockServer.Object.EnvironmentID));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestConnectUnsuccessful()
         {
@@ -459,7 +479,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(serverConnectedRaised);
         }
         
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestOnServerOnNetworkStateChanged()
         {
@@ -497,7 +518,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(serverDisconnectedRaised);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestOnServerOnNetworkStateChangedConnected()
         {
@@ -527,7 +549,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(serverReconnectedRaised);
         }
         
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestEditSelectedConnectionShouldSetSelectedConnection()
         {
@@ -568,7 +591,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             return mockEnvironmentConnection;
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_EditServerServerIDMatchIsTrue()
@@ -628,7 +652,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(passed);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_CheckVersionConflict_GivenConnectedServer_ResultServerIsConnecting()
@@ -646,7 +671,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             popupController.Verify(controller => controller.ShowConnectServerVersionConflict(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_CheckVersionConflict_ThrowsException()
         {
@@ -660,7 +686,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             privateObject.Invoke("CheckVersionConflictAsync");
             //------------Assert Results-------------------------
         }
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_CheckVersionConflict_GivenNoVersionConflicts()
@@ -678,7 +705,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             popupController.Verify(controller => controller.ShowConnectServerVersionConflict(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_ConnectOrDisconnect_GivenServerNull()
@@ -694,7 +722,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsConnecting);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_ConnectOrDisconnect_GivenServerIsConnectAndServerHasNotLoaded()
@@ -708,7 +737,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsConnecting);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_ConnectOrDisconnect_GivenServerIsConnectAndServerHasLoaded()
@@ -726,7 +756,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsConnected);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_Connect_GivenShowConnectionTimeoutConfirmation_MessageBox_Yes()
@@ -745,7 +776,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_LoadServers_GivenSelectedServer_ResultIsSelectedServer()
@@ -774,7 +806,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(intergrationId, connectControlViewModel.SelectedConnection.EnvironmentID);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_OnServerOnNetworkStateChanged_GivenLocalhostAndIsNotConnecting_ResultServerDisconnected()
@@ -801,7 +834,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(connectControlViewModel.IsConnected);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_UpdateRepositoryOnServerSaved_GivenEmptyGuid_Result()
@@ -821,7 +855,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             privateObject.Invoke("UpdateRepositoryOnServerSaved", Guid.Empty, false);
             //------------Assert Results-------------------------
         }
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_UpdateRepositoryOnServerSaved_GivenLocalhost_Result()
@@ -845,7 +880,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Pieter Terblanche")]
         public void ConnectControlViewModel_UpdateRepositoryOnServerSaved()

@@ -56,7 +56,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #endregion Test initialize
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestRetrieveSources()
         {
             var expectedResult = new ObservableCollection<IDbSource>();
@@ -68,7 +69,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchDbSources());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestGetActions()
         {
             var expectedResult = new ObservableCollection<IDbAction>();
@@ -81,7 +83,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchDbActions(mockDbSource.Object));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestCreateNewSource()
         {
             _target.CreateNewSource(enSourceType.SqlDatabase);
@@ -91,7 +94,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.CreateNewSource(enSourceType.ODBC);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEditSqlSource()
         {
             var mockSqlSource = new Mock<IDbSource>();
@@ -102,7 +106,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockSqlSource.Object, mockSqlSource.Object.Type);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEditMySqlSource()
         {
             var mockSqlSource = new Mock<IDbSource>();
@@ -113,7 +118,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockSqlSource.Object, mockSqlSource.Object.Type);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEditPostgreSqlSource()
         {
             var mockSqlSource = new Mock<IDbSource>();
@@ -124,7 +130,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockSqlSource.Object, mockSqlSource.Object.Type);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEditOracleSource()
         {
             var mockSqlSource = new Mock<IDbSource>();
@@ -135,7 +142,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockSqlSource.Object, mockSqlSource.Object.Type);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEditOdbcSource()
         {
             var mockSqlSource = new Mock<IDbSource>();
@@ -146,7 +154,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockSqlSource.Object, mockSqlSource.Object.Type);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestService()
         {
             var mockDataTable = new Mock<IDatabaseService>();
