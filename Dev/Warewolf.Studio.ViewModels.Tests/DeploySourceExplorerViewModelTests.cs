@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(150)]
         public void TestEnvironments()
         {
             //arrange
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(150)]
         public void TestPreselected()
         {
             //arrange
@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(160)]
         public void TestSelectedItemsEmpty()
         {
             //arrange
@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(150)]
         public void TestSelectedItemsNotEmpty()
         {
             //arrange
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(130)]
         public void TestSelectedItemsSet()
         {
             //arrange
@@ -202,7 +202,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(140)]
         public void TestSelectedItemsSetEnvironmentNull()
         {
             //arrange
@@ -247,7 +247,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(130)]
         public void TestSelectedEnvironmentChanged()
         {
             //arrange
@@ -319,7 +319,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(180)]
         public void TestEnvironmentSelectAll()
         {
             //arrange
@@ -341,7 +341,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(150)]
         public void TestCalculateOnNullExplorerItems()
         {
             //arrange
@@ -365,7 +365,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(160)]
         public void TestSelectActionFolder()
         {
             //arrange

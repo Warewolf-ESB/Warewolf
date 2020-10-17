@@ -119,7 +119,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(180)]
         public void TestEnvironments()
         {
             //arrange
@@ -129,7 +129,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsNotNull(env);
         }
-
         
         [TestMethod]
         [Timeout(100)]
@@ -141,7 +140,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(130)]
         public void TestSelectedEnvironmentChanged()
         {
             //arrange
