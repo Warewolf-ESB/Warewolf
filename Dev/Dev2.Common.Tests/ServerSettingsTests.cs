@@ -123,8 +123,8 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(LogLevel.TRACE.ToString(), result.ExecutionLogLevel);
             Assert.AreEqual(false, result.EnableDetailedLogging);
             Assert.AreEqual(nameof(LegacySettingsData), result.Sink);
-
         }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServerSettings))]
