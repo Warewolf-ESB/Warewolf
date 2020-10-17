@@ -1,4 +1,3 @@
-@FileAndFolderMove
 Feature: Move
 	In order to be able to Move a File or Folder 
 	as a Warewolf user
@@ -108,6 +107,7 @@ Scenario Outline: Move file at location with overwrite disabled
 	   | 29 | SFTP to FTPS PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile31.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt                            | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
 	   | 30 | SFTP to SFTP PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile41.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/moved41.txt                                                   | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
+@FileAndFolderMove
 Scenario Outline: Move file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -128,6 +128,7 @@ Scenario Outline: Move file at location Null
 	   | 5  | Local to FTPS  | [[sourcePath]] | v:\movefile2.txt                                                                            | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt | Administrator | Dev2@dmin123 | True     | [[result]] | Failure | AN           |                      |                           |
 	   | 6  | Local to SFTP  | [[sourcePath]] | " "                                                                                         | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                        | dev2          | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
 	 
+@FileAndFolderMove
 Scenario Outline: Move file Validation
 	Given I have a variable "[[a]]" with a value "<Val1>"
 	And I have a variable "[[b]]" with a value "<Val2>"
