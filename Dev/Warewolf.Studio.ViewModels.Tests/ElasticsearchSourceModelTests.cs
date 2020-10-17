@@ -37,7 +37,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(p.GetField("_shellViewModel"));
         }
         
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_Retrieve_ExpectPassThrough()
@@ -55,7 +56,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             queryManager.Verify(a=>a.FetchElasticsearchServiceSources(),Times.Once);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_Edit_ExpectPassThrough()
@@ -74,7 +76,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             shellViewModel.Verify(a => a.EditResource(src.Object), Times.Once);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_New_ExpectPassThrough()
@@ -93,7 +96,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             shellViewModel.Verify(a => a.NewElasticsearchSource(""), Times.Once);
         }
         
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_Save_ExpectPassThrough()
@@ -108,7 +112,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             updateManager.Verify(a => a.Save(src.Object),Times.Once);
         }
         
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_Test_ExpectPassThrough()
