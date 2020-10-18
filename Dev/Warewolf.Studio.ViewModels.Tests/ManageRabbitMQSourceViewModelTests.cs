@@ -679,7 +679,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Clint Stedman")]
         [TestCategory("ManageRabbitMQSourceViewModel_Methods")]
         public void TestUpdateHelpDescriptor()
