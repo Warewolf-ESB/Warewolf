@@ -639,8 +639,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestUpdateHelpDescriptor()
+        [Timeout(250)]
+        public void ComPluginSourceTestUpdateHelpDescriptor()
         {
             //arrange
             var mainViewModelMock = new Mock<IShellViewModel>();
