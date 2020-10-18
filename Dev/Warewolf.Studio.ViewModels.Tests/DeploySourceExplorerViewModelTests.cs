@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestEnvironments()
         {
             //arrange
@@ -319,7 +319,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(180)]
+        [Timeout(500)]
         public void TestEnvironmentSelectAll()
         {
             //arrange
