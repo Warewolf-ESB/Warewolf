@@ -35,8 +35,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSave()
+        [Timeout(250)]
+        public void OAuthSourceTestSave()
         {
             //arrange
             var resourceMock = new Mock<IOAuthSource>();

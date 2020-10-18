@@ -52,8 +52,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSave()
+        [Timeout(250)]
+        public void WebServiceSourceTestSave()
         {
             //arrange
             var resourceMock = new Mock<IWebServiceSource>();

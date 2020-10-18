@@ -117,7 +117,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreSame(expectedValue, value);
 		}
 		[TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestSave()
         {
             //arrange
