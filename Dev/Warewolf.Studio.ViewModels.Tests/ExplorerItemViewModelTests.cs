@@ -182,7 +182,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestIsMergeVisibleFalse()
         {
             //assert
@@ -190,7 +190,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestIsMergeVisibleTrue()
         {
             _target.IsSaveDialog = false;
