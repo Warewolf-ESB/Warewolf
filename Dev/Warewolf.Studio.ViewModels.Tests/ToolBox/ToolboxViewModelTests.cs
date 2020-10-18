@@ -269,7 +269,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(190)]
+        [Timeout(250)]
         public void TestFilterCategory()
         {
             //arrange

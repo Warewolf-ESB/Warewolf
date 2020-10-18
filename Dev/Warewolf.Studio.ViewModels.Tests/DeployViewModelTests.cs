@@ -31,9 +31,10 @@ namespace Warewolf.Studio.ViewModels.Tests
     public class DeployViewModelTests
     {
         [TestMethod]
-        [Timeout(130)]
+        [Timeout(250)]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DeployViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
+        [TestCategory("DeployViewModel_Ctor")]
+		[ExpectedException(typeof(ArgumentNullException))]
         public void DeployViewModel_Ctor_NullParamsFirst_ExprecErrors()
         {
             //------------Setup for test--------------------------

@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(150)]
+        [Timeout(250)]
         public void TestPreselected()
         {
             //arrange
@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(150)]
+        [Timeout(250)]
         public void TestSelectedItemsNotEmpty()
         {
             //arrange
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(130)]
+        [Timeout(250)]
         public void TestSelectedItemsSet()
         {
             //arrange

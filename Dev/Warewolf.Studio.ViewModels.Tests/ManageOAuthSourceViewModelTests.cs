@@ -194,7 +194,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(160)]
+        [Timeout(250)]
         public void TestGetAuthTokensWithDropBoxUriWithInvalidToken()
         {
             //arrange

@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestRefreshCommandChildrenAllowResourceCheck()
         {
             //arrange
