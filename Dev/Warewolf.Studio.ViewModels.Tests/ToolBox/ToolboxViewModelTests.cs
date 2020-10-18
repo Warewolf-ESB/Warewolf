@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test commands
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestClearFilterCommand()
         {
             //act
@@ -373,7 +373,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         public void TestClearFilter()
         {
             //arrange

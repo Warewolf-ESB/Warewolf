@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioServerProxy_LoadExplorer")]
         public void StudioServerProxy_Delete_WhenResource_ShouldDeleteResource()
@@ -435,7 +435,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory("StudioServerProxy_CreateFolder")]
         public void StudioServerProxy_CreateFolder_VerifyFolderIsTrue()

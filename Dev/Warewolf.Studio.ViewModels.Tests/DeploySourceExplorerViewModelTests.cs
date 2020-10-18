@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(160)]
+        [Timeout(250)]
         public void TestSelectedItemsEmpty()
         {
             //arrange
@@ -247,7 +247,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
         [TestMethod]
-        [Timeout(130)]
+        [Timeout(2000)]
         public void TestSelectedEnvironmentChanged()
         {
             //arrange

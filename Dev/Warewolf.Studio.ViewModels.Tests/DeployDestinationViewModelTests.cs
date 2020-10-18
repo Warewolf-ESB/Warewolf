@@ -76,7 +76,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_TestMinSupportedVersion()
         {
@@ -96,7 +96,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_TestServerVersion()
         {

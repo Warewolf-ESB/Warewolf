@@ -78,7 +78,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(5000)]
         [ExpectedException(typeof(IOException))]
         public void TestIcon()
         {
