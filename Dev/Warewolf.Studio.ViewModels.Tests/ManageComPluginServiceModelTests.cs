@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestService()
         {
             var mockPluginInputValues = new Mock<IComPluginService>();

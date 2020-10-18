@@ -1659,7 +1659,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         public void TestFilter()
         {
             //arrange
@@ -1683,7 +1683,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestFilterNoText()
         {
             //arrange
@@ -1707,7 +1707,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestFilterVersion()
         {
             //arrange
@@ -1738,7 +1738,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestFilterInvisible()
         {
             //arrange
@@ -1762,7 +1762,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestFilterInvisibleNoChildren()
         {
             //arrange
@@ -1971,7 +1971,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestFilterChildrenFound()
         {
             //arrange
@@ -1991,7 +1991,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestFilterChildrenEmpty()
         {
             //arrange

@@ -34,7 +34,7 @@ namespace Warewolf.Studio.Models.Help.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestHelpModel()
         {

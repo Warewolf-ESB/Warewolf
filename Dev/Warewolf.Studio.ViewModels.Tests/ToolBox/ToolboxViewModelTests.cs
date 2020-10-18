@@ -203,7 +203,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestFilterEmptySearchString()
         {
             //arrange
@@ -218,7 +218,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         public void TestFilter()
         {
             //arrange
@@ -269,7 +269,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestFilterCategory()
         {
             //arrange
@@ -321,7 +321,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(180)]
+        [Timeout(250)]
         public void TestFilterTag()
         {
             //arrange
