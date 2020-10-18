@@ -1027,8 +1027,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestUpdateHelpDescriptor()
+        [Timeout(500)]
+        public void MySqlSourceTestUpdateHelpDescriptor()
         {
             //arrange
             var mainViewModelMock = new Mock<IShellViewModel>();

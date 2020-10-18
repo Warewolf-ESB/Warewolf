@@ -887,8 +887,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestUpdateHelpDescriptor()
+        [Timeout(500)]
+        public void PostgreSqlSourceTestUpdateHelpDescriptor()
         {
             //arrange
             var mainViewModelMock = new Mock<IShellViewModel>();

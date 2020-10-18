@@ -1029,7 +1029,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestUpdateHelpDescriptor()
         {
             //arrange

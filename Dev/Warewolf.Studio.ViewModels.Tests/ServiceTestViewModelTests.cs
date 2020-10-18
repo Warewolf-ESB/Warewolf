@@ -948,7 +948,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestFrameworkViewModel_CreateTestCommand")]
         public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldSetHasChangedTrue()
@@ -966,7 +966,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         public void TestUpdateHelpDescriptor()
         {
@@ -987,7 +987,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_IsDirty")]
         public void ServiceTestViewModel_IsDirty_WhenSetTrue_ShouldUpdateDisplayNameWithStar()
@@ -1754,7 +1754,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenSelectedItemDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
         {
@@ -1795,10 +1795,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
         }
 
-
-
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Hagashen Naidu")]
         public void ItemSelected_GivenDebugStateDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
         {
@@ -2677,7 +2675,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_MoreLink_ShouldSetValue()
         {
@@ -2750,7 +2748,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_DsfEnhancedDotNetDllActivity_ShouldSetValue()
         {

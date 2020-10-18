@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
