@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Clint Stedman")]
         [TestCategory("ManageRabbitMQSourceViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -75,7 +75,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Clint Stedman")]
         [TestCategory("ManageRabbitMQSourceViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
