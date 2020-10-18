@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
         public void DeploySourceExplorerViewModel_Ctor_Nulls_ExpectSuccess()
