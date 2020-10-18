@@ -140,7 +140,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(130)]
+        [Timeout(2000)]
         public void TestSelectedEnvironmentChanged()
         {
             //arrange

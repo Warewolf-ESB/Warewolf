@@ -115,7 +115,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManagePluginSourceViewModelAsyncWorkerNull()
         {

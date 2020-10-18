@@ -46,7 +46,7 @@ namespace Warewolf.Studio.Models.Help.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(300)]
+        [Timeout(2000)]
         public void TestFireOnHelpReceived()
         {
             //arrange

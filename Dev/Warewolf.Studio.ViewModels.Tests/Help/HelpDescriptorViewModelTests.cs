@@ -80,7 +80,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(5000)]
         public void TestIcon()
         {
             //arrange

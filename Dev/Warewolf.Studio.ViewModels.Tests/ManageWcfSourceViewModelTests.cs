@@ -258,7 +258,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(2000)]
         [Owner("Ashley Lewis")]
         [TestCategory(Category)]
         public void WcfSource_FetchSource_Returns_IWcfServerSource()

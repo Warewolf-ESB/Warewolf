@@ -722,7 +722,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(2000)]
         [TestCategory("EnvironmentModel_NetworkStateChanged")]
         public void EnvironmentModel_NetworkStateChanged_Offline_DoesPublishEnvironmentDisconnectedMessage()
         {
@@ -730,7 +730,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [TestCategory("EnvironmentModel_NetworkStateChanged")]
         public void EnvironmentModel_NetworkStateChanged_Online_DoesPublishEnvironmentConnectedMessage()
         {
@@ -1010,7 +1010,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EnvironmentModel_Equals")]
         public void EnvironmentModel_Equals_OtherIsNull_False()

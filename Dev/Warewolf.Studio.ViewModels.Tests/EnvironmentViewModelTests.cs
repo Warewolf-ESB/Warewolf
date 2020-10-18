@@ -195,7 +195,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         public void TestChildrenCount()
         {
             //arrange
@@ -367,7 +367,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestIsFolderChecked()
         {
             //arrange
@@ -507,7 +507,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestCanCreateFolderTrue()
         {
             //arrange
@@ -681,7 +681,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void EnvironmentViewModelVerifyNewFolderShowsContextMenu_HasParentPermissions()
         {
             //arrange
