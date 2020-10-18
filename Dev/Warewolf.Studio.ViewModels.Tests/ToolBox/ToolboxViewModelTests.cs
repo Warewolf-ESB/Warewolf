@@ -471,8 +471,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestUpdateHelpDescriptor()
+        [Timeout(500)]
+        public void ToolboxTestUpdateHelpDescriptor()
         {
             //arrange
             var mainViewModelMock = new Mock<IShellViewModel>();
