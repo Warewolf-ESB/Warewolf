@@ -250,7 +250,7 @@ Scenario Outline: Copy file at FTPS location with overwrite disabled
 		 | 4  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile3.txt | Administrator     | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied3.txt                         | Administrator     | Dev2@dmin123 | False    | [[result]] | "Success" | NO           |                      |                           |
 		 | 5  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copyfile4.txt | Administrator     | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/copied3.txt                                                   | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
 
-@CopyFileFromSFTPlWithoutOverwrite
+@CopyFileFromSFTPWithoutOverwrite
 Scenario Outline: Copy file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
