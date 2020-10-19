@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
