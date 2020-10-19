@@ -1579,6 +1579,9 @@ No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will e
   <data name="SuspendExecutionResultToolTip" xml:space="preserve">
     <value>The result after suspending the execution to be stored.</value>
   </data>
+  <data name="HangfireDashboardBrowserTooltip" xml:space="preserve">
+    <value>Open this URL in your default browser to view the hangfire dashboard</value>
+  </data>
   <data name="FindToolTipTo" xml:space="preserve">
     <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.</value>
   </data>

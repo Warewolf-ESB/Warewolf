@@ -14,13 +14,16 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Resources;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Dialogs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Persistence;
 using Dev2.Studio.Interfaces;
@@ -47,6 +50,8 @@ namespace Dev2.Settings.Persistence
         private string _persistenceScheduler;
         private IResource _selectedPersistenceDatabaseSource;
         private string _selectedPersistenceScheduler;
+        private string _hangfireDashboardUrl;
+        readonly IExternalProcessExecutor _processExecutor;
 
         //this is here to clone the viewmodel
         [ExcludeFromCodeCoverage]
@@ -54,10 +59,17 @@ namespace Dev2.Settings.Persistence
         {
         }
 
-        public PersistenceSettingsViewModel(IServer currentEnvironment)
+        public PersistenceSettingsViewModel(IServer server)
+            : this(server, new ExternalProcessExecutor())
+        {
+
+        }
+
+        public PersistenceSettingsViewModel(IServer currentEnvironment, IExternalProcessExecutor processExecutor)
         {
             CurrentEnvironment = currentEnvironment ?? throw new ArgumentNullException(nameof(currentEnvironment));
             _resourceRepository = CurrentEnvironment.ResourceRepository;
+            _processExecutor = processExecutor ?? throw new ArgumentNullException(nameof(processExecutor));
 
             var settingsData = CurrentEnvironment.ResourceRepository.GetPersistenceSettings<PersistenceSettingsData>(CurrentEnvironment);
 
@@ -74,10 +86,17 @@ namespace Dev2.Settings.Persistence
             _dashboardHostname = settingsData.DashboardHostname;
             _dashboardPort = settingsData.DashboardPort;
             _serverName = settingsData.ServerName;
+            UpdateHangfireDashboardUrl();
+
+            HangfireDashboardBrowserCommand = new DelegateCommand(HangfireDashboardBrowser);
 
             IsDirty = false;
         }
 
+        private void HangfireDashboardBrowser(object obj)
+        {
+            _processExecutor?.OpenInBrowser(new Uri(HangfireDashboardUrl));
+        }
 
         public IServer CurrentEnvironment
         {
@@ -147,6 +166,7 @@ namespace Dev2.Settings.Persistence
                 IsDirty = !Equals(Item);
                 _dashboardHostname = value;
                 OnPropertyChanged();
+                UpdateHangfireDashboardUrl();
             }
         }
 
@@ -158,6 +178,7 @@ namespace Dev2.Settings.Persistence
                 IsDirty = !Equals(Item);
                 _dashboardPort = value;
                 OnPropertyChanged();
+                UpdateHangfireDashboardUrl();
             }
         }
 
@@ -169,8 +190,27 @@ namespace Dev2.Settings.Persistence
                 IsDirty = !Equals(Item);
                 _dashboardName = value;
                 OnPropertyChanged();
+                UpdateHangfireDashboardUrl();
             }
         }
+
+        private void UpdateHangfireDashboardUrl()
+        {
+            HangfireDashboardUrl = DashboardHostname + ":" + DashboardPort + "/" + DashboardName;
+        }
+
+        public string HangfireDashboardUrl
+        {
+            get => _hangfireDashboardUrl;
+            set
+            {
+                IsDirty = !Equals(Item);
+                _hangfireDashboardUrl = value;
+                OnPropertyChanged();
+            }
+        }
+        [JsonIgnore]
+        public ICommand HangfireDashboardBrowserCommand { get; set; }
 
         [JsonIgnore]
         public IResource SelectedPersistenceDataSource
@@ -330,6 +370,7 @@ namespace Dev2.Settings.Persistence
             equalsSeq &= Equals(_dashboardPort, other._dashboardPort);
             equalsSeq &= Equals(_resourceSourceId, other._resourceSourceId);
             equalsSeq &= Equals(_persistenceScheduler, other._persistenceScheduler);
+            equalsSeq &= Equals(_hangfireDashboardUrl, other._hangfireDashboardUrl);
             return equalsSeq;
         }
 

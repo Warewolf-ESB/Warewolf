@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Resources;
@@ -231,6 +232,40 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceSettingsViewModel))]
+        public void PersistenceSettingsViewModel_HangfireDashboardUrl_Set_PropertyChangeFired()
+        {
+            //------------Setup for test--------------------------
+            var persistenceSettingsViewModel = CreatePersistenceSettingViewModel();
+            var hasPropertyChanged = false;
+            persistenceSettingsViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "HangfireDashboardUrl")
+                {
+                    hasPropertyChanged = true;
+                }
+            };
+            Assert.IsFalse(persistenceSettingsViewModel.IsDirty);
+            //------------Execute Test---------------------------
+            persistenceSettingsViewModel.DashboardHostname = "NewHostName";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("NewHostName:5001/Dashboardname", persistenceSettingsViewModel.HangfireDashboardUrl);
+            Assert.IsTrue(hasPropertyChanged);
+            Assert.IsTrue(persistenceSettingsViewModel.IsDirty);
+
+            hasPropertyChanged = false;
+            persistenceSettingsViewModel.DashboardPort = "4444";
+            Assert.AreEqual("NewHostName:4444/Dashboardname", persistenceSettingsViewModel.HangfireDashboardUrl);
+            Assert.IsTrue(hasPropertyChanged);
+
+            hasPropertyChanged = false;
+            persistenceSettingsViewModel.DashboardName = "NewName";
+            Assert.AreEqual("NewHostName:4444/NewName", persistenceSettingsViewModel.HangfireDashboardUrl);
+            Assert.IsTrue(hasPropertyChanged);
+        }
+
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
         public void PersistenceSettingsViewModel_PersistenceScheduler_Set_PropertyChangeFired()
@@ -320,9 +355,28 @@ namespace Dev2.Core.Tests.Settings
             viewModel.CloseHelpCommand.Execute(null);
         }
 
-        static PersistenceSettingsViewModel CreatePersistenceSettingViewModel(Mock<IResourceRepository> resourceRepo = null)
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceSettingsViewModel))]
+        public void PersistenceSettingsViewModel_HangfireDashboardBrowser_OpenInBrowser()
         {
-            var env = new Mock<IServer>();
+            const string expectedUrl = "http://localhost:5001/hangfire";
+            var uri = new Uri(expectedUrl);
+            var mockExternalProcessExecutor = new Mock<IExternalProcessExecutor>();
+            mockExternalProcessExecutor.Setup(o => o.OpenInBrowser(uri)).Verifiable();
+
+            var viewModel = CreateViewModelWithExternalProcess(mockExternalProcessExecutor);
+            viewModel.DashboardHostname = "http://localhost";
+            viewModel.DashboardPort = "5001";
+            viewModel.DashboardName = "hangfire";
+            viewModel.HangfireDashboardBrowserCommand.Execute(null);
+
+            mockExternalProcessExecutor.Verify(o => o.OpenInBrowser(uri), Times.Once);
+        }
+
+        private static Mock<IServer> CreateMockServer(Mock<IResourceRepository> resourceRepo = null)
+        {
+            var mockServer = new Mock<IServer>();
             if (resourceRepo is null)
             {
                 resourceRepo = new Mock<IResourceRepository>();
@@ -345,20 +399,32 @@ namespace Dev2.Core.Tests.Settings
                 PrepareSchemaIfNecessary = true,
                 ServerName = "servername"
             };
-            resourceRepo.Setup(res => res.GetPersistenceSettings<PersistenceSettingsData>(env.Object)).Returns(settingsData);
-            resourceRepo.Setup(res => res.SavePersistenceSettings(env.Object, settingsData)).Verifiable();
+            resourceRepo.Setup(res => res.GetPersistenceSettings<PersistenceSettingsData>(mockServer.Object)).Returns(settingsData);
+            resourceRepo.Setup(res => res.SavePersistenceSettings(mockServer.Object, settingsData)).Verifiable();
 
             IResource mockPersistenceSource = new DbSource()
             {
                 ResourceID = selectedDbSourceId,
                 ResourceName = "Persistence Data Source"
             };
-            var expectedList = new List<IResource>();
-            expectedList.Add(mockPersistenceSource);
+            var expectedList = new List<IResource> {mockPersistenceSource};
 
-            resourceRepo.Setup(resourceRepository => resourceRepository.FindResourcesByType<IPersistenceSource>(env.Object)).Returns(expectedList);
-            env.Setup(a => a.ResourceRepository).Returns(resourceRepo.Object);
+            resourceRepo.Setup(resourceRepository => resourceRepository.FindResourcesByType<IPersistenceSource>(mockServer.Object)).Returns(expectedList);
+            mockServer.Setup(a => a.ResourceRepository).Returns(resourceRepo.Object);
+            return mockServer;
+        }
+
+        private static PersistenceSettingsViewModel CreatePersistenceSettingViewModel(Mock<IResourceRepository> resourceRepo = null)
+        {
+            var env = CreateMockServer(resourceRepo);
             var vm = new PersistenceSettingsViewModel(env.Object);
+            return vm;
+        }
+
+        private static PersistenceSettingsViewModel CreateViewModelWithExternalProcess(IMock<IExternalProcessExecutor> externalProcessMock, Mock<IResourceRepository> resourceRepo = null)
+        {
+            var env = CreateMockServer(resourceRepo);
+            var vm = new PersistenceSettingsViewModel(env.Object, externalProcessMock.Object);
             return vm;
         }
     }
