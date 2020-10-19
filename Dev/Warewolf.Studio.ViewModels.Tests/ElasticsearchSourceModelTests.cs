@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_Retrieve_ExpectPassThrough()
@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_Edit_ExpectPassThrough()
@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_Save_ExpectPassThrough()
@@ -113,7 +113,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_Test_ExpectPassThrough()

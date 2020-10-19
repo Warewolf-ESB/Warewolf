@@ -85,7 +85,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConnectControlViewModelServerNull()
         {
@@ -480,7 +480,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestOnServerOnNetworkStateChanged()
         {
@@ -519,7 +519,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestOnServerOnNetworkStateChangedConnected()
         {

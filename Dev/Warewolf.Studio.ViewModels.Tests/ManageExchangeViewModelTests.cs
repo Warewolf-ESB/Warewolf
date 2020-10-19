@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageExchangeModel_Initialize_Properties_Returns_Success()
@@ -139,37 +139,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNull(viewModel.SendCommand);
             Assert.IsNull(viewModel.OkCommand);
             Assert.IsNotNull(viewModel.RequestServiceNameViewModel);
-        }
-
-        [TestMethod]
-        [Timeout(100)]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
-        public void ManageexchangeModel_Initialize_Properties_Returns_Success()
-        {
-            var viewModel = GetViewModelWithSource();
-
-            viewModel.SendCommand = null;
-            viewModel.OkCommand = null;
-
-            Assert.IsNotNull(viewModel.Name);
-            Assert.IsNotNull(viewModel.AutoDiscoverUrl);
-            Assert.IsNotNull(viewModel.AutoDiscoverLabel);
-            Assert.IsNotNull(viewModel.EmailTo);
-            Assert.IsNotNull(viewModel.EmailFromLabel);
-            Assert.IsNotNull(viewModel.EmailToLabel);
-            Assert.IsNotNull(viewModel.Password);
-            Assert.IsNotNull(viewModel.PasswordLabel);
-            Assert.IsNotNull(viewModel.Timeout);
-            Assert.AreEqual(viewModel.Timeout,10000);
-            Assert.IsFalse(viewModel.TestPassed);
-            Assert.IsFalse(viewModel.TestFailed);
-            Assert.IsTrue(viewModel.EnableSend);
-            Assert.IsFalse(viewModel.Testing);
-            Assert.IsNotNull(viewModel.TestMessage);
-            Assert.IsNotNull(viewModel.HeaderText);
-            Assert.IsNull(viewModel.SendCommand);
-            Assert.IsNull(viewModel.OkCommand);
         }
 
         [TestMethod]

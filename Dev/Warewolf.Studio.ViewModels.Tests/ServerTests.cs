@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(server.DisplayName));
         }
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Sanele Mthembu")]
         public void CanDeployTo_GivenIsAuthorizedDeployToIsTrue_ShouldReturnTrue()
         {
@@ -1026,7 +1026,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EnvironmentModel_Equals")]
         public void EnvironmentModel_Equals_OtherIsSame_True()

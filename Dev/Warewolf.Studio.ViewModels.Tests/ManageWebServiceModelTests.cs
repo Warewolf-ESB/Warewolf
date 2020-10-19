@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         public void TestEditWebServiceSource()
         {
             var mockWebServiceSource = new Mock<IWebServiceSource>();

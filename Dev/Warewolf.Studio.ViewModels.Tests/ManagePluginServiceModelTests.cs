@@ -81,7 +81,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         public void TestGetActionsWithReturns()
         {
             var expectedResult = new ObservableCollection<IPluginAction>();
@@ -96,7 +96,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         public void TestGetConstructors()
         {
             var expectedResult = new ObservableCollection<IPluginConstructor>();
