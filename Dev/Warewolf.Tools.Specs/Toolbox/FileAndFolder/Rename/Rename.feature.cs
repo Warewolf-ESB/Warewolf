@@ -1319,6 +1319,9 @@ this.RenameFileAtSFTPLocation("6", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename file at local location with overwrite disabled", @__tags);
 #line 144
  this.ScenarioSetup(scenarioInfo);
@@ -1573,6 +1576,9 @@ this.RenameFileAtSFTPLocation("6", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename file at UNC location with overwrite disabled", @__tags);
 #line 172
  this.ScenarioSetup(scenarioInfo);
@@ -1809,6 +1815,9 @@ this.RenameFileAtSFTPLocation("6", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename file at FTP location with overwrite disabled", @__tags);
 #line 199
  this.ScenarioSetup(scenarioInfo);
@@ -2035,6 +2044,9 @@ this.RenameFileAtSFTPLocation("6", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename file at FTPS location with overwrite disabled", @__tags);
 #line 226
  this.ScenarioSetup(scenarioInfo);
@@ -2261,6 +2273,9 @@ this.RenameFileAtSFTPLocation("6", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename file at SFTP location with overwrite disabled", @__tags);
 #line 253
  this.ScenarioSetup(scenarioInfo);
@@ -2517,6 +2532,9 @@ this.RenameFileAtSFTPLocation("6", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename file validation", @__tags);
 #line 281
 this.ScenarioSetup(scenarioInfo);
@@ -5038,6 +5056,9 @@ this.RenameFileValidation("81", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename file at location with invalid directories", @__tags);
 #line 387
 this.ScenarioSetup(scenarioInfo);

@@ -1406,6 +1406,9 @@ this.MoveFileAtSFTPLocation("10", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://S
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at local location with overwrite disabled", @__tags);
 #line 147
 this.ScenarioSetup(scenarioInfo);
@@ -1632,6 +1635,9 @@ this.MoveFileAtLocalLocationWithOverwriteDisabled("5", "Local to UNC", "[[source
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at UNC location with overwrite disabled", @__tags);
 #line 174
 this.ScenarioSetup(scenarioInfo);
@@ -1868,6 +1874,9 @@ this.MoveFileAtUNCLocationWithOverwriteDisabled("6", "UNC TO UNC", "[[sourcePath
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at FTP location with overwrite disabled", @__tags);
 #line 201
 this.ScenarioSetup(scenarioInfo);
@@ -2094,6 +2103,9 @@ this.MoveFileAtFTPLocationWithOverwriteDisabled("5", "FTP to FTP", "[[sourcePath
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at FTPS location with overwrite disabled", @__tags);
 #line 228
 this.ScenarioSetup(scenarioInfo);
@@ -2320,6 +2332,9 @@ this.MoveFileAtFTPSLocationWithOverwriteDisabled("5", "FTPS to FTP", "[[sourcePa
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at SFTP location with overwrite disabled", @__tags);
 #line 255
 this.ScenarioSetup(scenarioInfo);
@@ -2688,6 +2703,9 @@ this.MoveFileAtSFTPLocationWithOverwriteDisabled("10", "SFTP to SFTP PK", "[[sou
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at location Null", @__tags);
 #line 287
 this.ScenarioSetup(scenarioInfo);
@@ -2914,6 +2932,9 @@ this.MoveFileAtLocationNull("6", "Local to SFTP", "[[sourcePath]]", "\" \"", "\"
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file Validation", @__tags);
 #line 308
 this.ScenarioSetup(scenarioInfo);

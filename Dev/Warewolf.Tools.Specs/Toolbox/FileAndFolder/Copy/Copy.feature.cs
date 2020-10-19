@@ -1313,6 +1313,9 @@ this.CopyFileAtSFTPLocation("7", "[[sourcePath]]", "sftp://SVRDEV.premier.local/
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at local location with overwrite disabled", @__tags);
 #line 145
 this.ScenarioSetup(scenarioInfo);
@@ -1560,6 +1563,9 @@ this.CopyFileAtLocalLocationWithOverwriteDisabled("6", "[[sourcePath]]", "c:\\co
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at UNC location with overwrite disabled", @__tags);
 #line 173
 this.ScenarioSetup(scenarioInfo);
@@ -1790,6 +1796,9 @@ this.CopyFileAtUNCLocationWithOverwriteDisabled("5", "[[sourcePath]]", "\\\\SVRD
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at FTP location with overwrite disabled", @__tags);
 #line 200
 this.ScenarioSetup(scenarioInfo);
@@ -2010,6 +2019,9 @@ this.CopyFileAtFTPLocationWithOverwriteDisabled("5", "[[sourcePath]]", "ftp://DE
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at FTPS location with overwrite disabled", @__tags);
 #line 227
 this.ScenarioSetup(scenarioInfo);
@@ -2230,6 +2242,9 @@ this.CopyFileAtFTPSLocationWithOverwriteDisabled("5", "[[sourcePath]]", "ftp://D
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at SFTP location with overwrite disabled", @__tags);
 #line 254
 this.ScenarioSetup(scenarioInfo);
@@ -2504,6 +2519,9 @@ this.CopyFileAtSFTPLocationWithOverwriteDisabled("7", "[[sourcePath]]", "sftp://
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at location Null", @__tags);
 #line 283
 this.ScenarioSetup(scenarioInfo);
@@ -2636,6 +2654,9 @@ this.CopyFileAtLocationNull("3", "[[variable]]", "c:\\copyfile0.txt", "\"\"", "\
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy file at location Null with overwrite disabled", @__tags);
 #line 301
 this.ScenarioSetup(scenarioInfo);
