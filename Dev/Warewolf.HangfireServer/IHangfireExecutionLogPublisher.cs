@@ -13,7 +13,7 @@ using Warewolf.Logging;
 
 namespace Warewolf.HangfireServer
 {
-    public interface IExecutionLogPublisher : ILoggerPublisher
+    public interface IHangfireExecutionLogPublisher : ILoggerPublisher
     {
         void ExecutionFailed(ExecutionHistory executionHistory);
         void ExecutionSucceeded(ExecutionHistory executionHistory);

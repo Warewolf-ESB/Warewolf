@@ -15,22 +15,22 @@ using Warewolf.Streams;
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace Warewolf.HangfireServer
 {
-    internal class ExecutionLogger : NetworkLogger, IExecutionLogPublisher
+    internal class HangfireExecutionLogger : HangfireNetworkLogger, IHangfireExecutionLogPublisher
     {
-        public interface IExecutionLoggerFactory
+        public interface IHangfireExecutionLoggerFactory
         {
-            IExecutionLogPublisher New(ISerializer jsonSerializer, IWebSocketPool webSocketPool);
+            IHangfireExecutionLogPublisher New(ISerializer jsonSerializer, IWebSocketPool webSocketPool);
         }
 
-        public class ExecutionLoggerFactory : IExecutionLoggerFactory
+        public class HangfireExecutionLoggerFactory : IHangfireExecutionLoggerFactory
         {
-            public IExecutionLogPublisher New(ISerializer serializer, IWebSocketPool webSocketPool)
+            public IHangfireExecutionLogPublisher New(ISerializer serializer, IWebSocketPool webSocketPool)
             {
-                return new ExecutionLogger(serializer, webSocketPool);
+                return new HangfireExecutionLogger(serializer, webSocketPool);
             }
         }
 
-        public ExecutionLogger(ISerializer serializer, IWebSocketPool webSocketPool)
+        public HangfireExecutionLogger(ISerializer serializer, IWebSocketPool webSocketPool)
             : base(serializer, webSocketPool)
         {
         }
