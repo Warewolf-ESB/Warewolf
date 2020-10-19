@@ -3,8 +3,8 @@ Feature: Rename
 	as a Warewolf user
 	I want a tool that will rename a File or Floder at a given location
 
-@FileRenameWithOverwrite
-Scenario Outline: Rename file at location
+@FileRenameFromLocalWithOverwrite
+Scenario Outline: Rename file at local location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
@@ -23,37 +23,16 @@ Scenario Outline: Rename file at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| No | Name            | source         | sourceLocation                                                                                  | username      | password     | destination  | destinationLocation                                                                  | destUsername      | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-	| 1  | Local to Local  | [[sourcePath]] | C:\renamefile0.txt                                                                              | ""            | ""           | [[destPath]] | C:\renamed0.txt                                                                      | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 2  | Local to FTP    | [[sourcePath]] | C:\renamefile1.txt                                                                              | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt                            | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 3  | Local to FTPS   | [[sourcePath]] | C:\renamefile2.txt                                                                              | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt                            | Administrator | Dev2@dmin123     | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 4  | Local to SFTP   | [[sourcePath]] | C:\renamefile3.txt                                                                              | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/renamed0.txt                                                | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 5  | Local to UNC    | [[sourcePath]] | C:\renamefile4.txt                                                                              | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed0.txt | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 6  | UNC to Local    | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile0.txt | ""            | ""           | [[destPath]] | C:\renamed1.txt                                                                      | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 7  | UNC to FTP      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile1.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed1.txt                            | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 8  | UNC to FTPS     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile2.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed1.txt                            | Administrator | Dev2@dmin123     | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 9  | UNC to SFTP     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile3.txt | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/renamed1.txt                                                | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 10 | UNC to UNC      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile4.txt | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed1.txt | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 11 | FTP to Local    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile0.txt                            | ""            | ""           | [[destPath]] | C:\renamed2.txt                                                                      | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 12 | FTP to UNC      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile1.txt                            | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed2.txt | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 13 | FTP to FTPS     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile2.txt                            | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed2.txt                            | Administrator | Dev2@dmin123     | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 14 | FTP to SFTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile3.txt                            | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/renamed2.txt                                                | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 15 | FTP to FTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile4.txt                            | ""            |              | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed2.txt                            | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 16 | FTPS to Local   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile0.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | C:\renamed3.txt                                                                      | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 17 | FTPS to UNC     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile1.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed3.txt | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 18 | FTPS to FTPS    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile2.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed3.txt                            | Administrator | Dev2@dmin123     | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 19 | FTPS to SFTP    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile3.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/renamed3.txt                                                | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 20 | FTPS to FTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile4.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed3.txt                            | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 21 | SFTP to Local   | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile0.txt                                                     | dev2          | Q/ulw&]      | [[destPath]] | C:\renamed4.txt                                                                      | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 22 | SFTP to UNC     | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile1.txt                                                     | dev2          | Q/ulw&]      | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed4.txt | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 23 | SFTP to FTP     | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile2.txt                                                     | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed4.txt                            | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 24 | SFTP to FTPS    | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile3.txt                                                     | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed4.txt                            | Administrator | Dev2@dmin123     | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 25 | SFTP to SFTP    | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile4.txt                                                     | dev2          | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/renamed4.txt                                                | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 26 | SFTP to SFTP PK | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile41.txt                                                    | dev2          | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/renamed41.txt                                               | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
-	| 27 | Local to Local  | [[sourcePath]] | NULL                                                                                            | ""            | ""           | [[destPath]] | C:\renamed0.txt                                                                      | ""                | ""           | True     | [[result]] | ""        | AN           |                      |                           |
+	| No | Name            | source         | sourceLocation      | username | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | Local to Local  | [[sourcePath]] | C:\renamefile0.txt  | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | Local to FTP    | [[sourcePath]] | C:\renamefile1.txt  | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | Local to FTPS   | [[sourcePath]] | C:\renamefile2.txt  | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt                         | Administrator | Dev2@dmin123 | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | Local to SFTP   | [[sourcePath]] | C:\renamefile3.txt  | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed0.txt                                                     | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | Local to UNC    | [[sourcePath]] | C:\renamefile4.txt  | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed0.txt | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 27 | Local to Local  | [[sourcePath]] | NULL                | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | True     | [[result]] | ""        | AN           |                      |                           |
 
-@FileRenameWithoutOverwrite
-	Scenario Outline: Rename file at location with overwrite disabled
+@FileRenameFromUNCWithOverwrite
+Scenario Outline: Rename file at UNC location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
@@ -72,34 +51,231 @@ Scenario Outline: Rename file at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| No | Name            | source         | sourceLocation                                                                          | username          | password | destination  | destinationLocation                                                                  | destUsername      | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-	| 1  | Local to Local  | [[sourcePath]] | C:\renamefile0.txt                                                                      | ""                | ""       | [[destPath]] | C:\renamed0.txt                                                                      | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 2  | Local to FTP    | [[sourcePath]] | C:\renamefile1.txt                                                                      | ""                | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt                            | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 3  | Local to FTPS   | [[sourcePath]] | C:\renamefile2.txt                                                                      | ""                | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt                            | Administrator | Dev2@dmin123     | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 4  | Local to SFTP   | [[sourcePath]] | C:\renamefile3.txt                                                                      | ""                | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed0.txt                                                | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 5  | Local to UNC    | [[sourcePath]] | C:\renamefile4.txt                                                                      | ""                | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed0.txt | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 6  | UNC to Local    | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile0.txt | ""                | ""       | [[destPath]] | C:\renamed1.txt                                                                      | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 7  | UNC to FTP      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile1.txt | ""                | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed1.txt                            | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 8  | UNC to FTPS     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile2.txt | ""                | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed1.txt                            | Administrator | Dev2@dmin123     | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 9  | UNC to SFTP     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile3.txt | ""                | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed1.txt                                                | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 10 | UNC to UNC      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile4.txt | ""                | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed1.txt | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 11 | FTP to Local    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile0.txt                            | ""                | ""       | [[destPath]] | C:\renamed2.txt                                                                      | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 12 | FTP to UNC      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile1.txt                            | ""                | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed2.txt | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 13 | FTP to FTPS     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile2.txt                            | ""                | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed2.txt                            | Administrator | Dev2@dmin123     | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 14 | FTP to SFTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile3.txt                            | ""                | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed2.txt                                                | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 15 | FTP to FTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile4.txt                            | ""                |          | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed2.txt                            | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 16 | FTPS to Local   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile0.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | C:\renamed3.txt                                                                      | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 17 | FTPS to UNC     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile1.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed3.txt | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 18 | FTPS to FTPS    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile2.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed3.txt                            | Administrator | Dev2@dmin123     | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 19 | FTPS to SFTP    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile3.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/renamed3.txt                                                | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 20 | FTPS to FTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile4.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed3.txt                            | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 21 | SFTP to Local   | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile0.txt                                                | dev2              | Q/ulw&]  | [[destPath]] | C:\renamed4.txt                                                                      | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 22 | SFTP to UNC     | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile1.txt                                                | dev2              | Q/ulw&]  | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed4.txt | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 23 | SFTP to FTP     | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile2.txt                                                | dev2              | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed4.txt                            | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 24 | SFTP to FTPS    | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile3.txt                                                | dev2              | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed4.txt                            | Administrator | Dev2@dmin123     | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 25 | SFTP to SFTP    | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile4.txt                                                | dev2              | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed4.txt                                                | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 26 | SFTP to SFTP PK | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile41.txt                                               | dev2              | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed41.txt                                               | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
-	| 27 | Local to Local  | [[sourcePath]] | NULL                                                                                    | ""                | ""       | [[destPath]] | C:\renamed0.txt                                                                      | ""                | ""           | False    | [[result]] | ""        | AN           |                      |                           |
+	| No | Name            | source         | sourceLocation                                                                                  | username      | password     | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 6  | UNC to Local    | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile0.txt | ""            | ""           | [[destPath]] | C:\renamed1.txt                                                                              | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 7  | UNC to FTP      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile1.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed1.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 8  | UNC to FTPS     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile2.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed1.txt                         | Administrator | Dev2@dmin123 | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 9  | UNC to SFTP     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile3.txt | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/renamed1.txt                                                     | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 10 | UNC to UNC      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile4.txt | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed1.txt | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+
+@FileRenameFromFTPWithOverwrite
+Scenario Outline: Rename file at FTP location
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name            | source         | sourceLocation                                                          | username      | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 11 | FTP to Local    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile0.txt | ""            | ""       | [[destPath]] | C:\renamed2.txt                                                                              | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 12 | FTP to UNC      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile1.txt | ""            | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed2.txt | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 13 | FTP to FTPS     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile2.txt | ""            | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed2.txt                         | Administrator | Dev2@dmin123 | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 14 | FTP to SFTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile3.txt | ""            | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed2.txt                                                     | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 15 | FTP to FTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile4.txt | ""            | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed2.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+
+@FileRenameFromFTPSWithOverwrite
+Scenario Outline: Rename file at FTPS location
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name            | source         | sourceLocation                                                          | username      | password     | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 16 | FTPS to Local   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile0.txt | Administrator | Dev2@dmin123 | [[destPath]] | C:\renamed3.txt                                                                              | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 17 | FTPS to UNC     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile1.txt | Administrator | Dev2@dmin123 | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed3.txt | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 18 | FTPS to FTPS    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile2.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed3.txt                         | Administrator | Dev2@dmin123 | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 19 | FTPS to SFTP    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile3.txt | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/renamed3.txt                                                     | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 20 | FTPS to FTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed3.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+
+@FileRenameFromSFTPWithOverwrite
+Scenario Outline: Rename file at SFTP location
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name            | source         | sourceLocation                               | username | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | SFTP to Local   | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile0.txt  | dev2     | Q/ulw&]  | [[destPath]] | C:\renamed4.txt                                                                              | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | SFTP to UNC     | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile1.txt  | dev2     | Q/ulw&]  | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed4.txt | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | SFTP to FTP     | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile2.txt  | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed4.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | SFTP to FTPS    | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile3.txt  | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed4.txt                         | Administrator | Dev2@dmin123 | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | SFTP to SFTP    | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile4.txt  | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed4.txt                                                     | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 6  | SFTP to SFTP PK | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile41.txt | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed41.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
+
+@FileRenameFromLocalWithoutOverwrite
+	Scenario Outline: Rename file at local location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name           | source         | sourceLocation     | username | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | Local to Local | [[sourcePath]] | C:\renamefile0.txt | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | Local to FTP   | [[sourcePath]] | C:\renamefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | Local to FTPS  | [[sourcePath]] | C:\renamefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt                         | Administrator | Dev2@dmin123 | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | Local to SFTP  | [[sourcePath]] | C:\renamefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed0.txt                                                     | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | Local to UNC   | [[sourcePath]] | C:\renamefile4.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed0.txt | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 6  | Local to Local | [[sourcePath]] | NULL               | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | False    | [[result]] | ""        | AN           |                      |                           |
+
+@FileRenameFromUNCWithoutOverwrite
+	Scenario Outline: Rename file at UNC location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name         | source         | sourceLocation                                                                                  | username          | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | UNC to Local | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile0.txt | ""                | ""       | [[destPath]] | C:\renamed1.txt                                                                              | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | UNC to FTP   | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile1.txt | ""                | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed1.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | UNC to FTPS  | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile2.txt | ""                | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed1.txt                         | Administrator | Dev2@dmin123 | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | UNC to SFTP  | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile3.txt | ""                | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed1.txt                                                     | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | UNC to UNC   | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile4.txt | ""                | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed1.txt | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+
+@FileRenameFromFTPWithoutOverwrite
+	Scenario Outline: Rename file at FTP location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name         | source         | sourceLocation                                                          | username | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | FTP to Local | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile0.txt | ""       | ""       | [[destPath]] | C:\renamed2.txt                                                                              | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | FTP to UNC   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile1.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed2.txt | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | FTP to FTPS  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed2.txt                         | Administrator | Dev2@dmin123 | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | FTP to SFTP  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed2.txt                                                     | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | FTP to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile4.txt | ""       |          | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed2.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+
+@FileRenameFromFTPSWithoutOverwrite
+	Scenario Outline: Rename file at FTPS location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name          | source         | sourceLocation                                                          | username          | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | FTPS to Local | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile0.txt | Administrator | Dev2@dmin123 | [[destPath]] | C:\renamed3.txt                                                                              | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | FTPS to UNC   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile1.txt | Administrator | Dev2@dmin123 | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed3.txt | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | FTPS to FTPS  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile2.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed3.txt                         | Administrator | Dev2@dmin123 | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | FTPS to SFTP  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile3.txt | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/renamed3.txt                                                     | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | FTPS to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed3.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+
+@FileRenameFromSFTPWithoutOverwrite
+	Scenario Outline: Rename file at SFTP location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| No | Name            | source         | sourceLocation                               | username | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | SFTP to Local   | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile0.txt  | dev2     | Q/ulw&]  | [[destPath]] | C:\renamed4.txt                                                                              | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | SFTP to UNC     | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile1.txt  | dev2     | Q/ulw&]  | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed4.txt | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | SFTP to FTP     | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile2.txt  | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed4.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | SFTP to FTPS    | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile3.txt  | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed4.txt                         | Administrator | Dev2@dmin123 | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | SFTP to SFTP    | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile4.txt  | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed4.txt                                                     | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 6  | SFTP to SFTP PK | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile41.txt | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed41.txt                                                    | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
 @FileAndFolderRename
 Scenario Outline: Rename file validation
