@@ -15,13 +15,13 @@ using Warewolf.Streams;
 
 namespace Warewolf.HangfireServer
 {
-    internal class HangfireNetworkLogger : ILoggerPublisher
+    internal class NetworkLogger : ILoggerPublisher
     {
         private IWebSocketPool _webSocketPool;
         private readonly ISerializer _serializer;
         protected ISerializer Serializer { get => _serializer; }
 
-        public HangfireNetworkLogger(ISerializer serializer, IWebSocketPool webSocketPool)
+        public NetworkLogger(ISerializer serializer, IWebSocketPool webSocketPool)
         {
             _webSocketPool = webSocketPool;
             _serializer = serializer;
