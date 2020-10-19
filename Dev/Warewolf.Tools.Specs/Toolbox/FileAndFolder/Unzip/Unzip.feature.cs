@@ -600,6 +600,7 @@ this.UnzipFileAtUNCLocation("5", "UNC to SFTP", "[[path]]", "\\\\SVRDEV.premier.
             var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
+            System.Console.WriteLine("Unzipping file to destination: " + destinationLocation);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file at FTP location", @__tags);
 #line 63
 this.ScenarioSetup(scenarioInfo);
