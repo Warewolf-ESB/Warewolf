@@ -32,7 +32,7 @@ namespace Warewolf.HangfireServer
         {
             var implConfig = new Impl.Config
             {
-                HangfireExecutionLoggerFactory = new HangfireExecutionLogger.HangfireExecutionLoggerFactory(),
+                ExecutionLoggerFactory = new ExecutionLogger.ExecutionLoggerFactory(),
                 Writer = new Writer(),
             };
             var result = CommandLine.Parser.Default.ParseArguments<Args>(args);
@@ -44,13 +44,13 @@ namespace Warewolf.HangfireServer
         internal class Impl
         {
             private readonly IArgs _options;
-            private readonly IHangfireExecutionLogPublisher _logger;
+            private readonly IExecutionLogPublisher _logger;
             private readonly IWriter _writer;
 
             public Impl(Args options, Config implConfig)
             {
                 _options = options;
-                _logger = implConfig.HangfireExecutionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
+                _logger = implConfig.ExecutionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
                 _writer = implConfig.Writer;
             }
 
@@ -71,21 +71,21 @@ namespace Warewolf.HangfireServer
             internal class Config
             {
                 public IWriter Writer { get; set; }
-                public HangfireExecutionLogger.IHangfireExecutionLoggerFactory HangfireExecutionLoggerFactory { get; set; }
+                public ExecutionLogger.IExecutionLoggerFactory ExecutionLoggerFactory { get; set; }
             }
         }
     }
 
     internal class Implementation
     {
-        private readonly IHangfireExecutionLogPublisher _logger;
+        private readonly IExecutionLogPublisher _logger;
         private readonly IWriter _writer;
         private BackgroundJobServer _server;
         private IHangfireContext _context;
         private readonly IPauseHelper _pause;
         readonly EventWaitHandle _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
 
-        public Implementation(IHangfireContext context, IHangfireExecutionLogPublisher logger, IWriter writer, IPauseHelper pause)
+        public Implementation(IHangfireContext context, IExecutionLogPublisher logger, IWriter writer, IPauseHelper pause)
         {
             _context = context;
             _logger = logger;
