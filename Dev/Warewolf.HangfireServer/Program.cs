@@ -12,6 +12,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using CommandLine;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
@@ -97,9 +98,18 @@ namespace Warewolf.HangfireServer
         {
             _writer.WriteLine("Starting Hangfire server...");
 
+            var connectionString = ConnectionString();
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
+                _writer.Write("Press any key to exit...");
+                _pause.Pause();
+                Environment.Exit(0);
+                return;
+            }
             GlobalConfiguration.Configuration
                 .UseFilter(new LogEverythingAttribute())
-                .UseSqlServerStorage(ConnectionString(), new SqlServerStorageOptions
+                .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
                 {
                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                     SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
@@ -107,7 +117,7 @@ namespace Warewolf.HangfireServer
                     UseRecommendedIsolationLevel = true,
                     DisableGlobalLocks = true
                 });
-            var dashboardEndpoint = Dev2.Common.Config.Persistence.DashboardHostname + ":" + Dev2.Common.Config.Persistence.DashboardPort;
+            var dashboardEndpoint = Config.Persistence.DashboardHostname + ":" + Dev2.Common.Config.Persistence.DashboardPort;
             var options = new StartOptions();
             options.Urls.Add(dashboardEndpoint);
             WebApp.Start<Dashboard>(options);
@@ -118,8 +128,12 @@ namespace Warewolf.HangfireServer
 
         private string ConnectionString()
         {
-            var payload = Dev2.Common.Config.Persistence.PersistenceDataSource.Payload;
-            if (Dev2.Common.Config.Persistence.EncryptDataSource)
+            var payload = Config.Persistence.PersistenceDataSource.Payload;
+            if (string.IsNullOrEmpty(payload))
+            {
+                return string.Empty;
+            }
+            if (Config.Persistence.EncryptDataSource)
             {
                 payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
             }
