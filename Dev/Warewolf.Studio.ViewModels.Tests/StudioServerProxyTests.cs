@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioServerProxy_LoadExplorer")]
         public void StudioServerProxy_Delete_WhenResource_ShouldDeleteResource()
@@ -137,7 +137,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioServerProxy_LoadExplorer")]
         public void StudioServerProxy_Delete_WhenVersion_ShouldDeleteVersion()
@@ -171,7 +171,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_RenameFolder")]
         public void StudioServerProxy_Rename_WhenFolder_ShouldRenameFolder()
@@ -201,7 +201,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_Rename")]
         public void StudioServerProxy_Rename_WhenNotFolder_ShouldRenameResourceId()
@@ -231,7 +231,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_Move")]
         public void StudioServerProxy_Move_WhenSucces_ShouldReturnTrue()
@@ -265,7 +265,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_Move")]
         public void StudioServerProxy_Move_WhenFaulty_ShouldReturnfalse()
@@ -471,7 +471,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_HasDependencies")]
         public void StudioServerProxy_HasDependencies_GivenNoNodes_ShowDepenciesIsFalse()
@@ -496,7 +496,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_HasDependencies")]
         public void StudioServerProxy_HasDependencies_GivenNodesAndDeleteAnyway_ShowDepenciesIsFalse()
@@ -574,7 +574,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_HasDependencies")]
         public void StudioServerProxy_HasDependencies_GivenNodesAndCanceClicked_ShowsDependencies()

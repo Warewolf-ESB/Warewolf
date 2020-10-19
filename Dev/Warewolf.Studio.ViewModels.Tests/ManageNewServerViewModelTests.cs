@@ -159,7 +159,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ManageNewServerViewModelAsyncWorkerNull()
         {

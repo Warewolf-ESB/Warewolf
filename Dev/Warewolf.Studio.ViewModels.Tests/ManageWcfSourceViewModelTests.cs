@@ -53,7 +53,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InstantiateNewModel_Returns_Success()

@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -132,7 +132,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -142,7 +142,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_IRequestServiceNameViewModel_IsNotNull()
@@ -929,7 +929,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestConnection_Failed_InvalidSearchIndex()

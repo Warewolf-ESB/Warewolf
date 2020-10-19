@@ -681,7 +681,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         public void EnvironmentViewModelVerifyNewFolderShowsContextMenu_HasParentPermissions()
         {
             //arrange
@@ -707,7 +707,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         public void TestCreateFolder()
         {
             //arrange

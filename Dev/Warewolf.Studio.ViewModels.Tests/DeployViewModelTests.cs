@@ -31,7 +31,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     public class DeployViewModelTests
     {
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeployViewModel_Ctor")]
 		[ExpectedException(typeof(ArgumentNullException))]
@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeployViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
         public void DeployViewModel_Ctor_NullParamsThird_ExprecErrors()
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
         public void DeploySourceExplorerViewModel_Ctor_Nulls_ExpectSuccess()
@@ -171,7 +171,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Sanele Mthembu")]
         public void DeployViewModel_Version_Mistmatch()
         {

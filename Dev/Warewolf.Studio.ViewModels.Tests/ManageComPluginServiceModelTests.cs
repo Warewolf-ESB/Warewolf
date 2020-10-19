@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         public void TestEditComPluginSource()
         {
             var mockPluginSource = new Mock<IComPluginSource>();
