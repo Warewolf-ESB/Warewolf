@@ -1789,6 +1789,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open this URL in your default browser to view the hangfire dashboard.
+        /// </summary>
+        public static string HangfireDashboardBrowserTooltip {
+            get {
+                return ResourceManager.GetString("HangfireDashboardBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hard coded values or variables..
         /// </summary>
         public static string InputDefaultValueToolTip {

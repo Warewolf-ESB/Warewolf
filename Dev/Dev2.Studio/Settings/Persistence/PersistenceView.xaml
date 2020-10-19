@@ -153,6 +153,11 @@
                             <ColumnDefinition Width="{Binding ElementName=PersistenceDataSourcesTextBlock, Path=ActualWidth}" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Host Name"
                                    Margin="{StaticResource ElementBorderTop}" />
                         <Grid Grid.Row="0" Grid.Column="1">
@@ -160,10 +165,8 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="DashboardHostNameTextbox"
+                            <TextBox x:Name="DashboardHostNameTextBox"
                                      Grid.Column="0"
                                      Margin="{StaticResource ElementBorderTop}"
                                      Text="{Binding DashboardHostname, UpdateSourceTrigger=PropertyChanged}"
@@ -174,22 +177,9 @@
                                                      DataContext="{Binding}" />
                                 </i:Interaction.Behaviors>
                             </TextBox>
-                            <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="/" />
-                            <TextBox x:Name="DashboardNameTextBox"
-                                     Grid.Column="2"
-                                     MinWidth="500"
-                                     Margin="{StaticResource ElementBorderTop}"
-                                     Text="{Binding DashboardName, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{x:Static languages:Tooltips.PersistenceDashboardNameTooltip}"
-                                     Focusable="True">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceDashboardNameHelp}"
-                                                     DataContext="{Binding}" />
-                                </i:Interaction.Behaviors>
-                            </TextBox>
-                            <TextBlock Grid.Column="3" HorizontalAlignment="Center" Text=":" />
+                            <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text=":" />
                             <TextBox x:Name="DashboardPortTextBox"
-                                     Grid.Column="4"
+                                     Grid.Column="2"
                                      MinWidth="35"
                                      Margin="{StaticResource ElementBorderTop}"
                                      Text="{Binding DashboardPort, UpdateSourceTrigger=PropertyChanged}"
@@ -201,6 +191,32 @@
                                 </i:Interaction.Behaviors>
                             </TextBox>
                         </Grid>
+
+                        <TextBlock Grid.Column="0" Grid.Row="1" Text="Query String"
+                                   Margin="{StaticResource ControlBorderTop}" />
+
+                        <TextBox x:Name="DashboardNameTextBox"
+                                 Grid.Row="1"
+                                 Grid.Column="1"
+                                 Margin="{StaticResource ControlBorderTop}"
+                                 Text="{Binding DashboardName, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="{x:Static languages:Tooltips.PersistenceDashboardNameTooltip}"
+                                 Focusable="True">
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceDashboardNameHelp}"
+                                                 DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+
+                        <TextBlock Grid.Column="1" Grid.Row="2" Margin="{StaticResource ControlBorderTop}" >
+                            <Hyperlink x:Name="HangfireDashboardUrl"
+                                       Command="{Binding HangfireDashboardBrowserCommand}"
+                                       ToolTip="{x:Static languages:Tooltips.HangfireDashboardBrowserTooltip}"
+                                       Style="{StaticResource HyperLinkStyle}"
+                                       NavigateUri="{Binding HangfireDashboardUrl,UpdateSourceTrigger=PropertyChanged}" >
+                                <TextBlock Text="{Binding HangfireDashboardUrl,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource HoverUnderlineStyle}"/>
+                            </Hyperlink>
+                        </TextBlock>
                     </Grid>
                 </Grid>
             </StackPanel>

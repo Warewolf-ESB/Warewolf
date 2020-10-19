@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 using System.Collections.Generic;
+using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Settings.Persistence
@@ -25,5 +26,7 @@ namespace Dev2.Settings.Persistence
         string DashboardHostname { get; set; }
         string DashboardPort { get; set; }
         string DashboardName { get; set; }
+        string HangfireDashboardUrl { get; set; }
+        ICommand HangfireDashboardBrowserCommand { get; set; }
     }
 }
