@@ -117,7 +117,7 @@ namespace Warewolf.HangfireServer
                     UseRecommendedIsolationLevel = true,
                     DisableGlobalLocks = true
                 });
-            var dashboardEndpoint = Config.Persistence.DashboardHostname + ":" + Dev2.Common.Config.Persistence.DashboardPort;
+            var dashboardEndpoint = Config.Persistence.DashboardHostname + ":" + Config.Persistence.DashboardPort;
             var options = new StartOptions();
             options.Urls.Add(dashboardEndpoint);
             WebApp.Start<Dashboard>(options);
