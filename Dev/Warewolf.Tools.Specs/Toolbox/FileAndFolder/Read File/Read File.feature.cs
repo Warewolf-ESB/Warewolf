@@ -86,8 +86,6 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.ReadFile
         
         public virtual void ReadFileAtLocation(string nO, string name, string source, string sourceLocation, string username, string password, string resultVar, string result, string errorOccured, string sourcePrivateKeyFile, string[] exampleTags)
         {
-            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
-            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read File at location", exampleTags);
 #line 8
 this.ScenarioSetup(scenarioInfo);
