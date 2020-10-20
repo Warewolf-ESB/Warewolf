@@ -739,7 +739,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(250)]
         public void TestCreateFolderIsDialog()
         {
             //arrange
