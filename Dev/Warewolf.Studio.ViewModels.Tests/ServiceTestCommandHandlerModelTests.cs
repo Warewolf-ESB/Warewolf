@@ -783,7 +783,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestCommandHandlerModel))]
         public void ServiceTestCommandHandlerModel_RunSelectedTest_GivenResultWithOutputWithTestSteps_ShouldPopulateSelectedTesWithResultOutputsStep()
