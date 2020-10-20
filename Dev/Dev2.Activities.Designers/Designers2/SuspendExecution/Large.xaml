@@ -135,7 +135,7 @@
         <GroupBox x:Name="OnSaveGroupBox"
                   Style="{StaticResource ActivityGroupBoxStyle}"
                   VerticalContentAlignment="Stretch"
-                  IsEnabled="{Binding ModelItem.AllowManualResumption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InverseBooleanConverter}}"
+                  IsEnabled="{Binding ModelItem.AllowManualResumption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Grid.Row="3"
                   Width="Auto">
             <GroupBox.Header>
