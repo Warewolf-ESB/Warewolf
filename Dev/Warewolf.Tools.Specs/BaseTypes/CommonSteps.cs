@@ -470,6 +470,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"I have a destination path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveADestinationPathWithValue(string pathVariable, string location)
         {
+            if (location.StartsWith(@"\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP") && !Directory.Exists(location)))
+            {
+                Directory.CreateDirectory(location);
+            }
             _scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
