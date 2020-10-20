@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Activities.Designers2.Foreach;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.Interfaces.Enums;
