@@ -1808,7 +1808,7 @@ this.ZipFileAtUNCLocationWithOverwriteDisabled("2", "UNC to UNC", "[[path]]", "\
         {
 #line 182
 this.ZipFileAtUNCLocationWithOverwriteDisabled("3", "UNC to FTP", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileZipSharedTestingSite\\fileto" +
-                    "zip2.txt", "\"\"", "\"\"", "[[path1]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip11.txt", "\"\"", "\"\"", "False", "", "BestCompression", "[[result]]", "", "NO", "", "", ((string[])(null)));
+                    "zip2.txt", "\"\"", "\"\"", "[[path1]]", "ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip11.txt", "\"\"", "\"\"", "False", "", "BestCompression", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1840,7 +1840,7 @@ this.ZipFileAtUNCLocationWithOverwriteDisabled("3", "UNC to FTP", "[[path]]", "\
         {
 #line 182
 this.ZipFileAtUNCLocationWithOverwriteDisabled("4", "UNC to FTPS", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileZipSharedTestingSite\\fileto" +
-                    "zip3.txt", "\"\"", "\"\"", "[[path1]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip21.txt", "Administrator", "Dev2@dmin123", "False", "", "None", "[[result]]", "", "NO", "", "", ((string[])(null)));
+                    "zip3.txt", "\"\"", "\"\"", "[[path1]]", "ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip21.txt", "Administrator", "Dev2@dmin123", "False", "", "None", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
