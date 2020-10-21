@@ -40,7 +40,7 @@ namespace Dev2.Activities
         public SuspendExecutionActivity()
         {
             DisplayName = "Suspend Execution";
-            DataFunc = new ActivityFunc<string, bool>
+            SaveDataFunc = new ActivityFunc<string, bool>
             {
                 DisplayName = "Data Action",
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
@@ -62,7 +62,7 @@ namespace Dev2.Activities
         public bool AllowManualResumption { get; set; }
         [FindMissing] public string Response { get; set; }
 
-        public ActivityFunc<string, bool> DataFunc { get; set; }
+        public ActivityFunc<string, bool> SaveDataFunc { get; set; }
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -115,6 +115,7 @@ namespace Dev2.Activities
 
                 Response = _suspensionId;
                 Dev2Logger.Debug($"{_dataObject.ServiceName} execution suspended: Trigger {_suspensionId} scheduled: {_suspensionId}", GlobalConstants.WarewolfDebug);
+                ExecuteSaveDataFunc();
                 _dataObject.StopExecution = true;
                 return new List<string> {_suspensionId};
             }
@@ -125,6 +126,15 @@ namespace Dev2.Activities
                 throw new Exception(ex.GetAllMessages());
             }
         }
+        private void ExecuteSaveDataFunc()
+        {
+            if (SaveDataFunc.Handler is IDev2Activity act)
+            {
+                act.Execute(_dataObject, 0);
+                Dev2Logger.Debug("Save SuspensionId: Execute - " + act.GetDisplayName(), _dataObject.ExecutionID.ToString());
+            }
+        }
+
         private string PersistSchedulePersistValue()
         {
             var debugEvalResult = new DebugEvalResult(PersistValue, "Persist Schedule Value", _dataObject.Environment, _update);
@@ -196,7 +206,7 @@ namespace Dev2.Activities
             equals &= string.Equals(PersistValue, other.PersistValue);
             equals &= Equals(AllowManualResumption, other.AllowManualResumption);
             equals &= Equals(Response, other.Response);
-            equals &= activityFuncComparer.Equals(DataFunc, other.DataFunc);
+            equals &= activityFuncComparer.Equals(SaveDataFunc, other.SaveDataFunc);
 
             return equals;
         }
@@ -230,7 +240,7 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (PersistValue != null ? PersistValue.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (AllowManualResumption != null ? AllowManualResumption.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (DataFunc != null ? DataFunc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SaveDataFunc != null ? SaveDataFunc.GetHashCode() : 0);
                 return hashCode;
             }
         }

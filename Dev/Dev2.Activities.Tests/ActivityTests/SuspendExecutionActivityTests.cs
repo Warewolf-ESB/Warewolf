@@ -28,7 +28,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNull(suspendExecutionActivity.PersistValue);
             Assert.AreEqual(enSuspendOption.SuspendUntil, suspendExecutionActivity.SuspendOption);
             Assert.IsFalse(suspendExecutionActivity.AllowManualResumption);
-            Assert.AreEqual("Data Action", suspendExecutionActivity.DataFunc.DisplayName);
+            Assert.AreEqual("Data Action", suspendExecutionActivity.SaveDataFunc.DisplayName);
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 SuspendOption = enSuspendOption.SuspendForDays,
                 PersistValue = "15",
                 AllowManualResumption = true,
-                DataFunc = activityFunction,
+                SaveDataFunc = activityFunction,
                 Response = "[[result]]"
             };
 
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("15", suspendExecutionActivity.PersistValue);
             Assert.AreEqual(enSuspendOption.SuspendForDays, suspendExecutionActivity.SuspendOption);
             Assert.IsTrue(suspendExecutionActivity.AllowManualResumption);
-            Assert.AreEqual("TestService", suspendExecutionActivity.DataFunc.DisplayName);
+            Assert.AreEqual("TestService", suspendExecutionActivity.SaveDataFunc.DisplayName);
 
             var result = suspendExecutionActivity.GetOutputs();
 
@@ -218,7 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 SuspendOption = enSuspendOption.SuspendForDays,
                 PersistValue = "15",
                 AllowManualResumption = true,
-                DataFunc = activityFunction,
+                SaveDataFunc = activityFunction,
                 Response = "[[result]]",
                 NextNodes = dev2Activities,
             };
