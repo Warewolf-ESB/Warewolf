@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
@@ -79,6 +79,7 @@ namespace Dev2.Diagnostics.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerfmonContainer_Ctor")]
+        [DoNotParallelize]
         public void PerfmonContainer_Ctor_WrappedMethods()
         {
             var cont = new Cont();

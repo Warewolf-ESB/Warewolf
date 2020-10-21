@@ -26,6 +26,7 @@ namespace Dev2.Common.Tests
         {
             Assert.AreEqual(nameof(LegacySettingsData), ServerSettings.DefaultSink);
         }
+
         [TestMethod]
         [TestCategory(nameof(ServerSettings))]
         public void ServerSettingsData_Equals_Valid_Expected()
@@ -88,7 +89,7 @@ namespace Dev2.Common.Tests
             var mockDirectoryWrapper = new Mock<IDirectory>();
 
             var settings = new ServerSettings("", mockFileWrapper.Object, mockDirectoryWrapper.Object);
-            var result = settings.Get();
+            settings.Get();
 
             Assert.AreEqual(0, settings.WebServerPort);
             Assert.AreEqual(0, settings.WebServerSslPort);
@@ -122,8 +123,8 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(LogLevel.TRACE.ToString(), result.ExecutionLogLevel);
             Assert.AreEqual(false, result.EnableDetailedLogging);
             Assert.AreEqual(nameof(LegacySettingsData), result.Sink);
-
         }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServerSettings))]
@@ -147,9 +148,9 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ServerSettings))]
-        [DoNotParallelize]
         public void ServerSettingsData_SinkNotInFile_AuditFilePathIsNotNull_SetSinkEqualLegacySettingsData()
         {
+            Config.Server.Sink = null;
             var serverSettings = Config.Server.Get();
             Assert.AreEqual(nameof(LegacySettingsData), serverSettings.Sink);
             Assert.AreEqual(LegacySettings.DefaultAuditPath, serverSettings.AuditFilePath);

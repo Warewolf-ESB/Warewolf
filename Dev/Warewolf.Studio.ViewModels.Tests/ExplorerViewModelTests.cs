@@ -65,7 +65,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             return mockEnvironmentConnection;
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestRefreshCommand()
@@ -100,7 +101,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_ValidateEnvironmentContainsDoesNotAdd()
@@ -128,7 +130,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, _target.Environments.Count);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestClearSearchTextCommand()
@@ -148,7 +151,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(_target.SearchText));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestCreateFolderCommand()
@@ -169,7 +173,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             selectedItemCommandMock.Verify(it=>it.Execute(null));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestIsFromActivityDrop()
@@ -189,7 +194,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isIsFromActivityDropChanged);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestIsRefreshing()
@@ -209,7 +215,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isIsRefreshingChanged);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestAllowDrag()
@@ -230,7 +237,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isAllowDragChanged);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSelectedItemExplorerViewModel_()
@@ -259,7 +267,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isSelectedItem);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestShowConnectControl()
@@ -274,7 +283,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.ShowConnectControl);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSelectedDataItems()
@@ -300,7 +310,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.ShowConnectControl);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestEnvironments()
@@ -321,7 +332,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isEnvironmentsChanged);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSelectedEnvironment()
@@ -336,7 +348,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(environmentViewModelMock.Object, _target.SelectedEnvironment);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSelectedServer()
@@ -354,7 +367,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(serverMock.Object, actual);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSearchTextNotChanged()
@@ -373,7 +387,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(isSearchText);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSearchTextChanged()
@@ -397,7 +412,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isEnvironments);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSearchToolTip()
@@ -411,7 +427,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(!string.IsNullOrEmpty(actual));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestExplorerClearSearchTooltip()
@@ -425,7 +442,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(!string.IsNullOrEmpty(actual));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestRefreshToolTip()
@@ -439,7 +457,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(!string.IsNullOrEmpty(actual));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestIsDeploy()
@@ -454,7 +473,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsDeploy);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -463,7 +483,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             new ExplorerViewModel(null, _eventAggregatorMock.Object,true);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestServerConnected()
@@ -489,7 +510,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.Environments.Any());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestServerDisconnected()
@@ -533,7 +555,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.Environments.Any());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestServerReConnected()
@@ -566,7 +589,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsLoading);
         }
       
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestRefreshEnvironment()
@@ -596,7 +620,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestRefreshEnvironmentSetsPermissions()
@@ -627,7 +652,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.SetPropertiesForDialogFromPermissions(It.IsAny<IWindowsGroupPermission>()));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestRefreshSelectedEnvironment()
@@ -656,7 +682,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestFilter()
@@ -678,7 +705,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_RemoveItemChildRemoveItem()
@@ -706,7 +734,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.RemoveItem(explorerItemViewModelMock.Object));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_RemoveItemChildRemoveChild()
@@ -736,7 +765,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.RemoveChild(explorerItemViewModelMock.Object));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestUpdateHelpDescriptor()
@@ -754,7 +784,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             helpWindowViewModelMock.Verify(it => it.UpdateHelpText("someHelpText"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSelectItemGuid()
@@ -784,7 +815,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.VerifySet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSelectItemString()
@@ -814,7 +846,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.VerifySet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestDispose()
@@ -830,7 +863,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.Dispose());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestFindItems()
@@ -842,7 +876,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNull(value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSelectAction()

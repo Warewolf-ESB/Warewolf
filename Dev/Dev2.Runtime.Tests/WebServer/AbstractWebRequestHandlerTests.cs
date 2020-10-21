@@ -21,9 +21,12 @@ using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
+using System.Web.Http.Controllers;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -42,6 +45,8 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
+using FluentAssertions.Common;
+using Microsoft.Office.SharePoint.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -51,6 +56,7 @@ using Warewolf.Security;
 using Warewolf.Services;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Xceed.Wpf.Toolkit.Core.Converters;
 using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Tests.Runtime.WebServer
@@ -428,7 +434,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var resourceId = Guid.NewGuid();
             var resourceName = @"Hello World";
 
-            var resourceIds = new[] {resourceId};
+            var resourceIds = new[] { resourceId };
             dataObject.TestsResourceIds = resourceIds;
 
             var mockResource = new Mock<IResource>();
@@ -442,7 +448,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(o => o.GetResource(Guid.Empty, resourceName)).Returns(mockResource.Object);
-            var resources = new List<IResource> {mockResource.Object};
+            var resources = new List<IResource> { mockResource.Object };
             resourceCatalog.Setup(o => o.GetResources(Guid.Empty)).Returns(resources);
 
             var serviceTestModelTO = new Mock<IServiceTestModelTO>();
@@ -450,7 +456,7 @@ namespace Dev2.Tests.Runtime.WebServer
             serviceTestModelTO.Setup(to => to.TestName).Returns("Test1");
             serviceTestModelTO.Setup(to => to.ResourceId).Returns(resourceId);
 
-            var tests = new List<IServiceTestModelTO> {serviceTestModelTO.Object};
+            var tests = new List<IServiceTestModelTO> { serviceTestModelTO.Object };
             var testCatalog = new Mock<ITestCatalog>();
             var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
             testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(tests);
@@ -477,7 +483,7 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 Content = new StringContent(content, Encoding.UTF8)
                 {
-                    Headers = {ContentType = new MediaTypeHeaderValue("text/plain")}
+                    Headers = { ContentType = new MediaTypeHeaderValue("text/plain") }
                 },
             };
             var boundVars = new NameValueCollection
@@ -762,6 +768,105 @@ namespace Dev2.Tests.Runtime.WebServer
             var json = postDataMock.IsJSON();
             Assert.IsTrue(json);
             Assert.AreEqual(data, postDataMock);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_GivenPost_FileStreamData_InContext_ShouldReturnBase64RequestBoundVariables()
+        {
+            //---------------Set up test pack-------------------
+            var data = "this is a test";
+            var dataBytes = Encoding.ASCII.GetBytes(data);
+            var dataStream = new MemoryStream(dataBytes);
+
+            var mockCommunicationRequestContentHeaders = new Mock<ICommunicationRequestContentHeaders>();
+            mockCommunicationRequestContentHeaders.Setup(o => o.Headers)
+                .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { { "Content-type", "text/plain" } } }.Headers);
+
+            var communicationRequestContent = new Mock<ICommunicationRequestContent>();
+            communicationRequestContent.Setup(o => o.IsMimeMultipartContent("form-data"))
+                .Returns(true);
+            communicationRequestContent.Setup(o => o.ReadAsStreamAsync())
+                .Returns(Task.FromResult(dataStream as Stream));
+            communicationRequestContent.Setup(o => o.Headers)
+                .Returns(mockCommunicationRequestContentHeaders.Object);
+
+            var communicationContext = new Mock<ICommunicationContext>();
+            const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+
+            communicationContext.Setup(context => context.Request.InputStream).Returns(dataStream);
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.Content).Returns(communicationRequestContent.Object);
+
+            var provider = new MultipartMemoryStreamProvider 
+            { 
+                Contents = 
+                { 
+                    { 
+                        new HttpContentStub(dataBytes)
+                        { 
+                            Headers = 
+                            { 
+                                { "contant-type", "text/plain" },
+                                { "content-disposition", "form-data; name=testStringData" },
+                            } 
+                        }
+                    },
+                    {
+                        new HttpContentStub(new UTF8Encoding(true).GetBytes("This is some text in the file."))
+                        {
+                            Headers =
+                            {
+                                { "contant-type", "text/plain" },
+                                { "content-disposition", "form-data; name=testFileData; filename=MyTest.txt" },
+                            }
+                        }
+                    }
+                }
+            };
+
+            var mockStreamContentWrapper = new Mock<IStreamContentWrapper>();
+
+            mockStreamContentWrapper.Setup(o => o.Headers)
+                .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
+            mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
+                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+            mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
+                .Returns(Task<byte[]>.FromResult(dataBytes));
+
+            var mockStreamContentFactory = new Mock<IStreamContentFactory>();
+            mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
+                .Returns(mockStreamContentWrapper.Object);
+
+            var mockMultipartMemoryStreamProviderFactory = new Mock<IMultipartMemoryStreamProviderFactory>();
+            mockMultipartMemoryStreamProviderFactory.Setup(o => o.New())
+                .Returns(provider);
+
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMockInstance(communicationContext.Object, new StreamWriterFactory(), mockStreamContentFactory.Object, mockMultipartMemoryStreamProviderFactory.Object, new MemoryStreamFactory());
+
+            var contextObject = communicationContext.Object;
+            var requestBoundVariables = contextObject.Request.BoundVariables;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(string.Empty, postDataMock);
+            Assert.AreEqual("dGhpcyBpcyBhIHRlc3Q=", requestBoundVariables.Get("testStringData"));
+            Assert.AreEqual("VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu", requestBoundVariables.Get("testFileData"));
+
         }
 
         [TestMethod]
@@ -2188,6 +2293,42 @@ namespace Dev2.Tests.Runtime.WebServer
         }
     }
 
+    internal class HttpContentHeadersStub : HttpHeaders
+    {
+        public HttpContentHeadersStub()
+        {
+        }
+
+        public HttpContentHeaders Headers { get; set; }
+    }
+
+    internal class HttpContentStub : HttpContent
+    {
+        private MemoryStream _stream;
+
+        public HttpContentStub(byte[] data)
+            : base()
+        {
+            _stream = new MemoryStream(data);
+            _stream.Flush();
+            _stream.Position = 0;
+        }
+
+        protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
+        {
+            _stream.CopyTo(stream);
+            var source = new TaskCompletionSource<object>();
+            source.SetResult(null);
+            return source.Task;
+        }
+
+        protected override bool TryComputeLength(out long length)
+        {
+            length = _stream.Length;
+            return true;
+        }
+    }
+
     class TestAbstractWebRequestDataObjectFactory : AbstractWebRequestHandler.IDataObjectFactory
     {
         readonly IDSFDataObject _dataObject;
@@ -2223,10 +2364,15 @@ namespace Dev2.Tests.Runtime.WebServer
             return CreateForm(webRequest, serviceName, workspaceId, headers, user);
         }
 
+        public string GetPostDataMockInstance(ICommunicationContext ctx, IStreamWriterFactory streamWriterFactory, IStreamContentFactory streamContentFactory, IMultipartMemoryStreamProviderFactory streamProviderFactory, IMemoryStreamFactory memoryStreamFactory)
+        {
+            return new SubmittedData(streamWriterFactory, streamContentFactory, streamProviderFactory, memoryStreamFactory ).GetPostData(ctx);
+        }
+
         //protected static string GetPostData(ICommunicationContext ctx)
         public string GetPostDataMock(ICommunicationContext ctx)
         {
-            return SubmittedData.GetPostData(ctx);
+            return new SubmittedData().GetPostData(ctx);
         }
 
         //BindRequestVariablesToDataObject(WebRequestTO request, ref IDSFDataObject dataObject)
@@ -2290,4 +2436,5 @@ namespace Dev2.Tests.Runtime.WebServer
             return ctx.GetMethodName();
         }
     }
+
 }

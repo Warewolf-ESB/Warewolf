@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -47,6 +47,7 @@
     <Reference Include="System.Activities.Presentation" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Workflow Designer.cs" />
   </ItemGroup>

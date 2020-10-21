@@ -104,10 +104,12 @@
     <Compile Include="Activities\AdvancedRecordset\AdvancedRecordset.cs" />
     <Compile Include="Activities\AdvancedRecordset\IAdvancedRecordset.cs" />
     <Compile Include="Activities\DropBox2016\DsfDropBoxBaseActivity.cs" />
+    <Compile Include="Activities\DsfWebGetActivity.cs" />
     <Compile Include="Activities\GateActivity.cs" />
     <Compile Include="Activities\Exchange\DsfExchangeEmailNewActivity.cs" />
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
+    <Compile Include="Activities\PathOperations\DsfFileWrite.cs" />
     <Compile Include="Activities\PathOperations\FileReadWithBase64.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />
     <Compile Include="Activities\RabbitMQ\Publish\PublishRabbitMQActivity.cs" />
@@ -230,7 +232,7 @@
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebActivityBase.cs" />
     <Compile Include="Activities\DsfWebDeleteActivity.cs" />
-    <Compile Include="Activities\DsfWebGetActivity.cs" />
+    <Compile Include="Activities\WebGetActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
@@ -277,7 +279,7 @@
     <Compile Include="Activities\PathOperations\DsfPathMove.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderRead.cs" />
     <Compile Include="Activities\PathOperations\DsfFileRead.cs" />
-    <Compile Include="Activities\PathOperations\DsfFileWrite.cs" />
+    <Compile Include="Activities\PathOperations\FileWriteActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfPathRename.cs" />
     <Compile Include="Activities\PathOperations\DsfUnZip.cs" />
     <Compile Include="Activities\PathOperations\DsfZip.cs" />
@@ -513,9 +515,6 @@
     <PackageReference Include="Dropbox.Api">
       <Version>4.2.4</Version>
     </PackageReference>
-    <PackageReference Include="FSharp.Core.3">
-      <Version>0.0.2</Version>
-    </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.8</Version>
     </PackageReference>
@@ -544,5 +543,4 @@
       <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
 </Project>

@@ -6780,6 +6780,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to When selected, it reads the content of the file as base64 format..
+        /// </summary>
+        public static string WriteFileToolTipContentsAsBase64 {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipContentsAsBase64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To write content to a file, put the full path and file name in here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..

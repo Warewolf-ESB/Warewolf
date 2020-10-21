@@ -240,8 +240,10 @@
     <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
     <Compile Include="WebPutTool\TestWebPutViewModel.cs" />
     <Compile Include="WebPostTool\TestWebPostViewModel.cs" />
-    <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
     <Compile Include="WriteFile\TestWriteFileDesignerViewModel.cs" />
+    <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
+    <Compile Include="WriteFileWithBase64\WriteFileActivityDesignerViewModelTests.cs" />
+    <Compile Include="WriteFileWithBase64\TestWriteFileActivityDesignerViewModel.cs" />
     <Compile Include="XPath\XPathDesignerViewModelTests.cs" />
     <Compile Include="Zip\ZipDesignerViewModelTests.cs" />
     <Compile Include="Zip\TestZipDesignerViewModel.cs" />

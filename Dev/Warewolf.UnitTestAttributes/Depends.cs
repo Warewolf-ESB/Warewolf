@@ -39,7 +39,8 @@ namespace Warewolf.UnitTestAttributes
             AnonymousRedis = 7,
             AnonymousWarewolf = 8,
             Elasticsearch = 9,
-            AnonymousElasticsearch = 10
+            AnonymousElasticsearch = 10,
+            WebApi = 11
         }
 
         ContainerType _containerType;
@@ -70,6 +71,8 @@ namespace Warewolf.UnitTestAttributes
                     return "Elasticsearch";
                 case ContainerType.AnonymousElasticsearch:
                     return "AnonymousElasticsearch";
+                case ContainerType.WebApi:
+                    return "WebApi";
             }
 
             throw new ArgumentOutOfRangeException();
@@ -112,6 +115,9 @@ namespace Warewolf.UnitTestAttributes
                     break;
                 case ContainerType.AnonymousElasticsearch:
                     getUrl = "https://gitlab.com/warewolf/anonymous-elasticsearch-connector-testing";
+                    break;
+                case ContainerType.WebApi:
+                    getUrl = "https://gitlab.com/warewolf/Web-API-connector-testing";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -196,6 +202,9 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.AnonymousElasticsearch:
                     InjectElasticContainer();
                     break;
+                case ContainerType.WebApi:
+                    InjectWebApiContainer();
+                    break;
             }
         }
 
@@ -203,10 +212,10 @@ namespace Warewolf.UnitTestAttributes
         {
             switch (type)
             {
-                case ContainerType.CIRemote:
-                    return "3144";
                 case ContainerType.MSSQL:
                     return "1433";
+                case ContainerType.CIRemote:
+                    return "3144";
                 case ContainerType.MySQL:
                     return "3306";
                 case ContainerType.PostGreSQL:
@@ -225,6 +234,8 @@ namespace Warewolf.UnitTestAttributes
                     return "9200";
                 case ContainerType.Elasticsearch:
                     return "9400";
+                case ContainerType.WebApi:
+                    return "8080";
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -325,27 +336,27 @@ namespace Warewolf.UnitTestAttributes
                 knownServerSources);
         }
 
-        void InjectTFSBLDIP()
+        void InjectWebApiContainer()
         {
-            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.xml",

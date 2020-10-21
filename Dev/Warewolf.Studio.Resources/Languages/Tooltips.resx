@@ -929,7 +929,6 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="RabbitMQToolTipAutoCustomTransactionIDCorrelationID" xml:space="preserve">
     <value>Use CustomTransactionID from Header as CorrelationID of the Queue you want to consume from.</value>
   </data>
-  
   <data name="RabbitMQToolTipPrefetch" xml:space="preserve">
     <value>Provide number of processes that can run concurrently.</value>
   </data>
@@ -1196,7 +1195,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>The default port on which elasticsearch listens is 9200.</value>
   </data>
   <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
-    <value>The server password</value>
+    <value>The Elasticsearch server password</value>
   </data>
   <data name="ElasticsearchUsernameTooltip" xml:space="preserve">
     <value>The Elasticsearch server username</value>
@@ -1204,10 +1203,6 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ElasticsearchSearchIndexTooltip" xml:space="preserve">
     <value>The Elasticsearch server index that will be used to index the data.</value>
   </data>
-  
-  <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
-    <value>The Elasticsearch server password</value>
-  </data>  
   <data name="ElasticsearchTestTooltip" xml:space="preserve">
     <value>Test the elasticsearch source connection</value>
   </data>
@@ -2482,11 +2477,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewAuditsDataSourceToolTip" xml:space="preserve">
     <value>Auditing Data Source</value>
   </data>
-
   <data name="LoggingViewEncryptToolTip" xml:space="preserve">
     <value>Encrypt the Logging Data Source in the Auditing Settings File</value>
   </data>
-
   <data name="RedisTTLToolTip" xml:space="preserve">
     <value>Time in seconds before the key expires. Default is 5 Seconds.</value>
   </data>
@@ -2556,7 +2549,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="OptionConditionToolTip" xml:space="preserve">
     <value>OptionConditionToolTip</value>
   </data>
-
+  <data name="WriteFileToolTipContentsAsBase64" xml:space="preserve">
+    <value>When selected, it reads the content of the file as base64 format.</value>
+  </data>
   <data name="PersistenceDashboardPortTooltip" xml:space="preserve">
     <value>The default port on which Persistence listens is 5001</value>
   </data>

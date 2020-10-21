@@ -239,9 +239,7 @@
     <Compile Include="QueueConfigLoader.cs" />
     <Compile Include="QueueProcessorMonitor.cs" />
     <Compile Include="ServerEnvironmentPreparer.cs" />
-    <Compile Include="ServerLifecycleManagerService.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ServerLifecycleManagerService.cs" />
     <Compile Include="StartWebServer.cs" />
     <Compile Include="WebServerConfiguration.cs" />
     <Compile Include="TempFileDeleter.cs" />
@@ -508,6 +506,7 @@
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\_PublishedWebsites\Dev2.Web"
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.config" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
@@ -515,8 +514,9 @@
       if exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf Server.exe" (
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Resources"
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Resources - Release"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
-      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Release\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Release\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Release\net48\win-x86\Warewolf.COMIPC.exe.config" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
       if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"

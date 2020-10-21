@@ -40,11 +40,30 @@ namespace Dev2.Data.Tests.PathOperations
             //------------Setup for test--------------------------
             const WriteType WriteType = WriteType.AppendBottom;
             const string Contents = "Some test";
+            var ContentsAsBase64 = false;
             //------------Execute Test---------------------------
             var dev2PutRawOperation = new Dev2PutRawOperationTO(WriteType, Contents);
             //------------Assert Results-------------------------
             Assert.AreEqual(WriteType,dev2PutRawOperation.WriteType);
             Assert.AreEqual(Contents,dev2PutRawOperation.FileContents);
+            Assert.AreEqual(ContentsAsBase64,dev2PutRawOperation.FileContentsAsBase64);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Dev2PutRawOperationTO))]
+        public void Dev2PutRawOperationTO_Constructor_GivenParameter_FileContentsAsBase64_ShouldSetProperties()
+        {
+            //------------Setup for test--------------------------
+            const WriteType WriteType = WriteType.AppendBottom;
+            const string Contents = "Some test";
+            var ContentsAsBase64 = true;
+            //------------Execute Test---------------------------
+            var dev2PutRawOperation = new Dev2PutRawOperationTO(WriteType, Contents, ContentsAsBase64);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(WriteType, dev2PutRawOperation.WriteType);
+            Assert.AreEqual(Contents, dev2PutRawOperation.FileContents);
+            Assert.AreEqual(ContentsAsBase64, dev2PutRawOperation.FileContentsAsBase64);
         }
     }
 }
