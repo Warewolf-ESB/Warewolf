@@ -624,10 +624,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(2000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
-        public void TestDispose()
+        public void Com_TestDispose()
         {
             var vm = new ManageComPluginSourceViewModel();
             var ns = new Mock<IRequestServiceNameViewModel>();

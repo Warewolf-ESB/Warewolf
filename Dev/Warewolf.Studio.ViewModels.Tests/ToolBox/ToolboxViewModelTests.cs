@@ -455,8 +455,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestDispose()
+        [Timeout(2000)]
+        public void ToolBox_TestDispose()
         {
             //arrange
             _changedProperties.Clear();

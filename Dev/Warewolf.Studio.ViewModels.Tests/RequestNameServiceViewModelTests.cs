@@ -8,12 +8,11 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class RequestNameServiceViewModelTests
     {
-
         [TestMethod]
         [Timeout(100)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
-        public void TestDispose()
+        public void RequestNameService_TestDispose()
         {
             var serverRepo = new Mock<IServerRepository>();
             var connectionObject = new Mock<IEnvironmentConnection>();
@@ -29,29 +28,5 @@ namespace Warewolf.Studio.ViewModels.Tests
             x.Verify(a=>a.Dispose());
             env.Verify(a => a.Dispose());
         }
-
-    }
-
-
-    [TestClass]
-    public class ManageDatabaseSourceModellTests
-    {
-
-      /*  [TestMethod]
-        [Timeout(100)]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
-        public void TestDispose()
-        {
-            var vm = new ManageDatabaseSourceViewModel(new Mock<IAsyncWorker>().Object );
-            var ns = new Mock<IRequestServiceNameViewModel>();
-            Task<IRequestServiceNameViewModel> t = new Task<IRequestServiceNameViewModel>(()=> ns.Object );
-            t.Start();
-            vm.RequestServiceNameViewModel = t;
-
-            vm.Dispose();
-            ns.Verify(a=>a.Dispose());
-        }*/
-
     }
 }
