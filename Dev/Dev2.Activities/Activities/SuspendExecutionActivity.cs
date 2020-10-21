@@ -114,6 +114,8 @@ namespace Dev2.Activities
                 }
 
                 Response = _suspensionId;
+                _dataObject.Environment.Assign(Result,_suspensionId, 0);
+                _dataObject.Environment.CommitAssign();
                 Dev2Logger.Debug($"{_dataObject.ServiceName} execution suspended: Trigger {_suspensionId} scheduled: {_suspensionId}", GlobalConstants.WarewolfDebug);
                 ExecuteSaveDataFunc();
                 _dataObject.StopExecution = true;
@@ -126,6 +128,7 @@ namespace Dev2.Activities
                 throw new Exception(ex.GetAllMessages());
             }
         }
+
         private void ExecuteSaveDataFunc()
         {
             if (SaveDataFunc.Handler is IDev2Activity act)
@@ -134,7 +137,6 @@ namespace Dev2.Activities
                 Dev2Logger.Debug("Save SuspensionId: Execute - " + act.GetDisplayName(), _dataObject.ExecutionID.ToString());
             }
         }
-
         private string PersistSchedulePersistValue()
         {
             var debugEvalResult = new DebugEvalResult(PersistValue, "Persist Schedule Value", _dataObject.Environment, _update);
@@ -179,6 +181,7 @@ namespace Dev2.Activities
                     Value = AllowManualResumption.ToString(),
                     Type = StateVariable.StateType.Input,
                 },
+
                 new StateVariable
                 {
                     Name = nameof(Response),
