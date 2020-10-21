@@ -131,7 +131,7 @@ namespace Dev2.Activities
 
         private void ExecuteSaveDataFunc()
         {
-            if (SaveDataFunc.Handler is IDev2Activity act)
+            if (SaveDataFunc.Handler is IDev2Activity act && AllowManualResumption)
             {
                 act.Execute(_dataObject, 0);
                 Dev2Logger.Debug("Save SuspensionId: Execute - " + act.GetDisplayName(), _dataObject.ExecutionID.ToString());
