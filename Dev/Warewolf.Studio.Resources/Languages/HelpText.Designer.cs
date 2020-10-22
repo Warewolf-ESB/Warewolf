@@ -4795,7 +4795,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selecting this will enable the suspended execution of the workflow to be manually resumed..
+        ///   Looks up a localized string similar to If selected, it allows for manual resumption of the workflow suspended execution..
         /// </summary>
         public static string SuspendExecutionAllowManualResumptionHelpText {
             get {
@@ -4804,14 +4804,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select an option for when the workflow should be suspended.
-        ///Suspend until: Specified Date Time
-        ///Suspend for Seconds: Value in seconds
-        ///Suspend for Minutes: Value in minutes
-        ///Suspend for Hours: Value in hours
-        ///Suspend for Day(s): Value in days
-        ///Suspend for Month(s): Value in months
-        ///    .
+        ///   Looks up a localized string similar to Enter the value for when the suspended workflow needs to be resumed..
         /// </summary>
         public static string SuspendExecutionPersistValueHelpText {
             get {
@@ -4820,7 +4813,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The result after suspending the execution to be stored..
+        ///   Looks up a localized string similar to When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption.
         /// </summary>
         public static string SuspendExecutionResultHelpText {
             get {
@@ -4829,14 +4822,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select an option for when the workflow should be suspended.
-        ///Suspend until:
-        ///Suspend for Seconds:
-        ///Suspend for Minutes:
-        ///Suspend for Hours:
-        ///Suspend for Day(s):
-        ///Suspend for Month(s):
-        ///    .
+        ///   Looks up a localized string similar to Select an option for when the suspended workflow should be resumed..
         /// </summary>
         public static string SuspendExecutionSuspendOptionsHelpText {
             get {
@@ -5219,7 +5205,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Suspend Execution tool when you need to pause and persist your workflow for a length of time..
+        ///   Looks up a localized string similar to Use the Suspend Execution tool when you need to suspend execution of a workflow and persist the data so that the workflow can be resumed with the persisted data at the time scheduled in the tool..
         /// </summary>
         public static string Tool_Flow_SuspendExecution {
             get {
@@ -5949,7 +5935,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When selected, it reads the content of the file as base64 format..
+        ///   Looks up a localized string similar to WriteFileHelpContentsAsBase64.
         /// </summary>
         public static string WriteFileHelpContentsAsBase64 {
             get {
