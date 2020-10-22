@@ -8,15 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Warewolf.Auditing;
-using Warewolf.Logging;
+using System;
 
-namespace HangfireServer
+namespace Warewolf
 {
-    public interface IExecutionLogPublisher : ILoggerPublisher
+    public class ExitHelper : IExitHelper
     {
-        void ExecutionFailed(ExecutionHistory executionHistory);
-        void ExecutionSucceeded(ExecutionHistory executionHistory);
-        void StartExecution(string message, params object[] args);
+        public void Exit()
+        {
+            Environment.Exit(0);
+        }
     }
 }

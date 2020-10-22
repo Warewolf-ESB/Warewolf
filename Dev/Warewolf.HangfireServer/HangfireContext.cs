@@ -9,7 +9,7 @@
 */
 using System;
 
-namespace Warewolf.HangfireServer
+namespace HangfireServer
 {
     public interface IHangfireContext
     {

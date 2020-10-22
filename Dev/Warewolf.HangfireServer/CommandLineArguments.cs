@@ -10,7 +10,7 @@
 
 using CommandLine;
 
-namespace Warewolf.HangfireServer
+namespace HangfireServer
 {
     public interface IArgs
     {

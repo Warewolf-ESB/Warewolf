@@ -17,7 +17,7 @@ using Hangfire.States;
 using Hangfire.Storage;
 using Warewolf.Driver.Resume;
 
-namespace Warewolf.HangfireServer
+namespace HangfireServer
 {
     public class LogEverythingAttribute : JobFilterAttribute, IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
     {

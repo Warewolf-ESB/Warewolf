@@ -11,10 +11,10 @@ using System;
 using Hangfire;
 using Microsoft.Owin;
 using Owin;
-using Warewolf.HangfireServer;
+using HangfireServer;
 
 [assembly: OwinStartup(typeof(Dashboard))]
-namespace Warewolf.HangfireServer
+namespace HangfireServer
 {
     public class Dashboard
     {
