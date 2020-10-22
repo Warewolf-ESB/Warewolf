@@ -298,11 +298,11 @@ namespace Dev2.Settings.Persistence
             {
                 payload = DpapiWrapper.Encrypt(payload);
             }
-
+            _enable = true;
             var data = new PersistenceSettingsData
             {
                 EncryptDataSource = _encryptDataSource,
-                Enable = true,
+                Enable = _enable,
                 ServerName = _serverName,
                 DashboardHostname = _dashboardHostname,
                 DashboardName = _dashboardName,

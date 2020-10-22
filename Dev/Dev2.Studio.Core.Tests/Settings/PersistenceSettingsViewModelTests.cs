@@ -334,7 +334,27 @@ namespace Dev2.Core.Tests.Settings
             persistenceSettingsViewModel.Save(new PersistenceSettingsTo());
             resourceRepo.Verify(o => o.SavePersistenceSettings(It.IsAny<IServer>(), It.IsAny<PersistenceSettingsData>()), Times.Once);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PersistenceSettingsViewModel))]
+        public void PersistenceSettingsViewModel_Save_ConfirmEnableIsTrue()
+        {
+            var resourceRepo = new Mock<IResourceRepository>();
+            //------------Setup for test--------------------------
+            var persistenceSettingsViewModel = CreatePersistenceSettingViewModel(resourceRepo);
+            //------------Execute Test---------------------------
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceName).Returns("Default");
+            mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            persistenceSettingsViewModel.SelectedPersistenceDataSource = mockResource.Object;
+            persistenceSettingsViewModel.Enable = false;
 
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+            //------------Assert Results-------------------------
+            persistenceSettingsViewModel.Save(new PersistenceSettingsTo());
+            resourceRepo.Verify(o => o.SavePersistenceSettings(It.IsAny<IServer>(), It.IsAny<PersistenceSettingsData>()), Times.Once);
+            Assert.AreEqual(true, persistenceSettingsViewModel.Enable);
+        }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceSettingsViewModel))]
