@@ -61,31 +61,10 @@ using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
-   
     [TestClass]
     [TestCategory("Runtime WebServer")]
     public class AbstractWebRequestHandlerTests
     {
-        const string _path = @"c:\temp\MyTest.txt";
-        
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            try
-            {
-                using (FileStream fs = File.Create(_path))
-                {
-                    byte[] info = new UTF8Encoding(true).GetBytes("This is some text in the file.");
-                    fs.Write(info, 0, info.Length);
-                }
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
-
         NameValueCollection LocalBoundVariables => new NameValueCollection
         {
             {"Bookmark", "the_bookmark"},
@@ -801,8 +780,6 @@ namespace Dev2.Tests.Runtime.WebServer
             var dataBytes = Encoding.ASCII.GetBytes(data);
             var dataStream = new MemoryStream(dataBytes);
 
-            var fileDataBytes = File.OpenRead(_path).ToByteArray();
-
             var mockCommunicationRequestContentHeaders = new Mock<ICommunicationRequestContentHeaders>();
             mockCommunicationRequestContentHeaders.Setup(o => o.Headers)
                 .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { { "Content-type", "text/plain" } } }.Headers);
@@ -841,7 +818,7 @@ namespace Dev2.Tests.Runtime.WebServer
                         }
                     },
                     {
-                        new HttpContentStub(fileDataBytes)
+                        new HttpContentStub(new UTF8Encoding(true).GetBytes("This is some text in the file."))
                         {
                             Headers =
                             {
@@ -2457,21 +2434,6 @@ namespace Dev2.Tests.Runtime.WebServer
         public string GetMethodNameMock(ICommunicationContext ctx)
         {
             return ctx.GetMethodName();
-        }
-        
-        
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            try
-            {
-                File.Delete(@"c:\temp\MyTest.txt");
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
         }
     }
 

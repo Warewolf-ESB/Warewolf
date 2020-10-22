@@ -75,7 +75,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             return mockEnvironmentConnection;
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(2000)]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_TestMinSupportedVersion()
         {
@@ -94,7 +95,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Version.Parse(version), actual);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(2000)]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_TestServerVersion()
         {
@@ -113,7 +115,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Version.Parse(version), actual);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_TestIsLoading()
         {
@@ -133,7 +136,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isIsLoadingChanged);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_DeployTests_GivenIsSet_ShouldFireOnPropertyChanged()
@@ -155,7 +159,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(wasCalled);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_DeployTriggers_GivenIsSet_ShouldFireOnPropertyChanged()

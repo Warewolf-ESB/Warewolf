@@ -104,25 +104,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.And("the execution has \"<AN>\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1552 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1584 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Path",
                         "Username",
                         "Password",
                         "Private Key File"});
-            table1552.AddRow(new string[] {
+            table1584.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String",
                         string.Format("{0}", sourcePrivateKeyFile)});
 #line 16
- testRunner.And("the debug inputs as", ((string)(null)), table1552, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1584, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1553 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1585 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1553.AddRow(new string[] {
+            table1585.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 19
- testRunner.And("the debug output as", ((string)(null)), table1553, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1585, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -237,7 +237,7 @@ this.ReadFileAtLocation("4", "FTP", "[[path]]", "ftp://DEVOPSPDC.premier.local:1
         public virtual void ReadFileAtLocation_5()
         {
 #line 8
-this.ReadFileAtLocation("5", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORTESTING/filetodele.txt", "Administrator", "Dev2@dmin123", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+this.ReadFileAtLocation("5", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORTESTING/filetodele.txt", "Administrator", "Dev2@dmin123", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -496,23 +496,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 63
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1554 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1586 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Path",
                         "Username",
                         "Password"});
-            table1554.AddRow(new string[] {
+            table1586.AddRow(new string[] {
                         string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                         string.Format("{0}", username),
                         "String"});
 #line 65
- testRunner.And("the debug inputs as", ((string)(null)), table1554, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1586, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1555 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1587 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1555.AddRow(new string[] {
+            table1587.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 68
- testRunner.And("the debug output as", ((string)(null)), table1555, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1587, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1769,23 +1769,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 127
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1556 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1588 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Path",
                         "Username",
                         "Password"});
-            table1556.AddRow(new string[] {
+            table1588.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String"});
 #line 128
- testRunner.And("the debug inputs as", ((string)(null)), table1556, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1588, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1557 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1589 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1557.AddRow(new string[] {
+            table1589.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 131
- testRunner.And("the debug output as", ((string)(null)), table1557, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1589, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
