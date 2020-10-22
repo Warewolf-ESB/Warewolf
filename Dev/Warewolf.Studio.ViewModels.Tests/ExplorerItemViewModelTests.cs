@@ -903,7 +903,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         public void TestCreateFolderCommandResourceTypeFolder()
         {
             _serverMock.Setup(server => server.UserPermissions)
