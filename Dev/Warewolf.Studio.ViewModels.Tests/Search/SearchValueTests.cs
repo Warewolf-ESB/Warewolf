@@ -10,7 +10,8 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
     [TestClass]
     public class SearchValueTests
     {
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Pieter Terblanche")]
         public void SearchValue_OpenResourced_WorkflowType()
         {
@@ -24,7 +25,8 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             Assert.AreEqual(SearchItemType.WorkflowName, searchValue.Type);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Pieter Terblanche")]
         public void SearchValue_OpenResourced_TestType()
         {

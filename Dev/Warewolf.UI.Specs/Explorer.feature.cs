@@ -17,7 +17,7 @@ namespace Warewolf.UI.Specs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.2.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class ExplorerFeature
     {
         
@@ -243,40 +243,69 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deleting a Resource Remote")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeleteFromExplorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#TODO:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Re-introduce")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("this")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("test")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("once")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("the")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("to")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("the")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("new")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("domain")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("(premier.local)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("done")]
         public virtual void DeletingAResourceRemote()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting a Resource Remote", new string[] {
-                        "DeleteFromExplorer"});
-#line 61
- this.ScenarioSetup(scenarioInfo);
+                        "DeleteFromExplorer",
+                        "Ignore",
+                        "#TODO:",
+                        "Re-introduce",
+                        "this",
+                        "test",
+                        "once",
+                        "the",
+                        "move",
+                        "to",
+                        "the",
+                        "new",
+                        "domain",
+                        "(premier.local)",
+                        "is",
+                        "done"});
 #line 62
-   testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ this.ScenarioSetup(scenarioInfo);
 #line 63
-   testRunner.When("I Connect To Remote Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
+   testRunner.When("I Connect To Remote Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 65
    testRunner.And("I Try Remove \"LocalWorkflowWithRemoteSubworkflowToDelete\" From Remote Server Expl" +
                     "orer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
+#line 66
    testRunner.And("I validate and delete the existing resource with \"LocalWorkflowWithRemoteSubworkf" +
                     "lowToDelete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
-   testRunner.And("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
-   testRunner.And("I Filter the Explorer with \"GenericResource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
-   testRunner.And("I Drag Explorer Remote GenericResource Onto Workflow Design Surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Filter the Explorer with \"GenericResource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
+   testRunner.And("I Drag Explorer Remote GenericResource Onto Workflow Design Surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
    testRunner.And("I Save With Ribbon Button And Dialog As \"LocalWorkflowWithRemoteSubworkflowToDele" +
                     "te\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
-   testRunner.And("I Filter the Explorer with \"LocalWorkflowWithRemoteSubworkflowToDelete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 71
-   testRunner.And("I RightClick Explorer First Remote Server First Item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Filter the Explorer with \"LocalWorkflowWithRemoteSubworkflowToDelete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
-   testRunner.And("I Select Delete From Explorer Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I RightClick Explorer First Remote Server First Item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
+   testRunner.And("I Select Delete From Explorer Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 74
    testRunner.And("I Click MessageBox Yes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -290,17 +319,17 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Clear filter", new string[] {
                         "FilterExplorer"});
-#line 76
-this.ScenarioSetup(scenarioInfo);
 #line 77
-   testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 78
-   testRunner.When("I Filter the Explorer with \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 79
-   testRunner.Then("Filter Textbox has \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.When("I Filter the Explorer with \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 80
-   testRunner.And("I Click Explorer Filter Clear Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.Then("Filter Textbox has \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 81
+   testRunner.And("I Click Explorer Filter Clear Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 82
    testRunner.Then("Filter Textbox is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -314,19 +343,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag on service from Explorer and change input and output", new string[] {
                         "DragFromExplorer"});
-#line 84
-this.ScenarioSetup(scenarioInfo);
 #line 85
- testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 86
- testRunner.When("I Create New Workflow using shortcut", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 87
- testRunner.And("I Filter the Explorer with \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I Create New Workflow using shortcut", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 88
- testRunner.And("I Drag Explorer workflow Onto Workflow Design Surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Filter the Explorer with \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
- testRunner.And("I change Hello World input variable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Drag Explorer workflow Onto Workflow Design Surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
+ testRunner.And("I change Hello World input variable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 91
  testRunner.And("I change Hello World output variable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
