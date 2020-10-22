@@ -3,44 +3,32 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net48</TargetFramework>
-        <ApplicationIcon />
-        <StartupObject>Warewolf.HangfireServer.Program</StartupObject>
+        <RuntimeIdentifier>win</RuntimeIdentifier>
         <AssemblyName>HangfireServer</AssemblyName>
+        <ApplicationIcon />
+        <StartupObject />
+    </PropertyGroup>
+
+    <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <PlatformTarget>AnyCPU</PlatformTarget>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <PlatformTarget>AnyCPU</PlatformTarget>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj" />
-        <ProjectReference Include="..\Warewolf.Driver.Resume\Warewolf.Driver.Resume.csproj" />
+        <PackageReference Include="CommandLineParser" Version="2.6.0" />
+        <PackageReference Include="Hangfire.Core" Version="1.7.13" />
+        <PackageReference Include="Hangfire.SqlServer" Version="1.7.13" />
+        <PackageReference Include="Microsoft.Owin.Hosting" Version="4.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommandLineParser" Version="2.6.0" />
-        <PackageReference Include="Microsoft.Owin">
-            <Version>4.1.1</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Owin.Host.HttpListener">
-            <Version>4.1.1</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Owin.Host.SystemWeb">
-            <Version>4.1.1</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Owin.Hosting">
-            <Version>4.1.1</Version>
-        </PackageReference>
-        <PackageReference Include="Newtonsoft.Json">
-            <Version>12.0.3</Version>
-        </PackageReference>
+      <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
+      <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
+      <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
+      <ProjectReference Include="..\Warewolf.Driver.Resume\Warewolf.Driver.Resume.csproj" />
+      <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     </ItemGroup>
+
 </Project>
