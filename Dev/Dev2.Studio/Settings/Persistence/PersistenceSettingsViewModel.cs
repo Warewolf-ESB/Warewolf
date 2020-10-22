@@ -298,7 +298,7 @@ namespace Dev2.Settings.Persistence
             {
                 payload = DpapiWrapper.Encrypt(payload);
             }
-
+            _enable = true;
             var data = new PersistenceSettingsData
             {
                 EncryptDataSource = _encryptDataSource,
