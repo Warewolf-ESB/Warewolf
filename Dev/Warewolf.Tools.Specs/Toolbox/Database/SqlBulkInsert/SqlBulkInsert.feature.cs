@@ -46,7 +46,6 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.SqlBulkInsert
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SqlBulkInsert", "\tIn order to quickly insert large amounts of data in a sql server database\r\n\tAs a" +
                     " Warewolf user\r\n\tI want a tool that performs this action", ProgrammingLanguage.CSharp, new string[] {
-                        "SqlBulkInsert",
                         "MSTest:DeploymentItem:EnableDocker.txt"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -88,11 +87,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.SqlBulkInsert
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into table with check contraint disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithCheckContraintDisabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into table with check contraint disabled", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into table with check contraint disabled", new string[] {
+                        "SqlBulkInsert"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -252,12 +252,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with check constraint enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithCheckConstraintEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with check constraint enabled", ((string[])(null)));
-#line 33
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with check constraint enabled", new string[] {
+                        "SqlBulkInsert"});
+#line 34
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2231 = new TechTalk.SpecFlow.Table(new string[] {
@@ -268,15 +269,15 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "TestData",
                         "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
-#line 35
+#line 36
  testRunner.Given("I have this data", ((string)(null)), table2231, "Given ");
-#line 38
- testRunner.And("Check constraints is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Check constraints is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
- testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 41
+ testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 42
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2232 = new TechTalk.SpecFlow.Table(new string[] {
@@ -344,14 +345,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 42
+#line 43
  testRunner.And("the debug inputs as", ((string)(null)), table2232, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2233 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2233.AddRow(new string[] {
                         "[[result]] = Failure"});
-#line 48
+#line 49
  testRunner.And("the debug output as", ((string)(null)), table2233, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -360,12 +361,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with keep identity disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithKeepIdentityDisabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity disabled", ((string[])(null)));
-#line 52
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity disabled", new string[] {
+                        "SqlBulkInsert"});
+#line 54
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2234 = new TechTalk.SpecFlow.Table(new string[] {
@@ -384,11 +386,11 @@ this.ScenarioSetup(scenarioInfo);
                         "8",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 54
+#line 56
  testRunner.Given("I have this data", ((string)(null)), table2234, "Given ");
-#line 59
+#line 61
  testRunner.And("Keep identity is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 62
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2235 = new TechTalk.SpecFlow.Table(new string[] {
@@ -407,9 +409,9 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 61
+#line 63
  testRunner.Then("the new table will have", ((string)(null)), table2235, "Then ");
-#line 66
+#line 68
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2236 = new TechTalk.SpecFlow.Table(new string[] {
@@ -555,14 +557,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 67
+#line 69
  testRunner.And("the debug inputs as", ((string)(null)), table2236, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2237 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2237.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 79
+#line 81
  testRunner.And("the debug output as", ((string)(null)), table2237, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -571,12 +573,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with keep identity enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithKeepIdentityEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity enabled", ((string[])(null)));
-#line 83
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity enabled", new string[] {
+                        "SqlBulkInsert"});
+#line 86
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2238 = new TechTalk.SpecFlow.Table(new string[] {
@@ -595,11 +598,11 @@ this.ScenarioSetup(scenarioInfo);
                         "8",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 84
+#line 87
  testRunner.Given("I have this data", ((string)(null)), table2238, "Given ");
-#line 89
+#line 92
  testRunner.And("Keep identity is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 93
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2239 = new TechTalk.SpecFlow.Table(new string[] {
@@ -618,9 +621,9 @@ this.ScenarioSetup(scenarioInfo);
                         "8",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 91
+#line 94
  testRunner.Then("the new table will have", ((string)(null)), table2239, "Then ");
-#line 96
+#line 99
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2240 = new TechTalk.SpecFlow.Table(new string[] {
@@ -766,14 +769,14 @@ this.ScenarioSetup(scenarioInfo);
                         "YES",
                         "NO",
                         "NO"});
-#line 97
+#line 100
  testRunner.And("the debug inputs as", ((string)(null)), table2240, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2241 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2241.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 109
+#line 112
  testRunner.And("the debug output as", ((string)(null)), table2241, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -782,12 +785,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with skip blank rows disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithSkipBlankRowsDisabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows disabled", ((string[])(null)));
-#line 113
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows disabled", new string[] {
+                        "SqlBulkInsert"});
+#line 117
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2242 = new TechTalk.SpecFlow.Table(new string[] {
@@ -810,15 +814,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 115
+#line 119
  testRunner.Given("I have this data", ((string)(null)), table2242, "Given ");
-#line 121
+#line 125
  testRunner.And("Skip rows is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
+#line 126
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 123
+#line 127
  testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 124
+#line 128
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2243 = new TechTalk.SpecFlow.Table(new string[] {
@@ -990,14 +994,14 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 125
+#line 129
  testRunner.And("the debug inputs as", ((string)(null)), table2243, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2244 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2244.AddRow(new string[] {
                         "[[result]] = Failure"});
-#line 139
+#line 143
  testRunner.And("the debug output as", ((string)(null)), table2244, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1006,12 +1010,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with skip blank rows enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithSkipBlankRowsEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows enabled", ((string[])(null)));
-#line 143
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows enabled", new string[] {
+                        "SqlBulkInsert"});
+#line 148
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2245 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1034,15 +1039,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 145
+#line 150
  testRunner.Given("I have this data", ((string)(null)), table2245, "Given ");
-#line 151
+#line 156
  testRunner.And("Skip rows is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
+#line 157
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 153
+#line 158
  testRunner.Then("the new table will will have 3 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 154
+#line 159
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2246 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1227,14 +1232,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "YES"});
-#line 155
+#line 160
  testRunner.And("the debug inputs as", ((string)(null)), table2246, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2247 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2247.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 170
+#line 175
  testRunner.And("the debug output as", ((string)(null)), table2247, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1243,12 +1248,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with fire triggers disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithFireTriggersDisabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers disabled", ((string[])(null)));
-#line 174
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers disabled", new string[] {
+                        "SqlBulkInsert"});
+#line 180
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2248 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1267,11 +1273,11 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 176
- testRunner.Given("I have this data", ((string)(null)), table2248, "Given ");
-#line 181
- testRunner.And("Fire triggers is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 182
+ testRunner.Given("I have this data", ((string)(null)), table2248, "Given ");
+#line 187
+ testRunner.And("Fire triggers is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 188
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2249 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1290,9 +1296,9 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 183
+#line 189
  testRunner.Then("the new table will have", ((string)(null)), table2249, "Then ");
-#line 188
+#line 194
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2250 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1438,14 +1444,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 189
+#line 195
  testRunner.And("the debug inputs as", ((string)(null)), table2250, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2251 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2251.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 201
+#line 207
  testRunner.And("the debug output as", ((string)(null)), table2251, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1454,12 +1460,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with fire triggers enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithFireTriggersEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers enabled", ((string[])(null)));
-#line 205
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers enabled", new string[] {
+                        "SqlBulkInsert"});
+#line 212
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2252 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1478,11 +1485,11 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 207
+#line 214
  testRunner.Given("I have this data", ((string)(null)), table2252, "Given ");
-#line 212
+#line 219
  testRunner.And("Fire triggers is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 213
+#line 220
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2253 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1501,9 +1508,9 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 214
+#line 221
  testRunner.Then("the new table will have", ((string)(null)), table2253, "Then ");
-#line 219
+#line 226
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2254 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1649,14 +1656,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 220
+#line 227
  testRunner.And("the debug inputs as", ((string)(null)), table2254, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2255 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2255.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 232
+#line 239
  testRunner.And("the debug output as", ((string)(null)), table2255, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1665,12 +1672,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableBatchSizeIs0()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 0", ((string[])(null)));
-#line 236
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 0", new string[] {
+                        "SqlBulkInsert"});
+#line 244
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2256 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1689,15 +1697,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 237
- testRunner.Given("I have this data", ((string)(null)), table2256, "Given ");
-#line 242
- testRunner.And("Batch size is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 243
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 244
- testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 245
+ testRunner.Given("I have this data", ((string)(null)), table2256, "Given ");
+#line 250
+ testRunner.And("Batch size is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 251
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 252
+ testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 253
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2257 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1843,14 +1851,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 246
+#line 254
  testRunner.And("the debug inputs as", ((string)(null)), table2257, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2258 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2258.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 258
+#line 266
  testRunner.And("the debug output as", ((string)(null)), table2258, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1859,12 +1867,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableBatchSizeIs1()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 1", ((string[])(null)));
-#line 262
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 1", new string[] {
+                        "SqlBulkInsert"});
+#line 271
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2259 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1883,15 +1892,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 263
+#line 272
  testRunner.Given("I have this data", ((string)(null)), table2259, "Given ");
-#line 268
+#line 277
  testRunner.And("Batch size is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 269
+#line 278
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 270
+#line 279
  testRunner.Then("number of inserts is 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 271
+#line 280
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2260 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2037,7 +2046,7 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 272
+#line 281
  testRunner.And("the debug inputs as", ((string)(null)), table2260, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2046,12 +2055,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableBatchSizeIs2()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 2", ((string[])(null)));
-#line 285
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 2", new string[] {
+                        "SqlBulkInsert"});
+#line 295
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2261 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2070,15 +2080,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 286
+#line 296
  testRunner.Given("I have this data", ((string)(null)), table2261, "Given ");
-#line 291
+#line 301
  testRunner.And("Batch size is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
+#line 302
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 293
+#line 303
  testRunner.Then("number of inserts is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 294
+#line 304
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2262 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2224,7 +2234,7 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 295
+#line 305
  testRunner.And("the debug inputs as", ((string)(null)), table2262, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2233,12 +2243,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 3 second")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseTimeout")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseTimeout")]
         public virtual void ImportDataIntoTableTimeoutAfter3Second()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 3 second", ((string[])(null)));
-#line 308
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 3 second", new string[] {
+                        "DatabaseTimeout"});
+#line 319
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2263 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2257,15 +2268,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 309
+#line 320
  testRunner.Given("I have this data", ((string)(null)), table2263, "Given ");
-#line 314
+#line 325
  testRunner.And("Timeout in 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 315
+#line 326
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 316
+#line 327
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 317
+#line 328
  testRunner.And("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2264 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2411,14 +2422,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 318
+#line 329
  testRunner.And("the debug inputs as", ((string)(null)), table2264, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2265 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2265.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 330
+#line 341
  testRunner.And("the debug output as", ((string)(null)), table2265, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2427,12 +2438,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 1 second")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseTimeout")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DatabaseTimeout")]
         public virtual void ImportDataIntoTableTimeoutAfter1Second()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 1 second", ((string[])(null)));
-#line 334
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 1 second", new string[] {
+                        "DatabaseTimeout"});
+#line 346
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2266 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2451,15 +2463,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 336
+#line 348
  testRunner.Given("I have this data", ((string)(null)), table2266, "Given ");
-#line 341
+#line 353
  testRunner.And("Timeout in 1 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 342
+#line 354
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 343
+#line 355
  testRunner.Then("number of inserts is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 344
+#line 356
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2267 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2605,14 +2617,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 345
+#line 357
   testRunner.And("the debug inputs as", ((string)(null)), table2267, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2268 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2268.AddRow(new string[] {
                         "[[result]] = Failure"});
-#line 357
+#line 369
  testRunner.And("the debug output as", ((string)(null)), table2268, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2621,30 +2633,31 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into table with blank data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithBlankData()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into table with blank data", ((string[])(null)));
-#line 361
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into table with blank data", new string[] {
+                        "SqlBulkInsert"});
+#line 374
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2269 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
-#line 362
+#line 375
  testRunner.Given("I have this data", ((string)(null)), table2269, "Given ");
-#line 364
+#line 377
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2270 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
-#line 365
+#line 378
  testRunner.Then("the new table will have", ((string)(null)), table2270, "Then ");
-#line 367
+#line 380
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

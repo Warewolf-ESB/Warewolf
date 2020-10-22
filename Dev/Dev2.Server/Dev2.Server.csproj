@@ -240,9 +240,7 @@
     <Compile Include="QueueConfigLoader.cs" />
     <Compile Include="QueueProcessorMonitor.cs" />
     <Compile Include="ServerEnvironmentPreparer.cs" />
-    <Compile Include="ServerLifecycleManagerService.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ServerLifecycleManagerService.cs" />
     <Compile Include="StartWebServer.cs" />
     <Compile Include="WebServerConfiguration.cs" />
     <Compile Include="TempFileDeleter.cs" />
