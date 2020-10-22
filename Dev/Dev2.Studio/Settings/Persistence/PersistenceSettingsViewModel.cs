@@ -302,7 +302,7 @@ namespace Dev2.Settings.Persistence
             var data = new PersistenceSettingsData
             {
                 EncryptDataSource = _encryptDataSource,
-                Enable = _enable,
+                Enable = true,
                 ServerName = _serverName,
                 DashboardHostname = _dashboardHostname,
                 DashboardName = _dashboardName,
