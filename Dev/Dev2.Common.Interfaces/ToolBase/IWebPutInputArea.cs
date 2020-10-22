@@ -5,6 +5,7 @@
         string QueryString { get; set; }
         string RequestUrl { get; set; }
         string PutData { get; set; }
+        bool IsPutDataBase64 { get; set; }
 
     }
 }

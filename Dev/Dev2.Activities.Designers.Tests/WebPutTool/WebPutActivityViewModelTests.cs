@@ -14,8 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Web_Put;
 using Dev2.Activities.Designers2.Web_Service_Post;
-using Dev2.Activities.Designers2.Web_Service_Put;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
@@ -36,14 +36,14 @@ using Warewolf.Studio.ViewModels;
 namespace Dev2.Activities.Designers.Tests.WebPutTool
 {
     [TestClass]
-    public class WebPutViewModelTests
+    public class WebPutActivityViewModelTests
     {
         static MyWebModel GetMockModel()
         {
             return new MyWebModel();
         }
 
-        static WebPutActivity GetPostActivityWithOutPuts(MyWebModel mod)
+        static WebPutActivity GetPutActivityWithOutPuts(MyWebModel mod)
         {
             return new WebPutActivity()
             {
@@ -65,23 +65,19 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             return new WebPutActivity();
         }
 
-        WebServicePostViewModel GetWebServicePostViewModel()
+        static WebPutActivityViewModel CreateViewModel(WebPutActivity act, MyWebModel mod)
         {
-            return new WebServicePostViewModel(ModelItemUtils.CreateModelItem(GetEmptyPostActivity(), GetMockModel()));
-        }
-        static WebServicePutViewModel CreateViewModel(WebPutActivity act, MyWebModel mod)
-        {
-            return new WebServicePutViewModel(ModelItemUtils.CreateModelItem(act), mod);
+            return new WebPutActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_OnLoad_GivenHasModelAndId_ShouldHaveDefaultHeightValues()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_OnLoad_GivenHasModelAndId_ShouldHaveDefaultHeightValues()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var postViewModel = CreateViewModel(act, mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -96,8 +92,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_OnLoad_GivenHasModelAndId_ThumbVisibility_ExpectedTrue()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_OnLoad_GivenHasModelAndId_ThumbVisibility_ExpectedTrue()
         {
             //---------------Set up test pack-------------------
             CustomContainer.LoadedTypes = new List<Type>()
@@ -113,10 +109,10 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
             CustomContainer.Register(shellVm.Object);
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var modelItem = ModelItemUtils.CreateModelItem(act);
             IsItemDragged.Instance.IsDragged = true;
-            var putViewModel = new WebServicePutViewModel(modelItem);
+            var putViewModel = new WebPutActivityViewModel(modelItem);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -125,8 +121,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_OnLoad_GivenHasModelAndId_ThumbVisibility_ExpectedFalse()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_OnLoad_GivenHasModelAndId_ThumbVisibility_ExpectedFalse()
         {
             //---------------Set up test pack-------------------
             CustomContainer.LoadedTypes = new List<Type>()
@@ -142,10 +138,10 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
             CustomContainer.Register(shellVm.Object);
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var modelItem = ModelItemUtils.CreateModelItem(act);
             IsItemDragged.Instance.IsDragged = false;
-            var putViewModel = new WebServicePutViewModel(modelItem);
+            var putViewModel = new WebPutActivityViewModel(modelItem);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -154,8 +150,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_MethodName_ValidateExpectErrors()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_MethodName_ValidateExpectErrors()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
@@ -172,7 +168,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
+        [TestCategory(nameof(WebPutActivityViewModel))]
         public void WebPutDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
@@ -193,12 +189,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_ClearValidationMemoWithNoFoundError_GivenHasNoErrors_ShouldNullErrors()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_ClearValidationMemoWithNoFoundError_GivenHasNoErrors_ShouldNullErrors()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var postViewModel = CreateViewModel(act, mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -212,8 +208,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_GetHeaderRegion_GivenIsNew_ShouldReturnInputArea()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_GetHeaderRegion_GivenIsNew_ShouldReturnInputArea()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
@@ -232,8 +228,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_Construct_GivenIsNew_ShouldHaveDefalutValues()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_Construct_GivenIsNew_ShouldHaveDefalutValues()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
@@ -251,12 +247,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_ActionSetSource_GivenSelectedSource_ShouldHaveDefaultValues()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_ActionSetSource_GivenSelectedSource_ShouldHaveDefaultValues()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var postViewModel = CreateViewModel(act, mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTests(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
@@ -272,12 +268,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_TestActionSetSourceAndTestClickOkHasMappings()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_TestActionSetSourceAndTestClickOkHasMappings()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var postViewModel = CreateViewModel(act, mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTests(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
@@ -301,12 +297,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_TestActionSetSourceAndTestClickOkHasMappingsErrorFromServer()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_TestActionSetSourceAndTestClickOkHasMappingsErrorFromServer()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var postViewModel = CreateViewModel(act, mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTests(postViewModel, mod);
             
@@ -328,8 +324,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_TestActionSetSourceAndTestClickOkHasserialisationIssue()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_TestActionSetSourceAndTestClickOkHasserialisationIssue()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
@@ -352,12 +348,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_TestActionSetSourceAndTestClickOkHasHeaders()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_TestActionSetSourceAndTestClickOkHasHeaders()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var postViewModel = CreateViewModel(act, mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTests(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
@@ -383,8 +379,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_BodyIsJSonNoHeaders_ExpectNewHeadersAdded()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_BodyIsJSonNoHeaders_ExpectNewHeadersAdded()
         {
             //---------------Set up test pack-------------------
             CustomContainer.LoadedTypes = new List<Type>()
@@ -400,10 +396,10 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
             CustomContainer.Register(shellVm.Object);
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             act.Headers = new List<INameValue>();
             var modelItem = ModelItemUtils.CreateModelItem(act);
-            var postViewModel = new WebServicePutViewModel(modelItem);
+            var postViewModel = new WebPutActivityViewModel(modelItem);
             var oldCount = postViewModel.InputArea.Headers.Count;
             //---------------Assert Precondition----------------
             Assert.AreEqual(1, oldCount);
@@ -421,8 +417,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_BodyIsXmlNoHeaders_ExpectNewHeadersAdded()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_BodyIsXmlNoHeaders_ExpectNewHeadersAdded()
         {
             //---------------Set up test pack-------------------
             CustomContainer.LoadedTypes = new List<Type>()
@@ -438,10 +434,10 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
             CustomContainer.Register(shellVm.Object);
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             act.Headers = new List<INameValue>();
             var modelItem = ModelItemUtils.CreateModelItem(act);
-            var postViewModel = new WebServicePutViewModel(modelItem);
+            var postViewModel = new WebPutActivityViewModel(modelItem);
             var oldCount = postViewModel.InputArea.Headers.Count;
             //---------------Assert Precondition----------------
 
@@ -457,12 +453,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_BodyIsJSonExistingHeaders_ExpectNoHeadersAdded()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_BodyIsJSonExistingHeaders_ExpectNoHeadersAdded()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var postViewModel = CreateViewModel(act, mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTests(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
@@ -481,8 +477,8 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_BodyIsXmlExistingHeaders_ExpectNoHeadersAdded()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_BodyIsXmlExistingHeaders_ExpectNoHeadersAdded()
         {
             //---------------Set up test pack-------------------
             CustomContainer.LoadedTypes = new List<Type>()
@@ -498,9 +494,9 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
             CustomContainer.Register(shellVm.Object);
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var modelItem = ModelItemUtils.CreateModelItem(act);
-            var postViewModel = new WebServicePutViewModel(modelItem);
+            var postViewModel = new WebPutActivityViewModel(modelItem);
             
             var oldCount = postViewModel.InputArea.Headers.Count;
             //---------------Assert Precondition----------------
@@ -515,12 +511,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_TestActionSetSourceAndTestClickOkHasQueryStringAndHeaders()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_TestActionSetSourceAndTestClickOkHasQueryStringAndHeaders()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var postViewModel = CreateViewModel(act, mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTests(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
@@ -549,12 +545,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebServicePutViewModel))]
-        public void WebServicePutViewModel_TestActionSetSourceAndTestClickOkHasQueryStringAndHeadersRecSet()
+        [TestCategory(nameof(WebPutActivityViewModel))]
+        public void WebPutActivityViewModel_TestActionSetSourceAndTestClickOkHasQueryStringAndHeadersRecSet()
         {
             //---------------Set up test pack-------------------
             var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
+            var act = GetPutActivityWithOutPuts(mod);
             var postViewModel = CreateViewModel(act, mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTests(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();

@@ -17,6 +17,7 @@ using Dev2.Activities.Designers2.Core.Web.Put;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils; 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -51,7 +52,50 @@ namespace Dev2.Activities.Designers.Tests.Core
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             var region = new WebPutInputRegion();
-            Assert.AreEqual(region.IsEnabled, false);
+            Assert.IsFalse(region.IsEnabled);
+            Assert.IsFalse(region.IsPutDataBase64);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutInputRegion))]
+        public void WebPutInputRegion_TestInputCtorEmpty_IsPutDataBase64_True()
+        {
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+            var region = new WebPutInputRegion();
+            Assert.IsFalse(region.IsEnabled);
+            Assert.IsFalse(region.IsPutDataBase64);
+
+            region.IsPutDataBase64 = true;
+            region.IsPutDataBase64 = true;
+            Assert.IsTrue(region.IsPutDataBase64);
+            
+            region.IsPutDataBase64 = false;
+            Assert.IsFalse(region.IsPutDataBase64);
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutInputRegion))]
+        public void WebPutInputRegion_TestInputCtorNotEmpty_IsPutDataBase64_True()
+        {
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+
+            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(new WebPutActivity()), new Mock<ISourceToolRegion<IWebServiceSource>>().Object);
+            
+            Assert.IsFalse(region.IsEnabled);
+            Assert.IsFalse(region.IsPutDataBase64);
+
+            region.IsPutDataBase64 = true;
+            region.IsPutDataBase64 = true;
+            Assert.IsTrue(region.IsPutDataBase64);
+
+            region.IsPutDataBase64 = false;
+            Assert.IsFalse(region.IsPutDataBase64);
+
         }
 
         [TestMethod]
@@ -70,10 +114,12 @@ namespace Dev2.Activities.Designers.Tests.Core
             var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion) {PutData = "bob"};
             Assert.AreEqual(region.IsEnabled, false);
+            Assert.AreEqual(region.IsPutDataBase64, false);
             Assert.AreEqual(region.Errors.Count, 0);
             if (region.CloneRegion() is WebPutInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
+                Assert.AreEqual(clone.IsPutDataBase64, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
                 Assert.AreEqual(clone.PutData, "bob");
             }

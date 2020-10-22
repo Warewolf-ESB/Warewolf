@@ -108,6 +108,7 @@ using Dev2.Activities.Designers2.ReadFileWithBase64;
 using Dev2.Activities.Designers2.PathOperations.WriteFile;
 using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 using Dev2.Activities.Designers2.WebGet;
+using Dev2.Activities.Designers2.Web_Put;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -187,7 +188,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
-                { typeof(WebPutActivity), typeof(WebServicePutDesigner) },
+                { typeof(WebPutActivity), typeof(WebPutActivityDesigner) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },
                 { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteDesigner) },
