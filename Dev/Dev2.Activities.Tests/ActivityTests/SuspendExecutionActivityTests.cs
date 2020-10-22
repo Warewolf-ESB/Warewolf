@@ -2,9 +2,14 @@
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
+using System.Text;
+using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.State;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -16,7 +21,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    public class SuspendExecutionActivityTests
+    public class SuspendExecutionActivityTests : BaseActivityUnitTest
     {
         [TestMethod]
         [Owner("Pieter Terblanche")]
@@ -180,7 +185,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SuspendExecutionActivity))]
-        public void SuspendExecutionActivity_Execute_SuspendForDays_Success()
+        public void SuspendExecutionActivity_Execute_SuspendForDays_SaveSuspendIDIntoEnv_Success()
         {
             //------------Setup for test--------------------------
             var workflowName = "workflowName";
@@ -195,13 +200,23 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
-            var dataObject = new Mock<IDSFDataObject>();
-            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
-            dataObject.Setup(o => o.ServiceName).Returns(workflowName);
-            dataObject.Setup(o => o.ResourceID).Returns(resourceId);
-            dataObject.Setup(o => o.WorkflowInstanceId).Returns(workflowInstanceId);
-            dataObject.Setup(o => o.WebUrl).Returns(url);
-            dataObject.Setup(o => o.Environment).Returns(env);
+            var environmentID = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
 
             var mockActivity = new Mock<IDev2Activity>();
             mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
@@ -213,22 +228,442 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Handler = activity,
             };
 
-            var suspendExecutionActivity = new SuspendExecutionActivity
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var suspendExecutionActivity = new SuspendExecutionActivity(config)
             {
                 SuspendOption = enSuspendOption.SuspendForDays,
                 PersistValue = "15",
                 AllowManualResumption = true,
                 SaveDataFunc = activityFunction,
-                Response = "[[result]]",
+                Result = "[[SuspendID]]",
                 NextNodes = dev2Activities,
             };
 
             suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
             //------------Execute Test---------------------------
-            var response = suspendExecutionActivity.Execute(dataObject.Object, 0);
+            suspendExecutionActivity.Execute(dataObject, 0);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(response,suspendExecutionActivity.Response);
+            Assert.AreEqual(0, env.Errors.Count);
+            GetScalarValueFromEnvironment(env, "SuspendID", out string SuspendID, out string error);
+            Assert.AreEqual(SuspendID, suspendExecutionActivity.Response);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_Execute_SuspendForMonths_SaveSuspendIDIntoEnv_Success()
+        {
+            //------------Setup for test--------------------------
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentID = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var dev2Activities = new List<IDev2Activity> {mockActivity.Object};
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var suspendExecutionActivity = new SuspendExecutionActivity(config)
+            {
+                SuspendOption = enSuspendOption.SuspendForMonths,
+                PersistValue = "15",
+                AllowManualResumption = true,
+                SaveDataFunc = activityFunction,
+                Result = "[[SuspendID]]",
+                NextNodes = dev2Activities,
+            };
+
+            suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            suspendExecutionActivity.Execute(dataObject, 0);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, env.Errors.Count);
+            GetScalarValueFromEnvironment(env, "SuspendID", out string SuspendID, out string error);
+            Assert.AreEqual(SuspendID, suspendExecutionActivity.Response);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_Execute_SuspendForMinutes_SaveSuspendIDIntoEnv_Success()
+        {
+            //------------Setup for test--------------------------
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentID = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var dev2Activities = new List<IDev2Activity> {mockActivity.Object};
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var suspendExecutionActivity = new SuspendExecutionActivity(config)
+            {
+                SuspendOption = enSuspendOption.SuspendForMinutes,
+                PersistValue = "15",
+                AllowManualResumption = true,
+                SaveDataFunc = activityFunction,
+                Result = "[[SuspendID]]",
+                NextNodes = dev2Activities,
+            };
+
+            suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            suspendExecutionActivity.Execute(dataObject, 0);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, env.Errors.Count);
+            GetScalarValueFromEnvironment(env, "SuspendID", out string SuspendID, out string error);
+            Assert.AreEqual(SuspendID, suspendExecutionActivity.Response);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_Execute_SuspendForSeconds_SaveSuspendIDIntoEnv_Success()
+        {
+            //------------Setup for test--------------------------
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentID = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var dev2Activities = new List<IDev2Activity> {mockActivity.Object};
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var suspendExecutionActivity = new SuspendExecutionActivity(config)
+            {
+                SuspendOption = enSuspendOption.SuspendForSeconds,
+                PersistValue = "20",
+                AllowManualResumption = true,
+                SaveDataFunc = activityFunction,
+                Result = "[[SuspendID]]",
+                NextNodes = dev2Activities
+            };
+
+            suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            suspendExecutionActivity.Execute(dataObject, 0);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, env.Errors.Count);
+            GetScalarValueFromEnvironment(env, "SuspendID", out string SuspendID, out string error);
+            Assert.AreEqual(SuspendID, suspendExecutionActivity.Response);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_Execute_SuspendUntil_SaveSuspendIDIntoEnv_Success()
+        {
+            //------------Setup for test--------------------------
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentID = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var dev2Activities = new List<IDev2Activity> {mockActivity.Object};
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+            var suspendUntil = DateTime.Now.AddDays(1);
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var suspendExecutionActivity = new SuspendExecutionActivity(config);
+            suspendExecutionActivity.SuspendOption = enSuspendOption.SuspendUntil;
+            suspendExecutionActivity.PersistValue = suspendUntil.ToString();
+            suspendExecutionActivity.AllowManualResumption = true;
+            suspendExecutionActivity.SaveDataFunc = activityFunction;
+            suspendExecutionActivity.Result = "[[SuspendID]]";
+            suspendExecutionActivity.NextNodes = dev2Activities;
+
+            suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            suspendExecutionActivity.Execute(dataObject, 0);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, env.Errors.Count);
+            GetScalarValueFromEnvironment(env, "SuspendID", out string SuspendID, out string error);
+            Assert.AreEqual(SuspendID, suspendExecutionActivity.Response);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_Execute_NextNodesIsNull_FailWithMessage()
+        {
+            //------------Setup for test--------------------------
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentID = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var suspendUntil = DateTime.Now.AddDays(1);
+            var suspendExecutionActivity = new SuspendExecutionActivity(config)
+            {
+                SuspendOption = enSuspendOption.SuspendUntil,
+                PersistValue = suspendUntil.ToString(),
+                AllowManualResumption = true,
+                SaveDataFunc = activityFunction,
+                Result = "[[SuspendID]]",
+                NextNodes = null
+            };
+
+            suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            suspendExecutionActivity.Execute(dataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, env.Errors.Count);
+            var errors = env.AllErrors.ToList();
+            Assert.AreEqual(errors[0], "<InnerError>At least 1 activity is required after Suspend Execution.</InnerError>");
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_Execute_PersistenceNotConfigured_FailWithMessage()
+        {
+            //------------Setup for test--------------------------
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentID = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var dev2Activities = new List<IDev2Activity> {mockActivity.Object};
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+            var suspendUntil = DateTime.Now.AddDays(1);
+            var config = new PersistenceSettings
+            {
+                Enable = false
+            };
+            var suspendExecutionActivity = new SuspendExecutionActivity(config)
+            {
+                SuspendOption = enSuspendOption.SuspendUntil,
+                PersistValue = suspendUntil.ToString(),
+                AllowManualResumption = true,
+                SaveDataFunc = activityFunction,
+                Result = "[[SuspendID]]",
+                NextNodes = dev2Activities
+            };
+
+            suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            suspendExecutionActivity.Execute(dataObject, 0);
+
+            //------------Assert Results-------------------------
+            suspendExecutionActivity.Execute(dataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, env.Errors.Count);
+            var errors = env.AllErrors.ToList();
+            Assert.AreEqual(errors[0], "<InnerError>Could not find persistence config. Please configure in Persistence Settings.</InnerError>");
         }
 
         static IExecutionEnvironment CreateExecutionEnvironment()
