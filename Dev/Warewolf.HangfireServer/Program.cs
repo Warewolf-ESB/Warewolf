@@ -107,8 +107,11 @@ namespace Warewolf.HangfireServer
                 Environment.Exit(0);
                 return;
             }
+
+            var logEverythingAttribute = new LogEverythingAttribute(_logger);
+
             GlobalConfiguration.Configuration
-                .UseFilter(new LogEverythingAttribute())
+                .UseFilter(logEverythingAttribute)
                 .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
                 {
                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
