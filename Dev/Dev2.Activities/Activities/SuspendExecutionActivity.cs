@@ -36,17 +36,12 @@ namespace Dev2.Activities
         private IStateNotifier _stateNotifier = null;
         private int _update;
         private string _suspensionId = "";
-        private bool _persistenceEnabled;
+        private readonly bool _persistenceEnabled;
 
         public SuspendExecutionActivity()
+            : this(Config.Persistence)
         {
-            DisplayName = "Suspend Execution";
-            SaveDataFunc = new ActivityFunc<string, bool>
-            {
-                DisplayName = "Data Action",
-                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
-            };
-            _persistenceEnabled = Config.Persistence.Enable;
+
         }
 
         public SuspendExecutionActivity(PersistenceSettings config)
@@ -57,7 +52,7 @@ namespace Dev2.Activities
                 DisplayName = "Data Action",
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
             };
-              _persistenceEnabled = config.Enable;
+            _persistenceEnabled = config.Enable;
         }
 
         public enSuspendOption SuspendOption { get; set; }
