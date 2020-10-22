@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-﻿using System;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +32,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         bool _isEnabled;
         string _queryString;
         string _requestUrl;
-        string _putData;
+        private bool _isPutDataBase64;
 
         public WebPutInputRegion()
         {
@@ -104,7 +103,6 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             get => _modelItem.GetProperty<string>("QueryString") ?? string.Empty;
             set
             {
-                _queryString = value ?? string.Empty;
                 _modelItem.SetProperty("QueryString", value ?? string.Empty);
                 OnPropertyChanged();
             }
@@ -133,13 +131,32 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             get => _modelItem?.GetProperty<string>("PutData") ?? string.Empty;
             set
             {
-                _putData = value ?? string.Empty;
                 _modelItem.SetProperty("PutData", value ?? string.Empty);
                 OnPropertyChanged();
             }
         }
 
+        public bool IsPutDataBase64
+        {
+            get => _modelItem?.GetProperty<bool>("IsPutDataBase64") ?? _isPutDataBase64; 
+            set
+            {
+                if (_modelItem is null && value != _isPutDataBase64)
+                {
+                    _isPutDataBase64 = value;
+                    _modelItem.SetProperty("IsPutDataBase64", value); 
+                    OnPropertyChanged();
+                    return;
+                }
+
+                _modelItem.SetProperty("IsPutDataBase64", value);
+                OnPropertyChanged();
+            }
+        }
+
+
         public string ToolRegionName { get; set; }
+
         public bool IsEnabled
         {
             get => _isEnabled;
@@ -156,7 +173,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             var headers2 = new ObservableCollection<INameValue>();
             foreach (var nameValue in Headers)
             {
-                var value = new NameValue(nameValue.Name,nameValue.Value);
+                var value = new NameValue(nameValue.Name, nameValue.Value);
                 value.PropertyChanged += ValueOnPropertyChanged;
                 headers2.Add(value);
             }
@@ -166,7 +183,8 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled,
-                PutData = PutData
+                PutData = PutData,
+                IsPutDataBase64 = IsPutDataBase64
             };
         }
 
@@ -175,6 +193,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             if (toRestore is WebPutInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
+                IsPutDataBase64 = region.IsPutDataBase64;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
                 Headers.Clear();
@@ -212,7 +231,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                 {
                     var nameValue = new NameValue(a.Name, a.Value);
                     nameValue.PropertyChanged += ValueOnPropertyChanged;
-                    return (INameValue) nameValue;
+                    return (INameValue)nameValue;
                 }).ToList());
         }
 

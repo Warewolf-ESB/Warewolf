@@ -49,10 +49,17 @@ namespace Dev2.Activities
             }
 
             var debugItem = new DebugItem();
-
             AddDebugItem(new DebugItemStaticDataParams("", "Put Data"), debugItem);
             AddDebugItem(new DebugEvalResult(PutData, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
+
+            if (IsPutDataBase64)
+            {
+                debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams("", nameof(IsPutDataBase64)), debugItem);
+                AddDebugItem(new DebugEvalResult(IsPutDataBase64.ToString(), "", env, update), debugItem);
+                _debugInputs.Add(debugItem);
+            }
             base.GetDebugInputs(env, update);
             return _debugInputs;
         }
@@ -73,7 +80,7 @@ namespace Dev2.Activities
                 OutputDescription = OutputDescription, 
                 Outputs = Outputs, 
                 IsObject = IsObject, 
-                ObjectName = ObjectName 
+                ObjectName = ObjectName
             };
 
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);

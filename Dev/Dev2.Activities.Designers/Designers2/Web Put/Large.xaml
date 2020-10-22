@@ -1,5 +1,4 @@
-﻿<!--[Obsolete("DsfWebPutActivity is deprecated. It will be deleted in future releases along with this View.")]-->
-<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Web_Service_Put.Large"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Web_Put.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,7 +13,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:webServicePut="clr-namespace:Dev2.Activities.Designers2.Web_Service_Put"
+                               xmlns:webPutViewModel="clr-namespace:Dev2.Activities.Designers2.Web_Put"
                                MinWidth="350"
                                Width="350"
                                MinHeight="533"
@@ -23,7 +22,7 @@
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
-                               d:DataContext="{d:DesignInstance webServicePut:WebServicePutViewModel}">
+                               d:DataContext="{d:DesignInstance webPutViewModel:WebPutViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
@@ -181,9 +180,29 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock x:Name="BodyLabel" Text="Body" Grid.Row="0" />
+                            <TextBlock x:Name="BodyLabel" Text="Body" Grid.Row="0" />
 
+                            <CheckBox x:Name="IsPutDataBase64CheckBox" 
+                                  Grid.Row="0"
+                                  Grid.Column="1"
+                                  IsChecked="{Binding InputArea.IsPutDataBase64}" 
+                                  IsEnabled="{Binding InputArea.IsEnabled}"
+                                  ToolTip="{x:Static languages:Tooltips.IsPutDataBase64Tooltip}"
+                                  Visibility="{Binding IsObjectOutputUsed, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                  Content="As Base64"
+                                  HorizontalAlignment="Left">
+                                <i:Interaction.Behaviors>
+                                    <core1:HelpSetter Text="{x:Static languages:HelpText.IsPutDataBase64HelpText}" DataContext="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
+                        </Grid>
+                        
                         <TextBox Grid.Row="1"
                                  x:Name="RequestBody"
                                  Text="{Binding InputArea.PutData}" 

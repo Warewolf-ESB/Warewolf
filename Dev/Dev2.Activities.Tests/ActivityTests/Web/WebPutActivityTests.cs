@@ -443,7 +443,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPutActivity))]
-        public void WebPutActivity_GetDebugInputs_GivenMockEnvironment_ShouldAddDebugInputItems()
+        public void WebPutActivity_GetDebugInputs_GivenMockEnvironment_And_IsPutDataBase64_False_ShouldAddDebugInputItems()
         {
             //---------------Set up test pack-------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -488,6 +488,59 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 //---------------Test Result -----------------------
                 Assert.IsNotNull(debugInputs);
                 Assert.AreEqual(4, debugInputs.Count);
+            }
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_GetDebugInputs_GivenMockEnvironment_And_IsPutDataBase64_True_ShouldAddDebugInputItems()
+        {
+            //---------------Set up test pack-------------------
+            const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
+                                    "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
+                                    "\"Visibility\": \"greater than 7 mile(s):0\"," +
+                                    "\"Temperature\": \"59 F (15 C)\"," +
+                                    "\"DewPoint\": \"41 F (5 C)\"," +
+                                    "\"RelativeHumidity\": \"51%\"," +
+                                    "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
+                                    "\"Status\": \"Success\"" +
+                                    "}";
+            var environment = new ExecutionEnvironment();
+            environment.Assign("[[City]]", "PMB", 0);
+            environment.Assign("[[CountryName]]", "South Africa", 0);
+            environment.Assign("[[Post]]", "Some data", 0);
+            var DsfWebPutActivity = new TestWebPutActivity
+            {
+                Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
+                QueryString = "http://www.testing.com/[[CountryName]]",
+                PutData = "This is post:[[Post]]",
+                IsPutDataBase64 = true
+            };
+            var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
+            DsfWebPutActivity.Outputs = serviceOutputs;
+            var serviceXml = XmlResource.Fetch("WebService");
+            using (var service = new WebService(serviceXml) { RequestResponse = response })
+            {
+                DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
+                DsfWebPutActivity.ResponseFromWeb = response;
+                var dataObjectMock = new Mock<IDSFDataObject>();
+                dataObjectMock.Setup(o => o.Environment).Returns(environment);
+                dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+                DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+                var cat = new Mock<IResourceCatalog>();
+                var src = new WebSource { Address = "www.example.com" };
+                cat.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(src);
+                DsfWebPutActivity.ResourceCatalog = cat.Object;
+                //---------------Assert Precondition----------------
+                Assert.IsNotNull(environment);
+                Assert.IsNotNull(DsfWebPutActivity);
+                //---------------Execute Test ----------------------
+                var debugInputs = DsfWebPutActivity.GetDebugInputs(environment, 0);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(debugInputs);
+                Assert.AreEqual(5, debugInputs.Count);
             }
         }
 
