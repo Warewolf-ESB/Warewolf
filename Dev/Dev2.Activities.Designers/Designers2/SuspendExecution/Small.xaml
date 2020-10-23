@@ -62,9 +62,9 @@
                                     WrapInBrackets="False"
                                     Text="{Binding Path=ModelItem.PersistValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_PersistValue_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.ForEachToolTipForEachType}">
+                                    ToolTip="{x:Static languages:Tooltips.SuspendExecutionPersistValueToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.ForEachHelpForEachType}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SuspendExecutionPersistValueHelpText}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.PersistValue"
                                          SourcePropertyValue="{Binding ModelItem.PersistValue, UpdateSourceTrigger=PropertyChanged}"
