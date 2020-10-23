@@ -18,5 +18,6 @@ namespace Warewolf.HangfireServer
         void ExecutionFailed(ExecutionHistory executionHistory);
         void ExecutionSucceeded(ExecutionHistory executionHistory);
         void StartExecution(string message, params object[] args);
+        void LogResumedExecution(Audit values);
     }
 }
