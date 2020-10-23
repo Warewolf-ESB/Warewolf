@@ -79,8 +79,8 @@ namespace HangfireServer
                     _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
                     _writer.Write("Press any key to exit...");
                     _pause.Pause();
-                    Environment.Exit(0);
-                    return;
+                    _exit.Exit();
+                    return 0;
                 }
 
                 ConfigureServerStorage(connectionString);
@@ -89,11 +89,12 @@ namespace HangfireServer
                 options.Urls.Add(dashboardEndpoint);
                 WebApp.Start<Dashboard>(options);
                 _writer.WriteLine("Hangfire dashboard started...");
-                _server = new BackgroundJobServer();
+                _ = new BackgroundJobServer();
                 _writer.WriteLine("Hangfire server started...");
+                return 0;
             }
 
-            private static void ConfigureServerStorage(string connectionString, LogEverythingAttribute logEverythingAttribute)
+            private void ConfigureServerStorage(string connectionString)
             {
                 var logEverythingAttribute = new LogEverythingAttribute(_logger);
 
