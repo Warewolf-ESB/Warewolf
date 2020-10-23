@@ -29,6 +29,7 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
+    [DoNotParallelize]
     public class FetchExplorerItemsTest
     {
         [TestInitialize]

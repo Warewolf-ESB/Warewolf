@@ -77,37 +77,36 @@ namespace HangfireServer
                 if (string.IsNullOrEmpty(connectionString))
                 {
                     _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
-                    _logger.Info("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
                     _writer.Write("Press any key to exit...");
                     _pause.Pause();
-                    _exit.Exit();
-                    return 0;
+                    Environment.Exit(0);
+                    return;
                 }
-                ConfigureServerStorage(connectionString);
 
+                ConfigureServerStorage(connectionString);
                 var dashboardEndpoint = Config.Persistence.DashboardHostname + ":" + Config.Persistence.DashboardPort;
                 var options = new StartOptions();
                 options.Urls.Add(dashboardEndpoint);
                 WebApp.Start<Dashboard>(options);
                 _writer.WriteLine("Hangfire dashboard started...");
-                _ = new BackgroundJobServer();
+                _server = new BackgroundJobServer();
                 _writer.WriteLine("Hangfire server started...");
-                WaitForExit();
-                return 0;
             }
 
-            private static void ConfigureServerStorage(string connectionString)
+            private static void ConfigureServerStorage(string connectionString, LogEverythingAttribute logEverythingAttribute)
             {
+                var logEverythingAttribute = new LogEverythingAttribute(_logger);
+
                 GlobalConfiguration.Configuration
-                    .UseFilter(new LogEverythingAttribute())
-                    .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
-                    {
-                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                        QueuePollInterval = TimeSpan.Zero,
-                        UseRecommendedIsolationLevel = true,
-                        DisableGlobalLocks = true
-                    });
+                                .UseFilter(logEverythingAttribute)
+                                .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+                                {
+                                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                                    QueuePollInterval = TimeSpan.Zero,
+                                    UseRecommendedIsolationLevel = true,
+                                    DisableGlobalLocks = true
+                                });
             }
 
             private static string ConnectionString()

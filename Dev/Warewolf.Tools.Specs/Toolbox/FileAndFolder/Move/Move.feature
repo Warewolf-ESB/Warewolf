@@ -1,10 +1,10 @@
-﻿@FileAndFolderMove
 Feature: Move
 	In order to be able to Move a File or Folder 
 	as a Warewolf user
 	I want a tool that will Move File(s) or Folder(s) from a given location to another location
 	
-Scenario Outline: Move file at location
+@FileMoveFromLocalWithOverwrite
+Scenario Outline: Move file at local location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
@@ -23,39 +23,15 @@ Scenario Outline: Move file at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	   | No | Name             | source         | sourceLocation                                                                              | username      | password     | destination  | destinationLocation                                                                       | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-	   | 1  | Local to Local   | [[sourcePath]] | c:\movefile0.txt                                                                            | ""            | ""           | [[destPath]] | C:\moved0.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 2  | Local to FTP     | [[sourcePath]] | c:\movefile1.txt                                                                            | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 3  | Local to FTPS    | [[sourcePath]] | c:\movefile2.txt                                                                            | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt                             | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
-	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt                                                                            | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
-	   | 5  | Local to UNC     | [[sourcePath]] | c:\movefile4.txt                                                                            | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved0.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 6  | UNC to Local     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile0.txt | ""            | ""           | [[destPath]] | C:\moved1.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 7  | UNC to FTP       | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile1.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved1.txt                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 8  | UNC to FTPS      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile2.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved1.txt                             | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
-	   | 9  | UNC to SFTP      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile3.txt | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/moved1.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
-	   | 10 | UNC TO UNC       | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile4.txt | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved1.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 11 | FTP to Local     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile0.txt                            | ""            | ""           | [[destPath]] | C:\moved2.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 12 | FTP to UNC       | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile1.txt                            | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved2.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 13 | FTP to FTPS      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt                            | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt                             | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
-	   | 14 | FTP to SFTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile3.txt                            | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/moved2.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
-	   | 15 | FTP to FTP       | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt                            | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 16 | FTPS to Local    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile0.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | C:\moved3.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 17 | FTPS to UNC      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile1.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved3.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 18 | FTPS to FTPS     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt                             | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
-	   | 19 | FTPS to SFTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/moved3.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
-	   | 20 | FTPS to FTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 21 | SFTP to Local    | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile0.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | C:\moved4.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 22 | SFTP to UNC      | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile1.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved4.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 23 | SFTP to FTP      | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile2.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved4.txt                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	   | 24 | SFTP to FTPS     | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile3.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved4.txt                             | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
-	   | 25 | SFTP to SFTP     | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile4.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/moved4.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
-	   | 26 | SFTP to Local PK | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile01.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | C:\moved41.txt                                                                            | ""            | ""           | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
-	   | 27 | SFTP to UNC  PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile11.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved41.txt | ""            | ""           | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
-	   | 28 | SFTP to FTP  PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile21.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved41.txt                            | ""            | ""           | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
-	   | 29 | SFTP to FTPS PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile31.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt                            | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
-	   | 30 | SFTP to SFTP PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile41.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/moved41.txt                                                   | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
-
-Scenario Outline: Move file at location with overwrite disabled
+	   | No | Name             | source         | sourceLocation   | username | password | destination  | destinationLocation                                                                       | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | Local to Local   | [[sourcePath]] | c:\movefile0.txt | ""       | ""       | [[destPath]] | C:\moved0.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 2  | Local to FTP     | [[sourcePath]] | c:\movefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt                          | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 3  | Local to FTPS    | [[sourcePath]] | c:\movefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt                          | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
+	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
+	   | 5  | Local to UNC     | [[sourcePath]] | c:\movefile4.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved0.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	
+@FileMoveFromUNCWithOverwrite
+Scenario Outline: Move file at UNC location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
@@ -74,38 +50,240 @@ Scenario Outline: Move file at location with overwrite disabled
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	   | No | Name             | source         | sourceLocation                                                                              | username      | password     | destination  | destinationLocation                                                                       | destUsername      | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-	   | 1  | Local to Local   | [[sourcePath]] | c:\movefile0.txt                                                                            | ""            | ""           | [[destPath]] | C:\moved0.txt                                                                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 2  | Local to FTP     | [[sourcePath]] | c:\movefile1.txt                                                                            | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 3  | Local to FTPS    | [[sourcePath]] | c:\movefile2.txt                                                                            | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt                             | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
-	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt                                                                            | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
-	   | 5  | Local to UNC     | [[sourcePath]] | c:\movefile4.txt                                                                            | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved0.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 6  | UNC to Local     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile0.txt | ""            | ""           | [[destPath]] | C:\moved1.txt                                                                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 7  | UNC to FTP       | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile1.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved1.txt                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 8  | UNC to FTPS      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile2.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved1.txt                             | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
-	   | 9  | UNC to SFTP      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile3.txt | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/moved1.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
-	   | 10 | UNC TO UNC       | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile4.txt | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved1.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 11 | FTP to Local     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile0.txt                            | ""            | ""           | [[destPath]] | C:\moved2.txt                                                                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 12 | FTP to UNC       | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile1.txt                            | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved2.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 13 | FTP to FTPS      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt                            | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt                             | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
-	   | 14 | FTP to SFTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile3.txt                            | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/moved2.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
-	   | 15 | FTP to FTP       | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt                            | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 16 | FTPS to Local    | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile0.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | C:\moved3.txt                                                                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 17 | FTPS to UNC      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile1.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved3.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 18 | FTPS to FTPS     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt                             | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
-	   | 19 | FTPS to SFTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/moved3.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
-	   | 20 | FTPS to FTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt                            | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 21 | SFTP to Local    | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile0.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | C:\moved4.txt                                                                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 22 | SFTP to UNC      | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile1.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved4.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 23 | SFTP to FTP      | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile2.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved4.txt                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
-	   | 24 | SFTP to FTPS     | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile3.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved4.txt                             | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
-	   | 25 | SFTP to SFTP     | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile4.txt                                                   | dev2          | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/moved4.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
-	   | 26 | SFTP to Local PK | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile01.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | C:\moved41.txt                                                                            | ""                | ""           | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
-	   | 27 | SFTP to UNC  PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile11.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved41.txt | ""                | ""           | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
-	   | 28 | SFTP to FTP  PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile21.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved41.txt                            | ""                | ""           | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
-	   | 29 | SFTP to FTPS PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile31.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt                            | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
-	   | 30 | SFTP to SFTP PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile41.txt                                                  | dev2          | Q/ulw&]      | [[destPath]] | sftp://SVRDEV.premier.local/moved41.txt                                                   | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
+	   | No | Name             | source         | sourceLocation                                                                              | username | password | destination  | destinationLocation                                                                       | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | UNC to Local     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile0.txt | ""       | ""       | [[destPath]] | C:\moved1.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 2  | UNC to FTP       | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved1.txt                          | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 3  | UNC to FTPS      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved1.txt                          | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
+	   | 4  | UNC to SFTP      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved1.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
+	   | 5  | UNC TO UNC       | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile4.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved1.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	
+@FileMoveFromFTPWithOverwrite
+Scenario Outline: Move file at FTP location
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the Move file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   |<sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |       
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	   | No | Name             | source         | sourceLocation                                                      | username | password | destination  | destinationLocation                                                                       | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | FTP to Local     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile0.txt | ""       | ""       | [[destPath]] | C:\moved2.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 2  | FTP to UNC       | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile1.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved2.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 3  | FTP to FTPS      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt                          | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
+	   | 4  | FTP to SFTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved2.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
+	   | 5  | FTP to FTP       | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt                          | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	
+@FileMoveFromFTPSWithOverwrite
+Scenario Outline: Move file at FTPS location
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the Move file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   |<sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |       
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	   | No | Name          | source         | sourceLocation                                                      | username      | password     | destination  | destinationLocation                                                                       | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | FTPS to Local | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile0.txt | Administrator | Dev2@dmin123 | [[destPath]] | C:\moved3.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 2  | FTPS to UNC   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile1.txt | Administrator | Dev2@dmin123 | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved3.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 3  | FTPS to FTPS  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt                          | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
+	   | 4  | FTPS to SFTP  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/moved3.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
+	   | 5  | FTPS to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt                          | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	
+@FileMoveFromSFTPWithOverwrite
+Scenario Outline: Move file at SFTP location
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the Move file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   |<sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |       
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	   | No | Name             | source         | sourceLocation                             | username | password | destination  | destinationLocation                                                                       | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | SFTP to Local    | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile0.txt  | dev2     | Q/ulw&]  | [[destPath]] | C:\moved4.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 2  | SFTP to UNC      | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile1.txt  | dev2     | Q/ulw&]  | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved4.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 3  | SFTP to FTP      | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile2.txt  | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved4.txt                          | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
+	   | 4  | SFTP to FTPS     | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile3.txt  | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved4.txt                          | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
+	   | 5  | SFTP to SFTP     | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile4.txt  | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/moved4.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
+	   | 6  | SFTP to Local PK | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile01.txt | dev2     | Q/ulw&]  | [[destPath]] | C:\moved41.txt                                                                            | ""            | ""           | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
+	   | 7  | SFTP to UNC  PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile11.txt | dev2     | Q/ulw&]  | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved41.txt | ""            | ""           | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
+	   | 8  | SFTP to FTP  PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile21.txt | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved41.txt                         | ""            | ""           | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
+	   | 9  | SFTP to FTPS PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile31.txt | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt                         | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
+	   | 10 | SFTP to SFTP PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile41.txt | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/moved41.txt                                                   | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
+@FileMoveFromLocalWithoutOverwrite
+Scenario Outline: Move file at local location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the Move file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   |<sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |       
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	   | No | Name             | source         | sourceLocation   | username | password | destination  | destinationLocation                                                                       | destUsername      | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | Local to Local   | [[sourcePath]] | c:\movefile0.txt | ""       | ""       | [[destPath]] | C:\moved0.txt                                                                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 2  | Local to FTP     | [[sourcePath]] | c:\movefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt                          | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 3  | Local to FTPS    | [[sourcePath]] | c:\movefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt                          | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
+	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
+	   | 5  | Local to UNC     | [[sourcePath]] | c:\movefile4.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved0.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+
+@FileMoveFromUNCWithoutOverwrite
+Scenario Outline: Move file at UNC location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the Move file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   |<sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |       
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	   | No | Name         | source         | sourceLocation                                                                              | username | password | destination  | destinationLocation                                                                       | destUsername      | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | UNC to Local | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile0.txt | ""       | ""       | [[destPath]] | C:\moved1.txt                                                                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 2  | UNC to FTP   | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved1.txt                          | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 3  | UNC to FTPS  | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved1.txt                          | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
+	   | 4  | UNC to SFTP  | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved1.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
+	   | 6  | UNC TO UNC   | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile4.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved1.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+
+@FileMoveFromFTPWithoutOverwrite
+Scenario Outline: Move file at FTP location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the Move file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   |<sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |       
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	   | No | Name         | source         | sourceLocation                                                      | username      | password     | destination  | destinationLocation                                                                      | destUsername      | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | FTP to Local | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile0.txt | ""            | ""           | [[destPath]] | C:\moved2.txt                                                                            | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 2  | FTP to UNC   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile1.txt | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved2.txt | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 3  | FTP to FTPS  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt                         | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
+	   | 4  | FTP to SFTP  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile3.txt | ""            | ""           | [[destPath]] | sftp://SVRDEV.premier.local/moved2.txt                                                   | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
+	   | 5  | FTP to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt                         | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+
+@FileMoveFromFTPSWithoutOverwrite
+Scenario Outline: Move file at FTPS location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the Move file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   |<sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |       
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	   | No | Name          | source         | sourceLocation                                                      | username      | password     | destination  | destinationLocation                                                                      | destUsername      | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | FTPS to Local | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile0.txt | Administrator | Dev2@dmin123 | [[destPath]] | C:\moved3.txt                                                                            | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 2  | FTPS to UNC   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile1.txt | Administrator | Dev2@dmin123 | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved3.txt | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 3  | FTPS to FTPS  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt                         | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
+	   | 4  | FTPS to SFTP  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/moved3.txt                                                   | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
+	   | 5  | FTPS to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt                         | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+
+@FileMoveFromSFTPWithoutOverwrite
+Scenario Outline: Move file at SFTP location with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the Move file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   |<sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |       
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	   | No | Name             | source         | sourceLocation                             | username | password | destination  | destinationLocation                                                                       | destUsername      | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | SFTP to Local    | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile0.txt  | dev2     | Q/ulw&]  | [[destPath]] | C:\moved4.txt                                                                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 2  | SFTP to UNC      | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile1.txt  | dev2     | Q/ulw&]  | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved4.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 3  | SFTP to FTP      | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile2.txt  | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved4.txt                          | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
+	   | 4  | SFTP to FTPS     | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile3.txt  | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved4.txt                          | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
+	   | 5  | SFTP to SFTP     | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile4.txt  | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/moved4.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
+	   | 6  | SFTP to Local PK | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile01.txt | dev2     | Q/ulw&]  | [[destPath]] | C:\moved41.txt                                                                            | ""                | ""           | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
+	   | 7  | SFTP to UNC  PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile11.txt | dev2     | Q/ulw&]  | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved41.txt | ""                | ""           | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
+	   | 8  | SFTP to FTP  PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile21.txt | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved41.txt                         | ""                | ""           | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
+	   | 9  | SFTP to FTPS PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile31.txt | dev2     | Q/ulw&]  | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt                         | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    |                           |
+	   | 10 | SFTP to SFTP PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile41.txt | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/moved41.txt                                                   | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
+
+@FileAndFolderMove
 Scenario Outline: Move file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -118,14 +296,15 @@ Scenario Outline: Move file at location Null
     When the Move file tool is executed
 	Then the execution has "<errorOccured>" error
 	Examples: 
-	   | No | Name           | source         | sourceLocation                                                                              | username | password | destination  | destinationLocation                                           | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-	   | 1  | Local to Local | [[sourcePath]] | NULL                                                                                        | ""       | ""       | [[destPath]] | Null                                                          | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
-	   | 2  | Local to Local | [[sourcePath]] | C:\moved0.txt                                                                               | ""       | ""       | [[destPath]] | C:\moved0.txt                                                 | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
-	   | 3  | UNC to Local   | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile0.txt | ""       | ""       | [[destPath]] | cv:\moved1.txt                                                | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
+	   | No | Name           | source         | sourceLocation                                                                              | username | password | destination  | destinationLocation                                              | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 1  | Local to Local | [[sourcePath]] | NULL                                                                                        | ""       | ""       | [[destPath]] | Null                                                             | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
+	   | 2  | Local to Local | [[sourcePath]] | C:\moved0.txt                                                                               | ""       | ""       | [[destPath]] | C:\moved0.txt                                                    | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
+	   | 3  | UNC to Local   | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile0.txt | ""       | ""       | [[destPath]] | cv:\moved1.txt                                                   | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
 	   | 4  | Local to FTP   | [[sourcePath]] | c:\temp\movefile1.txt                                                                       | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt | ""            | ""           | True     | [[result]] | Failure | NO           |                      |                           |
 	   | 5  | Local to FTPS  | [[sourcePath]] | v:\movefile2.txt                                                                            | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt | Administrator | Dev2@dmin123 | True     | [[result]] | Failure | AN           |                      |                           |
-	   | 6  | Local to SFTP  | [[sourcePath]] | " "                                                                                         | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                        | dev2          | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
+	   | 6  | Local to SFTP  | [[sourcePath]] | " "                                                                                         | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                           | dev2          | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
 	 
+@FileAndFolderMove
 Scenario Outline: Move file Validation
 	Given I have a variable "[[a]]" with a value "<Val1>"
 	And I have a variable "[[b]]" with a value "<Val2>"
