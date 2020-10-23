@@ -6,9 +6,17 @@ using System.Threading;
 using Dev2.Core.Tests;
 using Dev2.Studio.Core.Factories;
 using System.Globalization;
+using System.Threading.Tasks;
+using System.Windows;
 using Dev2.Common;
 using Dev2.Data;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Controller;
+using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
+using Moq;
 
 namespace Dev2.Integration.Tests
 {
@@ -136,6 +144,54 @@ namespace Dev2.Integration.Tests
             Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(5500), $"Sort datalist took longer than 5500 milliseconds to sort 2500 variables. Took {endTime}");
 
             DataListViewModelTests.SortCleanup(_dataListViewModel);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void QueryManagerProxy_LoadExplorer_WhenLongerThan30Sec_ShouldLoadExplorerItemsShowPopup()
+        {
+            //------------Setup for test--------------------------
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            var comms = new Mock<ICommunicationControllerFactory>();
+            var env = new Mock<IEnvironmentConnection>();
+            var controller = new Mock<ICommunicationController>();
+            env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
+            env.Setup(a => a.DisplayName).Returns("localhost");
+            env.Setup(a => a.IsConnected).Returns(true);
+            comms.Setup(a => a.CreateController("FetchExplorerItemsService")).Returns(controller.Object);
+            controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(70000).ContinueWith(t => new Mock<IExplorerItem>().Object));
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
+            var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
+            //------------Execute Test---------------------------
+            var item = queryManagerProxy.Load(false, mockPopupController.Object).Result;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(item);
+            mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void QueryManagerProxy_LoadExplorer_WhenLongerThan30Sec__Localhost_ShouldLoadExplorerItemsNotShowPopup()
+        {
+            //------------Setup for test--------------------------
+            var comms = new Mock<ICommunicationControllerFactory>();
+            var env = new Mock<IEnvironmentConnection>();
+            var controller = new Mock<ICommunicationController>();
+            env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
+            env.Setup(a => a.DisplayName).Returns("localhost");
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(e => e.IsLocalHost).Returns(true);
+            comms.Setup(a => a.CreateController("FetchExplorerItemsService")).Returns(controller.Object);
+            controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(70000).ContinueWith(t => new Mock<IExplorerItem>().Object));
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
+            var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
+            //------------Execute Test---------------------------
+            var item = queryManagerProxy.Load(false, mockPopupController.Object).Result;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(item);
+            mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.Never);
         }
     }
 }

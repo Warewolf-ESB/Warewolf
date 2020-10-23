@@ -22,10 +22,17 @@ namespace HangfireServer
     public class LogEverythingAttribute : JobFilterAttribute, IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+        private readonly IExecutionLogPublisher _logger;
+
+        public LogEverythingAttribute(IExecutionLogPublisher logger)
+        {
+            _logger = logger;
+        }
 
         public void OnCreating(CreatingContext context)
         {
             Logger.InfoFormat("Creating a job based on method `{0}`...", context.Job.Method.Name);
+            _logger.Info("Creating a job based on method `{0}`...", context.Job.Method.Name);
         }
 
         public void OnCreated(CreatedContext context)
@@ -34,32 +41,47 @@ namespace HangfireServer
                 "Job that is based on method `{0}` has been created with id `{1}`",
                 context.Job.Method.Name,
                 context.BackgroundJob?.Id);
+            _logger.Info(
+
+                "Job that is based on method `{0}` has been created with id `{1}`",
+                context.Job.Method.Name,
+                context.BackgroundJob?.Id);
         }
 
         public void OnPerforming(PerformingContext context)
         {
             Logger.InfoFormat("Starting to perform job `{0}`", context.BackgroundJob.Id);
-            var values = context.BackgroundJob.Job.Args[0] as Dictionary<string, StringBuilder>;
+            _logger.Info("Starting to perform job `{0}`", context.BackgroundJob.Id);
+
             var resumptionFactory = new ResumptionFactory();
             var resumption = resumptionFactory.New();
             if (resumption.Connect())
             {
+                var values = context.BackgroundJob.Job.Args[0] as Dictionary<string, StringBuilder>;
+                _logger.StartExecution("Starting process to resume workflow `{0}`", values);
                 var result = resumption.Resume(values);
-                // TODO: Log Success "Error: " + ex.Message;
+            }
+            else
+            {
+                _logger.Error("Failed to perform job `{0}`, could not establish a connection.", context.BackgroundJob.Id);
             }
         }
 
         public void OnPerformed(PerformedContext context)
         {
             Logger.InfoFormat("Job `{0}` has been performed", context.BackgroundJob.Id);
+            _logger.Info("Job `{0}` has been performed", context.BackgroundJob.Id);
         }
 
         public void OnStateElection(ElectStateContext context)
         {
-            var failedState = context.CandidateState as FailedState;
-            if (failedState != null)
+            if (context.CandidateState is FailedState failedState)
             {
                 Logger.WarnFormat(
+                    "Job `{0}` has been failed due to an exception `{1}`",
+                    context.BackgroundJob.Id,
+                    failedState.Exception);
+                _logger.Warn(
                     "Job `{0}` has been failed due to an exception `{1}`",
                     context.BackgroundJob.Id,
                     failedState.Exception);
@@ -73,11 +95,20 @@ namespace HangfireServer
                 context.BackgroundJob.Id,
                 context.OldStateName,
                 context.NewState.Name);
+            _logger.Info(
+                "Job `{0}` state was changed from `{1}` to `{2}`",
+                context.BackgroundJob.Id,
+                context.OldStateName,
+                context.NewState.Name);
         }
 
         public void OnStateUnapplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
         {
             Logger.InfoFormat(
+                "Job `{0}` state `{1}` was unapplied.",
+                context.BackgroundJob.Id,
+                context.OldStateName);
+            _logger.Info(
                 "Job `{0}` state `{1}` was unapplied.",
                 context.BackgroundJob.Id,
                 context.OldStateName);

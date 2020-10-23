@@ -5745,7 +5745,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can this suspended execution of the workflow be manually resumed..
+        ///   Looks up a localized string similar to If selected, it allows for manual resumption of the workflow suspended execution..
         /// </summary>
         public static string SuspendExecutionAllowManualResumptionToolTip {
             get {
@@ -5754,7 +5754,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the value for when the workflow should be suspended..
+        ///   Looks up a localized string similar to Enter the value for when the suspended workflow needs to be resumed..
         /// </summary>
         public static string SuspendExecutionPersistValueToolTip {
             get {
@@ -5763,7 +5763,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The result after suspending the execution to be stored..
+        ///   Looks up a localized string similar to When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption.
         /// </summary>
         public static string SuspendExecutionResultToolTip {
             get {
@@ -5772,7 +5772,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select an option for when the workflow should be suspended..
+        ///   Looks up a localized string similar to Select an option for when the suspended workflow should be resumed..
         /// </summary>
         public static string SuspendExecutionSuspendOptionsToolTip {
             get {

@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Interfaces
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Driver.Serilog", "Warewolf.Driver.Serilog\Warewolf.Driver.Serilog.csproj", "{C910662A-F71B-4AC2-A53F-0D44185ADF31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Data", "Warewolf.Data\Warewolf.Data.csproj", "{ED6D034C-477F-447A-929C-3246B60AA76D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -271,6 +273,14 @@ Global
 		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Release|x86.ActiveCfg = Release|Any CPU
 		{C910662A-F71B-4AC2-A53F-0D44185ADF31}.Release|x86.Build.0 = Release|Any CPU
+		{ED6D034C-477F-447A-929C-3246B60AA76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED6D034C-477F-447A-929C-3246B60AA76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED6D034C-477F-447A-929C-3246B60AA76D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED6D034C-477F-447A-929C-3246B60AA76D}.Debug|x86.Build.0 = Debug|Any CPU
+		{ED6D034C-477F-447A-929C-3246B60AA76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED6D034C-477F-447A-929C-3246B60AA76D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED6D034C-477F-447A-929C-3246B60AA76D}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED6D034C-477F-447A-929C-3246B60AA76D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
