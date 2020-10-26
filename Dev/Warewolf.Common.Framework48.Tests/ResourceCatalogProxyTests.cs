@@ -41,9 +41,11 @@ namespace Warewolf.Common.Framework48.Tests
             Assert.AreEqual("test", resource.UserName);
             Assert.AreEqual("test", resource.Password);
         }
+		
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ResourceCatalogProxy))]
+		[Ignore]
         public void ResourceCatalogProxy_ResumeWorkflowExecution_Executes()
         {
             var environmentConnection = GetConnection();

@@ -46,6 +46,16 @@ namespace HangfireServer
             Publish(Serializer.Serialize(command));
         }
 
+        public void LogResumedExecution(Audit values)
+        {
+            var command = new AuditCommand
+            {
+                Type = "ResumeExecution",
+                Audit = values
+            };
+            Publish(Serializer.Serialize(command));
+        }
+
         public void ExecutionFailed(ExecutionHistory executionHistory)
         {
             LogExecutionCompleted(executionHistory);

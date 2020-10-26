@@ -7,6 +7,7 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Hangfire.Client;
@@ -15,62 +16,74 @@ using Hangfire.Logging;
 using Hangfire.Server;
 using Hangfire.States;
 using Hangfire.Storage;
+using Warewolf.Auditing;
 using Warewolf.Driver.Resume;
+using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace HangfireServer
 {
-    public class LogEverythingAttribute : JobFilterAttribute, IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
+    public class ResumptionAttribute : JobFilterAttribute, IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
         private readonly IExecutionLogPublisher _logger;
 
-        public LogEverythingAttribute(IExecutionLogPublisher logger)
+        public ResumptionAttribute(IExecutionLogPublisher logger)
         {
             _logger = logger;
         }
 
         public void OnCreating(CreatingContext context)
         {
-            Logger.InfoFormat("Creating a job based on method `{0}`...", context.Job.Method.Name);
-            _logger.Info("Creating a job based on method `{0}`...", context.Job.Method.Name);
+            Logger.InfoFormat("Creating a job based on method {0}...", context.Job.Method.Name);
         }
 
         public void OnCreated(CreatedContext context)
         {
             Logger.InfoFormat(
-                "Job that is based on method `{0}` has been created with id `{1}`",
-                context.Job.Method.Name,
-                context.BackgroundJob?.Id);
-            _logger.Info(
-
-                "Job that is based on method `{0}` has been created with id `{1}`",
+                "Job that is based on method {0} has been created with id {1}",
                 context.Job.Method.Name,
                 context.BackgroundJob?.Id);
         }
 
         public void OnPerforming(PerformingContext context)
         {
-            Logger.InfoFormat("Starting to perform job `{0}`", context.BackgroundJob.Id);
-            _logger.Info("Starting to perform job `{0}`", context.BackgroundJob.Id);
-
             var resumptionFactory = new ResumptionFactory();
             var resumption = resumptionFactory.New();
             if (resumption.Connect())
             {
                 var values = context.BackgroundJob.Job.Args[0] as Dictionary<string, StringBuilder>;
-                _logger.StartExecution("Starting process to resume workflow `{0}`", values);
-                var result = resumption.Resume(values);
+                LogResumption(values);
+                resumption.Resume(values);
             }
             else
             {
-                _logger.Error("Failed to perform job `{0}`, could not establish a connection.", context.BackgroundJob.Id);
+                _logger.Error("Failed to perform job {0}, could not establish a connection.", context.BackgroundJob.Id);
             }
+        }
+
+        private void LogResumption(Dictionary<string, StringBuilder> values)
+        {
+            values.TryGetValue("resourceID", out StringBuilder workflowId);
+            values.TryGetValue("environment", out StringBuilder environment);
+            values.TryGetValue("startActivityId", out StringBuilder startActivityId);
+            values.TryGetValue("versionNumber", out StringBuilder versionNumber);
+
+            var audit = new Audit
+            {
+                WorkflowID = workflowId?.ToString(),
+                Environment = environment?.ToString(),
+                VersionNumber = versionNumber?.ToString(),
+                NextActivityId = startActivityId?.ToString(),
+                AuditDate = DateTime.Now,
+                AuditType = "LogResumeExecutionState",
+                LogLevel = LogLevel.Info
+            };
+            _logger.LogResumedExecution(audit);
         }
 
         public void OnPerformed(PerformedContext context)
         {
-            Logger.InfoFormat("Job `{0}` has been performed", context.BackgroundJob.Id);
-            _logger.Info("Job `{0}` has been performed", context.BackgroundJob.Id);
+            Logger.InfoFormat("Job {0} has been performed", context.BackgroundJob.Id);
         }
 
         public void OnStateElection(ElectStateContext context)
@@ -78,11 +91,11 @@ namespace HangfireServer
             if (context.CandidateState is FailedState failedState)
             {
                 Logger.WarnFormat(
-                    "Job `{0}` has been failed due to an exception `{1}`",
+                    "Job {0} has been failed due to an exception {1}",
                     context.BackgroundJob.Id,
                     failedState.Exception);
                 _logger.Warn(
-                    "Job `{0}` has been failed due to an exception `{1}`",
+                    "Job {0} has been failed due to an exception {1}",
                     context.BackgroundJob.Id,
                     failedState.Exception);
             }
@@ -91,12 +104,7 @@ namespace HangfireServer
         public void OnStateApplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
         {
             Logger.InfoFormat(
-                "Job `{0}` state was changed from `{1}` to `{2}`",
-                context.BackgroundJob.Id,
-                context.OldStateName,
-                context.NewState.Name);
-            _logger.Info(
-                "Job `{0}` state was changed from `{1}` to `{2}`",
+                "Job {0} state was changed from {1} to {2}",
                 context.BackgroundJob.Id,
                 context.OldStateName,
                 context.NewState.Name);
@@ -105,11 +113,7 @@ namespace HangfireServer
         public void OnStateUnapplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
         {
             Logger.InfoFormat(
-                "Job `{0}` state `{1}` was unapplied.",
-                context.BackgroundJob.Id,
-                context.OldStateName);
-            _logger.Info(
-                "Job `{0}` state `{1}` was unapplied.",
+                "Job {0} state {1} was unapplied.",
                 context.BackgroundJob.Id,
                 context.OldStateName);
         }
