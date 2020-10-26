@@ -365,7 +365,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(160)]
+        [Timeout(250)]
         public void TestSelectActionFolder()
         {
             //arrange
@@ -409,7 +409,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestSelectActionParentServerSource()
         {
             //arrange
