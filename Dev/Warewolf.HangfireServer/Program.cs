@@ -96,10 +96,10 @@ namespace HangfireServer
 
             private void ConfigureServerStorage(string connectionString)
             {
-                var logEverythingAttribute = new LogEverythingAttribute(_logger);
+                var resumptionAttribute = new ResumptionAttribute(_logger);
 
                 GlobalConfiguration.Configuration
-                                .UseFilter(logEverythingAttribute)
+                                .UseFilter(resumptionAttribute)
                                 .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
                                 {
                                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
