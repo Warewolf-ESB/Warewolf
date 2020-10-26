@@ -386,7 +386,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sipohamandla Dube")]
         public void ConnectControlViewModel_TestConnectSuccessful()
@@ -442,7 +442,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestConnectUnsuccessful()
         {
@@ -592,7 +592,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_EditServerServerIDMatchIsTrue()

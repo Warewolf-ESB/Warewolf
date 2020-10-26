@@ -296,8 +296,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public async Task TestOtherServerСonnect()
+        [Timeout(250)]
+        public async Task Deploy_TestOtherServerСonnect()
         {
             //arrange
             var isEnvironmentChanged = false;

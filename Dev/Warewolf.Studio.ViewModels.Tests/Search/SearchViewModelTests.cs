@@ -74,7 +74,8 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             return mockEnvironmentConnection;
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+		[Timeout(1000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("SearchViewModel_Constructor")]
         public void SearchViewModel_Constructor_ExpectedValues()
