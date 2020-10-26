@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceModel))]
         public void ElasticsearchSourceModel_New_ExpectPassThrough()
