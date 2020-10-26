@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -412,7 +412,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_CreateFolder")]
         public void StudioServerProxy_CreateFolder_VerifyFolderCreated()

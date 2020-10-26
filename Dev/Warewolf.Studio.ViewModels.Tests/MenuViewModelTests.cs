@@ -94,7 +94,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory("MenuViewModel_ShowStartPage")]
         public void MenuViewModel_ShowStartPage_Execute_Result()
