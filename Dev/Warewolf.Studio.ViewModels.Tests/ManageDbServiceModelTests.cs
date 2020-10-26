@@ -70,8 +70,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestGetActions()
+        [Timeout(250)]
+        public void DbService_TestGetActions()
         {
             var expectedResult = new ObservableCollection<IDbAction>();
             var mockDbSource = new Mock<IDbSource>();

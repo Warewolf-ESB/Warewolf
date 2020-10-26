@@ -54,8 +54,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestTestConnection()
+        [Timeout(250)]
+        public void ServerSourceTestTestConnection()
         {
             //arrange
             var resourceMock = new Mock<IServerSource>();

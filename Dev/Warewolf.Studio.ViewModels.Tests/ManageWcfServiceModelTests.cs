@@ -66,8 +66,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestGetActions()
+        [Timeout(250)]
+        public void TestGetWCFActions()
         {
             var expectedResult = new ObservableCollection<IWcfAction>();
             var mockWcfServerSource = new Mock<IWcfServerSource>();

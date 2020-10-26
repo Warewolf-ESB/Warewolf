@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -75,7 +75,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioServerProxy_LoadExplorer")]
         public void StudioServerProxy_LoadExplorer_Called_ShouldLoadExplorerItems()
@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioServerProxy_LoadExplorer")]
         public void StudioServerProxy_Delete_WhenResource_ShouldDeleteResource()
@@ -137,7 +137,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioServerProxy_LoadExplorer")]
         public void StudioServerProxy_Delete_WhenVersion_ShouldDeleteVersion()
@@ -171,7 +171,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_RenameFolder")]
         public void StudioServerProxy_Rename_WhenFolder_ShouldRenameFolder()
@@ -201,7 +201,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_Rename")]
         public void StudioServerProxy_Rename_WhenNotFolder_ShouldRenameResourceId()
@@ -231,7 +231,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_Move")]
         public void StudioServerProxy_Move_WhenSucces_ShouldReturnTrue()
@@ -265,7 +265,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_Move")]
         public void StudioServerProxy_Move_WhenFaulty_ShouldReturnfalse()
@@ -296,12 +296,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(item);
             Assert.IsFalse(item.Result);
             updateManagerProxy.Verify(manager => manager.MoveItem(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
-        }
-
-      
+        }      
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_GetVersion")]
         public void StudioServerProxy_GetVersion_WhenGivenVersion_ShouldLoadUsingVersion()
@@ -412,7 +410,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_CreateFolder")]
         public void StudioServerProxy_CreateFolder_VerifyFolderCreated()
@@ -492,11 +490,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(true, deletedFileMetadata.IsDeleted);
             Assert.AreEqual(false, deletedFileMetadata.ShowDependencies);
             Assert.AreEqual(mock.Object.ResourceId, deletedFileMetadata.ResourceId);
-
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_HasDependencies")]
         public void StudioServerProxy_HasDependencies_GivenNodesAndDeleteAnyway_ShowDepenciesIsFalse()
@@ -574,7 +571,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_HasDependencies")]
         public void StudioServerProxy_HasDependencies_GivenNodesAndCanceClicked_ShowsDependencies()
@@ -618,12 +615,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(mockPopupController.Object.ApplyToAll, deletedFileMetadata.ApplyToAll);
             Assert.AreEqual(mockPopupController.Object.DeleteAnyway, deletedFileMetadata.DeleteAnyway);
             Assert.AreEqual(mock.Object.ResourceId, deletedFileMetadata.ResourceId);
-
         }
-
-
-
-
 
         Task<IExplorerRepositoryResult> ValueFunction(ExecStatus status)
         {
@@ -646,7 +638,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory("StudioServerProxy_VersionManager")]
         public void StudioServerProxy_VersionManager_GetVersions_ServerDown_ShowPopup()
