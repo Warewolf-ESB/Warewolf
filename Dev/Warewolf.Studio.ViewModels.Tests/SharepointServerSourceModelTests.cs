@@ -35,8 +35,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestTestConnection()
+        [Timeout(250)]
+        public void Sharepoint_TestTestConnection()
         {
             //arrange
             var resourceMock = new Mock<ISharepointServerSource>();
