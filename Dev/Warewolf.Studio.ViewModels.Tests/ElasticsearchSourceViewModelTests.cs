@@ -162,7 +162,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_Constructor_OnNew()
