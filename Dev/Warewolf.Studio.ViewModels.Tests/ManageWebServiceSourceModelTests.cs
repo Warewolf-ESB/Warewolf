@@ -38,8 +38,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestTestConnection()
+        [Timeout(250)]
+        public void Web_TestTestConnection()
         {
             //arrange
             var resourceMock = new Mock<IWebServiceSource>();
