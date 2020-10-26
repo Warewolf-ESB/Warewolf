@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(" FileChooserModel_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]

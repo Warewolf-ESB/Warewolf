@@ -142,7 +142,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_CanTest_False_Returns_Success()
@@ -158,7 +158,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_CanTest_True_Returns_Success()
