@@ -59,8 +59,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCancelCommandExecute()
+        [Timeout(250)]
+        public void FileChooser_TestCancelCommandExecute()
         {
             //act
             _target.CancelCommand.Execute(null);
