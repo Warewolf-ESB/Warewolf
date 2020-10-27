@@ -305,7 +305,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowPersistenceSettingsChanged()
         {
             var description = "You are about to make changes that will affect suspended executions." + Environment.NewLine
-                                                                                                            + "In doing so, you will need to manually restart the persistence server for the changes to take effect." + Environment.NewLine
+                                                                                                            + "In doing so, you will need to manually restart the warewolf server for the changes to take effect." + Environment.NewLine
                                                                                                             + "Would you like to continue to save the changes? " + Environment.NewLine +
                                                                                                             "-----------------------------------------------------------------" +
                                                                                                             Environment.NewLine +
