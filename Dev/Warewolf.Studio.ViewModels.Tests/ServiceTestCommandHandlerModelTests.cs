@@ -453,7 +453,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(60000)]
+        [Timeout(1000)]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestCommandHandlerModel))]
         [DoNotParallelize]
@@ -783,7 +783,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(2000)]
+        [Timeout(5000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ServiceTestCommandHandlerModel))]
         public void ServiceTestCommandHandlerModel_RunSelectedTest_GivenResultWithOutputWithTestSteps_ShouldPopulateSelectedTesWithResultOutputsStep()

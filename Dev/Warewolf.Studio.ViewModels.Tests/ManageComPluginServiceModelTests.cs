@@ -66,8 +66,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestGetActions()
+        [Timeout(250)]
+        public void ComPlugin_TestGetActions()
         {
             var expectedResult = new ObservableCollection<IPluginAction>();
             var mockComPluginSource = new Mock<IComPluginSource>();
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestGetNameSpaces()
         {
             var expectedResult = new ObservableCollection<INamespaceItem>();

@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void Destination_GivenNewDestinationIsCreated_ShouldHaveNewDestination()
         {
@@ -564,7 +564,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenNoSelectedItem_ShouldHaveFalse()
         {
@@ -605,7 +605,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenDestinationIsNotConnected_ShouldHaveFalse()
         {
@@ -1114,7 +1114,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void Source_GivenNewSourceIsCreated_ShouldHaveNewSource()
         {
