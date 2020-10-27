@@ -204,6 +204,25 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Equals_Given_Same_IsPutDataBase64_IsEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var headers = new List<INameValue> { new NameValue("a", "x") };
+            var webPut = new WebPutActivity { UniqueID = uniqueId, Headers = headers, IsPutDataBase64 = true };
+            var webPut1 = new WebPutActivity { UniqueID = uniqueId, Headers = headers, IsPutDataBase64 = true };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(webPut);
+            //---------------Execute Test ----------------------
+            var equals = webPut.Equals(webPut1);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(equals);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPutActivity))]
         public void WebPutActivity_Equals_Given_Same_QueryString_IsEqual()

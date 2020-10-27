@@ -82,6 +82,32 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WebPutInputRegion))]
+        public void WebPutInputRegion_TestClone_IsPutDataBase64()
+        {
+            var id = Guid.NewGuid();
+            var act = new WebPutActivity
+            {
+                SourceId = id
+            };
+
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebPutActivity()));
+            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion) {PutData = "bob", IsPutDataBase64 = true};
+            Assert.AreEqual(region.IsEnabled, false);
+            Assert.AreEqual(region.Errors.Count, 0);
+            if (region.CloneRegion() is WebPutInputRegion clone)
+            {
+                Assert.AreEqual(clone.IsEnabled, false);
+                Assert.AreEqual(clone.Errors.Count, 0);
+                Assert.AreEqual(clone.PutData, "bob");
+                Assert.IsTrue(clone.IsPutDataBase64);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPutInputRegion))]
         public void WebPutInputRegion_RestoreFromPrevious_Restore_ExpectValuesChanged()
         {
             //------------Setup for test--------------------------

@@ -30,7 +30,6 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         readonly ISourceToolRegion<IWebServiceSource> _source;
         ObservableCollection<INameValue> _headers;
         bool _isEnabled;
-        string _queryString;
         string _requestUrl;
         private bool _isPutDataBase64;
 
