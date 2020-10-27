@@ -66,8 +66,8 @@ namespace Warewolf.Studio.Models.Help.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestDispose()
+        [Timeout(250)]
+        public void HelpModel_Dispose()
         {
             //arrange
             var isOnHelpTextReceivedRaised = false;

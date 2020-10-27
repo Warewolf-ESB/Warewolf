@@ -1643,8 +1643,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestDispose()
+        [Timeout(250)]
+        public void ExplorerItem_Dispose()
         {
             //arrange
             var child = new Mock<IExplorerItemViewModel>();
