@@ -117,14 +117,6 @@
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                 </i:Interaction.Behaviors>
                             </CheckBox>
-                            <CheckBox Content="Enable Server"
-                                      IsChecked="{Binding Enable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ToolTip="{x:Static languages:Tooltips.PersistenceViewEnableToolTip}">
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:HelpText.PersistenceViewEnableHelpText}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
-                            </CheckBox>
                         </StackPanel>
                     </Grid>
                 </Grid>

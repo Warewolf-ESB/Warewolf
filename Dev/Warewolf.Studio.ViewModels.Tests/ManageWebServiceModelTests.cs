@@ -54,7 +54,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #endregion Test initialize
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestRetrieveSources()
         {
             var expectedResult = new ObservableCollection<IWebServiceSource>();
@@ -66,7 +67,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchWebServiceSources());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestCreateNewSource()
         {
             try
@@ -79,7 +81,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         public void TestEditWebServiceSource()
         {
             var mockWebServiceSource = new Mock<IWebServiceSource>();
@@ -89,7 +92,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockWebServiceSource.Object);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestService()
         {
             var mockWebServiceSourceValue = new Mock<IWebService>();

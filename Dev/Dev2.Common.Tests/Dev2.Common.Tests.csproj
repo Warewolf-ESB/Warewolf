@@ -192,6 +192,9 @@
     <EmbeddedResource Include="Json\Test.json" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk">
+      <Version>16.7.1</Version>
+    </PackageReference>
     <PackageReference Include="Moq" Version="4.14.5" />
     <PackageReference Include="MSTest.TestAdapter">
       <Version>2.1.2</Version>

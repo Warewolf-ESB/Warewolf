@@ -7,12 +7,14 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 using System.Runtime.CompilerServices;
 using Warewolf.Auditing;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+
 namespace Warewolf.HangfireServer
 {
     internal class ExecutionLogger : NetworkLogger, IExecutionLogPublisher
@@ -41,6 +43,16 @@ namespace Warewolf.HangfireServer
             {
                 Type = "ExecutionAuditCommand",
                 ExecutionHistory = executionHistory
+            };
+            Publish(Serializer.Serialize(command));
+        }
+
+        public void LogResumedExecution(Audit values)
+        {
+            var command = new AuditCommand
+            {
+                Type = "ResumeExecution",
+                Audit = values
             };
             Publish(Serializer.Serialize(command));
         }

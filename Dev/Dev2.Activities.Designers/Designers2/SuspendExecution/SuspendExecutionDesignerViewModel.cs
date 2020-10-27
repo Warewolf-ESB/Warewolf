@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Activities.Designers2.Foreach;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.Interfaces.Enums;
@@ -32,9 +31,9 @@ namespace Dev2.Activities.Designers2.SuspendExecution
             SelectedSuspendOption = SuspendOption.GetDescription();
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_SuspendExecution;
-            var dataFunc = modelItem.Properties["DataFunc"]?.ComputedValue as ActivityFunc<string, bool>;
-            DataFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
-            var type = dataFunc?.Handler?.GetType();
+            var saveDataFunc = modelItem.Properties["SaveDataFunc"]?.ComputedValue as ActivityFunc<string, bool>;
+            DataFuncDisplayName = saveDataFunc?.Handler == null ? "" : saveDataFunc?.Handler?.DisplayName;
+            var type = saveDataFunc?.Handler?.GetType();
             if (type != null)
             {
                 DataFuncIcon = ModelItemUtils.GetImageSourceForToolFromType(type);
@@ -109,7 +108,7 @@ namespace Dev2.Activities.Designers2.SuspendExecution
         }
 
         public static readonly DependencyProperty DataFuncDisplayNameProperty =
-            DependencyProperty.Register("DataFuncDisplayName", typeof(string), typeof(ForeachDesignerViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("DataFuncDisplayName", typeof(string), typeof(SuspendExecutionDesignerViewModel), new PropertyMetadata(null));
 
         public ImageSource DataFuncIcon
         {
@@ -118,7 +117,7 @@ namespace Dev2.Activities.Designers2.SuspendExecution
         }
 
         public static readonly DependencyProperty DataFuncIconProperty =
-            DependencyProperty.Register("DataFuncIcon", typeof(ImageSource), typeof(ForeachDesignerViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("DataFuncIcon", typeof(ImageSource), typeof(SuspendExecutionDesignerViewModel), new PropertyMetadata(null));
 
 
         public override void UpdateHelpDescriptor(string helpText)
