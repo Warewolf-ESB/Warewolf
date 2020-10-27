@@ -4,6 +4,10 @@
         <TargetFramework>net48</TargetFramework>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DebugType>none</DebugType>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Hangfire.Core">
             <Version>1.7.13</Version>
