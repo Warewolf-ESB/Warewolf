@@ -16,4 +16,9 @@
         <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
         <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
     </ItemGroup>
+	<ItemGroup>
+        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+          <Link>Properties\AssemblyCommonInfo.cs</Link>
+        </Compile>
+    </ItemGroup>
 </Project>
