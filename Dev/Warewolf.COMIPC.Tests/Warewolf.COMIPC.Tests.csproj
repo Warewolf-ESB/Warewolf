@@ -23,6 +23,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <SonarQubeExclude>True</SonarQubeExclude>
+    <Configurations>Debug</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>

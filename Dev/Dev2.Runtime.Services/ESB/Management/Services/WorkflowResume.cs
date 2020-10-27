@@ -64,6 +64,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IsDebug = true
             };
             var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+            if (dynamicService is null)
+            {
+                return new ExecuteMessage { HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}") };
+            }
             var sa = dynamicService.Actions.FirstOrDefault();
             if (sa is null)
             {

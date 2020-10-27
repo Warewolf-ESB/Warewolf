@@ -1058,10 +1058,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
-        public void TestDispose()
+        public void EmailSourceViewModel_Dispose()
         {
             var vm = new ManageEmailSourceViewModel();
             var ns = new Mock<IRequestServiceNameViewModel>();

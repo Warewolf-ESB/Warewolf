@@ -1010,7 +1010,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EnvironmentModel_Equals")]
         public void EnvironmentModel_Equals_OtherIsNull_False()
@@ -1026,7 +1026,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EnvironmentModel_Equals")]
         public void EnvironmentModel_Equals_OtherIsSame_True()
