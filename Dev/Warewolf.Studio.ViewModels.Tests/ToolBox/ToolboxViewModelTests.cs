@@ -52,15 +52,15 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestNullLocalModel()
+        public void Toolbox_TestNullLocalModel()
         {
             new ToolboxViewModel(null, _remoteModelMock.Object);
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullRemoteModel()
         {
@@ -88,7 +88,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestIsEnabledIsDesignerFocusedfalse()
         {
             //arrange

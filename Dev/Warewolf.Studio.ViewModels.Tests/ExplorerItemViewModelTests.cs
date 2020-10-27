@@ -236,7 +236,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestNewOracleSourceCommand()
         {
             //arrange
@@ -887,7 +887,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestExpandCommandResourceTypeWorkflowServiceDoubleClick()
         {
             //arrange
@@ -1808,7 +1808,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestAddChild()
         {
             //arrange

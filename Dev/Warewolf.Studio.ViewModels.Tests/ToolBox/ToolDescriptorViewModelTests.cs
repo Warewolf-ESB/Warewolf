@@ -40,9 +40,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestNullLocalModel()
+        public void ToolDescriptor_TestNullLocalModel()
         {
             new ToolDescriptorViewModel(null, false);
         }
@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestTool()
         {
             //act
