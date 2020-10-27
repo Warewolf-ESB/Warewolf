@@ -112,7 +112,7 @@ namespace Dev2.Activities
             var httpClient = new HttpClient();
             if (source.AuthenticationType == AuthenticationType.User)
             {
-                var byteArray = Encoding.ASCII.GetBytes(String.Format("{0}:{1}", source.UserName, source.Password));
+                var byteArray = Encoding.ASCII.GetBytes($"{source.UserName}:{source.Password}");
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", byteArray.ToBase64String());
             }
 
