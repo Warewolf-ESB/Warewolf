@@ -29,13 +29,12 @@ namespace Warewolf.Driver.Persistence.Drivers
         public HangfireScheduler()
         {
         }
+
         public string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)
         {
-
             var suspensionDate = DateTime.Now;
             var resumptionDate = CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
-            var state = new ScheduledState(resumptionDate);
-
+            var state = new ScheduledState(resumptionDate.ToUniversalTime());
             var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(ConnectionString()));
             var jobId = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
             return jobId;
@@ -47,7 +46,7 @@ namespace Warewolf.Driver.Persistence.Drivers
         {
             try
             {
-                //This method is intercepted in the HangfileServer Performing method
+                //This method is intercepted in the HangfireServer Performing method
                 return "success";
             }
             catch (Exception ex)
@@ -67,6 +66,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             var source = new Dev2JsonSerializer().Deserialize<DbSource>(payload);
             return source.ConnectionString;
         }
+
         private DateTime CalculateResumptionDate(DateTime persistenceDate, enSuspendOption suspendOption, string scheduleValue)
         {
             var resumptionDate = DateTime.UtcNow;

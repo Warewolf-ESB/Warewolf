@@ -107,8 +107,11 @@ namespace Warewolf.HangfireServer
                 Environment.Exit(0);
                 return;
             }
+
+            var resumptionAttribute = new ResumptionAttribute(_logger);
+
             GlobalConfiguration.Configuration
-                .UseFilter(new LogEverythingAttribute())
+                .UseFilter(resumptionAttribute)
                 .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
                 {
                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
@@ -117,7 +120,7 @@ namespace Warewolf.HangfireServer
                     UseRecommendedIsolationLevel = true,
                     DisableGlobalLocks = true
                 });
-            var dashboardEndpoint = Config.Persistence.DashboardHostname + ":" + Dev2.Common.Config.Persistence.DashboardPort;
+            var dashboardEndpoint = Config.Persistence.DashboardHostname + ":" + Config.Persistence.DashboardPort;
             var options = new StartOptions();
             options.Urls.Add(dashboardEndpoint);
             WebApp.Start<Dashboard>(options);

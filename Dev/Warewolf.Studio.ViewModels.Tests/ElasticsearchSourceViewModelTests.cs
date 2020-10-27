@@ -109,7 +109,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -119,7 +120,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -129,7 +131,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(source);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -138,7 +141,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             new ElasticsearchSourceViewModel(_elasticsearchSourceModel.Object, null, new SynchronousAsyncWorker(), new Mock<IServer>().Object);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_IRequestServiceNameViewModel_IsNotNull()
@@ -147,7 +151,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(source);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_Constructor_IElasticsearchSourceModel_ElasticsearchSourceDefinition_IAsyncWorker_IsNotNull()
@@ -156,7 +161,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(source);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_Constructor_OnNew()
@@ -177,7 +183,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(viewModel.PasswordSelected);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_Constructor_OnExisting()
@@ -214,7 +221,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(viewModel.PasswordSelected);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestCommand()
@@ -248,7 +256,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Passed", viewModel.TestMessage);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_CanTest()
@@ -291,7 +300,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(viewModel.CanTest());
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_CanExecute()
@@ -309,7 +319,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestOkCommand_CanExecute()
@@ -321,7 +332,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestCancelTestCommand_CanExecute()
@@ -330,13 +342,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void ElasticsearchSourceViewModel_TestCancelTestCommand_Execute()
         {
             _elasticsearchourceViewModelWithTask.CancelTestCommand.Execute(null);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestOkCommand_Execute()
@@ -345,7 +359,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_elasticsearchourceViewModelWithTask.TestPassed);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestOkCommand_Execute_SaveSource()
@@ -392,7 +407,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchSourceModel.Verify(x => x.Save(_elasticsearchSourceDefinition.Object));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestOkCommand_Execute_SaveSource_InvalidIndex()
@@ -439,7 +455,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchSourceModel.Verify(x => x.Save(_elasticsearchSourceDefinition.Object));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestName_AreEqual()
@@ -453,7 +470,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, _elasticsearchourceViewModelWithTask.ResourceName);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_RequestServiceNameViewModel_AreSame()
@@ -467,7 +485,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(expectedValue, value);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestResourceName()
@@ -483,7 +502,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains(expectedValue));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestHostName_Success()
@@ -501,7 +521,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_elasticsearchourceViewModelWithTask.TestPassed);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestPort_Success()
@@ -519,7 +540,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_elasticsearchourceViewModelWithTask.TestPassed);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestUsername()
@@ -537,7 +559,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_elasticsearchourceViewModelWithTask.TestPassed);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestPassword()
@@ -555,7 +578,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_elasticsearchourceViewModelWithTask.TestPassed);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestAuthenticationType_Anonymous()
@@ -573,7 +597,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_elasticsearchourceViewModelWithTask.TestPassed);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestAuthenticationType_Password()
@@ -591,7 +616,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_elasticsearchourceViewModelWithTask.TestPassed);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestTestPassed()
@@ -605,7 +631,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("TestPassed"));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestHeaderText()
@@ -621,7 +648,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("Header"));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestTestFailed()
@@ -635,7 +663,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("TestFailed"));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestToModelItemNull()
@@ -666,7 +695,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreNotEqual(Guid.Empty, result.Id);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestToModelItemNotNull()
@@ -698,7 +728,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Guid.Empty, result.Id);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestSaveSource()
@@ -746,7 +777,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchSourceModel.Verify(x => x.Save(_elasticsearchSourceDefinition.Object));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestSaveNewSource()
@@ -765,7 +797,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _elasticsearchSourceModel.Verify(x => x.Save(It.IsAny<ElasticsearchSourceDefinition>()));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestSave()
@@ -774,7 +807,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_elasticsearchourceViewModelWithTask.TestPassed);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(2000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestUpdateHelpDescriptor()
@@ -789,7 +823,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             helpViewModelMock.Verify(it => it.UpdateHelpText(helpText));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestCanSaveTrue()
@@ -801,7 +836,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestCanSaveFalse()
@@ -811,7 +847,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestCanTestTrue()
@@ -827,7 +864,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void ElasticsearchSourceViewModel_TestCanTestFalseHostNameEmpty()
         {
             _elasticsearchourceViewModelWithTask.HostName = "";
@@ -841,7 +879,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestCanTestFalseHostNameUsernameEmpty()
@@ -857,7 +896,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestCanTestFalseHostNameUsernamePasswordEmpty()
@@ -873,7 +913,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestCanTestFalseHostNameUsernamePasswordEmptyAuthenticationTypeNotSet()
@@ -887,7 +928,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         public void ElasticsearchSourceViewModel_TestConnection_Failed_InvalidSearchIndex()
