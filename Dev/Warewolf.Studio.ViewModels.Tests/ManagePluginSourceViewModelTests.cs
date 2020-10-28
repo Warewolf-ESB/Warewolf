@@ -885,8 +885,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSelectedDll()
+        [Timeout(260)]
+        public void TestSelectedPluginDll()
         {
             //arrange
             var expectedAssemblyName = EnvironmentVariables.WorkspacePath + @"\someAssemblyName.dll";
