@@ -640,6 +640,7 @@ Test Failed because of some reasons
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
+		[DoNotParallelize]
         public void ServiceTestExecutionContainer_TryExecuteWf_DataObject_StopExecutionFalse_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
@@ -703,6 +704,7 @@ Test Failed because of some reasons
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
+		[DoNotParallelize]
         public void ServiceTestExecutionContainer_ExecuteWf_DataObject_StopExecutionFalse_TestPassedTrue_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
@@ -767,6 +769,7 @@ Test Failed because of some reasons
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
+		[DoNotParallelize]
         public void ServiceTestExecutionContainer_TryExecuteWf_SetTestFailureBasedOnExpectedError_ErrorExpectedTrue_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
@@ -970,6 +973,7 @@ Test Failed because of some reasons
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
+		[DoNotParallelize]
         public void ServiceTestExecutionContainer_Execute_IsDebugTrue_EnvironmentHasErrors_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------

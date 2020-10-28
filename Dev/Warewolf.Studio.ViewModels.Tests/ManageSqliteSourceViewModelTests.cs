@@ -112,10 +112,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             _changedUpdateManagerRequestServiceName = new List<string>();
 
         }
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManageSqliteSourceViewModel))]
-
         public void ManageSqliteSourceViewModel_UpdateManagerThrowsExceptionWithInnerException()
         {
             var expectedExceptionMessage = "someExceptionMessage";
@@ -132,7 +132,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_targetUpdateManagerRequestServiceName.TestPassed);
             Assert.AreEqual(expectedExceptionMessage, _targetUpdateManagerRequestServiceName.TestMessage);
         }
-        [TestMethod, Timeout(60000)]
+		
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManageSqliteSourceViewModel))]
         public void ManageSqliteSourceViewModel_TestUpdateHelpDescriptor()
@@ -147,7 +149,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             helpViewModelMock.Verify(it => it.UpdateHelpText(helpText));
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManageSqliteSourceViewModel))]
         public void ManageSqliteSourceViewModel_TestName()
@@ -160,7 +163,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, _targetAsyncWorker.ResourceName);
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManageSqliteSourceViewModel))]
         public void ManageSqliteSourceViewModel_TestToModelItemNull()
@@ -199,7 +203,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(gd, value.Id);
 
         }
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManageSqliteSourceViewModel))]
         public void ManageSqliteSourceViewModel_TestToModeldbSourceIsNotNull_idIsNull()
@@ -238,7 +243,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         }
 
-        [TestMethod, Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManageSqliteSourceViewModel))]
         public void ManageSqliteSourceViewModel_TestHeaderText()

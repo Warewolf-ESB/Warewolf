@@ -97,7 +97,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageExchangeModel_Initialize_NewEmpty_Returns_Success()
@@ -107,7 +108,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(model);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageExchangeModel_Initialize_Properties_Returns_Success()
@@ -139,37 +141,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(viewModel.RequestServiceNameViewModel);
         }
 
-        [TestMethod,Timeout(60000)]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
-        public void ManageexchangeModel_Initialize_Properties_Returns_Success()
-        {
-            var viewModel = GetViewModelWithSource();
-
-            viewModel.SendCommand = null;
-            viewModel.OkCommand = null;
-
-            Assert.IsNotNull(viewModel.Name);
-            Assert.IsNotNull(viewModel.AutoDiscoverUrl);
-            Assert.IsNotNull(viewModel.AutoDiscoverLabel);
-            Assert.IsNotNull(viewModel.EmailTo);
-            Assert.IsNotNull(viewModel.EmailFromLabel);
-            Assert.IsNotNull(viewModel.EmailToLabel);
-            Assert.IsNotNull(viewModel.Password);
-            Assert.IsNotNull(viewModel.PasswordLabel);
-            Assert.IsNotNull(viewModel.Timeout);
-            Assert.AreEqual(viewModel.Timeout,10000);
-            Assert.IsFalse(viewModel.TestPassed);
-            Assert.IsFalse(viewModel.TestFailed);
-            Assert.IsTrue(viewModel.EnableSend);
-            Assert.IsFalse(viewModel.Testing);
-            Assert.IsNotNull(viewModel.TestMessage);
-            Assert.IsNotNull(viewModel.HeaderText);
-            Assert.IsNull(viewModel.SendCommand);
-            Assert.IsNull(viewModel.OkCommand);
-        }
-
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_CanTest_False_Returns_Success()
@@ -184,7 +157,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(viewModel.CanTest());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_CanTest_True_Returns_Success()
@@ -199,7 +173,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_CanSave_False_Returns_Success()
@@ -209,7 +184,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(viewModel.CanSave());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_CanTest_True_Returns_False()
@@ -221,7 +197,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(viewModel.CanTest());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_SaveConnection_Returns_False()
@@ -236,7 +213,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(viewModel.TestPassed);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_TestConnectionWithSource_Returns_False()
@@ -254,7 +232,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(viewModel.TestPassed);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_ToModel_Returns_True()
@@ -272,7 +251,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(model.Type);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_ToModel_ItemIsNull_Returns_True()
@@ -291,7 +271,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(model.Type);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_ToSource_Returns_True()
@@ -306,7 +287,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(model.Type);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_ToSource_SourceNull_Returns_True()

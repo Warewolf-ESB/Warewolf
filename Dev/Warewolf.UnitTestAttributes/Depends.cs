@@ -235,7 +235,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.Elasticsearch:
                     return "9400";
                 case ContainerType.WebApi:
-                    return "9910";
+                    return "8080";
             }
             throw new ArgumentOutOfRangeException();
         }
