@@ -76,7 +76,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(5000)]
+        [Timeout(2000)]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_TestMinSupportedVersion()
         {
@@ -116,7 +116,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(500)]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_TestIsLoading()
         {
@@ -137,7 +137,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_DeployTests_GivenIsSet_ShouldFireOnPropertyChanged()

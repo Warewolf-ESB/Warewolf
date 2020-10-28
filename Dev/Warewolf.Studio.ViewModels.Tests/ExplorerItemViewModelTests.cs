@@ -839,7 +839,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(100)]
         public void TestExpandCommandResourceTypeFolderSingleClick()
         {
             //arrange
