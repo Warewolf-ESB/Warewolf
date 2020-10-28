@@ -47,7 +47,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestCancelCommandCanExecute()
         {
             //act
@@ -57,8 +58,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestCancelCommandExecute()
+        [TestMethod]
+        [Timeout(250)]
+        public void FileChooser_TestCancelCommandExecute()
         {
             //act
             _target.CancelCommand.Execute(null);
@@ -68,7 +70,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_closeActionExecuted);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSaveCommandCanExecute()
         {
             //act
@@ -78,7 +81,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         public void TestSaveCommandExecute()
         {
             //act
@@ -93,7 +97,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestAttachments()
         {
             //arrange
@@ -108,7 +113,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestAllowMultipleSelection()
         {
             //act
@@ -118,7 +124,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.AllowMultipleSelection);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSelectedDriveName()
         {
             //act
@@ -128,7 +135,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_fileListingItemName, _target.SelectedDriveName);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestDrives()
         {
             //arrange
@@ -142,7 +150,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(expectedValue, value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         public void TestDriveName()
         {
             //arrange
@@ -175,7 +184,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("DriveName"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestDrivesChanged()
         {
             //arrange
@@ -192,14 +202,16 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestExpand()
         {
             //assert
             Assert.IsTrue(_target.Drives.First().IsChecked);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestGetAttachments()
         {
             //arrange
@@ -230,7 +242,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result.Contains(fileListingItemFullName2));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSelectAttachment()
         {
             //arrange
@@ -259,7 +272,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             fileGrandChildListingMock.VerifySet(it => it.IsChecked = true);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestCancel()
         {
             //act
@@ -270,7 +284,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_closeActionExecuted);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestSave()
         {
             //act

@@ -81,7 +81,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test construction
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullMainViewModel()
         { 
@@ -92,7 +93,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Pieter Terblanche")]
         [TestCategory("MenuViewModel_ShowStartPage")]
         public void MenuViewModel_ShowStartPage_Execute_Result()
@@ -110,31 +112,36 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(call);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestNewCommand()
         {
             Assert.AreSame(_newCommand, _target.NewServiceCommand);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestDeployCommand()
         {
             Assert.AreSame(_deployCommandMock.Object, _target.DeployCommand);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSaveCommand()
         {
             Assert.AreSame(_saveCommand, _target.SaveCommand);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestOpenSearchCommand()
         {
             Assert.AreSame(_openSearchCommand, _target.OpenSearchCommand);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestOpenSchedulerCommand()
         {
             Assert.AreSame(_openSchedulerCommand, _target.OpenSchedulerCommand);
@@ -146,25 +153,29 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(_openTasksCommand, _target.OpenTasksCommand);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestOpenSettingsCommand()
         {
             Assert.AreSame(_openSettingsCommand, _target.OpenSettingsCommand);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestExecuteServiceCommand()
         {
             Assert.AreSame(_executeServiceCommand, _target.ExecuteServiceCommand);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestStartPageCommand()
         {
             Assert.AreSame(_startPageCommandMock.Object, _target.StartPageCommand);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestCheckForNewVersionCommand()
         {
             //act
@@ -175,13 +186,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.Verify(it => it.DisplayDialogForNewVersion());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSupportCommand()
         {
             Assert.IsTrue(_target.SupportCommand.CanExecute(null));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestLockCommand()
         {
             //arrange
@@ -195,7 +208,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             this.VerifyUpdateProperties();
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSlideOpenCommand_isOverLockfalseIsPanelLockedOpenfalse()
         {
             //arrange
@@ -216,7 +230,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.VerifySet(it=>it.MenuExpanded = It.IsAny<bool>(), Times.Never);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestSlideOpenCommand_isOverLockfalseIsPanelLockedOpentrue()
         {
             //arrange
@@ -237,7 +252,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.VerifySet(it => it.MenuExpanded = true);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSlideOpenCommand_isOverLocktrue()
         {
             //arrange
@@ -258,7 +274,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.VerifySet(it => it.MenuExpanded = It.IsAny<bool>(), Times.Never);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSlideClosedCommand_isMenuPanelWidthLess80OverLocktrue()
         {
             //arrange
@@ -274,7 +291,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_changedProperties.Any());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSlideClosedCommand_isOverLocktrue()
         {
             //arrange
@@ -290,7 +308,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_changedProperties.Any());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSlideClosedCommand()
         {
             //arrange
@@ -312,7 +331,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.VerifySet(it=>it.MenuExpanded = It.IsAny<bool>(), Times.Never);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSlideClosedCommandIsPanelOpenFalse()
         {
             //arrange
@@ -352,7 +372,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsPanelOpen);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSlideClosedCommandIsPanelOpenTrue()
         {
             //arrange
@@ -377,30 +398,35 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestButtonWidth_Default()
         {
             Assert.AreEqual(125, _target.ButtonWidth);
         }
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsPanelOpen_Default()
         {
             Assert.IsTrue(_target.IsPanelOpen);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsPanelLockedOpen_Default()
         {
             Assert.IsTrue(_target.IsPanelLockedOpen);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestDebugIcon_Default()
         {
             Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Bug, _target.DebugIcon);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestDebugIcon()
         {
             //arrange
@@ -415,13 +441,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("DebugIcon"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestHasNewVersion_Default()
         {
             Assert.IsTrue(_target.HasNewVersion);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestLockImage()
         {
             //arrange
@@ -435,7 +463,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestLockImageIsPanelLockedOpentrue()
         {
             //arrange
@@ -448,7 +477,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("UnlockAlt", value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsPanelLockedOpen()
         {
             //arrange
@@ -464,7 +494,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("LockImage"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestNewLabelNotNullOrEmpty()
         {
             //arrange
@@ -477,7 +508,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestNewLabelNullOrEmpty()
         {
             //arrange
@@ -490,7 +522,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TesDebugLabelNotNullOrEmptyIsProcessingFalse()
         {
             //arrange
@@ -504,7 +537,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TesDebugLabelNotNullOrEmptyIsProcessingTrue()
         {
             //arrange
@@ -518,7 +552,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TesDebugLabelNullOrEmpty()
         {
             //arrange
@@ -531,7 +566,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSaveLabelNotNullOrEmpty()
         {
             //arrange
@@ -544,7 +580,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSaveLabelNullOrEmpty()
         {
             //arrange
@@ -557,7 +594,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestDeployLabelNotNullOrEmpty()
         {
             //arrange
@@ -570,7 +608,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestDeployLabelNullOrEmpty()
         {
             //arrange
@@ -583,7 +622,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestTaskLabelNotNullOrEmpty()
         {
             //arrange
@@ -596,7 +636,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestTaskLabelNullOrEmpty()
         {
             //arrange
@@ -663,7 +704,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSettingsLabelNotNullOrEmpty()
         {
             //arrange
@@ -676,7 +718,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSettingsLabelNullOrEmpty()
         {
             //arrange
@@ -688,7 +731,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSupportLabelNotNullOrEmpty()
         {
             //arrange
@@ -701,7 +745,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSupportLabelNullOrEmpty()
         {
             //arrange
@@ -714,7 +759,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestNewVersionLabelNullOrEmpty()
         {
             //arrange
@@ -727,7 +773,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsProcessingTrue()
         {
             //arrange
@@ -744,7 +791,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Stop, _target.DebugIcon);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsProcessingFalse()
         {
             //arrange
@@ -759,7 +807,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(FontAwesome.WPF.FontAwesomeIcon.Bug, _target.DebugIcon);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestLockLabelIsPanelLockedOpenTrue()
         {
             //arrange
@@ -772,7 +821,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestLockLabelIsPanelLockedOpenFalse()
         {
             //arrange
@@ -785,7 +835,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(value));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestDataContext()
         {
             //arrange
@@ -803,7 +854,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         public void TestUpdateHelpDescriptor()
         {
             //arrange
@@ -818,7 +870,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             helpViewModel.Verify(it=>it.UpdateHelpText(helpText));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestLockIsPanelLockedOpenfalse()
         {
             //arrange
@@ -833,7 +886,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             VerifyUpdateProperties();
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestLockIsPanelLockedOpentrueButtonWidth125()
         {
             //arrange
@@ -851,7 +905,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             VerifyUpdateProperties();
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestLockIsPanelLockedOpentrueButtonWidth35()
         {
             //arrange
