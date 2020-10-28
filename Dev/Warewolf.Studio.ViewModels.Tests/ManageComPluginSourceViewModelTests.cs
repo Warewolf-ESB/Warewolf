@@ -833,8 +833,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestSelectedCOMDll()
+        [Timeout(100)]
+        public void TestSelectedDll()
         {
             //arrange
             var expectedAssemblyName = "someAssemblyName";

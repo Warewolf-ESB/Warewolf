@@ -87,7 +87,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(100)]
         public void TestSelectedDll()
         {
             //act
