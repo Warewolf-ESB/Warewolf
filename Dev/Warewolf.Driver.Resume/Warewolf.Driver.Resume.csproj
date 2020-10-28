@@ -2,6 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DebugType>none</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,6 +16,9 @@
 
     <ItemGroup>
       <Folder Include="Properties" />
+      <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+        <Link>Properties\AssemblyCommonInfo.cs</Link>
+      </Compile>
     </ItemGroup>
 
 </Project>

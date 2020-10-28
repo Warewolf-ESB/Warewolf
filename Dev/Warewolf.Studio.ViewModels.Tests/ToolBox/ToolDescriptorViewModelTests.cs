@@ -117,8 +117,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestActivityTypeNull()
+        [Timeout(250)]
+        public void TestActivityNull()
         {
             //act
             var value = _target.ActivityType;
@@ -128,7 +128,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestActivityType()
         {
             //arrange
@@ -147,8 +147,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestActivityTypeFlowDecision()
+        [Timeout(250)]
+        public void TestActivityFlowDecision()
         {
             //arrange
             _warewolfTypeMock.SetupGet(it => it.FullyQualifiedName).Returns(typeof(DsfFlowDecisionActivity).FullName);
@@ -166,8 +166,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestActivityTypeFlowSwitchString()
+        [Timeout(250)]
+        public void TestActivityFlowSwitchString()
         {
             //arrange
             _warewolfTypeMock.SetupGet(it => it.FullyQualifiedName).Returns(typeof(DsfFlowSwitchActivity).FullName);
