@@ -8,16 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Warewolf.Auditing;
+using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
+using Warewolf.Triggers;
 
-namespace HangfireServer
+namespace Warewolf.Execution
 {
     public interface IExecutionLogPublisher : ILoggerPublisher
     {
-        void ExecutionFailed(ExecutionHistory executionHistory);
-        void ExecutionSucceeded(ExecutionHistory executionHistory);
+        void ExecutionFailed(IExecutionHistory executionHistory);
+        void ExecutionSucceeded(IExecutionHistory executionHistory);
         void StartExecution(string message, params object[] args);
-        void LogResumedExecution(Audit values);
+        void LogResumedExecution(IAudit values);
     }
 }

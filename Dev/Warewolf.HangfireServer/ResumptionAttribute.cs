@@ -18,6 +18,7 @@ using Hangfire.States;
 using Hangfire.Storage;
 using Warewolf.Auditing;
 using Warewolf.Driver.Resume;
+using Warewolf.Execution;
 using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace HangfireServer

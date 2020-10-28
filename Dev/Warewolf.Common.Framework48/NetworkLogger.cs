@@ -14,14 +14,14 @@ using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 using Warewolf.Streams;
 
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] 
-namespace QueueWorker
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+namespace Warewolf.Common
 {
-    internal class NetworkLogger : ILoggerPublisher
+    public class NetworkLogger : ILoggerPublisher
     {
-        private IWebSocketPool _webSocketPool;
+        private readonly IWebSocketPool _webSocketPool;
         private readonly ISerializer _serializer;
-        protected ISerializer Serializer { get => _serializer; }
+        protected ISerializer Serializer => _serializer;
 
         public NetworkLogger(ISerializer serializer, IWebSocketPool webSocketPool)
         {

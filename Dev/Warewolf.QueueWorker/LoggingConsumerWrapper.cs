@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Warewolf.Auditing;
 using Warewolf.Data;
+using Warewolf.Execution;
 using Warewolf.Logging;
 using Warewolf.Streams;
 

@@ -20,9 +20,10 @@ using Microsoft.Owin.Hosting;
 using Warewolf;
 using Warewolf.Auditing;
 using Warewolf.Common;
+using Warewolf.Execution;
 using Warewolf.Security.Encryption;
 using Warewolf.Streams;
-using static HangfireServer.ExecutionLogger;
+using static Warewolf.Common.ExecutionLogger;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace HangfireServer
