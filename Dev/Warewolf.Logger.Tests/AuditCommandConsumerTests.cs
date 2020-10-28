@@ -17,6 +17,8 @@ using Moq;
 using Warewolf.Auditing;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
+using Warewolf.Streams;
+using Warewolf.Triggers;
 using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Logger.Tests
@@ -97,44 +99,44 @@ namespace Warewolf.Logger.Tests
         [TestCategory(nameof(AuditCommandConsumer))]
         public void AuditCommandConsumer_Consume_LogQuery()
         {
-            var workflowId = Guid.NewGuid().ToString();
-            var audit = new Audit
-            {
-                WorkflowID = workflowId,
-            };
-
             object parameters = new object();
 
             var auditCommand = new AuditCommand
             {
                 Type = "LogQuery",
-                Audit = audit,
                 Query = new Dictionary<string, StringBuilder>(),
             };
 
-            //TODO: Dev2JsonSerializer needs to be injected. It is expecting to create an actual instead of allowing to Mock
+            byte[] expected = new byte[]{};
 
             var mockLoggerConsumer = new Mock<ILoggerConsumer<IAuditEntry>>();
-            mockLoggerConsumer.Setup(o => o.Consume(auditCommand.Audit, parameters)).Verifiable();
             var mockSocket = new Mock<IWebSocketConnection>();
-            mockSocket.Setup(o => o.Send(It.IsAny<string>())).Verifiable();
+            mockSocket.Setup(o => o.Send(expected)).Verifiable();
+
+            IEnumerable<IAudit> audits = new List<IAudit>();
 
             var mockWriter = new Mock<IWriter>();
             mockWriter.Setup(o => o.WriteLine("Logging Server OnMessage: Type:" + auditCommand.Type)).Verifiable();
-            mockWriter.Setup(o => o.WriteLine("Executing query: " + auditCommand.Audit.WorkflowID)).Verifiable();
-            mockWriter.Setup(o => o.WriteLine("sending QueryLog to server: " + auditCommand.Audit.WorkflowID + "...")).Verifiable();
+            mockWriter.Setup(o => o.WriteLine("Executing query: " + auditCommand.Query)).Verifiable();
+            mockWriter.Setup(o => o.WriteLine("sending QueryLog to server: " + audits + "...")).Verifiable();
 
-            var auditCommandConsumer = new AuditCommandConsumer(mockLoggerConsumer.Object, mockSocket.Object, mockWriter.Object);
+            var mockSerializer = new Mock<ISerializer>();
+            mockSerializer.Setup(o => o.Serialize(audits)).Returns(expected);
+            mockSerializer.Setup(o => o.Serialize(audits)).Verifiable();
+
+            var mockAuditQueryable = new Mock<IAuditQueryable>();
+            mockAuditQueryable.Setup(o => o.QueryLogData(auditCommand.Query)).Returns(audits);
+
+            var auditCommandConsumer = new AuditCommandConsumer(mockLoggerConsumer.Object, mockSocket.Object, mockWriter.Object, mockSerializer.Object, mockAuditQueryable.Object);
 
             auditCommandConsumer.Consume(auditCommand, parameters);
 
-            mockLoggerConsumer.Verify(o => o.Consume(auditCommand.Audit, parameters), Times.Once);
-
             mockWriter.Verify(o => o.WriteLine("Logging Server OnMessage: Type:" + auditCommand.Type), Times.Once);
-            mockWriter.Verify(o => o.WriteLine("Executing query: " + auditCommand.Audit.WorkflowID), Times.Once);
-            mockWriter.Verify(o => o.WriteLine("sending QueryLog to server: " + auditCommand.Audit.WorkflowID + "..."), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("Executing query: " + auditCommand.Query), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("sending QueryLog to server: " + audits + "..."), Times.Once);
 
-            mockSocket.Verify(o => o.Send(It.IsAny<string>()), Times.Once);
+            mockSocket.Verify(o => o.Send(expected), Times.Once);
+            mockSerializer.Verify(o => o.Serialize(audits), Times.Once);
         }
 
         [TestMethod]
@@ -142,44 +144,43 @@ namespace Warewolf.Logger.Tests
         [TestCategory(nameof(AuditCommandConsumer))]
         public void AuditCommandConsumer_Consume_TriggerQuery()
         {
-            var workflowId = Guid.NewGuid().ToString();
-            var audit = new Audit
-            {
-                WorkflowID = workflowId,
-            };
-
             object parameters = new object();
 
             var auditCommand = new AuditCommand
             {
                 Type = "TriggerQuery",
-                Audit = audit,
                 Query = new Dictionary<string, StringBuilder>(),
             };
 
-            //TODO: Dev2JsonSerializer needs to be injected. It is expecting to create an actual instead of allowing to Mock
-
             var mockLoggerConsumer = new Mock<ILoggerConsumer<IAuditEntry>>();
-            mockLoggerConsumer.Setup(o => o.Consume(auditCommand.Audit, parameters)).Verifiable();
             var mockSocket = new Mock<IWebSocketConnection>();
             mockSocket.Setup(o => o.Send(It.IsAny<string>())).Verifiable();
 
+            IEnumerable<IExecutionHistory> histories = new List<IExecutionHistory>();
+
             var mockWriter = new Mock<IWriter>();
             mockWriter.Setup(o => o.WriteLine("Logging Server OnMessage: Type:" + auditCommand.Type)).Verifiable();
-            mockWriter.Setup(o => o.WriteLine("Executing TriggerQuery: " + auditCommand.Audit.WorkflowID)).Verifiable();
-            mockWriter.Setup(o => o.WriteLine("sending QueryTriggerLog to server: " + auditCommand.Audit.WorkflowID + "...")).Verifiable();
+            mockWriter.Setup(o => o.WriteLine("Executing TriggerQuery: " + auditCommand.Query)).Verifiable();
+            mockWriter.Setup(o => o.WriteLine("sending QueryTriggerLog to server: " + histories + "...")).Verifiable();
 
-            var auditCommandConsumer = new AuditCommandConsumer(mockLoggerConsumer.Object, mockSocket.Object, mockWriter.Object);
+            byte[] expected = new byte[]{};
+            var mockSerializer = new Mock<ISerializer>();
+            mockSerializer.Setup(o => o.Serialize(histories)).Returns(expected);
+            mockSerializer.Setup(o => o.Serialize(histories)).Verifiable();
+
+            var mockAuditQueryable = new Mock<IAuditQueryable>();
+            mockAuditQueryable.Setup(o => o.QueryTriggerData(auditCommand.Query)).Returns(histories);
+
+            var auditCommandConsumer = new AuditCommandConsumer(mockLoggerConsumer.Object, mockSocket.Object, mockWriter.Object, mockSerializer.Object, mockAuditQueryable.Object);
 
             auditCommandConsumer.Consume(auditCommand, parameters);
 
-            mockLoggerConsumer.Verify(o => o.Consume(auditCommand.Audit, parameters), Times.Once);
-
             mockWriter.Verify(o => o.WriteLine("Logging Server OnMessage: Type:" + auditCommand.Type), Times.Once);
-            mockWriter.Verify(o => o.WriteLine("Executing TriggerQuery: " + auditCommand.Audit.WorkflowID), Times.Once);
-            mockWriter.Verify(o => o.WriteLine("sending QueryTriggerLog to server: " + auditCommand.Audit.WorkflowID + "..."), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("Executing TriggerQuery: " + auditCommand.Query), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("sending QueryTriggerLog to server: " + histories + "..."), Times.Once);
 
-            mockSocket.Verify(o => o.Send(It.IsAny<string>()), Times.Once);
+            mockSocket.Verify(o => o.Send(expected), Times.Once);
+            mockSerializer.Verify(o => o.Serialize(histories), Times.Once);
         }
 
         [TestMethod]
