@@ -19,10 +19,11 @@ using Moq;
 using QueueWorker;
 using System;
 using Warewolf.Common;
+using Warewolf.Execution;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 using Warewolf.Triggers;
-using static QueueWorker.ExecutionLogger;
+using static Warewolf.Common.ExecutionLogger;
 using static QueueWorker.Program;
 
 namespace Warewolf.QueueWorker.Tests

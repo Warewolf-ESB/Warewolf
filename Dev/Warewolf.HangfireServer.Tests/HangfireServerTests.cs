@@ -13,7 +13,8 @@ using Moq;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 using HangfireServer;
-using static HangfireServer.ExecutionLogger;
+using Warewolf.Execution;
+using static Warewolf.Common.ExecutionLogger;
 using static HangfireServer.Program;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 

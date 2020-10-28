@@ -8,19 +8,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Runtime.CompilerServices;
 using Warewolf.Auditing;
+using Warewolf.Execution;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
+using Warewolf.Triggers;
 
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-namespace QueueWorker
+namespace Warewolf.Common
 {
-    internal class ExecutionLogger : NetworkLogger, IExecutionLogPublisher
+    public class ExecutionLogger : NetworkLogger, IExecutionLogPublisher
     {
         public interface IExecutionLoggerFactory
         {
-            IExecutionLogPublisher New(ISerializer jsonSerializer, IWebSocketPool webSocketPool); 
+            IExecutionLogPublisher New(ISerializer jsonSerializer, IWebSocketPool webSocketPool);
         }
 
         public class ExecutionLoggerFactory : IExecutionLoggerFactory
@@ -36,26 +36,36 @@ namespace QueueWorker
         {
         }
 
-        private void LogExecutionCompleted(ExecutionHistory executionHistory)
+        private void LogExecutionCompleted(IExecutionHistory executionHistory)
         {
             var command = new AuditCommand
             {
                 Type = "ExecutionAuditCommand",
-                ExecutionHistory = executionHistory
+                ExecutionHistory = executionHistory as ExecutionHistory
             };
             Publish(Serializer.Serialize(command));
         }
 
-        public void ExecutionFailed(ExecutionHistory executionHistory)
+        public void ExecutionFailed(IExecutionHistory executionHistory)
         {
             LogExecutionCompleted(executionHistory);
         }
 
-        public void ExecutionSucceeded(ExecutionHistory executionHistory)
+        public void ExecutionSucceeded(IExecutionHistory executionHistory)
         {
             LogExecutionCompleted(executionHistory);
         }
 
         public void StartExecution(string message, params object[] args) => Info(message, args);
+
+        public void LogResumedExecution(IAudit values)
+        {
+            var command = new AuditCommand
+            {
+                Type = "ResumeExecution",
+                Audit = values as Audit
+            };
+            Publish(Serializer.Serialize(command));
+        }
     }
 }
