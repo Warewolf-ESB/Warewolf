@@ -79,9 +79,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var attributes = typeof(DsfWebPutActivity).GetCustomAttributes(false);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, attributes.Length);
-            var toolDescriptor = attributes[0] as ToolDescriptorInfo;
+            var toolDescriptor = attributes[0] as ObsoleteAttribute;
             Assert.IsNotNull(toolDescriptor);
-            Assert.AreEqual("PUT", toolDescriptor.Name);
+            Assert.AreEqual("DsfWebPutActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPutActivity.", toolDescriptor.Message);
         }
 
         [TestMethod]
