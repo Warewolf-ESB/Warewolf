@@ -62,6 +62,13 @@ namespace HangfireServer
                 _pause = implConfig.PauseHelper;
                 _exit = implConfig.ExitHelper;
                 _hangfireContext = new HangfireContext(_options);
+                _persistence = Config.Persistence;
+            }
+
+            public Implementation(IArgs options, ConfigImpl configImpl, PersistenceSettings persistenceSettings)
+                :this(options, configImpl)
+            {
+                _persistence = persistenceSettings;
             }
 
             public int Run()
@@ -85,7 +92,7 @@ namespace HangfireServer
                 }
 
                 ConfigureServerStorage(connectionString);
-                var dashboardEndpoint = Config.Persistence.DashboardHostname + ":" + Config.Persistence.DashboardPort;
+                var dashboardEndpoint = _persistence.DashboardHostname + ":" + _persistence.DashboardPort;
                 var options = new StartOptions();
                 options.Urls.Add(dashboardEndpoint);
                 WebApp.Start<Dashboard>(options);
@@ -95,9 +102,11 @@ namespace HangfireServer
                 return 0;
             }
 
+            private static PersistenceSettings _persistence;
+
             private void ConfigureServerStorage(string connectionString)
             {
-                var resumptionAttribute = new ResumptionAttribute(_logger);
+                var resumptionAttribute = new ResumptionAttribute(_logger, null);
 
                 GlobalConfiguration.Configuration
                                 .UseFilter(resumptionAttribute)
@@ -113,12 +122,12 @@ namespace HangfireServer
 
             private static string ConnectionString()
             {
-                var payload = Config.Persistence.PersistenceDataSource.Payload;
+                var payload = _persistence.PersistenceDataSource.Payload;
                 if (string.IsNullOrEmpty(payload))
                 {
                     return string.Empty;
                 }
-                if (Config.Persistence.EncryptDataSource)
+                if (_persistence.EncryptDataSource)
                 {
                     payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
                 }
