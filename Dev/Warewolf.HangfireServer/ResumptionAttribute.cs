@@ -9,6 +9,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Hangfire.Client;
 using Hangfire.Common;
@@ -25,40 +26,55 @@ namespace HangfireServer
 {
     public class ResumptionAttribute : JobFilterAttribute, IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
     {
-        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+        private static readonly ILog _hangfireLogger = LogProvider.GetCurrentClassLogger();
         private readonly IExecutionLogPublisher _logger;
+        private readonly IResumptionFactory _resumptionFactory;
 
-        public ResumptionAttribute(IExecutionLogPublisher logger)
+        public ResumptionAttribute(IExecutionLogPublisher logger, IResumptionFactory resumptionFactory)
         {
             _logger = logger;
+            _resumptionFactory = resumptionFactory;
         }
 
         public void OnCreating(CreatingContext context)
         {
-            Logger.InfoFormat("Creating a job based on method {0}...", context.Job.Method.Name);
+            _hangfireLogger.InfoFormat("Creating a job based on method {0}...", context.Job.Method.Name);
         }
 
         public void OnCreated(CreatedContext context)
         {
-            Logger.InfoFormat(
+            _hangfireLogger.InfoFormat(
                 "Job that is based on method {0} has been created with id {1}",
                 context.Job.Method.Name,
                 context.BackgroundJob?.Id);
         }
 
+        [ExcludeFromCodeCoverage]
         public void OnPerforming(PerformingContext context)
         {
-            var resumptionFactory = new ResumptionFactory();
+            if (context is null)
+            {
+                return;
+            }
+            var jobArg = context.BackgroundJob.Job.Args[0];
+            var backgroundJobId = context.BackgroundJob.Id;
+
+            OnPerformResume(jobArg, backgroundJobId);
+        }
+
+        public void OnPerformResume(object jobArg, string backgroundJobId)
+        {
+            var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
             var resumption = resumptionFactory.New();
             if (resumption.Connect())
             {
-                var values = context.BackgroundJob.Job.Args[0] as Dictionary<string, StringBuilder>;
+                var values = jobArg as Dictionary<string, StringBuilder>;
                 LogResumption(values);
                 resumption.Resume(values);
             }
             else
             {
-                _logger.Error("Failed to perform job {0}, could not establish a connection.", context.BackgroundJob.Id);
+                _logger.Error("Failed to perform job {0}, could not establish a connection.", backgroundJobId);
             }
         }
 
@@ -84,14 +100,14 @@ namespace HangfireServer
 
         public void OnPerformed(PerformedContext context)
         {
-            Logger.InfoFormat("Job {0} has been performed", context.BackgroundJob.Id);
+            _hangfireLogger.InfoFormat("Job {0} has been performed", context.BackgroundJob.Id);
         }
 
         public void OnStateElection(ElectStateContext context)
         {
             if (context.CandidateState is FailedState failedState)
             {
-                Logger.WarnFormat(
+                _hangfireLogger.WarnFormat(
                     "Job {0} has been failed due to an exception {1}",
                     context.BackgroundJob.Id,
                     failedState.Exception);
@@ -104,7 +120,7 @@ namespace HangfireServer
 
         public void OnStateApplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
         {
-            Logger.InfoFormat(
+            _hangfireLogger.InfoFormat(
                 "Job {0} state was changed from {1} to {2}",
                 context.BackgroundJob.Id,
                 context.OldStateName,
@@ -113,7 +129,7 @@ namespace HangfireServer
 
         public void OnStateUnapplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
         {
-            Logger.InfoFormat(
+            _hangfireLogger.InfoFormat(
                 "Job {0} state {1} was unapplied.",
                 context.BackgroundJob.Id,
                 context.OldStateName);
