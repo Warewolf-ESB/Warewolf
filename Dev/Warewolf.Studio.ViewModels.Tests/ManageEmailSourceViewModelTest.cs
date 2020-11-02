@@ -1017,8 +1017,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestFromModel()
+        [Timeout(250)]
+        public void ManageEmailSourceViewModel_TestFromModel()
         {
             //arrange
             var expectedHostName = "expectedHostName";
@@ -1058,10 +1058,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
-        public void TestDispose()
+        public void ManageEmailSourceViewModel_TestDispose()
         {
             var vm = new ManageEmailSourceViewModel();
             var ns = new Mock<IRequestServiceNameViewModel>();

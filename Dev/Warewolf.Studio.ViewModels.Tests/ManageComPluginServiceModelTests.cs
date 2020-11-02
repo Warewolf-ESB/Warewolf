@@ -95,8 +95,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCreateNewSource()
+        [Timeout(250)]
+        public void ManageComPluginServiceModel_TestCreateNewSource()
         {
             try
             {

@@ -108,9 +108,8 @@ namespace Warewolf.Studio.ViewModels.Tests
                 _elasticsearchSourceModel.Object, _elasticsearchSourceDefinition.Object, _asyncWorkerMock.Object, _server.Object);
         }
 
-
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -119,9 +118,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             new ElasticsearchSourceViewModel(null, _requestServiceNameViewModelTask, new Mock<IServer>().Object);
         }
 
-
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ElasticsearchSourceViewModel))]
         [ExpectedException(typeof(ArgumentNullException))]

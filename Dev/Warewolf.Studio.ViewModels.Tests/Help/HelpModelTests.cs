@@ -34,7 +34,7 @@ namespace Warewolf.Studio.Models.Help.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestHelpModel()
         {
@@ -66,8 +66,8 @@ namespace Warewolf.Studio.Models.Help.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestDispose()
+        [Timeout(250)]
+        public void TestHelpModelDispose()
         {
             //arrange
             var isOnHelpTextReceivedRaised = false;
