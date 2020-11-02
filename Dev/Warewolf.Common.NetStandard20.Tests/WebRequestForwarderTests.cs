@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Common;
 using Warewolf.Data;
+using HttpClientFactory = Warewolf.Common.HttpClientFactory;
 
 namespace Warewolf.Web.Tests
 {

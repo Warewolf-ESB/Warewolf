@@ -18,9 +18,9 @@ using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 using HangfireServer;
 using Warewolf.Execution;
-using static Warewolf.Common.ExecutionLogger;
 using static HangfireServer.Program;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using static Warewolf.Common.NetStandard20.ExecutionLogger;
 
 namespace Warewolf.HangfireServer.Tests
 {

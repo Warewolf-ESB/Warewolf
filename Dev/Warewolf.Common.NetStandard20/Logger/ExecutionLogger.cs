@@ -14,7 +14,7 @@ using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 using Warewolf.Triggers;
 
-namespace Warewolf.Common
+namespace Warewolf.Common.NetStandard20
 {
     public class ExecutionLogger : NetworkLogger, IExecutionLogPublisher
     {

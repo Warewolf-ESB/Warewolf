@@ -15,7 +15,7 @@ using Warewolf.Logging;
 using Warewolf.Streams;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-namespace Warewolf.Common
+namespace Warewolf.Common.NetStandard20
 {
     public class NetworkLogger : ILoggerPublisher
     {
