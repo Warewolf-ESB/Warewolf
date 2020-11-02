@@ -106,8 +106,8 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
-        public void TestHelpModel()
+        [Timeout(1000)]
+        public void TestHelpWindowViewModel()
         {
             //act
             var value = _target.HelpModel;
@@ -209,8 +209,8 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestDispose()
+        [Timeout(250)]
+        public void HelpWindowViewModel_TestDispose()
         {
             //arrange
             var helpDescriptorMock = new Mock<IHelpDescriptor>();

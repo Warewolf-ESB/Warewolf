@@ -194,7 +194,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         public void TestGetAuthTokensWithDropBoxUriWithInvalidToken()
         {
             //arrange
@@ -376,8 +376,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestFromModel()
+        [Timeout(250)]
+        public void ManageOAuthSourceViewModel_TestFromModel()
         {
             //arrange
             IOAuthSource dropBoxSource = new DropBoxSource() { ResourcePath = "test path", ResourceName = "test resource", AppKey = "test app key", AccessToken = "test token" };
