@@ -9,10 +9,11 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Text;
 using CommandLine;
 using Dev2.Common;
-using Dev2.Common.Serializers;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
 using Hangfire.SqlServer;
@@ -30,6 +31,7 @@ namespace HangfireServer
 {
     public static class Program
     {
+        [ExcludeFromCodeCoverage]
         public static int Main(string[] args)
         {
             var implConfig = new Implementation.ConfigImpl
@@ -45,7 +47,7 @@ namespace HangfireServer
                 _ => 1);
         }
 
-        public class Implementation
+        internal class Implementation
         {
             private readonly IArgs _options;
             private readonly IExecutionLogPublisher _logger;
@@ -56,19 +58,22 @@ namespace HangfireServer
 
             public Implementation(IArgs options, ConfigImpl implConfig)
             {
+                var jsonSerializer = new JsonSerializer();
                 _options = options;
-                _logger = implConfig.ExecutionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
+                _logger = implConfig.ExecutionLoggerFactory.New(jsonSerializer, new WebSocketPool());
                 _writer = implConfig.Writer;
                 _pause = implConfig.PauseHelper;
                 _exit = implConfig.ExitHelper;
                 _hangfireContext = new HangfireContext(_options);
                 _persistence = Config.Persistence;
+                _deserializer = jsonSerializer;
             }
 
-            public Implementation(IArgs options, ConfigImpl configImpl, PersistenceSettings persistenceSettings)
+            public Implementation(IArgs options, ConfigImpl configImpl, PersistenceSettings persistenceSettings, IDeserializer deserializer)
                 :this(options, configImpl)
             {
                 _persistence = persistenceSettings;
+                _deserializer = deserializer;
             }
 
             public int Run()
@@ -86,8 +91,7 @@ namespace HangfireServer
                 {
                     _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
                     _writer.Write("Press any key to exit...");
-                    _pause.Pause();
-                    _exit.Exit();
+                    WaitForExit();
                     return 0;
                 }
 
@@ -103,6 +107,7 @@ namespace HangfireServer
             }
 
             private static PersistenceSettings _persistence;
+            private readonly IDeserializer _deserializer;
 
             private void ConfigureServerStorage(string connectionString)
             {
@@ -120,7 +125,7 @@ namespace HangfireServer
                                 });
             }
 
-            private static string ConnectionString()
+            private string ConnectionString()
             {
                 var payload = _persistence.PersistenceDataSource.Payload;
                 if (string.IsNullOrEmpty(payload))
@@ -132,23 +137,18 @@ namespace HangfireServer
                     payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
                 }
 
-                var source = new Dev2JsonSerializer().Deserialize<DbSource>(payload);
+                var bytes = UTF8Encoding.UTF8.GetBytes(payload);
+                var source = _deserializer.Deserialize<DbSource>(bytes);
                 return source.ConnectionString;
             }
 
             private void WaitForExit()
             {
-                if (_hangfireContext.Verbose)
-                {
-                    _pause.Pause();
-                }
-                else
-                {
-                    _exit.Exit();
-                }
+                _pause.Pause();
+                _exit.Exit();
             }
 
-            public class ConfigImpl
+            internal class ConfigImpl
             {
                 public IWriter Writer { get; set; }
                 public IExecutionLoggerFactory ExecutionLoggerFactory { get; set; }
