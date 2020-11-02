@@ -1165,8 +1165,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestFromModel()
+        [Timeout(250)]
+        public void ManageNewServerViewModel_TestFromModel()
         {
             //arrange
             var source = new Mock<IServerSource>();

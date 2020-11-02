@@ -1082,8 +1082,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestFromModel()
+        [Timeout(250)]
+        public void ManagePostgreSqlSourceViewModel_TestFromModel()
         {
             //arrange
             var dbSourceMock = new Mock<IDbSource>();

@@ -168,9 +168,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelUpdateManagerNull()
+        public void TestManageMySQLDatabaseSourceViewModelUpdateManagerNull()
         {
             new ManageMySqlSourceViewModel(
                  null,
@@ -180,9 +180,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelAggregatorNull()
+        public void TestManageMySqlDatabaseSourceViewModelAggregatorNull()
         {
             new ManageMySqlSourceViewModel(
                  _updateManagerMock.Object,
@@ -1233,8 +1233,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestFromModel()
+        [Timeout(250)]
+        public void ManageMySqlSourceViewModel_TestFromModel()
         {
             //arrange
             var dbSourceMock = new Mock<IDbSource>();

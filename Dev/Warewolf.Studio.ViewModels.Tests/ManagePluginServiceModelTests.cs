@@ -139,17 +139,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCreateNewSource()
+        [Timeout(250)]
+        public void TestCreateNewPluginSource()
         {
-            try
-            {
-                _target.CreateNewSource();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail("Create new plugin source failed. Exception: " + ex.Message);
-            }
+			_target.CreateNewSource();
         }
 
         [TestMethod]
