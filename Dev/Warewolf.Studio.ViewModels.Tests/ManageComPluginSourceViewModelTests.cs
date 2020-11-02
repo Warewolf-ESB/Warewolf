@@ -903,8 +903,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSearchTerm()
+        [Timeout(250)]
+        public void TestSearchComTerm()
         {
             //arrange
             var expectedValue = "SearchTerm";

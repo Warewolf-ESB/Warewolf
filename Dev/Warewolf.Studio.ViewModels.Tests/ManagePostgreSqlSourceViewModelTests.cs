@@ -465,8 +465,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestServerName()
+        [Timeout(250)]
+        public void TestPostgreSqlSourceViewModelServerName()
         {
             //arrange
             var expectedValue = new ComputerName();
