@@ -337,7 +337,7 @@ namespace Dev2.Activities.Designers2.Web_Put
                 InputArea = new WebPutInputRegion(ModelItem, SourceRegion);
                 InputArea.PropertyChanged += (sender, args) =>
                  {
-                     if (args.PropertyName == "PutData" && InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)) && args.PropertyName is "IsPutDataBase64")
+                     if (args.PropertyName == "PutData" && InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
                      {
                          ((ManageWebServiceInputViewModel)ManageServiceInputViewModel).BuidHeaders(InputArea.PutData);
                      }
