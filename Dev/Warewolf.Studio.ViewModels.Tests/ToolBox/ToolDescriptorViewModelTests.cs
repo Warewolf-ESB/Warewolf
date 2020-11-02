@@ -128,7 +128,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         public void TestActivityType()
         {
             //arrange
@@ -147,7 +147,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         public void TestActivityTypeFlowDecision()
         {
             //arrange
