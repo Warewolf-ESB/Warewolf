@@ -109,8 +109,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSearchTerm()
+        [Timeout(250)]
+        public void TestDLLSearchTerm()
         {
             //act
             var expectedValue = "textFilter";

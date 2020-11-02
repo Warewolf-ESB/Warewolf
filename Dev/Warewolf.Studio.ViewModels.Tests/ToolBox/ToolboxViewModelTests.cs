@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Toolbox_TestNullLocalModel()
         {
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test commands
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestClearFilterCommand()
         {
             //act
@@ -183,8 +183,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSearchTerm()
+        [Timeout(250)]
+        public void TestSearchToolbox()
         {
             //arrange
             _changedProperties.Clear();

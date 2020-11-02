@@ -68,7 +68,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestServerName()
+        public void TestEmailSourceModelServerName()
         {
             //act
             var value = _target.ServerName;
