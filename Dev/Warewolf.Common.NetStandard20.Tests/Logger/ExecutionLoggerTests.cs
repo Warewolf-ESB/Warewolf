@@ -15,7 +15,7 @@ using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 using Warewolf.Triggers;
 
-namespace Warewolf.Common.Framework48.Tests
+namespace Warewolf.Common.NetStandard20.Tests
 {
     [TestClass]
     public class ExecutionLoggerTests

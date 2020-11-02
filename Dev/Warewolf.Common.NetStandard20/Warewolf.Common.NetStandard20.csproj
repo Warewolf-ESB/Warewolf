@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
+    <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj" />
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

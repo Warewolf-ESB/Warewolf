@@ -20,6 +20,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj" />
     <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
   </ItemGroup>
