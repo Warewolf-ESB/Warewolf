@@ -8,8 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Interfaces.Auditing;
@@ -44,11 +46,27 @@ namespace Warewolf.HangfireServer.Tests
             mockWriter.Setup(o => o.WriteLine("Hangfire dashboard started...")).Verifiable();
             mockWriter.Setup(o => o.WriteLine("Hangfire server started...")).Verifiable();
 
-            var item = new Implementation(args, implConfig);
+            var mockFile = new Mock<IFile>();
+            var mockDirectory = new Mock<IDirectory>();
+
+            var persistenceSettings = new PersistenceSettings("", mockFile.Object, mockDirectory.Object)
+            {
+                PersistenceDataSource = {Payload = "test"}
+            };
+            var bytes = UTF8Encoding.UTF8.GetBytes(persistenceSettings.PersistenceDataSource.Payload);
+            var mockDeserializer = new Mock<IDeserializer>();
+            var dbSource = new DbSource
+            {
+                ConnectionString = "connectionString",
+            };
+            mockDeserializer.Setup(o => o.Deserialize<DbSource>(bytes)).Returns(dbSource).Verifiable();
+
+            var item = new Implementation(args, implConfig, persistenceSettings, mockDeserializer.Object);
             var result = item.Run();
 
             Assert.AreEqual(0, result);
             mockWriter.Verify(o => o.WriteLine("Starting Hangfire server..."), Times.Once);
+            mockDeserializer.Verify(o => o.Deserialize<DbSource>(bytes), Times.Once);
             mockWriter.Verify(o => o.WriteLine("Hangfire dashboard started..."), Times.Once);
             mockWriter.Verify(o => o.WriteLine("Hangfire server started..."), Times.Once);
             mockPauseHelper.Verify(o => o.Pause(), Times.Never);
@@ -79,7 +97,7 @@ namespace Warewolf.HangfireServer.Tests
 
             var persistenceSettings = new PersistenceSettings("", mockFile.Object, mockDirectory.Object);
 
-            var item = new Implementation(args, implConfig, persistenceSettings);
+            var item = new Implementation(args, implConfig, persistenceSettings, new Mock<IDeserializer>().Object);
             var result = item.Run();
 
             Assert.AreEqual(0, result);
