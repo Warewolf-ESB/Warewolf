@@ -23,7 +23,7 @@ using Warewolf.Common;
 using Warewolf.Execution;
 using Warewolf.Security.Encryption;
 using Warewolf.Streams;
-using static Warewolf.Common.ExecutionLogger;
+using static Warewolf.Common.NetStandard20.ExecutionLogger;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace HangfireServer

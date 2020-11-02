@@ -26,6 +26,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
       <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
+      <ProjectReference Include="..\Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj" />
       <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
       <ProjectReference Include="..\Warewolf.Driver.Resume\Warewolf.Driver.Resume.csproj" />
       <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />

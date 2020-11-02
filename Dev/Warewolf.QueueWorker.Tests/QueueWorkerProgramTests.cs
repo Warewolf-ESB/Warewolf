@@ -23,8 +23,8 @@ using Warewolf.Execution;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Streams;
 using Warewolf.Triggers;
-using static Warewolf.Common.ExecutionLogger;
 using static QueueWorker.Program;
+using static Warewolf.Common.NetStandard20.ExecutionLogger;
 
 namespace Warewolf.QueueWorker.Tests
 {
