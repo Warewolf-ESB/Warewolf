@@ -86,8 +86,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestService()
+        [Timeout(500)]
+        public void TestWebService()
         {
             var mockWebServiceSourceValue = new Mock<IWebService>();
             var expectedResult = string.Empty;
