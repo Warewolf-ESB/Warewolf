@@ -1,3 +1,9 @@
+Monday 2 November 2020
+======================
+Enhancements
+---------
+- Web Put Method can now use a Base64 formatted file content to upload all common media types to a specified destination.
+
 Tuesday 13 October 2020
 ======================
 Enhancements
