@@ -1,18 +1,16 @@
-﻿<!--[Obsolete("DsfWebPutActivity is deprecated. It will be deleted in future releases along with this View.")]-->
-<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Web_Service_Put.Small"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Web_Put.Small"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:webServiceGet="clr-namespace:Dev2.Activities.Designers2.Web_Service_Put"
+                               xmlns:webPutViewModel="clr-namespace:Dev2.Activities.Designers2.Web_Put"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="250"
                                MaxWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
-                               d:DataContext="{d:DesignInstance webServiceGet:WebServicePutViewModel}">
-
+                               d:DataContext="{d:DesignInstance webPutViewModel:WebPutActivityViewModel}">
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

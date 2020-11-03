@@ -155,8 +155,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestService()
+        [Timeout(500)]
+        public void TestDbService()
         {
             var mockDataTable = new Mock<IDatabaseService>();
             var expectedResult = new DataTable();

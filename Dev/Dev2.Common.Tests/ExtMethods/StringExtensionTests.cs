@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -520,6 +520,17 @@ namespace Dev2.Tests.ExtMethods
         public void StringExtension_IsAlphaNumericRegex_True()
         {
             Assert.IsFalse(" 223 eeddd23".IsAlphaNumeric(), "IsAlphaNumericRegex is True");
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(StringExtension))]
+        public void StringExtension_IsBase64_notValidsdf()
+        {
+            var toEncodeAsBytes = ASCIIEncoding.ASCII.GetBytes("String that is just an example");
+            string returnValue = Convert.ToString(toEncodeAsBytes);
+            var sut = returnValue.ToBytesArray();
+            Assert.AreEqual(toEncodeAsBytes.ToString(), sut.ToString());
         }
     }
 }
