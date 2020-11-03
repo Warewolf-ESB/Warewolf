@@ -1741,6 +1741,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allows you to send the body as base64.
+        /// </summary>
+        public static string IsPutDataBase64HelpText {
+            get {
+                return ResourceManager.GetString("IsPutDataBase64HelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset()]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string LengthHelpRecordset {
@@ -5670,6 +5679,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebInputDefaultValueHelp {
             get {
                 return ResourceManager.GetString("WebInputDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows you to read the body as base64.
+        /// </summary>
+        public static string WebReadsBase64BodyHelp {
+            get {
+                return ResourceManager.GetString("WebReadsBase64BodyHelp", resourceCulture);
             }
         }
         

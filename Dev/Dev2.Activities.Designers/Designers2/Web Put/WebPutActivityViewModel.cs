@@ -9,8 +9,7 @@
 */
 
 
-#pragma warning disable
-﻿using System;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,7 +20,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Activities.Designers2.Core.Web.Put;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -35,10 +33,9 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-namespace Dev2.Activities.Designers2.Web_Service_Put
+namespace Dev2.Activities.Designers2.Web_Put
 {
-    [Obsolete("DsfWebPutActivity is deprecated. It will be deleted in future releases along with this viewModel.")]
-    public class WebServicePutViewModel : CustomToolWithRegionBase, IWebServicePutViewModel
+    public class WebPutActivityViewModel : CustomToolWithRegionBase, IWebServicePutViewModel
     {
         readonly IServiceInputBuilder _builder;
         const string DoneText = "Done";
@@ -50,7 +47,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         IErrorInfo _worstDesignError;
 
-        public WebServicePutViewModel(ModelItem modelItem)
+        public WebPutActivityViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
@@ -63,7 +60,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Put;
         }
 
-        public WebServicePutViewModel(ModelItem modelItem, IWebServiceModel model)
+        public WebPutActivityViewModel(ModelItem modelItem, IWebServiceModel model)
             : base(modelItem)
         {
             Model = model;
@@ -271,7 +268,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             }
         }
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
-            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebServicePutViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebPutActivityViewModel), new PropertyMetadata(false));
 
         public ErrorType WorstError
         {
@@ -282,7 +279,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             }
         }
         public static readonly DependencyProperty WorstErrorProperty =
-            DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServicePutViewModel), new PropertyMetadata(ErrorType.None));
+            DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebPutActivityViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
 

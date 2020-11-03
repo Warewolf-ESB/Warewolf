@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Factories;
+using Dev2.FindMissingStrategies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
@@ -165,9 +166,9 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
-        public void DataGridActivityFindMissingStrategy_GetActivityFields_WebPutActivity_ShouldReturnResults()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DataGridActivityFindMissingStrategy))]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_DsfWebPutActivity_ShouldReturnResults()
         {
             //------------Setup for test--------------------------
             var fac = new Dev2FindMissingStrategyFactory();
@@ -181,6 +182,43 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
                 OnErrorVariable = "[[err]]",
                 OnErrorWorkflow = "[[errSvc]]",
                 PutData = "[[putdata]]"
+            };
+            //------------Execute Test---------------------------
+            var fields = strategy.GetActivityFields(activity);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(11, fields.Count);
+            Assert.IsTrue(fields.Contains("[[InputValue1]]"));
+            Assert.IsTrue(fields.Contains("[[InputValue2]]"));
+            Assert.IsTrue(fields.Contains("[[InputValue3]]"));
+            Assert.IsTrue(fields.Contains("[[rec().OutputValue1]]"));
+            Assert.IsTrue(fields.Contains("[[rec().OutputValue2]]"));
+            Assert.IsTrue(fields.Contains("[[qstring]]"));
+            Assert.IsTrue(fields.Contains("[[err]]"));
+            Assert.IsTrue(fields.Contains("[[errSvc]]"));
+            Assert.IsTrue(fields.Contains("Content-Type"));
+            Assert.IsTrue(fields.Contains("[[ctype]]"));
+            Assert.IsTrue(fields.Contains("[[putdata]]"));
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DataGridActivityFindMissingStrategy))]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_WebPutActivity_ShouldReturnResults()
+        {
+            //------------Setup for test--------------------------
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
+            var activity = new WebPutActivity
+            {
+                Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
+                QueryString = "[[qstring]]",
+                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                OnErrorVariable = "[[err]]",
+                OnErrorWorkflow = "[[errSvc]]",
+                PutData = "[[putdata]]",
+                IsPutDataBase64 = true
             };
             //------------Execute Test---------------------------
             var fields = strategy.GetActivityFields(activity);
@@ -541,14 +579,41 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Rory McGuire")]
-        [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
-        public void DataGridActivityFindMissingStrategy_GetActivityFields_WebPutActivity_ShouldReturnResults_IsObject()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DataGridActivityFindMissingStrategy))]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_DsfWebPutActivity_ShouldReturnResults_IsObject()
         {
             //------------Setup for test--------------------------
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
             var activity = new DsfWebPutActivity
+            {
+                Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
+                QueryString = "[[qstring]]",
+                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                OnErrorVariable = "[[err]]",
+                OnErrorWorkflow = "[[errSvc]]",
+                PutData = "[[putdata]]",
+                IsObject = true,
+                ObjectName = "TheObject"
+            };
+            //------------Execute Test---------------------------
+            var fields = strategy.GetActivityFields(activity);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(fields.Contains("TheObject"));
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DataGridActivityFindMissingStrategy))]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_WebPutActivity_ShouldReturnResults_IsObject()
+        {
+            //------------Setup for test--------------------------
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
+            var activity = new WebPutActivity
             {
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
