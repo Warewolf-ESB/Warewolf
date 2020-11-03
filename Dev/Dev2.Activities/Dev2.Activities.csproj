@@ -116,6 +116,7 @@
     <Compile Include="Activities\RedisCounter\RedisCounterActivity.cs" />
     <Compile Include="Activities\RedisRemove\RedisRemoveActivity.cs" />
     <Compile Include="Activities\RedisCache\RedisCacheActivity.cs" />
+    <Compile Include="Activities\DsfWebPutActivity.cs" />
     <Compile Include="Activities\SuspendExecutionActivity.cs" />
     <Compile Include="Comparer\ActivityComparer.cs" />
     <Compile Include="Comparer\GatherSystemInformationTOComparer.cs" />
@@ -238,7 +239,7 @@
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
     <Compile Include="Activities\DsfWebPostActivity.cs" />
-    <Compile Include="Activities\DsfWebPutActivity.cs" />
+    <Compile Include="Activities\WebPutActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
     <Compile Include="Activities\DsfXPathActivity.cs" />
     <Compile Include="Activities\EmailSender.cs" />

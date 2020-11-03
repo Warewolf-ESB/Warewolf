@@ -128,7 +128,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestActivityType()
         {
             //arrange
@@ -147,8 +147,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestActivityFlowDecision()
+        [Timeout(500)]
+        public void TestActivityTypeFlowDecision()
         {
             //arrange
             _warewolfTypeMock.SetupGet(it => it.FullyQualifiedName).Returns(typeof(DsfFlowDecisionActivity).FullName);

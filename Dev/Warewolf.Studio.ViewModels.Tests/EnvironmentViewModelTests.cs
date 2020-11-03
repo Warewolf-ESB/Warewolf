@@ -149,8 +149,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestExpand()
+        [Timeout(250)]
+        public void EnvironmentViewModel_TestExpand()
         {
             //arrange
             _target.IsExpanded = false;
@@ -667,7 +667,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(250)]
-        public void EnvironmentViewModel_Dispose()
+        public void EnvironmentViewModel_TestDispose()
         {
             //arrange
             var child = new Mock<IExplorerItemViewModel>();
@@ -892,8 +892,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
-        public void TestFilter()
+        [Timeout(1000)]
+        public void EnvironmentViewModel_TestFilter()
         {
             //arrange
             var child = new Mock<IExplorerItemViewModel>();
@@ -1190,7 +1190,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestCreateExplorerItemsSetsPermissions()
         {
             //arrange

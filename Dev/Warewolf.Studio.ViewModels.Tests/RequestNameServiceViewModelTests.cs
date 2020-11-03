@@ -12,7 +12,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
-        public void RequestNameServiceViewModel_Dispose()
+        public void RequestNameServiceViewModel_TestDispose()
         {
             var serverRepo = new Mock<IServerRepository>();
             var connectionObject = new Mock<IEnvironmentConnection>();

@@ -1816,6 +1816,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check this to send a base64 formatted body data..
+        /// </summary>
+        public static string IsPutDataBase64Tooltip {
+            get {
+                return ResourceManager.GetString("IsPutDataBase64Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]].
         /// </summary>
         public static string LengthToolTipRecordset {
@@ -6764,6 +6773,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebInsertToolTipColumn {
             get {
                 return ResourceManager.GetString("WebInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check this to read a base64 formatted body data..
+        /// </summary>
+        public static string WebReadsBase64BodyTooltip {
+            get {
+                return ResourceManager.GetString("WebReadsBase64BodyTooltip", resourceCulture);
             }
         }
         

@@ -70,8 +70,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestServerName()
+        [Timeout(250)]
+        public void TestWebServiceSourceModelServerName()
         {
             //act
             var value = _target.ServerName;

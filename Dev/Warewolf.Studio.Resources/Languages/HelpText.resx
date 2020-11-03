@@ -2521,7 +2521,12 @@ The conflicts on the left will show your current workflow changes and the confli
       <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
   </data>
   <data name="WriteFileHelpContentsAsBase64" xml:space="preserve">
-      <value>WriteFileHelpContentsAsBase64</value>
+    <value>When selected, it reads the content of the file as base64 format.</value>
   </data>
-
+  <data name="IsPutDataBase64HelpText" xml:space="preserve">
+    <value>Allows you to send the body as base64</value>
+  </data>
+  <data name="WebReadsBase64BodyHelp" xml:space="preserve">
+    <value>Allows you to read the body as base64</value>
+  </data>
 </root>

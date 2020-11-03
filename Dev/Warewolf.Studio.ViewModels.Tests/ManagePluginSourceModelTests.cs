@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestGetDllListings()
         {
             //arrange
@@ -73,8 +73,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestServerName()
+        [Timeout(250)]
+        public void TestPluginSourceModelServerName()
         {
             //act
             var value = _target.ServerName;

@@ -1,7 +1,6 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,7 +26,7 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using System.Net;
 using System.IO;
-using Dev2.Interfaces;
+using Dev2.Common.Common;
 
 namespace Dev2.Activities
 {
@@ -69,7 +68,7 @@ namespace Dev2.Activities
             AddDebugItem(new DebugEvalResult(query, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
             debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "Headers"), debugItem);
+            AddDebugItem(new DebugItemStaticDataParams("", nameof(Headers)), debugItem);
             AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
@@ -99,7 +98,7 @@ namespace Dev2.Activities
             var address = source.Address;
             if (!string.IsNullOrEmpty(query))
             {
-                address = address + query;
+                address += query;
             }
             try
             {
@@ -117,7 +116,7 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
-        protected virtual string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData)
+        protected virtual string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData, bool isPutDataBase64 = false)
         {
             var headerValues = head as NameValue[] ?? head.ToArray();
             var httpClient = CreateClient(headerValues, query, source);
@@ -142,7 +141,7 @@ namespace Dev2.Activities
                             resultAsString = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
                             break;
                         case WebRequestMethod.Put:
-                            resultAsString = PerformPut(putData, headerValues, httpClient, address);
+                            resultAsString = PerformPut(putData, headerValues, httpClient, address, isPutDataBase64);
                             break;
                         default:
                             resultAsString = $"Invalid Request Method: {_method}";
@@ -165,9 +164,26 @@ namespace Dev2.Activities
             return null;
         }
 
-        private static string PerformPut(string putData, INameValue[] headerValues, HttpClient httpClient, string address)
+        protected virtual string PerformPut(string putData, INameValue[] headerValues, HttpClient httpClient, string address, bool isPutDataBase64 = false)
         {
-            HttpContent httpContent = new StringContent(putData, Encoding.UTF8);
+            HttpContent httpContent = null;
+            if (isPutDataBase64)
+            {
+                var isPutDataValidBase64 = putData.IsBase64String(out byte[] bytes);
+                if (isPutDataValidBase64)
+                {
+                    httpContent = new ByteArrayContent(bytes);
+                }
+                else
+                {
+                    throw new Exception("Put Data is not valid Base64");
+                }
+            }
+            else
+            {
+                httpContent = new StringContent(putData, Encoding.UTF8);
+            }
+
             var contentType = headerValues.FirstOrDefault(value => value.Name.ToLowerInvariant() == "Content-Type".ToLowerInvariant());
             if (contentType != null)
             {
@@ -186,7 +202,7 @@ namespace Dev2.Activities
             var address = source.Address;
             if (query != null)
             {
-                address = address + query;
+                address += query;
             }
 
             return address;
@@ -194,7 +210,7 @@ namespace Dev2.Activities
 
         public bool Equals(DsfWebActivityBase other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -215,7 +231,7 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }

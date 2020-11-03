@@ -839,7 +839,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestExpandCommandResourceTypeFolderSingleClick()
         {
             //arrange
@@ -1644,7 +1644,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(250)]
-        public void ExplorerItem_Dispose()
+        public void ExplorerItemViewModel_TestDispose()
         {
             //arrange
             var child = new Mock<IExplorerItemViewModel>();
@@ -1659,8 +1659,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
-        public void TestFilter()
+        [Timeout(1000)]
+        public void ExplorerItemViewModel_TestFilter()
         {
             //arrange
             var isChildrenChanged = false;

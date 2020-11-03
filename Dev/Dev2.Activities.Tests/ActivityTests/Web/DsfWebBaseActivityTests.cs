@@ -1,10 +1,20 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
+using System.Net.Http;
 using Dev2.Activities;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Interfaces;
@@ -267,6 +277,75 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNotNull(debugInputs);
             Assert.AreEqual(3, debugInputs.Count);
         }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        public void DsfWebActivityBase_PerformPut_Given_IsPutDataBase64_True_And_Base64String_Invalid_ShouldThrow()
+        {
+            //---------------Set up test pack-------------------
+            var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
+            var address = "http://www.contoso.com/";
+
+            var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
+                    "Web Put Tool", "Web Put Tool"));
+            //---------------Execute Test ----------------------
+            Assert.ThrowsException<Exception>(()=> sut.TestPerformPut("teststringnotbase64", headers, new Mock<HttpClient>().Object, address, true));
+            //---------------Test Result -----------------------
+            
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        public void DsfWebActivityBase_PerformPut_Given_IsPutDataBase64_True_And_Base64String_Valid_ShouldNotThrow()
+        {
+            //---------------Set up test pack-------------------
+            var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
+            var address = "http://www.contoso.com/";
+
+            var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
+                    "Web Put Tool", "Web Put Tool"));
+            //---------------Execute Test ----------------------
+            var result = sut.TestPerformPut("THVja3kgRHViZQ==", headers, new Mock<HttpClient>().Object, address, true);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        public void DsfWebActivityBase_PerformPut_Given_IsPutDataBase64_False_And_Base64String_Valid_ShouldNotThrow1()
+        {
+            //---------------Set up test pack-------------------
+            var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
+            var address = "http://www.contoso.com/";
+
+            var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
+                    "Web Put Tool", "Web Put Tool"));
+            //---------------Execute Test ----------------------
+            var result = sut.TestPerformPut("THVja3kgRHViZQ==", headers, new Mock<HttpClient>().Object, address);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        public void DsfWebActivityBase_PerformPut_Given_IsPutDataBase64_False_And_Base64String_Invalid_ShouldNotThrow1()
+        {
+            //---------------Set up test pack-------------------
+            var headers = new INameValue[] { new NameValue("Header1", "[[City]]") };
+            var address = "http://www.contoso.com/";
+
+            var sut = new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put,
+                    "Web Put Tool", "Web Put Tool"));
+            //---------------Execute Test ----------------------
+            var result = sut.TestPerformPut("teststringnotbase64", headers, new Mock<HttpClient>().Object, address);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
+        }
+
         static WebSource CreateTestWebSource()
         {
             return new WebSource
@@ -302,10 +381,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
         }
 
-        protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source,
-            string putData)
+        public string TestPerformPut(string putData, INameValue[] headerValues, HttpClient httpClient, string address, bool isPutDataBase64 = false)
         {
-            return ResponseFromWeb;
+            return base.PerformPut(putData, headerValues, httpClient, address, isPutDataBase64);
         }
 
         #endregion

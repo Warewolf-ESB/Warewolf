@@ -8,9 +8,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
     [TestClass]
     public class ToolBoxCategoryViewModelTests
     {
-
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestToolBoxCategoryViewModel()
         {
             //arrange
