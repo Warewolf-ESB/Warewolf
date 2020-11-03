@@ -99,8 +99,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestService()
+        [Timeout(500)]
+        public void TestWcfService()
         {
             var mockWcfServiceValues = new Mock<IWcfService>();
             var expectedResult = string.Empty;

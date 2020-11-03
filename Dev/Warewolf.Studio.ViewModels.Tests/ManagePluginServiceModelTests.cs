@@ -158,8 +158,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestService()
+        [Timeout(500)]
+        public void TestPluginService()
         {
             var mockPluginInputValues = new Mock<IPluginService>();
             var expectedResult = string.Empty;
