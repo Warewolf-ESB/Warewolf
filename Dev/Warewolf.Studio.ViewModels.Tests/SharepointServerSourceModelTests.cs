@@ -35,7 +35,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void Sharepoint_TestTestConnection()
         {
             //arrange
@@ -67,8 +67,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestServerName()
+        [Timeout(250)]
+        public void TestSharepointServerSourceModelServerName()
         {
             //arrange
             var expectedValue = "someValue";

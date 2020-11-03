@@ -80,17 +80,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCreateNewSource()
+        [Timeout(250)]
+        public void TestCreateNewWcfSource()
         {
-            try
-            {
-                _target.CreateNewSource();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail("Create new web source failed. Exception: " + ex.Message);
-            }
+            _target.CreateNewSource();
         }
 
         [TestMethod]
@@ -106,8 +99,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestService()
+        [Timeout(500)]
+        public void TestWcfService()
         {
             var mockWcfServiceValues = new Mock<IWcfService>();
             var expectedResult = string.Empty;

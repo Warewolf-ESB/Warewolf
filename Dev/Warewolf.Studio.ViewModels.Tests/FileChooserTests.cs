@@ -203,8 +203,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestExpand()
+        [Timeout(250)]
+        public void FileChooser_TestExpand()
         {
             //assert
             Assert.IsTrue(_target.Drives.First().IsChecked);

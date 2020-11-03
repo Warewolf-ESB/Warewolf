@@ -36,8 +36,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestGetDllListings()
+        [Timeout(250)]
+        public void TestGetCOMDllListings()
         {
             //arrange
             var listingMock = new Mock<IFileListing>();
@@ -72,8 +72,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestServerName()
+        [Timeout(250)]
+        public void TestComPluginSourceModelServerName()
         {
             //act
             var value = _target.ServerName;

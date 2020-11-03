@@ -124,9 +124,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelUpdateManagerNull()
+        public void TestManageOdbcDatabaseSourceViewModelUpdateManagerNull()
         {
             new ManageOdbcSourceViewModel(
                  null,
@@ -136,9 +136,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestManageDatabaseSourceViewModelAggregatorNull()
+        public void TestManageOdbcDatabaseSourceViewModelAggregatorNull()
         {
             new ManageOdbcSourceViewModel(
                  _updateManagerMock.Object,
@@ -558,8 +558,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestServerName()
+        [Timeout(250)]
+        public void TestOdbcSourceViewModelServerName()
         {
             //arrange
             var expectedValue = new ComputerName();
@@ -1175,8 +1175,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestFromModel()
+        [Timeout(250)]
+        public void ManageOdbcSourceViewModel_TestFromModel()
         {
             //arrange
             var dbSourceMock = new Mock<IDbSource>();

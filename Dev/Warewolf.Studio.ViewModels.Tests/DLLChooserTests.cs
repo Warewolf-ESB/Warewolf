@@ -87,7 +87,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestSelectedDll()
         {
             //act
@@ -109,8 +109,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSearchTerm()
+        [Timeout(250)]
+        public void TestDLLSearchTerm()
         {
             //act
             var expectedValue = "textFilter";

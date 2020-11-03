@@ -84,8 +84,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCreateNewSource()
+        [Timeout(250)]
+        public void ManageDbServiceModel_TestCreateNewSource()
         {
             _target.CreateNewSource(enSourceType.SqlDatabase);
             _target.CreateNewSource(enSourceType.MySqlDatabase);
@@ -155,8 +155,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestService()
+        [Timeout(500)]
+        public void TestDbService()
         {
             var mockDataTable = new Mock<IDatabaseService>();
             var expectedResult = new DataTable();

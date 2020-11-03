@@ -627,7 +627,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(250)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
-        public void ManageComPlugin_Dispose()
+        public void ManageComPluginSourceViewModel_TestDispose()
         {
             var vm = new ManageComPluginSourceViewModel();
             var ns = new Mock<IRequestServiceNameViewModel>();
@@ -833,8 +833,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSelectedDll()
+        [Timeout(250)]
+        public void TestSelectedCOMDll()
         {
             //arrange
             var expectedAssemblyName = "someAssemblyName";
@@ -903,8 +903,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSearchTerm()
+        [Timeout(250)]
+        public void TestSearchComTerm()
         {
             //arrange
             var expectedValue = "SearchTerm";

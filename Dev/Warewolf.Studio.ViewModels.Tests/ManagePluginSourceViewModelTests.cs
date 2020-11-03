@@ -695,10 +695,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
-        public void TestDispose()
+        public void ManagePluginSourceViewModel_TestDispose()
         {
             var vm = new ManagePluginSourceViewModel();
             var ns = new Mock<IRequestServiceNameViewModel>();
@@ -885,8 +885,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSelectedDll()
+        [Timeout(260)]
+        public void TestSelectedPluginDll()
         {
             //arrange
             var expectedAssemblyName = EnvironmentVariables.WorkspacePath + @"\someAssemblyName.dll";
