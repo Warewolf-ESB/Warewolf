@@ -299,7 +299,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 $OutputProperty = ""
             }
 			if ($FullVersionString -ne $null -and $FullVersionString -ne "") {
-				$NugetPackVersion = "/p:PackageVersion=$FullVersionString"
+				$NugetPackVersion = " /p:PackageVersion=$FullVersionString"
 			} else {
 				$NugetPackVersion = ""
 			}
