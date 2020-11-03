@@ -22,7 +22,7 @@ $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
                       "$PSScriptRoot\Dev\Web.sln"
 $NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent)
 if ($Target -ne "") {
-	$Target = "/t:" + $Target
+	$Target = " /t:" + $Target
 }
 
 #find script
@@ -293,16 +293,20 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 			if ($OutputFolderName -eq "Webs") {
 				npm install --add-python-to-path='true' --global --production windows-build-tools
 			}
-
             if ($SolutionWideOutputs.IsPresent) {
-                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+                $OutputProperty = " /property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             } else {
                 $OutputProperty = ""
             }
+			if ($FullVersionString -ne $null -and $FullVersionString -ne "") {
+				$NugetPackVersion = "/p:PackageVersion=$FullVersionString"
+			} else {
+				$NugetPackVersion = ""
+			}
             &"$NuGet" "restore" "$SolutionFile"
             Write-Host `nDotNet Restore:
             dotnet restore "$SolutionFile"
-            &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" $OutputProperty $Target
+            &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false"$OutputProperty$Target$NugetPackVersion
             if ($LASTEXITCODE -ne 0) {
 				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
                 exit 1
