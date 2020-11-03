@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     partial class ServiceTestViewModelTests
     {
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(2000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
         public void ServiceTestViewModel_PopulateFromDebug_WithError_ShouldSetTestToExpectErrorWithDebugErrorMessage()
@@ -75,7 +75,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
         public void ServiceTestViewModel_PopulateFromDebug_WithNoError_ShouldSetTestToExpectNoErrorWithDebugErrorMessage()
@@ -115,7 +115,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [Owner("Pieter Terblanche")]
         [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
         public void ServiceTestViewModel_PopulateFromDebug_WithNoError_UpdateInputs()
