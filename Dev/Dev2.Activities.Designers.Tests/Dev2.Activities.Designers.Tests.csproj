@@ -100,6 +100,7 @@
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
     <Compile Include="Core\WebOutputsRegionTests.cs" />
+    <Compile Include="Core\WebPutInputRegionTests.cs" />
     <Compile Include="Core\WebPutInputRegionTest.cs" />
     <Compile Include="Core\WebPostInputRegionTest.cs" />
     <Compile Include="Core\WebServiceHeaderBuilderTests.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="WCFEndPoint\WcfEndPointViewModelTests.cs" />
     <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
     <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
+    <Compile Include="WebPutTool\WebPutActivityViewModelTests.cs" />
     <Compile Include="WebPutTool\TestWebPutViewModel.cs" />
     <Compile Include="WebPostTool\TestWebPostViewModel.cs" />
     <Compile Include="WriteFile\TestWriteFileDesignerViewModel.cs" />

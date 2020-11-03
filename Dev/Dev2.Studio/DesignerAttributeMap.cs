@@ -83,6 +83,7 @@ using Dev2.Activities.Designers2.Web_Service_Delete;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Activities.Designers2.Web_Service_Post;
 using Dev2.Activities.Designers2.Web_Service_Put;
+using Dev2.Activities.Designers2.Web_Put;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
@@ -194,6 +195,7 @@ namespace Dev2
                 { typeof(DsfWebPostActivity), typeof(WebServicePostViewModel) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteViewModel) },
                 { typeof(DsfWebPutActivity), typeof(WebServicePutViewModel) },
+                { typeof(WebPutActivity), typeof(WebPutActivityViewModel) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadViewModel) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadViewModel) },
                 { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteViewModel) },
