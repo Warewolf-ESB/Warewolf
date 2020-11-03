@@ -443,6 +443,203 @@ namespace Dev2.Server.Tests
             }
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ServerLifecycleManager))]
+        public void ServerLifecycleManager_IsServerOnline_And_HangfireServer_Fails_ExpectFailureMessage()
+        {
+            //------------------------Arrange------------------------
+            var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
+            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            var mockDirectory = new Mock<IDirectory>();
+            var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+            var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
+            var mockWriter = new Mock<IWriter>();
+            var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockStartWebServer = new Mock<IStartWebServer>();
+            var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+            var mockLoggingServiceMonitorWithRestart = new LoggingServiceMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
+
+            var process = new ProcessThreadForTesting(new Mock<IJobConfig>().Object);
+            var mockHangfireServerMonitorWithRestart = new HangfireServerMonitorWithRestartTest(new Mock<IChildProcessTracker>().Object, new Mock<IProcessFactory>().Object, process);
+            
+            var mockWebSocketPool = new Mock<IWebSocketPool>();
+            var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+
+            var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
+
+            EnvironmentVariables.IsServerOnline = true;
+
+            mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+            mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+
+            mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
+            mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            //------------------------Act----------------------------
+            var config = new StartupConfiguration
+            {
+                ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
+                AssemblyLoader = mockAssemblyLoader.Object,
+                Directory = mockDirectory.Object,
+                ResourceCatalogFactory = mockResourceCatalogFactory.Object,
+                WebServerConfiguration = mockWebServerConfiguration.Object,
+                Writer = mockWriter.Object,
+                StartWebServer = mockStartWebServer.Object,
+                SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
+                HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
+                WebSocketPool = mockWebSocketPool.Object,
+            };
+            using (var serverLifeCycleManager = new ServerLifecycleManager(config))
+            {
+                serverLifeCycleManager.Run(items).Wait();
+                process.ForceProcessDiedEvent(); //kill Hangfire Server thread
+                serverLifeCycleManager.Stop(false, 0, false);
+            }
+
+            //------------------------Assert-------------------------
+            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("hangfire server exited"), Times.Once); //we might need to use the write like the above, inverstigate.
+            mockSerLifeCycleWorker.Verify();
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ServerLifecycleManager))]
+        public void ServerLifecycleManager_IsServerOnline_And_HangfireServer_Success_ExpectNoFailureMessage()
+        {
+            //------------------------Arrange------------------------
+            var mockEnvironmentPreparer = new Mock<IServerEnvironmentPreparer>();
+            var mockIpcClient = new Mock<IIpcClient>();
+            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            var mockDirectory = new Mock<IDirectory>();
+            var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
+            var mockWebServerConfiguration = new Mock<IWebServerConfiguration>();
+            var mockWriter = new Mock<IWriter>();
+            var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockStartWebServer = new Mock<IStartWebServer>();
+            var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
+            var mockLoggingServiceMonitorWithRestart = new LoggingServiceMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
+
+            var process = new ProcessThreadForTesting(new Mock<IJobConfig>().Object);
+            var mockHangfireServerMonitorWithRestart = new HangfireServerMonitorWithRestartTest(new Mock<IChildProcessTracker>().Object, new Mock<IProcessFactory>().Object, process);
+
+            var mockWebSocketPool = new Mock<IWebSocketPool>();
+            var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+
+            var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
+
+            EnvironmentVariables.IsServerOnline = true;
+
+            mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
+            mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
+            mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName { Name = "testAssemblyName" } });
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+
+            mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
+            mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            //------------------------Act----------------------------
+            var config = new StartupConfiguration
+            {
+                ServerEnvironmentPreparer = mockEnvironmentPreparer.Object,
+                IpcClient = mockIpcClient.Object,
+                AssemblyLoader = mockAssemblyLoader.Object,
+                Directory = mockDirectory.Object,
+                ResourceCatalogFactory = mockResourceCatalogFactory.Object,
+                WebServerConfiguration = mockWebServerConfiguration.Object,
+                Writer = mockWriter.Object,
+                StartWebServer = mockStartWebServer.Object,
+                SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
+                LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
+                HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
+                WebSocketPool = mockWebSocketPool.Object,
+            };
+            using (var serverLifeCycleManager = new ServerLifecycleManager(config))
+            {
+                serverLifeCycleManager.Run(items).Wait();
+                serverLifeCycleManager.Stop(false, 0, false);
+            }
+
+            //------------------------Assert-------------------------
+            mockWriter.Verify(o => o.Write("Loading security provider...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Opening named pipe client stream for COM IPC... "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading resource catalog...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading server workspace...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
+            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("hangfire server exited"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
+            mockSerLifeCycleWorker.Verify();
+        }
+
+
+        class HangfireServerMonitorWithRestartTest : HangfireServerMonitorWithRestart
+        {
+            private IProcessThread _processThread;
+
+            public HangfireServerMonitorWithRestartTest(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IProcessThread processThread)
+                :base(childProcessTracker, processFactory)
+            {
+                _processThread = processThread;
+            }
+
+            protected override ProcessThreadList NewThreadList(IJobConfig config)
+            {
+                return new HangfireServerThreadListTest(config, _processThread);
+            }
+        }
+
+        class HangfireServerThreadListTest : ProcessThreadList
+        {
+            IProcessThread _processThead;
+
+            public HangfireServerThreadListTest(IJobConfig jobConfig, IProcessThread processThread)
+                :base(jobConfig)
+            {
+                _processThead = processThread;
+            }
+
+            protected override IProcessThread GetProcessThread() => _processThead;
+        }
+
+
+        internal class ProcessThreadForTesting : IProcessThread
+        {
+            private IJobConfig _config;
+
+            public ProcessThreadForTesting(IJobConfig config)
+            {
+                _config = config;
+            }
+
+            public bool IsAlive { get; }
+
+            public event ProcessDiedEvent OnProcessDied;
+
+            public void ForceProcessDiedEvent()
+            {
+                OnProcessDied(_config);
+            }
+
+            public void Kill() { }
+            public void Start() { }
+        }
 
         class ServerLifecycleManagerServiceTest : ServerLifecycleManagerService
         {
