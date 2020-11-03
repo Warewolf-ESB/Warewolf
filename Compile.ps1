@@ -306,7 +306,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             &"$NuGet" "restore" "$SolutionFile"
             Write-Host `nDotNet Restore:
             dotnet restore "$SolutionFile"
-			Write-Host Building like this: "$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false"$OutputProperty$Target
             &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"$NugetPackVersion" "/maxcpucount" "/nodeReuse:false"$OutputProperty$Target
             if ($LASTEXITCODE -ne 0) {
 				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
