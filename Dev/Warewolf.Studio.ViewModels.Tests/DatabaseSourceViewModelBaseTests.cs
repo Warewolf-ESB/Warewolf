@@ -101,7 +101,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(expectedValue, value);
         }
 		[TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
 		public void TestSqliteConnection()
 		{
 			//arrange
