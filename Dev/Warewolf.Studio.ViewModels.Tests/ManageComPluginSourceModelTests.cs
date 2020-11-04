@@ -54,8 +54,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestSavePlugin()
+        [Timeout(250)]
+        public void TestSaveComPlugin()
         {
             //arrange
             var resourceMock = new Mock<IComPluginSource>();
