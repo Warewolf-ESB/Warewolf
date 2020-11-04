@@ -118,7 +118,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		}
 		[TestMethod]
         [Timeout(250)]
-        public void TestSave()
+        public void TestDatabaseSourceSave()
         {
             //arrange
             var dbResourceMock = new Mock<IDbSource>();
