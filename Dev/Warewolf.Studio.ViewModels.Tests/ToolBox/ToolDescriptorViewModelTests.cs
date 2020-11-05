@@ -52,8 +52,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestTool()
+        [Timeout(500)]
+        public void TestToolDescriptorViewModel_Tool()
         {
             //act
             var value = _target.Tool;
