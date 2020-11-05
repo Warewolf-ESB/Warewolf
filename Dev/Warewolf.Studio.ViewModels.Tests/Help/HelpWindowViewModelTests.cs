@@ -41,7 +41,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestHelpWindowViewModelNullDefaultViewModel()
         {
@@ -49,7 +49,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestHelpWindowViewModelNullModel()
         {
@@ -157,7 +157,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestUpdateHelpTextEmpty()
         {
             //act
@@ -168,7 +168,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestUpdateHelpTextNonEmpty()
         {
             //act
