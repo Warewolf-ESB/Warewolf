@@ -24,6 +24,7 @@ using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace HangfireServer
 {
+    // TODO: Refactor Hangfire implementations into separate wrappers.
     public class ResumptionAttribute : JobFilterAttribute, IClientFilter, IServerFilter, IElectStateFilter, IApplyStateFilter
     {
         private static readonly ILog _hangfireLogger = LogProvider.GetCurrentClassLogger();
