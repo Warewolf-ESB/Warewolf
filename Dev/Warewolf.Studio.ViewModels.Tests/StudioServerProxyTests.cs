@@ -43,7 +43,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioServerProxy_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -380,7 +380,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("StudioServerProxy_Rollback")]
         public void StudioServerProxy_Rollback_GivenVersionIdAndResourceId_ShouldLoadVersionIdAndResourceId()
