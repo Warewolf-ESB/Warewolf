@@ -33,7 +33,9 @@ namespace Warewolf.Common.Framework48.Tests
         public void ResourceCatalogProxy_GetResourceById_ReturnsResource()
         {
             var environmentConnection = GetConnection();
-            var proxy = new ResourceCatalogProxy(environmentConnection);
+            environmentConnection.Setup(o => o.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder("{\"$id\": \"1\",\"$type\": \"Dev2.Data.ServiceModel.RabbitMQSource, Dev2.Data\",\"UserName\": \"test\",\"Password\": \"test\",\"ResourceID\": \"5d82c480-505e-48e9-9915-aca0293be30c\"}"));
+
+            var proxy = new ResourceCatalogProxy(environmentConnection.Object);
             var resourceId = Guid.Parse("5d82c480-505e-48e9-9915-aca0293be30c");
             var resource = proxy.GetResourceById<RabbitMQSource>(Guid.Empty, resourceId);
 
@@ -45,11 +47,12 @@ namespace Warewolf.Common.Framework48.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ResourceCatalogProxy))]
-		[Ignore]
         public void ResourceCatalogProxy_ResumeWorkflowExecution_Executes()
         {
             var environmentConnection = GetConnection();
-            var proxy = new ResourceCatalogProxy(environmentConnection);
+            environmentConnection.Setup(o => o.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder("{\"success\"}"));
+
+            var proxy = new ResourceCatalogProxy(environmentConnection.Object);
             var resourceId = "acb75027-ddeb-47d7-814e-a54c37247ec1";
             var startActivity = "bd557ca7-113b-4197-afc3-de5d086dfc69";
             var version = "0";
@@ -60,19 +63,17 @@ namespace Warewolf.Common.Framework48.Tests
         private static ResourceCatalogProxy GetResourceCatalog()
         {
             var environmentConnection = GetConnection();
-            var proxy = new ResourceCatalogProxy(environmentConnection);
+            var proxy = new ResourceCatalogProxy(environmentConnection. Object);
             return proxy;
         }
 
-        private static IEnvironmentConnection GetConnection()
+        private static Mock<IEnvironmentConnection> GetConnection()
         {
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
 
             mockEnvironmentConnection.Setup(o => o.IsConnected).Returns(true);
-            mockEnvironmentConnection.Setup(o => o.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder("{\"$id\": \"1\",\"$type\": \"Dev2.Data.ServiceModel.RabbitMQSource, Dev2.Data\",\"UserName\": \"test\",\"Password\": \"test\",\"ResourceID\": \"5d82c480-505e-48e9-9915-aca0293be30c\"}"));
 
-            var environmentConnection = mockEnvironmentConnection.Object;
-            return environmentConnection;
+            return mockEnvironmentConnection;
         }
     }
 }
