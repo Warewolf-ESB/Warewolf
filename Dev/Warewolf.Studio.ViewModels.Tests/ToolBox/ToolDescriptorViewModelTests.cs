@@ -118,7 +118,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         [TestMethod]
         [Timeout(250)]
-        public void TestActivityNull()
+        public void TestActivityTypeNull()
         {
             //act
             var value = _target.ActivityType;
