@@ -4,6 +4,10 @@
         <TargetFramework>net48</TargetFramework>
 
         <IsPackable>false</IsPackable>
+
+        <Configurations>Debug</Configurations>
+
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
