@@ -26,6 +26,7 @@ using Dev2.Util;
 using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Activities
 {
@@ -37,14 +38,15 @@ namespace Dev2.Activities
         private int _update;
         private string _suspensionId = "";
         private readonly bool _persistenceEnabled;
+        private readonly ISuspendExecution _scheduler;
 
         public SuspendExecutionActivity()
-            : this(Config.Persistence)
+            : this(Config.Persistence, new SuspendExecution())
         {
 
         }
 
-        public SuspendExecutionActivity(PersistenceSettings config)
+        public SuspendExecutionActivity(PersistenceSettings config, ISuspendExecution suspendExecution)
         {
             DisplayName = "Suspend Execution";
             SaveDataFunc = new ActivityFunc<string, bool>
@@ -53,6 +55,7 @@ namespace Dev2.Activities
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
             };
             _persistenceEnabled = config.Enable;
+            _scheduler = suspendExecution;
         }
 
         public enSuspendOption SuspendOption { get; set; }
@@ -68,6 +71,12 @@ namespace Dev2.Activities
         /// </summary>
         [FindMissing]
         public bool AllowManualResumption { get; set; }
+
+        /// <summary>
+        /// The property that holds the result bool the user selects from the "EncryptData" box
+        /// </summary>
+        [FindMissing]
+        public bool EncryptData { get; set; }
 
         [FindMissing] public string Response { get; set; }
 
@@ -105,16 +114,20 @@ namespace Dev2.Activities
                 }
 
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ?? throw new Exception(GlobalConstants.NextNodeIDNotFound));
+                var currentEnvironment = _dataObject.Environment.ToJson();
+                if (EncryptData)
+                {
+                    currentEnvironment = DpapiWrapper.Encrypt(currentEnvironment);
+                }
                 var values = new Dictionary<string, StringBuilder>
                 {
                     {"resourceID", new StringBuilder(_dataObject.ResourceID.ToString())},
-                    {"environment", new StringBuilder(_dataObject.Environment.ToJson())},
+                    {"environment", new StringBuilder(currentEnvironment)},
                     {"startActivityId", new StringBuilder(activityId.ToString())},
                     {"versionNumber", new StringBuilder(_dataObject.VersionNumber.ToString())}
                 };
                 var persistScheduleValue = PersistSchedulePersistValue();
-                var scheduler = new SuspendExecution();
-                _suspensionId = scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
+                _suspensionId = _scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
 
                 _stateNotifier?.LogActivityExecuteState(this);
 
@@ -142,8 +155,6 @@ namespace Dev2.Activities
                 throw new Exception(ex.GetAllMessages());
             }
         }
-
-
 
         private void ExecuteSaveDataFunc()
         {
@@ -199,7 +210,12 @@ namespace Dev2.Activities
                     Value = AllowManualResumption.ToString(),
                     Type = StateVariable.StateType.Input,
                 },
-
+                new StateVariable
+                {
+                    Name = nameof(EncryptData),
+                    Value = EncryptData.ToString(),
+                    Type = StateVariable.StateType.Input,
+                },
                 new StateVariable
                 {
                     Name = nameof(Response),
@@ -226,6 +242,7 @@ namespace Dev2.Activities
             equals &= Equals(SuspendOption, other.SuspendOption);
             equals &= string.Equals(PersistValue, other.PersistValue);
             equals &= Equals(AllowManualResumption, other.AllowManualResumption);
+            equals &= Equals(EncryptData, other.EncryptData);
             equals &= Equals(Response, other.Response);
             equals &= activityFuncComparer.Equals(SaveDataFunc, other.SaveDataFunc);
 
@@ -260,6 +277,7 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (int) SuspendOption;
                 hashCode = (hashCode * 397) ^ (PersistValue != null ? PersistValue.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (AllowManualResumption != null ? AllowManualResumption.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (EncryptData != null ? EncryptData.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SaveDataFunc != null ? SaveDataFunc.GetHashCode() : 0);
                 return hashCode;

@@ -4813,6 +4813,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If selected, the resumption data stored will be encrypted..
+        /// </summary>
+        public static string SuspendExecutionEncryptDataHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionEncryptDataHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the value for when the suspended workflow needs to be resumed..
         /// </summary>
         public static string SuspendExecutionPersistValueHelpText {
@@ -5953,7 +5962,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WriteFileHelpContentsAsBase64.
+        ///   Looks up a localized string similar to When selected, it reads the content of the file as base64 format..
         /// </summary>
         public static string WriteFileHelpContentsAsBase64 {
             get {

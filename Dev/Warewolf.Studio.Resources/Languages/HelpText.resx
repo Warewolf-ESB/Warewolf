@@ -2517,6 +2517,9 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="SuspendExecutionResultHelpText" xml:space="preserve">
        <value>When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption</value>
   </data>
+  <data name="SuspendExecutionEncryptDataHelpText" xml:space="preserve">
+      <value>If selected, the resumption data stored will be encrypted.</value>
+  </data>
   <data name="SuspendExecutionAllowManualResumptionHelpText" xml:space="preserve">
       <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
   </data>
