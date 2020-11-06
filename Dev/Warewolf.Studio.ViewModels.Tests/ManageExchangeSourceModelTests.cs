@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void Exchange_TestTestConnection()
         {
             //arrange
@@ -50,7 +50,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void ExchangeSourceTestSave()
         {
             //arrange
