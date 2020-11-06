@@ -1154,7 +1154,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestCreateExplorerItems()
         {
             //arrange
@@ -1190,7 +1190,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestCreateExplorerItemsSetsPermissions()
         {
             //arrange
