@@ -160,7 +160,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DeployDestinationViewModel))]
         public void DeployDestinationViewModel_DeployTriggers_GivenIsSet_ShouldFireOnPropertyChanged()
