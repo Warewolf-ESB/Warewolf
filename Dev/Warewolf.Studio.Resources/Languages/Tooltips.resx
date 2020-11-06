@@ -1573,6 +1573,9 @@ No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will e
   <data name="SuspendExecutionPersistValueToolTip" xml:space="preserve">
     <value>Enter the value for when the suspended workflow needs to be resumed.</value>
   </data>
+  <data name="SuspendExecutionEncryptDataToolTip" xml:space="preserve">
+   <value>If selected, the resumption data stored will be encrypted.</value>
+  </data>
   <data name="SuspendExecutionAllowManualResumptionToolTip" xml:space="preserve">
    <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
   </data>

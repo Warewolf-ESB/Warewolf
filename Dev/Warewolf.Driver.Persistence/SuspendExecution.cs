@@ -16,9 +16,8 @@ using Warewolf.Driver.Persistence.Drivers;
 
 namespace Warewolf.Driver.Persistence
 {
-    public class SuspendExecution
+    public class SuspendExecution : ISuspendExecution
     {
-
         public string CreateAndScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)
         {
             var scheduler = GetScheduler();

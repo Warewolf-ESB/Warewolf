@@ -16,7 +16,7 @@
                                MinWidth="350"
                                Width="350"
                                Height="Auto"
-                               MinHeight="300"
+                               MinHeight="350"
                                MaxWidth="450"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
@@ -92,15 +92,40 @@
             </ui:IntellisenseTextBox>
         </Grid>
 
-        <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+        <Grid Grid.Row="1" Margin="0,-2,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="SuspensionID" Margin="{StaticResource ControlBorderRight}" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Encrypt" Margin="{StaticResource ControlBorderRight}" />
+            <CheckBox Margin="-6,0,0,0"
+                      Grid.Row="0"
+                      Grid.Column="1"
+                      Style="{StaticResource CheckBoxStyle}"
+                      Content="Resumption Data"
+                      IsChecked="{Binding Path=ModelItem.EncryptData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{x:Static languages:Tooltips.SuspendExecutionEncryptDataToolTip}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter
+                        Text="{x:Static languages:HelpText.SuspendExecutionEncryptDataHelpText}"
+                        DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="ModelItem.EncryptData"
+                                         SourcePropertyValue="{Binding  ModelItem.EncryptData, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </CheckBox>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Result" Margin="0,-1,0,0" />
             <ui:IntellisenseTextBox Grid.Column="1"
-                                    Grid.Row="0"
+                                    Grid.Row="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Margin="0,-1,0,0"
                                     DefaultText="[[SuspensionID]]"
                                     AcceptsReturn="True"
                                     AllowUserInsertLine="False"
