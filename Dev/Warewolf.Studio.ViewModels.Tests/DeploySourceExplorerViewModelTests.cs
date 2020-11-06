@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestSelectedItemsEmpty()
         {
             //arrange
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestSelectedItemsSet()
         {
             //arrange

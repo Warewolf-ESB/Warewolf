@@ -896,8 +896,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestSave()
+        [Timeout(500)]
+        public void TestEmailSourceSave()
         {
             //act
             _target.Save();

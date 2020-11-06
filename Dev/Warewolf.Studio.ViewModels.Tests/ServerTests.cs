@@ -512,7 +512,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void EnvironmentModel_Constructor_ConnectionAndWizardEngine_InitializesConnectionAndResourceRepository()
         {
 
@@ -525,7 +525,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentModel_Constructor_ConnectionAndNullResourceRepository_ThrowsArgumentNullException()
         {
@@ -1069,7 +1069,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EnvironmentModel_Equals")]
         public void EnvironmentModel_Equals_OtherHasDifferentName_True()

@@ -52,8 +52,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestTool()
+        [Timeout(500)]
+        public void TestToolDescriptorViewModel_Tool()
         {
             //act
             var value = _target.Tool;
@@ -118,7 +118,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         [TestMethod]
         [Timeout(250)]
-        public void TestActivityNull()
+        public void TestActivityTypeNull()
         {
             //act
             var value = _target.ActivityType;
@@ -128,7 +128,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         public void TestActivityType()
         {
             //arrange
@@ -147,7 +147,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         public void TestActivityTypeFlowDecision()
         {
             //arrange

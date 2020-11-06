@@ -48,8 +48,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCancelCommandCanExecute()
+        [Timeout(250)]
+        public void TestCancelFileChooserCommandCanExecute()
         {
             //act
             var result = _target.CancelCommand.CanExecute(null);
@@ -286,7 +286,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(250)]
-        public void TestSave()
+        public void TestFileChooserSave()
         {
             //act
             _target.Save();

@@ -369,7 +369,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestConnectException()
         {
