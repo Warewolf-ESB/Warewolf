@@ -2675,7 +2675,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_MoreLink_ShouldSetValue()
         {
@@ -2748,7 +2748,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_DsfEnhancedDotNetDllActivity_ShouldSetValue()
         {

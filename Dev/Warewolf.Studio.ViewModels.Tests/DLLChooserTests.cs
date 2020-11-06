@@ -38,8 +38,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test commands
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCancelCommandCanExecute()
+        [Timeout(250)]
+        public void TestCancelDllChooserCommandCanExecute()
         {
             //act
             var result = _target.CancelCommand.CanExecute(null);
