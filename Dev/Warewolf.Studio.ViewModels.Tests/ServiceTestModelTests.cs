@@ -976,7 +976,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         public void Clone_GivenObjects_ShouldReturnANewShallowCopyOfTheObject()
         {

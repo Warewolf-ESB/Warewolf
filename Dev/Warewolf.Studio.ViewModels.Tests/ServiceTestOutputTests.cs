@@ -349,8 +349,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(input.IsBetweenCriteriaVisible, false);
             Assert.AreEqual(input.IsSinglematchCriteriaVisible, false);
         }
+		
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         public void UpdateMatchVisibility_GivenOption3_ShouldSetUpCorrectly()
         {
@@ -366,8 +367,5 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(input.IsBetweenCriteriaVisible, true);
             Assert.AreEqual(input.IsSinglematchCriteriaVisible, false);
         }
-
-
-
     }
 }
