@@ -638,7 +638,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         [TestCategory("StudioServerProxy_VersionManager")]
         public void StudioServerProxy_VersionManager_GetVersions_ServerDown_ShowPopup()

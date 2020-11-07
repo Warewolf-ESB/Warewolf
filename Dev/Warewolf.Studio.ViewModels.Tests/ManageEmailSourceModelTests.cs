@@ -35,7 +35,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void EmailSourceTestTestConnection()
         {
             //arrange
@@ -49,8 +49,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestEmailSourceSave()
+        [Timeout(500)]
+        public void TestEmailSourceModelSave()
         {
             //arrange
             var resourceMock = new Mock<IEmailServiceSource>();

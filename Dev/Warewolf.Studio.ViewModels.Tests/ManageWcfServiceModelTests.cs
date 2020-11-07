@@ -87,7 +87,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestEditSqlSource()
         {
             var mockWcfServiceSource = new Mock<IWcfServerSource>();
