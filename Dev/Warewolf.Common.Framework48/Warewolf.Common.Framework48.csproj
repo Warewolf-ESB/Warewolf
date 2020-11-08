@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <Target Name="BeforeBuild">
-    <Exec Command="IF [%WAREWOLF_GITHUB_NUGET_SOURCES%]==[invalid] (SETX WAREWOLF_GITHUB_NUGET_SOURCES 7310a19c54c7895b632b4 /m &amp;&amp; SETX WAREWOLF_GITHUB_NUGET_SOURCES %WAREWOLF_GITHUB_NUGET_SOURCES%39bae6958d0afdf132a /m) ELSE (IF [%WAREWOLF_GITHUB_NUGET_SOURCES%]=[c602a84187731ac52f14f25e32245027608c17e45e32245027608c17e4] (SETX WAREWOLF_GITHUB_NUGET_SOURCES invalid))" />
+    <Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file &quot;$(SolutionDir)Warewolf.Common.Framework48\GithubNugetSourcesKey.ps1&quot;" />
   </Target>
   
 </Project>
