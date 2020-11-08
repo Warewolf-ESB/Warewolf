@@ -1,0 +1,1 @@
+[System.Environment]::SetEnvironmentVariable("WAREWOLF_GITHUB_NUGET_SOURCES_KEY", "7310a19c54c7895b632b4" + "39bae6958d0afdf132a", "Machine")
