@@ -449,6 +449,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServerLifecycleManager))]
+        [Ignore]
         public void ServerLifecycleManager_IsServerOnline_And_HangfireServer_Fails_ExpectFailureMessage()
         {
             //------------------------Arrange------------------------
