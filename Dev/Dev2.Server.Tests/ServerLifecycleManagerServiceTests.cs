@@ -502,7 +502,10 @@ namespace Dev2.Server.Tests
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
                 serverLifeCycleManager.Run(items).Wait();
-                process.ForceProcessDiedEvent(); //kill Hangfire Server thread
+                if (process != null)
+                {
+                    process.ForceProcessDiedEvent(); //kill Hangfire Server thread
+                }
                 serverLifeCycleManager.Stop(false, 0, false);
             }
 
