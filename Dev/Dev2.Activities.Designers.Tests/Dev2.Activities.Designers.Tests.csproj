@@ -122,6 +122,7 @@
     <Compile Include="Exchange\ExchangeNewEmailDesignerViewModelTests.cs" />
     <Compile Include="Gate\GateDesignerViewModelTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ManualResume\SuspendExecutionDesignerViewModelTests.cs" />
     <Compile Include="MultiAssignObjectTests\MultiAssignObjectViewModelTests.cs" />
     <Compile Include="MySql\TestMySqlViewModel.cs" />
     <Compile Include="Oracle\InputViewForTest.cs" />
