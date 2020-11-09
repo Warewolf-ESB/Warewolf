@@ -13,10 +13,7 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                mc:Ignorable="d"
                                MinWidth="250"
-                               MinHeight="50"
                                Width="250"
-                               MaxWidth="700"
-                               MaxHeight="700"
                                d:DesignHeight="300" d:DesignWidth="300"
                                d:DataContext="{d:DesignInstance manualResume:ManualResumeViewModel}">
 

@@ -13,7 +13,6 @@ using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Windows.Media;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Activities.Designers2.SuspendExecution;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 
@@ -42,7 +41,7 @@ namespace Dev2.Activities.Designers2.ManualResume
         }
 
         public static readonly DependencyProperty DataFuncDisplayNameProperty =
-            DependencyProperty.Register("DataFuncDisplayName", typeof(string), typeof(SuspendExecutionDesignerViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("DataFuncDisplayName", typeof(string), typeof(ManualResumeViewModel), new PropertyMetadata(null));
 
         public ImageSource DataFuncIcon
         {
@@ -51,7 +50,7 @@ namespace Dev2.Activities.Designers2.ManualResume
         }
 
         public static readonly DependencyProperty DataFuncIconProperty =
-            DependencyProperty.Register("DataFuncIcon", typeof(ImageSource), typeof(SuspendExecutionDesignerViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("DataFuncIcon", typeof(ImageSource), typeof(ManualResumeViewModel), new PropertyMetadata(null));
 
 
         public override void UpdateHelpDescriptor(string helpText)
