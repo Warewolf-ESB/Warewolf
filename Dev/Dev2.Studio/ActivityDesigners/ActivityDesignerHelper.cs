@@ -218,7 +218,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
                 { typeof(GateActivity), typeof(GateDesigner) },
                 { typeof(SuspendExecutionActivity), typeof(SuspendExecutionDesigner) },
-                //{ typeof(ManualResumeActivity), typeof(ManualResumeDesigner) },
+                { typeof(ManualResumeActivity), typeof(ManualResumeDesigner) },
             };
         static Hashtable _hashTable;
 

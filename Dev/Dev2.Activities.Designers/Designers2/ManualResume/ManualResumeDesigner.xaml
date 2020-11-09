@@ -18,6 +18,7 @@
 
     <sap:ActivityDesigner.Resources>
         <ResourceDictionary>
+            <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
             <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
 
             <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">

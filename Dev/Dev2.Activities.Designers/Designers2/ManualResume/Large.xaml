@@ -14,11 +14,11 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
                                mc:Ignorable="d"
-                               MinWidth="250"
-                               MinHeight="50"
-                               Width="250"
-                               MaxWidth="700"
-                               MaxHeight="700"
+                               MinWidth="350"
+                               Width="350"
+                               Height="Auto"
+                               MinHeight="350"
+                               MaxWidth="450"
                                d:DesignHeight="300" d:DesignWidth="300"
                                d:DataContext="{d:DesignInstance manualResume:ManualResumeViewModel}">
 
@@ -127,15 +127,14 @@
             </Grid>
         </GroupBox>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="{StaticResource ControlBorderTop}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ElementName=SuspensionIdTextBlock, Path=ActualWidth}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Result" Margin="0,-1,0,0" />
+            <TextBlock Grid.Column="0" Text="Result" />
             <ui:IntellisenseTextBox Grid.Column="1"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    Margin="0,-1,0,0"
                                     DefaultText="[[Result]]"
                                     AcceptsReturn="True"
                                     AllowUserInsertLine="False"
