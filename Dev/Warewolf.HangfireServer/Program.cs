@@ -11,9 +11,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Text;
 using CommandLine;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
 using Hangfire.SqlServer;
@@ -58,18 +58,17 @@ namespace HangfireServer
 
             public Implementation(IArgs options, ConfigImpl implConfig)
             {
-                var jsonSerializer = new JsonSerializer();
                 _options = options;
-                _logger = implConfig.ExecutionLoggerFactory.New(jsonSerializer, new WebSocketPool());
+                _logger = implConfig.ExecutionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
                 _writer = implConfig.Writer;
                 _pause = implConfig.PauseHelper;
                 _exit = implConfig.ExitHelper;
                 _hangfireContext = new HangfireContext(_options);
                 _persistence = Config.Persistence;
-                _deserializer = jsonSerializer;
+                _deserializer = new Dev2JsonSerializer();
             }
 
-            public Implementation(IArgs options, ConfigImpl configImpl, PersistenceSettings persistenceSettings, IDeserializer deserializer)
+            public Implementation(IArgs options, ConfigImpl configImpl, PersistenceSettings persistenceSettings, Dev2JsonSerializer deserializer)
                 :this(options, configImpl)
             {
                 _persistence = persistenceSettings;
@@ -89,6 +88,7 @@ namespace HangfireServer
                 var connectionString = ConnectionString();
                 if (string.IsNullOrEmpty(connectionString))
                 {
+                    _logger.Error("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
                     _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
                     _writer.Write("Press any key to exit...");
                     WaitForExit();
@@ -107,7 +107,7 @@ namespace HangfireServer
             }
 
             private static PersistenceSettings _persistence;
-            private readonly IDeserializer _deserializer;
+            private readonly Dev2JsonSerializer _deserializer;
 
             private void ConfigureServerStorage(string connectionString)
             {
@@ -136,9 +136,7 @@ namespace HangfireServer
                 {
                     payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
                 }
-
-                var bytes = UTF8Encoding.UTF8.GetBytes(payload);
-                var source = _deserializer.Deserialize<DbSource>(bytes);
+                var source = _deserializer.Deserialize<DbSource>(payload);
                 return source.ConnectionString;
             }
 
