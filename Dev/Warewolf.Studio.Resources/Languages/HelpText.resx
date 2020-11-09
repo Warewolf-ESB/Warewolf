@@ -2523,6 +2523,15 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="SuspendExecutionAllowManualResumptionHelpText" xml:space="preserve">
       <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
   </data>
+  <data name="ManualResumeSuspensionIdHelpText" xml:space="preserve">
+       <value>Enter the SuspensionID returned for the workflow that was suspended.</value>
+  </data>
+  <data name="ManualResumeOverrideVariablesHelpText" xml:space="preserve">
+      <value>If selected, it allows for the input variables to be altered. Any changes will replace the current stored values.</value>
+  </data>
+  <data name="ManualResumeResultHelpText" xml:space="preserve">
+       <value>The result of the manual resumption.</value>
+  </data>
   <data name="WriteFileHelpContentsAsBase64" xml:space="preserve">
     <value>When selected, it reads the content of the file as base64 format.</value>
   </data>

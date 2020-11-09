@@ -2833,6 +2833,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If selected, it allows for the input variables to be altered..
+        /// </summary>
+        public static string ManualResumeOverrideVariablesToolTip {
+            get {
+                return ResourceManager.GetString("ManualResumeOverrideVariablesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The result of the manual resumption..
+        /// </summary>
+        public static string ManualResumeResultToolTip {
+            get {
+                return ResourceManager.GetString("ManualResumeResultToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the SuspensionID returned for the workflow that was suspended..
+        /// </summary>
+        public static string ManualResumeSuspensionIdToolTip {
+            get {
+                return ResourceManager.GetString("ManualResumeSuspensionIdToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The @name of the object you want to put the result into.
         /// </summary>
         public static string MappingsObjectNameTooltip {
