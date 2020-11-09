@@ -1,0 +1,159 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.ManualResume.Large"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:manualResume="clr-namespace:Dev2.Activities.Designers2.ManualResume"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+                               mc:Ignorable="d"
+                               MinWidth="250"
+                               MinHeight="50"
+                               Width="250"
+                               MaxWidth="700"
+                               MaxHeight="700"
+                               d:DesignHeight="300" d:DesignWidth="300"
+                               d:DataContext="{d:DesignInstance manualResume:ManualResumeViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="SuspensionIdTextBlock" Grid.Column="0" Text="SuspensionID" />
+
+            <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                    Grid.Column="1"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    DefaultText="[[SuspensionID]]"
+                                    AcceptsReturn="True"
+                                    AllowUserInsertLine="False"
+                                    WrapInBrackets="False"
+                                    Text="{Binding Path=ModelItem.SuspensionID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.SuspensionID, StringFormat=UI_{0}_SuspensionID_AutoID}"
+                                    ToolTip="{x:Static languages:Tooltips.ManualResumeSuspensionIdToolTip}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ManualResumeSuspensionIdHelpText}"
+                                      DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="ModelItem.SuspensionID"
+                                         SourcePropertyValue="{Binding ModelItem.SuspensionID, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+        </Grid>
+
+        <GroupBox x:Name="OnSaveGroupBox"
+                  Style="{StaticResource ActivityGroupBoxStyle}"
+                  VerticalContentAlignment="Stretch"
+                  Grid.Row="1"
+                  Width="Auto">
+            <GroupBox.Header>
+                <TextBlock Text="Resumption Workflow" Margin="1" Padding="1" />
+            </GroupBox.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Margin="0,0,0,0"
+                              Style="{StaticResource CheckBoxStyle}"
+                              Content="Override Input Variables"
+                              IsChecked="{Binding Path=ModelItem.Override, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ToolTip="{x:Static languages:Tooltips.ManualResumeOverrideVariablesToolTip}">
+                        <i:Interaction.Behaviors>
+                            <core1:HelpSetter
+                                Text="{x:Static languages:HelpText.ManualResumeOverrideVariablesHelpText}"
+                                DataContext="{Binding}" />
+                            <errors:ErrorsSetter Source="{Binding}"
+                                                 SourcePropertyName="ModelItem.Override"
+                                                 SourcePropertyValue="{Binding  ModelItem.Override, UpdateSourceTrigger=PropertyChanged}"
+                                                 Target="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </CheckBox>
+                    <Border Grid.Row="1"
+                            BorderBrush="#CFD6E1"
+                            BorderThickness="1"
+                            Margin="5,0,5,5"
+                            CornerRadius="12">
+                        <sap:WorkflowItemPresenter x:Name="DropPoint"
+                                                   AllowDrop="False"
+                                                   Margin="3"
+                                                   HintText="Drop Activity Here"
+                                                   BorderBrush="Black"
+                                                   BorderThickness="2"
+                                                   Item="{Binding Path=ModelItem.DataFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
+                                                   MinHeight="50"
+                                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                            <AutomationProperties.AutomationId>
+                                <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
+                                    <Binding Path="ModelItem.AutomationID" />
+                                </MultiBinding>
+                            </AutomationProperties.AutomationId>
+                        </sap:WorkflowItemPresenter>
+                    </Border>
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=SuspensionIdTextBlock, Path=ActualWidth}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Result" Margin="0,-1,0,0" />
+            <ui:IntellisenseTextBox Grid.Column="1"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Margin="0,-1,0,0"
+                                    DefaultText="[[Result]]"
+                                    AcceptsReturn="True"
+                                    AllowUserInsertLine="False"
+                                    WrapInBrackets="False"
+                                    Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
+                                    ToolTip="{x:Static languages:Tooltips.ManualResumeResultToolTip}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ManualResumeResultHelpText}"
+                                      DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="ModelItem.Result"
+                                         SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+        </Grid>
+
+        <errors:OnError Grid.Row="3" />
+    </Grid>
+</core:ActivityDesignerTemplate>

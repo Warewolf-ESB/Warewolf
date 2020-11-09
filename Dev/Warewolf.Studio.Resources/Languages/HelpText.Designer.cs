@@ -2083,6 +2083,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If selected, it allows for the input variables to be altered. Any changes will replace the current stored values..
+        /// </summary>
+        public static string ManualResumeOverrideVariablesHelpText {
+            get {
+                return ResourceManager.GetString("ManualResumeOverrideVariablesHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The result of the manual resumption..
+        /// </summary>
+        public static string ManualResumeResultHelpText {
+            get {
+                return ResourceManager.GetString("ManualResumeResultHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the SuspensionID returned for the workflow that was suspended..
+        /// </summary>
+        public static string ManualResumeSuspensionIdHelpText {
+            get {
+                return ResourceManager.GetString("ManualResumeSuspensionIdHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The default value to be used when mapping this field..
         /// </summary>
         public static string MappingsDefaultValueHelp {

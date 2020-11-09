@@ -1582,6 +1582,15 @@ No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will e
   <data name="SuspendExecutionResultToolTip" xml:space="preserve">
     <value>When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption</value>
   </data>
+  <data name="ManualResumeSuspensionIdToolTip" xml:space="preserve">
+    <value>Enter the SuspensionID returned for the workflow that was suspended.</value>
+  </data>
+  <data name="ManualResumeOverrideVariablesToolTip" xml:space="preserve">
+   <value>If selected, it allows for the input variables to be altered.</value>
+  </data>
+  <data name="ManualResumeResultToolTip" xml:space="preserve">
+    <value>The result of the manual resumption.</value>
+  </data>
   <data name="HangfireDashboardBrowserTooltip" xml:space="preserve">
     <value>Open this URL in your default browser to view the hangfire dashboard</value>
   </data>
