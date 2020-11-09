@@ -2481,6 +2481,9 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
       <value>Use the Suspend Execution tool when you need to suspend execution of a workflow and persist the data so that the workflow can be resumed with the persisted data at the time scheduled in the tool.</value>
   </data>
+  <data name="Tool_Flow_ManualResume" xml:space="preserve">
+      <value>Use the Manual Resume tool when you need to resume execution of a workflow before the time scheduled in the Suspend Execution tool.</value>
+  </data>
   <data name="PersistenceDashboardPortHelp" xml:space="preserve">
     <value>The default port on which Persistence listens is 5001.</value>
   </data>

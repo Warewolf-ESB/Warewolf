@@ -6187,6 +6187,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tags: manual resume of workflow.
+        /// </summary>
+        public static string Tool_Flow_ManualResume {
+            get {
+                return ResourceManager.GetString("Tool_Flow_ManualResume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tags: consolidate cleanup group nest.
         /// </summary>
         public static string Tool_Flow_Sequence {

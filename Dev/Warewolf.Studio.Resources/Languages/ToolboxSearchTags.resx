@@ -366,4 +366,7 @@
   <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
     <value>suspend stop end pause</value>
   </data>
+  <data name="Tool_Flow_ManualResume" xml:space="preserve">
+    <value>manual resume of workflow</value>
+  </data>
 </root>

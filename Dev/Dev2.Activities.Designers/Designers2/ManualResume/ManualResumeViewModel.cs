@@ -25,7 +25,7 @@ namespace Dev2.Activities.Designers2.ManualResume
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_SuspendExecution;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_ManualResume;
             var dataFunc = modelItem.Properties["DataFunc"]?.ComputedValue as ActivityFunc<string, bool>;
             DataFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
             var type = dataFunc?.Handler?.GetType();
