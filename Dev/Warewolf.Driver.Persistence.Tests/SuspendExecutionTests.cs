@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Warewolf.Driver.Persistence.Tests
 {
     [TestClass]
+    [DoNotParallelize]//IOException: The process cannot access the file 'C:\ProgramData\Warewolf\Server Settings\persistencesettings.json' because it is being used by another process.
     public class SuspendExecutionTests
     {
         private string _settingsFilePath;
