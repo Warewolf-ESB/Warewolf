@@ -11,9 +11,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using CommandLine;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Communication;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
@@ -74,7 +74,6 @@ namespace HangfireServer
             private readonly IPauseHelper _pause;
             private readonly IExitHelper _exit;
             private readonly IHangfireContext _hangfireContext;
-            readonly EventWaitHandle _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
 
             public Implementation(IHangfireContext hangfireContext, ConfigImpl implConfig)
             {
@@ -87,7 +86,7 @@ namespace HangfireServer
                 _deserializer = new Dev2JsonSerializer();
             }
 
-            public Implementation(IHangfireContext hangfireContext, ConfigImpl configImpl, PersistenceSettings persistenceSettings, Dev2JsonSerializer deserializer)
+            public Implementation(IHangfireContext hangfireContext, ConfigImpl configImpl, PersistenceSettings persistenceSettings, IBuilderSerializer deserializer)
                 : this(hangfireContext, configImpl)
             {
                 _persistence = persistenceSettings;
@@ -112,7 +111,7 @@ namespace HangfireServer
                         _logger.Error("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
                         _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
                         _writer.Write("Press any key to exit...");
-                        WaitForExit();
+                        return;
                     }
 
                     ConfigureServerStorage(connectionString);
@@ -121,8 +120,10 @@ namespace HangfireServer
                     options.Urls.Add(dashboardEndpoint);
                     WebApp.Start<Dashboard>(options);
                     _writer.WriteLine("Hangfire dashboard started...");
+                    _logger.Info("Hangfire dashboard started...");
                     _ = new BackgroundJobServer();
                     _writer.WriteLine("Hangfire server started...");
+                    _logger.Info("Hangfire server started...");
                 }
                 catch (Exception ex)
                 {
@@ -132,7 +133,7 @@ namespace HangfireServer
             }
 
             private static PersistenceSettings _persistence;
-            private readonly Dev2JsonSerializer _deserializer;
+            private readonly IBuilderSerializer _deserializer;
 
             private void ConfigureServerStorage(string connectionString)
             {
@@ -175,7 +176,7 @@ namespace HangfireServer
                 }
                 else
                 {
-                    _waitHandle.WaitOne();
+                    _exit.Exit();
                 }
             }
 
