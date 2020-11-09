@@ -696,7 +696,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestResourceXamlNonNullEmpty()
         {
             //arrange
@@ -730,7 +730,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestResourceXamlNullEmpty()
         {
             //arrange
