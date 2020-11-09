@@ -5241,6 +5241,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use the Manual Resume tool when you need to resume execution of a workflow before the time scheduled in the Suspend Execution tool..
+        /// </summary>
+        public static string Tool_Flow_ManualResume {
+            get {
+                return ResourceManager.GetString("Tool_Flow_ManualResume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use the sequence tool to group steps into a single step in a workflow..
         /// </summary>
         public static string Tool_Flow_Sequence {

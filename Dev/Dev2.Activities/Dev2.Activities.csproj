@@ -109,6 +109,7 @@
     <Compile Include="Activities\Exchange\DsfExchangeEmailNewActivity.cs" />
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
+    <Compile Include="Activities\ManualResumeActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfFileWrite.cs" />
     <Compile Include="Activities\PathOperations\FileReadWithBase64.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />

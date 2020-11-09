@@ -2364,6 +2364,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
     <value>Tags: suspend stop end pause</value>
   </data>
+  <data name="Tool_Flow_ManualResume" xml:space="preserve">
+    <value>Tags: manual resume of workflow</value>
+  </data>
   <data name="Tool_Data_Find_Index" xml:space="preserve">
     <value>Tags: search string position</value>
   </data>
