@@ -1582,13 +1582,13 @@ No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will e
   <data name="SuspendExecutionResultToolTip" xml:space="preserve">
     <value>When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption</value>
   </data>
-  <data name="ManualResumeSuspensionIdToolTip" xml:space="preserve">
+  <data name="ManualResumptionSuspensionIdToolTip" xml:space="preserve">
     <value>Enter the SuspensionID returned for the workflow that was suspended.</value>
   </data>
-  <data name="ManualResumeOverrideVariablesToolTip" xml:space="preserve">
+  <data name="ManualResumptionOverrideVariablesToolTip" xml:space="preserve">
    <value>If selected, it allows for the input variables to be altered.</value>
   </data>
-  <data name="ManualResumeResultToolTip" xml:space="preserve">
+  <data name="ManualResumptionResultToolTip" xml:space="preserve">
     <value>The result of the manual resumption.</value>
   </data>
   <data name="HangfireDashboardBrowserTooltip" xml:space="preserve">
@@ -2364,8 +2364,8 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
     <value>Tags: suspend stop end pause</value>
   </data>
-  <data name="Tool_Flow_ManualResume" xml:space="preserve">
-    <value>Tags: manual resume of workflow</value>
+  <data name="Tool_Flow_ManualResumption" xml:space="preserve">
+    <value>Tags: manual resumption</value>
   </data>
   <data name="Tool_Data_Find_Index" xml:space="preserve">
     <value>Tags: search string position</value>

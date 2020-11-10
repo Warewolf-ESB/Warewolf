@@ -2085,27 +2085,27 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to If selected, it allows for the input variables to be altered. Any changes will replace the current stored values..
         /// </summary>
-        public static string ManualResumeOverrideVariablesHelpText {
+        public static string ManualResumptionOverrideVariablesHelpText {
             get {
-                return ResourceManager.GetString("ManualResumeOverrideVariablesHelpText", resourceCulture);
+                return ResourceManager.GetString("ManualResumptionOverrideVariablesHelpText", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The result of the manual resumption..
         /// </summary>
-        public static string ManualResumeResultHelpText {
+        public static string ManualResumptionResultHelpText {
             get {
-                return ResourceManager.GetString("ManualResumeResultHelpText", resourceCulture);
+                return ResourceManager.GetString("ManualResumptionResultHelpText", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter the SuspensionID returned for the workflow that was suspended..
         /// </summary>
-        public static string ManualResumeSuspensionIdHelpText {
+        public static string ManualResumptionSuspensionIdHelpText {
             get {
-                return ResourceManager.GetString("ManualResumeSuspensionIdHelpText", resourceCulture);
+                return ResourceManager.GetString("ManualResumptionSuspensionIdHelpText", resourceCulture);
             }
         }
         
@@ -5241,11 +5241,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the Manual Resume tool when you need to resume execution of a workflow before the time scheduled in the Suspend Execution tool..
+        ///   Looks up a localized string similar to Use the Manual Resumption tool when you need to resume execution of a workflow before the time scheduled in the Suspend Execution tool..
         /// </summary>
-        public static string Tool_Flow_ManualResume {
+        public static string Tool_Flow_ManualResumption {
             get {
-                return ResourceManager.GetString("Tool_Flow_ManualResume", resourceCulture);
+                return ResourceManager.GetString("Tool_Flow_ManualResumption", resourceCulture);
             }
         }
         

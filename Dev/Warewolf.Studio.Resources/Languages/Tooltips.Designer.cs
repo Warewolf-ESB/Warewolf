@@ -2835,27 +2835,27 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to If selected, it allows for the input variables to be altered..
         /// </summary>
-        public static string ManualResumeOverrideVariablesToolTip {
+        public static string ManualResumptionOverrideVariablesToolTip {
             get {
-                return ResourceManager.GetString("ManualResumeOverrideVariablesToolTip", resourceCulture);
+                return ResourceManager.GetString("ManualResumptionOverrideVariablesToolTip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The result of the manual resumption..
         /// </summary>
-        public static string ManualResumeResultToolTip {
+        public static string ManualResumptionResultToolTip {
             get {
-                return ResourceManager.GetString("ManualResumeResultToolTip", resourceCulture);
+                return ResourceManager.GetString("ManualResumptionResultToolTip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Enter the SuspensionID returned for the workflow that was suspended..
         /// </summary>
-        public static string ManualResumeSuspensionIdToolTip {
+        public static string ManualResumptionSuspensionIdToolTip {
             get {
-                return ResourceManager.GetString("ManualResumeSuspensionIdToolTip", resourceCulture);
+                return ResourceManager.GetString("ManualResumptionSuspensionIdToolTip", resourceCulture);
             }
         }
         
@@ -6187,11 +6187,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: manual resume of workflow.
+        ///   Looks up a localized string similar to Tags: manual resumption.
         /// </summary>
-        public static string Tool_Flow_ManualResume {
+        public static string Tool_Flow_ManualResumption {
             get {
-                return ResourceManager.GetString("Tool_Flow_ManualResume", resourceCulture);
+                return ResourceManager.GetString("Tool_Flow_ManualResumption", resourceCulture);
             }
         }
         

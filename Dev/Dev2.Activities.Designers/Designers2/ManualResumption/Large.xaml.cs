@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -8,13 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Dev2.Activities.Designers2.ManualResume
+using System.Windows;
+
+namespace Dev2.Activities.Designers2.ManualResumption
 {
-    public partial class ManualResumeDesigner
+    public partial class Large
     {
-        public ManualResumeDesigner()
+        public Large()
         {
             InitializeComponent();
         }
+
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }
