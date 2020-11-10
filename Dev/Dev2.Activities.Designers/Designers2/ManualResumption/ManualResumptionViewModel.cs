@@ -16,15 +16,15 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 
-namespace Dev2.Activities.Designers2.ManualResume
+namespace Dev2.Activities.Designers2.ManualResumption
 {
-    public class ManualResumeViewModel : ActivityDesignerViewModel
+    public class ManualResumptionViewModel : ActivityDesignerViewModel
     {
-        public ManualResumeViewModel(ModelItem modelItem)
+        public ManualResumptionViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
-            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_ManualResume;
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_ManualResumption;
             var dataFunc = modelItem.Properties["DataFunc"]?.ComputedValue as ActivityFunc<string, bool>;
             DataFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
             var type = dataFunc?.Handler?.GetType();
@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers2.ManualResume
         }
 
         public static readonly DependencyProperty DataFuncDisplayNameProperty =
-            DependencyProperty.Register("DataFuncDisplayName", typeof(string), typeof(ManualResumeViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("DataFuncDisplayName", typeof(string), typeof(ManualResumptionViewModel), new PropertyMetadata(null));
 
         public ImageSource DataFuncIcon
         {
@@ -50,7 +50,7 @@ namespace Dev2.Activities.Designers2.ManualResume
         }
 
         public static readonly DependencyProperty DataFuncIconProperty =
-            DependencyProperty.Register("DataFuncIcon", typeof(ImageSource), typeof(ManualResumeViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("DataFuncIcon", typeof(ImageSource), typeof(ManualResumptionViewModel), new PropertyMetadata(null));
 
 
         public override void UpdateHelpDescriptor(string helpText)

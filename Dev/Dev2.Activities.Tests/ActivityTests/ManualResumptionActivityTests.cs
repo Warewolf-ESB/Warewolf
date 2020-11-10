@@ -26,71 +26,71 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    public class ManualResumeActivityTests : BaseActivityUnitTest
+    public class ManualResumptionActivityTests : BaseActivityUnitTest
     {
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ManualResumeActivity))]
-        public void ManualResumeActivity_Initialize()
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Initialize()
         {
-            var manualResumeActivity = new ManualResumeActivity();
-            Assert.AreEqual("Manual Resume", manualResumeActivity.DisplayName);
+            var manualResumptionActivity = new ManualResumptionActivity();
+            Assert.AreEqual("Manual Resumption", manualResumptionActivity.DisplayName);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ManualResumeActivity))]
-        public void ManualResumeActivity_Equals_Set_OtherIsEqual_Returns_IsTrue()
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Equals_Set_OtherIsEqual_Returns_IsTrue()
         {
-            var manualResumeActivity = new ManualResumeActivity();
-            var manualResumeActivityOther = manualResumeActivity;
-            var equal = manualResumeActivity.Equals(manualResumeActivityOther);
+            var manualResumptionActivity = new ManualResumptionActivity();
+            var manualResumptionActivityOther = manualResumptionActivity;
+            var equal = manualResumptionActivity.Equals(manualResumptionActivityOther);
             Assert.IsTrue(equal);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ManualResumeActivity))]
-        public void ManualResumeActivity_Equals_Set_BothAreObjects_Returns_IsFalse()
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Equals_Set_BothAreObjects_Returns_IsFalse()
         {
-            object manualResumeActivity = new ManualResumeActivity();
-            var manualResumeActivityOther = new object();
-            var equal = manualResumeActivity.Equals(manualResumeActivityOther);
+            object manualResumptionActivity = new ManualResumptionActivity();
+            var manualResumptionActivityOther = new object();
+            var equal = manualResumptionActivity.Equals(manualResumptionActivityOther);
             Assert.IsFalse(equal);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ManualResumeActivity))]
-        public void ManualResumeActivity_Equals_Set_OtherIsObjectOfManualResumeActivityEqual_Returns_IsFalse()
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Equals_Set_OtherIsObjectOfmanualResumptionActivityEqual_Returns_IsFalse()
         {
-            var manualResumeActivity = new ManualResumeActivity();
-            object manualResumeActivityOther = new ManualResumeActivity();
-            var equal = manualResumeActivity.Equals(manualResumeActivityOther);
+            var manualResumptionActivity = new ManualResumptionActivity();
+            object manualResumptionActivityOther = new ManualResumptionActivity();
+            var equal = manualResumptionActivity.Equals(manualResumptionActivityOther);
             Assert.IsFalse(equal);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ManualResumeActivity))]
-        public void ManualResumeActivity_GetHashCode()
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_GetHashCode()
         {
-            var manualResumeActivity = new ManualResumeActivity();
-            var hashCode = manualResumeActivity.GetHashCode();
+            var manualResumptionActivity = new ManualResumptionActivity();
+            var hashCode = manualResumptionActivity.GetHashCode();
             Assert.IsNotNull(hashCode);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ManualResumeActivity))]
-        public void ManualResumeActivity_GetState()
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_GetState()
         {
-            var manualResumeActivity = new ManualResumeActivity
+            var manualResumptionActivity = new ManualResumptionActivity
             {
                 Response = "[[result]]",
             };
-            var stateItems = manualResumeActivity.GetState();
+            var stateItems = manualResumptionActivity.GetState();
 
             Assert.AreEqual(1, stateItems.Count());
 
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 },
             };
 
-            var iter = manualResumeActivity.GetState().Select(
+            var iter = manualResumptionActivity.GetState().Select(
                 (item, index) => new
                 {
                     value = item,
@@ -122,8 +122,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(ManualResumeActivity))]
-        public void ManualResumeActivity_Execute_Success()
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Execute_Success()
         {
             //------------Setup for test--------------------------
             var workflowName = "workflowName";
@@ -162,18 +162,18 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = true
             };
-            var manualResumeActivity = new ManualResumeActivity(config)
+            var manualResumptionActivity = new ManualResumptionActivity(config)
             {
                 Result = "[[Response]]"
             };
 
-            manualResumeActivity.SetStateNotifier(mockStateNotifier.Object);
+            manualResumptionActivity.SetStateNotifier(mockStateNotifier.Object);
             //------------Execute Test---------------------------
-            manualResumeActivity.Execute(dataObject, 0);
+            manualResumptionActivity.Execute(dataObject, 0);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
-            Assert.AreEqual("success", manualResumeActivity.Response);
+            Assert.AreEqual("success", manualResumptionActivity.Response);
         }
         static IExecutionEnvironment CreateExecutionEnvironment()
         {

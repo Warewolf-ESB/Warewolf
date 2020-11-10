@@ -24,23 +24,23 @@ using Warewolf.Core;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("ControlFlow-ManualResume", "Manual Resume", ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1F", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_ManualResume")]
-    public class ManualResumeActivity : DsfBaseActivity, IEquatable<ManualResumeActivity>, IStateNotifierRequired
+    [ToolDescriptorInfo("ControlFlow-ManualResumption", "Manual Resumption", ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1F", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_ManualResumption")]
+    public class ManualResumptionActivity : DsfBaseActivity, IEquatable<ManualResumptionActivity>, IStateNotifierRequired
     {
         private IDSFDataObject _dataObject;
         private int _update;
         private IStateNotifier _stateNotifier = null;
         private string _suspensionId = "";
 
-        public ManualResumeActivity()
+        public ManualResumptionActivity()
             : this(Config.Persistence)
         {
 
         }
 
-        public ManualResumeActivity(PersistenceSettings config)
+        public ManualResumptionActivity(PersistenceSettings config)
         {
-            DisplayName = "Manual Resume";
+            DisplayName = "Manual Resumption";
         }
         [FindMissing] public string Response { get; set; }
 
@@ -77,7 +77,7 @@ namespace Dev2.Activities
                 _stateNotifier?.LogActivityExecuteState(this);
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Manually Resume: " + _suspensionId, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Manual Resumption: " + _suspensionId, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
                 Response = "success";
@@ -98,7 +98,7 @@ namespace Dev2.Activities
                 _stateNotifier = stateNotifier;
             }
         }
-          public bool Equals(ManualResumeActivity other)
+          public bool Equals(ManualResumptionActivity other)
         {
             if (other is null)
             {
@@ -130,7 +130,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((ManualResumeActivity) obj);
+            return Equals((ManualResumptionActivity) obj);
         }
 
         public override int GetHashCode()

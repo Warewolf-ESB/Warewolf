@@ -1,4 +1,4 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.ManualResume.Large"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.ManualResumption.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,7 +8,7 @@
                                xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:manualResume="clr-namespace:Dev2.Activities.Designers2.ManualResume"
+                               xmlns:manualResumption="clr-namespace:Dev2.Activities.Designers2.ManualResumption"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -20,7 +20,7 @@
                                MinHeight="350"
                                MaxWidth="450"
                                d:DesignHeight="300" d:DesignWidth="300"
-                               d:DataContext="{d:DesignInstance manualResume:ManualResumeViewModel}">
+                               d:DataContext="{d:DesignInstance manualResumption:ManualResumptionViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
@@ -55,9 +55,9 @@
                                     WrapInBrackets="False"
                                     Text="{Binding Path=ModelItem.SuspensionID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.SuspensionID, StringFormat=UI_{0}_SuspensionID_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.ManualResumeSuspensionIdToolTip}">
+                                    ToolTip="{x:Static languages:Tooltips.ManualResumptionSuspensionIdToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.ManualResumeSuspensionIdHelpText}"
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ManualResumptionSuspensionIdHelpText}"
                                       DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.SuspensionID"
@@ -91,10 +91,10 @@
                               Style="{StaticResource CheckBoxStyle}"
                               Content="Override Input Variables"
                               IsChecked="{Binding Path=ModelItem.Override, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ToolTip="{x:Static languages:Tooltips.ManualResumeOverrideVariablesToolTip}">
+                              ToolTip="{x:Static languages:Tooltips.ManualResumptionOverrideVariablesToolTip}">
                         <i:Interaction.Behaviors>
                             <core1:HelpSetter
-                                Text="{x:Static languages:HelpText.ManualResumeOverrideVariablesHelpText}"
+                                Text="{x:Static languages:HelpText.ManualResumptionOverrideVariablesHelpText}"
                                 DataContext="{Binding}" />
                             <errors:ErrorsSetter Source="{Binding}"
                                                  SourcePropertyName="ModelItem.Override"
@@ -141,9 +141,9 @@
                                     WrapInBrackets="False"
                                     Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                    ToolTip="{x:Static languages:Tooltips.ManualResumeResultToolTip}">
+                                    ToolTip="{x:Static languages:Tooltips.ManualResumptionResultToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.ManualResumeResultHelpText}"
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.ManualResumptionResultHelpText}"
                                       DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Result"
