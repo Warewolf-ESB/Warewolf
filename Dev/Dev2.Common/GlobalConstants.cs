@@ -400,6 +400,7 @@ where pn.nspname = 'public';
         public static readonly string WarewolfDebug = "Warewolf Debug";
         public static readonly string WarewolfWarn = "Warewolf Warn";
 
+        public static readonly string ManualResumptionSuspensionIdBlank = "SuspensionID must not be null or empty.";
         public static readonly string PersistenceSettingsNoConfigured = "Could not find persistence config. Please configure in Persistence Settings.";
         public static readonly string NextNodeRequiredForSuspendExecution = "At least 1 activity is required after Suspend Execution.";
         public static readonly string NextNodeIDNotFound = "Next node Id not found.";

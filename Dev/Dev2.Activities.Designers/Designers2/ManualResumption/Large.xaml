@@ -30,6 +30,15 @@
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
 
+    <core:ActivityDesignerTemplate.RightButtons>
+        <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Content="Done"
+                                     Margin="0,0,7,12"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
+    </core:ActivityDesignerTemplate.RightButtons>
+
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -53,15 +62,15 @@
                                     AcceptsReturn="True"
                                     AllowUserInsertLine="False"
                                     WrapInBrackets="False"
-                                    Text="{Binding Path=ModelItem.SuspensionID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    AutomationProperties.AutomationId="{Binding ModelItem.SuspensionID, StringFormat=UI_{0}_SuspensionID_AutoID}"
+                                    Text="{Binding Path=ModelItem.SuspensionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.SuspensionId, StringFormat=UI_{0}_SuspensionID_AutoID}"
                                     ToolTip="{x:Static languages:Tooltips.ManualResumptionSuspensionIdToolTip}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.ManualResumptionSuspensionIdHelpText}"
                                       DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.SuspensionID"
-                                         SourcePropertyValue="{Binding ModelItem.SuspensionID, UpdateSourceTrigger=PropertyChanged}"
+                                         SourcePropertyValue="{Binding ModelItem.SuspensionId, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
@@ -90,15 +99,15 @@
                     <CheckBox Margin="0,0,0,0"
                               Style="{StaticResource CheckBoxStyle}"
                               Content="Override Input Variables"
-                              IsChecked="{Binding Path=ModelItem.Override, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              IsChecked="{Binding Path=ModelItem.OverrideInputVariables, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ToolTip="{x:Static languages:Tooltips.ManualResumptionOverrideVariablesToolTip}">
                         <i:Interaction.Behaviors>
                             <core1:HelpSetter
                                 Text="{x:Static languages:HelpText.ManualResumptionOverrideVariablesHelpText}"
                                 DataContext="{Binding}" />
                             <errors:ErrorsSetter Source="{Binding}"
-                                                 SourcePropertyName="ModelItem.Override"
-                                                 SourcePropertyValue="{Binding  ModelItem.Override, UpdateSourceTrigger=PropertyChanged}"
+                                                 SourcePropertyName="ModelItem.OverrideInputVariables"
+                                                 SourcePropertyValue="{Binding  ModelItem.OverrideInputVariables, UpdateSourceTrigger=PropertyChanged}"
                                                  Target="{Binding}" />
                         </i:Interaction.Behaviors>
                     </CheckBox>
@@ -109,11 +118,12 @@
                             CornerRadius="12">
                         <sap:WorkflowItemPresenter x:Name="DropPoint"
                                                    AllowDrop="False"
+                                                   IsEnabled="{Binding ModelItem.OverrideInputVariables, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    Margin="3"
-                                                   HintText="Drop Activity Here"
+                                                   HintText="Drop Resumption Workflow Here"
                                                    BorderBrush="Black"
                                                    BorderThickness="2"
-                                                   Item="{Binding Path=ModelItem.DataFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
+                                                   Item="{Binding Path=ModelItem.OverrideDataFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
                                                    MinHeight="50"
                                                    attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                             <AutomationProperties.AutomationId>
