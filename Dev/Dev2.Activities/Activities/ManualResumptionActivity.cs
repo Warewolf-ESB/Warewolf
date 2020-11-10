@@ -16,6 +16,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Util;
@@ -30,19 +31,39 @@ namespace Dev2.Activities
         private IDSFDataObject _dataObject;
         private int _update;
         private IStateNotifier _stateNotifier = null;
-        private string _suspensionId = "";
+        private readonly bool _persistenceEnabled;
 
         public ManualResumptionActivity()
             : this(Config.Persistence)
         {
-
         }
 
         public ManualResumptionActivity(PersistenceSettings config)
         {
             DisplayName = "Manual Resumption";
+            OverrideDataFunc = new ActivityFunc<string, bool>
+            {
+                DisplayName = "Data Action",
+                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
+            };
+            _persistenceEnabled = config.Enable;
         }
+
+        /// <summary>
+        /// The property that holds the result string the user enters into the "SuspensionId" box
+        /// </summary>
+        [FindMissing]
+        public string SuspensionId { get; set; }
+
         [FindMissing] public string Response { get; set; }
+
+        /// <summary>
+        /// The property that holds the result bool the user selects from the "OverrideInputVariables" box
+        /// </summary>
+        [FindMissing]
+        public bool OverrideInputVariables { get; set; }
+
+        public ActivityFunc<string, bool> OverrideDataFunc { get; set; }
 
         public override IEnumerable<StateVariable> GetState()
         {
@@ -54,8 +75,21 @@ namespace Dev2.Activities
                     Value = Response,
                     Type = StateVariable.StateType.Output
                 },
+                new StateVariable
+                {
+                    Name = nameof(SuspensionId),
+                    Value = SuspensionId,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(OverrideInputVariables),
+                    Value = OverrideInputVariables.ToString(),
+                    Type = StateVariable.StateType.Input
+                }
             };
         }
+
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -69,19 +103,38 @@ namespace Dev2.Activities
             _update = update;
             base.ExecuteTool(_dataObject, update);
         }
+
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             _errorsTo = new ErrorResultTO();
             try
             {
+                var suspensionId = EvalSuspensionId();
+                if(string.IsNullOrWhiteSpace(suspensionId))
+                {
+                    Response = "failed";
+                    throw new Exception(GlobalConstants.ManualResumptionSuspensionIdBlank);
+                }
+
+                if (!_persistenceEnabled)
+                {
+                    Response = "failed";
+                    throw new Exception(GlobalConstants.PersistenceSettingsNoConfigured);
+                }
+
                 _stateNotifier?.LogActivityExecuteState(this);
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Manual Resumption: " + _suspensionId, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Manual Resumption: " + suspensionId, "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
+                    debugItemStaticDataParams = new DebugItemStaticDataParams("Override Variables: " + OverrideInputVariables, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
+
+                //TODO: var overrideVariables = ExecuteOverrideDataFunc();
+                //TODO: Manually Resume(suspensionId,overrideVariables)
                 Response = "success";
-                return new List<string> {_suspensionId};
+                return new List<string> {Response};
             }
             catch (Exception ex)
             {
@@ -91,6 +144,30 @@ namespace Dev2.Activities
                 throw new Exception(ex.GetAllMessages());
             }
         }
+
+        private string EvalSuspensionId()
+        {
+            var debugEvalResult = new DebugEvalResult(SuspensionId, nameof(SuspensionId), _dataObject.Environment, _update);
+            AddDebugInputItem(debugEvalResult);
+            var suspensionId = string.Empty;
+            var debugItemResults = debugEvalResult.GetDebugItemResult();
+            if (debugItemResults.Count > 0)
+            {
+                suspensionId = debugItemResults[0].Value;
+            }
+            return suspensionId;
+        }
+
+        private string ExecuteOverrideDataFunc()
+        {
+            if (OverrideDataFunc.Handler is IDev2Activity act && OverrideInputVariables)
+            {
+                //Return new variables
+            }
+
+            return "";
+        }
+
         public void SetStateNotifier(IStateNotifier stateNotifier)
         {
             if (_stateNotifier is null)
@@ -98,7 +175,8 @@ namespace Dev2.Activities
                 _stateNotifier = stateNotifier;
             }
         }
-          public bool Equals(ManualResumptionActivity other)
+
+        public bool Equals(ManualResumptionActivity other)
         {
             if (other is null)
             {
@@ -109,7 +187,13 @@ namespace Dev2.Activities
             {
                 return true;
             }
+
+            var activityFuncComparer = new ActivityFuncComparer();
             var equals = base.Equals(other);
+            equals &= Equals(SuspensionId, other.SuspensionId);
+            equals &= Equals(OverrideInputVariables, other.OverrideInputVariables);
+            equals &= Equals(Response, other.Response);
+            equals &= activityFuncComparer.Equals(OverrideDataFunc, other.OverrideDataFunc);
             return equals;
         }
 
@@ -138,6 +222,10 @@ namespace Dev2.Activities
             unchecked
             {
                 var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SuspensionId != null ? SuspensionId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OverrideInputVariables != null ? OverrideInputVariables.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OverrideDataFunc != null ? OverrideDataFunc.GetHashCode() : 0);
                 return hashCode;
             }
         }
