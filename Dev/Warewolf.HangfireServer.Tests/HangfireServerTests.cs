@@ -68,8 +68,12 @@ namespace Warewolf.HangfireServer.Tests
             };
             mockSerializer.Setup(o => o.Deserialize<DbSource>(persistenceSettings.PersistenceDataSource.Payload)).Returns(dbSource).Verifiable();
             var mockContext = new HangfireContext(args);
-            var waitHandle = new EventWaitHandleTesting(false, EventResetMode.ManualReset);
-            var item = new Implementation(mockContext, implConfig, persistenceSettings, mockSerializer.Object, waitHandle);
+
+            var mockEventWaitHandle = new Mock<IEventWaitHandle>();
+            mockEventWaitHandle.Setup(o => o.New()).Verifiable();
+            mockEventWaitHandle.Setup(o => o.WaitOne()).Verifiable();
+
+            var item = new Implementation(mockContext, implConfig, persistenceSettings, mockSerializer.Object, mockEventWaitHandle.Object);
             item.Run();
 
             mockWriter.Verify(o => o.WriteLine("Starting Hangfire server..."), Times.Once);
@@ -80,6 +84,9 @@ namespace Warewolf.HangfireServer.Tests
             mockWriter.Verify(o => o.WriteLine("Hangfire server started..."), Times.Once);
             mockExecutionLogPublisher.Verify(o => o.Info("Hangfire server started..."), Times.Once);
             mockPauseHelper.Verify(o => o.Pause(), Times.Never);
+
+            mockEventWaitHandle.Verify(o => o.New(), Times.Never);
+            mockEventWaitHandle.Verify(o => o.WaitOne(), Times.Never);
         }
 
         [TestMethod]
@@ -99,8 +106,12 @@ namespace Warewolf.HangfireServer.Tests
 
             var persistenceSettings = new PersistenceSettings("", mockFile.Object, mockDirectory.Object);
             var mockContext = new HangfireContext(args);
-            var waitHandle = new EventWaitHandleTesting(false, EventResetMode.ManualReset);
-            var item = new Implementation(mockContext, implConfig, persistenceSettings, new Mock<IBuilderSerializer>().Object, waitHandle);
+
+            var mockEventWaitHandle = new Mock<IEventWaitHandle>();
+            mockEventWaitHandle.Setup(o => o.New()).Verifiable();
+            mockEventWaitHandle.Setup(o => o.WaitOne()).Verifiable();
+
+            var item = new Implementation(mockContext, implConfig, persistenceSettings, new Mock<IBuilderSerializer>().Object, mockEventWaitHandle.Object);
             item.Run();
             item.WaitForExit();
 
@@ -113,6 +124,9 @@ namespace Warewolf.HangfireServer.Tests
             mockExecutionLogPublisher.Verify(o => o.Info("Hangfire dashboard started..."), Times.Never);
             mockWriter.Verify(o => o.WriteLine("Hangfire server started..."), Times.Never);
             mockExecutionLogPublisher.Verify(o => o.Info("Hangfire server started..."), Times.Never);
+
+            mockEventWaitHandle.Verify(o => o.New(), Times.Never);
+            mockEventWaitHandle.Verify(o => o.WaitOne(), Times.Never);
         }
 
         [TestMethod]
@@ -132,8 +146,12 @@ namespace Warewolf.HangfireServer.Tests
 
             var persistenceSettings = new PersistenceSettings("", mockFile.Object, mockDirectory.Object);
             var mockContext = new HangfireContext(args);
-            var waitHandle = new EventWaitHandleTesting(false, EventResetMode.AutoReset);
-            var item = new Implementation(mockContext, implConfig, persistenceSettings, new Mock<IBuilderSerializer>().Object, waitHandle);
+
+            var mockEventWaitHandle = new Mock<IEventWaitHandle>();
+            mockEventWaitHandle.Setup(o => o.New()).Verifiable();
+            mockEventWaitHandle.Setup(o => o.WaitOne()).Verifiable();
+
+            var item = new Implementation(mockContext, implConfig, persistenceSettings, new Mock<IBuilderSerializer>().Object, mockEventWaitHandle.Object);
             item.Run();
             item.WaitForExit();
 
@@ -147,6 +165,9 @@ namespace Warewolf.HangfireServer.Tests
             mockExecutionLogPublisher.Verify(o => o.Info("Hangfire dashboard started..."), Times.Never);
             mockWriter.Verify(o => o.WriteLine("Hangfire server started..."), Times.Never);
             mockExecutionLogPublisher.Verify(o => o.Info("Hangfire server started..."), Times.Never);
+
+            mockEventWaitHandle.Verify(o => o.New(), Times.Never);
+            mockEventWaitHandle.Verify(o => o.WaitOne(), Times.Once);
         }
 
         private static Implementation.ConfigImpl SetupHangfireImplementationConfigs(out Mock<IWriter> mockWriter,
@@ -180,26 +201,6 @@ namespace Warewolf.HangfireServer.Tests
             };
 
             return implConfig;
-        }
-
-        private class EventWaitHandleTesting : EventWaitHandle
-        {
-            public EventWaitHandleTesting(bool initialState, EventResetMode mode) : base(initialState, mode)
-            {
-                base.Set();
-            }
-
-            public EventWaitHandleTesting(bool initialState, EventResetMode mode, string name) : base(initialState, mode, name)
-            {
-            }
-
-            public EventWaitHandleTesting(bool initialState, EventResetMode mode, string name, out bool createdNew) : base(initialState, mode, name, out createdNew)
-            {
-            }
-
-            public EventWaitHandleTesting(bool initialState, EventResetMode mode, string name, out bool createdNew, EventWaitHandleSecurity eventSecurity) : base(initialState, mode, name, out createdNew, eventSecurity)
-            {
-            }
         }
     }
 }
