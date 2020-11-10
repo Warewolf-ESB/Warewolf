@@ -11,7 +11,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using CommandLine;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Communication;
@@ -73,7 +72,7 @@ namespace HangfireServer
             private readonly IWriter _writer;
             private readonly IPauseHelper _pause;
             private readonly IHangfireContext _hangfireContext;
-            private readonly EventWaitHandle _waitHandle;
+            private readonly IEventWaitHandle _eventWaitHandlerFactory = EventWaitHandleFactory.CreateInstance();
             public Implementation(IHangfireContext hangfireContext, ConfigImpl implConfig)
             {
                 _logger = implConfig.ExecutionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
@@ -82,15 +81,15 @@ namespace HangfireServer
                 _hangfireContext = hangfireContext;
                 _persistence = Config.Persistence;
                 _deserializer = new Dev2JsonSerializer();
-                _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+                _eventWaitHandlerFactory.New();
             }
 
-            public Implementation(IHangfireContext hangfireContext, ConfigImpl configImpl, PersistenceSettings persistenceSettings, IBuilderSerializer deserializer, EventWaitHandle waitHandle)
+            public Implementation(IHangfireContext hangfireContext, ConfigImpl configImpl, PersistenceSettings persistenceSettings, IBuilderSerializer deserializer, IEventWaitHandle waitHandle)
                 : this(hangfireContext, configImpl)
             {
                 _persistence = persistenceSettings;
                 _deserializer = deserializer;
-                _waitHandle = waitHandle;
+                _eventWaitHandlerFactory = waitHandle;
             }
 
             public void Run()
@@ -176,7 +175,7 @@ namespace HangfireServer
                 }
                 else
                 {
-                    _waitHandle.WaitOne();
+                    _eventWaitHandlerFactory.WaitOne();
                 }
             }
 
