@@ -25,9 +25,9 @@ namespace Dev2.Activities.Designers2.ManualResumption
         {
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Flow_ManualResumption;
-            var dataFunc = modelItem.Properties["DataFunc"]?.ComputedValue as ActivityFunc<string, bool>;
-            DataFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
-            var type = dataFunc?.Handler?.GetType();
+            var overrideDataFunc = modelItem.Properties["OverrideDataFunc"]?.ComputedValue as ActivityFunc<string, bool>;
+            DataFuncDisplayName = overrideDataFunc?.Handler == null ? "" : overrideDataFunc?.Handler?.DisplayName;
+            var type = overrideDataFunc?.Handler?.GetType();
             if (type != null)
             {
                 DataFuncIcon = ModelItemUtils.GetImageSourceForToolFromType(type);

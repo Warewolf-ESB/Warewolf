@@ -15,7 +15,6 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.ManualResumption
 {
@@ -53,8 +52,7 @@ namespace Dev2.Activities.Designers.Tests.ManualResumption
 
         static ModelItem CreateModelItem()
         {
-            //return ModelItemUtils.CreateModelItem(new ManualResumptionActivity());
-            return ModelItemUtils.CreateModelItem(new DsfActivity());
+           return ModelItemUtils.CreateModelItem(new ManualResumptionActivity());
         }
     }
 }

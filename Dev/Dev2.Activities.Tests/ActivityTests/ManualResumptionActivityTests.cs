@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Activities;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -19,6 +20,7 @@ using Dev2.Common.State;
 using Dev2.DynamicServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -36,6 +38,69 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var manualResumptionActivity = new ManualResumptionActivity();
             Assert.AreEqual("Manual Resumption", manualResumptionActivity.DisplayName);
+            Assert.IsFalse(manualResumptionActivity.OverrideInputVariables);
+            Assert.IsNull(manualResumptionActivity.SuspensionId);
+            Assert.AreEqual("Data Action", manualResumptionActivity.OverrideDataFunc.DisplayName);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Initialize_With_Values_OverrideInputVariables_True()
+        {
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var manualResumptionActivity = new ManualResumptionActivity()
+            {
+                SuspensionId = "15",
+                OverrideInputVariables = true,
+                OverrideDataFunc = activityFunction,
+                Response = "[[result]]"
+            };
+
+            Assert.AreEqual("Manual Resumption", manualResumptionActivity.DisplayName);
+            Assert.AreEqual("15", manualResumptionActivity.SuspensionId);
+            Assert.IsTrue(manualResumptionActivity.OverrideInputVariables);
+            Assert.AreEqual("TestService", manualResumptionActivity.OverrideDataFunc.DisplayName);
+
+            var result = manualResumptionActivity.GetOutputs();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(null, result[0]);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Initialize_With_Values_OverrideInputVariables_False()
+        {
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var manualResumptionActivity = new ManualResumptionActivity()
+            {
+                SuspensionId = "15",
+                OverrideInputVariables = false,
+                OverrideDataFunc = activityFunction,
+                Response = "[[result]]"
+            };
+
+            Assert.AreEqual("Manual Resumption", manualResumptionActivity.DisplayName);
+            Assert.AreEqual("15", manualResumptionActivity.SuspensionId);
+            Assert.IsFalse(manualResumptionActivity.OverrideInputVariables);
+            Assert.AreEqual("TestService", manualResumptionActivity.OverrideDataFunc.DisplayName);
+
+            var result = manualResumptionActivity.GetOutputs();
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(null, result[0]);
         }
 
         [TestMethod]
@@ -89,10 +154,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             var manualResumptionActivity = new ManualResumptionActivity
             {
                 Response = "[[result]]",
+                OverrideInputVariables = false,
+                SuspensionId = "321"
             };
             var stateItems = manualResumptionActivity.GetState();
 
-            Assert.AreEqual(1, stateItems.Count());
+            Assert.AreEqual(3, stateItems.Count());
 
             var expectedResults = new[]
             {
@@ -101,6 +168,18 @@ namespace Dev2.Tests.Activities.ActivityTests
                     Name = "Response",
                     Value = "[[result]]",
                     Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name = "SuspensionId",
+                    Value = "321",
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "OverrideInputVariables",
+                    Value = "False",
+                    Type = StateVariable.StateType.Input
                 },
             };
 
@@ -164,7 +243,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var manualResumptionActivity = new ManualResumptionActivity(config)
             {
-                Result = "[[Response]]"
+                Response = "[[result]]",
+                OverrideInputVariables = false,
+                SuspensionId = "321"
             };
 
             manualResumptionActivity.SetStateNotifier(mockStateNotifier.Object);
@@ -175,10 +256,132 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(0, env.Errors.Count);
             Assert.AreEqual("success", manualResumptionActivity.Response);
         }
+
+         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Execute_SuspensionID_IsNullOrWhiteSpace_FailWithMessage()
+        {
+            //------------Setup for test--------------------------
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentId = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentId,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var manualResumptionActivity = new ManualResumptionActivity(config)
+            {
+                Response = "[[result]]",
+                OverrideInputVariables = false,
+            };
+
+            manualResumptionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            manualResumptionActivity.Execute(dataObject, 0);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, env.Errors.Count);
+            var errors = env.AllErrors.ToList();
+            Assert.AreEqual("failed", manualResumptionActivity.Response);
+            Assert.AreEqual(errors[0], "<InnerError>SuspensionID must not be null or empty.</InnerError>");
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Execute_PersistenceNotConfigured_FailWithMessage()
+        {
+            //------------Setup for test--------------------------
+            var resourceId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+            var environmentId = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = "workflowName",
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = "url",
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentId,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+            var config = new PersistenceSettings
+            {
+                Enable = false
+            };
+            var manualResumptionActivity = new ManualResumptionActivity(config)
+            {
+                Response = "[[result]]",
+                OverrideInputVariables = false,
+                SuspensionId = "321"
+            };
+
+            manualResumptionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            manualResumptionActivity.Execute(dataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, env.Errors.Count);
+            var errors = env.AllErrors.ToList();
+            Assert.AreEqual("failed", manualResumptionActivity.Response);
+            Assert.AreEqual(errors[0], "<InnerError>Could not find persistence config. Please configure in Persistence Settings.</InnerError>");
+        }
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }
+        DsfActivity CreateWorkflow()
+        {
+            var activity = new DsfActivity
+            {
+                ServiceName = "InnerService",
+                DisplayName = "TestService",
+                InputMapping = ActivityStrings.ForEach_Input_Mapping,
+                OutputMapping = ActivityStrings.ForEach_Output_Mapping,
+            };
 
+            return activity;
+        }
     }
 }
