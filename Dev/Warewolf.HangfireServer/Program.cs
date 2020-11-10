@@ -11,6 +11,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using CommandLine;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Communication;
@@ -74,7 +75,7 @@ namespace HangfireServer
             private readonly IPauseHelper _pause;
             private readonly IExitHelper _exit;
             private readonly IHangfireContext _hangfireContext;
-
+            readonly EventWaitHandle _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
             public Implementation(IHangfireContext hangfireContext, ConfigImpl implConfig)
             {
                 _logger = implConfig.ExecutionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
@@ -176,7 +177,7 @@ namespace HangfireServer
                 }
                 else
                 {
-                    _exit.Exit();
+                    _waitHandle.WaitOne();
                 }
             }
 
