@@ -59,7 +59,6 @@ namespace HangfireServer
                     ExecutionLoggerFactory = new ExecutionLoggerFactory(),
                     Writer = new Writer(),
                     PauseHelper = new PauseHelper(),
-                    ExitHelper = new ExitHelper(),
                 };
                 var implementation = new Implementation(context, implConfig);
                 implementation.Run();
@@ -73,25 +72,25 @@ namespace HangfireServer
             private readonly IExecutionLogPublisher _logger;
             private readonly IWriter _writer;
             private readonly IPauseHelper _pause;
-            private readonly IExitHelper _exit;
             private readonly IHangfireContext _hangfireContext;
-            readonly EventWaitHandle _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+            private readonly EventWaitHandle _waitHandle;
             public Implementation(IHangfireContext hangfireContext, ConfigImpl implConfig)
             {
                 _logger = implConfig.ExecutionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
                 _writer = implConfig.Writer;
                 _pause = implConfig.PauseHelper;
-                _exit = implConfig.ExitHelper;
                 _hangfireContext = hangfireContext;
                 _persistence = Config.Persistence;
                 _deserializer = new Dev2JsonSerializer();
+                _waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
             }
 
-            public Implementation(IHangfireContext hangfireContext, ConfigImpl configImpl, PersistenceSettings persistenceSettings, IBuilderSerializer deserializer)
+            public Implementation(IHangfireContext hangfireContext, ConfigImpl configImpl, PersistenceSettings persistenceSettings, IBuilderSerializer deserializer, EventWaitHandle waitHandle)
                 : this(hangfireContext, configImpl)
             {
                 _persistence = persistenceSettings;
                 _deserializer = deserializer;
+                _waitHandle = waitHandle;
             }
 
             public void Run()
@@ -186,7 +185,6 @@ namespace HangfireServer
                 public IWriter Writer { get; set; }
                 public IExecutionLoggerFactory ExecutionLoggerFactory { get; set; }
                 public IPauseHelper PauseHelper { get; set; }
-                public IExitHelper ExitHelper { get; set; }
             }
         }
     }
