@@ -16,8 +16,14 @@ using Warewolf.Driver.Persistence.Drivers;
 
 namespace Warewolf.Driver.Persistence
 {
-    public class SuspendExecution : ISuspendExecution
+    public class PersistenceExecution : IPersistenceExecution
     {
+        public string ResumeJob(string jobId, bool overrideVariables, Dictionary<string, StringBuilder>  variables)
+        {
+            var scheduler = GetScheduler();
+            return scheduler.ResumeJob(jobId, overrideVariables, variables);
+        }
+
         public string CreateAndScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)
         {
             var scheduler = GetScheduler();

@@ -16,11 +16,12 @@ using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
+
 namespace Warewolf.Driver.Persistence.Tests
 {
     [TestClass]
-    [DoNotParallelize]//IOException: The process cannot access the file 'C:\ProgramData\Warewolf\Server Settings\persistencesettings.json' because it is being used by another process.
-    public class SuspendExecutionTests
+    [DoNotParallelize] //IOException: The process cannot access the file 'C:\ProgramData\Warewolf\Server Settings\persistencesettings.json' because it is being used by another process.
+    public class PersistenceExecutionTests
     {
         private string _settingsFilePath;
 
@@ -35,7 +36,9 @@ namespace Warewolf.Driver.Persistence.Tests
                 File.WriteAllText(_settingsFilePath,
                     "{\"EncryptDataSource\":false,\"PersistenceDataSource\":{\"Payload\":\"{\\r\\n  \\\"$id\\\": \\\"1\\\",\\r\\n  \\\"$type\\\": \\\"Dev2.Runtime.ServiceModel.Data.DbSource, Dev2.Runtime.Services\\\",\\r\\n  \\\"ServerType\\\": \\\"SqlDatabase\\\",\\r\\n  \\\"Server\\\": \\\"tuptn-stg01.premier.local\\\",\\r\\n  \\\"DatabaseName\\\": \\\"Hangfire\\\",\\r\\n  \\\"Port\\\": 1433,\\r\\n  \\\"ConnectionTimeout\\\": 30,\\r\\n  \\\"AuthenticationType\\\": \\\"User\\\",\\r\\n  \\\"UserID\\\": \\\"warewolf\\\",\\r\\n  \\\"Password\\\": \\\"W4r3w0lf##$$\\\",\\r\\n  \\\"DataList\\\": \\\"\\\",\\r\\n  \\\"ConnectionString\\\": \\\"Data Source=tuptn-stg01.premier.local,1433;Initial Catalog=Hangfire;User ID=warewolf;Password=W4r3w0lf##$$;;Connection Timeout=30\\\",\\r\\n  \\\"IsSource\\\": true,\\r\\n  \\\"IsService\\\": false,\\r\\n  \\\"IsFolder\\\": false,\\r\\n  \\\"IsReservedService\\\": false,\\r\\n  \\\"IsServer\\\": false,\\r\\n  \\\"IsResourceVersion\\\": false,\\r\\n  \\\"Version\\\": null,\\r\\n  \\\"ResourceID\\\": \\\"355e6cd6-2ed2-4409-8348-1e616b031bcf\\\",\\r\\n  \\\"ResourceType\\\": \\\"SqlDatabase\\\",\\r\\n  \\\"ResourceName\\\": \\\"Hangfire_Database\\\",\\r\\n  \\\"IsValid\\\": false,\\r\\n  \\\"Errors\\\": [],\\r\\n  \\\"ReloadActions\\\": false,\\r\\n  \\\"UserPermissions\\\": 0,\\r\\n  \\\"HasDataList\\\": false,\\r\\n  \\\"VersionInfo\\\": {\\r\\n    \\\"$id\\\": \\\"2\\\",\\r\\n    \\\"$type\\\": \\\"Dev2.Runtime.ServiceModel.Data.VersionInfo, Dev2.Data\\\",\\r\\n    \\\"DateTimeStamp\\\": \\\"2020-10-14T09:56:56.7360852+02:00\\\",\\r\\n    \\\"Reason\\\": \\\"Save\\\",\\r\\n    \\\"User\\\": \\\"Unknown\\\",\\r\\n    \\\"VersionNumber\\\": \\\"1\\\",\\r\\n    \\\"ResourceId\\\": \\\"355e6cd6-2ed2-4409-8348-1e616b031bcf\\\",\\r\\n    \\\"VersionId\\\": \\\"55b0c7eb-2eb2-4c4c-afa6-5075ba6fbdd4\\\"\\r\\n  }\\r\\n}\",\"Name\":\"Hangfire_Database\",\"Value\":\"355e6cd6-2ed2-4409-8348-1e616b031bcf\"},\"Enable\":true,\"PersistenceScheduler\":\"Hangfire\",\"PrepareSchemaIfNecessary\":true,\"DashboardHostname\":\"http://localhost\",\"DashboardPort\":\"5001\",\"DashboardName\":\"hangfire\",\"ServerName\":\"server\"}");
             }
-            catch (IOException){}
+            catch (IOException)
+            {
+            }
         }
 
         [TestCleanup]
@@ -45,13 +48,15 @@ namespace Warewolf.Driver.Persistence.Tests
             {
                 File.Delete(_settingsFilePath);
             }
-            catch (IOException){}
+            catch (IOException)
+            {
+            }
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SuspendExecution))]
-        public void SuspendExecution_CreateandScheduleJob_Hangfire_SuspendForDays_Success()
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForDays_Success()
         {
             var values = new Dictionary<string, StringBuilder>
             {
@@ -61,18 +66,18 @@ namespace Warewolf.Driver.Persistence.Tests
                 {"versionNumber", new StringBuilder("1")}
             };
 
-            var suspendOption =  enSuspendOption.SuspendForDays;
+            var suspendOption = enSuspendOption.SuspendForDays;
             var suspendOptionValue = "1";
 
-            var scheduler = new SuspendExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption,suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId),typeof(int));
+            var scheduler = new PersistenceExecution();
+            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
+            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
         }
-        
+
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SuspendExecution))]
-        public void SuspendExecution_CreateandScheduleJob_Hangfire_SuspendForHours_Success()
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForHours_Success()
         {
             var values = new Dictionary<string, StringBuilder>
             {
@@ -82,18 +87,18 @@ namespace Warewolf.Driver.Persistence.Tests
                 {"versionNumber", new StringBuilder("1")}
             };
 
-            var suspendOption =  enSuspendOption.SuspendForHours;
+            var suspendOption = enSuspendOption.SuspendForHours;
             var suspendOptionValue = "1";
 
-            var scheduler = new SuspendExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption,suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId),typeof(int));
+            var scheduler = new PersistenceExecution();
+            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
+            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
         }
-        
+
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SuspendExecution))]
-        public void SuspendExecution_CreateandScheduleJob_Hangfire_SuspendForMonths_Success()
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForMonths_Success()
         {
             var values = new Dictionary<string, StringBuilder>
             {
@@ -103,18 +108,18 @@ namespace Warewolf.Driver.Persistence.Tests
                 {"versionNumber", new StringBuilder("1")}
             };
 
-            var suspendOption =  enSuspendOption.SuspendForMonths;
+            var suspendOption = enSuspendOption.SuspendForMonths;
             var suspendOptionValue = "1";
 
-            var scheduler = new SuspendExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption,suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId),typeof(int));
+            var scheduler = new PersistenceExecution();
+            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
+            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
         }
-        
+
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SuspendExecution))]
-        public void SuspendExecution_CreateandScheduleJob_Hangfire_SuspendForMinutes_Success()
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForMinutes_Success()
         {
             var values = new Dictionary<string, StringBuilder>
             {
@@ -124,18 +129,18 @@ namespace Warewolf.Driver.Persistence.Tests
                 {"versionNumber", new StringBuilder("1")}
             };
 
-            var suspendOption =  enSuspendOption.SuspendForMinutes;
+            var suspendOption = enSuspendOption.SuspendForMinutes;
             var suspendOptionValue = "1";
 
-            var scheduler = new SuspendExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption,suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId),typeof(int));
+            var scheduler = new PersistenceExecution();
+            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
+            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
         }
-        
+
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SuspendExecution))]
-        public void SuspendExecution_CreateandScheduleJob_Hangfire_SuspendForSeconds_Success()
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForSeconds_Success()
         {
             var values = new Dictionary<string, StringBuilder>
             {
@@ -145,18 +150,18 @@ namespace Warewolf.Driver.Persistence.Tests
                 {"versionNumber", new StringBuilder("1")}
             };
 
-            var suspendOption =  enSuspendOption.SuspendForSeconds;
+            var suspendOption = enSuspendOption.SuspendForSeconds;
             var suspendOptionValue = "1";
 
-            var scheduler = new SuspendExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption,suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId),typeof(int));
+            var scheduler = new PersistenceExecution();
+            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
+            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
         }
-        
+
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(SuspendExecution))]
-        public void SuspendExecution_CreateandScheduleJob_Hangfire_SuspendUntil_Success()
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendUntil_Success()
         {
             var values = new Dictionary<string, StringBuilder>
             {
@@ -166,12 +171,12 @@ namespace Warewolf.Driver.Persistence.Tests
                 {"versionNumber", new StringBuilder("1")}
             };
 
-            var suspendOption =  enSuspendOption.SuspendUntil;
+            var suspendOption = enSuspendOption.SuspendUntil;
             var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
 
-            var scheduler = new SuspendExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption,suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId),typeof(int));
+            var scheduler = new PersistenceExecution();
+            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
+            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
         }
     }
 }

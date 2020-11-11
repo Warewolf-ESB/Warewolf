@@ -38,15 +38,15 @@ namespace Dev2.Activities
         private int _update;
         private string _suspensionId = "";
         private readonly bool _persistenceEnabled;
-        private readonly ISuspendExecution _scheduler;
+        private readonly IPersistenceExecution _scheduler;
 
         public SuspendExecutionActivity()
-            : this(Config.Persistence, new SuspendExecution())
+            : this(Config.Persistence, new PersistenceExecution())
         {
 
         }
 
-        public SuspendExecutionActivity(PersistenceSettings config, ISuspendExecution suspendExecution)
+        public SuspendExecutionActivity(PersistenceSettings config, IPersistenceExecution suspendExecution)
         {
             DisplayName = "Suspend Execution";
             SaveDataFunc = new ActivityFunc<string, bool>
