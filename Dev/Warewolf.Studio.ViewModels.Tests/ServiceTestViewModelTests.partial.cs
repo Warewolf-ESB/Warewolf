@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             debugStateTreeViewItemViewModel.Content = debugState;
             debugTreeViewItemViewModels.Add(debugStateTreeViewItemViewModel);
             //------------Execute Test---------------------------
-            testFrameworkViewModel.PrepopulateTestsUsingDebug(debugTreeViewItemViewModels);
+            testFrameworkViewModel.PrePopulateTestsUsingDebug(debugTreeViewItemViewModels);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.ErrorExpected);
@@ -105,7 +105,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             debugStateTreeViewItemViewModel.Content = debugState;
             debugTreeViewItemViewModels.Add(debugStateTreeViewItemViewModel);
             //------------Execute Test---------------------------
-            testFrameworkViewModel.PrepopulateTestsUsingDebug(debugTreeViewItemViewModels);
+            testFrameworkViewModel.PrePopulateTestsUsingDebug(debugTreeViewItemViewModels);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             Assert.IsFalse(testFrameworkViewModel.SelectedServiceTest.ErrorExpected);
@@ -156,7 +156,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             debugTreeViewItemViewModels.Add(debugStateTreeViewItemViewModel);
             //------------Execute Test---------------------------
-            testFrameworkViewModel.PrepopulateTestsUsingDebug(debugTreeViewItemViewModels);
+            testFrameworkViewModel.PrePopulateTestsUsingDebug(debugTreeViewItemViewModels);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             Assert.IsFalse(testFrameworkViewModel.SelectedServiceTest.ErrorExpected);
@@ -360,7 +360,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, null, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
-            testFrameworkViewModel.PrepopulateTestsUsingDebug(newTestFromDebugMessage.RootItems);
+            testFrameworkViewModel.PrePopulateTestsUsingDebug(newTestFromDebugMessage.RootItems);
             Assert.AreEqual(2, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
         }
 

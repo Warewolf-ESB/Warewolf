@@ -367,7 +367,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.MockSelected = true;
             //---------------Test Result -----------------------
             Assert.AreEqual(false, serviceTestOutput.IsBetweenCriteriaVisible);
-            Assert.AreEqual(true, serviceTestOutput.IsSinglematchCriteriaVisible);
+            Assert.AreEqual(true, serviceTestOutput.IsSingleMatchCriteriaVisible);
             Assert.AreEqual(true, serviceTestOutput.IsSearchCriteriaVisible);
         }
 
@@ -380,7 +380,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestOutput = new ServiceTestOutput("a", "a", "", "")
             {
                 IsSearchCriteriaEnabled = false,
-                IsSinglematchCriteriaVisible = false
+                IsSingleMatchCriteriaVisible = false
             };
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
@@ -391,7 +391,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testModel.MockSelected = true;
             //---------------Test Result -----------------------
             Assert.IsTrue(serviceTestOutput.IsSearchCriteriaEnabled);
-            Assert.IsTrue(serviceTestOutput.IsSinglematchCriteriaVisible);
+            Assert.IsTrue(serviceTestOutput.IsSingleMatchCriteriaVisible);
             Assert.IsFalse(serviceTestOutput.IsBetweenCriteriaVisible);
         }
 
@@ -416,7 +416,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestOutput = new ServiceTestOutput("[[person().name]]", "bob", "", "")
             {
                 IsSearchCriteriaEnabled = false,
-                IsSinglematchCriteriaVisible = false
+                IsSingleMatchCriteriaVisible = false
             };
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
@@ -442,7 +442,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestOutput = new ServiceTestOutput("", "", "", "")
             {
                 IsSearchCriteriaEnabled = false,
-                IsSinglematchCriteriaVisible = false
+                IsSingleMatchCriteriaVisible = false
             };
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
@@ -465,7 +465,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestOutput = new ServiceTestOutput("", "", "", "")
             {
                 IsSearchCriteriaEnabled = false,
-                IsSinglematchCriteriaVisible = false
+                IsSingleMatchCriteriaVisible = false
             };
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
@@ -488,7 +488,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestOutput = new ServiceTestOutput("[[Person().Name]]", "bob", "", "")
             {
                 IsSearchCriteriaEnabled = false,
-                IsSinglematchCriteriaVisible = false
+                IsSingleMatchCriteriaVisible = false
             };
             var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
             { serviceTestOutput
