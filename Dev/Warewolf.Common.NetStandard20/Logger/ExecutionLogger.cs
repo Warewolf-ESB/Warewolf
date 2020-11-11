@@ -62,7 +62,7 @@ namespace Warewolf.Common.NetStandard20
         {
             var command = new AuditCommand
             {
-                Type = "ResumeExecution",
+                Type = "LogResumeExecutionState",
                 Audit = values as Audit
             };
             Publish(Serializer.Serialize(command));
