@@ -178,5 +178,16 @@ namespace Warewolf.Driver.Persistence.Tests
             var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
             Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
         }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_ResumeJob_OverrideIsFalse_Hangfire_Success()
+        {
+            var scheduler = new PersistenceExecution();
+            var jobId = "31";
+            var response = scheduler.ResumeJob(jobId, false, new Dictionary<string, StringBuilder>());
+            Assert.IsInstanceOfType(response, typeof(bool));
+        }
     }
 }
