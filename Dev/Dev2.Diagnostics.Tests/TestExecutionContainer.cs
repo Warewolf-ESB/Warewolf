@@ -182,7 +182,6 @@ namespace Dev2.Diagnostics.Test
 
         public IDSFDataObject GetDataObject()
         {
-
             return new DsfDataObject(string.Empty, Guid.NewGuid());
         }
 
