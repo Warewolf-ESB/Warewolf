@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -30,86 +29,12 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using Warewolf.Common.Interfaces.NetStandard20;
+using Warewolf.Common.NetStandard20;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    public interface IWebRequest
-    {
-        string Method { get; set; }
-        string ContentType { get; set; }
-        long ContentLength { get; set; }
-        bool UseDefaultCredentials { get; set; }
-        WebHeaderCollection Headers { get; set; }
-        ICredentials Credentials { get; set; }
-        Uri RequestUri { get; }
-        Stream GetRequestStream();
-        WebResponse GetResponse();
-        Task<WebResponse> GetResponseAsync();
-    }
-    public interface IWebRequestFactory
-    {
-        IWebRequest New(string escapeUriString);
-    }
-
-    public class WebRequestWrapper : IWebRequest
-    {
-        private WebRequest _request;
-        public WebRequestWrapper(string escapeUriString)
-        {
-            _request = WebRequest.Create(escapeUriString);
-        }
-        public string Method {
-            get => _request.Method;
-            set => _request.Method = value;
-        }
-        public string ContentType {
-            get => _request.ContentType;
-            set => _request.ContentType = value;
-        }
-        public long ContentLength {
-            get => _request.ContentLength;
-            set => _request.ContentLength = value;
-        }
-        public bool UseDefaultCredentials {
-            get => _request.UseDefaultCredentials;
-            set => _request.UseDefaultCredentials = value;
-        }
-        public WebHeaderCollection Headers {
-            get => _request.Headers;
-            set => _request.Headers = value;
-        }
-
-        public ICredentials Credentials
-        {
-            get => _request.Credentials;
-            set => _request.Credentials = value;
-        }
-
-        public Uri RequestUri => _request.RequestUri;
-
-        public Stream GetRequestStream()
-        {
-            return _request.GetRequestStream();
-        }
-
-        public WebResponse GetResponse()
-        {
-            return _request.GetResponse();
-        }
-
-        public Task<WebResponse> GetResponseAsync()
-        {
-            return _request.GetResponseAsync();
-        }
-    }
-    public class WebRequestFactory : IWebRequestFactory
-    {
-        public IWebRequest New(string escapeUriString)
-        {
-            return new WebRequestWrapper(escapeUriString);
-        }
-    }
 
     /// <summary>
     /// Execute a remote workflow ;)

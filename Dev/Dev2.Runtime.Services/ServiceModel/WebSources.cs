@@ -24,7 +24,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
-
+using Warewolf.Common.Interfaces.NetStandard20;
+using Warewolf.Common.NetStandard20;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -33,6 +34,8 @@ namespace Dev2.Runtime.ServiceModel
 
     public class WebSources : ExceptionManager
     {
+        readonly IResourceCatalog _resourceCatalog;
+
         public WebSources()
             : this(ResourceCatalog.Instance)
         {
@@ -40,17 +43,15 @@ namespace Dev2.Runtime.ServiceModel
 
         public WebSources(IResourceCatalog resourceCatalog)
         {
-            if (resourceCatalog == null)
-            {
-                throw new ArgumentNullException(nameof(resourceCatalog));
-            }
+            _resourceCatalog = resourceCatalog ?? throw new ArgumentNullException(nameof(resourceCatalog));
         }
-        public WebSource Get(string resourceId, Guid workspaceId)
+
+        public IWebSource Get(string resourceId, Guid workspaceId)
         {
             var result = new WebSource();
             try
             {
-                var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
+                var xmlStr = _resourceCatalog.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
                 if (!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
@@ -78,7 +79,7 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        public ValidationResult Test(WebSource source)
+        public ValidationResult Test(IWebSource source)
         {
             try
             {
@@ -91,7 +92,7 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        ValidationResult CanConnectServer(WebSource source)
+        ValidationResult CanConnectServer(IWebSource source)
         {
             try
             {
@@ -123,56 +124,27 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
-        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
+        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
+        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
         {
-            CreateWebClient(source, headers);
-            return Execute(source.Client, GetAddress(source, relativeUri), method, data, throwError, out errors);
+            return Execute(source, method, headers, relativeUri, data, throwError, out errors);
         }
 
-        static string GetAddress(WebSource source, string relativeUri)
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, string data, bool throwError, out ErrorResultTO errors)
         {
-            if (source == null)
-            {
-                if (string.IsNullOrEmpty(relativeUri))
-                {
-                    return "";
-                }
-                return relativeUri;
-            }
-            if (!string.IsNullOrEmpty(source.Address) && relativeUri.Contains(source.Address))
-            {
-                return relativeUri;
-            }
-            return $"{source.Address}{relativeUri}";
-        }
+            var client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
 
-        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, out errors, null);
-        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, out ErrorResultTO errors, string[] headers)
-        {
-            CreateWebClient(source, headers);
-            return Execute(source.Client, GetAddress(source, relativeUri), method, data, out errors);
-        }
-
-        static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, out ErrorResultTO errors)
-
-        {
-            errors = new ErrorResultTO();
-            return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
-        }
-
-        static string Execute(WebClient client, string address, WebRequestMethod method, string data, bool throwError, out ErrorResultTO errors)
-        {
             errors = new ErrorResultTO();
             try
             {
+                var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
                 if (contentType != null && contentType.ToLowerInvariant().Contains("multipart"))
                 {
                     return PerformMultipartWebRequest(client, address, data);
                 }
-                
-                return method == WebRequestMethod.Get ? client.DownloadData(address).ToBase64String() : client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String(); 
+
+                return method == WebRequestMethod.Get ? client.DownloadData(address).ToBase64String() : client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String();
             }
             catch (WebException webex) when (webex.Response is HttpWebResponse httpResponse)
             {
@@ -199,9 +171,41 @@ namespace Dev2.Runtime.ServiceModel
             return string.Empty;
         }
 
-        public static string PerformMultipartWebRequest(WebClient client, string address, string data)
+        static string GetAddress(IWebSource source, string relativeUri)
         {
-            var wr = (HttpWebRequest)WebRequest.Create(address);
+            if (source == null)
+            {
+                if (string.IsNullOrEmpty(relativeUri))
+                {
+                    return "";
+                }
+                return relativeUri;
+            }
+            if (!string.IsNullOrEmpty(source.Address) && relativeUri.Contains(source.Address))
+            {
+                return relativeUri;
+            }
+            return $"{source.Address}{relativeUri}";
+        }
+
+        public static byte[] Execute(IWebSource source, WebRequestMethod method, string relativeUri, byte[] data, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, out errors, null);
+        public static byte[] Execute(IWebSource source, WebRequestMethod method, string relativeUri, byte[] data, out ErrorResultTO errors, string[] headers)
+        {
+            return Execute(source, relativeUri, method, headers, data, out errors);
+        }
+
+        static byte[] Execute(IWebSource source, string relativeUri, WebRequestMethod method, IEnumerable<string> headers, byte[] data, out ErrorResultTO errors)
+        {
+            var client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password,source.Client, headers);
+
+            var address = GetAddress(source, relativeUri);
+            errors = new ErrorResultTO();
+            return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
+        }
+
+        public static string PerformMultipartWebRequest(IWebClientWrapper client, string address, string data)
+        {
+            var wr = (HttpWebRequest)WebRequest.Create(address); //TODO: use: Dev2.Runtime.ESB.Execution.IWebRequestWrapper try factory: WebRequestFactory
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
@@ -243,29 +247,26 @@ namespace Dev2.Runtime.ServiceModel
             return byteData;
         }
 
-        public static void CreateWebClient(WebSource source, IEnumerable<string> headers)
+        private static IWebClientWrapper CreateWebClient(AuthenticationType authenticationType, string userName, string password, IWebClientWrapper webClient, IEnumerable<string> headers)
         {
-            if (source != null && source.Client != null)
+            if (webClient is null)
             {
-                return;
+                webClient = new WebClientWrapper();
             }
 
-            if (source != null)
+            if (authenticationType == AuthenticationType.User)
             {
-                source.Client = new WebClient();
-
-                if (source.AuthenticationType == AuthenticationType.User)
-                {
-                    source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
-                }
-                source.Client.Headers.Add("user-agent", GlobalConstants.UserAgentString);
-                AddHeaders(source, headers);
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+                webClient.Credentials = new NetworkCredential(userName, password);
             }
+            webClient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
+            AddHeaders(webClient, headers);
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+
+            return webClient;
         }
 
-        static void AddHeaders(WebSource source, IEnumerable<string> headers)
+        private static void AddHeaders(IWebClientWrapper webClient, IEnumerable<string> headers)
         {
             if (headers != null)
             {
@@ -273,7 +274,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     if (header != ":")
                     {
-                        source.Client.Headers.Add(header.Trim());
+                        webClient.Headers.Add(header.Trim());
                     }
                 }
             }
