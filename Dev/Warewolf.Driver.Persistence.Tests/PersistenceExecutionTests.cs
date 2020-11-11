@@ -184,10 +184,22 @@ namespace Warewolf.Driver.Persistence.Tests
         [TestCategory(nameof(PersistenceExecution))]
         public void PersistenceExecution_ResumeJob_OverrideIsFalse_Hangfire_Success()
         {
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")}
+            };
+
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+
             var scheduler = new PersistenceExecution();
-            var jobId = "31";
-            var response = scheduler.ResumeJob(jobId, false, new Dictionary<string, StringBuilder>());
-            Assert.IsInstanceOfType(response, typeof(bool));
+            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
+
+            var resumeId = scheduler.ResumeJob(jobId, false, values);
+            Assert.IsInstanceOfType(int.Parse(resumeId), typeof(int));
         }
     }
 }
