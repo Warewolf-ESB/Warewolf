@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Serializers;
@@ -28,6 +29,30 @@ namespace Warewolf.Driver.Persistence.Drivers
     {
         public HangfireScheduler()
         {
+        }
+
+        public string ResumeJob(string jobId, bool overrideVariables, Dictionary<string, StringBuilder> variables)
+        {
+            var conn = ConnectionString();
+            GlobalConfiguration.Configuration.UseSqlServerStorage(conn);
+            var monitoringApi = JobStorage.Current.GetMonitoringApi();
+            var jobDetails = monitoringApi.JobDetails(jobId);
+
+            var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
+            var jobIsDeleted = jobDetails.History.Any(i => i.StateName.Equals("Deleted"));
+            if (jobIsDeleted) return "failed";
+
+            if (overrideVariables)
+            {
+                values = variables;
+            }
+            var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(conn));
+            var state = new ScheduledState(DateTime.Now.ToUniversalTime());
+
+            var result = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
+            if (result == null) return "failed";
+            backgroundJobClient.Delete(jobId);
+            return result;
         }
 
         public string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)
@@ -49,7 +74,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 //This method is intercepted in the HangfireServer Performing method
                 return "success";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "failed";
             }
