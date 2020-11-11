@@ -14,8 +14,9 @@ using Dev2.Data.Interfaces.Enums;
 
 namespace Warewolf.Driver.Persistence
 {
-    public interface ISuspendExecution
+    public interface IPersistenceExecution
     {
+        string ResumeJob(string jobId, bool overrideVariables, Dictionary<string, StringBuilder>  variables);
         string CreateAndScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values);
     }
 }
