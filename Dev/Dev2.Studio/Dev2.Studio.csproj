@@ -44,11 +44,17 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageID>Studio</PackageID>
+	<PackageID>WarewolfStudio</PackageID>
     <PackageVersion>$(PackageVersion)</PackageVersion>
-    <Title>$title$</Title>
-    <Authors>$author$</Authors>
-    <Copyright>$copyright$</Copyright>
+    <Title>Warewolf Studio</Title>
+    <Authors>Dev2</Authors>
+    <Copyright>Warewolf - Once bitten, there's no going back
+Copyright 2020 by Warewolf Ltd &lt;alpha@warewolf.io&gt;
+Licensed under GNU Affero General Public License 3.0 or later. 
+Some rights reserved.
+Visit our website for more information &lt;http://warewolf.io/&gt;
+AUTHORS &lt;http://warewolf.io/authors.php&gt; , CONTRIBUTORS &lt;http://warewolf.io/contributors.php&gt;
+@license GNU Affero General Public License &lt;http://www.gnu.org/licenses/agpl-3.0.html&gt;</Copyright>
     <PackageProjectUrl>https://warewolf.io/</PackageProjectUrl>
     <PackageLicenseUrl>https://warewolf.io/eula</PackageLicenseUrl>
     <PackageIconUrl>https://warewolf.io/images/logo.png</PackageIconUrl>
