@@ -41,7 +41,7 @@ namespace Dev2.TO
         bool _isSearchCriteriaVisible;
         bool _isFromFocused;
         bool _isToFocused;
-        bool _isSinglematchCriteriaVisible;
+        bool _isSingleMatchCriteriaVisible;
         bool _isBetweenCriteriaVisible;
         public static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAllDecision();
         bool _isLast;
@@ -343,12 +343,12 @@ namespace Dev2.TO
             return ruleSet;
         }
 
-        public bool IsSinglematchCriteriaVisible
+        public bool IsSingleMatchCriteriaVisible
         {
-            get => _isSinglematchCriteriaVisible;
+            get => _isSingleMatchCriteriaVisible;
             set
             {
-                _isSinglematchCriteriaVisible = value;
+                _isSingleMatchCriteriaVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -374,17 +374,17 @@ namespace Dev2.TO
                     case 1:
                         to.IsSearchCriteriaVisible = false;
                         to.IsBetweenCriteriaVisible = false;
-                        to.IsSinglematchCriteriaVisible = false;
+                        to.IsSingleMatchCriteriaVisible = false;
                         break;
                     case 2:
                         to.IsSearchCriteriaVisible = true;
                         to.IsBetweenCriteriaVisible = false;
-                        to.IsSinglematchCriteriaVisible = true;
+                        to.IsSingleMatchCriteriaVisible = true;
                         break;
                     case 3:
                         to.IsSearchCriteriaVisible = true;
                         to.IsBetweenCriteriaVisible = true;
-                        to.IsSinglematchCriteriaVisible = false;
+                        to.IsSingleMatchCriteriaVisible = false;
                         break;
                     default:
                         break;
