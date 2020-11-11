@@ -4,20 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>none</DebugType>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
     <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj" />
+    <ProjectReference Include="..\Warewolf.Common.Interfaces.NetStandard20\Warewolf.Common.Interfaces.NetStandard20.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
   </ItemGroup>
 

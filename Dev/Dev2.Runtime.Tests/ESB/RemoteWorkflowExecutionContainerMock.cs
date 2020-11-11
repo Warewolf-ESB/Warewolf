@@ -9,7 +9,6 @@
 */
 
 using System.Collections.Generic;
-using System.Net;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices.Objects;
@@ -17,6 +16,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
+using Warewolf.Common.Interfaces.NetStandard20;
 
 namespace Dev2.Tests.Runtime.ESB
 {

@@ -9,11 +9,11 @@
 */
 
 using System;
-using System.Net;
 using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Common.NetStandard20;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
@@ -98,7 +98,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         public void WebSourceDisposeClientExpectedDisposesAndNullsClient()
         {
-            var source = new WebSource { Client = new WebClient() };
+            var source = new WebSource { Client = new WebClientWrapper() };
 
             Assert.IsNotNull(source.Client);
             source.DisposeClient();
@@ -108,7 +108,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         public void WebSourceDisposeExpectedDisposesAndNullsClient()
         {
-            var source = new WebSource { Client = new WebClient() };
+            var source = new WebSource { Client = new WebClientWrapper() };
 
             Assert.IsNotNull(source.Client);
             source.Dispose();
