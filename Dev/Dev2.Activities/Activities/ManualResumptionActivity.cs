@@ -11,6 +11,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -22,6 +23,7 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Warewolf.Auditing;
 using Warewolf.Core;
+using Warewolf.Driver.Persistence;
 
 namespace Dev2.Activities
 {
@@ -32,13 +34,14 @@ namespace Dev2.Activities
         private int _update;
         private IStateNotifier _stateNotifier = null;
         private readonly bool _persistenceEnabled;
+        private readonly IPersistenceExecution _scheduler;
 
         public ManualResumptionActivity()
-            : this(Config.Persistence)
+            : this(Config.Persistence, new PersistenceExecution())
         {
         }
 
-        public ManualResumptionActivity(PersistenceSettings config)
+        public ManualResumptionActivity(PersistenceSettings config, IPersistenceExecution resumeExecution)
         {
             DisplayName = "Manual Resumption";
             OverrideDataFunc = new ActivityFunc<string, bool>
@@ -47,6 +50,7 @@ namespace Dev2.Activities
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
             };
             _persistenceEnabled = config.Enable;
+            _scheduler = resumeExecution;
         }
 
         /// <summary>
@@ -110,7 +114,7 @@ namespace Dev2.Activities
             try
             {
                 var suspensionId = EvalSuspensionId();
-                if(string.IsNullOrWhiteSpace(suspensionId))
+                if (string.IsNullOrWhiteSpace(suspensionId))
                 {
                     Response = "failed";
                     throw new Exception(GlobalConstants.ManualResumptionSuspensionIdBlank);
@@ -122,18 +126,19 @@ namespace Dev2.Activities
                     throw new Exception(GlobalConstants.PersistenceSettingsNoConfigured);
                 }
 
+                var overrideVariables = ExecuteOverrideDataFunc();
+                Response = _scheduler.ResumeJob(suspensionId, OverrideInputVariables, overrideVariables);
                 _stateNotifier?.LogActivityExecuteState(this);
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Manual Resumption: " + suspensionId, "", true);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("SuspensionID: " + suspensionId, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                     debugItemStaticDataParams = new DebugItemStaticDataParams("Override Variables: " + OverrideInputVariables, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
+                    debugItemStaticDataParams = new DebugItemStaticDataParams("ResumptionID: " + Response, "", true);
+                    AddDebugOutputItem(debugItemStaticDataParams);
                 }
 
-                //TODO: var overrideVariables = ExecuteOverrideDataFunc();
-                //TODO: Manually Resume(suspensionId,overrideVariables)
-                Response = "success";
                 return new List<string> {Response};
             }
             catch (Exception ex)
@@ -150,22 +155,25 @@ namespace Dev2.Activities
             var debugEvalResult = new DebugEvalResult(SuspensionId, nameof(SuspensionId), _dataObject.Environment, _update);
             AddDebugInputItem(debugEvalResult);
             var suspensionId = string.Empty;
+
             var debugItemResults = debugEvalResult.GetDebugItemResult();
             if (debugItemResults.Count > 0)
             {
                 suspensionId = debugItemResults[0].Value;
             }
+
             return suspensionId;
         }
 
-        private string ExecuteOverrideDataFunc()
+        private Dictionary<string, StringBuilder> ExecuteOverrideDataFunc()
         {
             if (OverrideDataFunc.Handler is IDev2Activity act && OverrideInputVariables)
             {
-                //Return new variables
+                //TODO: Return new variables
+                return new Dictionary<string, StringBuilder>();
             }
 
-            return "";
+            return new Dictionary<string, StringBuilder>();
         }
 
         public void SetStateNotifier(IStateNotifier stateNotifier)

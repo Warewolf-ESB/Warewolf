@@ -10,6 +10,7 @@
 
 using System;
 using System.Activities;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -22,6 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
+using Warewolf.Driver.Persistence;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -30,7 +32,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class ManualResumptionActivityTests : BaseActivityUnitTest
     {
-
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManualResumptionActivity))]
@@ -202,7 +203,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManualResumptionActivity))]
-        public void ManualResumptionActivity_Execute_Success()
+        public void ManualResumptionActivity_Execute_NoOverride_Success()
         {
             //------------Setup for test--------------------------
             var workflowName = "workflowName";
@@ -241,11 +242,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = true
             };
-            var manualResumptionActivity = new ManualResumptionActivity(config)
+            var suspensionId = "321";
+            var overrideInputVariables = false;
+            var variables =  new Dictionary<string, StringBuilder>();
+            var mockResumeJob = new Mock<IPersistenceExecution>();
+            mockResumeJob.Setup(o => o.ResumeJob(suspensionId,overrideInputVariables,variables)).Verifiable();
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
-                OverrideInputVariables = false,
-                SuspensionId = "321"
+                OverrideInputVariables = overrideInputVariables,
+                SuspensionId = suspensionId
             };
 
             manualResumptionActivity.SetStateNotifier(mockStateNotifier.Object);
@@ -254,10 +260,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
-            Assert.AreEqual("success", manualResumptionActivity.Response);
+            mockResumeJob.Verify(o => o.ResumeJob(suspensionId,overrideInputVariables,variables), Times.Once);
         }
 
-         [TestMethod]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManualResumptionActivity))]
         public void ManualResumptionActivity_Execute_SuspensionID_IsNullOrWhiteSpace_FailWithMessage()
@@ -299,7 +305,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = true
             };
-            var manualResumptionActivity = new ManualResumptionActivity(config)
+            var manualResumptionActivity = new ManualResumptionActivity(config, new Mock<IPersistenceExecution>().Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = false,
@@ -351,7 +357,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = false
             };
-            var manualResumptionActivity = new ManualResumptionActivity(config)
+
+            var manualResumptionActivity = new ManualResumptionActivity(config, new Mock<IPersistenceExecution>().Object)
             {
                 Response = "[[result]]",
                 OverrideInputVariables = false,
@@ -367,10 +374,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("failed", manualResumptionActivity.Response);
             Assert.AreEqual(errors[0], "<InnerError>Could not find persistence config. Please configure in Persistence Settings.</InnerError>");
         }
+
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }
+
         DsfActivity CreateWorkflow()
         {
             var activity = new DsfActivity

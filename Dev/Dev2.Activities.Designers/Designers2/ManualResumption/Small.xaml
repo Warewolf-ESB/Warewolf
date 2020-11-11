@@ -40,15 +40,15 @@
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="False"
                                 WrapInBrackets="False"
-                                Text="{Binding Path=ModelItem.SuspensionID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.SuspensionID, StringFormat=UI_{0}_SuspensionID_AutoID}"
+                                Text="{Binding Path=ModelItem.SuspensionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.SuspensionId, StringFormat=UI_{0}_SuspensionId_AutoID}"
                                 ToolTip="{x:Static languages:Tooltips.ManualResumptionSuspensionIdToolTip}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:HelpText.ManualResumptionSuspensionIdHelpText}"
                                   DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.SuspensionID"
-                                     SourcePropertyValue="{Binding ModelItem.SuspensionID, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.SuspensionId"
+                                     SourcePropertyValue="{Binding ModelItem.SuspensionId, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
