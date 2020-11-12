@@ -285,6 +285,7 @@ namespace Dev2.Sql.Tests
             var sqlServer = new PostgreServer(factory.Object);
             try
             {
+
                 var pvt = new PrivateObject(sqlServer);
                 pvt.SetField("_connection", conn.Object);
                 //------------Execute Test---------------------------
@@ -314,10 +315,11 @@ namespace Dev2.Sql.Tests
             //------------Assert Results-------------------------
        
         }
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PostgreServer_IsFunction")]
+
+        
         public void PostgreServer_IsFunction_InvalidRow()
     
         {
