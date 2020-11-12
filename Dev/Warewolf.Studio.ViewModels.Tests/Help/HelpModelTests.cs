@@ -66,7 +66,7 @@ namespace Warewolf.Studio.Models.Help.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestHelpModelDispose()
         {
             //arrange
