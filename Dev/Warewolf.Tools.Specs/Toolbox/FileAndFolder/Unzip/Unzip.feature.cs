@@ -227,6 +227,7 @@ this.UnzipFileAtLocalLocation("1", "Local to Local", "[[path]]", "C:\\test0.zip"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtLocalLocation_2()
         {
 #line 7
@@ -469,6 +470,7 @@ this.UnzipFileAtUNCLocation("1", "UNC to Local", "[[path]]", "\\\\SVRDEV.premier
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtUNCLocation_2()
         {
 #line 35
@@ -715,6 +717,7 @@ this.UnzipFileAtFTPLocation("1", "FTP to Local", "[[path]]", "ftp://DEVOPSPDC.pr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtFTPLocation_2()
         {
 #line 63
@@ -925,6 +928,7 @@ this.UnzipFileAtFTPSLocation("1", "FTPS to Local", "[[path]]", "ftp://DEVOPSPDC.
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtFTPSLocation_2()
         {
 #line 90
@@ -1164,6 +1168,7 @@ this.UnzipFileAtSFTPLocation("1", "SFTP to Local", "[[path]]", "sftp://SVRDEV.pr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtSFTPLocation_2()
         {
 #line 118
