@@ -116,13 +116,13 @@ namespace Dev2.Activities
                 var suspensionId = EvalSuspensionId();
                 if (string.IsNullOrWhiteSpace(suspensionId))
                 {
-                    Response = "failed";
+                    Response = GlobalConstants.Failed;
                     throw new Exception(GlobalConstants.ManualResumptionSuspensionIdBlank);
                 }
 
                 if (!_persistenceEnabled)
                 {
-                    Response = "failed";
+                    Response = GlobalConstants.Failed;
                     throw new Exception(GlobalConstants.PersistenceSettingsNoConfigured);
                 }
 
@@ -143,7 +143,7 @@ namespace Dev2.Activities
             }
             catch (Exception ex)
             {
-                Response = "failed";
+                Response = GlobalConstants.Failed;
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
@@ -231,7 +231,7 @@ namespace Dev2.Activities
             {
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SuspensionId != null ? SuspensionId.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (OverrideInputVariables != null ? OverrideInputVariables.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ OverrideInputVariables.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OverrideDataFunc != null ? OverrideDataFunc.GetHashCode() : 0);
                 return hashCode;
