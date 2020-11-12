@@ -50,12 +50,22 @@ namespace Warewolf.Logger
         private readonly IWebSocketConnection _socket;
         private readonly IWriter _writer;
         private readonly ILoggerConsumer<IAuditEntry> _logger;
+        private readonly ISerializer _serializer;
+        private readonly IAuditQueryable _auditQueryable;
 
-        public AuditCommandConsumer(ILoggerConsumer<IAuditEntry> loggerConsumer, IWebSocketConnection socket, IWriter writer)
+        public AuditCommandConsumer(ILoggerConsumer<IAuditEntry> loggerConsumer, IWebSocketConnection socket, IWriter writer, ISerializer serializer, IAuditQueryable auditQueryable)
         {
             _socket = socket;
             _writer = writer;
             _logger = loggerConsumer;
+            _serializer = serializer;
+            _auditQueryable = auditQueryable;
+        }
+
+        public AuditCommandConsumer(ILoggerConsumer<IAuditEntry> loggerConsumer, IWebSocketConnection socket, IWriter writer)
+            :this(loggerConsumer, socket, writer, new JsonSerializer(), null)
+        {
+            _auditQueryable = GetAuditQueryable();
         }
 
         public Task<ConsumerResult> Consume(AuditCommand item, object parameters)
@@ -66,6 +76,10 @@ namespace Warewolf.Logger
             switch (item.Type)
             {
                 case "LogEntry":
+                    _logger.Consume(msg.Audit, parameters);
+                    break;
+                case "ResumeExecution":
+                    _writer.WriteLine("Resuming workflow: " + msg.Audit.WorkflowID);
                     _logger.Consume(msg.Audit, parameters);
                     break;
                 case "LogQuery":
@@ -95,22 +109,16 @@ namespace Warewolf.Logger
 
         private void QueryTriggerLog(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
         {
-            var serializer = new Dev2JsonSerializer();
-            var auditQueryable = GetAuditQueryable();
-            var results = auditQueryable.QueryTriggerData(query);
-
+            var results = _auditQueryable.QueryTriggerData(query);
             writer.WriteLine("sending QueryTriggerLog to server: " + results + "...");
-            socket.Send(serializer.Serialize(results));
+            socket.Send(_serializer.Serialize(results));
         }
 
         private void ExecuteLogQuery(Dictionary<string, StringBuilder> query, IWebSocketConnection socket, IWriter writer)
         {
-            var serializer = new Dev2JsonSerializer();
-            var auditQueryable = GetAuditQueryable();
-            var results = auditQueryable.QueryLogData(query);
-
+            var results = _auditQueryable.QueryLogData(query);
             writer.WriteLine("sending QueryLog to server: " + results + "...");
-            socket.Send(serializer.Serialize(results));
+            socket.Send(_serializer.Serialize(results));
         }
 
         private IAuditQueryable GetAuditQueryable()

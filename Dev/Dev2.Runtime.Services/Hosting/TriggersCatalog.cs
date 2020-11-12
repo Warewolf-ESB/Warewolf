@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -21,6 +21,7 @@ using Warewolf.OS.IO;
 using Warewolf.Security.Encryption;
 using Warewolf.Triggers;
 using System.Collections.Concurrent;
+using System.Linq;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -218,12 +219,29 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
+        public List<ITriggerQueue> LoadQueuesByResourceId(Guid resourceId)
+        {
+            Load();
+            return Queues.Where(queue => queue.ResourceId == resourceId).ToList();
+        }
+
         public ITriggerQueue LoadQueueTriggerFromFile(string filename)
         {
             var fileData = _fileWrapper.ReadAllText(filename);
             var decryptedTrigger = DpapiWrapper.Decrypt(fileData);
             var triggerQueue = _serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
             return triggerQueue;
+        }
+
+        public void SaveTriggers(Guid resourceId, List<ITriggerQueue> triggerQueues)
+        {
+            if (triggerQueues != null && triggerQueues.Count > 0)
+            {
+                foreach (var triggerQueue in triggerQueues)
+                {
+                    SaveTriggerQueue(triggerQueue);
+                }
+            }
         }
 
         public void SaveTriggerQueue(ITriggerQueue triggerQueue)

@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -25,10 +35,10 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class OutputsRegion : IOutputsToolRegion
     {
-        readonly ModelItem _modelItem;
-        bool _isEnabled;
-        ICollection<IServiceOutputMapping> _outputs;
-        readonly IFieldAndPropertyMapper _mapper;
+        private readonly ModelItem _modelItem;
+        private bool _isEnabled;
+        private ICollection<IServiceOutputMapping> _outputs;
+        private readonly IFieldAndPropertyMapper _mapper;
 
         public OutputsRegion(ModelItem modelItem)
             : this(modelItem, false, CustomContainer.Get<IFieldAndPropertyMapper>())
@@ -37,36 +47,26 @@ namespace Dev2.Activities.Designers2.Core
 
         public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed)
             : this(modelItem, isObjectOutputUsed, CustomContainer.Get<IFieldAndPropertyMapper>())
-        { }
+        {
+        }
+
         public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed, IFieldAndPropertyMapper mapper)
             : this(mapper)
         {
             Dependants = new List<IToolRegion>();
             _modelItem = modelItem;
             var serviceOutputMappings = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
-            if (_modelItem.GetProperty("Outputs") == null||_modelItem.GetProperty<IList<IServiceOutputMapping>>("Outputs").Count ==0)
+            var outputs = new ObservableCollection<IServiceOutputMapping>();
+            IsEnabled = serviceOutputMappings != null;
+            if (serviceOutputMappings != null)
             {
-                var current = serviceOutputMappings;
-                if(current == null)
-                {
-                    IsEnabled = false;
-                }
-                var outputMappings = current ?? new List<IServiceOutputMapping>();
-                var outputs = new ObservableCollection<IServiceOutputMapping>();
-                outputs.CollectionChanged += OutputsCollectionChanged;
-                outputs.AddRange(outputMappings);
-                Outputs = outputs;
-            }
-            else
-            {
-                IsEnabled = true;
-                var outputs = new ObservableCollection<IServiceOutputMapping>();
-                outputs.CollectionChanged += OutputsCollectionChanged;
                 outputs.AddRange(serviceOutputMappings);
-                Outputs = outputs;
             }
+            outputs.CollectionChanged += OutputsCollectionChanged;
+            Outputs = outputs;
 
             IsObject = _modelItem.GetProperty<bool>("IsObject");
+            IsResponseBase64 = _modelItem.GetProperty<bool>("IsResponseBase64");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
@@ -75,9 +75,10 @@ namespace Dev2.Activities.Designers2.Core
 
         //Needed for Deserialization
         public OutputsRegion()
-            :this(CustomContainer.Get<IFieldAndPropertyMapper>())
+            : this(CustomContainer.Get<IFieldAndPropertyMapper>())
         {
         }
+
         public OutputsRegion(IFieldAndPropertyMapper mapper)
         {
             _mapper = mapper;
@@ -93,15 +94,14 @@ namespace Dev2.Activities.Designers2.Core
             Outputs = newOutputs;
         }
 
-        void OutputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OutputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            OnPropertyChanged("IsOutputsEmptyRows");
+            OnPropertyChanged(nameof(IsOutputsEmptyRows));
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
         }
 
-
-        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)
+        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems == null)
             {
@@ -117,7 +117,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (!Outputs.Equals(_outputs))
             {
@@ -125,7 +125,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)
+        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems == null)
             {
@@ -141,28 +141,24 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-
-        bool _outputMappingEnabled;
-        string _recordsetName;
-        IOutputDescription _description;
-        bool _isOutputsEmptyRows;
-        bool _outputCountExpandAllowed;
-        bool _isObject;
-        string _objectName;
-        string _objectResult;
-        bool _isObjectOutputUsed;
-        IShellViewModel _shellViewModel;
-        RelayCommand _viewObjectResult;
-
-        #region Implementation of IToolRegion
+        private bool _outputMappingEnabled;
+        private string _recordsetName;
+        private IOutputDescription _description;
+        private bool _isOutputsEmptyRows;
+        private bool _outputCountExpandAllowed;
+        private bool _isObject;
+        private bool _isResponseBase64;
+        private string _objectName;
+        private string _objectResult;
+        private bool _isObjectOutputUsed;
+        private IShellViewModel _shellViewModel;
+        private RelayCommand _viewObjectResult;
 
         public string ToolRegionName { get; set; }
+
         public bool IsEnabled
         {
-            get
-            {
-                return _isEnabled;
-            }
+            get => _isEnabled;
             set
             {
                 _isEnabled = value;
@@ -172,7 +168,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool IsObjectOutputUsed
         {
-            get { return _isObjectOutputUsed; }
+            get => _isObjectOutputUsed;
             set
             {
                 _isObjectOutputUsed = value;
@@ -186,7 +182,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             _mapper.AddMap<OutputsRegion, OutputsRegion>();
             var outputsRegion = new OutputsRegion();
-            _mapper.Map(this,outputsRegion);
+            _mapper.Map(this, outputsRegion);
             return outputsRegion;
         }
 
@@ -201,50 +197,34 @@ namespace Dev2.Activities.Designers2.Core
                 ObjectName = region.ObjectName;
                 IsObject = region.IsObject;
 
-                OnPropertyChanged("IsOutputsEmptyRows");
+                OnPropertyChanged(nameof(IsOutputsEmptyRows));
             }
         }
 
-        public EventHandler<List<string>> ErrorsHandler
-        {
-            get;
-            set;
-        }
-
-        #endregion
-
-        #region Implementation of IOutputsToolRegion
+        public EventHandler<List<string>> ErrorsHandler { get; set; }
 
         public ICollection<IServiceOutputMapping> Outputs
         {
-            get
-            {
-                return _outputs;
-            }
+            get => _outputs;
             set
             {
                 if (value != null)
                 {
                     _outputs = value;
-                    _modelItem.SetProperty("Outputs", value.ToList());
                     IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
-                    OnPropertyChanged();
                 }
                 else
                 {
                     _outputs.Clear();
-                    _modelItem.SetProperty("Outputs", _outputs.ToList());
-                    OnPropertyChanged();
                 }
+                _modelItem.SetProperty("Outputs", _outputs.ToList());
+                OnPropertyChanged();
             }
         }
 
         public bool OutputCountExpandAllowed
         {
-            get
-            {
-                return _outputCountExpandAllowed;
-            }
+            get => _outputCountExpandAllowed;
             set
             {
                 _outputCountExpandAllowed = value;
@@ -254,28 +234,24 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool OutputMappingEnabled
         {
-            get
-            {
-                return _outputMappingEnabled;
-            }
+            get => _outputMappingEnabled;
             set
             {
                 _outputMappingEnabled = value;
                 OnPropertyChanged();
             }
         }
+
         public bool IsOutputsEmptyRows
         {
-            get
-            {
-                return _isOutputsEmptyRows;
-            }
+            get => _isOutputsEmptyRows;
             set
             {
                 _isOutputsEmptyRows = value;
                 OnPropertyChanged();
             }
         }
+
         public string RecordsetName
         {
             get
@@ -288,6 +264,7 @@ namespace Dev2.Activities.Designers2.Core
                         _recordsetName = recSet.RecordSetName;
                     }
                 }
+
                 return _recordsetName;
             }
             set
@@ -303,13 +280,14 @@ namespace Dev2.Activities.Designers2.Core
                         }
                     }
                 }
+
                 OnPropertyChanged();
             }
         }
 
         public bool IsObject
         {
-            get { return _isObject; }
+            get => _isObject;
             set
             {
                 _isObject = value;
@@ -318,21 +296,30 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
+        public bool IsResponseBase64
+        {
+            get => _isResponseBase64;
+            set
+            {
+                _isResponseBase64 = value;
+                _modelItem.SetProperty("IsResponseBase64", value);
+                OnPropertyChanged();
+            }
+        }
+
 
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
-        public RelayCommand ViewObjectResult => _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
-                                                              {
-                                                                  ViewJsonObjects();
-                                                              }, CanRunCommand));
+        public RelayCommand ViewObjectResult => _viewObjectResult ??
+                                                (_viewObjectResult = new RelayCommand(item => { ViewJsonObjects(); },
+                                                    CanRunCommand));
 
-        static bool CanRunCommand(object obj) => true;
+        private static bool CanRunCommand(object obj) => true;
 
-        void ViewJsonObjects()
+        private void ViewJsonObjects()
         {
             JsonObjectsView?.ShowJsonString(JsonUtils.Format(ObjectResult));
         }
-
 
 
         public string ObjectName
@@ -379,14 +366,17 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _shellViewModel = CustomContainer.Get<IShellViewModel>();
                 }
-                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
+
+                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value),
+                    ObjectResult);
             }
+
             _modelItem.SetProperty("ObjectName", value);
         }
 
         public string ObjectResult
         {
-            get { return _objectResult; }
+            get => _objectResult;
             set
             {
                 if (value != null)
@@ -406,14 +396,11 @@ namespace Dev2.Activities.Designers2.Core
 
         public IOutputDescription Description
         {
-            get
-            {
-                return _description;
-            }
+            get => _description;
             set
             {
                 _description = value;
-                _modelItem.SetProperty("OutputDescription",value);
+                _modelItem.SetProperty("OutputDescription", value);
                 OnPropertyChanged();
             }
         }
@@ -427,23 +414,27 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     if (Outputs != null && Outputs.Count > 0 && !IsObject)
                     {
-                        var serviceOutputMappings = Outputs.Where(a => !string.IsNullOrEmpty(a.MappedTo) && (FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression));
+                        var serviceOutputMappings = Outputs.Where(a =>
+                            !string.IsNullOrEmpty(a.MappedTo) &&
+                            (FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression ||
+                             FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo)
+                                 .IsWarewolfAtomExpression));
                         errors = serviceOutputMappings.Select(a => "Invalid Output Mapping: " + a.MappedTo).ToList();
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     errors.Add(e.Message);
                 }
-                if(IsObject && string.IsNullOrEmpty(ObjectName))
+
+                if (IsObject && string.IsNullOrEmpty(ObjectName))
                 {
                     errors.Add(ErrorResource.NoObjectName);
                 }
+
                 return errors;
             }
         }
-
-        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 

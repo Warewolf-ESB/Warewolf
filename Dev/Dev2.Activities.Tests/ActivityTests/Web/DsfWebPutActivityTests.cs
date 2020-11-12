@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -79,9 +79,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var attributes = typeof(DsfWebPutActivity).GetCustomAttributes(false);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, attributes.Length);
-            var toolDescriptor = attributes[0] as ToolDescriptorInfo;
+            var toolDescriptor = attributes[0] as ObsoleteAttribute;
             Assert.IsNotNull(toolDescriptor);
-            Assert.AreEqual("PUT", toolDescriptor.Name);
+            Assert.AreEqual("DsfWebPutActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPutActivity.", toolDescriptor.Message);
         }
 
         [TestMethod]
@@ -670,7 +670,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData)
+        protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData, bool isPutDataBase64)
         {
             Head = head;
             QueryRes = query;

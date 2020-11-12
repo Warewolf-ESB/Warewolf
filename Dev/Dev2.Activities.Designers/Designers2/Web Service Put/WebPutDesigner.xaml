@@ -1,4 +1,5 @@
-﻿<core:ActivityDesigner x:TypeArguments="webServiceDelete:WebServicePutViewModel" 
+﻿ <!--[Obsolete("DsfWebPutActivity is deprecated. It will be deleted in future releases along with this Designer.")]-->
+<core:ActivityDesigner x:TypeArguments="webServiceDelete:WebServicePutViewModel" 
                        x:Class="Dev2.Activities.Designers2.Web_Service_Put.WebServicePutDesigner"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

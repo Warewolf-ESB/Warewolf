@@ -10,28 +10,24 @@
 
 using System.Threading;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer.TransferObjects;
+using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public class WebGetRequestHandler : AbstractWebRequestHandler
     {
-        private IResourceCatalog _catalog;
-        private ITestCatalog _testCatalog;
-        private ITestCoverageCatalog _testCoverageCatalog;
-
         public WebGetRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog)
+            : base(catalog, testCatalog, testCoverageCatalog, new DefaultEsbChannelFactory(), new SecuritySettings())
         {
-            _catalog = catalog;
-            _testCatalog = testCatalog;
-            _testCoverageCatalog = testCoverageCatalog;
         }
 
         public WebGetRequestHandler()
+            : this(ResourceCatalog.Instance, TestCatalog.Instance, TestCoverageCatalog.Instance)
         {
-
         }
 
         public override void ProcessRequest(ICommunicationContext ctx)
@@ -39,18 +35,21 @@ namespace Dev2.Runtime.WebServer.Handlers
             var postDataListId = ctx.GetDataListID();
             if (postDataListId != null)
             {
-                _catalog = _catalog ?? ResourceCatalog.Instance;
-                _testCatalog = _testCatalog ?? TestCatalog.Instance;
-                _testCoverageCatalog = _testCoverageCatalog ?? TestCoverageCatalog.Instance;
-                new WebPostRequestHandler(_catalog, _testCatalog, _testCoverageCatalog).ProcessRequest(ctx);
+                new WebPostRequestHandler(_resourceCatalog, _testCatalog, _testCoverageCatalog, _esbChannelFactory).ProcessRequest(ctx);
                 return;
             }
 
             var serviceName = ctx.GetServiceName();
             var workspaceId = ctx.GetWorkspaceID();
 
-            var requestTo = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}" };
-            var data = SubmittedData.GetPostData(ctx);
+            var requestTo = new WebRequestTO
+            {
+                ServiceName = serviceName,
+                WebServerUrl = ctx.Request.Uri.ToString(),
+                Dev2WebServer = $"{ctx.Request.Uri.Scheme}://{ctx.Request.Uri.Authority}",
+                IsUrlWithTokenPrefix = ctx.Request.IsTokenAuthentication
+            };
+            var data = new SubmittedData().GetPostData(ctx);
 
             if (!string.IsNullOrEmpty(data))
             {

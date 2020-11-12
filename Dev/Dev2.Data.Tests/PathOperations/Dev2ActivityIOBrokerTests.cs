@@ -213,6 +213,36 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_PutRaw_FileNotExists_WriteData_Success()
+        {
+            var mockFileWrapper = new Mock<IFile>();
+            var mockCommonData = new Mock<ICommon>();
+            var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
+            var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
+
+            var mockDst = new Mock<IActivityIOOperationsEndPoint>();
+            var dst = mockDst.Object;
+            var mockArgs = new Mock<IDev2PutRawOperationTO>();
+            var args = mockArgs.Object;
+
+            mockImplementation.Setup(o => o.CreateEndPoint(dst, It.IsAny<Dev2CRUDOperationTO>(), true)).Returns(ActivityIOBrokerBaseDriver.ResultOk);
+            mockImplementation.Setup(o => o.WriteDataToFile(args, dst)).Returns(true);
+
+            var result = broker.PutRaw(dst, args);
+
+            Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultOk, result);
+
+            mockDst.Verify(o => o.RequiresLocalTmpStorage(), Times.Once);
+            mockDst.Verify(o => o.PathExist(It.IsAny<Dev2ActivityIOPath>()), Times.Once);
+            mockImplementation.Verify(o => o.CreateEndPoint(dst, It.IsAny<Dev2CRUDOperationTO>(), true), Times.Once);
+            mockImplementation.Verify(o => o.WriteDataToFile(args, dst), Times.Once);
+        }
+
+        [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Dev2ActivityIOBroker))]
         public void Dev2ActivityIOBroker_PutRaw_FileNotExists_CreateEndPoint_Fails()

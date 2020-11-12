@@ -1789,6 +1789,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open this URL in your default browser to view the hangfire dashboard.
+        /// </summary>
+        public static string HangfireDashboardBrowserTooltip {
+            get {
+                return ResourceManager.GetString("HangfireDashboardBrowserTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hard coded values or variables..
         /// </summary>
         public static string InputDefaultValueToolTip {
@@ -1803,6 +1812,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string InputEmptyIsNullToolTip {
             get {
                 return ResourceManager.GetString("InputEmptyIsNullToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check this to send a base64 formatted body data..
+        /// </summary>
+        public static string IsPutDataBase64Tooltip {
+            get {
+                return ResourceManager.GetString("IsPutDataBase64Tooltip", resourceCulture);
             }
         }
         
@@ -3544,6 +3562,87 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PasswordToolTip {
             get {
                 return ResourceManager.GetString("PasswordToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The persistence server name to connect to.
+        /// </summary>
+        public static string PersistenceDashboardHostNameTooltip {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardHostNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name the url will map to..
+        /// </summary>
+        public static string PersistenceDashboardNameTooltip {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default port on which Persistence listens is 5001.
+        /// </summary>
+        public static string PersistenceDashboardPortTooltip {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardPortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server name the scheduled job will be mapped to..
+        /// </summary>
+        public static string PersistenceServerNameTooltip {
+            get {
+                return ResourceManager.GetString("PersistenceServerNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Persistence Data Source.
+        /// </summary>
+        public static string PersistenceViewDataSourceToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewDataSourceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable the Persistence Server..
+        /// </summary>
+        public static string PersistenceViewEnableToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewEnableToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encrypt the Persistence Data Source in the Persistence Settings File.
+        /// </summary>
+        public static string PersistenceViewEncryptToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewEncryptToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create the tables and index in the database if they dont already exist.
+        /// </summary>
+        public static string PersistenceViewPrepareSchemaIfNecessaryToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewPrepareSchemaIfNecessaryToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Persistence Scheduler.
+        /// </summary>
+        public static string PersistenceViewSchedulerToolTip {
+            get {
+                return ResourceManager.GetString("PersistenceViewSchedulerToolTip", resourceCulture);
             }
         }
         
@@ -5655,6 +5754,51 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If selected, it allows for manual resumption of the workflow suspended execution..
+        /// </summary>
+        public static string SuspendExecutionAllowManualResumptionToolTip {
+            get {
+                return ResourceManager.GetString("SuspendExecutionAllowManualResumptionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If selected, the resumption data stored will be encrypted..
+        /// </summary>
+        public static string SuspendExecutionEncryptDataToolTip {
+            get {
+                return ResourceManager.GetString("SuspendExecutionEncryptDataToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the value for when the suspended workflow needs to be resumed..
+        /// </summary>
+        public static string SuspendExecutionPersistValueToolTip {
+            get {
+                return ResourceManager.GetString("SuspendExecutionPersistValueToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption.
+        /// </summary>
+        public static string SuspendExecutionResultToolTip {
+            get {
+                return ResourceManager.GetString("SuspendExecutionResultToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an option for when the suspended workflow should be resumed..
+        /// </summary>
+        public static string SuspendExecutionSuspendOptionsToolTip {
+            get {
+                return ResourceManager.GetString("SuspendExecutionSuspendOptionsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
         ///Returns the type of system information selected..
         /// </summary>
@@ -6021,6 +6165,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Flow_Sequence {
             get {
                 return ResourceManager.GetString("Tool_Flow_Sequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags: suspend stop end pause.
+        /// </summary>
+        public static string Tool_Flow_SuspendExecution {
+            get {
+                return ResourceManager.GetString("Tool_Flow_SuspendExecution", resourceCulture);
             }
         }
         
@@ -6633,6 +6786,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check this to read a base64 formatted body data..
+        /// </summary>
+        public static string WebReadsBase64BodyTooltip {
+            get {
+                return ResourceManager.GetString("WebReadsBase64BodyTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To supply additional header information in your get request, put the header info in here..
         /// </summary>
         public static string WebRequestToolTipHeader {
@@ -6695,6 +6857,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WriteFileToolTipContents {
             get {
                 return ResourceManager.GetString("WriteFileToolTipContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When selected, it reads the content of the file as base64 format..
+        /// </summary>
+        public static string WriteFileToolTipContentsAsBase64 {
+            get {
+                return ResourceManager.GetString("WriteFileToolTipContentsAsBase64", resourceCulture);
             }
         }
         

@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,11 +21,11 @@ namespace Warewolf.UnitTestAttributes
         };
         private string SelectedHost = "";
         
-        static readonly string BackupServer = "SVRDEV.premier.local";
+        static readonly string BackupServer = "RSAKLFSVRHST1.premier.local";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
         static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
-        static readonly bool EnableDocker = true;
+        static readonly bool EnableRigOpsWorkflows = false;
 
         public enum ContainerType
         {
@@ -40,7 +39,8 @@ namespace Warewolf.UnitTestAttributes
             AnonymousRedis = 7,
             AnonymousWarewolf = 8,
             Elasticsearch = 9,
-            AnonymousElasticsearch = 10
+            AnonymousElasticsearch = 10,
+            WebApi = 11
         }
 
         ContainerType _containerType;
@@ -71,6 +71,8 @@ namespace Warewolf.UnitTestAttributes
                     return "Elasticsearch";
                 case ContainerType.AnonymousElasticsearch:
                     return "AnonymousElasticsearch";
+                case ContainerType.WebApi:
+                    return "WebApi";
             }
 
             throw new ArgumentOutOfRangeException();
@@ -91,7 +93,7 @@ namespace Warewolf.UnitTestAttributes
                     getUrl = "https://gitlab.com/warewolf/postgres-connector-testing";
                     break;
                 case ContainerType.Warewolf:
-                    getUrl = "https://gitlab.com/warewolfdevelopers/warewolf";
+                    getUrl = "https://gitlab.com/warewolf/warewolf";
                     break;
                 case ContainerType.RabbitMQ:
                     getUrl = "https://gitlab.com/warewolf/rabbitmq-connector-testing";
@@ -114,6 +116,9 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.AnonymousElasticsearch:
                     getUrl = "https://gitlab.com/warewolf/anonymous-elasticsearch-connector-testing";
                     break;
+                case ContainerType.WebApi:
+                    getUrl = "https://gitlab.com/warewolf/Web-API-connector-testing";
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -127,7 +132,7 @@ namespace Warewolf.UnitTestAttributes
         public Depends(ContainerType type, bool performSourceInjection = true)
         {
             _containerType = type;
-            if (EnableDocker)
+            if (EnableRigOpsWorkflows)
             {
                 using (var client = new WebClientWithExtendedTimeout
                     {Credentials = CredentialCache.DefaultNetworkCredentials})
@@ -180,22 +185,25 @@ namespace Warewolf.UnitTestAttributes
             switch (_containerType)
             {
                 case ContainerType.MySQL:
-                    InjectMySQLContainer(EnableDocker);
+                    InjectMySQLContainer();
                     break;
                 case ContainerType.MSSQL:
-                    InjectMSSQLContainer(EnableDocker);
+                    InjectMSSQLContainer();
                     break;
                 case ContainerType.RabbitMQ:
-                    InjectRabbitMQContainer(EnableDocker);
+                    InjectRabbitMQContainer();
                     break;
                 case ContainerType.CIRemote:
-                    InjectCIRemoteContainer(EnableDocker);
+                    InjectCIRemoteContainer();
                     break;
                 case ContainerType.PostGreSQL:
-                    InjectPostGreSQLContainer(EnableDocker);
+                    InjectPostGreSQLContainer();
                     break;
                 case ContainerType.AnonymousElasticsearch:
-                    InjectElasticContainer(EnableDocker);
+                    InjectElasticContainer();
+                    break;
+                case ContainerType.WebApi:
+                    InjectWebApiContainer();
                     break;
             }
         }
@@ -204,10 +212,10 @@ namespace Warewolf.UnitTestAttributes
         {
             switch (type)
             {
-                case ContainerType.CIRemote:
-                    return "3144";
                 case ContainerType.MSSQL:
                     return "1433";
+                case ContainerType.CIRemote:
+                    return "3144";
                 case ContainerType.MySQL:
                     return "3306";
                 case ContainerType.PostGreSQL:
@@ -226,6 +234,8 @@ namespace Warewolf.UnitTestAttributes
                     return "9200";
                 case ContainerType.Elasticsearch:
                     return "9400";
+                case ContainerType.WebApi:
+                    return "8080";
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -251,7 +261,7 @@ namespace Warewolf.UnitTestAttributes
             }
         }
 
-        void InjectCIRemoteContainer(bool EnableDocker)
+        void InjectCIRemoteContainer()
         {
             var knownServerSources = new List<string>()
             {
@@ -270,25 +280,12 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Remote Connection Integration.bite",
                 @"%programdata%\Warewolf\Resources\Remote Connection Integration.xml"
             };
-            if (EnableDocker)
-            {
-                UpdateSourcesConnectionStrings(
-                    $"AppServerUri=http://{Container.IP}:{Container.Port}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;",
-                    knownServerSources);
-            }
-            else
-            {
-                var defaultServer = GetIPAddress(BackupCIRemoteServer.Split(':')[0]);
-                if (defaultServer != null)
-                {
-                    UpdateSourcesConnectionStrings(
-                        $"AppServerUri=http://{defaultServer}:{BackupCIRemoteServer.Split(':')[1]}/dsf;WebServerPort=3142;AuthenticationType=Windows",
-                        knownServerSources);
-                }
-            }
+            UpdateSourcesConnectionStrings(
+                $"AppServerUri=http://{Container.IP}:{Container.Port}/dsf;WebServerPort={Container.Port};AuthenticationType=User;UserName=WarewolfAdmin;Password=W@rEw0lf@dm1n;",
+                knownServerSources);
         }
 
-        void InjectMSSQLContainer(bool EnableDocker)
+        void InjectMSSQLContainer()
         {
             var knownMssqlServerSources = new List<string>()
             {
@@ -299,58 +296,34 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.bite",
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
             };
-            if (EnableDocker)
-            {
-                UpdateSourcesConnectionStrings(
-                    $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
-                    knownMssqlServerSources);
-            }
-            else
-            {
-                UpdateSourcesConnectionStrings(
-                    $"Data Source={BackupServer},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
-                    knownMssqlServerSources);
-            }
+            UpdateSourcesConnectionStrings(
+                $"Data Source={Container.IP},{Container.Port};Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;",
+                knownMssqlServerSources);
         }
         
-        void InjectRabbitMQContainer(bool EnableDocker)
+        void InjectRabbitMQContainer()
         {
             var knownServerSources = new List<string>()
             {
                 @"%programdata%\Warewolf\Resources\Sources\RabbitMq\testRabbitMQSource.bite",
                 @"%programdata%\Warewolf\Resources\Sources\RabbitMq\testRabbitMQSource.xml"
             };
-            if (EnableDocker)
-            {
-                UpdateSourcesConnectionStrings(
-                    $"HostName={Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
-                    knownServerSources);
-            }
-            else
-            {
-                UpdateSourcesConnectionStrings($"HostName={BackupServer};UserName=test;Password=test;VirtualHost=/",
-                    knownServerSources);
-            }
+            UpdateSourcesConnectionStrings(
+                $"HostName={Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
+                knownServerSources);
         }
-        private void InjectElasticContainer(bool enableDocker)
+        private void InjectElasticContainer()
         {
             var knownServerSources = new List<string>()
             {
                 @"%programdata%\Warewolf\Resources\Sources\Elasticsearch\testElasticsearchSource.bite",
                 @"%programdata%\Warewolf\Resources\Sources\Elasticsearch\testElasticsearchSource.xml"
             };
-            if (EnableDocker)
-            {
-                UpdateSourcesConnectionStrings(
-                    $"HostName=http://{Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
-                    knownServerSources);
-            }
-            else
-            {
-                throw new Exception("No fallback server exists for Elastic Search in a Docker container.");
-            }
+            UpdateSourcesConnectionStrings(
+                $"HostName=http://{Container.IP};Port={Container.Port};UserName=test;Password=test;VirtualHost=/",
+                knownServerSources);
         }
-        void InjectPostGreSQLContainer(bool EnableDocker)
+        void InjectPostGreSQLContainer()
         {
             var knownServerSources = new List<string>()
             {
@@ -359,39 +332,31 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.bite",
                 @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.xml"
             };
-            if (EnableDocker)
-            {
-                UpdateSourcesConnectionStrings($"Host={Container.IP};Username=postgres;Password=test123;Database=TestDB",
-                    knownServerSources);
-            }
-            else
-            {
-                UpdateSourcesConnectionStrings($"Host={BackupServer};UserName=postgres;Password=test123;Database=TestDB",
-                    knownServerSources);
-            }
+            UpdateSourcesConnectionStrings($"Host={Container.IP};Username=postgres;Password=test123;Database=TestDB",
+                knownServerSources);
         }
 
-        void InjectTFSBLDIP()
+        void InjectWebApiContainer()
         {
-            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{TFSBLDIP}:9810/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.xml",
@@ -426,18 +391,10 @@ namespace Warewolf.UnitTestAttributes
                 knownServerSources);
         }
 
-        void InjectMySQLContainer(bool EnableDocker)
+        void InjectMySQLContainer()
         {
-            if (EnableDocker)
-            {
-                UpdateMySQLSourceConnectionString($"{Container.IP};Port={Container.Port}",
-                    @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
-            }
-            else
-            {
-                UpdateMySQLSourceConnectionString(BackupServer,
-                    @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
-            }
+            UpdateMySQLSourceConnectionString($"{Container.IP};Port={Container.Port}",
+                @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
         }
 
         static void UpdateMySQLSourceConnectionString(string defaultServer, string knownServerSource)
@@ -562,7 +519,7 @@ namespace Warewolf.UnitTestAttributes
         protected override WebRequest GetWebRequest(Uri uri)
         {
             WebRequest w = base.GetWebRequest(uri);
-            w.Timeout = 3 * 60 * 1000;
+            w.Timeout = 10 * 60 * 1000;
             return w;
         }
     }

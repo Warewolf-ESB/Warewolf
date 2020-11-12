@@ -65,6 +65,7 @@ namespace Dev2
         public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
         public IProcessMonitor QueueWorkerMonitor { get; set; } = new NullProcessMonitor();
         public IProcessMonitor LoggingServiceMonitor { get; set; } = new NullProcessMonitor();
+        public IProcessMonitor HangfireServerMonitor { get; set; } = new NullProcessMonitor();
         public IWebSocketPool WebSocketPool { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
@@ -86,6 +87,7 @@ namespace Dev2
                 SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
                 QueueWorkerMonitor = new QueueWorkerMonitor(processFactory, new QueueWorkerConfigLoader(), TriggersCatalog.Instance, childProcessTracker),
                 LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory),
+                HangfireServerMonitor = new HangfireServerMonitorWithRestart(childProcessTracker, processFactory),
                 WebSocketPool = new WebSocketPool(),
             };
         }
@@ -113,6 +115,7 @@ namespace Dev2
         private readonly IProcessMonitor _queueProcessMonitor;
         private readonly IProcessMonitor _loggingProcessMonitor;
         private readonly IWebSocketPool _webSocketPool;
+        private readonly IProcessMonitor _hangfireServerMonitor;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
@@ -136,6 +139,9 @@ namespace Dev2
 
             _loggingProcessMonitor = startupConfiguration.LoggingServiceMonitor;
             _loggingProcessMonitor.OnProcessDied += (e) => _writer.WriteLine("logging service exited");
+
+            _hangfireServerMonitor = startupConfiguration.HangfireServerMonitor;
+            _hangfireServerMonitor.OnProcessDied += (e) => _writer.WriteLine("hangfire server exited");
 
             _queueProcessMonitor = startupConfiguration.QueueWorkerMonitor;
             _queueProcessMonitor.OnProcessDied += (config) => _writer.WriteLine($"queue process died: {config.Name}({config.Id})");
@@ -222,6 +228,8 @@ namespace Dev2
                     _startWebServer.Execute(webServerConfig, _pauseHelper);
                     _queueProcessMonitor.Start();
 
+                    _hangfireServerMonitor.Start();
+
                     var checkLogServerConnectionTask = CheckLogServerConnection();
                     var result = Task.WaitAny(new [] { checkLogServerConnectionTask, loggingServerCheckDelay });
                     var isConnectedOkay = !checkLogServerConnectionTask.IsCanceled && !checkLogServerConnectionTask.IsFaulted && checkLogServerConnectionTask.Result == true;
@@ -297,6 +305,7 @@ namespace Dev2
             try
             {
                 _queueProcessMonitor.Shutdown();
+                _hangfireServerMonitor.Shutdown();
                 if (_startWebServer != null)
                 {
                     _startWebServer.Dispose();

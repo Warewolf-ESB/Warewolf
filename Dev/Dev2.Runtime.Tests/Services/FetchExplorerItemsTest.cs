@@ -29,6 +29,7 @@ using Moq;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
+    [DoNotParallelize]
     public class FetchExplorerItemsTest
     {
         [TestInitialize]
@@ -147,6 +148,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("FetchExplorerItems_HandlesType")]
+        [DoNotParallelize]
         public void FetchExplorerItems_ExecuteReloadTrueWithExecutionManager_ExpectCallsStartAndStopRefresh()
         {
             //------------Setup for test--------------------------
@@ -172,6 +174,7 @@ namespace Dev2.Tests.Runtime.Services
             exeManager.Verify(manager => manager.StopRefresh(),Times.AtLeastOnce());
             CustomContainer.DeRegister<IExecutionManager>();
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("FetchExplorerItems_HandlesType")]

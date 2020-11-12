@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,6 +19,7 @@ using System.Text;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.CodeDom;
 
 namespace Dev2.Common.Common
 {
@@ -476,5 +477,74 @@ namespace Dev2.Common.Common
                 return ms.ToArray();
             }
         }
+
+        public static string ToBase64String(this byte[] bytes, Base64FormattingOptions options = Base64FormattingOptions.None) => Convert.ToBase64String(bytes, options);
+
+        public static byte[] Base64StringToByteArray(this string base64String) => GetBase64StringToByteArray(base64String);
+
+        private static byte[] GetBase64StringToByteArray(string base64String)
+        {
+            if (base64String.IsBase64String(out byte[] bytes))
+            {
+                return bytes;
+            }
+            return GetBytesFromFailedBase64String(base64String);
+        }
+
+        public static string ReadToString(this byte[] bytes) => GetReadToEnd(bytes);
+
+        private static string GetReadToEnd(byte[] bytes)
+        {
+            var text = string.Empty;
+            using (var stream = new StreamReader(new MemoryStream(bytes)))
+            {
+                text = stream.ReadToEnd();
+            }
+            return text;
+        }
+
+        public static string ReadToEnd(this Stream stream) => GetReadToEnd(stream);
+
+        private static string GetReadToEnd(Stream stream)
+        {
+            var stringStream = string.Empty;
+            using (var tempStream = new StreamReader(stream))
+            {
+                stringStream = tempStream.ReadToEnd();
+            };
+            return stringStream;
+        }
+
+        public static bool IsBase64Stream(this Stream stream, out byte[] bytes) => GetIsBase64Stream(stream, out bytes);
+
+        private static bool GetIsBase64Stream(Stream stream, out byte[] bytes)
+        {
+            return IsBase64String(stream.ReadToEnd(), out bytes);
+        }
+
+        public static bool IsBase64String(this string base64String, out byte[] bytes) => GetIsBase64String(base64String, out bytes);
+
+        private static bool GetIsBase64String(string base64String, out byte[] bytes)
+        {
+            if (base64String?.Replace(" ", "").Length % 4 != 0)
+            {
+                bytes = GetBytesFromFailedBase64String(base64String);
+                return false;
+            }
+            try
+            {
+                bytes = GetBytesFromBase64String(base64String);
+                return true;
+            }
+            catch (Exception)
+            {
+                bytes = GetBytesFromFailedBase64String(base64String);
+                return false;
+            }
+        }
+
+        private static byte[] GetBytesFromFailedBase64String(string base64String) => Encoding.ASCII.GetBytes(base64String);
+
+        private static byte[] GetBytesFromBase64String(string base64String) => Convert.FromBase64String(base64String);
     }
 }

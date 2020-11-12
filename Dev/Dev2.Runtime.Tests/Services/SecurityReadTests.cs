@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,6 +28,7 @@ using Dev2.Infrastructure.Tests.Services.Security;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
+    [DoNotParallelize]
     public class SecurityReadTests
     {
         static string _testDir;
@@ -66,7 +67,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var securityRead = new SecurityRead
             {
-                Catalog = mockCatalog.Object
+
             };
             var jsonPermissions = securityRead.Execute(null, null);
 
@@ -97,7 +98,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityRead_Execute")]
-        [DoNotParallelize]
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithNoGuestPermission_ShouldHaveExistingPermissionsAndGuest()
         {
             //------------Setup for test--------------------------
@@ -155,7 +155,6 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityRead_Execute")]
-        [DoNotParallelize]
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithGuestPermission_ShouldHaveExistingPermissions()
         {
             //------------Setup for test--------------------------
@@ -240,13 +239,13 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.IsTrue(securitySettings.WindowsGroupPermissions.Count == 2);
 
-            var expected = SecurityRead.DefaultPermissions[0];
+            var expected = SecuritySettings.DefaultPermissions[0];
             var actual = securitySettings.WindowsGroupPermissions[0];
 
             var result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
 
-            expected = SecurityRead.DefaultPermissions[1];
+            expected = SecuritySettings.DefaultPermissions[1];
             actual = securitySettings.WindowsGroupPermissions[1];
             result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
@@ -272,13 +271,13 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.IsTrue(securitySettings.WindowsGroupPermissions.Count == 2);
 
-            var expected = SecurityRead.DefaultPermissions[0];
+            var expected = SecuritySettings.DefaultPermissions[0];
             var actual = securitySettings.WindowsGroupPermissions[0];
 
             var result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
 
-            expected = SecurityRead.DefaultPermissions[1];
+            expected = SecuritySettings.DefaultPermissions[1];
             actual = securitySettings.WindowsGroupPermissions[1];
             result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
@@ -364,10 +363,7 @@ namespace Dev2.Tests.Runtime.Services
             var mockCatalog = new Mock<IResourceCatalog>();
             mockCatalog.Setup(a => a.GetResourcePath(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             //------------Execute Test---------------------------
-            var securityRead = new SecurityRead
-            {
-                Catalog = mockCatalog.Object
-            };
+            var securityRead = new SecurityRead();
             var jsonPermissions = securityRead.Execute(null, null);
 
             File.Delete(serverSecuritySettingsFile);

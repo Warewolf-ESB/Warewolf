@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DebugType>none</DebugType>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Hangfire.Core">
+            <Version>1.7.13</Version>
+        </PackageReference>
+        <PackageReference Include="Hangfire.SqlServer">
+            <Version>1.7.13</Version>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
+        <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
+        <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+    </ItemGroup>
+	<ItemGroup>
+        <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+          <Link>Properties\AssemblyCommonInfo.cs</Link>
+        </Compile>
+    </ItemGroup>
+</Project>

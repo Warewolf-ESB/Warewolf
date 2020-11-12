@@ -1,4 +1,4 @@
-﻿using Dev2.Common;
+using Dev2.Common;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
@@ -12,6 +12,7 @@ namespace Dev2.Tests.Runtime
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("RevulyticsCollectUsageStats")]
+        [DoNotParallelize]
         public void RevulyticsCollectUsageStatsForServerIsFalseTest()
         {
             Assert.AreEqual(false, AppUsageStats.CollectUsageStats);

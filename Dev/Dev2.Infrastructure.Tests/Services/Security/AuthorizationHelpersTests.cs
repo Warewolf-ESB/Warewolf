@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -85,7 +85,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = true };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(null);
+            var authorized = securityPermission.Matches((WebName)null);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(authorized);
@@ -100,7 +100,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "CATEGORY\\TEST2" };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(null);
+            var authorized = securityPermission.Matches((WebName)null);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(authorized);
@@ -116,7 +116,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resourceID };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(resourceID.ToString());
+            var authorized = securityPermission.Matches(resourceID);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(authorized);
@@ -132,26 +132,10 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = Guid.NewGuid() };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(resourceID.ToString());
+            var authorized = securityPermission.Matches(resourceID);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(authorized);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationHelpers_Matches")]
-        public void AuthorizationHelpers_Matches_ResourceIsStringAndHasSecurityPermission_True()
-        {
-            //------------Setup for test--------------------------
-            const string ResourceName = "Test";
-            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "CATEGORY\\" + ResourceName };
-
-            //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(ResourceName);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
         }
 
         [TestMethod]
@@ -164,7 +148,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "CATEGORY\\TEST2" };
 
             //------------Execute Test---------------------------
-            var authorized = securityPermission.Matches(ResourceName);
+            var authorized = securityPermission.Matches(new WebNameSimple(ResourceName));
 
             //------------Assert Results-------------------------
             Assert.IsFalse(authorized);

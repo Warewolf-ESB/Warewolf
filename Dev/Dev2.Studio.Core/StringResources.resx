@@ -338,6 +338,9 @@ Cancel - Do not close the studio.</value>
   <data name="SettingsLogging" xml:space="preserve">
     <value>LOGGING</value>
   </data>
+  <data name="SettingsPersistence" xml:space="preserve">
+    <value>PERSISTENCE</value>
+  </data>
   <data name="CritErrorTitle" xml:space="preserve">
     <value>Critical Error</value>
   </data>

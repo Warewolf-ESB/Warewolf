@@ -36,7 +36,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestGetDllListings()
         {
             //arrange
@@ -53,7 +54,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestSavePlugin()
         {
             //arrange
@@ -70,8 +72,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod,Timeout(60000)]
-        public void TestServerName()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestPluginSourceModelServerName()
         {
             //act
             var value = _target.ServerName;
@@ -80,7 +83,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_serverName, value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestPluginSourceServerNameBrackets()
         {
             //arrange  

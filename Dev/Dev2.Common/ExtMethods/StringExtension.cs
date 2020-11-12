@@ -1,7 +1,6 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +9,6 @@
 */
 
 using Dev2.Common.DateAndTime;
-using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -74,7 +72,7 @@ namespace Dev2.Common.ExtMethods
             var count = 0;
             while (!result && count < acceptedDateFormats.Count)
             {
-                result = d.TryParseDateTime(payload, acceptedDateFormats[count], out IDateTimeResultTO to, out string errorMsg);
+                result = d.TryParseDateTime(payload, acceptedDateFormats[count], out _, out _);
                 count++;
             }
             return result;
@@ -215,7 +213,8 @@ namespace Dev2.Common.ExtMethods
             {
                 return false;
             }
-            return IsWholeNumber(payload, out int value);
+
+            return IsWholeNumber(payload, out _);
         }
 
         public static bool IsWholeNumber(this string payload, out int value)
@@ -234,7 +233,7 @@ namespace Dev2.Common.ExtMethods
 
         public static bool IsNumeric(this string payload)
         {
-            return IsNumeric(payload, out decimal value);
+            return IsNumeric(payload, out _);
         }
 
         public static bool IsNumeric(this string payload, out decimal value)
@@ -355,5 +354,7 @@ namespace Dev2.Common.ExtMethods
                 stringa != null &&
                 stringa.ToLowerInvariant().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLowerInvariant().ExceptChars(new[] { ' ', '\t', '\n', '\r' }));
         }
+
+        public static byte[] ToBytesArray(this string stringData) => Encoding.ASCII.GetBytes(stringData); 
     }
 }

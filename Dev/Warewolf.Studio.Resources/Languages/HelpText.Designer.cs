@@ -1057,11 +1057,47 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to These are the new tests that will be found on the remote server after deploy..
+        /// </summary>
+        public static string DeployNewTestsViewHelp {
+            get {
+                return ResourceManager.GetString("DeployNewTestsViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These are the new triggers that will be found on the remote server after deploy..
+        /// </summary>
+        public static string DeployNewTriggersViewHelp {
+            get {
+                return ResourceManager.GetString("DeployNewTriggersViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to These resources will be overwritten on the destination server.
         /// </summary>
         public static string DeployOverridesCountViewHelp {
             get {
                 return ResourceManager.GetString("DeployOverridesCountViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These tests will be overwritten on the destination server.
+        /// </summary>
+        public static string DeployOverridesTestsCountViewHelp {
+            get {
+                return ResourceManager.GetString("DeployOverridesTestsCountViewHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These triggers will be overwritten on the destination server.
+        /// </summary>
+        public static string DeployOverridesTriggersCountViewHelp {
+            get {
+                return ResourceManager.GetString("DeployOverridesTriggersCountViewHelp", resourceCulture);
             }
         }
         
@@ -1701,6 +1737,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string InputGenerateOutputsDefaultHelp {
             get {
                 return ResourceManager.GetString("InputGenerateOutputsDefaultHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows you to send the body as base64.
+        /// </summary>
+        public static string IsPutDataBase64HelpText {
+            get {
+                return ResourceManager.GetString("IsPutDataBase64HelpText", resourceCulture);
             }
         }
         
@@ -2578,6 +2623,87 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PasswordAuthenticationHelp {
             get {
                 return ResourceManager.GetString("PasswordAuthenticationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The persistence server name to connect to. The default is the localhost..
+        /// </summary>
+        public static string PersistenceDashboardHostNameHelp {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardHostNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name the url will map to..
+        /// </summary>
+        public static string PersistenceDashboardNameHelp {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default port on which Persistence listens is 5001..
+        /// </summary>
+        public static string PersistenceDashboardPortHelp {
+            get {
+                return ResourceManager.GetString("PersistenceDashboardPortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server name the scheduled job will be mapped to..
+        /// </summary>
+        public static string PersistenceServerNameHelp {
+            get {
+                return ResourceManager.GetString("PersistenceServerNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Data source for the Persistence database. Sql Server is currently supported..
+        /// </summary>
+        public static string PersistenceViewAuditsDataSourceHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewAuditsDataSourceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will start the Persistence Server. Only once this is enabled will persistence occur with the Suspend Execution Tool..
+        /// </summary>
+        public static string PersistenceViewEnableHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewEnableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encrypt the Persistence Data Source in the Persistence Settings File.
+        /// </summary>
+        public static string PersistenceViewEncryptHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewEncryptHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create the tables and index in the database if they dont already exist.
+        /// </summary>
+        public static string PersistenceViewPrepareSchemaIfNecessaryHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewPrepareSchemaIfNecessaryHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Scheduler that will handle the persistence of workflow executions.
+        /// </summary>
+        public static string PersistenceViewSchedulerHelpText {
+            get {
+                return ResourceManager.GetString("PersistenceViewSchedulerHelpText", resourceCulture);
             }
         }
         
@@ -4250,6 +4376,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use a public workflow to associate a username and password with a set of group names that that user belongs to.
+        ///      &lt;br/&gt;&lt;br/&gt;
+        ///      Make sure the workflow has a recordset with the name [[UserGroups(*).Name]] containing these group names set to output.
+        ///      &lt;br/&gt;&lt;br/&gt;
+        ///      Any request that contains the resulting hashed token will be considered to be in these groups.
+        ///    .
+        /// </summary>
+        public static string SettingsSecurityOverrideAuthHelpText {
+            get {
+                return ResourceManager.GetString("SettingsSecurityOverrideAuthHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource picker.
         /// </summary>
         public static string SettingsSecurityResourceBrowseHelpResources {
@@ -4664,6 +4804,51 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If selected, it allows for manual resumption of the workflow suspended execution..
+        /// </summary>
+        public static string SuspendExecutionAllowManualResumptionHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionAllowManualResumptionHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If selected, the resumption data stored will be encrypted..
+        /// </summary>
+        public static string SuspendExecutionEncryptDataHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionEncryptDataHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the value for when the suspended workflow needs to be resumed..
+        /// </summary>
+        public static string SuspendExecutionPersistValueHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionPersistValueHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption.
+        /// </summary>
+        public static string SuspendExecutionResultHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionResultHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an option for when the suspended workflow should be resumed..
+        /// </summary>
+        public static string SuspendExecutionSuspendOptionsHelpText {
+            get {
+                return ResourceManager.GetString("SuspendExecutionSuspendOptionsHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.	Returns the type of system information selected.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string SystemInformationHelpResult {
@@ -5034,6 +5219,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Flow_Sequence {
             get {
                 return ResourceManager.GetString("Tool_Flow_Sequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Suspend Execution tool when you need to suspend execution of a workflow and persist the data so that the workflow can be resumed with the persisted data at the time scheduled in the tool..
+        /// </summary>
+        public static string Tool_Flow_SuspendExecution {
+            get {
+                return ResourceManager.GetString("Tool_Flow_SuspendExecution", resourceCulture);
             }
         }
         
@@ -5624,6 +5818,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allows you to read the body as base64.
+        /// </summary>
+        public static string WebReadsBase64BodyHelp {
+            get {
+                return ResourceManager.GetString("WebReadsBase64BodyHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To supply additional header information in your get request, put the header info in here.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string WebRequestHelpHeader {
@@ -5755,6 +5958,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WriteFileHelpContents {
             get {
                 return ResourceManager.GetString("WriteFileHelpContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When selected, it reads the content of the file as base64 format..
+        /// </summary>
+        public static string WriteFileHelpContentsAsBase64 {
+            get {
+                return ResourceManager.GetString("WriteFileHelpContentsAsBase64", resourceCulture);
             }
         }
         

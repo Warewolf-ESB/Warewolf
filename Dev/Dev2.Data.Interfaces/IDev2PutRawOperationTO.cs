@@ -6,5 +6,6 @@ namespace Dev2.Data.Interfaces
     {
         WriteType WriteType { get; set; }
         string FileContents { get; set; }
+        bool FileContentsAsBase64 { get; set; }
     }
 }

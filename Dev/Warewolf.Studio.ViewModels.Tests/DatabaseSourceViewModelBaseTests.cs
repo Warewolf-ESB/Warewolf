@@ -39,8 +39,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod,Timeout(60000)]
-        public void TestServerName()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestDatabaseSourceViewModelBaseServerName()
         {
             //act
             var value = _target.ServerName;
@@ -49,7 +50,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_serverName, value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestDatabaseSourceServerNameWithBrackets()
         {
             //arrange
@@ -66,7 +68,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestGetComputerNames()
         {
             //arrange
@@ -81,7 +84,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(expectedValue, value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestTestDbConnection()
         {
             //arrange
@@ -96,7 +100,8 @@ namespace Warewolf.Studio.ViewModels.Tests
            _updateRepositoryMock.Verify(it=>it.TestDbConnection(dbResourceMock.Object));
             Assert.AreSame(expectedValue, value);
         }
-		[TestMethod,Timeout(60000)]
+		[TestMethod]
+        [Timeout(500)]
 		public void TestSqliteConnection()
 		{
 			//arrange
@@ -111,8 +116,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 			_updateRepositoryMock.Verify(it => it.TestSqliteConnection(dbResourceMock.Object));
 			Assert.AreSame(expectedValue, value);
 		}
-		[TestMethod,Timeout(60000)]
-        public void TestSave()
+		[TestMethod]
+        [Timeout(250)]
+        public void TestDatabaseSourceSave()
         {
             //arrange
             var dbResourceMock = new Mock<IDbSource>();

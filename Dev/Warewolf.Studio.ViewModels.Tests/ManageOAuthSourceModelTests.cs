@@ -34,8 +34,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
 
-        [TestMethod,Timeout(60000)]
-        public void TestSave()
+        [TestMethod]
+        [Timeout(250)]
+        public void OAuthSourceTestSave()
         {
             //arrange
             var resourceMock = new Mock<IOAuthSource>();
@@ -51,8 +52,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod,Timeout(60000)]
-        public void TestServerName()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestOAuthSourceModelServerName()
         {
             //act
             var value = _target.ServerName;
@@ -61,7 +63,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_serverName, value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEmailSourceServerNameBrackets()
         {
             //arrange  

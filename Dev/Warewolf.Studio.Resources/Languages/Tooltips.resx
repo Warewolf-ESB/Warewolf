@@ -1195,16 +1195,12 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ElasticsearchSourcePortTooltip" xml:space="preserve">
     <value>The default port on which elasticsearch listens is 9200.</value>
   </data>
-  <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
-    <value>The server password</value>
-  </data>
   <data name="ElasticsearchUsernameTooltip" xml:space="preserve">
     <value>The Elasticsearch server username</value>
   </data>
   <data name="ElasticsearchSearchIndexTooltip" xml:space="preserve">
     <value>The Elasticsearch server index that will be used to index the data.</value>
   </data>
-  
   <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
     <value>The Elasticsearch server password</value>
   </data>  
@@ -1570,6 +1566,24 @@ To format a number, put the number in here.</value>
 * in Recordset will execute every index in the given recordset.
 * in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... up to the number you specify.
 No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.</value>
+  </data>
+  <data name="SuspendExecutionSuspendOptionsToolTip" xml:space="preserve">
+    <value>Select an option for when the suspended workflow should be resumed.</value>
+  </data>
+  <data name="SuspendExecutionPersistValueToolTip" xml:space="preserve">
+    <value>Enter the value for when the suspended workflow needs to be resumed.</value>
+  </data>
+  <data name="SuspendExecutionEncryptDataToolTip" xml:space="preserve">
+   <value>If selected, the resumption data stored will be encrypted.</value>
+  </data>
+  <data name="SuspendExecutionAllowManualResumptionToolTip" xml:space="preserve">
+   <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
+  </data>
+  <data name="SuspendExecutionResultToolTip" xml:space="preserve">
+    <value>When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption</value>
+  </data>
+  <data name="HangfireDashboardBrowserTooltip" xml:space="preserve">
+    <value>Open this URL in your default browser to view the hangfire dashboard</value>
   </data>
   <data name="FindToolTipTo" xml:space="preserve">
     <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.</value>
@@ -2338,6 +2352,9 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Flow_Gate" xml:space="preserve">
     <value>Tags: gate retry stop end</value>
   </data>
+  <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
+    <value>Tags: suspend stop end pause</value>
+  </data>
   <data name="Tool_Data_Find_Index" xml:space="preserve">
     <value>Tags: search string position</value>
   </data>
@@ -2554,5 +2571,42 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="OptionConditionToolTip" xml:space="preserve">
     <value>OptionConditionToolTip</value>
+  </data>
+  <data name="WriteFileToolTipContentsAsBase64" xml:space="preserve">
+    <value>When selected, it reads the content of the file as base64 format.</value>
+  </data>
+
+  <data name="PersistenceDashboardPortTooltip" xml:space="preserve">
+    <value>The default port on which Persistence listens is 5001</value>
+  </data>
+  <data name="PersistenceDashboardHostNameTooltip" xml:space="preserve">
+    <value>The persistence server name to connect to</value>
+  </data>
+  <data name="PersistenceDashboardNameTooltip" xml:space="preserve">
+    <value>The name the url will map to.</value>
+  </data>
+  <data name="PersistenceServerNameTooltip" xml:space="preserve">
+    <value>The server name the scheduled job will be mapped to.</value>
+  </data>
+  <data name="PersistenceViewSchedulerToolTip" xml:space="preserve">
+    <value>Persistence Scheduler</value>
+  </data>
+  <data name="PersistenceViewDataSourceToolTip" xml:space="preserve">
+    <value>Persistence Data Source</value>
+  </data>
+  <data name="PersistenceViewEnableToolTip" xml:space="preserve">
+    <value>Enable the Persistence Server.</value>
+  </data>
+  <data name="PersistenceViewEncryptToolTip" xml:space="preserve">
+    <value>Encrypt the Persistence Data Source in the Persistence Settings File</value>
+  </data>
+  <data name="PersistenceViewPrepareSchemaIfNecessaryToolTip" xml:space="preserve">
+    <value>Create the tables and index in the database if they dont already exist</value>
+  </data>
+  <data name="IsPutDataBase64Tooltip" xml:space="preserve">
+    <value>Check this to send a base64 formatted body data.</value>
+  </data>
+  <data name="WebReadsBase64BodyTooltip" xml:space="preserve">
+    <value>Check this to read a base64 formatted body data.</value>
   </data>
 </root>

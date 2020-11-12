@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,12 +23,13 @@ using Dev2.Services.Security;
 namespace Dev2.Runtime.WebServer.Security
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public class AuthorizeWebAttribute : AuthorizationFilterAttribute//, IAuthenticationFilter 
+    public class AuthorizeWebAttribute : AuthorizationFilterAttribute //, IAuthenticationFilter
     {
         public AuthorizeWebAttribute()
             : this(ServerAuthorizationService.Instance)
         {
         }
+
         public AuthorizeWebAttribute(IAuthorizationService authorizationService)
         {
             VerifyArgument.IsNotNull("AuthorizationService", authorizationService);
@@ -41,6 +42,11 @@ namespace Dev2.Runtime.WebServer.Security
         {
             VerifyArgument.IsNotNull("actionContext", actionContext);
             var user = actionContext.ControllerContext.RequestContext.Principal;
+            if (actionContext.ActionDescriptor.ActionName == "ExecutePublicTokenWorkflow" ||
+                actionContext.ActionDescriptor.ActionName == "ExecuteLoginWorkflow")
+            {
+                return;
+            }
 
             if (user == null && (actionContext.ActionDescriptor.ActionName == "ExecutePublicWorkflow" || actionContext.ActionDescriptor.ActionName == "ExecuteGetRootLevelApisJson"))
             {
@@ -48,13 +54,14 @@ namespace Dev2.Runtime.WebServer.Security
                 actionContext.ControllerContext.RequestContext.Principal = user;
             }
 
-            if(!user.IsAuthenticated())
+            if (!user.IsAuthenticated())
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
                 return;
             }
+
             var authorizationRequest = GetAuthorizationRequest(actionContext);
-            if(!Service.IsAuthorized(authorizationRequest))
+            if (!Service.IsAuthorized(authorizationRequest))
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
             }
@@ -68,12 +75,12 @@ namespace Dev2.Runtime.WebServer.Security
             {
                 var absolutePath = actionContext.Request.RequestUri.AbsolutePath;
                 var startIndex = GetNameStartIndex(absolutePath);
-                if(startIndex > -1)
+                if (startIndex > -1)
                 {
                     var resourceName = HttpUtility.UrlDecode(absolutePath.Substring(startIndex, absolutePath.Length - startIndex));
                     var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
 
-                    if(resource != null && resource.ResourceType == "ReservedService")
+                    if (resource != null && resource.ResourceType == "ReservedService")
                     {
                         authorizationRequest = new AuthorizationRequest
                         {
@@ -85,7 +92,7 @@ namespace Dev2.Runtime.WebServer.Security
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
@@ -96,7 +103,7 @@ namespace Dev2.Runtime.WebServer.Security
         int GetNameStartIndex(string absolutePath)
         {
             var startIndex = absolutePath.IndexOf("services/", StringComparison.InvariantCultureIgnoreCase);
-            if(startIndex == -1)
+            if (startIndex == -1)
             {
                 return -1;
             }
@@ -104,6 +111,17 @@ namespace Dev2.Runtime.WebServer.Security
             startIndex += 9;
             return startIndex;
         }
-    }
 
+        int GetNameStartIndexForToken(string absolutePath)
+        {
+            var startIndex = absolutePath.IndexOf("token/", StringComparison.InvariantCultureIgnoreCase);
+            if (startIndex == -1)
+            {
+                return -1;
+            }
+
+            startIndex += 5;
+            return startIndex;
+        }
+    }
 }

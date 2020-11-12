@@ -9,26 +9,28 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Threading;
 using Dev2.Common.Interfaces;
+using Dev2.Runtime.Hosting;
+using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer.TransferObjects;
+using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public class WebPostRequestHandler : AbstractWebRequestHandler
     {
-        public WebPostRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog)
-            : base(catalog, testCatalog, testCoverageCatalog)
+        public WebPostRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IEsbChannelFactory esbChannelFactory)
+            : base(catalog, testCatalog, testCoverageCatalog, esbChannelFactory, new SecuritySettings())
         {
-
         }
 
         public WebPostRequestHandler()
+            : this(ResourceCatalog.Instance, TestCatalog.Instance, TestCoverageCatalog.Instance, new DefaultEsbChannelFactory())
         {
-            
         }
+
         public override void ProcessRequest(ICommunicationContext ctx)
         {
             var serviceName = ctx.GetServiceName();
@@ -36,7 +38,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var bookmark = ctx.GetBookmark();
             var workspaceId = ctx.GetWorkspaceID();
             var requestTo = new WebRequestTO();
-            var xml = SubmittedData.GetPostData(ctx);
+            var xml = new SubmittedData().GetPostData(ctx);
 
             if (!string.IsNullOrEmpty(xml))
             {

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
 
             //------------Execute Test---------------------------
             var jsonPermissions = settingsRead.Execute(null, null);
-            var settings = serializer.Deserialize<Settings>(jsonPermissions.ToString());
+            var settings = serializer.Deserialize<Data.Settings.Settings>(jsonPermissions.ToString());
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(settings);
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
 
             //------------Execute Test---------------------------
             var jsonPermissions = settingsRead.Execute(null, null);
-            var settings = JsonConvert.DeserializeObject<Settings>(jsonPermissions.ToString());
+            var settings = JsonConvert.DeserializeObject<Data.Settings.Settings>(jsonPermissions.ToString());
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(settings);
@@ -113,7 +113,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(settings.HasError);
             StringAssert.Contains(settings.Error, invalidFormat);
 
-            var expected = SecurityRead.DefaultPermissions[0];
+            var expected = SecuritySettings.DefaultPermissions[0];
             var actual = settings.Security.WindowsGroupPermissions[0];
 
             var result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
@@ -147,7 +147,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var esb = new SettingsRead();
             var result = esb.HandlesType();
-            Assert.AreEqual("SettingsReadService", result);
+            Assert.AreEqual("SettingsRead", result);
         }
 
         #endregion

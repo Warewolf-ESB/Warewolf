@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -8,6 +7,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2C7F0E32-C4C4-422D-A767-92F3B3510392}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Integration.Tests</RootNamespace>
     <AssemblyName>Dev2.Integration.Tests</AssemblyName>
@@ -58,6 +61,7 @@
     <Compile Include="Redis\RedisCacheIntegrationTests.cs" />
     <Compile Include="Redis\RedisRemoveIntegrationTests.cs" />
     <Compile Include="Redis\TestRedisActivity.cs" />
+    <Compile Include="TestCoverage\TestCoverageCatalogIntegrationTests.cs" />
     <Compile Include="TestResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -255,10 +259,6 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Core.Tests\Dev2.Core.Tests.csproj">
-      <Project>{6a65d99b-61c5-4376-b4f7-71a503f9351f}</Project>
-      <Name>Dev2.Core.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
@@ -339,6 +339,10 @@
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
+      <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
+      <Name>Warewolf.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj">
       <Project>{86df54bb-e37d-4559-8014-13d6030a2242}</Project>
       <Name>Warewolf.Driver.Redis</Name>
@@ -346,6 +350,10 @@
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926CF512-B3FD-410D-AA83-EBDF4C4868DE}</Project>
       <Name>Warewolf.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
+      <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
+      <Name>Warewolf.Language.Parser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
@@ -395,13 +403,13 @@
       <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="Moq">
-      <Version>4.13.1</Version>
+      <Version>4.14.5</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>2.0.0</Version>
+      <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>2.0.0</Version>
+      <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
@@ -413,8 +421,6 @@
       <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

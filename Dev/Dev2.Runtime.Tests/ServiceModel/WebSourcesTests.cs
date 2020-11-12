@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,8 +9,8 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Data.TO;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,11 +19,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Warewolf.Data;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
+    [DoNotParallelize]
     public class WebSourcesTests
     {
         [TestMethod]
@@ -241,6 +243,41 @@ Content-Type: text/html
             result = Encoding.UTF8.GetString(byteData);
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void WebSources_Execute_WebRequestMethod_Get_ExpectExpectBase64String()
+        {
+            var headerString = new List<string> { "a:x", "b:e" };
+            var source = new WebSource { Address = "http://www.msn.com/", AuthenticationType = AuthenticationType.Anonymous };
+
+            var result = WebSources.Execute(source, WebRequestMethod.Get, "http://www.msn.com/", "", false, out var errors, headerString.ToArray());
+
+            Assert.IsTrue(result.IsBase64());
+
+            var client = source.Client;
+            Assert.IsFalse(errors.HasErrors(), "On executing without multipart form data web client source returned at least one error: " + (errors.HasErrors() ? errors.FetchErrors()[0] : ""));
+            Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
+            Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_Execute_WebRequestMethod_Put_ExpectExpectBase64String()
+        {
+            var headerString = new List<string> { "a:x", "b:e" };
+            var source = new WebSource { Address = "http://www.msn.com/", AuthenticationType = AuthenticationType.Anonymous };
+
+            var result = WebSources.Execute(source, WebRequestMethod.Put, "http://www.msn.com/", "", false, out var errors, headerString.ToArray());
+
+            Assert.IsTrue(result.IsBase64());
+
+            var client = source.Client;
+            Assert.IsFalse(errors.HasErrors(), "On executing without multipart form data web client source returned at least one error: " + (errors.HasErrors() ? errors.FetchErrors()[0] : ""));
+            Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
+            Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
         }
     }
 }

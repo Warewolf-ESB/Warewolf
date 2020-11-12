@@ -35,8 +35,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
 
-        [TestMethod,Timeout(60000)]
-        public void TestTestConnection()
+        [TestMethod]
+        [Timeout(1000)]
+        public void Exchange_TestTestConnection()
         {
             //arrange
             var resourceMock = new Mock<IExchangeSource>();
@@ -48,8 +49,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateRepositoryMock.Verify(it => it.TestConnection(resourceMock.Object));
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestSave()
+        [TestMethod]
+        [Timeout(500)]
+        public void ExchangeSourceTestSave()
         {
             //arrange
             var resourceMock = new Mock<IExchangeSource>();
@@ -65,7 +67,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestServerName()
         {
             //act
@@ -75,7 +78,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_serverName, value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestEmailSourceServerNameBrackets()
         {
             //arrange  

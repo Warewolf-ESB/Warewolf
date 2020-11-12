@@ -1,10 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{544C93C6-067C-4026-BD4A-BE9C7C1E9FB8}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.UIBindingTests.Scheduler</RootNamespace>
     <AssemblyName>Warewolf.UIBindingTests.Scheduler</AssemblyName>
@@ -50,9 +53,6 @@
     <Compile Include="Scheduler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
       <Project>{b95b724a-b052-4e18-98a4-88072c8df2c2}</Project>
       <Name>Dev2.Activities.Designers</Name>
@@ -94,15 +94,13 @@
       <Version>1.4.1</Version>
     </PackageReference>
     <PackageReference Include="Moq">
-      <Version>4.13.1</Version>
+      <Version>4.14.5</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>2.0.0</Version>
+      <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>2.0.0</Version>
+      <Version>2.1.2</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

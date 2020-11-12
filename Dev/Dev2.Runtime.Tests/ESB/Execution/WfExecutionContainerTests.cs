@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -29,6 +29,7 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Runtime;
 using Microsoft.VisualBasic.Activities;
 using Warewolf.Auditing;
+using System.IO;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -103,8 +104,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestInitialize]
         public void Setup()
         {
-            Config.Server.EnableDetailedLogging = false;
-            Config.Server.ExecutionLogLevel = LogLevel.DEBUG.ToString();
+            try
+            {
+                Config.Server.EnableDetailedLogging = false;
+                Config.Server.ExecutionLogLevel = LogLevel.DEBUG.ToString();
+            }
+            catch (IOException)
+            {
+                //Threadsafety catch
+            }
             TestStartNode = new FlowStep
             {
                 Action = new DsfNumberFormatActivity(),
@@ -149,6 +157,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
+        [DoNotParallelize]
         public void WfExecutionContainer_ExecuteNode_CheckWhenDataObjectStopExecutionIsTrue_ShouldNotEmptyExecutionExceptionInDataObject()
         {
             //--------------Arrange------------------------------
@@ -252,6 +261,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
+        [DoNotParallelize]
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogActivityExecuteStateAndLogExecuteCompleteState()
         {
             //--------------Arrange------------------------------
@@ -299,6 +309,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
+        [DoNotParallelize]
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogExecuteException()
         {
             //--------------Arrange------------------------------

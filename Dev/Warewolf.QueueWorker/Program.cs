@@ -20,9 +20,11 @@ using System.Threading.Tasks;
 using Warewolf;
 using Warewolf.Auditing;
 using Warewolf.Common;
+using Warewolf.Common.NetStandard20;
+using Warewolf.Execution;
 using Warewolf.Streams;
 using Warewolf.Triggers;
-using static QueueWorker.ExecutionLogger;
+using static Warewolf.Common.NetStandard20.ExecutionLogger;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace QueueWorker

@@ -1,8 +1,7 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -10,9 +9,12 @@
 */
 
 using System;
+using System.Web;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Attribute;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
+using Warewolf.Data;
 
 namespace Dev2.Services.Security
 {
@@ -77,24 +79,116 @@ namespace Dev2.Services.Security
             return permission;
         }
 
-        public static bool Matches(this WindowsGroupPermission permission, string resource)
+        public static bool Matches(this WindowsGroupPermission permission, Guid resourceId)
         {
             if(permission.IsServer)
             {
                 return true;
             }
 
-            if (Guid.TryParse(resource, out Guid resourceId))
-            {
-                return permission.ResourceID == resourceId;
-            }
-            
-            resource = resource?.Replace('/', '\\');
-            if(string.IsNullOrEmpty(resource))
+            return permission.ResourceID == resourceId;
+        }
+
+        public static bool Matches(this WindowsGroupPermission permission, WebName resource)
+        {
+            if(permission.IsServer || resource is null)
             {
                 return true;
             }
-            return permission.ResourceName.Contains("\\" + resource);
+
+            var resourceString = resource.Value<string>();
+
+            if (Guid.TryParse(resourceString, out var resourceId))
+            {
+                var matchingResourceID = permission.ResourceID == resourceId;
+                if (matchingResourceID)
+                {
+                    return true;
+                }
+            }
+
+            var resourcePath = resourceString?.Replace('/', '\\');
+            if(string.IsNullOrEmpty(resourcePath))
+            {
+                return true;
+            }
+
+            var p1 = resourcePath;
+            if (p1.StartsWith(EnvironmentVariables.ResourcePath))
+            {
+                p1 = p1.Replace(EnvironmentVariables.ResourcePath, "");
+            }
+            var permissionResourcePath = permission.ResourcePath;
+            if (permissionResourcePath is null)
+            {
+                return false;
+            }
+            var p2 = "\\" + permissionResourcePath;
+            var pathMatches = p1.StartsWith(p2);
+            return pathMatches;
+        }
+        public static bool Matches(this WindowsGroupPermission permission, IWarewolfResource resource)
+        {
+            if(permission.IsServer)
+            {
+                return true;
+            }
+
+            var matchingResourceID = permission.ResourceID == resource?.ResourceID;
+            if (matchingResourceID)
+            {
+                return true;
+            }
+
+            var resourcePath = resource?.FilePath?.Replace('/', '\\');
+            if(string.IsNullOrEmpty(resourcePath))
+            {
+                return true;
+            }
+
+            var p1 = resourcePath;
+            if (p1.StartsWith(EnvironmentVariables.ResourcePath))
+            {
+                p1 = p1.Replace(EnvironmentVariables.ResourcePath, "");
+            }
+            var permissionResourcePath = permission.ResourcePath;
+            if (permissionResourcePath is null)
+            {
+                return false;
+            }
+
+            var p2 = "\\" + permissionResourcePath;
+            var pathMatches = p1.StartsWith(p2);
+            return pathMatches;
+        }
+
+        public static bool Matches(this WindowsGroupPermission permission, IAuthorizationRequest request)
+        {
+            if(permission.IsServer)
+            {
+                return true;
+            }
+
+            var resourcePath = HttpUtility.UrlDecode(request?.ResourcePath?.Replace('/', '\\') ?? "");
+            if(string.IsNullOrEmpty(resourcePath))
+            {
+                return true;
+            }
+
+            var p1 = resourcePath;
+            if (p1.StartsWith(EnvironmentVariables.ResourcePath))
+            {
+                p1 = p1.Replace(EnvironmentVariables.ResourcePath, "");
+            }
+            var permissionResourcePath = permission.ResourcePath;
+            if (permissionResourcePath is null)
+            {
+                return false;
+            }
+
+            var p2 = "\\" + permissionResourcePath;
+            var pathMatches = p1.StartsWith(p2, StringComparison.InvariantCultureIgnoreCase);
+            return pathMatches;
         }
     }
 }

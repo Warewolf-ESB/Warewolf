@@ -52,7 +52,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #endregion Test initialize
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestRetrieveSources()
         {
             var expectedResult = new ObservableCollection<IComPluginSource>();
@@ -64,8 +65,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchComPluginSources());
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestGetActions()
+        [TestMethod]
+        [Timeout(250)]
+        public void ComPlugin_TestGetActions()
         {
             var expectedResult = new ObservableCollection<IPluginAction>();
             var mockComPluginSource = new Mock<IComPluginSource>();
@@ -78,7 +80,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.PluginActions(mockComPluginSource.Object, mockNamespace.Object));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestGetNameSpaces()
         {
             var expectedResult = new ObservableCollection<INamespaceItem>();
@@ -91,8 +94,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchNamespaces(mockComPluginSource.Object));
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestCreateNewSource()
+        [TestMethod]
+        [Timeout(250)]
+        public void ManageComPluginServiceModel_TestCreateNewSource()
         {
             try
             {
@@ -104,7 +108,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         public void TestEditComPluginSource()
         {
             var mockPluginSource = new Mock<IComPluginSource>();
@@ -115,8 +120,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockPluginSource.Object);
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestService()
+        [TestMethod]
+        [Timeout(500)]
+        public void TestComPluginService()
         {
             var mockPluginInputValues = new Mock<IComPluginService>();
             var expectedResult = string.Empty;

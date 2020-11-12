@@ -32,8 +32,8 @@ namespace Dev2.Web.Tests
         public void AuditController_Resuming_Workflow_Given_UnAuthorizedUser_Authentication()
         {
             //---------------------------------Arrange---------------------------------------
-            var url = "http://localhost:3142/secure/WorkflowResume";
-            var returnedExceptionMessage = "The remote server returned an error: (401) Unauthorized.";
+            const string url = "http://localhost:3142/secure/WorkflowResume";
+            const string returnedExceptionMessage = "The remote server returned an error: (401) Unauthorized.";
 
             var mockContext = new Mock<HttpContextBase>();
             var mockRequest = new Mock<HttpRequestBase>();
@@ -118,8 +118,8 @@ namespace Dev2.Web.Tests
             using (var controller = new AuditController())
             {
                 //-------------------Arrange-----------------------------
-                var validJosonA = @"{ 'AuditType': 'testTypeA','AuditDate':'2019/10/03'}";
-                var validJosonB = @"{ 'AuditType': 'testTypeB','AuditDate':'2019/10/03'}";
+                const string validJosonA = @"{ 'AuditType': 'testTypeA','AuditDate':'2019/10/03'}";
+                const string validJosonB = @"{ 'AuditType': 'testTypeB','AuditDate':'2019/10/03'}";
 
                 var AuditA = JsonConvert.DeserializeObject<Audit>(validJosonA);
                 var AuditB = JsonConvert.DeserializeObject<Audit>(validJosonB);

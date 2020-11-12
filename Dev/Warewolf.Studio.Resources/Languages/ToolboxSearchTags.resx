@@ -363,4 +363,7 @@
   <data name="Tool_Flow_Gate" xml:space="preserve">
     <value>gate retry stop end</value>
   </data>
+  <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
+    <value>suspend stop end pause</value>
+  </data>
 </root>

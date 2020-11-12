@@ -1,4 +1,14 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Linq;
 using Dev2.Studio.Interfaces;
@@ -12,6 +22,7 @@ namespace Warewolf.Studio.ViewModels
     {
         bool _isLoading;
         bool _deployTests;
+        private bool _deployTriggers;
         Version _serverVersion;
         public IDeployStatsViewerViewModel StatsArea { private get; set; }
 
@@ -95,6 +106,20 @@ namespace Warewolf.Studio.ViewModels
             {
                 _deployTests = value;
                 OnPropertyChanged(()=> DeployTests);
+                StatsArea?.CalculateTestsCount();
+                StatsArea?.UpdateStatsArea();
+            }
+        }
+
+        public bool DeployTriggers
+        {
+            get => _deployTriggers;
+            set
+            {
+                _deployTriggers = value;
+                OnPropertyChanged(()=> DeployTriggers);
+                StatsArea?.CalculateTriggersCount();
+                StatsArea?.UpdateStatsArea();
             }
         }
     }

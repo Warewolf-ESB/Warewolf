@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Warewolf.HangfireServer": {
+      "commandName": "Project",
+      "commandLineArgs": "-v"
+    }
+  }
+}

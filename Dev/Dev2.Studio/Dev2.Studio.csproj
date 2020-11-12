@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -7,6 +6,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{62247A80-2266-4295-A8F6-A05507E2796E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Warewolf Studio</AssemblyName>
@@ -40,6 +43,24 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageID>WarewolfStudio</PackageID>
+    <PackageVersion>$(PackageVersion)</PackageVersion>
+    <Title>Warewolf Studio</Title>
+    <Authors>Dev2</Authors>
+    <Copyright>Warewolf - Once bitten, there's no going back
+Copyright 2020 by Warewolf Ltd &lt;alpha@warewolf.io&gt;
+Licensed under GNU Affero General Public License 3.0 or later. 
+Some rights reserved.
+Visit our website for more information &lt;http://warewolf.io/&gt;
+AUTHORS &lt;http://warewolf.io/authors.php&gt; , CONTRIBUTORS &lt;http://warewolf.io/contributors.php&gt;
+@license GNU Affero General Public License &lt;http://www.gnu.org/licenses/agpl-3.0.html&gt;</Copyright>
+    <PackageProjectUrl>https://warewolf.io/</PackageProjectUrl>
+    <PackageLicenseUrl>https://warewolf.io/eula</PackageLicenseUrl>
+    <PackageIconUrl>https://warewolf.io/images/logo.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/warewolf-esb/warewolf</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>
@@ -66,6 +87,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, CC0013, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
     <LangVersion>7.3</LangVersion>
+    <DebugType>none</DebugType>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Dev2.Startup</StartupObject>
@@ -216,6 +238,9 @@
     <Compile Include="Factory\CustomGit.cs" />
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Settings\Persistence\IPersistenceSettings.cs" />
+    <Compile Include="Settings\Persistence\PersistenceView.xaml.cs" />
+    <Compile Include="Settings\Persistence\PersistenceSettingsViewModel.cs" />
     <Compile Include="Triggers\QueueEvents\QueueEventsView.xaml.cs">
       <DependentUpon>QueueEventsView.xaml</DependentUpon>
     </Compile>
@@ -450,6 +475,10 @@
     <Page Include="Settings\Perfcounters\PerfCounterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Persistence\PersistenceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Triggers\Scheduler\SchedulerView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -867,34 +896,16 @@
       <Version>1.0.0</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
-    <PostBuildEvent>
-      xcopy /Y /Q /R "$(TargetPath)" "C:\Development\DEV2 Studio Tests\BusinessDesignStudio.Unit.Tests\BusinessDesignStudio.Unit.Tests\Test References”
-      xcopy /Y /Q /R "$(TargetName).pdb" "C:\Development\DEV2 Studio Tests\BusinessDesignStudio.Unit.Tests\BusinessDesignStudio.Unit.Tests\Test References”
-    </PostBuildEvent>
-  </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PostBuildEvent>if exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Warewolf Studio.exe" (
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x64.dll"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Debug\net48\win"
+)
+if exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Warewolf Studio.exe" (
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x64.dll"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
+  if not exist "$(SolutionDir)Dev2.Studio\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Studio\bin\Release\net48\win"
+)</PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
-    <PostBuildEvent>ROBOCOPY "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
-REM Visual Studio expects 0 when successful
-set rce=%25errorlevel%25
-if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0
-    </PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>if not exist "$(TargetDir)Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
-if not exist "$(TargetDir)Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
-if not exist "$(TargetDir)Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(TargetDir)"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

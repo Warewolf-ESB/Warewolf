@@ -9,6 +9,8 @@
 */
 
 using System;
+using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Interfaces;
 
@@ -30,6 +32,7 @@ namespace Warewolf.Common
     public interface IResourceCatalogProxy
     {
         T GetResourceById<T>(Guid workspaceId, Guid resourceId) where T : class;
+        ExecuteMessage ResumeWorkflowExecution(string resource, string environment, string startActivityId, string versionNumber);
     }
     public class ResourceCatalogProxy : IResourceCatalogProxy
     {
@@ -49,6 +52,16 @@ namespace Warewolf.Common
             communicationController.AddPayloadArgument(Service.GetResourceById.ResourceId, resourceId.ToString());
             var result = communicationController.ExecuteCommand<T>(_environmentConnection, workspaceId);
 
+            return result;
+        }
+        public ExecuteMessage ResumeWorkflowExecution(string resourceId, string environment, string startActivityId, string versionNumber)
+        {
+            var comController = new CommunicationController {ServiceName = "WorkflowResume"};
+            comController.AddPayloadArgument("resourceID", resourceId);
+            comController.AddPayloadArgument("environment", environment);
+            comController.AddPayloadArgument("startActivityId", startActivityId);
+            comController.AddPayloadArgument("versionNumber", versionNumber);
+            var result =  comController.ExecuteCommand<ExecuteMessage>(_environmentConnection, GlobalConstants.ServerWorkspaceID);
             return result;
         }
     }

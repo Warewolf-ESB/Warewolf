@@ -110,14 +110,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1579 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1635 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output Path",
                         "Method",
                         "Username",
                         "Password",
                         "Private Key File",
                         "File Contents"});
-            table1579.AddRow(new string[] {
+            table1635.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", method),
                         string.Format("{0}", username),
@@ -125,14 +125,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", sourcePrivateKeyFile),
                         string.Format("{0}", content)});
 #line 17
- testRunner.And("the debug inputs as", ((string)(null)), table1579, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1635, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1580 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1636 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1580.AddRow(new string[] {
+            table1636.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 20
- testRunner.And("the debug output as", ((string)(null)), table1580, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1636, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -167,7 +167,7 @@ this.WriteFileAtLocation("Local with Overwrite", "[[path]]", "c:\\Temp\\filetowr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC with Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
             "towrite0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
@@ -180,7 +180,7 @@ this.WriteFileAtLocation("Local with Overwrite", "[[path]]", "c:\\Temp\\filetowr
         public virtual void WriteFileAtLocation_Variant1()
         {
 #line 7
-this.WriteFileAtLocation("UNC with Overwrite", "[[path]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
+this.WriteFileAtLocation("UNC with Overwrite", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
                     "towrite0.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -192,7 +192,7 @@ this.WriteFileAtLocation("UNC with Overwrite", "[[path]]", "\\\\SVRPDC.premier.l
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP with Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -204,7 +204,7 @@ this.WriteFileAtLocation("UNC with Overwrite", "[[path]]", "\\\\SVRPDC.premier.l
         public virtual void WriteFileAtLocation_Variant2()
         {
 #line 7
-this.WriteFileAtLocation("FTP with Overwrite", "[[path]]", "ftp://SVRPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite0.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.WriteFileAtLocation("FTP with Overwrite", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite0.txt", "Overwrite", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -215,7 +215,7 @@ this.WriteFileAtLocation("FTP with Overwrite", "[[path]]", "ftp://SVRPDC.premier
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS with Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
@@ -227,7 +227,7 @@ this.WriteFileAtLocation("FTP with Overwrite", "[[path]]", "ftp://SVRPDC.premier
         public virtual void WriteFileAtLocation_Variant3()
         {
 #line 7
-this.WriteFileAtLocation("FTPS with Overwrite", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite0.txt", "Overwrite", "warewolf rules", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.WriteFileAtLocation("FTPS with Overwrite", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite0.txt", "Overwrite", "warewolf rules", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -284,7 +284,7 @@ this.WriteFileAtLocation("Local with Append Top", "[[path]]", "c:\\Temp\\filetow
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC with Append Top")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
             "towrite1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Top")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
@@ -297,7 +297,7 @@ this.WriteFileAtLocation("Local with Append Top", "[[path]]", "c:\\Temp\\filetow
         public virtual void WriteFileAtLocation_Variant6()
         {
 #line 7
-this.WriteFileAtLocation("UNC with Append Top", "[[path]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
+this.WriteFileAtLocation("UNC with Append Top", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
                     "towrite1.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -309,7 +309,7 @@ this.WriteFileAtLocation("UNC with Append Top", "[[path]]", "\\\\SVRPDC.premier.
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP with Append Top")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Top")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -321,7 +321,7 @@ this.WriteFileAtLocation("UNC with Append Top", "[[path]]", "\\\\SVRPDC.premier.
         public virtual void WriteFileAtLocation_Variant7()
         {
 #line 7
-this.WriteFileAtLocation("FTP with Append Top", "[[path]]", "ftp://SVRPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite1.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.WriteFileAtLocation("FTP with Append Top", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite1.txt", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -332,7 +332,7 @@ this.WriteFileAtLocation("FTP with Append Top", "[[path]]", "ftp://SVRPDC.premie
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS with Append Top")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Top")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
@@ -344,7 +344,7 @@ this.WriteFileAtLocation("FTP with Append Top", "[[path]]", "ftp://SVRPDC.premie
         public virtual void WriteFileAtLocation_Variant8()
         {
 #line 7
-this.WriteFileAtLocation("FTPS with Append Top", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite1.txt", "Append Top", "warewolf rules", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.WriteFileAtLocation("FTPS with Append Top", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite1.txt", "Append Top", "warewolf rules", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -401,7 +401,7 @@ this.WriteFileAtLocation("Local with Append Bottom", "[[path]]", "c:\\Temp\\file
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC with Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
             "towrite2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
@@ -414,7 +414,7 @@ this.WriteFileAtLocation("Local with Append Bottom", "[[path]]", "c:\\Temp\\file
         public virtual void WriteFileAtLocation_Variant11()
         {
 #line 7
-this.WriteFileAtLocation("UNC with Append Bottom", "[[path]]", "\\\\SVRPDC.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
+this.WriteFileAtLocation("UNC with Append Bottom", "[[path]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\WriteFileSharedTestingSite\\file" +
                     "towrite2.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -426,7 +426,7 @@ this.WriteFileAtLocation("UNC with Append Bottom", "[[path]]", "\\\\SVRPDC.premi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP with Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
@@ -438,7 +438,7 @@ this.WriteFileAtLocation("UNC with Append Bottom", "[[path]]", "\\\\SVRPDC.premi
         public virtual void WriteFileAtLocation_Variant12()
         {
 #line 7
-this.WriteFileAtLocation("FTP with Append Bottom", "[[path]]", "ftp://SVRPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite2.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.WriteFileAtLocation("FTP with Append Bottom", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORWRITEFILETESTING/filetowrite2.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -449,7 +449,7 @@ this.WriteFileAtLocation("FTP with Append Bottom", "[[path]]", "ftp://SVRPDC.pre
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS with Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://SVRPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:method", "Append Bottom")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:content", "warewolf rules")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
@@ -461,7 +461,7 @@ this.WriteFileAtLocation("FTP with Append Bottom", "[[path]]", "ftp://SVRPDC.pre
         public virtual void WriteFileAtLocation_Variant13()
         {
 #line 7
-this.WriteFileAtLocation("FTPS with Append Bottom", "[[path]]", "ftp://SVRPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite2.txt", "Append Bottom", "warewolf rules", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.WriteFileAtLocation("FTPS with Append Bottom", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORWRITEFILETESTING/filetowrite2.txt", "Append Bottom", "warewolf rules", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -638,27 +638,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 73
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1581 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1637 = new TechTalk.SpecFlow.Table(new string[] {
                         "Username",
                         "Password",
                         "File Contents",
                         "Output Path",
                         "Method"});
-            table1581.AddRow(new string[] {
+            table1637.AddRow(new string[] {
                         string.Format("{0}", username),
                         "String",
                         string.Format("{0}", content),
                         string.Format("<source> = {0}", sourceLocation),
                         string.Format("{0}", method)});
 #line 74
- testRunner.And("the debug inputs as", ((string)(null)), table1581, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1637, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1582 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1638 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1582.AddRow(new string[] {
+            table1638.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 77
- testRunner.And("the debug output as", ((string)(null)), table1582, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1638, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

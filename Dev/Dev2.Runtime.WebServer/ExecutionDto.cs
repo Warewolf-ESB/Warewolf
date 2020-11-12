@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,16 +10,19 @@
 */
 
 using System;
+using System.Linq;
+using System.Net;
 using System.Runtime;
+using System.Text;
+using System.Web;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.Decision;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
-using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
@@ -56,7 +59,6 @@ namespace Dev2.Runtime.WebServer
         public DataListFormat DataListFormat { get; set; }
         public Dev2JsonSerializer Serializer { get; set; }
         public ErrorResultTO ErrorResultTO { get; set; }
-
     }
 
     public class ExecutionDtoExtensions
@@ -68,7 +70,55 @@ namespace Dev2.Runtime.WebServer
             _executionDto = executionDto;
         }
 
+        public class ResponseData
+        {
+            private ResponseData(string content)
+            {
+                Content = content;
+            }
+
+            private ResponseData(string content, string contentType)
+                : this(content)
+            {
+                ContentType = contentType;
+            }
+
+            private ResponseData(HttpException exception, string content)
+                : this(content)
+            {
+                Exception = exception;
+            }
+            public string Content { get; }
+            public string ContentType { get; }
+            public HttpException Exception { get; }
+
+            public static ResponseData FromExecutionDto(IExecutionDto executionDto, string contentType)
+            {
+                return new ResponseData(executionDto.PayLoad, contentType);
+            }
+
+            public static ResponseData FromException(HttpException exception, string content)
+            {
+                return new ResponseData(exception, content);
+            }
+
+            public IResponseWriter ToResponseWriter(IStringResponseWriterFactory stringResponseWriterFactory)
+            {
+                if (Exception != null)
+                {
+                    return new ExceptionResponseWriter(HttpStatusCode.InternalServerError, Content);
+                }
+
+                return stringResponseWriterFactory.New(Content, ContentType);
+            }
+        }
+
         public IResponseWriter CreateResponseWriter(IStringResponseWriterFactory stringResponseWriterFactory)
+        {
+            var responseData = CreateResponse();
+            return responseData.ToResponseWriter(stringResponseWriterFactory);
+        }
+        public ResponseData CreateResponse()
         {
             var dataObject = _executionDto.DataObject;
             var esbExecuteRequest = _executionDto.Request;
@@ -90,10 +140,11 @@ namespace Dev2.Runtime.WebServer
                 if (dataObject.ExecutionException is null)
                 {
                     _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
-                } else
+                }
+                else
                 {
                     var content = GetExecuteExceptionPayload(dataObject);
-                    return new ExceptionResponseWriter(System.Net.HttpStatusCode.InternalServerError, content);
+                    return ResponseData.FromException(new HttpException((int)HttpStatusCode.InternalServerError, "internal server error"), content);
                 }
             }
             else
@@ -116,20 +167,22 @@ namespace Dev2.Runtime.WebServer
 
             if (dataObject.Environment.HasErrors())
             {
-                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine,string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
             }
             else
             {
                 Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (_executionDto.PayLoad ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
             }
+
             if (!dataObject.Environment.HasErrors() && wasInternalService)
             {
                 TryGetFormatter(ref formatter);
             }
+
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-            
+
             CleanUp(_executionDto);
-            return stringResponseWriterFactory.New(_executionDto.PayLoad, formatter.ContentType);
+            return ResponseData.FromExecutionDto(_executionDto, formatter.ContentType);
         }
 
         void TryGetFormatter(ref DataListFormat formatter)
@@ -147,12 +200,14 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
+
         string GetExecutePayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug && resource?.DataList != null)
             {
-                switch (dataObject.ReturnType) {
+                switch (dataObject.ReturnType)
+                {
                     case EmitionTypes.XML:
                     {
                         return ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
@@ -170,8 +225,11 @@ namespace Dev2.Runtime.WebServer
                     }
                 }
             }
+
             return string.Empty;
         }
+
+
 
         string GetExecuteExceptionPayload(IDSFDataObject dataObject)
         {
@@ -188,10 +246,11 @@ namespace Dev2.Runtime.WebServer
                     case EmitionTypes.SWAGGER:
                     case EmitionTypes.JSON:
                     {
-                        return JsonConvert.SerializeObject(new { Message = dataObject.ExecutionException.Message });
+                        return JsonConvert.SerializeObject(new {Message = dataObject.ExecutionException.Message});
                     }
                 }
             }
+
             return string.Empty;
         }
 
@@ -200,8 +259,7 @@ namespace Dev2.Runtime.WebServer
             dto.DataObject = null;
             dto.ErrorResultTO.ClearErrors();
             GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-            GC.Collect(3,GCCollectionMode.Forced,false);
+            GC.Collect(3, GCCollectionMode.Forced, false);
         }
-
     }
 }

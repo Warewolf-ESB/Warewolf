@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -105,6 +105,11 @@ using Dev2.Activities.Designers2.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
+using Dev2.Activities.Designers2.PathOperations.WriteFile;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
+using Dev2.Activities.Designers2.WebGet;
+using Dev2.Activities.Designers2.Web_Put;
+using Dev2.Activities.Designers2.SuspendExecution;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -147,6 +152,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfFileRead), typeof(ReadFileDesigner) },
                 { typeof(FileReadWithBase64), typeof(ReadFileWithBase64Designer) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
+                { typeof(FileWriteActivity), typeof(WriteFileActivityDesigner) },
                 { typeof(DsfFolderRead), typeof(Activities.Designers2.ReadFolder.ReadFolderDesigner) },
                 { typeof(DsfFolderReadActivity), typeof(Activities.Designers2.ReadFolderNew.ReadFolderDesigner) },
                 { typeof(DsfPathRename), typeof(RenameDesigner) },
@@ -179,9 +185,11 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
+                { typeof(WebGetActivity), typeof(WebGetActivityDesigner) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
+                { typeof(WebPutActivity), typeof(WebPutActivityDesigner) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },
                 { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteDesigner) },
@@ -207,7 +215,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(RedisRemoveActivity), typeof(RedisRemoveDesigner) },
                 { typeof(RedisCacheActivity), typeof(RedisCacheDesigner) },
                 { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
-                { typeof(GateActivity), typeof(GateDesigner) }
+                { typeof(GateActivity), typeof(GateDesigner) },
+                { typeof(SuspendExecutionActivity), typeof(SuspendExecutionDesigner) },
             };
         static Hashtable _hashTable;
 

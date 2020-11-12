@@ -458,7 +458,7 @@
     <value>Test the connection to the Database. </value>
   </data>
   <data name="ElasticsearchSourceTestConnectionHelp" xml:space="preserve">
-     <value>Test the elasticsearch source connection</value>
+    <value>Test the elasticsearch source connection</value>
   </data>
   <data name="DecisionHelpDisplayText" xml:space="preserve">
     <value>On the small view on the design surface, this text will show to help identify what decision is being made and will not affect execution.</value>
@@ -747,8 +747,20 @@
   <data name="DeployNewResourcesViewHelp" xml:space="preserve">
     <value>These are the new resources that will be found on the remote server after deploy.</value>
   </data>
+  <data name="DeployNewTestsViewHelp" xml:space="preserve">
+    <value>These are the new tests that will be found on the remote server after deploy.</value>
+  </data>
+  <data name="DeployNewTriggersViewHelp" xml:space="preserve">
+    <value>These are the new triggers that will be found on the remote server after deploy.</value>
+  </data>
   <data name="DeployOverridesCountViewHelp" xml:space="preserve">
     <value>These resources will be overwritten on the destination server</value>
+  </data>
+  <data name="DeployOverridesTestsCountViewHelp" xml:space="preserve">
+    <value>These tests will be overwritten on the destination server</value>
+  </data>
+  <data name="DeployOverridesTriggersCountViewHelp" xml:space="preserve">
+    <value>These triggers will be overwritten on the destination server</value>
   </data>
   <data name="DeploySelectDependenciesHelp" xml:space="preserve">
     <value>Automatically include everything that this resource would need to execute at the destination.&lt;br/&gt;	&lt;br/&gt;	&lt;b&gt;Warning: &lt;b/&gt;Deploying Sources that are already on the destination Server, will overwrite their connection strings. </value>
@@ -1660,6 +1672,14 @@ A test must be ignored/disabled before it can be deleted.</value>
   <data name="SettingsSecurityServerHelpWindowsGroup" xml:space="preserve">
     <value>To set server wide permissions for security, enter the Windows Group name or "Public" here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct windows group.	By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.	Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission. 	The Public group grants any and every user those permissions.</value>
   </data>
+  <data name="SettingsSecurityOverrideAuthHelpText" xml:space="preserve">
+    <value>Use a public workflow to associate a username and password with a set of group names that that user belongs to.
+      &lt;br/&gt;&lt;br/&gt;
+      Make sure the workflow has a recordset with the name [[UserGroups(*).Name]] containing these group names set to output.
+      &lt;br/&gt;&lt;br/&gt;
+      Any request that contains the resulting hashed token will be considered to be in these groups.
+    </value>
+  </data>
   <data name="SharepointDeleteHelpResult" xml:space="preserve">
     <value>Only variables go in here.	Returns the number of records deleted.	You can use [[Scalar]] as well as [[Recordset().Fields]].	Using recordset () will add a new record and (*) will assign every record.	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
@@ -1818,7 +1838,7 @@ A test must be ignored/disabled before it can be deleted.</value>
      Cannot include special characters&lt;br/&gt;
      Cannot be longer than 255 characters&lt;br/&gt;
     </value>
-  </data>  
+  </data>
   <data name="WarewolfDefaultHelpDescription" xml:space="preserve">
     <value>&lt;h2&gt; Warewolf Help &lt;/h2&gt; 	For more information, follow the link below.	&lt;br/&gt;&lt;br/&gt;	&lt;a href="http://warewolf.io/knowledge-base/" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
   </data>
@@ -2396,9 +2416,8 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>The Data source for the auditing database.</value>
   </data>
   <data name="LoggingViewEncryptHelpText" xml:space="preserve">
-     <value>Encrypt the Logging Data Source in the Auditing Settings File</value>
+    <value>Encrypt the Logging Data Source in the Auditing Settings File</value>
   </data>
-
   <data name="RedisRemoveResultHelp" xml:space="preserve">
     <value>Only variables go in here.	Returns Success if the key to remove was found and removed or Failure otherwise.</value>
   </data>
@@ -2458,5 +2477,59 @@ The conflicts on the left will show your current workflow changes and the confli
   </data>
   <data name="OptionConditionRightHelpText" xml:space="preserve">
     <value>OptionConditionRightHelpText</value>
+  </data>
+  <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
+      <value>Use the Suspend Execution tool when you need to suspend execution of a workflow and persist the data so that the workflow can be resumed with the persisted data at the time scheduled in the tool.</value>
+  </data>
+  <data name="PersistenceDashboardPortHelp" xml:space="preserve">
+    <value>The default port on which Persistence listens is 5001.</value>
+  </data>
+  <data name="PersistenceDashboardHostNameHelp" xml:space="preserve">
+    <value>The persistence server name to connect to. The default is the localhost.</value>
+  </data>
+  <data name="PersistenceDashboardNameHelp" xml:space="preserve">
+    <value>The name the url will map to.</value>
+  </data>
+  <data name="PersistenceServerNameHelp" xml:space="preserve">
+      <value>The server name the scheduled job will be mapped to.</value>
+  </data>
+  <data name="PersistenceViewSchedulerHelpText" xml:space="preserve">
+    <value>The Scheduler that will handle the persistence of workflow executions</value>
+  </data>
+  <data name="PersistenceViewAuditsDataSourceHelpText" xml:space="preserve">
+    <value>The Data source for the Persistence database. Sql Server is currently supported.</value>
+  </data>
+  <data name="PersistenceViewEnableHelpText" xml:space="preserve">
+     <value>This will start the Persistence Server. Only once this is enabled will persistence occur with the Suspend Execution Tool.</value>
+  </data>
+  <data name="PersistenceViewEncryptHelpText" xml:space="preserve">
+     <value>Encrypt the Persistence Data Source in the Persistence Settings File</value>
+  </data>
+  <data name="PersistenceViewPrepareSchemaIfNecessaryHelpText" xml:space="preserve">
+      <value>Create the tables and index in the database if they dont already exist</value>
+  </data>
+  <data name="SuspendExecutionSuspendOptionsHelpText" xml:space="preserve">
+      <value>Select an option for when the suspended workflow should be resumed.</value>
+  </data>
+  <data name="SuspendExecutionPersistValueHelpText" xml:space="preserve">
+    <value>Enter the value for when the suspended workflow needs to be resumed.</value>
+  </data>
+  <data name="SuspendExecutionResultHelpText" xml:space="preserve">
+       <value>When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption</value>
+  </data>
+  <data name="SuspendExecutionEncryptDataHelpText" xml:space="preserve">
+      <value>If selected, the resumption data stored will be encrypted.</value>
+  </data>
+  <data name="SuspendExecutionAllowManualResumptionHelpText" xml:space="preserve">
+      <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
+  </data>
+  <data name="WriteFileHelpContentsAsBase64" xml:space="preserve">
+    <value>When selected, it reads the content of the file as base64 format.</value>
+  </data>
+  <data name="IsPutDataBase64HelpText" xml:space="preserve">
+    <value>Allows you to send the body as base64</value>
+  </data>
+  <data name="WebReadsBase64BodyHelp" xml:space="preserve">
+    <value>Allows you to read the body as base64</value>
   </data>
 </root>

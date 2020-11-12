@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going bac
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -766,7 +766,7 @@ namespace Dev2.Activities.Specs.Composition
                 }
                 else if (resource.ServerResourceType == "WebService")
                 {
-                    var updatedActivity = new DsfWebGetActivity();
+                    var updatedActivity = new WebGetActivity();
                     var xml = resource.ToServiceDefinition(true).ToXElement();
                     var service = new WebService(xml);
                     var source = service.Source as WebSource;
@@ -2417,7 +2417,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var serializer = new Dev2JsonSerializer();
 
-            var dsfWebGetActivity = new DsfWebGetActivity
+            var dsfWebGetActivity = new WebGetActivity
             {
                 DisplayName = activityName
                 ,

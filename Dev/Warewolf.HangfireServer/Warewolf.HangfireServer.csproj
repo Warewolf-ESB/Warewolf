@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net48</TargetFramework>
+        <RuntimeIdentifier>win</RuntimeIdentifier>
+        <AssemblyName>HangfireServer</AssemblyName>
+        <ApplicationIcon />
+        <StartupObject />
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.6.0" />
+        <PackageReference Include="Hangfire.Core" Version="1.7.13" />
+        <PackageReference Include="Hangfire.SqlServer" Version="1.7.13" />
+        <PackageReference Include="Microsoft.Owin.Hosting" Version="4.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
+      <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
+      <ProjectReference Include="..\Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj" />
+      <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
+      <ProjectReference Include="..\Warewolf.Driver.Resume\Warewolf.Driver.Resume.csproj" />
+      <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,9 +16,11 @@ using System.Linq;
 using System.Text;
 using Dev2;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Triggers;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -28,13 +30,23 @@ namespace Warewolf.Studio.ViewModels
         int _connectors;
         int _services;
         int _sources;
+        int _tests;
+        int _triggers;
         int _unknown;
         int _newResources;
+        int _newTests;
+        int _newTriggers;
         int _overrides;
+        int _overridesTests;
+        int _overridesTriggers;
         string _status;
         public string RenameErrors { get; private set; }
         List<Conflict> _conflicts;
+        List<Conflict> _testsConflicts;
+        List<Conflict> _triggersConflicts;
         IEnumerable<IExplorerTreeItem> _new;
+        IEnumerable<IExplorerTreeItem> _testsNew;
+        IEnumerable<IExplorerTreeItem> _triggersNew;
         IList<IExplorerTreeItem> _items;
         ICollection<IExplorerItemViewModel> _destinationItems;
 
@@ -94,6 +106,26 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public int Tests
+        {
+            get => _tests;
+            set
+            {
+                _tests = value;
+                OnPropertyChanged(() => Tests);
+            }
+        }
+
+        public int Triggers
+        {
+            get => _triggers;
+            set
+            {
+                _triggers = value;
+                OnPropertyChanged(() => Triggers);
+            }
+        }
+
         public int Unknown
         {
             get => _unknown;
@@ -114,6 +146,26 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public int NewTests
+        {
+            get => _newTests;
+            set
+            {
+                _newTests = value;
+                OnPropertyChanged(() => NewTests);
+            }
+        }
+
+        public int NewTriggers
+        {
+            get => _newTriggers;
+            set
+            {
+                _newTriggers = value;
+                OnPropertyChanged(() => NewTriggers);
+            }
+        }
+
         public int Overrides
         {
             get => _overrides;
@@ -121,6 +173,25 @@ namespace Warewolf.Studio.ViewModels
             {
                 _overrides = value;
                 OnPropertyChanged(() => Overrides);
+            }
+        }
+        public int OverridesTests
+        {
+            get => _overridesTests;
+            set
+            {
+                _overridesTests = value;
+                OnPropertyChanged(() => OverridesTests);
+            }
+        }
+
+        public int OverridesTriggers
+        {
+            get => _overridesTriggers;
+            set
+            {
+                _overridesTriggers = value;
+                OnPropertyChanged(() => OverridesTriggers);
             }
         }
 
@@ -196,11 +267,22 @@ namespace Warewolf.Studio.ViewModels
                 Connectors = 0;
                 Services = 0;
                 Sources = 0;
+                Tests = 0;
+                Triggers = 0;
                 Unknown = 0;
                 _conflicts = new List<Conflict>();
+                _testsConflicts = new List<Conflict>();
+                _triggersConflicts = new List<Conflict>();
+
                 _new = new List<IExplorerTreeItem>();
+                _testsNew = new List<IExplorerTreeItem>();
+                _triggersNew = new List<IExplorerTreeItem>();
             }
 
+            UpdateStatsArea();
+        }
+        public void UpdateStatsArea()
+        {
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
@@ -222,6 +304,9 @@ namespace Warewolf.Studio.ViewModels
                                         && IsSource(a.ResourceType)
                                         && a.IsResourceChecked == true);
 
+            CalculateTestsCount();
+            CalculateTriggersCount();
+
             Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
 
             CalculateNewItems(items);
@@ -230,9 +315,36 @@ namespace Warewolf.Studio.ViewModels
             NewResources = New.Count;
         }
 
+        public void CalculateTestsCount()
+        {
+            Tests = _destination.DeployTests ? _items.Where(IsServiceResource).Sum(CountResourceTests) : 0;
+        }
+
+        public void CalculateTriggersCount()
+        {
+            Triggers = _destination.DeployTriggers ? _items.Where(IsServiceResource).Sum(CountResourceTriggerQueues) : 0;
+        }
+
+        private static bool IsServiceResource(IExplorerTreeItem item)
+        {
+            return !string.IsNullOrEmpty(item.ResourceType)
+                   && item.IsResourceChecked is true
+                   && item.ResourceType == @"WorkflowService";
+        }
+
+        private static int CountResourceTests(IExplorerTreeItem item)
+        {
+            return LoadResourceTestsForDeploy(item)?.Count ?? 0;
+        }
+
+        private static int CountResourceTriggerQueues(IExplorerTreeItem item)
+        {
+            return LoadResourceTriggersForDeploy(item)?.Count ?? 0;
+        }
+
         private void CalculateNewItems(IList<IExplorerTreeItem> items)
         {
-            if (_destination.SelectedEnvironment != null && _destination.SelectedEnvironment.UnfilteredChildren != null)
+            if (_destination.SelectedEnvironment?.UnfilteredChildren != null)
             {
                 var explorerTreeItems = SetAllConflictsAndGetTreeItems(items);
 
@@ -253,18 +365,44 @@ namespace Warewolf.Studio.ViewModels
             var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
             var idConflicts = from b in explorerTreeItems
                               join explorerTreeItem in items on b.ResourceId equals explorerTreeItem.ResourceId
-                              where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
-                              select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
+                              where IsValidConflicts(b, explorerTreeItem)
+                              select CreateConflict(explorerTreeItem, b);
 
             var pathConflicts = from b in explorerTreeItems
                                 join explorerTreeItem in items on b.ResourcePath equals explorerTreeItem.ResourcePath
-                                where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
-                                select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
+                                where IsValidConflicts(b, explorerTreeItem)
+                                select CreateConflict(explorerTreeItem, b);
+
             var allConflicts = new List<Conflict>();
             allConflicts.AddRange(idConflicts);
             allConflicts.AddRange(pathConflicts);
             _conflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
             return explorerTreeItems;
+        }
+
+        private static List<IServiceTestModelTO> LoadResourceTestsForDeploy(IExplorerTreeItem explorerTreeItem)
+        {
+            return explorerTreeItem.Server?.ResourceRepository?.LoadResourceTestsForDeploy(explorerTreeItem.ResourceId);
+        }
+
+        private static List<ITriggerQueue> LoadResourceTriggersForDeploy(IExplorerTreeItem explorerTreeItem)
+        {
+            return explorerTreeItem.Server?.ResourceRepository?.LoadResourceTriggersForDeploy(explorerTreeItem.ResourceId);
+        }
+
+        private static bool IsValidConflicts(IExplorerTreeItem b, IExplorerTreeItem treeItem)
+        {
+            return b.ResourceType != @"Folder" && treeItem.ResourceType != @"Folder" && treeItem.IsResourceChecked.HasValue && treeItem.IsResourceChecked.Value;
+        }
+        private static Conflict CreateConflict(IExplorerTreeItem explorerTreeItem, IExplorerTreeItem b)
+        {
+            return new Conflict
+            {
+                SourceName = explorerTreeItem.ResourcePath,
+                DestinationName = b.ResourcePath,
+                DestinationId = b.ResourceId,
+                SourceId = explorerTreeItem.ResourceId
+            };
         }
 
         private void CalculateRenameErrors(IList<IExplorerTreeItem> treeItems, IExplorerItemViewModel[] viewModels)
@@ -291,12 +429,30 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();
+        public IList<Conflict> TestsConflicts => _testsConflicts.ToList();
+        public IList<Conflict> TriggersConflicts => _triggersConflicts.ToList();
 
         public IList<IExplorerTreeItem> New
         {
             get
             {
                 var explorerTreeItems = _new.Where(a => a.ResourceType != @"Folder").ToList();
+                return explorerTreeItems;
+            }
+        }
+        public IList<IExplorerTreeItem> TestsNew
+        {
+            get
+            {
+                var explorerTreeItems = _testsNew.Where(a => a.ResourceType != @"Folder").ToList();
+                return explorerTreeItems;
+            }
+        }
+        public IList<IExplorerTreeItem> TriggersNew
+        {
+            get
+            {
+                var explorerTreeItems = _triggersNew.Where(a => a.ResourceType != @"Folder").ToList();
                 return explorerTreeItems;
             }
         }

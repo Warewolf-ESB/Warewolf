@@ -37,8 +37,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-        [TestMethod,Timeout(60000)]
-        public void TestCancelCommandCanExecute()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestCancelDllChooserCommandCanExecute()
         {
             //act
             var result = _target.CancelCommand.CanExecute(null);
@@ -47,8 +48,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestCancelCommandExecute()
+        [TestMethod]
+        [Timeout(250)]
+        public void DllChooser_TestCancelCommandExecute()
         {
             //act
             _target.CancelCommand.Execute(null);
@@ -57,7 +59,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNull(_target.SelectedDll);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSelectCommandCanExecute()
         {
             //act
@@ -67,7 +70,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         public void TestSaveCommandExecute()
         {
             //act
@@ -82,7 +86,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestSelectedDll()
         {
             //act
@@ -92,7 +97,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_modelMock.Object, _target.SelectedDll);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsLoading()
         {
             //act
@@ -102,8 +108,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsLoading);
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestSearchTerm()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestDLLSearchTerm()
         {
             //act
             var expectedValue = "textFilter";

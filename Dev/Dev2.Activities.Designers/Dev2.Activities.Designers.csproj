@@ -1,11 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Activities</RootNamespace>
     <AssemblyName>Dev2.Activities.Designers</AssemblyName>
@@ -224,6 +226,38 @@
     <Compile Include="Designers2\Sequence\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Web Service Put\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Put\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Put\WebPutDesigner.xaml.cs" />
+    <Compile Include="Designers2\Web Service Put\WebServicePutViewModel.cs" />
+    <Compile Include="Designers2\Web Service Get\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Get\WebGetActivityViewModel.cs" />
+    <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
+    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs" />
+    <Compile Include="Designers2\WriteFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PathOperations\WriteFile\WriteFileActivityDesigner.xaml.cs" />
+    <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
+      <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\WriteFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SuspendExecution\Large.xaml.cs" />
+    <Compile Include="Designers2\SuspendExecution\SuspendExecutionDesigner.xaml.cs" />
+    <Compile Include="Designers2\SuspendExecution\Small.xaml.cs" />
+    <Compile Include="Designers2\SuspendExecution\SuspendExecutionDesignerViewModel.cs" />
     <Compile Include="Utils\ObservableAwareNameValue.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
@@ -1105,17 +1139,17 @@
     </Compile>
     <Compile Include="Designers2\WCFEndPoint\WcfEndPointViewModel.cs" />
     <Compile Include="Designers2\Core\IServiceInputBuilder.cs" />
-    <Compile Include="Designers2\Web Service Put\Large.xaml.cs">
+    <Compile Include="Designers2\Web Put\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Core\ServiceInputBuilder.cs" />
-    <Compile Include="Designers2\Web Service Put\Small.xaml.cs">
+    <Compile Include="Designers2\Web Put\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Put\WebPutDesigner.xaml.cs">
-      <DependentUpon>WebPutDesigner.xaml</DependentUpon>
+    <Compile Include="Designers2\Web Put\WebPutActivityDesigner.xaml.cs">
+      <DependentUpon>WebPutActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Put\WebServicePutViewModel.cs" />
+    <Compile Include="Designers2\Web Put\WebPutActivityViewModel.cs" />
     <Compile Include="Designers2\Web Service Delete\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1126,16 +1160,13 @@
     <Compile Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml.cs">
       <DependentUpon>WebDeleteDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs">
-      <DependentUpon>WebGetDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\Web Service Get\Large.xaml.cs">
+    <Compile Include="Designers2\Web Get\WebGetActivityDesigner.xaml.cs" />
+    <Compile Include="Designers2\Web Get\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get\Small.xaml.cs">
+    <Compile Include="Designers2\Web Get\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
     <Compile Include="Designers2\Web Service Post\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1146,14 +1177,11 @@
       <DependentUpon>WebPostDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Web Service Post\WebServicePostViewModel.cs" />
-    <Compile Include="Designers2\WriteFile\Large.xaml.cs">
+    <Compile Include="Designers2\PathOperations\WriteFile\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
-      <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\WriteFile\WriteFileDesignerViewModel.cs" />
-    <Compile Include="Designers2\WriteFile\Small.xaml.cs">
+    <Compile Include="Designers2\PathOperations\WriteFile\WriteFileActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\PathOperations\WriteFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\XPath\Large.xaml.cs">
@@ -2312,6 +2340,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\SuspendExecution\Large.xaml" />
+    <Page Include="Designers2\SuspendExecution\SuspendExecutionDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SuspendExecution\Small.xaml" />
     <Page Include="Designers2\Switch\ConfigureSwitch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -2357,14 +2391,38 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Web Service Put\Large.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Web Service Put\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Put\WebPutDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Get\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Get\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Get\WebGetDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Put\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Web Service Put\WebPutDesigner.xaml">
+    <Page Include="Designers2\Web Put\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Put\WebPutActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2380,15 +2438,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Web Service Get\WebGetDesigner.xaml">
+    <Page Include="Designers2\Web Get\WebGetActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Web Service Get\Large.xaml">
+    <Page Include="Designers2\Web Get\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\Web Service Get\Small.xaml">
+    <Page Include="Designers2\Web Get\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2405,14 +2463,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\WriteFile\Large.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\WriteFile\WriteFileDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\WriteFile\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\PathOperations\WriteFile\WriteFileActivityDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\WriteFile\WriteFileDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\PathOperations\WriteFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\PathOperations\WriteFile\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2469,7 +2539,6 @@
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="1.4.1" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

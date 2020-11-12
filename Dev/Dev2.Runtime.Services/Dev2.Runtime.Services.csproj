@@ -1,11 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Runtime</RootNamespace>
     <AssemblyName>Dev2.Runtime.Services</AssemblyName>
@@ -117,18 +119,23 @@
     <Compile Include="ESB\Management\Services\DeleteTriggerQueueService.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
     <Compile Include="ESB\Management\Services\FetchElasticsearchServiceSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchTriggersForDeploy.cs" />
     <Compile Include="ESB\Management\Services\FindAutocompleteOptions.cs" />
     <Compile Include="ESB\Management\Services\FindOptionsBy.cs" />
     <Compile Include="ESB\Management\Services\GetAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\GetPersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\GetResourceById.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByType.cs" />
     <Compile Include="ESB\Management\Services\GetExecutionHistory.cs" />
     <Compile Include="ESB\Management\Services\FindOptions.cs" />
     <Compile Include="ESB\Management\Services\FetchTriggerQueues.cs" />
+    <Compile Include="ESB\Management\Services\PersistenceSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SaveAuditingSettings.cs" />
+    <Compile Include="ESB\Management\Services\SavePersistenceSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveRedisSource.cs" />
     <Compile Include="ESB\Management\Services\SaveElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\SaveTriggerQueueService.cs" />
+    <Compile Include="ESB\Management\Services\SaveTriggers.cs" />
     <Compile Include="ESB\Management\Services\TestElasticsearchSource.cs" />
     <Compile Include="ESB\Management\Services\TestRedisSource.cs" />
     <Compile Include="ESB\Management\Services\WorkflowResume.cs" />
@@ -245,7 +252,6 @@
     <Compile Include="ESB\Management\Services\SaveWebService.cs" />
     <Compile Include="ESB\Management\Services\SaveRabbitMQServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebserviceSource.cs" />
-    <Compile Include="ESB\Management\Services\SecurityEncryption.cs" />
     <Compile Include="ESB\Management\Services\SecurityRead.cs" />
     <Compile Include="ESB\Management\Services\SecurityWrite.cs" />
     <Compile Include="ESB\Management\Services\SettingsRead.cs" />
@@ -318,6 +324,7 @@
     <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDuplicateProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceLoadProvider.cs" />
+    <Compile Include="ResourceCatalogImpl\ResourceNameProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceRenameProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSaveProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceSyncProvider.cs" />
@@ -401,6 +408,7 @@
     <Compile Include="Configuration\SettingsProvider.cs" />
     <Compile Include="ServiceModel\RabbitMQSources.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
+    <Compile Include="ServiceTestCoverageModelToFactory.cs" />
     <Compile Include="TestCatalog.cs" />
     <Compile Include="TestCoverageCatalog.cs" />
     <Compile Include="Utilities.cs" />
@@ -553,13 +561,13 @@
       <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client">
-      <Version>5.2.3</Version>
+      <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core">
-      <Version>5.2.3</Version>
+      <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors">
-      <Version>5.2.3</Version>
+      <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CompilerServices.AsyncTargetingPack">
       <Version>1.0.0</Version>
@@ -568,10 +576,10 @@
       <Version>2.2.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Security">
-      <Version>4.0.1</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.SelfHost">
-      <Version>4.0.1</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="MySql.Data">
       <Version>6.9.9</Version>
@@ -610,7 +618,6 @@
   <ItemGroup>
     <Folder Include="Triggers\" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

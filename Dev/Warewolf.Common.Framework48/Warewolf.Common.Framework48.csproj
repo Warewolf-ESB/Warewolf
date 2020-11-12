@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
@@ -17,6 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,4 +30,8 @@
     <ProjectReference Include="..\Warewolf.ServiceDefinitions\Warewolf.ServiceDefinitions.csproj" />
   </ItemGroup>
 
+  <Target Name="BeforeBuild">
+    <Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -nologo -noprofile -file &quot;$(SolutionDir)Warewolf.Common.Framework48\GithubNugetSourcesKey.ps1&quot;" />
+  </Target>
+  
 </Project>
