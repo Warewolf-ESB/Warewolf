@@ -6,6 +6,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Activities.Designers.Tests</RootNamespace>
     <AssemblyName>Dev2.Activities.Designers.Tests</AssemblyName>
@@ -96,6 +100,7 @@
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
     <Compile Include="Core\WebOutputsRegionTests.cs" />
+    <Compile Include="Core\WebPutInputRegionTests.cs" />
     <Compile Include="Core\WebPutInputRegionTest.cs" />
     <Compile Include="Core\WebPostInputRegionTest.cs" />
     <Compile Include="Core\WebServiceHeaderBuilderTests.cs" />
@@ -224,6 +229,7 @@
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
     <Compile Include="SqlServer\TestSqlServerViewModel.cs" />
+    <Compile Include="SuspendExecution\SuspendExecutionDesignerViewModelTests.cs" />
     <Compile Include="Switch\SwitchDesignerViewModelTests.cs" />
     <Compile Include="TestToolBaseViewModel.cs" />
     <Compile Include="UniqueRecords\UniqueRecordsDesignerViewModelTests.cs" />
@@ -234,10 +240,13 @@
     <Compile Include="WCFEndPoint\WcfEndPointViewModelTests.cs" />
     <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
     <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
+    <Compile Include="WebPutTool\WebPutActivityViewModelTests.cs" />
     <Compile Include="WebPutTool\TestWebPutViewModel.cs" />
     <Compile Include="WebPostTool\TestWebPostViewModel.cs" />
-    <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
     <Compile Include="WriteFile\TestWriteFileDesignerViewModel.cs" />
+    <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
+    <Compile Include="WriteFileWithBase64\WriteFileActivityDesignerViewModelTests.cs" />
+    <Compile Include="WriteFileWithBase64\TestWriteFileActivityDesignerViewModel.cs" />
     <Compile Include="XPath\XPathDesignerViewModelTests.cs" />
     <Compile Include="Zip\ZipDesignerViewModelTests.cs" />
     <Compile Include="Zip\TestZipDesignerViewModel.cs" />
@@ -363,16 +372,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="Moq" Version="4.14.5" />
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>2.0.0</Version>
+      <Version>2.1.2</Version>
     </PackageReference>
-    <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.112</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

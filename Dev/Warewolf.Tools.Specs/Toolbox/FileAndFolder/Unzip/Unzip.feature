@@ -1,10 +1,10 @@
-﻿@Unzip
 Feature: Unzip
 	In order to be able to Unzip File or Folder 
 	as a Warewolf user
 	I want a tool that will Unzip File(s) or Folder(s) at a given location
 	
-Scenario Outline: Unzip file at location
+@UnzipFromLocal
+Scenario Outline: Unzip file at local location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And zip credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
@@ -23,37 +23,127 @@ Scenario Outline: Unzip file at location
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
-	| No | Name            | source   | sourceLocation                                                                           | username          | password     | destination | destinationLocation                                                                 | destUsername  | destPassword | selected | archivepassword | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-	| 1  | Local to Local  | [[path]] | C:\test0.zip                                                                             | ""                | ""           | [[path1]]   | C:\Temp\ZIP0                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 2  | UNC to Local    | [[path]] | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test0.zip | ""                | ""           | [[path1]]   | C:\Temp\ZIP1                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 3  | FTP to Local    | [[path]] | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/test0.zip                                | ""                | ""           | [[path1]]   | C:\Temp\ZIP2                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 4  | FTPS to Local   | [[path]] | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/test0.zip                                | Administrator     | Dev2@dmin123 | [[path1]]   | C:\Temp\ZIP3                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 5  | SFTP to Local   | [[path]] | sftp://SVRDEV.premier.local/test0.zip                                                    | dev2              | Q/ulw&]      | [[path1]]   | C:\Temp\ZIP4                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-#TODO:Reintroduce these on premier.local domain	| 6  | Local to UNC    | [[path]] | C:\test1.zip                                                                             | ""                | ""           | [[path1]]   | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP0 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-#TODO:Reintroduce these on premier.local domain	| 7  | UNC to UNC      | [[path]] | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test1.zip | ""                | ""           | [[path1]]   | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP1 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-#TODO:Reintroduce these on premier.local domain	| 8  | FTP to UNC      | [[path]] | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/test1.zip                                | ""                | ""           | [[path1]]   | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP2 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-#TODO:Reintroduce these on premier.local domain	| 9  | FTPS to UNC     | [[path]] | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/test1.zip                                | Administrator     | Dev2@dmin123 | [[path1]]   | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP3 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-#TODO:Reintroduce these on premier.local domain	| 10 | SFTP to UNC     | [[path]] | sftp://SVRDEV.premier.local/test1.zip                                                    | dev2              | Q/ulw&]      | [[path1]]   | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP4 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 11 | Local to FTP    | [[path]] | C:\test2.zip                                                                             | ""                | ""           | [[path1]]   | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/ZIP0                                | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 12 | UNC to FTP      | [[path]] | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test2.zip | ""                | ""           | [[path1]]   | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/ZIP1                                | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 13 | FTP to FTP      | [[path]] | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/test2.zip                                | ""                | ""           | [[path1]]   | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/ZIP2                                | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 14 | FTPS to FTP     | [[path]] | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/test2.zip                                | Administrator     | Dev2@dmin123 | [[path1]]   | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/ZIP3                                | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 15 | SFTP to FTP     | [[path]] | sftp://SVRDEV.premier.local/test2.zip                                                    | dev2              | Q/ulw&]      | [[path1]]   | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/ZIP4                                | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 16 | Local to FTPS   | [[path]] | C:\test3.zip                                                                             | ""                | ""           | [[path1]]   | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/ZIP0                                | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 17 | UNC to FTPS     | [[path]] | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test3.zip | ""                | ""           | [[path1]]   | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/ZIP1                                | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 18 | FTP tp FTPS     | [[path]] | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/test3.zip                                | ""                | ""           | [[path1]]   | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/ZIP2                                | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 19 | FTPS to FTPS    | [[path]] | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/test3.zip                                | Administrator     | Dev2@dmin123 | [[path1]]   | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/ZIP3                                | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 20 | SFTP to FTPS    | [[path]] | sftp://SVRDEV.premier.local/test3.zip                                                    | dev2              | Q/ulw&]      | [[path1]]   | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/ZIP4                                | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 21 | Local to SFTP   | [[path]] | C:\test4.zip                                                                             | ""                | ""           | [[path1]]   | sftp://SVRDEV.premier.local/ZIP0                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 22 | UNC to SFTP     | [[path]] | \\\\SVRPDC.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test4.zip | ""                | ""           | [[path1]]   | sftp://SVRDEV.premier.local/ZIP1                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 23 | FTP to SFTP     | [[path]] | ftp://SVRPDC.premier.local:1001/FORUNZIPTESTING/test4.zip                                | ""                | ""           | [[path1]]   | sftp://SVRDEV.premier.local/ZIP2                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 24 | FTPS to SFTP    | [[path]] | ftp://SVRPDC.premier.local:1002/FORUNZIPTESTING/test4.zip                                | Administrator     | Dev2@dmin123 | [[path1]]   | sftp://SVRDEV.premier.local/ZIP3                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 25 | SFTP to SFTP    | [[path]] | sftp://SVRDEV.premier.local/test5.zip                                                    | dev2              | Q/ulw&]      | [[path1]]   | sftp://SVRDEV.premier.local/ZIP6                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 26 | SFTP to SFTP PK | [[path]] | sftp://SVRDEV.premier.local/test51.zip                                                   | dev2              | Q/ulw&]      | [[path1]]   | sftp://SVRDEV.premier.local/ZIP61                                                   | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           | C:\Temp\key.opk      | C:\Temp\key.opk           |
+	Examples:
+	| No | Name            | source   | sourceLocation | username | password | destination | destinationLocation                                                                 | destUsername  | destPassword | selected | archivepassword | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | Local to Local  | [[path]] | C:\test0.zip   | ""       | ""       | [[path1]]   | C:\Temp\ZIP0                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | Local to UNC    | [[path]] | C:\test1.zip   | ""       | ""       | [[path1]]   | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP0 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | Local to FTP    | [[path]] | C:\test2.zip   | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP0                                | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | Local to FTPS   | [[path]] | C:\test3.zip   | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP0                                | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | Local to SFTP   | [[path]] | C:\test4.zip   | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/ZIP0                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	
+@UnzipFromUNC
+Scenario Outline: Unzip file at UNC location
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And zip credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"	
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
+    When the Unzip file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  | Archive Password |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> | String           |         
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples:
+	| No | Name            | source   | sourceLocation                                                                           | username | password | destination | destinationLocation                                                                 | destUsername  | destPassword | selected | archivepassword | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | UNC to Local    | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test0.zip | ""       | ""       | [[path1]]   | C:\Temp\ZIP1                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | UNC to UNC      | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test1.zip | ""       | ""       | [[path1]]   | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP1 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | UNC to FTP      | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test2.zip | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP1                             | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | UNC to FTPS     | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test3.zip | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP1                             | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | UNC to SFTP     | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\test4.zip | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/ZIP1                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	
+@UnzipFromFTP
+Scenario Outline: Unzip file at FTP location
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And zip credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"	
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
+    When the Unzip file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  | Archive Password |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> | String           |         
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples:
+	| No | Name            | source   | sourceLocation                                               | username | password | destination | destinationLocation                                                                 | destUsername  | destPassword | selected | archivepassword | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | FTP to Local    | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/test0.zip | ""       | ""       | [[path1]]   | C:\Temp\ZIP2                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | FTP to UNC      | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/test1.zip | ""       | ""       | [[path1]]   | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP2 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | FTP to FTP      | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/test2.zip | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP2                             | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | FTP tp FTPS     | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/test3.zip | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP2                             | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	
+@UnzipFromFTPS
+Scenario Outline: Unzip file at FTPS location
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And zip credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"	
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
+    When the Unzip file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  | Archive Password |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> | String           |         
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples:
+	| No | Name            | source   | sourceLocation                                               | username          | password     | destination | destinationLocation                                                                 | destUsername  | destPassword | selected | archivepassword | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | FTPS to Local   | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test0.zip | Administrator     | Dev2@dmin123 | [[path1]]   | C:\Temp\ZIP3                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | FTPS to UNC     | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test1.zip | Administrator     | Dev2@dmin123 | [[path1]]   | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP3 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | FTPS to FTP     | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test2.zip | Administrator     | Dev2@dmin123 | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP3                             | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | FTPS to FTPS    | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test3.zip | Administrator     | Dev2@dmin123 | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP3                             | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | FTPS to SFTP    | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/test4.zip | Administrator     | Dev2@dmin123 | [[path1]]   | sftp://SVRDEV.premier.local/ZIP3                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	
+@UnzipFromSFTP
+Scenario Outline: Unzip file at SFTP location
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And zip credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"	
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
+    When the Unzip file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  | Archive Password |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> | String           |         
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples:
+	| No | Name            | source   | sourceLocation                         | username | password | destination | destinationLocation                                                                 | destUsername  | destPassword | selected | archivepassword | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | SFTP to Local   | [[path]] | sftp://SVRDEV.premier.local/test0.zip  | dev2     | Q/ulw&]  | [[path1]]   | C:\Temp\ZIP4                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | SFTP to UNC     | [[path]] | sftp://SVRDEV.premier.local/test1.zip  | dev2     | Q/ulw&]  | [[path1]]   | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileUnzipSharedTestingSite\ZIP4 | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | SFTP to FTP     | [[path]] | sftp://SVRDEV.premier.local/test2.zip  | dev2     | Q/ulw&]  | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP4                             | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | SFTP to FTPS    | [[path]] | sftp://SVRDEV.premier.local/test3.zip  | dev2     | Q/ulw&]  | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP4                             | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | SFTP to SFTP    | [[path]] | sftp://SVRDEV.premier.local/test5.zip  | dev2     | Q/ulw&]  | [[path1]]   | sftp://SVRDEV.premier.local/ZIP6                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+	| 6  | SFTP to SFTP PK | [[path]] | sftp://SVRDEV.premier.local/test51.zip | dev2     | Q/ulw&]  | [[path1]]   | sftp://SVRDEV.premier.local/ZIP61                                                   | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           | C:\Temp\key.opk      | C:\Temp\key.opk           |
 
-
-
+@UnzipValidation
 Scenario Outline: Unzip file validation
     Given I have a variable "[[a]]" with a value "<Val1>"
 	Given I have a variable "[[b]]" with a value "<Val2>"
@@ -77,8 +167,7 @@ Scenario Outline: Unzip file validation
 	And the execution has "<errorOccured>" error	
 	And the debug inputs as
          | Source Path                         | Username   | Password | Source Private Key File | Destination Path                      | Destination Username | Destination Password | Destination Private Key File | Overwrite  | Archive Password |
-         | <File or Folder> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               | <destinationPrivateKeyFile>  | <selected> | String           |
-	
+         | <File or Folder> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               | <destinationPrivateKeyFile>  | <selected> | String           |	
 	Examples: 
 		| No | File or Folder              | Val1               | Val2             | sourceLocation         | username              | password | destination                  | destinationLocation | destUsername      | destPassword | selected | resultVar              | Archive Password | result    | errorOccured | ValidationResult | DesignValidation                                                                                                         | OutputError                                                                           |
 		| 0  | [[sourcePath]]              | ""                 | ""               | C:\Temp\test7.zip      | ""                    | ""       | [[destPath]]                 | C:\Temp\ZIP9        | dev2              | Q/ulw&]      | True     | [[result]]             | ""               | "Success" | NO           | False            | ""                                                                                                                       | ""                                                                                    |

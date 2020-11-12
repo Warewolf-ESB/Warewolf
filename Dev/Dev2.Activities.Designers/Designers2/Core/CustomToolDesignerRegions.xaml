@@ -877,6 +877,190 @@
         </Grid>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="NewOutputsGridWithBase64" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
+        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" />
+                    <CheckBox x:Name="IsObjectCheckBox" 
+                              Grid.Column="1"
+                              IsChecked="{Binding IsObject}" 
+                              IsEnabled="{Binding IsEnabled}"
+                              ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
+                              Visibility="{Binding IsObjectOutputUsed, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                              Content="Output to Object"
+                              HorizontalAlignment="Left">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                        </i:Interaction.Behaviors>
+                    </CheckBox>
+                    <CheckBox x:Name="IsBase64CheckBox" 
+                              Grid.Column="3"
+                              IsChecked="{Binding IsResponseBase64}" 
+                              IsEnabled="{Binding IsEnabled}"
+                              ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
+                              Visibility="{Binding IsObjectOutputUsed, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                              Content="Response as Base64"
+                              HorizontalAlignment="Left">
+                        <i:Interaction.Behaviors>
+                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                        </i:Interaction.Behaviors>
+                    </CheckBox>
+                </Grid>
+
+                <!-- OUTPUT MAPPINGS RESULT -->
+                <Grid Grid.Row="1" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                    <controls:Dev2DataGrid x:Name="OutputsMappingDataGridWithBase64"
+                                       ItemsSource="{Binding Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource ActivityMappingDataGridStyle}"
+                                       Height="Auto">
+
+                        <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="SizeToCells"
+                                            MinWidth="100"
+                                            Header="Mapped From"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                            <TextBlock Text="{Binding Path=MappedFrom}"
+                                           TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center"
+                                           Padding="3,0"
+                                           ToolTip="{Binding OutputColumn.ColumnName}">                               
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                                            </TextBlock>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="*"
+                                        MinWidth="125"
+                                        Header="Mapped To"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:IntellisenseTextBox DefaultText="[[Variable]]"
+                                                    AllowMultilinePaste="True"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="80"
+                                                    Margin="0,0,1,1"
+                                                    TextWrapping="Wrap"
+                                                    WrapInBrackets="True"
+                                                    ToolTip="{x:Static languages:HelpText.MappingsDefaultValueHelp}"
+                                                    Text="{Binding Path=MappedTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.MappingsDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                                <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="MappedTo"
+                                                         SourcePropertyValue="{Binding Path=MappedTo, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                                    <Binding Path="IndexNumber" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </ui:IntellisenseTextBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </controls:Dev2DataGrid>
+                    <TextBlock Text="None"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,0,-18"
+                           Style="{StaticResource MenuTextBlockStyle}"
+                           Visibility="{Binding IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </Grid>
+                <!-- OBJECT RESULT -->
+                <Grid Grid.Row="1" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                    <TextBox TextWrapping="Wrap" 
+                             x:Name="ResponseTextboxWithBase64"
+                             IsReadOnly="True"
+                             Height="Auto" 
+                             MinHeight="60"
+                             AcceptsReturn="True" 
+                             Text="{Binding ObjectResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Top"
+                             SnapsToDevicePixels="True" 
+                             VerticalScrollBarVisibility="Auto"
+                             HorizontalScrollBarVisibility="Auto" />
+                </Grid>
+            </Grid>
+            <!-- RECORDSET NAME -->
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Recordset Name" />
+                <TextBox Grid.Column="1" x:Name="RecordSetTextBoxWithBase64" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" 
+                         IsEnabled="{Binding IsEnabled}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+            </Grid>
+            <!-- OBJECT NAME -->
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Object Name" />
+                <ui:IntellisenseTextBox Grid.Column="1" 
+                                        WrapInBrackets="True"
+                                        Padding="3"
+                                        FilterType="JsonObject"
+                                        Text="{Binding ObjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                        AutomationProperties.AutomationId="UI_TextBox_AutoID"
+                                        ToolTip="{x:Static languages:Tooltips.MappingsObjectNameTooltip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                        <errors:ErrorsSetter Source="{Binding}"
+                                             SourcePropertyName="ObjectName"
+                                             SourcePropertyValue="{Binding ObjectName, UpdateSourceTrigger=PropertyChanged}"
+                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                    </i:Interaction.Behaviors>
+                </ui:IntellisenseTextBox>
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
+
     <ControlTemplate x:Key="NewDotNetSelectionNamespaceGrid">
         <Grid>
             <Grid.RowDefinitions>

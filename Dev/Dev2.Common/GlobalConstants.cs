@@ -400,6 +400,9 @@ where pn.nspname = 'public';
         public static readonly string WarewolfDebug = "Warewolf Debug";
         public static readonly string WarewolfWarn = "Warewolf Warn";
 
+        public static readonly string PersistenceSettingsNoConfigured = "Could not find persistence config. Please configure in Persistence Settings.";
+        public static readonly string NextNodeRequiredForSuspendExecution = "At least 1 activity is required after Suspend Execution.";
+        public static readonly string NextNodeIDNotFound = "Next node Id not found.";
         public static readonly string WarewolfLogsTemplate = "{@Data}";
         public static readonly string HTTPSAddress = "https://";
         public static readonly string HTTPAddress = "http://";
@@ -539,6 +542,8 @@ where pn.nspname = 'public';
         public static string SaveReasonForDeploy { get; } = "Deploy";
         public static string HTTPNewLine { get; } = "\r\n";
         public static string QueueWorkerExe { get; } = "QueueWorker.exe";
+        public static string HangfireServerExe { get; } = "HangfireServer.exe";
+        public static string HangfireServerProcessId { get; } = "HangfireServer";
 
         public static readonly string DefaultLoggingSourceId = "{8f090202-0000-0000-0000-5598abe69001}";
         public static readonly string DropboxPathNotFoundException = "Dropbox location cannot be found";

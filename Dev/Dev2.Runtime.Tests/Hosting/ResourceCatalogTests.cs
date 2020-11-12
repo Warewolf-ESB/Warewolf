@@ -71,7 +71,16 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
             }
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
+
+            try
+            {
+                CustomContainer.Register<IActivityParser>(new ActivityParser());
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine("Error putting IActivityParser into the DI container:\n" + e.Message);
+            }
+
             if (EnvironmentVariables.ApplicationPath == null)
             {
                 var assembly = Assembly.GetExecutingAssembly();

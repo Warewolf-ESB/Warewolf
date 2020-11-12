@@ -1,10 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Dev2.Activities</AssemblyName>
@@ -101,16 +104,20 @@
     <Compile Include="Activities\AdvancedRecordset\AdvancedRecordset.cs" />
     <Compile Include="Activities\AdvancedRecordset\IAdvancedRecordset.cs" />
     <Compile Include="Activities\DropBox2016\DsfDropBoxBaseActivity.cs" />
+    <Compile Include="Activities\DsfWebGetActivity.cs" />
     <Compile Include="Activities\GateActivity.cs" />
     <Compile Include="Activities\Exchange\DsfExchangeEmailNewActivity.cs" />
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
+    <Compile Include="Activities\PathOperations\DsfFileWrite.cs" />
     <Compile Include="Activities\PathOperations\FileReadWithBase64.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />
     <Compile Include="Activities\RabbitMQ\Publish\PublishRabbitMQActivity.cs" />
     <Compile Include="Activities\RedisCounter\RedisCounterActivity.cs" />
     <Compile Include="Activities\RedisRemove\RedisRemoveActivity.cs" />
     <Compile Include="Activities\RedisCache\RedisCacheActivity.cs" />
+    <Compile Include="Activities\DsfWebPutActivity.cs" />
+    <Compile Include="Activities\SuspendExecutionActivity.cs" />
     <Compile Include="Comparer\ActivityComparer.cs" />
     <Compile Include="Comparer\GatherSystemInformationTOComparer.cs" />
     <Compile Include="Comparer\DataSplitDTOComparer.cs" />
@@ -227,12 +234,12 @@
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebActivityBase.cs" />
     <Compile Include="Activities\DsfWebDeleteActivity.cs" />
-    <Compile Include="Activities\DsfWebGetActivity.cs" />
+    <Compile Include="Activities\WebGetActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
     <Compile Include="Activities\DsfWebPostActivity.cs" />
-    <Compile Include="Activities\DsfWebPutActivity.cs" />
+    <Compile Include="Activities\WebPutActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
     <Compile Include="Activities\DsfXPathActivity.cs" />
     <Compile Include="Activities\EmailSender.cs" />
@@ -274,7 +281,7 @@
     <Compile Include="Activities\PathOperations\DsfPathMove.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderRead.cs" />
     <Compile Include="Activities\PathOperations\DsfFileRead.cs" />
-    <Compile Include="Activities\PathOperations\DsfFileWrite.cs" />
+    <Compile Include="Activities\PathOperations\FileWriteActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfPathRename.cs" />
     <Compile Include="Activities\PathOperations\DsfUnZip.cs" />
     <Compile Include="Activities\PathOperations\DsfZip.cs" />
@@ -381,7 +388,6 @@
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Dev2.Activities.ruleset" />
   </ItemGroup>
   <ItemGroup>
@@ -441,6 +447,7 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Driver.Persistence\Warewolf.Driver.Persistence.csproj" />
     <ProjectReference Include="..\Warewolf.Driver.Redis\Warewolf.Driver.Redis.csproj">
       <Project>{86DF54BB-E37D-4559-8014-13D6030A2242}</Project>
       <Name>Warewolf.Driver.Redis</Name>
@@ -511,9 +518,6 @@
     <PackageReference Include="Dropbox.Api">
       <Version>4.2.4</Version>
     </PackageReference>
-    <PackageReference Include="FSharp.Core.3">
-      <Version>0.0.2</Version>
-    </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.8</Version>
     </PackageReference>
@@ -542,6 +546,4 @@
       <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

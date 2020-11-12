@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,6 +29,7 @@ using Dev2;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class SingleExplorerDeployViewModelTests
     {
         Mock<IDeployDestinationExplorerViewModel> _destView;
@@ -64,7 +75,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             return mockEnvironmentConnection;
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Nkosinathi Sangweni")]
         public void CanDeploytests_GivenCanSelectAllDependencies_ShouldMatch()
         {
@@ -89,7 +101,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(singleExplorerDeployViewModel.CanDeployTests);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Nkosinathi Sangweni")]
         public void CanDeploy_GivenDestinationIsNotConnected_ShouldReturnFalseAndSetCorrectMessage()
         {
@@ -120,7 +133,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Core.DeployDestinationNotConnected, errorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Nkosinathi Sangweni")]
         public void DestinationOnPropertyChanged_GivenisConnectedChanged_ShouldHandleDeployChanged()
         {
@@ -158,7 +172,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(wasCalled);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void Destination_GivenNewDestinationIsCreated_ShouldHaveNewDestination()
         {
@@ -191,7 +206,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(Equals(deployDestinationExplorerViewModelBefore, singleExplorerDeployViewModel.Destination));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenServerIsNotConnected_ShouldHaveFalse()
         {
@@ -221,7 +237,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Core.DeploySourceNotConnected, singleExplorerDeployViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenSourceAndDestinationAreSameServer_ShouldHaveFalse()
         {
@@ -259,7 +276,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Core.DeploySourceDestinationAreSame, singleExplorerDeployViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenSourceServerSelectedItemsIsNull_ShouldHaveFalse()
         {
@@ -301,7 +319,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Core.DeployNoResourcesSelected, singleExplorerDeployViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenNoSourceServerPermissions_ShouldHaveFalse()
         {
@@ -350,7 +369,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(StringResources.SourcePermission_Error, singleExplorerDeployViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenNoDestinarionSourcePermissions_ShouldHaveFalse()
         {
@@ -401,7 +421,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(StringResources.DestinationPermission_Error, singleExplorerDeployViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenIsDeployingIsTrue_ShouldHaveFalse()
         {
@@ -453,7 +474,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenAllValidRequirements_ShouldHaveTrue()
         {
@@ -505,7 +527,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenSelectedServerIsNull_ShouldHaveFalse()
         {
@@ -540,7 +563,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenNoSelectedItem_ShouldHaveFalse()
         {
@@ -580,7 +604,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Core.DeploySourceNotConnected, singleExplorerDeployViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void CanDeploy_GivenDestinationIsNotConnected_ShouldHaveFalse()
         {
@@ -627,7 +652,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Core.DeployDestinationNotConnected, singleExplorerDeployViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void DestinationServerStateChanged_GivenDestinationIsDisconnected_Should()
         {
@@ -656,7 +682,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void DestinationServerStateChanged_GivenDestinationConnected_Should()
         {
@@ -696,7 +723,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(singleExplorerDeployViewModel.NewResourcesViewCommand);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void DefaultValues_GivenNewInstance_Should()
         {
@@ -735,7 +763,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void DeployConflics_GivenDifferntServerVersions_ShouldHaveIsDeployingFalse()
         {
@@ -783,7 +812,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(singleExplorerDeployViewModel.IsDeploying);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void IsDeploying_GivenSameServerVersions_ShouldHaveIsDeployingTrue()
         {
@@ -831,7 +861,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(singleExplorerDeployViewModel.IsDeploying);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void IsDeploying_GivenSourceServerIsOldVersionAndPopupCancelClick_ShouldHaveIsDeployingTrue()
         {
@@ -880,7 +911,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void DeployConflics_GivenDestinationHasOldVersionServerVersions_ShouldHaveIsDeployingFalse()
         {
@@ -920,7 +952,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void StatsViewModel_GivenNewInstance_ShouldNotBeNull()
         {
@@ -949,7 +982,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(singleExplorerDeployViewModel.StatsViewModel);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void ConflictNewResourceText_GivenViewOverrides_ShouldHaveText()
         {
@@ -974,7 +1008,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(singleExplorerDeployViewModel.ConflictNewResourceText));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void ConflictNewResourceText_GivenViewNewResources_ShouldHaveText()
         {
@@ -1000,7 +1035,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("List of New Resources", singleExplorerDeployViewModel.ConflictNewResourceText);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void UpdateHelpDescriptor_GivenSomeMessage_ShouldHaveSomeMessage()
         {
@@ -1023,7 +1059,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void DeploySuccessMessage_GivenSomeError_ShouldHaveEmptyText()
         {
@@ -1051,7 +1088,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(singleExplorerDeployViewModel.DeploySuccessfull);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void NewResourceCount_GivenEmptyStateItems_Should0()
         {
@@ -1075,7 +1113,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(string.IsNullOrEmpty(singleExplorerDeployViewModel.NewResourcesCount));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void Source_GivenNewSourceIsCreated_ShouldHaveNewSource()
         {
@@ -1103,7 +1142,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(Equals(deploySourceExplorerViewModelBefore, singleExplorerDeployViewModel.Source));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void NewItems_GivenCalculateAction_AreEqualTo_StatViewNew()
         {
@@ -1130,7 +1170,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(singleExplorerDeployViewModel.NewItems, _statsView.Object.New);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void SourcesCount_GivenCalculateAction_AreEqualTo_StatViewSources()
         {
@@ -1156,7 +1197,64 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(singleExplorerDeployViewModel.SourcesCount, _statsView.Object.Sources.ToString());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SingleExplorerDeployViewModel))]
+        public void SingleExplorerDeployViewModel_SourcesCount_GivenCalculateAction_AreEqualTo_StatViewTests()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _statsView.Setup(model => model.Tests).Returns(25);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNull(singleExplorerDeployViewModel.TestsCount);
+            //---------------Execute Test ----------------------
+            _statsView.Object.CalculateAction.Invoke();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(singleExplorerDeployViewModel.TestsCount, _statsView.Object.Tests.ToString());
+        }
+
+        [TestMethod]
+        [Timeout(100)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SingleExplorerDeployViewModel))]
+        public void SingleExplorerDeployViewModel_SourcesCount_GivenCalculateAction_AreEqualTo_StatViewTriggers()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _statsView.Setup(model => model.Triggers).Returns(25);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNull(singleExplorerDeployViewModel.TriggersCount);
+            //---------------Execute Test ----------------------
+            _statsView.Object.CalculateAction.Invoke();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(singleExplorerDeployViewModel.TriggersCount, _statsView.Object.Triggers.ToString());
+        }
+
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void ConflictItems_GivenCalculateAction_AreEqualToStatViewConflictItems()
         {
@@ -1184,7 +1282,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.AreEqual(singleExplorerDeployViewModel.ConflictItems, _statsView.Object.Conflicts);
         }
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void UpdateServerCompareChanged_ShouldRecalculate_Items()
         {
@@ -1204,6 +1303,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _statsView.Setup(model => model.New).Returns(explorerTreeItems);
             _statsView.Setup(model => model.Services).Returns(5);
             _statsView.Setup(model => model.Sources).Returns(2);
+            _statsView.Setup(model => model.Tests).Returns(6);
+            _statsView.Setup(model => model.Triggers).Returns(4);
             _statsView.Setup(model => model.NewResources).Returns(3);
             _statsView.Setup(model => model.Overrides).Returns(1);
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
@@ -1212,11 +1313,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(singleExplorerDeployViewModel);
             Assert.AreEqual("5", singleExplorerDeployViewModel.ServicesCount);
             Assert.AreEqual("2", singleExplorerDeployViewModel.SourcesCount);
+            Assert.AreEqual("6", singleExplorerDeployViewModel.TestsCount);
+            Assert.AreEqual("4", singleExplorerDeployViewModel.TriggersCount);
             Assert.AreEqual("3", singleExplorerDeployViewModel.NewResourcesCount);
             Assert.AreEqual("1", singleExplorerDeployViewModel.OverridesCount);
             //---------------Execute Test ----------------------
             _statsView.Setup(model => model.Services).Returns(50);
             _statsView.Setup(model => model.Sources).Returns(20);
+            _statsView.Setup(model => model.Tests).Returns(60);
+            _statsView.Setup(model => model.Triggers).Returns(40);
             _statsView.Setup(model => model.NewResources).Returns(30);
             _statsView.Setup(model => model.Overrides).Returns(10);
             var privateObject = new PrivateObject(singleExplorerDeployViewModel);
@@ -1225,11 +1330,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(singleExplorerDeployViewModel.ShowConflicts);
             Assert.AreEqual("50", singleExplorerDeployViewModel.ServicesCount);
             Assert.AreEqual("20", singleExplorerDeployViewModel.SourcesCount);
+            Assert.AreEqual("60", singleExplorerDeployViewModel.TestsCount);
+            Assert.AreEqual("40", singleExplorerDeployViewModel.TriggersCount);
             Assert.AreEqual("30", singleExplorerDeployViewModel.NewResourcesCount);
             Assert.AreEqual("10", singleExplorerDeployViewModel.OverridesCount);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void SelectDependencies_GivenSourceWithDependencies_ShouldHaveItemsSelected()
         {
@@ -1282,7 +1390,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             mock.VerifySet(model => model.IsResourceChecked = true, Times.Once);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void DestinationConnectControlViewModel_GivenDestinationConnectControlViewModelIsSetToSameValue_ShouldReturn()
         {
@@ -1325,7 +1434,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(singleExplorerDeployViewModel.SourceConnectControlViewModel);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void CheckResourceNameConflict_GivenSourceWith1ItemAndDestinationWith1Item_ShouldSetIsDeployingToFalse()
         {
@@ -1365,7 +1475,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             popupController.Verify(controller => controller.ShowDeployResourceNameConflict(It.IsAny<string>()));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void Deploy_ShouldSetIsDeployingToTrue()
         {
@@ -1429,7 +1540,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _statsView.Verify(model => model.ReCalculate(), Times.Once);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void Deploy_GivenConflictsAndMessageBoxResultCancel_ShouldSetIsDeployingToFalse()
         {
@@ -1496,7 +1608,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(singleExplorerDeployViewModel.ShowConflictItemsList);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void Deploy_GivenConflictsAndMessageBoxResultOK_ShouldSetIsDeployingToTrue()
         {

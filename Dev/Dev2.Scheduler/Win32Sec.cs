@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -22,6 +22,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Services.Security;
+using Warewolf.Data;
 using Warewolf.Resource.Errors;
 using LSA_HANDLE = System.IntPtr;
 
@@ -315,7 +316,7 @@ public class SecurityWrapper : ISecurityWrapper
         return lus;
     }
 
-    public bool IsWarewolfAuthorised(string privilege, string userName, string resourceGuid)
+    public bool IsWarewolfAuthorised(string privilege, string userName, IWarewolfResource resource)
     {
         var unqualifiedUserName = GetUnqualifiedName(userName).Trim();
 
@@ -332,7 +333,32 @@ public class SecurityWrapper : ISecurityWrapper
             identity = new GenericPrincipal(tmp, groups.ToArray());
         }
 
-        if (_authorizationService.IsAuthorized(identity, AuthorizationContext.Execute, resourceGuid))
+        if (_authorizationService.IsAuthorized(identity, AuthorizationContext.Execute, resource))
+        {
+            return true;
+        }
+        Dev2Logger.Warn("User " + unqualifiedUserName + " was denied permission to create a scheduled task.", GlobalConstants.WarewolfWarn);
+
+        return false;
+    }
+    public bool IsWarewolfAuthorised(string privilege, string userName, Guid resourceId)
+    {
+        var unqualifiedUserName = GetUnqualifiedName(userName).Trim();
+
+        IPrincipal identity;
+        try
+        {
+            identity = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+        }
+        catch (Exception e)
+        {
+            Dev2Logger.Warn("Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity. " + e.Message, GlobalConstants.WarewolfWarn);
+            var groups = GetGroupsUserBelongsTo(unqualifiedUserName, GetAccountsWithPrivilege(privilege));
+            var tmp = new GenericIdentity(unqualifiedUserName);
+            identity = new GenericPrincipal(tmp, groups.ToArray());
+        }
+
+        if (_authorizationService.IsAuthorized(identity, AuthorizationContext.Execute, resourceId))
         {
             return true;
         }

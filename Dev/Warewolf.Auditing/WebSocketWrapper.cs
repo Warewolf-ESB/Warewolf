@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,6 @@ namespace Warewolf.Auditing
         {
             var pool = WebSocketConnectionPool.GetOrAdd(new Uri(endpoint), CreateObjectPool);
             var clientWebSocket = pool.AcquireObject();
-
             return clientWebSocket;
         }
         public void Release(IWebSocketWrapper webSocketWrapper)
@@ -77,7 +76,7 @@ namespace Warewolf.Auditing
 
             if (_clientWebSocket.State == WebSocketState.None)
             {
-                _clientWebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
+                _clientWebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(60);
             }
         }
         public WebSocketState State => _clientWebSocket.State;

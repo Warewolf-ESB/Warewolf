@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Dev2.Common.Interfaces.Data;
@@ -136,6 +136,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void FindService_GivenServiceName_InCache_ShouldReturnFromCache()
         {
             //---------------Set up test pack-------------------

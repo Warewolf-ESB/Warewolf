@@ -1,0 +1,234 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.WebGet.Large"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:WebGet="clr-namespace:Dev2.Activities.Designers2.WebGet"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
+                               MinWidth="350"
+                               Width="350"
+                               MinHeight="430"
+                               Height="430"
+                               MaxWidth="Infinity"
+                               mc:Ignorable="d"
+                               d:DesignHeight="300"
+                               d:DesignWidth="350"
+                               d:DataContext="{d:DesignInstance WebGet:WebGetActivityViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <ResourceDictionary Source="../Core/CustomToolDesignerRegions.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+
+    <core:ActivityDesignerTemplate.RightButtons>
+        <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                     Content="{Binding ButtonDisplayValue}"
+                                     Margin="0,0,7,12"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
+    </core:ActivityDesignerTemplate.RightButtons>
+
+    <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" MinHeight="169"/>
+                    <RowDefinition>
+                        <RowDefinition.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="True">
+                                        <Setter Property="RowDefinition.Height" Value="*"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="False">
+                                        <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </RowDefinition.Style>
+                    </RowDefinition>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Control Template="{StaticResource NewSelectionGrid}"/>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="HeadersLabel" Text="Headers" Grid.Column="0" Grid.Row="0" />
+
+                        <controls:Dev2DataGrid x:Name="Headers"
+                                   Grid.Row="1" 
+                                   ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Style="{StaticResource ActivityMappingDataGridStyle}"
+                                   Height="Auto"
+                                   IsEnabled="{Binding InputArea.IsEnabled}"
+                                   ColumnWidth="*"
+                                   Margin="{StaticResource ControlBorderTop}">
+
+                            <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Width="*"
+                                        MinWidth="125"
+                                        Header="Header"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=interfaces:INameValue}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ui:IntellisenseTextBox DefaultText="Header"
+                                                    AllowMultilinePaste="True"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="80"
+                                                    Margin="0,0,1,1"
+                                                    TextWrapping="Wrap"
+                                                    WrapInBrackets="False"
+                                                    ToolTip="{x:Static languages:Tooltips.WebRequestToolTipHeader}"
+                                                    Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
+                                                <i:Interaction.Behaviors>
+                                                    <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestHeadersTableHelp}"  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                    <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="Name"
+                                                         SourcePropertyValue="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                </i:Interaction.Behaviors>
+                                                <AutomationProperties.AutomationId>
+                                                    <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                        <Binding Path="IndexNumber" />
+                                                    </MultiBinding>
+                                                </AutomationProperties.AutomationId>
+                                            </ui:IntellisenseTextBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="*"
+                                            MinWidth="125"
+                                            Header="Value"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:INameValue}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ui:IntellisenseTextBox DefaultText="Value"
+                                                    AllowMultilinePaste="True"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="80"
+                                                    Margin="0,0,1,1"
+                                                    TextWrapping="Wrap"
+                                                    WrapInBrackets="False"
+                                                    ToolTip="{x:Static languages:Tooltips.WebRequestToolTipHeader}"
+                                                    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
+                                                <i:Interaction.Behaviors>
+                                                    <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestHeadersTableHelp}"  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                    <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="Value"
+                                                         SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                </i:Interaction.Behaviors>
+                                                <AutomationProperties.AutomationId>
+                                                    <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                        <Binding Path="IndexNumber" />
+                                                    </MultiBinding>
+                                                </AutomationProperties.AutomationId>
+                                            </ui:IntellisenseTextBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </controls:Dev2DataGrid>
+                    </Grid>
+                    <Grid x:Name="UrlGrid" Grid.Row="1" IsEnabled="{Binding InputArea.IsEnabled}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="URL" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" />
+                        <ui:IntellisenseTextBox Grid.Column="1" 
+                                                Grid.Row="1" 
+                                                AllowMultilinePaste="False"
+                                                AcceptsReturn="False"
+                                                AllowUserInsertLine="False"
+                                                WrapInBrackets="False"
+                                                Text="{Binding InputArea.QueryString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestUrlHelp}" DataContext="{Binding}" />
+                                <errors:ErrorsSetter Source="{Binding}"
+                                                     SourcePropertyName="QueryString"
+                                                     SourcePropertyValue="{Binding InputArea.QueryString, UpdateSourceTrigger=PropertyChanged}"
+                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                            </i:Interaction.Behaviors>
+                        </ui:IntellisenseTextBox>
+                        <Button x:Name="TestInputButton"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Content="Generate Outputs"
+                                Width="Auto"
+                                Margin="{StaticResource ControlBorderTop}"
+                                ToolTip="{x:Static languages:Tooltips.ManageDbServiceTestActionTooltip}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding Path=TestInputCommand, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceTestCommandHelp}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </Button>
+                    </Grid>
+                </Grid>
+
+                <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGridWithBase64}"/>
+
+                <Grid x:Name="ErrorGrid"
+                      Grid.Row="3"
+                      Margin="{StaticResource ControlBorderTop}"
+                      Visibility="{Binding OnErrorVisible}">
+                    <errors:OnError />
+                </Grid>
+            </Grid>
+
+            <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                <Control DataContext="{Binding ManageServiceInputViewModel}" Template="{StaticResource NewGenerateOutputsView}" Margin="0,0,0,-5"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</core:ActivityDesignerTemplate>

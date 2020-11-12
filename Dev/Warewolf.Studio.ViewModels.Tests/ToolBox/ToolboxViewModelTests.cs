@@ -51,14 +51,16 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test construction
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestNullLocalModel()
+        public void Toolbox_TestNullLocalModel()
         {
             new ToolboxViewModel(null, _remoteModelMock.Object);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullRemoteModel()
         {
@@ -69,7 +71,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test commands
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(500)]
         public void TestClearFilterCommand()
         {
             //act
@@ -84,7 +87,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test properties
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestIsEnabledIsDesignerFocusedfalse()
         {
             //arrange
@@ -97,7 +101,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsFalse(value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsEnabledLocalRemoteDisabled()
         {
             //arrange
@@ -112,7 +117,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsFalse(value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsEnabledLocalEnabledRemoteDisabled()
         {
             //arrange
@@ -127,7 +133,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsFalse(value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsEnabledLocalRemoteEnabled()
         {
             //arrange
@@ -142,7 +149,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestIsDesignerFocused()
         {
             //arrange
@@ -157,7 +165,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("IsEnabled"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestSelectedTool()
         {
             //arrange
@@ -173,8 +182,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("SelectedTool"));
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestSearchTerm()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestSearchToolbox()
         {
             //arrange
             _changedProperties.Clear();
@@ -192,7 +202,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test methods
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestFilterEmptySearchString()
         {
             //arrange
@@ -206,8 +217,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(string.IsNullOrEmpty(_target.SearchTerm));
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestFilter()
+        [TestMethod]
+        [Timeout(1000)]
+        public void ToolboxViewModelTests_Filter()
         {
             //arrange
             var searchString = "someSearchString";
@@ -256,7 +268,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("Tools"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         public void TestFilterCategory()
         {
             //arrange
@@ -307,7 +320,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("Tools"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestFilterTag()
         {
             //arrange
@@ -358,7 +372,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("Tools"));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         public void TestClearFilter()
         {
             //arrange
@@ -406,7 +421,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_target.BackedUpTools.Any(it => it.Tool == toolDescriptorMockNotContainingInLocal2.Object && !it.IsEnabled));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void Test_remoteModel_OnserverDisconnected()
         {
             //arrange
@@ -420,7 +436,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _changedProperties.Contains("IsVisible");
         }
         
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void Test_localModel_OnserverDisconnected()
         {
             //arrange
@@ -437,8 +454,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _changedProperties.Contains("IsVisible");
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestDispose()
+        [TestMethod]
+        [Timeout(250)]
+        public void ToolboxViewModel_TestDispose()
         {
             //arrange
             _changedProperties.Clear();
@@ -452,8 +470,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsFalse(_changedProperties.Any());
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestUpdateHelpDescriptor()
+        [TestMethod]
+        [Timeout(500)]
+        public void ToolboxTestUpdateHelpDescriptor()
         {
             //arrange
             var mainViewModelMock = new Mock<IShellViewModel>();

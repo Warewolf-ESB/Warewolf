@@ -20,7 +20,6 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -30,6 +29,7 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Factories;
@@ -39,7 +39,6 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
-using Warewolf.Auditing;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Options;
@@ -887,6 +886,35 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
+        public List<ITriggerQueue> LoadResourceTriggersForDeploy(Guid resourceId)
+        {
+            if (GetCommunicationController != null)
+            {
+                var controller = GetCommunicationController?.Invoke("FetchTriggersForDeploy");
+                controller.AddPayloadArgument("resourceID", resourceId.ToString());
+                var executeCommand = controller.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                var message = executeCommand.GetDecompressedMessage();
+                if (executeCommand.HasError)
+                {
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
+
+                var triggerQueues = serializer.Deserialize<List<ITriggerQueue>>(message);
+                if (triggerQueues != null)
+                {
+                    return triggerQueues;
+                }
+
+                return new List<ITriggerQueue>();
+            }
+            else
+            {
+                throw new NullReferenceException("Cannot load resource trigger queues for deploy. Cannot get Communication Controller.");
+            }
+        }
+
         public ExecuteMessage StopExecution(IContextualResourceModel resourceModel)
         {
             if (resourceModel == null)
@@ -969,7 +997,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public Data.Settings.Settings ReadSettings(IServer currentEnv)
         {
-            var comController = new CommunicationController {ServiceName = "SettingsReadService"};
+            var comController = new CommunicationController {ServiceName = nameof(SettingsRead)};
             return comController.ExecuteCommand<Data.Settings.Settings>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
         }
 
@@ -1011,7 +1039,35 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             return output;
         }
-        
+        public ExecuteMessage SavePersistenceSettings(IServer currentEnv, PersistenceSettingsData persistenceSettingsData)
+        {
+            var comController = new CommunicationController {ServiceName = "SavePersistenceSettings"};
+            comController.AddPayloadArgument("PersistenceSettings", _serializer.Serialize(persistenceSettingsData));
+            var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+
+            return output;
+        }
+        public T GetPersistenceSettings<T>(IServer currentEnv) where T : PersistenceSettingsData, new()
+        {
+            var comController = new CommunicationController {ServiceName =nameof(Warewolf.Service.GetPersistenceSettings)};
+            var output = comController.ExecuteCommand<T>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+            return output;
+        }
         public ExecuteMessage SaveAuditingSettings(IServer currentEnv, AuditSettingsDataBase auditingSettingsData)
         {
             var comController = new CommunicationController {ServiceName = nameof(Warewolf.Service.SaveAuditingSettings)};

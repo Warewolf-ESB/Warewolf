@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -288,6 +288,60 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowPersistenceSettingsMissingValuesChanged()
+        {
+            var description = "Persistence settings cannot be saved without a valid data source." + Environment.NewLine +
+                              Environment.NewLine + "Please select a valid data source from the dropdown.";
+            AssignCommonValues("Missing data source", description, MessageBoxButton.OK);
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+        public MessageBoxResult ShowPersistenceSettingsChanged()
+        {
+            var description = "You are about to make changes that will affect suspended executions." + Environment.NewLine
+                                                                                                            + "In doing so, you will need to manually restart the warewolf server for the changes to take effect." + Environment.NewLine
+                                                                                                            + "Would you like to continue to save the changes? " + Environment.NewLine +
+                                                                                                            "-----------------------------------------------------------------" +
+                                                                                                            Environment.NewLine +
+                                                                                                            "Yes - Save changes." + Environment.NewLine +
+                                                                                                            "No - Discard your changes." + Environment.NewLine +
+                                                                                                            $"Cancel - Returns you to persistence settings.";
+            AssignCommonValues($"Persistence settings Has Changes", description, MessageBoxButton.YesNoCancel);
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+        public MessageBoxResult ShowPersistenceSourceChange()
+        {
+            var description = "You are about to make changes to the source assigned to persist executions." + Environment.NewLine
+                                                                                                     + "In doing so, you will need to manually restart the persistence server for the changes to take effect." + Environment.NewLine
+                                                                                                     + "Would you like to continue to save the changes? " + Environment.NewLine +
+                                                                                                     "-----------------------------------------------------------------" +
+                                                                                                     Environment.NewLine +
+                                                                                                     "Yes - Save changes." + Environment.NewLine +
+                                                                                                     "No - Discard your changes." + Environment.NewLine +
+                                                                                                     $"Cancel - Returns you to persistence settings.";
+            AssignCommonValues($"Persistence source update", description, MessageBoxButton.YesNoCancel);
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
         public MessageBoxResult ShowLoggerSourceChange(string resourceName)
         {
             var description = "You are about to make changes to the source assigned to log queries." + Environment.NewLine

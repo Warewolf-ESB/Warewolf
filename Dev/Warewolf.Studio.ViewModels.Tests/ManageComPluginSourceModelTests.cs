@@ -35,8 +35,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
 
-        [TestMethod,Timeout(60000)]
-        public void TestGetDllListings()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestGetCOMDllListings()
         {
             //arrange
             var listingMock = new Mock<IFileListing>();
@@ -52,8 +53,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
-        public void TestSavePlugin()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestSaveComPlugin()
         {
             //arrange
             var resourceMock = new Mock<IComPluginSource>();
@@ -69,8 +71,9 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod,Timeout(60000)]
-        public void TestServerName()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestComPluginSourceModelServerName()
         {
             //act
             var value = _target.ServerName;
@@ -79,7 +82,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_serverName, value);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestComPluginSourceServerNameBrackets()
         {
             //arrange  

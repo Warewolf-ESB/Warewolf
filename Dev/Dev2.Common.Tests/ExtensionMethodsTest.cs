@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,16 +19,11 @@ using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
 namespace Dev2.Common.Tests
 {
     [TestClass]
     public class ExtensionMethodsTest
     {
-
-        // ReturnAsTagSet
-
-        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory(nameof(ExtensionMethods))]
@@ -46,7 +41,192 @@ namespace Dev2.Common.Tests
                 Assert.AreEqual(result.ToString(), bytes.ToString());
             }
         }
-        
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_ReadToEnd_ExpectReadStream()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            using (Stream s = new MemoryStream(bytes))
+            {
+                var result = s.ReadToEnd();
+
+                using (var ss = new MemoryStream(bytes))
+                {
+                    using (var r = new StreamReader(ss))
+                    {
+                        //------------Assert Results-------------------------
+                        Assert.AreEqual(result, r.ReadToEnd());
+                    };
+                };
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_ReadToString_ExpectReadString()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var actual = bytes.ReadToString();
+
+            using (Stream s = new MemoryStream(bytes))
+            {
+                using (var ss = new MemoryStream(bytes))
+                {
+                    using (var r = new StreamReader(ss))
+                    {
+                        var expected = r.ReadToEnd();
+                        //------------Assert Results-------------------------
+                        Assert.AreEqual(expected, actual);
+                    };
+                };
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64Stream_GivenNonBase64StringBytes_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            using (Stream s = new MemoryStream(bytes))
+            {
+                var result = s.IsBase64Stream(out byte[] outputBytes);
+                
+                //------------Assert Results-------------------------
+                Assert.IsFalse(result);
+                Assert.IsNotNull(outputBytes);
+                Assert.AreEqual(input, outputBytes.ReadToString());
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64Stream_GivenBase64StringBytes_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string input = "dGVzdCBtZXNzYWdl";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            using (Stream s = new MemoryStream(bytes))
+            {
+                var result = s.IsBase64Stream(out byte[] outputBytes);
+
+                //------------Assert Results-------------------------
+                Assert.IsTrue(result);
+                Assert.IsNotNull(outputBytes);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_ToBase64String_ExpectBase64String()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var base64String = bytes.ToBase64String(Base64FormattingOptions.InsertLineBreaks);
+            
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Convert.ToBase64String(bytes, Base64FormattingOptions.InsertLineBreaks), base64String);
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_Base64StringToByteArray_InCorrect_ExpectByteArray()
+        {
+            //------------Setup for test--------------------------
+            const string input = "dGVzdCBtZXNzYWdl=3421";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var base64String = bytes.ToBase64String(Base64FormattingOptions.InsertLineBreaks);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(base64String.Base64StringToByteArray().ToString(), Convert.FromBase64String(base64String).ToString());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_Base64StringToByteArray_ExpectByteArray()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var base64String = bytes.ToBase64String(Base64FormattingOptions.InsertLineBreaks);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(base64String.Base64StringToByteArray().ToString(), Convert.FromBase64String(base64String).ToString());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64Stream_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            var base64String = bytes.ToBase64String(Base64FormattingOptions.InsertLineBreaks);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(base64String.Base64StringToByteArray().ToString(), Convert.FromBase64String(base64String).ToString());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64String_ExpectFalseCurrentBytes()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            //------------Execute Test---------------------------
+            var result = input.IsBase64String(out byte[] bytes);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+            Assert.AreEqual(Encoding.ASCII.GetBytes(input).ToString(), bytes.ToString());
+            using (var s = new StreamReader(new MemoryStream(bytes)))
+            {
+                Assert.AreEqual(input, s.ReadToEnd());
+            };
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsBase64String_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string input = "dGVzdCBtZXNzYWdl";
+            //------------Execute Test---------------------------
+            var result = input.IsBase64String(out byte[] bytes);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+            Assert.AreEqual(Encoding.ASCII.GetBytes(input).ToString(), bytes.ToString());
+            using (var s = new StreamReader(new MemoryStream(bytes)))
+            {
+                Assert.AreEqual("test message", s.ReadToEnd());
+            };
+
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -827,7 +1007,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var escapeString = ExtensionMethods.EscapeString(null);
+            var escapeString = Dev2.Common.Common.ExtensionMethods.EscapeString(null);
             //------------Assert Results-------------------------
             Assert.IsNull(escapeString);
         }
@@ -840,7 +1020,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = "<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">";
             //------------Execute Test---------------------------
-            var escapeString =  ExtensionMethods.EscapeString(value);
+            var escapeString =  Dev2.Common.Common.ExtensionMethods.EscapeString(value);
             //------------Assert Results-------------------------
             Assert.AreEqual("&lt;Action Name=&quot;bug11827service&quot; Type=&quot;InvokeWebService&quot; SourceID=&quot;fd54cecb-eebf-485a-aff7-e97835853c93&quot; SourceName=&quot;bug11827src&quot; SourceMethod=&quot;&quot; RequestUrl=&quot;&quot; RequestMethod=&quot;Get&quot; JsonPath=&quot;&quot;&gt;", escapeString);
         }
@@ -852,7 +1032,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var escapeString = ExtensionMethods.UnescapeString(null);
+            var escapeString = Dev2.Common.Common.ExtensionMethods.UnescapeString(null);
             //------------Assert Results-------------------------
             Assert.IsNull(escapeString);
         }
@@ -866,7 +1046,7 @@ namespace Dev2.Common.Tests
             var value = "<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">";
             var value1 = "&lt;Action Name=&quot;bug11827service&quot; Type=&quot;InvokeWebService&quot; SourceID=&quot;fd54cecb-eebf-485a-aff7-e97835853c93&quot; SourceName=&quot;bug11827src&quot; SourceMethod=&quot;&quot; RequestUrl=&quot;&quot; RequestMethod=&quot;Get&quot; JsonPath=&quot;&quot;&gt;";
             //------------Execute Test---------------------------
-            var unEscapeString = ExtensionMethods.UnescapeString(value1);
+            var unEscapeString = Dev2.Common.Common.ExtensionMethods.UnescapeString(value1);
             //------------Assert Results-------------------------
             Assert.AreEqual(value, unEscapeString);
         }
@@ -879,7 +1059,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "rdf" , true);
+            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "rdf" , true);
             //------------Assert Results-------------------------
             Assert.AreEqual(-1, lastIndexOf);
         }
@@ -892,7 +1072,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "sdf", true);
+            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "sdf", true);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, lastIndexOf);
         }
@@ -905,7 +1085,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "sdf", 1, true);
+            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "sdf", 1, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, lastIndexOf);
         }
@@ -918,7 +1098,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "sDf", 1, true);
+            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "sDf", 1, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, lastIndexOf);
         }
@@ -931,7 +1111,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("sdf");
             //------------Execute Test---------------------------
-            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "sDf", 1, false);
+            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "sDf", 1, false);
             //------------Assert Results-------------------------
             Assert.AreEqual(-1, lastIndexOf);
         }
@@ -944,7 +1124,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee bbb");
             //------------Execute Test---------------------------
-            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "bbb", 8, false);
+            var lastIndexOf = Dev2.Common.Common.ExtensionMethods.LastIndexOf(value, "bbb", 8, false);
             //------------Assert Results-------------------------
             Assert.AreEqual(4, lastIndexOf);
         }
@@ -956,7 +1136,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var isValidXml = ExtensionMethods.IsValidXml("invalid xml");
+            var isValidXml = Dev2.Common.Common.ExtensionMethods.IsValidXml("invalid xml");
             //------------Assert Results-------------------------
             Assert.IsFalse(isValidXml);
         }
@@ -968,7 +1148,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var isValidXml = ExtensionMethods.IsValidXml("<invalid xml>");
+            var isValidXml = Dev2.Common.Common.ExtensionMethods.IsValidXml("<invalid xml>");
             //------------Assert Results-------------------------
             Assert.IsFalse(isValidXml);
         }
@@ -986,7 +1166,7 @@ namespace Dev2.Common.Tests
                         <Child>Content</Child>  
                     </Root>";
             //------------Execute Test---------------------------
-            var isValidXml = ExtensionMethods.IsValidXml(str);
+            var isValidXml = Dev2.Common.Common.ExtensionMethods.IsValidXml(str);
             //------------Assert Results-------------------------
             Assert.IsTrue(isValidXml);
         }
@@ -1010,7 +1190,7 @@ namespace Dev2.Common.Tests
                             ]
                         }";
             //------------Execute Test---------------------------
-            var isValidJson = ExtensionMethods.IsValidJson(str);
+            var isValidJson = Dev2.Common.Common.ExtensionMethods.IsValidJson(str);
             //------------Assert Results-------------------------
             Assert.IsTrue(isValidJson);
         }
@@ -1034,7 +1214,7 @@ namespace Dev2.Common.Tests
                             ]
                         ";
             //------------Execute Test---------------------------
-            var isValidJson = ExtensionMethods.IsValidJson(str);
+            var isValidJson = Dev2.Common.Common.ExtensionMethods.IsValidJson(str);
             //------------Assert Results-------------------------
             Assert.IsFalse(isValidJson);
         }
@@ -1058,7 +1238,7 @@ namespace Dev2.Common.Tests
                             ]
                         }";
             //------------Execute Test---------------------------
-            var isValidJson = ExtensionMethods.IsValidJson(str);
+            var isValidJson = Dev2.Common.Common.ExtensionMethods.IsValidJson(str);
             //------------Assert Results-------------------------
             Assert.IsFalse(isValidJson);
         }

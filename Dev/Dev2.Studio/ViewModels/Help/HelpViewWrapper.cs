@@ -56,7 +56,7 @@ namespace Dev2.ViewModels.Help
 
         public void Navigate(string uri)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             HelpView.WebBrowserHost.Source = new Uri(uri, UriKind.Absolute);
         }
     }

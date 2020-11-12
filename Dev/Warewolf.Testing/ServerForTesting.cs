@@ -26,7 +26,7 @@ using System.Xml.Linq;
 
 namespace Warewolf.Testing
 {
-    public class ServerForTesting : Resource, IServer
+    public class ServerForTesting : Dev2.Runtime.ServiceModel.Data.Resource, IServer
     {
         public ServerForTesting(Mock<IExplorerRepository> explorerRepository)
         {

@@ -1,3 +1,35 @@
+Monday 2 November 2020
+======================
+Enhancements
+---------
+- Web Put Method can now use a Base64 formatted file content to upload all common media types to a specified destination.
+
+Tuesday 13 October 2020
+======================
+Enhancements
+---------
+- Web Get Method can now download all common media types.
+- Write File Tool can now use a Base64 formatted file content to write a file to a specified destination.
+- Use Cases folder has been added under the Examples folder for more examples of use to the above enhancements.
+
+Friday 28 August 2020
+======================
+Bug Fixes
+---------
+- Manual CorrelationID can now evaluate Warewolf variables.
+- The log server no longer returns object null error.
+
+Friday 31 July 2020
+======================
+Features
+---------
+- Allow triggers to be deployed from the studio.
+- Added counts for Tests and Triggers per resource selection to the deploy view.
+
+Enhancements
+---------
+- Warewolf Logger memory usage improvements.
+
 Friday 17 July 2020
 ======================
 Bug Fixes

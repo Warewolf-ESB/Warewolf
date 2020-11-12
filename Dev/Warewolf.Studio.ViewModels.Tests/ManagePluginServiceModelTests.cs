@@ -52,7 +52,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #endregion Test initialize
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestRetrieveSources()
         {
             var expectedResult = new ObservableCollection<IPluginSource>();
@@ -64,7 +65,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchPluginSources());
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestGetActions()
         {
             var expectedResult = new ObservableCollection<IPluginAction>();
@@ -78,7 +80,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.PluginActions(mockPluginSource.Object, mockNamespace.Object));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         public void TestGetActionsWithReturns()
         {
             var expectedResult = new ObservableCollection<IPluginAction>();
@@ -92,7 +95,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.PluginActionsWithReturns(mockPluginSource.Object, mockNamespace.Object));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(1000)]
         public void TestGetConstructors()
         {
             var expectedResult = new ObservableCollection<IPluginConstructor>();
@@ -106,7 +110,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.PluginConstructors(mockPluginSource.Object, mockNamespace.Object));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestGetNameSpaces()
         {
             var expectedResult = new ObservableCollection<INamespaceItem>();
@@ -119,7 +124,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchNamespaces(mockPluginSource.Object));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestGetNameSpacesWithJsonRetunrs()
         {
             var expectedResult = new ObservableCollection<INamespaceItem>();
@@ -132,20 +138,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchNamespacesWithJsonRetunrs(mockPluginSource.Object));
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestCreateNewSource()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestCreateNewPluginSource()
         {
-            try
-            {
-                _target.CreateNewSource();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail("Create new plugin source failed. Exception: " + ex.Message);
-            }
+			_target.CreateNewSource();
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestEditPluginSource()
         {
             var mockPluginSource = new Mock<IPluginSource>();
@@ -156,8 +157,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockPluginSource.Object);
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestService()
+        [TestMethod]
+        [Timeout(500)]
+        public void TestPluginService()
         {
             var mockPluginInputValues = new Mock<IPluginService>();
             var expectedResult = string.Empty;

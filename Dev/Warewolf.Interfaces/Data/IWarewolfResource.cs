@@ -9,9 +9,7 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Xml.Linq;
 
 namespace Warewolf.Data
 {
@@ -19,31 +17,13 @@ namespace Warewolf.Data
     {
         Guid ResourceID { get; set; }
         String ResourceName { get; set; }
+        String FilePath { get; }
         string ResourceType { get; set; }
         IVersionInfo VersionInfo { get; set; }
         StringBuilder DataList { get; set; }
         
     }
-    public interface IWarewolfWorkflow : IWarewolfResource
-    {
-        string Name { get; }
-        List<IWorkflowNode> WorkflowNodesForHtml { get; }
-        List<IWorkflowNode> WorkflowNodes { get; }
-        StringBuilder XamlDefinition { get; set; }
-
-        XElement ToXml();
-    }
-
-    public interface IWorkflowNode
-    {
-        Guid ActivityID { get; }
-        Guid UniqueID { get; }
-        string StepDescription { get; }
-        bool MockSelected { get; }
-        List<IWorkflowNode> NextNodes { get; }
-        void Add(IWorkflowNode workflowNode);
-    }
-
+   
     public interface IFilePathResource
     {
         string Path { get; }

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -83,6 +83,7 @@ using Dev2.Activities.Designers2.Web_Service_Delete;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Activities.Designers2.Web_Service_Post;
 using Dev2.Activities.Designers2.Web_Service_Put;
+using Dev2.Activities.Designers2.Web_Put;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
@@ -112,8 +113,12 @@ using Dev2.Activities.Designers2.RedisRemove;
 using Dev2.Activities.Designers2.RedisCounter;
 using Dev2.Activities.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
+using Dev2.Activities.Designers2.PathOperations.WriteFile;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
+using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
+using Dev2.Activities.Designers2.SuspendExecution;
+using Dev2.Activities.Designers2.WebGet;
 
 namespace Dev2
 {
@@ -121,6 +126,12 @@ namespace Dev2
     {
         public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
             {
+                // DEPRECATED
+                { typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel) },
+                { typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel) },
+                { typeof(DsfWebPutActivity), typeof(WebServicePutViewModel) },
+
+                // EXISTING
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesignerViewModel) },
                 { typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesignerViewModel) },
                 { typeof(DsfDotNetMultiAssignActivity), typeof(MultiAssignDesignerViewModel) },
@@ -151,7 +162,7 @@ namespace Dev2
                 { typeof(DsfPathDelete), typeof(DeleteDesignerViewModel) },
                 { typeof(DsfFileRead), typeof(ReadFileDesignerViewModel) },
                 { typeof(FileReadWithBase64), typeof(ReadFileWithBase64DesignerViewModel) },
-                { typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel) },
+                { typeof(FileWriteActivity), typeof(WriteFileActivityDesignerViewModel) },
                 { typeof(DsfFolderRead), typeof(ReadFolderDesignerViewModel) },
                 { typeof(DsfFolderReadActivity), typeof(ReadFolderNewDesignerViewModel) },
                 { typeof(DsfPathRename), typeof(RenameDesignerViewModel) },
@@ -187,10 +198,10 @@ namespace Dev2
                 { typeof(DsfExchangeEmailNewActivity), typeof(ExchangeNewEmailDesignerViewModel) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllEnhancedViewModel) },
                 { typeof(DsfComDllActivity), typeof(ComDllViewModel) },
-                { typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel) },
+                { typeof(WebGetActivity), typeof(WebGetActivityViewModel) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostViewModel) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteViewModel) },
-                { typeof(DsfWebPutActivity), typeof(WebServicePutViewModel) },
+                { typeof(WebPutActivity), typeof(WebPutActivityViewModel) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadViewModel) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadViewModel) },
                 { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteViewModel) },
@@ -218,7 +229,8 @@ namespace Dev2
                 { typeof(RedisCacheActivity), typeof(RedisCacheDesigner) },
                 { typeof(RedisRemoveActivity), typeof(RedisRemoveDesigner) },
                 { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
-                { typeof(GateActivity), typeof(GateDesignerViewModel) }
+                { typeof(GateActivity), typeof(GateDesignerViewModel) },
+                { typeof(SuspendExecutionActivity), typeof(SuspendExecutionDesignerViewModel) },
             };
     }
 }

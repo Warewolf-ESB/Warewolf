@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Activities;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Data;
@@ -107,7 +108,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (IsResultBase64)
                     {
                         var result = broker.GetBytes(endpoint);
-                        outputs[0].OutputStrings.Add(Convert.ToBase64String(result, Base64FormattingOptions.InsertLineBreaks));
+                        outputs[0].OutputStrings.Add(result.ToBase64String());
                     }
                     else
                     {

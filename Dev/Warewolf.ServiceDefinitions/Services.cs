@@ -20,20 +20,24 @@ namespace Warewolf.Service
     {
         public const string RedisSource = nameof(RedisSource);
     }
+
     public static class TestRedisSource
     {
         public const string RedisSource = nameof(RedisSource);
     }
+
     public static class OptionsService
     {
         public const string ParameterName = nameof(ParameterName);
 
         public const string GateResume = nameof(GateResume);
     }
+
     public static class SaveElasticsearchSource
     {
         public const string ElasticsearchSource = nameof(ElasticsearchSource);
     }
+
     public static class TestElasticsearchSource
     {
         public const string ElasticsearchSource = nameof(ElasticsearchSource);
@@ -44,16 +48,31 @@ namespace Warewolf.Service
         public const string ServerSettings = nameof(ServerSettings);
     }
 
+    public static class SavePersistenceSettings
+    {
+        public const string PersistenceSettings = nameof(PersistenceSettings);
+    }
+    public static class GetPersistenceSettings
+    {
+        public const string PersistenceSettings = nameof(PersistenceSettings);
+    }
+
     public static class SaveAuditingSettings
     {
         public const string LegacySettings = nameof(LegacySettings);
         public const string AuditingSettings = nameof(AuditingSettings);
         public const string SinkType = nameof(SinkType);
     }
+
     public static class GetAuditingSettings
     {
         public const string LegacySettings = nameof(LegacySettings);
         public const string AuditingSettings = nameof(AuditingSettings);
         public const string SinkType = nameof(SinkType);
+    }
+
+    public static class GetDependanciesOnList
+    {
+        public const string Dependencies = nameof(Dependencies);
     }
 }

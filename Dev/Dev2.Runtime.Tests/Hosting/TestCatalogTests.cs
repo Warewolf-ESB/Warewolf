@@ -1,6 +1,6 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,6 +15,7 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Runtime.Services;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
@@ -28,12 +29,14 @@ namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
     [TestCategory("Runtime Hosting")]
+    [DoNotParallelize]
     public class TestCatalogTests
     {
         public static IDirectory DirectoryWrapperInstance()
         {
             return new DirectoryWrapper();
         }
+
         [TestInitialize]
         public void CleanupTestDirectory()
         {

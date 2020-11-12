@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,8 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Runtime.Diagnostics;
@@ -169,8 +171,8 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     return PerformMultipartWebRequest(client, address, data);
                 }
-
-                return method == WebRequestMethod.Get ? client.DownloadString(address) : client.UploadString(address, method.ToString().ToUpperInvariant(), data);
+                
+                return method == WebRequestMethod.Get ? client.DownloadData(address).ToBase64String() : client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String(); 
             }
             catch (WebException webex) when (webex.Response is HttpWebResponse httpResponse)
             {
@@ -259,7 +261,7 @@ namespace Dev2.Runtime.ServiceModel
                 source.Client.Headers.Add("user-agent", GlobalConstants.UserAgentString);
                 AddHeaders(source, headers);
                 ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             }
         }
 

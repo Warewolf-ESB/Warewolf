@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -7,11 +6,13 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{87AEFD04-29F3-45B6-A7C6-4161F9190876}</ProjectGuid>
     <OutputType>Exe</OutputType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Warewolf Server</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <RuntimeIdentifier>win</RuntimeIdentifier>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -46,6 +47,25 @@
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageID>WarewolfServer</PackageID>
+    <PackageVersion>$(PackageVersion)</PackageVersion>
+    <Title>Warewolf Server</Title>
+    <Authors>Dev2</Authors>
+    <Copyright>Warewolf - Once bitten, there's no going back
+Copyright 2020 by Warewolf Ltd &lt;alpha@warewolf.io&gt;
+Licensed under GNU Affero General Public License 3.0 or later. 
+Some rights reserved.
+Visit our website for more information &lt;http://warewolf.io/&gt;
+AUTHORS &lt;http://warewolf.io/authors.php&gt; , CONTRIBUTORS &lt;http://warewolf.io/contributors.php&gt;
+@license GNU Affero General Public License &lt;http://www.gnu.org/licenses/agpl-3.0.html&gt;</Copyright>
+    <PackageProjectUrl>https://warewolf.io/</PackageProjectUrl>
+    <PackageLicenseUrl>https://warewolf.io/eula</PackageLicenseUrl>
+    <PackageIconUrl>https://warewolf.io/images/logo.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/warewolf-esb/warewolf</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <TargetFrameworks>net48;net5.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>E0E1E9A356E095CC89E4164299ED65ED12690217</ManifestCertificateThumbprint>
@@ -86,6 +106,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>CC0091, S1226, S100, CC0044, CC0021, S1449, S1541, S1067, S3235, CC0015, S107, S2292, S1450, S105, CC0074, S1135, S101, S3776, CS0168, S2339, CC0031, S3240, CC0020, CS0108, S1694, S1481, CC0008, S2328, S2696, S1643, CS0659, CS0067, CC0030, CA2202, S3376, S1185, CS0219, S3253, S1066, CC0075, S3459, S1871, S1125, CS0649, S2737, S1858, CC0082, CC0001, S3241, S2223, S1301, CC0013, S2955, S1944, CS4014, S3052, S2674, S2344, S1939, S1210, CC0033, CC0002, S3458, S3254, S3220, S2197, S1905, S1699, S1659, S1155, CS0105, CC0019, S3626, S3604, S3440, S3256, S2692, S2345, S1109, FS0058, CS1998, CS0661, CS0660, CS0162, CC0089, CC0032, CC0011, CA1001</WarningsAsErrors>
     <LangVersion>7.3</LangVersion>
+    <DebugType>none</DebugType>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -219,6 +240,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyLoader.cs" />
+    <Compile Include="HangfireServerMonitor.cs" />
     <Compile Include="NullProcessMonitor.cs" />
     <Compile Include="IQueueConfigLoader.cs" />
     <Compile Include="IWriter.cs" />
@@ -235,9 +257,7 @@
     <Compile Include="QueueConfigLoader.cs" />
     <Compile Include="QueueProcessorMonitor.cs" />
     <Compile Include="ServerEnvironmentPreparer.cs" />
-    <Compile Include="ServerLifecycleManagerService.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ServerLifecycleManagerService.cs" />
     <Compile Include="StartWebServer.cs" />
     <Compile Include="WebServerConfiguration.cs" />
     <Compile Include="TempFileDeleter.cs" />
@@ -329,6 +349,7 @@
       <Project>{66dcb0b3-1f33-490f-b874-913cf1f43e49}</Project>
       <Name>Warewolf.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.HangfireServer\Warewolf.HangfireServer.csproj" />
     <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj">
       <Project>{926cf512-b3fd-410d-aa83-ebdf4c4868de}</Project>
       <Name>Warewolf.Interfaces</Name>
@@ -447,25 +468,25 @@
       <Version>2.0.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.Cors">
-      <Version>5.2.3</Version>
+      <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost">
       <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost">
-      <Version>5.2.3</Version>
+      <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Exchange.WebServices">
       <Version>2.2.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Cors">
-      <Version>4.0.1</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Security">
-      <Version>4.0.1</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.SelfHost">
-      <Version>4.0.1</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
     <PackageReference Include="MySql.Data">
       <Version>6.9.9</Version>
@@ -479,8 +500,14 @@
     <PackageReference Include="Oracle.ManagedDataAccess">
       <Version>12.1.2400</Version>
     </PackageReference>
+    <PackageReference Include="System.Configuration.ConfigurationManager">
+      <Version>5.0.0</Version>
+    </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>
+    </PackageReference>
+    <PackageReference Include="System.ServiceProcess.ServiceController">
+      <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.5.20</Version>
@@ -491,25 +518,36 @@
     <PackageReference Include="TxFileManager">
       <Version>1.3.0</Version>
     </PackageReference>
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.6.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(TargetDir)Resources"
-echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)Resources - Release"
-if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(TargetDir)Resources - ServerTests"
-if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(TargetDir)Resources - UITests"
-if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(TargetDir)Resources - Load"
-if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(TargetDir)_PublishedWebsites\Dev2.Web"
-taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
-taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"
-if not exist "$(TargetDir)Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\$(ConfigurationName)\Warewolf.COMIPC.exe" "$(TargetDir)"
-if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.pdb" "$(TargetDir)"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>if not exist "$(TargetDir)Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
-if not exist "$(TargetDir)Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
-if not exist "$(TargetDir)Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(TargetDir)"</PreBuildEvent>
+    <PostBuildEvent>
+      if exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf Server.exe" (
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - Release"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - ServerTests" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - ServerTests"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - UITests"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Load" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Resources - Load"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\_PublishedWebsites\Dev2.Web" echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Web2" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\_PublishedWebsites\Dev2.Web"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Debug\net48\win-x86\Warewolf.COMIPC.config" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Debug\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Debug\net48\win"
+      )
+      if exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf Server.exe" (
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Resources"
+      echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Resources - Release"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.exe" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.pdb" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Warewolf.COMIPC.config" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\Release\net48\win-x86\Warewolf.COMIPC.exe.config" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
+      if not exist "$(SolutionDir)Dev2.Server\bin\Release\net48\win\Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(SolutionDir)Dev2.Server\bin\Release\net48\win"
+      )
+      taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
+      taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

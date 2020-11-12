@@ -3,31 +3,31 @@ $Invocation = (Get-Variable MyInvocation -Scope 0).Value
 $SolutionDirectory = (get-item (Split-Path $Invocation.MyCommand.Path)).parent.FullName
 Write-Host Got solution path as `"$SolutionDirectory`".
 
-Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll`".
-if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll") {
-    Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll"
+Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\Dev2.Runtime.Services.dll`".
+if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\Dev2.Runtime.Services.dll") {
+    Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\Dev2.Runtime.Services.dll"
 } else {
-    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll", please compile that before running this tool.
+    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\Dev2.Runtime.Services.dll", please compile that before running this tool.
     pause
     exit 1
 }
 Write-Host Dev2.Runtime.Services Assembly loaded.
 
-Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\System.Security.Cryptography.ProtectedData.dll`".
-if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\System.Security.Cryptography.ProtectedData.dll") {
-    Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\System.Security.Cryptography.ProtectedData.dll"
+Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\System.Security.Cryptography.ProtectedData.dll`".
+if (Test-Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\System.Security.Cryptography.ProtectedData.dll") {
+    Add-Type -Path "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\System.Security.Cryptography.ProtectedData.dll"
 } else {
-    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\System.Security.Cryptography.ProtectedData.dll", please compile that before running this tool.
+    Write-Host Cannot find assembly at "$SolutionDirectory\Dev2.Runtime.Services\bin\Debug\net48\win\System.Security.Cryptography.ProtectedData.dll", please compile that before running this tool.
     pause
     exit 1
 }
 Write-Host System.Security.Cryptography.ProtectedData Assembly loaded.
 
-Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Warewolf.Security\bin\Debug\netstandard2.0\Warewolf.Security.dll`".
-if (Test-Path "$SolutionDirectory\Warewolf.Security\bin\Debug\netstandard2.0\Warewolf.Security.dll") {
-    Add-Type -Path "$SolutionDirectory\Warewolf.Security\bin\Debug\netstandard2.0\Warewolf.Security.dll"
+Write-Host Loading assembly at `"$SolutionDirectory\Dev2.Warewolf.Security\bin\Debug\net48\Warewolf.Security.dll`".
+if (Test-Path "$SolutionDirectory\Warewolf.Security\bin\Debug\net48\Warewolf.Security.dll") {
+    Add-Type -Path "$SolutionDirectory\Warewolf.Security\bin\Debug\net48\Warewolf.Security.dll"
 } else {
-    Write-Host Cannot find assembly at "$SolutionDirectory\Warewolf.Security\bin\Debug\netstandard2.0\Warewolf.Security.dll", please compile that before running this tool.
+    Write-Host Cannot find assembly at "$SolutionDirectory\Warewolf.Security\bin\Debug\net48\Warewolf.Security.dll", please compile that before running this tool.
     pause
     exit 1
 }

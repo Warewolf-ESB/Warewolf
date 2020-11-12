@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -19,6 +19,7 @@ using System.Threading;
 namespace Dev2.Common.Tests
 {
     [TestClass]
+    [DoNotParallelize]
     public class UtilitiesTests
     {
         class Example
@@ -34,7 +35,6 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Utilities))]
-
         public void Utilities_Flatten_GivenNull()
         {
             var result = Utilities.Flatten<int>(null, (item) => { return new List<int> { item }; });
@@ -202,7 +202,6 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Utilities))]
-        [DoNotParallelize]
         public void Utilities_PerformActionInsideImpersonatedContext_GivenAnonymousPrincipal_ShouldTryServerUser()
         {
             var executed = false;
@@ -234,7 +233,6 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Utilities))]
-        [DoNotParallelize]
         public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgain()
         {
             var executed = false;

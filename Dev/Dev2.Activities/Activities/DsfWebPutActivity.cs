@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("WebMethods", "PUT", ToolType.Native, "6C5F6D7E-4B42-4874-8197-DBE86D4A9F2D", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Put")]
+    [Obsolete("DsfWebPutActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPutActivity.")]
     public class DsfWebPutActivity : DsfWebActivityBase,IEquatable<DsfWebPutActivity>
     {
         public DsfWebPutActivity()

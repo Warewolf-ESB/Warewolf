@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var executingUser = new Mock<IPrincipal>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString())).Returns(true);
+            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty)).Returns(true);
             var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
             //------------Execute Test---------------------------
             var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
@@ -196,11 +196,11 @@ namespace Dev2.Tests.Runtime.WebServer
             var executingUser = new Mock<IPrincipal>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var authorizationService = new Mock<IAuthorizationService>();
-            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString())).Returns(false);
+            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty)).Returns(false);
             var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
             //------------Execute Test---------------------------
             var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
-            authorizationService.Verify(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString()), Times.Once);
+            authorizationService.Verify(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty), Times.Once);
             Assert.IsNotNull(processRequest);
         }
     }

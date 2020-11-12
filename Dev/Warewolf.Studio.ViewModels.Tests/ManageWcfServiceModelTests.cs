@@ -52,7 +52,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #endregion Test initialize
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(100)]
         public void TestRetrieveSources()
         {
             var expectedResult = new ObservableCollection<IWcfServerSource>();
@@ -64,8 +65,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchWcfSources());
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestGetActions()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestGetWCFActions()
         {
             var expectedResult = new ObservableCollection<IWcfAction>();
             var mockWcfServerSource = new Mock<IWcfServerSource>();
@@ -77,20 +79,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.WcfActions(mockWcfServerSource.Object));
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestCreateNewSource()
+        [TestMethod]
+        [Timeout(250)]
+        public void TestCreateNewWcfSource()
         {
-            try
-            {
-                _target.CreateNewSource();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail("Create new web source failed. Exception: " + ex.Message);
-            }
+            _target.CreateNewSource();
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod]
+        [Timeout(250)]
         public void TestEditSqlSource()
         {
             var mockWcfServiceSource = new Mock<IWcfServerSource>();
@@ -101,8 +98,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockWcfServiceSource.Object);
         }
 
-        [TestMethod,Timeout(60000)]
-        public void TestService()
+        [TestMethod]
+        [Timeout(500)]
+        public void TestWcfService()
         {
             var mockWcfServiceValues = new Mock<IWcfService>();
             var expectedResult = string.Empty;
