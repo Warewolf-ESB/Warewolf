@@ -399,6 +399,9 @@ where pn.nspname = 'public';
         public static readonly string WarewolfError = "Warewolf Error";
         public static readonly string WarewolfDebug = "Warewolf Debug";
         public static readonly string WarewolfWarn = "Warewolf Warn";
+        public static readonly string Error = "Error";
+        public static readonly string Success = "Success";
+        public static readonly string Failed = "Failed";
 
         public static readonly string ManualResumptionSuspensionIdBlank = "SuspensionID must not be null or empty.";
         public static readonly string PersistenceSettingsNoConfigured = "Could not find persistence config. Please configure in Persistence Settings.";

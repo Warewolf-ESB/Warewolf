@@ -40,7 +40,10 @@ namespace Warewolf.Driver.Persistence.Drivers
 
             var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
             var jobIsDeleted = jobDetails.History.Any(i => i.StateName.Equals("Deleted"));
-            if (jobIsDeleted) return "failed";
+            if (jobIsDeleted)
+            {
+                return GlobalConstants.Failed;
+            }
 
             if (overrideVariables)
             {
@@ -50,7 +53,10 @@ namespace Warewolf.Driver.Persistence.Drivers
             var state = new ScheduledState(DateTime.Now.ToUniversalTime());
 
             var result = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
-            if (result == null) return "failed";
+            if (result == null)
+            {
+                return GlobalConstants.Failed;
+            }
             backgroundJobClient.Delete(jobId);
             return result;
         }
@@ -72,11 +78,11 @@ namespace Warewolf.Driver.Persistence.Drivers
             try
             {
                 //This method is intercepted in the HangfireServer Performing method
-                return "success";
+                return GlobalConstants.Success;
             }
             catch (Exception)
             {
-                return "failed";
+                return GlobalConstants.Failed;
             }
         }
 

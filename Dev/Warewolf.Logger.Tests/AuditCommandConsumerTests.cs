@@ -74,7 +74,7 @@ namespace Warewolf.Logger.Tests
 
             var auditCommand = new AuditCommand
             {
-                Type = "ResumeExecution",
+                Type = "LogResumeExecutionState",
                 Audit = audit,
             };
 
