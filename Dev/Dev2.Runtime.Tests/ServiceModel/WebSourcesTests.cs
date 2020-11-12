@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -9,7 +9,6 @@
 */
 
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Runtime.Interfaces;
@@ -118,7 +117,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var result = handler.Test(source);
             Assert.IsFalse(result.IsValid, result.ErrorMessage);
             Assert.AreEqual("test: false webexception", result.ErrorMessage.Trim());
-
         }
 
         [TestMethod]
@@ -228,9 +226,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
             _ = WebSources.Execute(source, WebRequestMethod.Get, "http://consoto.com", "test data", false, out ErrorResultTO error);
 
             var client = source.Client;
-            Assert.IsTrue((client.Credentials as NetworkCredential).UserName == "User");
-            Assert.IsTrue((client.Credentials as NetworkCredential).Password == "pwd");
-
+            var clientCredentials = client.Credentials as NetworkCredential;
+            Assert.IsNotNull(clientCredentials);
+            Assert.IsTrue(clientCredentials.UserName == "User");
+            Assert.IsTrue(clientCredentials.Password == "pwd");
         }
 
         [TestMethod]
@@ -282,7 +281,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNotNull(results);
             Assert.IsTrue(string.IsNullOrEmpty(results));
         }
-
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -470,7 +468,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
         }
 
-
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebSources))]
@@ -530,22 +527,19 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Once);
         }
 
-
         private static bool IsBase64(string payload)
         {
-            var result = false;
             try
             {
-                Convert.FromBase64String(payload);
-                result = true;
+                _ = Convert.FromBase64String(payload);
+                return true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 // if error is thrown we know it is not a valid base64 string
+                Assert.Fail("Convert from Base64 failed" + exception.Message);
+                return false;
             }
-
-            return result;
         }
-
     }
 }
