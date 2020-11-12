@@ -109,6 +109,9 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Unzip
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file at local location", @__tags);
 #line 7
 this.ScenarioSetup(scenarioInfo);
@@ -224,7 +227,6 @@ this.UnzipFileAtLocalLocation("1", "Local to Local", "[[path]]", "C:\\test0.zip"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtLocalLocation_2()
         {
 #line 7
@@ -346,6 +348,9 @@ this.UnzipFileAtLocalLocation("5", "Local to SFTP", "[[path]]", "C:\\test4.zip",
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file at UNC location", @__tags);
 #line 35
 this.ScenarioSetup(scenarioInfo);
@@ -464,7 +469,6 @@ this.UnzipFileAtUNCLocation("1", "UNC to Local", "[[path]]", "\\\\SVRDEV.premier
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtUNCLocation_2()
         {
 #line 35
@@ -593,6 +597,9 @@ this.UnzipFileAtUNCLocation("5", "UNC to SFTP", "[[path]]", "\\\\SVRDEV.premier.
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file at FTP location", @__tags);
 #line 63
 this.ScenarioSetup(scenarioInfo);
@@ -708,7 +715,6 @@ this.UnzipFileAtFTPLocation("1", "FTP to Local", "[[path]]", "ftp://DEVOPSPDC.pr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtFTPLocation_2()
         {
 #line 63
@@ -801,6 +807,9 @@ this.UnzipFileAtFTPLocation("4", "FTP tp FTPS", "[[path]]", "ftp://DEVOPSPDC.pre
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file at FTPS location", @__tags);
 #line 90
 this.ScenarioSetup(scenarioInfo);
@@ -916,7 +925,6 @@ this.UnzipFileAtFTPSLocation("1", "FTPS to Local", "[[path]]", "ftp://DEVOPSPDC.
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtFTPSLocation_2()
         {
 #line 90
@@ -1038,6 +1046,9 @@ this.UnzipFileAtFTPSLocation("5", "FTPS to SFTP", "[[path]]", "ftp://DEVOPSPDC.p
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
+            var getGuid = Dev2.Activities.Specs.BaseTypes.CommonSteps.GetGuid();
+            sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
+            destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file at SFTP location", @__tags);
 #line 118
 this.ScenarioSetup(scenarioInfo);
@@ -1153,7 +1164,6 @@ this.UnzipFileAtSFTPLocation("1", "SFTP to Local", "[[path]]", "sftp://SVRDEV.pr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.Ignore]
         public virtual void UnzipFileAtSFTPLocation_2()
         {
 #line 118
