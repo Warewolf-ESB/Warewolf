@@ -17,7 +17,6 @@ using System;
 using System.Configuration;
 using System.IO;
 using System.Security.Principal;
-using log4net.Repository;
 
 namespace Dev2
 {
@@ -66,9 +65,10 @@ namespace Dev2
         {
             try
             {
+
                 Dev2Logger.AddEventLogging(settingsConfigFile, "Warewolf Server");
                 Dev2Logger.UpdateFileLoggerToProgramData(settingsConfigFile);
-                XmlConfigurator.ConfigureAndWatch(null, new FileInfo(settingsConfigFile));
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             }
             catch (Exception e)
             {
@@ -85,11 +85,11 @@ namespace Dev2
 
             if (_fileWrapper.Exists("Settings.config") && !_fileWrapper.Exists(EnvironmentVariables.ServerLogSettingsFile))
             {
-                _fileWrapper.Copy("Settings.config", EnvironmentVariables.ServerLogSettingsFile);
+                    _fileWrapper.Copy("Settings.config", EnvironmentVariables.ServerLogSettingsFile);
             }
             if (_fileWrapper.Exists("secure.config") && !_fileWrapper.Exists(EnvironmentVariables.ServerSecuritySettingsFile))
             {
-                _fileWrapper.Copy("secure.config", EnvironmentVariables.ServerSecuritySettingsFile);
+                    _fileWrapper.Copy("secure.config", EnvironmentVariables.ServerSecuritySettingsFile);
             }
             if (!_fileWrapper.Exists(settingsConfigFile))
             {
