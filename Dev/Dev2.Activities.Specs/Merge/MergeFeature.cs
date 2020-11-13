@@ -443,11 +443,11 @@ namespace Dev2.Activities.Specs.Merge
                                      typeof(TestMockSwitchStep),
                                      typeof(DsfAbstractMultipleFilesActivity)};
             
-            var allActivityTypes = dev2ActivityIOMapping.Assembly.GetTypes().Where(t => dev2ActivityIOMapping.IsAssignableFrom(t) && (!excludedTypes.Contains(t)));
+            var allActivityTypes = dev2ActivityIOMapping.Assembly.GetTypes().Where(t => dev2ActivityIOMapping.IsAssignableFrom(t) && (!excludedTypes.Contains(t))).ToList();
             
-            var countOfAllTools = allActivityTypes.Count();
+            var countOfAllTools = allActivityTypes.Count;
             var currentDesignerTools = DesignerAttributeMap.DesignerAttributes.Count;
-            Assert.AreEqual(countOfAllTools, currentDesignerTools, "Count mismatch between the assembly activities and the mapped activities in DesignerAttributeMap class");
+            Assert.AreEqual(countOfAllTools, currentDesignerTools, "Count mismatch between the assembly activities and the mapped activities in DesignerAttributeMap class.\nAll tools:\n" + string.Join("\n", allActivityTypes.Select(activityType => activityType.FullName)) + "\n\nCurrent Designer Tools:\n" + string.Join("\n", DesignerAttributeMap.DesignerAttributes.Keys.Select(activityType => activityType.FullName)));
             var allActivitiesAreMapped = allActivityTypes.All(t => DesignerAttributeMap.DesignerAttributes.ContainsKey(t));
             Assert.IsTrue(allActivitiesAreMapped, "Not all activities are mapped in the DesignerAttributeMap class");
 
