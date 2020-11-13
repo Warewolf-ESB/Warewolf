@@ -368,12 +368,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.HangfireServer.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.NetStandard20", "Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj", "{A87F5F4B-4098-4895-BF40-67CA23755FBD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Run Configurations", "Run Configurations", "{6E1DB603-FCEC-474B-853D-66C7A9AAAD5C}"
-ProjectSection(SolutionItems) = preProject
-	.run\Server.run.xml = .run\Server.run.xml
-	.run\Studio.run.xml = .run\Studio.run.xml
-EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -100,34 +100,34 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("No data in the cache", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2841 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2769 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2841.AddRow(new string[] {
+            table2769.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 11
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2841, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2769, "And ");
 #line 14
  testRunner.When("I execute the Redis Cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table2842 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2770 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
                         "Data"});
-            table2842.AddRow(new string[] {
+            table2770.AddRow(new string[] {
                         "MyData",
                         "\"[[Var1]],Test1\""});
 #line 15
- testRunner.Then("the cache will contain", ((string)(null)), table2842, "Then ");
+ testRunner.Then("the cache will contain", ((string)(null)), table2770, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2843 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2771 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2843.AddRow(new string[] {
+            table2771.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 18
- testRunner.And("output variables have the following values", ((string)(null)), table2843, "And ");
+ testRunner.And("output variables have the following values", ((string)(null)), table2771, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -147,36 +147,36 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.And("I have a key \"MyData\" with GUID and ttl of \"20000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2844 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2772 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
                         "Data"});
-            table2844.AddRow(new string[] {
+            table2772.AddRow(new string[] {
                         "MyData",
                         "\"[[Var1]],Data in cache\""});
 #line 26
- testRunner.And("data exists (TTL not hit) for key \"MyData\" with GUID as", ((string)(null)), table2844, "And ");
+ testRunner.And("data exists (TTL not hit) for key \"MyData\" with GUID as", ((string)(null)), table2772, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2845 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2773 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2845.AddRow(new string[] {
+            table2773.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 29
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2845, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2773, "And ");
 #line 32
  testRunner.When("I execute the Redis Cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 33
  testRunner.Then("the assign \"dataToStore\" is not executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2846 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2774 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2846.AddRow(new string[] {
+            table2774.AddRow(new string[] {
                         "[[Var1]]",
                         "\"[[Var1]],Data in cache\""});
 #line 34
- testRunner.And("output variables have the following values", ((string)(null)), table2846, "And ");
+ testRunner.And("output variables have the following values", ((string)(null)), table2774, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -196,42 +196,42 @@ this.ScenarioSetup(scenarioInfo);
 #line 41
  testRunner.And("I have a key \"MyData\" with GUID and ttl of \"3000\" milliseconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2847 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2775 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         ""});
 #line 42
- testRunner.And("data does not exist (TTL exceeded) for key \"MyData\" as", ((string)(null)), table2847, "And ");
+ testRunner.And("data does not exist (TTL exceeded) for key \"MyData\" as", ((string)(null)), table2775, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2848 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2776 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2848.AddRow(new string[] {
+            table2776.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 44
- testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2848, "And ");
+ testRunner.And("an assign \"dataToStore\" as", ((string)(null)), table2776, "And ");
 #line 47
  testRunner.When("I execute the Redis Cache tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48
  testRunner.Then("the assign \"dataToStore\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2849 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2777 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
                         "Data"});
-            table2849.AddRow(new string[] {
+            table2777.AddRow(new string[] {
                         "MyData",
                         "\"[[Var1]],Test1\""});
 #line 49
- testRunner.Then("the cache will contain", ((string)(null)), table2849, "Then ");
+ testRunner.Then("the cache will contain", ((string)(null)), table2777, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2850 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2778 = new TechTalk.SpecFlow.Table(new string[] {
                         "var",
                         "value"});
-            table2850.AddRow(new string[] {
+            table2778.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
 #line 52
- testRunner.And("output variables have the following values", ((string)(null)), table2850, "And ");
+ testRunner.And("output variables have the following values", ((string)(null)), table2778, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -253,77 +253,77 @@ this.ScenarioSetup(scenarioInfo);
 #line 60
  testRunner.And("I have \"key2\" of \"MyData\" with GUID and \"ttl2\" of \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2851 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2779 = new TechTalk.SpecFlow.Table(new string[] {
                         "name",
                         "value"});
-            table2851.AddRow(new string[] {
+            table2779.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-            table2851.AddRow(new string[] {
+            table2779.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
 #line 61
- testRunner.And("an assign \"dataToStore1\" into \"DsfMultiAssignActivity1\" with", ((string)(null)), table2851, "And ");
+ testRunner.And("an assign \"dataToStore1\" into \"DsfMultiAssignActivity1\" with", ((string)(null)), table2779, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2852 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2780 = new TechTalk.SpecFlow.Table(new string[] {
                         "name",
                         "value"});
-            table2852.AddRow(new string[] {
+            table2780.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test21\""});
 #line 65
- testRunner.And("an assign \"dataToStore2\" into \"DsfMultiAssignActivity2\" with", ((string)(null)), table2852, "And ");
+ testRunner.And("an assign \"dataToStore2\" into \"DsfMultiAssignActivity2\" with", ((string)(null)), table2780, "And ");
 #line 68
  testRunner.Then("the assigned \"key1\", \"ttl1\" and innerActivity \"DsfMultiAssignActivity1\" is execut" +
                     "ed by \"RedisActivity1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2853 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2781 = new TechTalk.SpecFlow.Table(new string[] {
                         "name",
                         "value"});
-            table2853.AddRow(new string[] {
+            table2781.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-            table2853.AddRow(new string[] {
+            table2781.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
 #line 69
- testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2853, "And ");
+ testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2781, "And ");
 #line 73
  testRunner.Then("the assigned \"key2\", \"ttl2\" and innerActivity \"DsfMultiAssignActivity2\" is execut" +
                     "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2854 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2782 = new TechTalk.SpecFlow.Table(new string[] {
                         "label",
                         "variable",
                         "operator",
                         "value"});
-            table2854.AddRow(new string[] {
+            table2782.AddRow(new string[] {
                         "Redis key { MyData } found",
                         "null",
                         "",
                         ""});
-            table2854.AddRow(new string[] {
+            table2782.AddRow(new string[] {
                         "null",
                         "[[Var1]]",
                         "=",
                         "\"Test21\""});
-            table2854.AddRow(new string[] {
+            table2782.AddRow(new string[] {
                         "null",
                         "[[Var2]]",
                         "=",
                         "\"Test22\""});
-            table2854.AddRow(new string[] {
+            table2782.AddRow(new string[] {
                         "null",
                         "[[Var3]]",
                         "=",
                         "\"Test23\""});
-            table2854.AddRow(new string[] {
+            table2782.AddRow(new string[] {
                         "null",
                         "[[Var4]]",
                         "=",
                         "\"Test24\""});
 #line 74
- testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2854, "Then ");
+ testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2782, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -345,118 +345,118 @@ this.ScenarioSetup(scenarioInfo);
 #line 86
  testRunner.And("I have \"key2\" of \"MyData\" with GUID and \"ttl2\" of \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2855 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2783 = new TechTalk.SpecFlow.Table(new string[] {
                         "name",
                         "value"});
-            table2855.AddRow(new string[] {
+            table2783.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-            table2855.AddRow(new string[] {
+            table2783.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
 #line 87
- testRunner.And("an assign \"dataToStore1\" into \"DsfMultiAssignActivity1\" with", ((string)(null)), table2855, "And ");
+ testRunner.And("an assign \"dataToStore1\" into \"DsfMultiAssignActivity1\" with", ((string)(null)), table2783, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2856 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2784 = new TechTalk.SpecFlow.Table(new string[] {
                         "name",
                         "value"});
-            table2856.AddRow(new string[] {
+            table2784.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test21\""});
-            table2856.AddRow(new string[] {
+            table2784.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test22\""});
-            table2856.AddRow(new string[] {
+            table2784.AddRow(new string[] {
                         "[[Var3]]",
                         "\"Test23\""});
-            table2856.AddRow(new string[] {
+            table2784.AddRow(new string[] {
                         "[[Var4]]",
                         "\"Test24\""});
-            table2856.AddRow(new string[] {
+            table2784.AddRow(new string[] {
                         "[[bank(1).name]]",
                         "\"FNB\""});
-            table2856.AddRow(new string[] {
+            table2784.AddRow(new string[] {
                         "[[bank(1).id]]",
                         "\"100\""});
-            table2856.AddRow(new string[] {
+            table2784.AddRow(new string[] {
                         "[[bank(2).name]]",
                         "\"discovery\""});
-            table2856.AddRow(new string[] {
+            table2784.AddRow(new string[] {
                         "[[bank(2).id]]",
                         "\"200\""});
 #line 91
- testRunner.And("an assign \"dataToStore2\" into \"DsfMultiAssignActivity2\" with", ((string)(null)), table2856, "And ");
+ testRunner.And("an assign \"dataToStore2\" into \"DsfMultiAssignActivity2\" with", ((string)(null)), table2784, "And ");
 #line 101
  testRunner.Then("the assigned \"key1\", \"ttl1\" and innerActivity \"DsfMultiAssignActivity1\" is execut" +
                     "ed by \"RedisActivity1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2857 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2785 = new TechTalk.SpecFlow.Table(new string[] {
                         "name",
                         "value"});
-            table2857.AddRow(new string[] {
+            table2785.AddRow(new string[] {
                         "[[Var1]]",
                         "\"Test1\""});
-            table2857.AddRow(new string[] {
+            table2785.AddRow(new string[] {
                         "[[Var2]]",
                         "\"Test2\""});
 #line 102
- testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2857, "And ");
+ testRunner.And("the Redis Cache under \"key1\" with GUID will contain", ((string)(null)), table2785, "And ");
 #line 106
  testRunner.Then("the assigned \"key2\", \"ttl2\" and innerActivity \"DsfMultiAssignActivity2\" is execut" +
                     "ed by \"RedisActivity2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2858 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2786 = new TechTalk.SpecFlow.Table(new string[] {
                         "label",
                         "variable",
                         "operator",
                         "value"});
-            table2858.AddRow(new string[] {
+            table2786.AddRow(new string[] {
                         "Redis key { MyData } found",
                         "null",
                         "",
                         ""});
-            table2858.AddRow(new string[] {
+            table2786.AddRow(new string[] {
                         "null",
                         "[[Var1]]",
                         "=",
                         "\"Test21\""});
-            table2858.AddRow(new string[] {
+            table2786.AddRow(new string[] {
                         "null",
                         "[[Var2]]",
                         "=",
                         "\"Test22\""});
-            table2858.AddRow(new string[] {
+            table2786.AddRow(new string[] {
                         "null",
                         "[[Var3]]",
                         "=",
                         "\"Test23\""});
-            table2858.AddRow(new string[] {
+            table2786.AddRow(new string[] {
                         "null",
                         "[[Var4]]",
                         "=",
                         "\"Test24\""});
-            table2858.AddRow(new string[] {
+            table2786.AddRow(new string[] {
                         "null",
                         "[[bank(1).name]]",
                         "=",
                         "\"FNB\""});
-            table2858.AddRow(new string[] {
+            table2786.AddRow(new string[] {
                         "null",
                         "[[bank(1).id]]",
                         "=",
                         "\"100\""});
-            table2858.AddRow(new string[] {
+            table2786.AddRow(new string[] {
                         "null",
                         "[[bank(2).name]]",
                         "=",
                         "\"discovery\""});
-            table2858.AddRow(new string[] {
+            table2786.AddRow(new string[] {
                         "null",
                         "[[bank(2).id]]",
                         "=",
                         "\"200\""});
 #line 107
- testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2858, "Then ");
+ testRunner.Then("\"RedisActivity2\" output variables have the following values", ((string)(null)), table2786, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
