@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(2500)]
+        [Timeout(1000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Toolbox_TestNullLocalModel()
         {
@@ -60,7 +60,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(2500)]
+        [Timeout(1000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullRemoteModel()
         {
