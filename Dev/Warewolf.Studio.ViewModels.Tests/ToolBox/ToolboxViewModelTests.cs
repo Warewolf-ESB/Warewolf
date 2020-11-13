@@ -60,7 +60,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullRemoteModel()
         {
