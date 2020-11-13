@@ -170,6 +170,11 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             }
             var document = Data as XDocument;
 
+            /*document.Descendants()
+                .Attributes()
+                .Where(o => o.IsNamespaceDeclaration)
+                .Remove();*/
+
             // Create the root node
             var rootIndexedValueTreeNode = new IndexedPathSegmentTreeNode<string> { CurrentValue = document };
 
@@ -299,7 +304,12 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 {
                     if (parentCurentElement != null)
                     {
-                        newIndexedValueTreeNode.CurrentValue = parentCurentElement.Element(pathSegment.ActualSegment);
+                        //PBI: this is where we loose our currentValue
+                        newIndexedValueTreeNode.CurrentValue = parentCurentElement
+                            .Element(pathSegment.ActualSegment)
+                            ?? parentCurentElement.Descendants()
+                            .Where(o => o.Name.LocalName == pathSegment.ActualSegment)
+                            .FirstOrDefault();
                     }
 
                     if (newIndexedValueTreeNode.CurrentValue == null)

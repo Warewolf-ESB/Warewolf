@@ -704,7 +704,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
+        protected override string PerformWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
             Head = head;
             QueryRes = query;
