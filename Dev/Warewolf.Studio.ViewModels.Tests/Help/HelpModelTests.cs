@@ -34,7 +34,7 @@ namespace Warewolf.Studio.Models.Help.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestHelpModel()
         {
@@ -46,7 +46,7 @@ namespace Warewolf.Studio.Models.Help.Tests
         #region Test methods
 
         [TestMethod]
-        [Timeout(2000)]
+        [Timeout(5000)]
         public void TestFireOnHelpReceived()
         {
             //arrange
@@ -66,7 +66,7 @@ namespace Warewolf.Studio.Models.Help.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         public void TestHelpModelDispose()
         {
             //arrange

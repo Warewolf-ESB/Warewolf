@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestRefreshCommand()

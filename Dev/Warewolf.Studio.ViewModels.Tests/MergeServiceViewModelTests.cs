@@ -119,8 +119,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
-        public void TestEnvironments()
+        [Timeout(2000)]
+        public void MergeServiceTestEnvironments()
         {
             //arrange
             //act
