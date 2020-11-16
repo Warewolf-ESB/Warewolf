@@ -1062,7 +1062,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestViewModel_Save_Rename_ShouldRename()
