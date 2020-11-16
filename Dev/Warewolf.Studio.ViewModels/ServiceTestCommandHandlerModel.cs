@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels
                 var outputList = _dataListConversionUtils.GetOutputs(DataList);
                 testModel.Inputs = inputList.Select(sca =>
                 {
-                    var serviceTestInput = new ServiceTestInput(sca.DisplayValue, "");
+                    var serviceTestInput = new ServiceTestInput(sca.DisplayValue, sca.Value);
                     serviceTestInput.AddNewAction = () => testModel.AddRow(serviceTestInput, DataList);
                     return (IServiceTestInput)serviceTestInput;
                 }).ToObservableCollection();

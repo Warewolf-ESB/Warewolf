@@ -195,8 +195,8 @@ namespace Warewolf.Studio.ViewModels
         {
             if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.OriginatingResourceID == ResourceModel.ID)
             {
-                UpdateInputValues(debugItemContent);
                 ProcessInputsAndOutputs(debugItemContent);
+                UpdateInputValues(debugItemContent);
             }
             else if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.ActualType == nameof(DsfActivity))
             {
