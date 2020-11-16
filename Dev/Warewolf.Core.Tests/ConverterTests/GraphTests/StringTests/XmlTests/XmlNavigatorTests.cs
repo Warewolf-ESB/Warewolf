@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -584,7 +584,37 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
                 const string expected = 
                     "<Company Name=\"Dev2\">\r\n" +
-                    "  <Motto>Eat lots of cake</Motto>\r\n  <PreviousMotto />\r\n  <Departments TestAttrib=\"testing\">\r\n    <Department Name=\"Dev\">\r\n      <Employees>\r\n        <Person Name=\"Brendon\" Surename=\"Page\" />\r\n        <Person Name=\"Jayd\" Surename=\"Page\" />\r\n      </Employees>\r\n    </Department>\r\n    <Department Name=\"Accounts\">\r\n      <Employees>\r\n        <Person Name=\"Bob\" Surename=\"Soap\" />\r\n        <Person Name=\"Joe\" Surename=\"Pants\" />\r\n      </Employees>\r\n    </Department>\r\n  </Departments>\r\n  <InlineRecordSet>\r\n                RandomData\r\n            </InlineRecordSet>\r\n  <InlineRecordSet>\r\n                RandomData1\r\n            </InlineRecordSet>\r\n  <OuterNestedRecordSet>\r\n    <InnerNestedRecordSet ItemValue=\"val1\" />\r\n    <InnerNestedRecordSet ItemValue=\"val2\" />\r\n  </OuterNestedRecordSet>\r\n  <OuterNestedRecordSet>\r\n    <InnerNestedRecordSet ItemValue=\"val3\" />\r\n    <InnerNestedRecordSet ItemValue=\"val4\" />\r\n  </OuterNestedRecordSet>\r\n</Company>";
+                    "  <Motto>Eat lots of cake</Motto>\r\n" +
+                    "  <PreviousMotto />\r\n" +
+                    "  <Departments TestAttrib=\"testing\">\r\n" +
+                    "    <Department Name=\"Dev\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Brendon\" Surename=\"Page\" />\r\n" +
+                    "        <Person Name=\"Jayd\" Surename=\"Page\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "    <Department Name=\"Accounts\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Bob\" Surename=\"Soap\" />\r\n" +
+                    "        <Person Name=\"Joe\" Surename=\"Pants\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "  </Departments>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData1\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val1\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val2\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val3\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val4\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "</Company>";
 
                 Assert.AreEqual(expected, actual);
             }
