@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -318,7 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual("failed", manualResumptionActivity.Response);
+            Assert.AreEqual("Failed", manualResumptionActivity.Response);
             Assert.AreEqual(errors[0], "<InnerError>SuspensionID must not be null or empty.</InnerError>");
         }
 
@@ -371,7 +371,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual("failed", manualResumptionActivity.Response);
+            Assert.AreEqual("Failed", manualResumptionActivity.Response);
             Assert.AreEqual(errors[0], "<InnerError>Could not find persistence config. Please configure in Persistence Settings.</InnerError>");
         }
 
