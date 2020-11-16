@@ -107,6 +107,12 @@ namespace Dev2.Tests.Runtime.ESB
             {
                 return new Task<WebResponse>(GetResponse);
             }
+
+            IWebResponseWrapper IWebRequest.GetResponse()
+            {
+                GetResponseCallCount++;
+                return (IWebResponseWrapper)new TestWebResponse();
+            }
         }
 
         [TestMethod]
