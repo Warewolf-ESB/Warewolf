@@ -3099,7 +3099,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse(containsOrgName);
         }
 
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_DuplicateFolderResourceWithValidArgs_ExpectSuccesResult()

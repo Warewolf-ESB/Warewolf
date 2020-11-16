@@ -256,7 +256,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStep_Parent_WhenSet_ShouldFirePropertyChanged()
         {
@@ -298,7 +298,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         public void ServiceTestStep_AddNewOutput_WhenEmptyVariable_ShouldNotAddStepOutPut()
         {
