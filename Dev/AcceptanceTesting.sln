@@ -370,6 +370,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.NetStandard
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Common.Interfaces.NetStandard20", "Warewolf.Common.Interfaces.NetStandard20\Warewolf.Common.Interfaces.NetStandard20.csproj", "{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Run Configurations", "Run Configurations", "{6EF4ACBD-74E6-4450-9EA5-C9B988CE1DCB}"
+ProjectSection(SolutionItems) = preProject
+	.run\Server.run.xml = .run\Server.run.xml
+	.run\Studio.run.xml = .run\Studio.run.xml
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
