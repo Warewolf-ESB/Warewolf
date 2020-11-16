@@ -1,7 +1,7 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -149,19 +149,22 @@ namespace Dev2.ViewModels.Merge
 
         public ActivityDesignerViewModel GetViewModel(IToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node)
         {
-            if (modelItem == null || node == null || node.Activity == null)
+            if (modelItem == null || node?.Activity == null)
             {
                 return null;
             }
 
             var activityType = node.Activity.GetType();
 
-            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out Type actualType);
+            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var currentType);
+            DesignerAttributeMap.DeprecatedDesignerAttributes.TryGetValue(activityType, out var deprecatedType);
+
+            var actualType = currentType ?? deprecatedType;
             if (actualType == null)
             {
                 return null;
             }
-            ActivityDesignerViewModel instance;           
+            ActivityDesignerViewModel instance;
             if (actualType == typeof(SwitchDesignerViewModel))
             {
                 var dsfSwitch = node.Activity as DsfSwitch;
