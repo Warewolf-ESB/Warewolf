@@ -119,22 +119,64 @@ using Dev2.Activities.Designers2.ReadFileWithBase64;
 using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 using Dev2.Activities.Designers2.SuspendExecution;
 using Dev2.Activities.Designers2.WebGet;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2
+namespace Dev2.Studio.Tests.AppResources.Converters
 {
-    public static class DesignerAttributeMap
+    [TestClass]
+    public class DesignerAttributeMapTests
     {
-        public static readonly Dictionary<Type, Type> DeprecatedDesignerAttributes = new Dictionary<Type, Type>
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DesignerAttributeMap))]
+        public void DesignerAttributeMap_Deprecated_DesignerAttributes()
         {
-            // DEPRECATED
+            //-------------------Arrange---------------------
+            var deprecatedDesignerAttributes = DesignerAttributeMap.DeprecatedDesignerAttributes;
+            //-------------------Act-------------------------
+            //-------------------Assert----------------------
+            Assert.AreEqual(_expectedDeprecated.Count, deprecatedDesignerAttributes.Count);
+            Assert.AreEqual(3, deprecatedDesignerAttributes.Count);
+
+            foreach (var attribute in deprecatedDesignerAttributes)
+            {
+                var containsKey = _expectedDeprecated.ContainsKey(attribute.Key);
+                var containsValue = _expectedDeprecated.ContainsValue(attribute.Value);
+                Assert.IsTrue(containsKey, "Mismatch for Type: " + attribute.Key.Name);
+                Assert.IsTrue(containsValue, "Mismatch for Value: " + attribute.Value.Name);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DesignerAttributeMap))]
+        public void DesignerAttributeMap_Existing_DesignerAttributes()
+        {
+            //-------------------Arrange---------------------
+            var designerAttributes = DesignerAttributeMap.DesignerAttributes;
+            //-------------------Act-------------------------
+            //-------------------Assert----------------------
+            Assert.AreEqual(_expectedExisting.Count, designerAttributes.Count);
+            Assert.AreEqual(99, designerAttributes.Count);
+
+            foreach (var attribute in designerAttributes)
+            {
+                var containsKey = _expectedExisting.ContainsKey(attribute.Key);
+                var containsValue = _expectedExisting.ContainsValue(attribute.Value);
+                Assert.IsTrue(containsKey, "Mismatch for Type: " + attribute.Key.Name);
+                Assert.IsTrue(containsValue, "Mismatch for Value: " + attribute.Value.Name);
+            }
+        }
+
+        private readonly Dictionary<Type, Type> _expectedDeprecated = new Dictionary<Type, Type>
+        {
             {typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel)},
             {typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel)},
             {typeof(DsfWebPutActivity), typeof(WebServicePutViewModel)},
         };
 
-        public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
+        private readonly Dictionary<Type, Type> _expectedExisting = new Dictionary<Type, Type>
         {
-            // EXISTING
             {typeof(DsfMultiAssignActivity), typeof(MultiAssignDesignerViewModel)},
             {typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesignerViewModel)},
             {typeof(DsfDotNetMultiAssignActivity), typeof(MultiAssignDesignerViewModel)},
