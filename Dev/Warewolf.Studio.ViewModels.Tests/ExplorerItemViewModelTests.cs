@@ -190,7 +190,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         public void TestIsMergeVisibleTrue()
         {
             _target.IsSaveDialog = false;
