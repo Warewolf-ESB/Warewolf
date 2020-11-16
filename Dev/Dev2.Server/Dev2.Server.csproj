@@ -49,18 +49,6 @@
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageID>Server</PackageID>
-    <PackageVersion>$(PackageVersion)</PackageVersion>
-    <Title>$title$</Title>
-    <Authors>$author$</Authors>
-    <Copyright>$copyright$</Copyright>
-    <PackageProjectUrl>https://warewolf.io/</PackageProjectUrl>
-    <PackageLicenseUrl>https://warewolf.io/eula</PackageLicenseUrl>
-    <PackageIconUrl>https://warewolf.io/images/logo.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/warewolf-esb/warewolf</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>E0E1E9A356E095CC89E4164299ED65ED12690217</ManifestCertificateThumbprint>
