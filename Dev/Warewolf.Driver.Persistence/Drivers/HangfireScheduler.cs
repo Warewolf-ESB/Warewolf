@@ -39,26 +39,26 @@ namespace Warewolf.Driver.Persistence.Drivers
             var jobDetails = monitoringApi.JobDetails(jobId);
 
             var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
-            var jobIsDeleted = jobDetails.History.Any(i => i.StateName.Equals("Deleted"));
-            if (jobIsDeleted)
-            {
-                return GlobalConstants.Failed;
-            }
+            // var jobIsDeleted = jobDetails.History.Any(i => i.StateName.Equals("Deleted"));
+            // if (jobIsDeleted)
+            // {
+            //     return GlobalConstants.Failed;
+            // }
 
             if (overrideVariables)
             {
                 values = variables;
             }
             var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(conn));
-            var state = new ScheduledState(DateTime.Now.ToUniversalTime());
-
-            var result = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
-            if (result == null)
-            {
-                return GlobalConstants.Failed;
-            }
-            backgroundJobClient.Delete(jobId);
-            return result;
+            var state = new EnqueuedState();
+            var result = backgroundJobClient.ChangeState(jobId, state, ScheduledState.StateName);
+            // var result = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
+            // if (result == null)
+            // {
+            //     return GlobalConstants.Failed;
+            // }
+            // backgroundJobClient.Delete(jobId);
+            return result.ToString();
         }
 
         public string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)
