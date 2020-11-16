@@ -21,38 +21,39 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
     [TestClass]
     public class XmlNavigatorTests
     {
-        string TestData => @"<Company Name='Dev2'>
-    <Motto>Eat lots of cake</Motto>
-    <PreviousMotto/>
-	<Departments TestAttrib='testing'>
-		<Department Name='Dev'>
-			<Employees>
-				<Person Name='Brendon' Surename='Page' />
-				<Person Name='Jayd' Surename='Page' />
-			</Employees>
-		</Department>
-		<Department Name='Accounts'>
-			<Employees>
-				<Person Name='Bob' Surename='Soap' />
-				<Person Name='Joe' Surename='Pants' />
-			</Employees>
-		</Department>
-	</Departments>
-    <InlineRecordSet>
-        RandomData
-    </InlineRecordSet>
-    <InlineRecordSet>
-        RandomData1
-    </InlineRecordSet>
-    <OuterNestedRecordSet>
-        <InnerNestedRecordSet ItemValue='val1' />
-        <InnerNestedRecordSet ItemValue='val2' />
-    </OuterNestedRecordSet>
-    <OuterNestedRecordSet>
-        <InnerNestedRecordSet ItemValue='val3' />
-        <InnerNestedRecordSet ItemValue='val4' />
-    </OuterNestedRecordSet>
-</Company>";
+        string TestData => 
+            @"<Company Name='Dev2'>
+            <Motto>Eat lots of cake</Motto>
+            <PreviousMotto/>
+	        <Departments TestAttrib='testing'>
+		        <Department Name='Dev'>
+			        <Employees>
+				        <Person Name='Brendon' Surename='Page' />
+				        <Person Name='Jayd' Surename='Page' />
+			        </Employees>
+		        </Department>
+		        <Department Name='Accounts'>
+			        <Employees>
+				        <Person Name='Bob' Surename='Soap' />
+				        <Person Name='Joe' Surename='Pants' />
+			        </Employees>
+		        </Department>
+	        </Departments>
+            <InlineRecordSet>
+                RandomData
+            </InlineRecordSet>
+            <InlineRecordSet>
+                RandomData1
+            </InlineRecordSet>
+            <OuterNestedRecordSet>
+                <InnerNestedRecordSet ItemValue='val1' />
+                <InnerNestedRecordSet ItemValue='val2' />
+            </OuterNestedRecordSet>
+            <OuterNestedRecordSet>
+                <InnerNestedRecordSet ItemValue='val3' />
+                <InnerNestedRecordSet ItemValue='val4' />
+            </OuterNestedRecordSet>
+        </Company>";
 
         string GivenSingleNode => @"<Message>Dummy Data</Message>";
         
@@ -70,7 +71,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 	            </S:Body>
             </S:Envelope>";
 
-        string GivenSoapWithManyNamespaces =
+        string GivenSoapWithManyNamespaces =>
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
                 "<Envelope" +
                     " xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"" +
@@ -120,7 +121,38 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             {
                 var actual = xmlNavigator.SelectScalar(namePath).ToString();
                 const string expected =
-                    @"<Company Name =\""Dev2\"">\r\n  <Motto>Eat lots of cake</Motto>\r\n  <PreviousMotto />\r\n  <Departments TestAttrib=\""testing\"">\r\n    <Department Name=\""Dev\"">\r\n      <Employees>\r\n        <Person Name=\""Brendon\"" Surename=\""Page\"" />\r\n        <Person Name=\""Jayd\"" Surename=\""Page\"" />\r\n      </Employees>\r\n    </Department>\r\n    <Department Name=\""Accounts\"">\r\n      <Employees>\r\n        <Person Name=\""Bob\"" Surename=\""Soap\"" />\r\n        <Person Name=\""Joe\"" Surename=\""Pants\"" />\r\n      </Employees>\r\n    </Department>\r\n  </Departments>\r\n  <InlineRecordSet>\r\n        RandomData\r\n    </InlineRecordSet>\r\n  <InlineRecordSet>\r\n        RandomData1\r\n    </InlineRecordSet>\r\n  <OuterNestedRecordSet>\r\n    <InnerNestedRecordSet ItemValue=\""val1\"" />\r\n    <InnerNestedRecordSet ItemValue=\""val2\"" />\r\n  </OuterNestedRecordSet>\r\n  <OuterNestedRecordSet>\r\n    <InnerNestedRecordSet ItemValue=\""val3\"" />\r\n    <InnerNestedRecordSet ItemValue=\""val4\"" />\r\n  </OuterNestedRecordSet>\r\n</Company>""";
+                    "<Company Name=\"Dev2\">\r\n" +
+                    "  <Motto>Eat lots of cake</Motto>\r\n" +
+                    "  <PreviousMotto />\r\n" +
+                    "  <Departments TestAttrib=\"testing\">\r\n" +
+                    "    <Department Name=\"Dev\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Brendon\" Surename=\"Page\" />\r\n" +
+                    "        <Person Name=\"Jayd\" Surename=\"Page\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "    <Department Name=\"Accounts\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Bob\" Surename=\"Soap\" />\r\n" +
+                    "        <Person Name=\"Joe\" Surename=\"Pants\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "  </Departments>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData1\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val1\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val2\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val3\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val4\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n</Company>";
+
 
                 Assert.AreEqual(expected, actual);
             }
@@ -246,39 +278,39 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             {
                 var actual = xmlNavigator.SelectEnumerable(namePath);
                 var expected = new List<object> 
-                { 
-                    @"<Company Name=""Dev2"">
-                          <Motto>Eat lots of cake</Motto>
-                          <PreviousMotto />
-                          <Departments TestAttrib=""testing"">
-                            <Department Name=""Dev"">
-                              <Employees>
-                                <Person Name=""Brendon"" Surename=""Page"" />
-                                <Person Name=""Jayd"" Surename=""Page"" />
-                              </Employees>
-                            </Department>
-                            <Department Name=""Accounts"">
-                              <Employees>
-                                <Person Name=""Bob"" Surename=""Soap"" />
-                                <Person Name=""Joe"" Surename=""Pants"" />
-                              </Employees>
-                            </Department>
-                          </Departments>
-                          <InlineRecordSet>
-                                RandomData
-                            </InlineRecordSet>
-                          <InlineRecordSet>
-                                RandomData1
-                            </InlineRecordSet>
-                          <OuterNestedRecordSet>
-                            <InnerNestedRecordSet ItemValue=""val1"" />
-                            <InnerNestedRecordSet ItemValue=""val2"" />
-                          </OuterNestedRecordSet>
-                          <OuterNestedRecordSet>
-                            <InnerNestedRecordSet ItemValue=""val3"" />
-                            <InnerNestedRecordSet ItemValue=""val4"" />
-                          </OuterNestedRecordSet>
-                    </Company>" 
+                {
+                    "<Company Name=\"Dev2\">\r\n" +
+                    "  <Motto>Eat lots of cake</Motto>\r\n" +
+                    "  <PreviousMotto />\r\n" +
+                    "  <Departments TestAttrib=\"testing\">\r\n" +
+                    "    <Department Name=\"Dev\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Brendon\" Surename=\"Page\" />\r\n" +
+                    "        <Person Name=\"Jayd\" Surename=\"Page\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "    <Department Name=\"Accounts\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Bob\" Surename=\"Soap\" />\r\n" +
+                    "        <Person Name=\"Joe\" Surename=\"Pants\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "  </Departments>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData1\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val1\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val2\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val3\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val4\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "</Company>"
                 };
 
                 Assert.AreEqual(expected.FirstOrDefault().ToString(), actual.FirstOrDefault().ToString());
@@ -550,38 +582,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             {
                 var actual = string.Join("|", XmlNavigator.SelectEnumerablesAsRelated(namePath).Values.FirstOrDefault());
 
-                const string expected = @"<Company Name=""Dev2"">
-  <Motto>Eat lots of cake</Motto>
-  <PreviousMotto />
-  <Departments TestAttrib=""testing"">
-    <Department Name=""Dev"">
-      <Employees>
-        <Person Name=""Brendon"" Surename=""Page"" />
-        <Person Name=""Jayd"" Surename=""Page"" />
-      </Employees>
-    </Department>
-    <Department Name=""Accounts"">
-      <Employees>
-        <Person Name=""Bob"" Surename=""Soap"" />
-        <Person Name=""Joe"" Surename=""Pants"" />
-      </Employees>
-    </Department>
-  </Departments>
-  <InlineRecordSet>
-        RandomData
-    </InlineRecordSet>
-  <InlineRecordSet>
-        RandomData1
-    </InlineRecordSet>
-  <OuterNestedRecordSet>
-    <InnerNestedRecordSet ItemValue=""val1"" />
-    <InnerNestedRecordSet ItemValue=""val2"" />
-  </OuterNestedRecordSet>
-  <OuterNestedRecordSet>
-    <InnerNestedRecordSet ItemValue=""val3"" />
-    <InnerNestedRecordSet ItemValue=""val4"" />
-  </OuterNestedRecordSet>
-</Company>";
+                const string expected = 
+                    "<Company Name=\"Dev2\">\r\n" +
+                    "  <Motto>Eat lots of cake</Motto>\r\n  <PreviousMotto />\r\n  <Departments TestAttrib=\"testing\">\r\n    <Department Name=\"Dev\">\r\n      <Employees>\r\n        <Person Name=\"Brendon\" Surename=\"Page\" />\r\n        <Person Name=\"Jayd\" Surename=\"Page\" />\r\n      </Employees>\r\n    </Department>\r\n    <Department Name=\"Accounts\">\r\n      <Employees>\r\n        <Person Name=\"Bob\" Surename=\"Soap\" />\r\n        <Person Name=\"Joe\" Surename=\"Pants\" />\r\n      </Employees>\r\n    </Department>\r\n  </Departments>\r\n  <InlineRecordSet>\r\n                RandomData\r\n            </InlineRecordSet>\r\n  <InlineRecordSet>\r\n                RandomData1\r\n            </InlineRecordSet>\r\n  <OuterNestedRecordSet>\r\n    <InnerNestedRecordSet ItemValue=\"val1\" />\r\n    <InnerNestedRecordSet ItemValue=\"val2\" />\r\n  </OuterNestedRecordSet>\r\n  <OuterNestedRecordSet>\r\n    <InnerNestedRecordSet ItemValue=\"val3\" />\r\n    <InnerNestedRecordSet ItemValue=\"val4\" />\r\n  </OuterNestedRecordSet>\r\n</Company>";
 
                 Assert.AreEqual(expected, actual);
             }
