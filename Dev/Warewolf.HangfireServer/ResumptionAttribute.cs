@@ -70,6 +70,7 @@ namespace HangfireServer
             if (resumption.Connect())
             {
                 var values = jobArg as Dictionary<string, StringBuilder>;
+                values?.Add("[[SuspensionID]]",  new StringBuilder(backgroundJobId));
                 LogResumption(values);
                 resumption.Resume(values);
             }
