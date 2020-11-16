@@ -422,7 +422,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void Test_remoteModel_OnserverDisconnected()
         {
             //arrange
@@ -437,7 +437,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
         
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void Test_localModel_OnserverDisconnected()
         {
             //arrange
