@@ -86,8 +86,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        [Timeout(500)]
-        public void TestEnvironments()
+        [Timeout(2000)]
+        public void DeploySourceTestEnvironments()
         {
             //arrange
             //act
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         public void TestPreselected()
         {
             //arrange
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         public void TestSelectedItemsSet()
         {
             //arrange
@@ -225,8 +225,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestServerVersion()
+        [Timeout(250)]
+        public void TestDeploySourceServerVersion()
         {
             //arrange
             var selectedEnvironmentMock = new Mock<IEnvironmentViewModel>();
@@ -365,7 +365,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestSelectActionFolder()
         {
             //arrange
