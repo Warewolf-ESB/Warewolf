@@ -11,9 +11,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Text;
 using CommandLine;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Communication;
+using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
 using Hangfire.SqlServer;
@@ -27,6 +28,7 @@ using Warewolf.Streams;
 using static Warewolf.Common.NetStandard20.ExecutionLogger;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+
 namespace HangfireServer
 {
     public static class Program
@@ -34,95 +36,118 @@ namespace HangfireServer
         [ExcludeFromCodeCoverage]
         public static int Main(string[] args)
         {
-            var implConfig = new Implementation.ConfigImpl
-            {
-                ExecutionLoggerFactory = new ExecutionLoggerFactory(),
-                Writer = new Writer(),
-                PauseHelper = new PauseHelper(),
-                ExitHelper = new ExitHelper(),
-            };
             var result = CommandLine.Parser.Default.ParseArguments<Args>(args);
             return result.MapResult(
-                options => new Implementation(options, implConfig).Run(),
-                _ => 1);
+                options => new Impl(options).Run(), _ => 1);
         }
 
-        internal class Implementation
+        internal class Impl
         {
             private readonly IArgs _options;
-            private readonly IExecutionLogPublisher _logger;
-            private readonly IWriter _writer;
-            private readonly IPauseHelper _pause;
-            private readonly IExitHelper _exit;
-            private readonly IHangfireContext _hangfireContext;
 
-            public Implementation(IArgs options, ConfigImpl implConfig)
+            public Impl(Args options)
             {
-                var jsonSerializer = new JsonSerializer();
                 _options = options;
-                _logger = implConfig.ExecutionLoggerFactory.New(jsonSerializer, new WebSocketPool());
-                _writer = implConfig.Writer;
-                _pause = implConfig.PauseHelper;
-                _exit = implConfig.ExitHelper;
-                _hangfireContext = new HangfireContext(_options);
-                _persistence = Config.Persistence;
-                _deserializer = jsonSerializer;
-            }
-
-            public Implementation(IArgs options, ConfigImpl configImpl, PersistenceSettings persistenceSettings, IDeserializer deserializer)
-                :this(options, configImpl)
-            {
-                _persistence = persistenceSettings;
-                _deserializer = deserializer;
             }
 
             public int Run()
             {
-                if (_options.ShowConsole)
+                var context = new HangfireContext(_options);
+                var implConfig = new Implementation.ConfigImpl
                 {
-                    _ = new ConsoleWindow();
-                }
-
-                _writer.WriteLine("Starting Hangfire server...");
-                _logger.Info("Starting Hangfire server...");
-
-                var connectionString = ConnectionString();
-                if (string.IsNullOrEmpty(connectionString))
-                {
-                    _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
-                    _writer.Write("Press any key to exit...");
-                    WaitForExit();
-                    return 0;
-                }
-
-                ConfigureServerStorage(connectionString);
-                var dashboardEndpoint = _persistence.DashboardHostname + ":" + _persistence.DashboardPort;
-                var options = new StartOptions();
-                options.Urls.Add(dashboardEndpoint);
-                WebApp.Start<Dashboard>(options);
-                _writer.WriteLine("Hangfire dashboard started...");
-                _ = new BackgroundJobServer();
-                _writer.WriteLine("Hangfire server started...");
+                    ExecutionLoggerFactory = new ExecutionLoggerFactory(),
+                    Writer = new Writer(),
+                    PauseHelper = new PauseHelper(),
+                };
+                var implementation = new Implementation(context, implConfig);
+                implementation.Run();
+                implementation.WaitForExit();
                 return 0;
+            }
+        }
+
+        internal class Implementation
+        {
+            private readonly IExecutionLogPublisher _logger;
+            private readonly IWriter _writer;
+            private readonly IPauseHelper _pause;
+            private readonly IHangfireContext _hangfireContext;
+            private readonly IEventWaitHandle _eventWaitHandlerFactory = EventWaitHandleFactory.CreateInstance();
+            public Implementation(IHangfireContext hangfireContext, ConfigImpl implConfig)
+            {
+                _logger = implConfig.ExecutionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
+                _writer = implConfig.Writer;
+                _pause = implConfig.PauseHelper;
+                _hangfireContext = hangfireContext;
+                _persistence = Config.Persistence;
+                _deserializer = new Dev2JsonSerializer();
+                _eventWaitHandlerFactory.New();
+            }
+
+            public Implementation(IHangfireContext hangfireContext, ConfigImpl configImpl, PersistenceSettings persistenceSettings, IBuilderSerializer deserializer, IEventWaitHandle waitHandle)
+                : this(hangfireContext, configImpl)
+            {
+                _persistence = persistenceSettings;
+                _deserializer = deserializer;
+                _eventWaitHandlerFactory = waitHandle;
+            }
+
+            public void Run()
+            {
+                try
+                {
+                    if (_hangfireContext.Verbose)
+                    {
+                        _ = new ConsoleWindow();
+                    }
+
+                    _writer.WriteLine("Starting Hangfire server...");
+                    _logger.Info("Starting Hangfire server...");
+
+                    var connectionString = ConnectionString();
+                    if (string.IsNullOrEmpty(connectionString))
+                    {
+                        _logger.Error("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
+                        _writer.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.");
+                        _writer.Write("Press any key to exit...");
+                        return;
+                    }
+
+                    ConfigureServerStorage(connectionString);
+                    var dashboardEndpoint = _persistence.DashboardHostname + ":" + _persistence.DashboardPort;
+                    var options = new StartOptions();
+                    options.Urls.Add(dashboardEndpoint);
+                    WebApp.Start<Dashboard>(options);
+                    _writer.WriteLine("Hangfire dashboard started...");
+                    _logger.Info("Hangfire dashboard started...");
+                    _ = new BackgroundJobServer();
+                    _writer.WriteLine("Hangfire server started...");
+                    _logger.Info("Hangfire server started...");
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error($"Hangfire Server OnError, Error details:{ex.Message}");
+                    _writer.WriteLine($"Hangfire Server OnError, Error details:{ex.Message}");
+                }
             }
 
             private static PersistenceSettings _persistence;
-            private readonly IDeserializer _deserializer;
+            private readonly IBuilderSerializer _deserializer;
 
             private void ConfigureServerStorage(string connectionString)
             {
                 var resumptionAttribute = new ResumptionAttribute(_logger, null);
 
                 GlobalConfiguration.Configuration
-                                .UseFilter(resumptionAttribute)
-                                .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
-                                {
-                                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                                    QueuePollInterval = TimeSpan.Zero,
-                                    UseRecommendedIsolationLevel = true,
-                                    DisableGlobalLocks = true
-                                });
+                    .UseFilter(resumptionAttribute)
+                    .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+                    {
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        DisableGlobalLocks = true
+                    });
             }
 
             private string ConnectionString()
@@ -132,20 +157,26 @@ namespace HangfireServer
                 {
                     return string.Empty;
                 }
+
                 if (_persistence.EncryptDataSource)
                 {
                     payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
                 }
 
-                var bytes = UTF8Encoding.UTF8.GetBytes(payload);
-                var source = _deserializer.Deserialize<DbSource>(bytes);
+                var source = _deserializer.Deserialize<DbSource>(payload);
                 return source.ConnectionString;
             }
 
-            private void WaitForExit()
+            public void WaitForExit()
             {
-                _pause.Pause();
-                _exit.Exit();
+                if (_hangfireContext.Verbose)
+                {
+                    _pause.Pause();
+                }
+                else
+                {
+                    _eventWaitHandlerFactory.WaitOne();
+                }
             }
 
             internal class ConfigImpl
@@ -153,7 +184,6 @@ namespace HangfireServer
                 public IWriter Writer { get; set; }
                 public IExecutionLoggerFactory ExecutionLoggerFactory { get; set; }
                 public IPauseHelper PauseHelper { get; set; }
-                public IExitHelper ExitHelper { get; set; }
             }
         }
     }
