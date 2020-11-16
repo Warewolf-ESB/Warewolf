@@ -199,7 +199,7 @@ namespace Warewolf.Driver.Persistence.Tests
             var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
 
             var resumeId = scheduler.ResumeJob(jobId, false, values);
-            Assert.IsInstanceOfType(int.Parse(resumeId), typeof(int));
+            Assert.IsTrue(int.TryParse(resumeId, out _), resumeId + " is not of type int");
         }
     }
 }
