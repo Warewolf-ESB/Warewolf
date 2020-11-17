@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Dev2.Common;
 using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -198,8 +199,8 @@ namespace Warewolf.Driver.Persistence.Tests
             var scheduler = new PersistenceExecution();
             var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
 
-            var resumeId = scheduler.ResumeJob(jobId, false, values);
-            Assert.IsInstanceOfType(int.Parse(resumeId), typeof(int));
+            var result = scheduler.ResumeJob(jobId, false, values);
+            Assert.AreEqual(GlobalConstants.Success,result);
         }
     }
 }
