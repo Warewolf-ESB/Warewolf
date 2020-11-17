@@ -590,7 +590,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
       
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestRefreshEnvironment()
@@ -621,7 +621,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestRefreshEnvironmentSetsPermissions()
