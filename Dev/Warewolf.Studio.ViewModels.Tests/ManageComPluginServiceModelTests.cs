@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void ComPlugin_TestGetActions()
         {
             var expectedResult = new ObservableCollection<IPluginAction>();
