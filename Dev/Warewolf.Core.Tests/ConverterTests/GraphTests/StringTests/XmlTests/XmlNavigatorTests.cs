@@ -573,6 +573,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(XmlNavigator))]
         public void XmlNavigator_SelectEnumerablesAsRelated_WithSeperatorSymbol_Expected_UnchangedPath()
         {
