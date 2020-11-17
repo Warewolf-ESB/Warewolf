@@ -4,6 +4,7 @@ Feature: Rename
 	I want a tool that will rename a File or Floder at a given location
 
 @FileRenameFromLocalWithOverwrite
+@FileRenameFromLocal
 Scenario Outline: Rename file at local location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -32,6 +33,7 @@ Scenario Outline: Rename file at local location
 	| 27 | Local to Local  | [[sourcePath]] | NULL                | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | True     | [[result]] | ""        | AN           |                      |                           |
 
 @FileRenameFromUNCWithOverwrite
+@FileRenameFromUNC
 Scenario Outline: Rename file at UNC location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -59,6 +61,7 @@ Scenario Outline: Rename file at UNC location
 	| 10 | UNC to UNC      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile4.txt | ""            | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed1.txt | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 
 @FileRenameFromFTPWithOverwrite
+@FileRenameFromFTP
 Scenario Outline: Rename file at FTP location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -86,6 +89,7 @@ Scenario Outline: Rename file at FTP location
 	| 15 | FTP to FTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile4.txt | ""            | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed2.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 
 @FileRenameFromFTPSWithOverwrite
+@FileRenameFromFTPS
 Scenario Outline: Rename file at FTPS location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -113,6 +117,7 @@ Scenario Outline: Rename file at FTPS location
 	| 20 | FTPS to FTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed3.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 
 @FileRenameFromSFTPWithOverwrite
+@FileRenameFromSFTP
 Scenario Outline: Rename file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -141,7 +146,8 @@ Scenario Outline: Rename file at SFTP location
 	| 6  | SFTP to SFTP PK | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile41.txt | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed41.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
 @FileRenameFromLocalWithoutOverwrite
-	Scenario Outline: Rename file at local location with overwrite disabled
+@FileRenameFromLocal
+Scenario Outline: Rename file at local location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
@@ -169,7 +175,8 @@ Scenario Outline: Rename file at SFTP location
 	| 6  | Local to Local | [[sourcePath]] | NULL               | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | False    | [[result]] | ""        | AN           |                      |                           |
 
 @FileRenameFromUNCWithoutOverwrite
-	Scenario Outline: Rename file at UNC location with overwrite disabled
+@FileRenameFromUNC
+Scenario Outline: Rename file at UNC location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
@@ -196,7 +203,8 @@ Scenario Outline: Rename file at SFTP location
 	| 5  | UNC to UNC   | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile4.txt | ""                | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed1.txt | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 
 @FileRenameFromFTPWithoutOverwrite
-	Scenario Outline: Rename file at FTP location with overwrite disabled
+@FileRenameFromFTP
+Scenario Outline: Rename file at FTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
@@ -223,7 +231,8 @@ Scenario Outline: Rename file at SFTP location
 	| 5  | FTP to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile4.txt | ""       |          | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed2.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 
 @FileRenameFromFTPSWithoutOverwrite
-	Scenario Outline: Rename file at FTPS location with overwrite disabled
+@FileRenameFromFTPS
+Scenario Outline: Rename file at FTPS location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
@@ -250,7 +259,8 @@ Scenario Outline: Rename file at SFTP location
 	| 5  | FTPS to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed3.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 
 @FileRenameFromSFTPWithoutOverwrite
-	Scenario Outline: Rename file at SFTP location with overwrite disabled
+@FileRenameFromSFTP
+Scenario Outline: Rename file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"

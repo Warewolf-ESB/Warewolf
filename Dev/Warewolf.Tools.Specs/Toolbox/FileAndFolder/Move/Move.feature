@@ -4,6 +4,7 @@ Feature: Move
 	I want a tool that will Move File(s) or Folder(s) from a given location to another location
 	
 @FileMoveFromLocalWithOverwrite
+@FileMoveFromLocal
 Scenario Outline: Move file at local location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -31,6 +32,7 @@ Scenario Outline: Move file at local location
 	   | 5  | Local to UNC     | [[sourcePath]] | c:\movefile4.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved0.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
 	
 @FileMoveFromUNCWithOverwrite
+@FileMoveFromUNC
 Scenario Outline: Move file at UNC location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -58,6 +60,7 @@ Scenario Outline: Move file at UNC location
 	   | 5  | UNC TO UNC       | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile4.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved1.txt  | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
 	
 @FileMoveFromFTPWithOverwrite
+@FileMoveFromFTP
 Scenario Outline: Move file at FTP location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -85,6 +88,7 @@ Scenario Outline: Move file at FTP location
 	   | 5  | FTP to FTP       | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt                          | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
 	
 @FileMoveFromFTPSWithOverwrite
+@FileMoveFromFTPS
 Scenario Outline: Move file at FTPS location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -112,6 +116,7 @@ Scenario Outline: Move file at FTPS location
 	   | 5  | FTPS to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt                          | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
 	
 @FileMoveFromSFTPWithOverwrite
+@FileMoveFromSFTP
 Scenario Outline: Move file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -144,6 +149,7 @@ Scenario Outline: Move file at SFTP location
 	   | 10 | SFTP to SFTP PK  | [[sourcePath]] | sftp://SVRDEV.premier.local/movefile41.txt | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/moved41.txt                                                   | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
 @FileMoveFromLocalWithoutOverwrite
+@FileMoveFromLocal
 Scenario Outline: Move file at local location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -171,6 +177,7 @@ Scenario Outline: Move file at local location with overwrite disabled
 	   | 5  | Local to UNC     | [[sourcePath]] | c:\movefile4.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved0.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
 
 @FileMoveFromUNCWithoutOverwrite
+@FileMoveFromUNC
 Scenario Outline: Move file at UNC location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -198,6 +205,7 @@ Scenario Outline: Move file at UNC location with overwrite disabled
 	   | 6  | UNC TO UNC   | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile4.txt | ""       | ""       | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved1.txt  | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
 
 @FileMoveFromFTPWithoutOverwrite
+@FileMoveFromFTP
 Scenario Outline: Move file at FTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -225,6 +233,7 @@ Scenario Outline: Move file at FTP location with overwrite disabled
 	   | 5  | FTP to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt                         | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
 
 @FileMoveFromFTPSWithoutOverwrite
+@FileMoveFromFTPS
 Scenario Outline: Move file at FTPS location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
@@ -252,6 +261,7 @@ Scenario Outline: Move file at FTPS location with overwrite disabled
 	   | 5  | FTPS to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt                         | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
 
 @FileMoveFromSFTPWithoutOverwrite
+@FileMoveFromSFTP
 Scenario Outline: Move file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
 	And source credentials as "<username>" and "<password>"
