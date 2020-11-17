@@ -342,6 +342,7 @@ Scenario: Example Executing File and Folder - Write File
 	  Given I have a workflow "File and Folder - Write File Test"
 	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
+      |                  |               | [[Complete]]        | [[Complete]]    |
 	  When "File and Folder - Write File Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the "Write" in Workflow "File and Folder - Write File" debug outputs as 
