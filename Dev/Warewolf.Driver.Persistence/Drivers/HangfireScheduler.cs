@@ -35,30 +35,35 @@ namespace Warewolf.Driver.Persistence.Drivers
         {
             var conn = ConnectionString();
             GlobalConfiguration.Configuration.UseSqlServerStorage(conn);
-            var monitoringApi = JobStorage.Current.GetMonitoringApi();
-            var jobDetails = monitoringApi.JobDetails(jobId);
-
-            var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
-            // var jobIsDeleted = jobDetails.History.Any(i => i.StateName.Equals("Deleted"));
-            // if (jobIsDeleted)
-            // {
-            //     return GlobalConstants.Failed;
-            // }
-
+            var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(conn));
             if (overrideVariables)
             {
-                values = variables;
+                var monitoringApi = JobStorage.Current.GetMonitoringApi();
+                var jobDetails = monitoringApi.JobDetails(jobId);
+                var jobIsScheduled = jobDetails.History.Any(i => i.StateName.Equals("Scheduled"));
+                if (!jobIsScheduled)
+                {
+                    return GlobalConstants.Failed;
+                }
+                var scheduledState = new ScheduledState(DateTime.Now.ToUniversalTime());
+                var result = backgroundJobClient.Create(() => ResumeWorkflow(variables, null), scheduledState);
+                if (result == null)
+                {
+                    return GlobalConstants.Failed;
+                }
+
+                backgroundJobClient.Delete(jobId);
+                return GlobalConstants.Success;
             }
-            var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(conn));
-            var state = new EnqueuedState();
-            var result = backgroundJobClient.ChangeState(jobId, state, ScheduledState.StateName);
-            // var result = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
-            // if (result == null)
-            // {
-            //     return GlobalConstants.Failed;
-            // }
-            // backgroundJobClient.Delete(jobId);
-            return result.ToString();
+            else
+            {
+                var enqueuedState = new EnqueuedState();
+                if (backgroundJobClient.ChangeState(jobId, enqueuedState, ScheduledState.StateName))
+                {
+                    return GlobalConstants.Success;
+                }
+                return GlobalConstants.Failed;
+            }
         }
 
         public string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)
