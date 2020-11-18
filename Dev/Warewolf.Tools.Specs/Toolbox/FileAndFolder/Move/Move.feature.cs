@@ -200,62 +200,6 @@ this.MoveFileAtLocalLocation("1", "Local to Local", "[[sourcePath]]", "c:\\movef
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at local location: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocalWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\movefile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtLocalLocation_2()
-        {
-#line 7
-this.MoveFileAtLocalLocation("2", "Local to FTP", "[[sourcePath]]", "c:\\movefile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at local location: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocalWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\movefile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtLocalLocation_3()
-        {
-#line 7
-this.MoveFileAtLocalLocation("3", "Local to FTPS", "[[sourcePath]]", "c:\\movefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at local location: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocalWithOverwrite")]
@@ -427,66 +371,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
 this.MoveFileAtUNCLocation("1", "UNC to Local", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
-            "ile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtUNCLocation_2()
-        {
-#line 34
-this.MoveFileAtUNCLocation("2", "UNC to FTP", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
-                    "ile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
-            "ile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtUNCLocation_3()
-        {
-#line 34
-this.MoveFileAtUNCLocation("3", "UNC to FTPS", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
-                    "ile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved1.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -698,34 +582,6 @@ this.MoveFileAtFTPLocation("2", "FTP to UNC", "[[sourcePath]]", "ftp://DEVOPSPDC
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtFTPLocation_3()
-        {
-#line 61
-this.MoveFileAtFTPLocation("3", "FTP to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithOverwrite")]
@@ -750,34 +606,6 @@ this.MoveFileAtFTPLocation("3", "FTP to FTPS", "[[sourcePath]]", "ftp://DEVOPSPD
         {
 #line 61
 this.MoveFileAtFTPLocation("4", "FTP to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/moved2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtFTPLocation_5()
-        {
-#line 61
-this.MoveFileAtFTPLocation("5", "FTP to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -927,34 +755,6 @@ this.MoveFileAtFTPSLocation("2", "FTPS to UNC", "[[sourcePath]]", "ftp://DEVOPSP
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtFTPSLocation_3()
-        {
-#line 88
-this.MoveFileAtFTPSLocation("3", "FTPS to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithOverwrite")]
@@ -979,34 +779,6 @@ this.MoveFileAtFTPSLocation("3", "FTPS to FTPS", "[[sourcePath]]", "ftp://DEVOPS
         {
 #line 88
 this.MoveFileAtFTPSLocation("4", "FTPS to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "sftp://SVRDEV.premier.local/moved3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtFTPSLocation_5()
-        {
-#line 88
-this.MoveFileAtFTPSLocation("5", "FTPS to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1156,62 +928,6 @@ this.MoveFileAtSFTPLocation("2", "SFTP to UNC", "[[sourcePath]]", "sftp://SVRDEV
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/movefile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtSFTPLocation_3()
-        {
-#line 115
-this.MoveFileAtSFTPLocation("3", "SFTP to FTP", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved4.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/movefile3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtSFTPLocation_4()
-        {
-#line 115
-this.MoveFileAtSFTPLocation("4", "SFTP to FTPS", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved4.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
@@ -1294,62 +1010,6 @@ this.MoveFileAtSFTPLocation("6", "SFTP to Local PK", "[[sourcePath]]", "sftp://S
 #line 115
 this.MoveFileAtSFTPLocation("7", "SFTP to UNC  PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile11.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "41.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTP  PK")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/movefile21.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved41.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtSFTPLocation_8()
-        {
-#line 115
-this.MoveFileAtSFTPLocation("8", "SFTP to FTP  PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile21.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved41.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTPS PK")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/movefile31.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtSFTPLocation_9()
-        {
-#line 115
-this.MoveFileAtSFTPLocation("9", "SFTP to FTPS PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile31.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1493,62 +1153,6 @@ this.ScenarioSetup(scenarioInfo);
         {
 #line 147
 this.MoveFileAtLocalLocationWithOverwriteDisabled("1", "Local to Local", "[[sourcePath]]", "c:\\movefile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at local location with overwrite disabled: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocalWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\movefile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtLocalLocationWithOverwriteDisabled_2()
-        {
-#line 147
-this.MoveFileAtLocalLocationWithOverwriteDisabled("2", "Local to FTP", "[[sourcePath]]", "c:\\movefile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at local location with overwrite disabled: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocalWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\movefile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtLocalLocationWithOverwriteDisabled_3()
-        {
-#line 147
-this.MoveFileAtLocalLocationWithOverwriteDisabled("3", "Local to FTPS", "[[sourcePath]]", "c:\\movefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1724,66 +1328,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 174
 this.MoveFileAtUNCLocationWithOverwriteDisabled("1", "UNC to Local", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved1.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location with overwrite disabled: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
-            "ile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtUNCLocationWithOverwriteDisabled_2()
-        {
-#line 174
-this.MoveFileAtUNCLocationWithOverwriteDisabled("2", "UNC to FTP", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
-                    "ile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved1.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location with overwrite disabled: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
-            "ile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtUNCLocationWithOverwriteDisabled_3()
-        {
-#line 174
-this.MoveFileAtUNCLocationWithOverwriteDisabled("3", "UNC to FTPS", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
-                    "ile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved1.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1995,34 +1539,6 @@ this.MoveFileAtFTPLocationWithOverwriteDisabled("2", "FTP to UNC", "[[sourcePath
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location with overwrite disabled: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtFTPLocationWithOverwriteDisabled_3()
-        {
-#line 201
-this.MoveFileAtFTPLocationWithOverwriteDisabled("3", "FTP to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location with overwrite disabled: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithoutOverwrite")]
@@ -2047,34 +1563,6 @@ this.MoveFileAtFTPLocationWithOverwriteDisabled("3", "FTP to FTPS", "[[sourcePat
         {
 #line 201
 this.MoveFileAtFTPLocationWithOverwriteDisabled("4", "FTP to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/moved2.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location with overwrite disabled: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtFTPLocationWithOverwriteDisabled_5()
-        {
-#line 201
-this.MoveFileAtFTPLocationWithOverwriteDisabled("5", "FTP to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2224,34 +1712,6 @@ this.MoveFileAtFTPSLocationWithOverwriteDisabled("2", "FTPS to UNC", "[[sourcePa
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location with overwrite disabled: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtFTPSLocationWithOverwriteDisabled_3()
-        {
-#line 228
-this.MoveFileAtFTPSLocationWithOverwriteDisabled("3", "FTPS to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location with overwrite disabled: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithoutOverwrite")]
@@ -2276,34 +1736,6 @@ this.MoveFileAtFTPSLocationWithOverwriteDisabled("3", "FTPS to FTPS", "[[sourceP
         {
 #line 228
 this.MoveFileAtFTPSLocationWithOverwriteDisabled("4", "FTPS to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "sftp://SVRDEV.premier.local/moved3.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location with overwrite disabled: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtFTPSLocationWithOverwriteDisabled_5()
-        {
-#line 228
-this.MoveFileAtFTPSLocationWithOverwriteDisabled("5", "FTPS to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2453,62 +1885,6 @@ this.MoveFileAtSFTPLocationWithOverwriteDisabled("2", "SFTP to UNC", "[[sourcePa
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location with overwrite disabled: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/movefile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_3()
-        {
-#line 255
-this.MoveFileAtSFTPLocationWithOverwriteDisabled("3", "SFTP to FTP", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile2.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved4.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location with overwrite disabled: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/movefile3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_4()
-        {
-#line 255
-this.MoveFileAtSFTPLocationWithOverwriteDisabled("4", "SFTP to FTPS", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile3.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved4.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location with overwrite disabled: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithoutOverwrite")]
@@ -2591,62 +1967,6 @@ this.MoveFileAtSFTPLocationWithOverwriteDisabled("6", "SFTP to Local PK", "[[sou
 #line 255
 this.MoveFileAtSFTPLocationWithOverwriteDisabled("7", "SFTP to UNC  PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile11.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "41.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location with overwrite disabled: 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTP  PK")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/movefile21.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved41.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_8()
-        {
-#line 255
-this.MoveFileAtSFTPLocationWithOverwriteDisabled("8", "SFTP to FTP  PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile21.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved41.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location with overwrite disabled: 9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithoutOverwrite")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTPS PK")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/movefile31.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "C:\\Temp\\key.opk")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_9()
-        {
-#line 255
-this.MoveFileAtSFTPLocationWithOverwriteDisabled("9", "SFTP to FTPS PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile31.txt", "dev2", "Q/ulw&]", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved41.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
         }
         
@@ -2816,62 +2136,6 @@ this.MoveFileAtLocationNull("2", "Local to Local", "[[sourcePath]]", "C:\\moved0
 #line 287
 this.MoveFileAtLocationNull("3", "UNC to Local", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile0.txt", "\"\"", "\"\"", "[[destPath]]", "cv:\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Failure", "AN", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at location Null: 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderMove")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\temp\\movefile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Failure")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtLocationNull_4()
-        {
-#line 287
-this.MoveFileAtLocationNull("4", "Local to FTP", "[[sourcePath]]", "c:\\temp\\movefile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "Failure", "NO", "", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at location Null: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderMove")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "v:\\movefile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Failure")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
-        public virtual void MoveFileAtLocationNull_5()
-        {
-#line 287
-this.MoveFileAtLocationNull("5", "Local to FTPS", "[[sourcePath]]", "v:\\movefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "Failure", "AN", "", "", ((string[])(null)));
 #line hidden
         }
         
