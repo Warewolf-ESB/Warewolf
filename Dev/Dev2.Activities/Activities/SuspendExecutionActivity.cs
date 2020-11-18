@@ -150,7 +150,7 @@ namespace Dev2.Activities
 
                 DispatchDebug(dataObject, StateType.Before, _update);
                 _suspensionId = _scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
-                _stateNotifier?.LogActivityExecuteState(this);
+
 
                 dataObject.ParentInstanceID = UniqueID;
                 dataObject.IsDebugNested = true;
@@ -159,6 +159,7 @@ namespace Dev2.Activities
                 Response = _suspensionId;
                 _dataObject.Environment.Assign(Result, _suspensionId, 0);
                 _dataObject.Environment.CommitAssign();
+                _stateNotifier?.LogActivityExecuteState(this);
                 Dev2Logger.Debug($"{_dataObject.ServiceName} execution suspended: SuspensionId {_suspensionId} scheduled", GlobalConstants.WarewolfDebug);
                 if (AllowManualResumption)
                 {
