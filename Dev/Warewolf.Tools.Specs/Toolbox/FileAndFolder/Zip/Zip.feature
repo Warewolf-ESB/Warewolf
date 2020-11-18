@@ -3,6 +3,7 @@ Feature: Zip
 	as a Warewolf user
 	I want a tool that Zip File or Folder at a given location
 
+@ZipFromLocal
 @ZipFromLocalWithOverwrite
 Scenario Outline: Zip file at local location
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -32,6 +33,7 @@ Scenario Outline: Zip file at local location
 #DevOps: Ignoring until SVRDEV.premier.local is back online		| 4 | Local to SFTP   | [[path]] | c:\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
+@ZipFromFTP
 @ZipFromFTPWithOverwrite
 Scenario Outline: Zip file at FTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -62,6 +64,7 @@ Scenario Outline: Zip file at FTP location
 		| 5  | FTP to FTPS     | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip3.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip22.txt                             | Administrator     | Dev2@dmin123 | True     |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
+@ZipFromFTPS
 @ZipFromFTPSWithOverwrite
 Scenario Outline: Zip file at FTPS location
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -92,6 +95,7 @@ Scenario Outline: Zip file at FTPS location
 		| 5  | FTPS to FTP     | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip2.txt | Administrator | Dev2@dmin123 | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip13.txt                             | ""            | ""           | True     |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until SVRDEV.premier.local is back online
+@ZipFromSFTP
 @ZipFromSFTPWithOverwrite
 Scenario Outline: Zip file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -122,6 +126,7 @@ Scenario Outline: Zip file at SFTP location
 		| 5  | SFTP to FTPS    | [[path]] | sftp://SVRDEV.premier.local/filetozip3.txt  | dev2 | Q/ulw&]  | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip24.txt                             | Administrator | Dev2@dmin123 | True     |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
 		| 6  | SFTP to SFTP    | [[path]] | sftp://SVRDEV.premier.local/filetozip4.txt  | dev2 | Q/ulw&]  | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 
+@ZipFromLocal
 @ZipFromLocalWithoutOverwrite
 Scenario Outline: Zip file at local location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -151,6 +156,7 @@ Scenario Outline: Zip file at local location with overwrite disabled
 #DevOps: Ignoring until SVRDEV.premier.local is back online		| 4  | Local to SFTP   | [[path]] | c:\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
+@ZipFromFTP
 @ZipFromFTPWithoutOverwrite
 Scenario Outline: Zip file at FTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -181,6 +187,7 @@ Scenario Outline: Zip file at FTP location with overwrite disabled
 		| 5  | FTP to SFTP     | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip4.txt | ""                | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
+@ZipFromFTPS
 @ZipFromFTPSWithoutOverwrite
 Scenario Outline: Zip file at FTPS location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -211,6 +218,7 @@ Scenario Outline: Zip file at FTPS location with overwrite disabled
 		| 5  | FTPS to SFTP    | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip4.txt | Administrator | Dev2@dmin123 | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until SVRDEV.premier.local is back online
+@ZipFromSFTP
 @ZipFromSFTPWithoutOverwrite
 Scenario Outline: Zip file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
