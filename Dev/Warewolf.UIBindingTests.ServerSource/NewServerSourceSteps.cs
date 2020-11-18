@@ -200,7 +200,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
             var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
+            var password = "I73573r0";
 
             var serverSourceDefinition = new Dev2.Common.ServerSource
             {

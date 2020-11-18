@@ -126,7 +126,7 @@ namespace Warewolf.UIBindingTests.WebSource
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
             var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
+            var password = "I73573r0";
             var webServiceSourceDefinition = new WebServiceSourceDefinition
             {
                 Name = "Test",
