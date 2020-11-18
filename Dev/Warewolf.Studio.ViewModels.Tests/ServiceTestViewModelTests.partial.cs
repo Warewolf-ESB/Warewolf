@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
@@ -1075,6 +1074,54 @@ namespace Warewolf.Studio.ViewModels.Tests
             var o = (IServiceTestStep)parameters[1];
             Assert.AreEqual(uniqueID, o.ActivityID.ToString());
             Assert.AreEqual("Dsipa", o.StepDescription);
+        }
+
+        [TestMethod]
+        [Timeout(500)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServiceTestViewModel))]
+        public void ServiceTestStepGetParentType_Given_SuspendExecutionActivity_ShouldSetupServiceTestStep()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var newTestFromDebugMessage = new NewTestFromDebugMessage
+            {
+                ResourceModel = mockResourceModel.Object, RootItems = new List<IDebugTreeViewItemViewModel>()
+            };
+
+            var mock = new Mock<IExternalProcessExecutor>();
+            mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(),
+                new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object,
+                popupController.Object, newTestFromDebugMessage, null)
+            {
+                WebClient = new Mock<IWarewolfWebClient>().Object
+            };
+            testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("ServiceTestStepGetParentType", BindingFlags.NonPublic | BindingFlags.Instance);
+            var activity = new SuspendExecutionActivity();
+            var uniqueId = Guid.NewGuid().ToString();
+            activity.UniqueID = uniqueId;
+            activity.DisplayName = "Suspend Execution";
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel);
+            //---------------Execute Test ----------------------
+            IServiceTestStep serviceTestStep = null;
+
+            var parameters = new object[] { modelItem, serviceTestStep };
+            methodInfo.Invoke(testFrameworkViewModel, parameters);
+            //---------------Test Result -----------------------
+            var o = (IServiceTestStep)parameters[1];
+            Assert.AreEqual(uniqueId, o.ActivityID.ToString());
+            Assert.AreEqual("Suspend Execution", o.StepDescription);
         }
 
         [TestMethod]
