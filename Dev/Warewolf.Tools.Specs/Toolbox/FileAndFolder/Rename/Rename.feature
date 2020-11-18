@@ -31,32 +31,6 @@ Scenario Outline: Rename file at local location
 #DevOps: Ignoring until SVRDEV.premier.local is back online	| 4  | Local to SFTP   | [[sourcePath]] | C:\renamefile3.txt  | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed0.txt                                                     | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
 	| 5  | Local to Local  | [[sourcePath]] | NULL                | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | True     | [[result]] | ""        | AN           |                      |                           |
 
-@FileRenameFromUNCWithOverwrite
-@FileRenameFromUNC
-Scenario Outline: Rename file at UNC location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And source credentials as "<username>" and "<password>"
-	And I have a destination path "<destination>" with value "<destinationLocation>"
-    And destination credentials as "<destUsername>" and "<destPassword>"
-	And overwrite is "<selected>"
-	And use private public key for source is "<sourcePrivateKeyFile>"
-	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"
-    When the rename file tool is executed
-	Then the result variable "<resultVar>" will be "<result>"
-	And the execution has "<errorOccured>" error
-	And the debug inputs as
-         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
-         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-	Examples: 
-	| No | Name            | source         | sourceLocation                                                                                  | username      | password     | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-	| 6  | UNC to Local    | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile0.txt | ""            | ""           | [[destPath]] | C:\renamed1.txt                                                                              | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 7  | UNC to FTP      | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile1.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed1.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 8  | UNC to FTPS     | [[sourcePath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamefile2.txt | ""            | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed1.txt                         | Administrator | Dev2@dmin123 | True     | [[result]] | "Success" | NO           |                      |                           |
-
 @Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @FileRenameFromFTP
 @FileRenameFromFTPWithOverwrite
