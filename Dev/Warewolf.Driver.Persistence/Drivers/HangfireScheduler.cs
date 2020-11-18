@@ -14,55 +14,93 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Serializers;
+using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Interfaces;
+using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Hangfire;
 using Hangfire.Server;
 using Hangfire.SqlServer;
 using Hangfire.States;
+using Warewolf.Auditing;
 using Warewolf.Security.Encryption;
+using Dev2JsonSerializer = Dev2.Common.Serializers.Dev2JsonSerializer;
+using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Driver.Persistence.Drivers
 {
     public class HangfireScheduler : IPersistenceScheduler
     {
+        private IStateNotifier _stateNotifier = null;
         public HangfireScheduler()
         {
         }
 
-        public string ResumeJob(string jobId, bool overrideVariables, Dictionary<string, StringBuilder> variables)
+        public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, Dictionary<string, StringBuilder> variables)
         {
-            var conn = ConnectionString();
-            GlobalConfiguration.Configuration.UseSqlServerStorage(conn);
-            var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(conn));
-            if (overrideVariables)
+            try
             {
+                var conn = ConnectionString();
+                GlobalConfiguration.Configuration.UseSqlServerStorage(conn);
+                var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(conn));
+
                 var monitoringApi = JobStorage.Current.GetMonitoringApi();
                 var jobDetails = monitoringApi.JobDetails(jobId);
-                var jobIsScheduled = jobDetails.History.Any(i => i.StateName.Equals("Scheduled"));
-                if (!jobIsScheduled)
-                {
-                    return GlobalConstants.Failed;
-                }
-                var scheduledState = new ScheduledState(DateTime.Now.ToUniversalTime());
-                var result = backgroundJobClient.Create(() => ResumeWorkflow(variables, null), scheduledState);
-                if (result == null)
+                var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
+
+                var jobIsScheduled = jobDetails.History.Where(i =>
+                    i.StateName == "Enqueued" ||
+                    i.StateName == "Processing" ||
+                    i.StateName == "Succeeded" ||
+                    i.StateName == "ManuallyResumed");
+                if (jobIsScheduled.Any())
                 {
                     return GlobalConstants.Failed;
                 }
 
-                backgroundJobClient.Delete(jobId);
+                if (overrideVariables)
+                {
+                    values = variables;
+                }
+
+                var workflowResume = new WorkflowResume();
+                var result = workflowResume.Execute(values, null);
+                var serializer = new Dev2JsonSerializer();
+                var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
+                if (executeMessage.HasError)
+                {
+                    var failedState = new FailedState(new Exception(executeMessage.Message.ToString()));
+                    backgroundJobClient.ChangeState(jobId, failedState, ScheduledState.StateName);
+                    return GlobalConstants.Failed;
+                }
+                values.TryGetValue("resourceID", out StringBuilder workflowId);
+                values.TryGetValue("environment", out StringBuilder environment);
+                values.TryGetValue("startActivityId", out StringBuilder startActivityId);
+                values.TryGetValue("versionNumber", out StringBuilder versionNumber);
+
+                _stateNotifier = dsfDataObject.StateNotifier;
+                var audit = new Audit
+                {
+                    WorkflowID = workflowId?.ToString(),
+                    Environment = environment?.ToString(),
+                    VersionNumber = versionNumber?.ToString(),
+                    NextActivityId = startActivityId?.ToString(),
+                    AuditDate = DateTime.Now,
+                    AuditType = "LogResumeExecutionState",
+                    LogLevel = LogLevel.Info
+                };
+
+                _stateNotifier?.LogAdditionalDetail(audit, nameof(ResumeJob));
+                var manuallyResumedState = new ManuallyResumedState(values);
+                backgroundJobClient.ChangeState(jobId, manuallyResumedState, ScheduledState.StateName);
                 return GlobalConstants.Success;
             }
-            else
+            catch (Exception ex)
             {
-                var enqueuedState = new EnqueuedState();
-                if (backgroundJobClient.ChangeState(jobId, enqueuedState, ScheduledState.StateName))
-                {
-                    return GlobalConstants.Success;
-                }
-                return GlobalConstants.Failed;
+                _stateNotifier?.LogExecuteException(ex, this);
+                Dev2Logger.Error(nameof(ResumeJob), ex, GlobalConstants.WarewolfError);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -72,6 +110,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             var resumptionDate = CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
             var state = new ScheduledState(resumptionDate.ToUniversalTime());
             var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(ConnectionString()));
+
             var jobId = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
             return jobId;
         }
@@ -106,7 +145,6 @@ namespace Warewolf.Driver.Persistence.Drivers
         private DateTime CalculateResumptionDate(DateTime persistenceDate, enSuspendOption suspendOption, string scheduleValue)
         {
             var resumptionDate = DateTime.UtcNow;
-
             switch (suspendOption)
             {
                 case enSuspendOption.SuspendForDays:

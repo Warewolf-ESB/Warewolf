@@ -39,6 +39,7 @@ namespace Dev2.Activities
         public ManualResumptionActivity()
             : this(Config.Persistence, new PersistenceExecution())
         {
+
         }
 
         public ManualResumptionActivity(PersistenceSettings config, IPersistenceExecution resumeExecution)
@@ -127,15 +128,16 @@ namespace Dev2.Activities
                 }
 
                 var overrideVariables = ExecuteOverrideDataFunc();
-                Response = _scheduler.ResumeJob(suspensionId, OverrideInputVariables, overrideVariables);
+                Response = _scheduler.ResumeJob(_dataObject,suspensionId, OverrideInputVariables, overrideVariables);
                 _stateNotifier?.LogActivityExecuteState(this);
+
                 if (_dataObject.IsDebugMode())
                 {
                     var debugItemStaticDataParams = new DebugItemStaticDataParams("SuspensionID: " + suspensionId, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                     debugItemStaticDataParams = new DebugItemStaticDataParams("Override Variables: " + OverrideInputVariables, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
-                    debugItemStaticDataParams = new DebugItemStaticDataParams("ResumptionID: " + Response, "", true);
+                    debugItemStaticDataParams = new DebugItemStaticDataParams("Result: " + Response, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
 
