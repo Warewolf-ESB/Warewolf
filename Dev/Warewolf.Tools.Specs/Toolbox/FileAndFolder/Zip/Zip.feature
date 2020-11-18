@@ -4,6 +4,7 @@ Feature: Zip
 	I want a tool that Zip File or Folder at a given location
 
 @ZipFromLocalWithOverwrite
+@ZipFromLocal
 Scenario Outline: Zip file at local location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -28,11 +29,12 @@ Scenario Outline: Zip file at local location
 		| No | Name            | source   | sourceLocation   | username | password | destination | destinationLocation                                                                          | destUsername  | destPassword | selected | archivepassword | compression     | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		| 1 | Local to Local  | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip                                                                               | ""            | ""           | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 		| 2 | Local to UNC    | [[path]] | c:\filetozip1.txt | ""       | ""       | [[path1]]   | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip10.txt | ""            | ""           | True     |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
-		| 3 | Local to FTP    | [[path]] | c:\filetozip2.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip10.txt                             | ""            | ""           | True     |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
-		| 4 | Local to FTPS   | [[path]] | c:\filetozip3.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip20.txt                             | Administrator | Dev2@dmin123 | True     |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 3 | Local to FTP    | [[path]] | c:\filetozip2.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip10.txt                             | ""            | ""           | True     |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 4 | Local to FTPS   | [[path]] | c:\filetozip3.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip20.txt                             | Administrator | Dev2@dmin123 | True     |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
 		| 5 | Local to SFTP   | [[path]] | c:\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 
 @ZipFromUNCWithOverwrite
+@ZipFromUNC
 Scenario Outline: Zip file at UNC location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -57,11 +59,12 @@ Scenario Outline: Zip file at UNC location
 		| No | Name            | source   | sourceLocation                                                                              | username | password | destination | destinationLocation                                                                          | destUsername  | destPassword | selected | archivepassword | compression     | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		| 1  | UNC to Local    | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New1.zip                                                                               | ""            | ""           | True     |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
 		| 2  | UNC to UNC      | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip1.txt | ""       | ""       | [[path1]]   | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip11.txt | ""            | ""           | True     |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
-		| 3  | UNC to FTP      | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip2.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip11.txt                             | ""            | ""           | True     |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
-		| 4  | UNC to FTPS     | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip3.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip21.txt                             | Administrator | Dev2@dmin123 | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 3  | UNC to FTP      | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip2.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip11.txt                             | ""            | ""           | True     |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 4  | UNC to FTPS     | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip3.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip21.txt                             | Administrator | Dev2@dmin123 | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 		| 5  | UNC to SFTP     | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | True     |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
 
 @ZipFromFTPWithOverwrite
+@ZipFromFTP
 Scenario Outline: Zip file at FTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -91,6 +94,7 @@ Scenario Outline: Zip file at FTP location
 		| 5  | FTP to FTPS     | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip3.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip22.txt                             | Administrator     | Dev2@dmin123 | True     |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
 
 @ZipFromFTPSWithOverwrite
+@ZipFromFTPS
 Scenario Outline: Zip file at FTPS location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -120,6 +124,7 @@ Scenario Outline: Zip file at FTPS location
 		| 5  | FTPS to FTP     | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip2.txt | Administrator | Dev2@dmin123 | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip13.txt                             | ""            | ""           | True     |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
 
 @ZipFromSFTPWithOverwrite
+@ZipFromSFTP
 Scenario Outline: Zip file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -150,6 +155,7 @@ Scenario Outline: Zip file at SFTP location
 		| 6  | SFTP to SFTP    | [[path]] | sftp://SVRDEV.premier.local/filetozip4.txt  | dev2 | Q/ulw&]  | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 
 @ZipFromLocalWithoutOverwrite
+@ZipFromLocal
 Scenario Outline: Zip file at local location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -179,6 +185,7 @@ Scenario Outline: Zip file at local location with overwrite disabled
 		| 5  | Local to SFTP   | [[path]] | c:\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 
 @ZipFromUNCWithoutOverwrite
+@ZipFromUNC
 Scenario Outline: Zip file at UNC location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -208,6 +215,7 @@ Scenario Outline: Zip file at UNC location with overwrite disabled
 		| 5  | UNC to SFTP     | [[path]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
 
 @ZipFromFTPWithoutOverwrite
+@ZipFromFTP
 Scenario Outline: Zip file at FTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -237,6 +245,7 @@ Scenario Outline: Zip file at FTP location with overwrite disabled
 		| 5  | FTP to SFTP     | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip4.txt | ""                | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
 
 @ZipFromFTPSWithoutOverwrite
+@ZipFromFTPS
 Scenario Outline: Zip file at FTPS location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
@@ -266,6 +275,7 @@ Scenario Outline: Zip file at FTPS location with overwrite disabled
 		| 5  | FTPS to SFTP    | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip4.txt | Administrator | Dev2@dmin123 | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
 
 @ZipFromSFTPWithoutOverwrite
+@ZipFromSFTP
 Scenario Outline: Zip file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
