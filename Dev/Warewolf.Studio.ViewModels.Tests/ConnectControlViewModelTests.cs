@@ -26,7 +26,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Testing;
 
-[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
@@ -592,7 +591,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_EditServerServerIDMatchIsTrue()
