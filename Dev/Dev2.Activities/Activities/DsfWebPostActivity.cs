@@ -100,6 +100,7 @@ namespace Dev2.Activities
 
             tmpErrors.MergeErrors(_errorsTo);
 
+            //TODO: Make sure the below changes are tested
             var  bytes = webRequestResult.Base64StringToByteArray();
             var response = bytes.ReadToString();
 
