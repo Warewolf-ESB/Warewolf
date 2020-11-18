@@ -1337,7 +1337,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(100)]
         [Owner("Sanele Mthembu")]
         public void SelectDependencies_GivenSourceWithDependencies_ShouldHaveItemsSelected()
         {
