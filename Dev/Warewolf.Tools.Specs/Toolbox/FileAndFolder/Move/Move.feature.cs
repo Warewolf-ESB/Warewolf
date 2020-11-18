@@ -277,6 +277,7 @@ this.MoveFileAtLocalLocation("5", "Local to UNC", "[[sourcePath]]", "c:\\movefil
                     string[] exampleTags)
         {
             string[] @__tags = new string[] {
+                    "FileMoveFromUNC",
                     "FileMoveFromUNCWithOverwrite"};
             if ((exampleTags != null))
             {
@@ -286,29 +287,29 @@ this.MoveFileAtLocalLocation("5", "Local to UNC", "[[sourcePath]]", "c:\\movefil
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at UNC location", @__tags);
-#line 34
-this.ScenarioSetup(scenarioInfo);
 #line 35
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 36
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 37
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
-    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 45
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 46
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1564 = new TechTalk.SpecFlow.Table(new string[] {
@@ -331,14 +332,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 46
+#line 47
  testRunner.And("the debug inputs as", ((string)(null)), table1564, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1565 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1565.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 49
+#line 50
  testRunner.And("the debug output as", ((string)(null)), table1565, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -347,6 +348,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
@@ -368,7 +370,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtUNCLocation_1()
         {
-#line 34
+#line 35
 this.MoveFileAtUNCLocation("1", "UNC to Local", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -377,6 +379,7 @@ this.MoveFileAtUNCLocation("1", "UNC to Local", "[[sourcePath]]", "\\\\SVRDEV.pr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
@@ -398,7 +401,7 @@ this.MoveFileAtUNCLocation("1", "UNC to Local", "[[sourcePath]]", "\\\\SVRDEV.pr
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtUNCLocation_4()
         {
-#line 34
+#line 35
 this.MoveFileAtUNCLocation("4", "UNC to SFTP", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/moved1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -407,6 +410,7 @@ this.MoveFileAtUNCLocation("4", "UNC to SFTP", "[[sourcePath]]", "\\\\SVRDEV.pre
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
@@ -429,7 +433,7 @@ this.MoveFileAtUNCLocation("4", "UNC to SFTP", "[[sourcePath]]", "\\\\SVRDEV.pre
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtUNCLocation_5()
         {
-#line 34
+#line 35
 this.MoveFileAtUNCLocation("5", "UNC TO UNC", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
@@ -456,6 +460,15 @@ this.MoveFileAtUNCLocation("5", "UNC TO UNC", "[[sourcePath]]", "\\\\SVRDEV.prem
                     string[] exampleTags)
         {
             string[] @__tags = new string[] {
+                    "Ignore",
+                    "#DevOps:",
+                    "Ignoring",
+                    "until",
+                    "DEVOPSPDC.premier.local",
+                    "is",
+                    "back",
+                    "online",
+                    "FileMoveFromFTP",
                     "FileMoveFromFTPWithOverwrite"};
             if ((exampleTags != null))
             {
@@ -465,29 +478,29 @@ this.MoveFileAtUNCLocation("5", "UNC TO UNC", "[[sourcePath]]", "\\\\SVRDEV.prem
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at FTP location", @__tags);
-#line 61
-this.ScenarioSetup(scenarioInfo);
-#line 62
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 63
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 65
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 66
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
-    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 71
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 73
+    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 74
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 75
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1566 = new TechTalk.SpecFlow.Table(new string[] {
@@ -510,14 +523,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 73
+#line 76
  testRunner.And("the debug inputs as", ((string)(null)), table1566, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1567 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1567.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 76
+#line 79
  testRunner.And("the debug output as", ((string)(null)), table1567, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -526,6 +539,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
@@ -546,7 +568,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPLocation_1()
         {
-#line 61
+#line 64
 this.MoveFileAtFTPLocation("1", "FTP to Local", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved2.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -554,6 +576,15 @@ this.MoveFileAtFTPLocation("1", "FTP to Local", "[[sourcePath]]", "ftp://DEVOPSP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
@@ -575,15 +606,61 @@ this.MoveFileAtFTPLocation("1", "FTP to Local", "[[sourcePath]]", "ftp://DEVOPSP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPLocation_2()
         {
-#line 61
+#line 64
 this.MoveFileAtFTPLocation("2", "FTP to UNC", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "2.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithOverwrite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        public virtual void MoveFileAtFTPLocation_3()
+        {
+#line 64
+this.MoveFileAtFTPLocation("3", "FTP to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
@@ -604,8 +681,45 @@ this.MoveFileAtFTPLocation("2", "FTP to UNC", "[[sourcePath]]", "ftp://DEVOPSPDC
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPLocation_4()
         {
-#line 61
+#line 64
 this.MoveFileAtFTPLocation("4", "FTP to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/moved2.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithOverwrite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        public virtual void MoveFileAtFTPLocation_5()
+        {
+#line 64
+this.MoveFileAtFTPLocation("5", "FTP to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -629,6 +743,15 @@ this.MoveFileAtFTPLocation("4", "FTP to SFTP", "[[sourcePath]]", "ftp://DEVOPSPD
                     string[] exampleTags)
         {
             string[] @__tags = new string[] {
+                    "Ignore",
+                    "#DevOps:",
+                    "Ignoring",
+                    "until",
+                    "DEVOPSPDC.premier.local",
+                    "is",
+                    "back",
+                    "online",
+                    "FileMoveFromFTPS",
                     "FileMoveFromFTPSWithOverwrite"};
             if ((exampleTags != null))
             {
@@ -638,29 +761,29 @@ this.MoveFileAtFTPLocation("4", "FTP to SFTP", "[[sourcePath]]", "ftp://DEVOPSPD
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at FTPS location", @__tags);
-#line 88
-this.ScenarioSetup(scenarioInfo);
-#line 89
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 90
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 94
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 95
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 96
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
-    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 100
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 101
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 103
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 104
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1568 = new TechTalk.SpecFlow.Table(new string[] {
@@ -683,14 +806,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 100
+#line 105
  testRunner.And("the debug inputs as", ((string)(null)), table1568, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1569 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1569.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 103
+#line 108
  testRunner.And("the debug output as", ((string)(null)), table1569, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -699,6 +822,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
@@ -719,7 +851,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPSLocation_1()
         {
-#line 88
+#line 93
 this.MoveFileAtFTPSLocation("1", "FTPS to Local", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile0.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "C:\\moved3.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -727,6 +859,15 @@ this.MoveFileAtFTPSLocation("1", "FTPS to Local", "[[sourcePath]]", "ftp://DEVOP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
@@ -748,15 +889,61 @@ this.MoveFileAtFTPSLocation("1", "FTPS to Local", "[[sourcePath]]", "ftp://DEVOP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPSLocation_2()
         {
-#line 88
+#line 93
 this.MoveFileAtFTPSLocation("2", "FTPS to UNC", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile1.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "3.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithOverwrite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        public virtual void MoveFileAtFTPSLocation_3()
+        {
+#line 93
+this.MoveFileAtFTPSLocation("3", "FTPS to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt", "Administrator", "Dev2@dmin123", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
@@ -777,8 +964,45 @@ this.MoveFileAtFTPSLocation("2", "FTPS to UNC", "[[sourcePath]]", "ftp://DEVOPSP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPSLocation_4()
         {
-#line 88
+#line 93
 this.MoveFileAtFTPSLocation("4", "FTPS to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "sftp://SVRDEV.premier.local/moved3.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithOverwrite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        public virtual void MoveFileAtFTPSLocation_5()
+        {
+#line 93
+this.MoveFileAtFTPSLocation("5", "FTPS to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -802,6 +1026,7 @@ this.MoveFileAtFTPSLocation("4", "FTPS to SFTP", "[[sourcePath]]", "ftp://DEVOPS
                     string[] exampleTags)
         {
             string[] @__tags = new string[] {
+                    "FileMoveFromSFTP",
                     "FileMoveFromSFTPWithOverwrite"};
             if ((exampleTags != null))
             {
@@ -811,29 +1036,29 @@ this.MoveFileAtFTPSLocation("4", "FTPS to SFTP", "[[sourcePath]]", "ftp://DEVOPS
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at SFTP location", @__tags);
-#line 115
-this.ScenarioSetup(scenarioInfo);
-#line 116
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 117
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 122
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 123
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 124
-    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 125
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 127
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 128
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 130
+    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 131
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 132
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1570 = new TechTalk.SpecFlow.Table(new string[] {
@@ -856,14 +1081,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 127
+#line 133
  testRunner.And("the debug inputs as", ((string)(null)), table1570, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1571 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1571.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 130
+#line 136
  testRunner.And("the debug output as", ((string)(null)), table1571, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -872,6 +1097,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
@@ -892,7 +1118,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocation_1()
         {
-#line 115
+#line 121
 this.MoveFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\moved4.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -900,6 +1126,7 @@ this.MoveFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://SVRD
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
@@ -921,7 +1148,7 @@ this.MoveFileAtSFTPLocation("1", "SFTP to Local", "[[sourcePath]]", "sftp://SVRD
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocation_2()
         {
-#line 115
+#line 121
 this.MoveFileAtSFTPLocation("2", "SFTP to UNC", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "4.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -930,6 +1157,7 @@ this.MoveFileAtSFTPLocation("2", "SFTP to UNC", "[[sourcePath]]", "sftp://SVRDEV
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
@@ -950,7 +1178,7 @@ this.MoveFileAtSFTPLocation("2", "SFTP to UNC", "[[sourcePath]]", "sftp://SVRDEV
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocation_5()
         {
-#line 115
+#line 121
 this.MoveFileAtSFTPLocation("5", "SFTP to SFTP", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://SVRDEV.premier.local/moved4.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -958,6 +1186,7 @@ this.MoveFileAtSFTPLocation("5", "SFTP to SFTP", "[[sourcePath]]", "sftp://SVRDE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
@@ -978,7 +1207,7 @@ this.MoveFileAtSFTPLocation("5", "SFTP to SFTP", "[[sourcePath]]", "sftp://SVRDE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocation_6()
         {
-#line 115
+#line 121
 this.MoveFileAtSFTPLocation("6", "SFTP to Local PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile01.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\moved41.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
         }
@@ -986,6 +1215,7 @@ this.MoveFileAtSFTPLocation("6", "SFTP to Local PK", "[[sourcePath]]", "sftp://S
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
@@ -1007,7 +1237,7 @@ this.MoveFileAtSFTPLocation("6", "SFTP to Local PK", "[[sourcePath]]", "sftp://S
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocation_7()
         {
-#line 115
+#line 121
 this.MoveFileAtSFTPLocation("7", "SFTP to UNC  PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile11.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "41.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
@@ -1016,6 +1246,7 @@ this.MoveFileAtSFTPLocation("7", "SFTP to UNC  PK", "[[sourcePath]]", "sftp://SV
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at SFTP location: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromSFTPWithOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
@@ -1036,7 +1267,7 @@ this.MoveFileAtSFTPLocation("7", "SFTP to UNC  PK", "[[sourcePath]]", "sftp://SV
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void MoveFileAtSFTPLocation_10()
         {
-#line 115
+#line 121
 this.MoveFileAtSFTPLocation("10", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile41.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://SVRDEV.premier.local/moved41.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
@@ -1061,6 +1292,7 @@ this.MoveFileAtSFTPLocation("10", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://S
                     string[] exampleTags)
         {
             string[] @__tags = new string[] {
+                    "FileMoveFromLocal",
                     "FileMoveFromLocalWithoutOverwrite"};
             if ((exampleTags != null))
             {
@@ -1070,29 +1302,29 @@ this.MoveFileAtSFTPLocation("10", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://S
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at local location with overwrite disabled", @__tags);
-#line 147
-this.ScenarioSetup(scenarioInfo);
-#line 148
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 149
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 155
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 156
-    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 157
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 158
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 159
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 160
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 161
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 163
+    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 164
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 165
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1572 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1115,14 +1347,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 159
+#line 166
  testRunner.And("the debug inputs as", ((string)(null)), table1572, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1573 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1573.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 162
+#line 169
  testRunner.And("the debug output as", ((string)(null)), table1573, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1131,6 +1363,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at local location with overwrite disabled: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocalWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
@@ -1151,7 +1384,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocalLocationWithOverwriteDisabled_1()
         {
-#line 147
+#line 154
 this.MoveFileAtLocalLocationWithOverwriteDisabled("1", "Local to Local", "[[sourcePath]]", "c:\\movefile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1159,6 +1392,7 @@ this.MoveFileAtLocalLocationWithOverwriteDisabled("1", "Local to Local", "[[sour
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at local location with overwrite disabled: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocalWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
@@ -1179,7 +1413,7 @@ this.MoveFileAtLocalLocationWithOverwriteDisabled("1", "Local to Local", "[[sour
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocalLocationWithOverwriteDisabled_4()
         {
-#line 147
+#line 154
 this.MoveFileAtLocalLocationWithOverwriteDisabled("4", "Local to SFTP", "[[sourcePath]]", "c:\\movefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/moved0.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1187,6 +1421,7 @@ this.MoveFileAtLocalLocationWithOverwriteDisabled("4", "Local to SFTP", "[[sourc
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at local location with overwrite disabled: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromLocalWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
@@ -1208,7 +1443,7 @@ this.MoveFileAtLocalLocationWithOverwriteDisabled("4", "Local to SFTP", "[[sourc
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocalLocationWithOverwriteDisabled_5()
         {
-#line 147
+#line 154
 this.MoveFileAtLocalLocationWithOverwriteDisabled("5", "Local to UNC", "[[sourcePath]]", "c:\\movefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "0.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -1234,6 +1469,7 @@ this.MoveFileAtLocalLocationWithOverwriteDisabled("5", "Local to UNC", "[[source
                     string[] exampleTags)
         {
             string[] @__tags = new string[] {
+                    "FileMoveFromUNC",
                     "FileMoveFromUNCWithoutOverwrite"};
             if ((exampleTags != null))
             {
@@ -1243,29 +1479,29 @@ this.MoveFileAtLocalLocationWithOverwriteDisabled("5", "Local to UNC", "[[source
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at UNC location with overwrite disabled", @__tags);
-#line 174
-this.ScenarioSetup(scenarioInfo);
-#line 175
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 176
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 182
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 183
-    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 184
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 185
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 186
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 187
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 188
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 189
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 190
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 191
+    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 192
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 193
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1574 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1288,14 +1524,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 186
+#line 194
  testRunner.And("the debug inputs as", ((string)(null)), table1574, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1575 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1575.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 189
+#line 197
  testRunner.And("the debug output as", ((string)(null)), table1575, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1304,6 +1540,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location with overwrite disabled: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
@@ -1325,7 +1562,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtUNCLocationWithOverwriteDisabled_1()
         {
-#line 174
+#line 182
 this.MoveFileAtUNCLocationWithOverwriteDisabled("1", "UNC to Local", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved1.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -1334,6 +1571,7 @@ this.MoveFileAtUNCLocationWithOverwriteDisabled("1", "UNC to Local", "[[sourcePa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location with overwrite disabled: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
@@ -1355,7 +1593,7 @@ this.MoveFileAtUNCLocationWithOverwriteDisabled("1", "UNC to Local", "[[sourcePa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtUNCLocationWithOverwriteDisabled_4()
         {
-#line 174
+#line 182
 this.MoveFileAtUNCLocationWithOverwriteDisabled("4", "UNC to SFTP", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/moved1.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -1364,6 +1602,7 @@ this.MoveFileAtUNCLocationWithOverwriteDisabled("4", "UNC to SFTP", "[[sourcePat
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at UNC location with overwrite disabled: 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromUNCWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
@@ -1386,7 +1625,7 @@ this.MoveFileAtUNCLocationWithOverwriteDisabled("4", "UNC to SFTP", "[[sourcePat
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtUNCLocationWithOverwriteDisabled_6()
         {
-#line 174
+#line 182
 this.MoveFileAtUNCLocationWithOverwriteDisabled("6", "UNC TO UNC", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "1.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
@@ -1413,6 +1652,15 @@ this.MoveFileAtUNCLocationWithOverwriteDisabled("6", "UNC TO UNC", "[[sourcePath
                     string[] exampleTags)
         {
             string[] @__tags = new string[] {
+                    "Ignore",
+                    "#DevOps:",
+                    "Ignoring",
+                    "until",
+                    "DEVOPSPDC.premier.local",
+                    "is",
+                    "back",
+                    "online",
+                    "FileMoveFromFTP",
                     "FileMoveFromFTPWithoutOverwrite"};
             if ((exampleTags != null))
             {
@@ -1422,29 +1670,29 @@ this.MoveFileAtUNCLocationWithOverwriteDisabled("6", "UNC TO UNC", "[[sourcePath
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at FTP location with overwrite disabled", @__tags);
-#line 201
-this.ScenarioSetup(scenarioInfo);
-#line 202
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 203
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 205
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 206
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 208
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 210
-    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 211
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 212
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 213
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 214
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 215
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 216
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 217
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 218
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 219
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 220
+    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 221
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 222
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1576 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1467,14 +1715,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 213
+#line 223
  testRunner.And("the debug inputs as", ((string)(null)), table1576, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1577 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1577.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 216
+#line 226
  testRunner.And("the debug output as", ((string)(null)), table1577, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1483,6 +1731,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location with overwrite disabled: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
@@ -1503,7 +1760,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPLocationWithOverwriteDisabled_1()
         {
-#line 201
+#line 211
 this.MoveFileAtFTPLocationWithOverwriteDisabled("1", "FTP to Local", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved2.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1511,6 +1768,15 @@ this.MoveFileAtFTPLocationWithOverwriteDisabled("1", "FTP to Local", "[[sourcePa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location with overwrite disabled: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
@@ -1532,15 +1798,61 @@ this.MoveFileAtFTPLocationWithOverwriteDisabled("1", "FTP to Local", "[[sourcePa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPLocationWithOverwriteDisabled_2()
         {
-#line 201
+#line 211
 this.MoveFileAtFTPLocationWithOverwriteDisabled("2", "FTP to UNC", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "2.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location with overwrite disabled: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithoutOverwrite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        public virtual void MoveFileAtFTPLocationWithOverwriteDisabled_3()
+        {
+#line 211
+this.MoveFileAtFTPLocationWithOverwriteDisabled("3", "FTP to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved2.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location with overwrite disabled: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
@@ -1561,8 +1873,45 @@ this.MoveFileAtFTPLocationWithOverwriteDisabled("2", "FTP to UNC", "[[sourcePath
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPLocationWithOverwriteDisabled_4()
         {
-#line 201
+#line 211
 this.MoveFileAtFTPLocationWithOverwriteDisabled("4", "FTP to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/moved2.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTP location with overwrite disabled: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPWithoutOverwrite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        public virtual void MoveFileAtFTPLocationWithOverwriteDisabled_5()
+        {
+#line 211
+this.MoveFileAtFTPLocationWithOverwriteDisabled("5", "FTP to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/movefile4.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved2.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1586,6 +1935,15 @@ this.MoveFileAtFTPLocationWithOverwriteDisabled("4", "FTP to SFTP", "[[sourcePat
                     string[] exampleTags)
         {
             string[] @__tags = new string[] {
+                    "Ignore",
+                    "#DevOps:",
+                    "Ignoring",
+                    "until",
+                    "DEVOPSPDC.premier.local",
+                    "is",
+                    "back",
+                    "online",
+                    "FileMoveFromFTPS",
                     "FileMoveFromFTPSWithoutOverwrite"};
             if ((exampleTags != null))
             {
@@ -1595,29 +1953,29 @@ this.MoveFileAtFTPLocationWithOverwriteDisabled("4", "FTP to SFTP", "[[sourcePat
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at FTPS location with overwrite disabled", @__tags);
-#line 228
+#line 240
 this.ScenarioSetup(scenarioInfo);
-#line 229
+#line 241
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 230
+#line 242
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 231
+#line 243
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 232
+#line 244
     testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 233
+#line 245
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 234
+#line 246
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 235
+#line 247
  testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 236
+#line 248
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 237
+#line 249
     testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 238
+#line 250
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 239
+#line 251
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1578 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1640,14 +1998,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 240
+#line 252
  testRunner.And("the debug inputs as", ((string)(null)), table1578, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1579 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1579.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 243
+#line 255
  testRunner.And("the debug output as", ((string)(null)), table1579, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1656,6 +2014,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location with overwrite disabled: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
@@ -1676,7 +2043,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPSLocationWithOverwriteDisabled_1()
         {
-#line 228
+#line 240
 this.MoveFileAtFTPSLocationWithOverwriteDisabled("1", "FTPS to Local", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile0.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "C:\\moved3.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1684,6 +2051,15 @@ this.MoveFileAtFTPSLocationWithOverwriteDisabled("1", "FTPS to Local", "[[source
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location with overwrite disabled: 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
@@ -1705,15 +2081,61 @@ this.MoveFileAtFTPSLocationWithOverwriteDisabled("1", "FTPS to Local", "[[source
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPSLocationWithOverwriteDisabled_2()
         {
-#line 228
+#line 240
 this.MoveFileAtFTPSLocationWithOverwriteDisabled("2", "FTPS to UNC", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile1.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "3.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location with overwrite disabled: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithoutOverwrite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        public virtual void MoveFileAtFTPSLocationWithOverwriteDisabled_3()
+        {
+#line 240
+this.MoveFileAtFTPSLocationWithOverwriteDisabled("3", "FTPS to FTPS", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile2.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved3.txt", "Administrator", "Dev2@dmin123", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location with overwrite disabled: 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithoutOverwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
@@ -1734,8 +2156,45 @@ this.MoveFileAtFTPSLocationWithOverwriteDisabled("2", "FTPS to UNC", "[[sourcePa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtFTPSLocationWithOverwriteDisabled_4()
         {
-#line 228
+#line 240
 this.MoveFileAtFTPSLocationWithOverwriteDisabled("4", "FTPS to SFTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "sftp://SVRDEV.premier.local/moved3.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Move file at FTPS location with overwrite disabled: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Move")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("#DevOps:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Ignoring")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("until")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DEVOPSPDC.premier.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("is")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("back")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("online")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileMoveFromFTPSWithoutOverwrite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
+        public virtual void MoveFileAtFTPSLocationWithOverwriteDisabled_5()
+        {
+#line 240
+this.MoveFileAtFTPSLocationWithOverwriteDisabled("5", "FTPS to FTP", "[[sourcePath]]", "ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt", "Administrator", "Dev2@dmin123", "[[destPath]]", "ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1768,29 +2227,29 @@ this.MoveFileAtFTPSLocationWithOverwriteDisabled("4", "FTPS to SFTP", "[[sourceP
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at SFTP location with overwrite disabled", @__tags);
-#line 255
+#line 267
 this.ScenarioSetup(scenarioInfo);
-#line 256
+#line 268
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 257
+#line 269
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 258
+#line 270
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 259
+#line 271
     testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 260
+#line 272
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 261
+#line 273
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 262
+#line 274
  testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
+#line 275
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 264
+#line 276
     testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 265
+#line 277
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 266
+#line 278
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1580 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1813,14 +2272,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
-#line 267
+#line 279
  testRunner.And("the debug inputs as", ((string)(null)), table1580, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1581 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1581.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 270
+#line 282
  testRunner.And("the debug output as", ((string)(null)), table1581, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1849,7 +2308,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_1()
         {
-#line 255
+#line 267
 this.MoveFileAtSFTPLocationWithOverwriteDisabled("1", "SFTP to Local", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile0.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\moved4.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1878,7 +2337,7 @@ this.MoveFileAtSFTPLocationWithOverwriteDisabled("1", "SFTP to Local", "[[source
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_2()
         {
-#line 255
+#line 267
 this.MoveFileAtSFTPLocationWithOverwriteDisabled("2", "SFTP to UNC", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "4.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
@@ -1907,7 +2366,7 @@ this.MoveFileAtSFTPLocationWithOverwriteDisabled("2", "SFTP to UNC", "[[sourcePa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_5()
         {
-#line 255
+#line 267
 this.MoveFileAtSFTPLocationWithOverwriteDisabled("5", "SFTP to SFTP", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile4.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://SVRDEV.premier.local/moved4.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
@@ -1935,7 +2394,7 @@ this.MoveFileAtSFTPLocationWithOverwriteDisabled("5", "SFTP to SFTP", "[[sourceP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_6()
         {
-#line 255
+#line 267
 this.MoveFileAtSFTPLocationWithOverwriteDisabled("6", "SFTP to Local PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile01.txt", "dev2", "Q/ulw&]", "[[destPath]]", "C:\\moved41.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
         }
@@ -1964,7 +2423,7 @@ this.MoveFileAtSFTPLocationWithOverwriteDisabled("6", "SFTP to Local PK", "[[sou
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_7()
         {
-#line 255
+#line 267
 this.MoveFileAtSFTPLocationWithOverwriteDisabled("7", "SFTP to UNC  PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile11.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\moved" +
                     "41.txt", "\"\"", "\"\"", "False", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
@@ -1993,7 +2452,7 @@ this.MoveFileAtSFTPLocationWithOverwriteDisabled("7", "SFTP to UNC  PK", "[[sour
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void MoveFileAtSFTPLocationWithOverwriteDisabled_10()
         {
-#line 255
+#line 267
 this.MoveFileAtSFTPLocationWithOverwriteDisabled("10", "SFTP to SFTP PK", "[[sourcePath]]", "sftp://SVRDEV.premier.local/movefile41.txt", "dev2", "Q/ulw&]", "[[destPath]]", "sftp://SVRDEV.premier.local/moved41.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
@@ -2027,27 +2486,27 @@ this.MoveFileAtSFTPLocationWithOverwriteDisabled("10", "SFTP to SFTP PK", "[[sou
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file at location Null", @__tags);
-#line 287
+#line 299
 this.ScenarioSetup(scenarioInfo);
-#line 288
+#line 300
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 289
+#line 301
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
+#line 302
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 291
+#line 303
     testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
+#line 304
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 293
+#line 305
  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 294
+#line 306
  testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 295
+#line 307
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 296
+#line 308
     testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 297
+#line 309
  testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -2076,7 +2535,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocationNull_1()
         {
-#line 287
+#line 299
 this.MoveFileAtLocationNull("1", "Local to Local", "[[sourcePath]]", "NULL", "\"\"", "\"\"", "[[destPath]]", "Null", "\"\"", "\"\"", "True", "[[result]]", "Failure", "AN", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2104,7 +2563,7 @@ this.MoveFileAtLocationNull("1", "Local to Local", "[[sourcePath]]", "NULL", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocationNull_2()
         {
-#line 287
+#line 299
 this.MoveFileAtLocationNull("2", "Local to Local", "[[sourcePath]]", "C:\\moved0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "Failure", "AN", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2133,7 +2592,7 @@ this.MoveFileAtLocationNull("2", "Local to Local", "[[sourcePath]]", "C:\\moved0
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocationNull_3()
         {
-#line 287
+#line 299
 this.MoveFileAtLocationNull("3", "UNC to Local", "[[sourcePath]]", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileMoveSharedTestingSite\\movef" +
                     "ile0.txt", "\"\"", "\"\"", "[[destPath]]", "cv:\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Failure", "AN", "", "", ((string[])(null)));
 #line hidden
@@ -2162,7 +2621,7 @@ this.MoveFileAtLocationNull("3", "UNC to Local", "[[sourcePath]]", "\\\\SVRDEV.p
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocationNull_6()
         {
-#line 287
+#line 299
 this.MoveFileAtLocationNull("6", "Local to SFTP", "[[sourcePath]]", "\" \"", "\"\"", "\"\"", "[[destPath]]", "sftp://SVRDEV.premier.local/moved0.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Failure", "AN", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2200,43 +2659,43 @@ this.MoveFileAtLocationNull("6", "Local to SFTP", "[[sourcePath]]", "\" \"", "\"
             sourceLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(sourceLocation, getGuid);
             destinationLocation = Dev2.Activities.Specs.BaseTypes.CommonSteps.AddGuidToPath(destinationLocation, getGuid);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move file Validation", @__tags);
-#line 308
-this.ScenarioSetup(scenarioInfo);
-#line 309
- testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 310
- testRunner.And(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 311
- testRunner.And(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 312
- testRunner.And(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 313
- testRunner.And("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 314
- testRunner.And(string.Format("I have a source path \"{0}\" with value \"{1}\"", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 315
- testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 316
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 317
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 318
- testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 319
- testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 320
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 321
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 322
- testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 323
- testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 324
-    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 325
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 326
+ testRunner.And(string.Format("I have a source path \"{0}\" with value \"{1}\"", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 327
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 328
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 329
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 330
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 331
+ testRunner.And(string.Format("use private public key for destination is \"{0}\"", destinationPrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 332
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 333
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 334
+ testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 335
+ testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 336
+    testRunner.When("the Move file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 337
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 338
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1582 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2255,14 +2714,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", destUsername),
                         "String",
                         string.Format("{0}", selected)});
-#line 327
+#line 339
  testRunner.And("the debug inputs as", ((string)(null)), table1582, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1583 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1583.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 330
+#line 342
  testRunner.And("the debug output as", ((string)(null)), table1583, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2295,7 +2754,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_1()
         {
-#line 308
+#line 320
 this.MoveFileValidation("1", "[[sourcePath]]", "", "", "c:\\temp\\movefile57.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved057.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2327,7 +2786,7 @@ this.MoveFileValidation("1", "[[sourcePath]]", "", "", "c:\\temp\\movefile57.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_2()
         {
-#line 308
+#line 320
 this.MoveFileValidation("2", "[[sourcePath]]", "", "", "c:\\temp\\movefile58.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved058.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2359,7 +2818,7 @@ this.MoveFileValidation("2", "[[sourcePath]]", "", "", "c:\\temp\\movefile58.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_3()
         {
-#line 308
+#line 320
 this.MoveFileValidation("3", "[[sourcePath]]", "", "", "c:\\temp\\movefile59.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved059.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2391,7 +2850,7 @@ this.MoveFileValidation("3", "[[sourcePath]]", "", "", "c:\\temp\\movefile59.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_4()
         {
-#line 308
+#line 320
 this.MoveFileValidation("4", "[[sourcePath]]", "", "", "c:\\temp\\movefile60.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved060.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2423,7 +2882,7 @@ this.MoveFileValidation("4", "[[sourcePath]]", "", "", "c:\\temp\\movefile60.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_5()
         {
-#line 308
+#line 320
 this.MoveFileValidation("5", "[[sourcePath]]", "", "", "c:\\temp\\movefile61.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved061.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2455,7 +2914,7 @@ this.MoveFileValidation("5", "[[sourcePath]]", "", "", "c:\\temp\\movefile61.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_6()
         {
-#line 308
+#line 320
 this.MoveFileValidation("6", "[[sourcePath]]", "", "", "c:\\temp\\movefile5.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved05.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2487,7 +2946,7 @@ this.MoveFileValidation("6", "[[sourcePath]]", "", "", "c:\\temp\\movefile5.txt"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_7()
         {
-#line 308
+#line 320
 this.MoveFileValidation("7", "[[sourcePath]]", "", "", "c:\\temp\\movefile6.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved06.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2519,7 +2978,7 @@ this.MoveFileValidation("7", "[[sourcePath]]", "", "", "c:\\temp\\movefile6.txt"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_8()
         {
-#line 308
+#line 320
 this.MoveFileValidation("8", "[[sourcePath]]", "", "", "c:\\temp\\movefile7.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved07.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2551,7 +3010,7 @@ this.MoveFileValidation("8", "[[sourcePath]]", "", "", "c:\\temp\\movefile7.txt"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_9()
         {
-#line 308
+#line 320
 this.MoveFileValidation("9", "[[sourcePath]]", "", "", "c:\\temp\\movefile8.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved08.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2583,7 +3042,7 @@ this.MoveFileValidation("9", "[[sourcePath]]", "", "", "c:\\temp\\movefile8.txt"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_10()
         {
-#line 308
+#line 320
 this.MoveFileValidation("10", "[[sourcePath]]", "", "", "c:\\temp\\movefile9.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved09.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2615,7 +3074,7 @@ this.MoveFileValidation("10", "[[sourcePath]]", "", "", "c:\\temp\\movefile9.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_11()
         {
-#line 308
+#line 320
 this.MoveFileValidation("11", "[[sourcePath]]", "", "", "c:\\temp\\movefile10.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved010.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2647,7 +3106,7 @@ this.MoveFileValidation("11", "[[sourcePath]]", "", "", "c:\\temp\\movefile10.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_12()
         {
-#line 308
+#line 320
 this.MoveFileValidation("12", "[[sourcePath]]", "", "", "c:\\temp\\movefile11.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved011.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2679,7 +3138,7 @@ this.MoveFileValidation("12", "[[sourcePath]]", "", "", "c:\\temp\\movefile11.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_13()
         {
-#line 308
+#line 320
 this.MoveFileValidation("13", "[[sourcePath]]", "", "", "c:\\temp\\movefile12.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved012.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2711,7 +3170,7 @@ this.MoveFileValidation("13", "[[sourcePath]]", "", "", "c:\\temp\\movefile12.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_14()
         {
-#line 308
+#line 320
 this.MoveFileValidation("14", "[[sourcePath]]", "", "", "c:\\temp\\movefile13.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved013.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2743,7 +3202,7 @@ this.MoveFileValidation("14", "[[sourcePath]]", "", "", "c:\\temp\\movefile13.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_15()
         {
-#line 308
+#line 320
 this.MoveFileValidation("15", "[[sourcePath]]", "", "", "c:\\temp\\movefile14.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\temp\\moved014.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "False", "\"\"", "\"\"", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2775,7 +3234,7 @@ this.MoveFileValidation("15", "[[sourcePath]]", "", "", "c:\\temp\\movefile14.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_42()
         {
-#line 308
+#line 320
 this.MoveFileValidation("42", "[[a&]]", "", "", "", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[a&]] contains invalid character(s)", "1.File or Folder - Variable name [[a&]] contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2807,7 +3266,7 @@ this.MoveFileValidation("42", "[[a&]]", "", "", "", "\"\"", "\"\"", "[[destPath]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_43()
         {
-#line 308
+#line 320
 this.MoveFileValidation("43", "[[rec(**).a]]", "", "", "", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Recordset index (**) contains invalid character(s)", "1.File or Folder - Recordset index (**) contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2839,7 +3298,7 @@ this.MoveFileValidation("43", "[[rec(**).a]]", "", "", "", "\"\"", "\"\"", "[[de
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_44()
         {
-#line 308
+#line 320
 this.MoveFileValidation("44", "[[a]", "", "", "", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Invalid expression: opening and closing brackets don\"t match", "1.File or Folder - Invalid expression: opening and closing brackets don\"t match", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2871,7 +3330,7 @@ this.MoveFileValidation("44", "[[a]", "", "", "", "\"\"", "\"\"", "[[destPath]]"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_45()
         {
-#line 308
+#line 320
 this.MoveFileValidation("45", "[[rec(a]]", "", "", "", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Recordset name [[rec(a]] contains invalid character(s)", "1.File or Folder - Recordset name [[rec(a]] contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2903,7 +3362,7 @@ this.MoveFileValidation("45", "[[rec(a]]", "", "", "", "\"\"", "\"\"", "[[destPa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_46()
         {
-#line 308
+#line 320
 this.MoveFileValidation("46", "c(*()", "", "", "", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2935,7 +3394,7 @@ this.MoveFileValidation("46", "c(*()", "", "", "", "\"\"", "\"\"", "[[destPath]]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_47()
         {
-#line 308
+#line 320
 this.MoveFileValidation("47", "[[rec([[inde$x]]).a]]", "", "", "", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[inde$x]]  contains invalid character(s)", "1.File or Folder - Variable name [[inde$x]]  contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2967,7 +3426,7 @@ this.MoveFileValidation("47", "[[rec([[inde$x]]).a]]", "", "", "", "\"\"", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_48()
         {
-#line 308
+#line 320
 this.MoveFileValidation("48", "ghjghj", "", "", "", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", "", "", ((string[])(null)));
 #line hidden
         }
@@ -2999,7 +3458,7 @@ this.MoveFileValidation("48", "ghjghj", "", "", "", "\"\"", "\"\"", "[[destPath]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_49()
         {
-#line 308
+#line 320
 this.MoveFileValidation("49", "\"\"", "", "", "", "\"\"", "\"\"", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder cannot be empty or only white space", "1.File or Folder cannot be empty or only white space", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3031,7 +3490,7 @@ this.MoveFileValidation("49", "\"\"", "", "", "", "\"\"", "\"\"", "[[destPath]]"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_50()
         {
-#line 308
+#line 320
 this.MoveFileValidation("50", "[[sourcePath]]", "", "", "c:\\copyfile41.txt", "\"\"", "\"\"", "[[a&]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Variable name [[a&]] contains invalid character(s)", "1.Destination - Variable name [[a&]] contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3063,7 +3522,7 @@ this.MoveFileValidation("50", "[[sourcePath]]", "", "", "c:\\copyfile41.txt", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_51()
         {
-#line 308
+#line 320
 this.MoveFileValidation("51", "[[sourcePath]]", "", "", "c:\\copyfile42.txt", "\"\"", "\"\"", "[[rec(**).a]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Recordset index (**) contains invalid character(s)", "1.Destination - Recordset index (**) contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3095,7 +3554,7 @@ this.MoveFileValidation("51", "[[sourcePath]]", "", "", "c:\\copyfile42.txt", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_52()
         {
-#line 308
+#line 320
 this.MoveFileValidation("52", "[[sourcePath]]", "", "", "c:\\copyfile43.txt", "\"\"", "\"\"", "[[a]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Invalid expression: opening and closing brackets don\"t match", "1.Destination - Invalid expression: opening and closing brackets don\"t match", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3127,7 +3586,7 @@ this.MoveFileValidation("52", "[[sourcePath]]", "", "", "c:\\copyfile43.txt", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_53()
         {
-#line 308
+#line 320
 this.MoveFileValidation("53", "[[sourcePath]]", "", "", "c:\\copyfile44.txt", "\"\"", "\"\"", "[[rec(a]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Recordset name [[rec(a]] contains invalid character(s)", "1.Destination - Recordset name [[rec(a]] contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3159,7 +3618,7 @@ this.MoveFileValidation("53", "[[sourcePath]]", "", "", "c:\\copyfile44.txt", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_54()
         {
-#line 308
+#line 320
 this.MoveFileValidation("54", "[[sourcePath]]", "", "", "c:\\copyfile45.txt", "\"\"", "\"\"", "c(*()", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3191,7 +3650,7 @@ this.MoveFileValidation("54", "[[sourcePath]]", "", "", "c:\\copyfile45.txt", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_55()
         {
-#line 308
+#line 320
 this.MoveFileValidation("55", "[[sourcePath]]", "", "", "c:\\copyfile46.txt", "\"\"", "\"\"", "[[rec([[inde$x]]).a]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Variable name [[inde$x]]  contains invalid character(s)", "1.Destination - Variable name [[inde$x]]  contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3223,7 +3682,7 @@ this.MoveFileValidation("55", "[[sourcePath]]", "", "", "c:\\copyfile46.txt", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_56()
         {
-#line 308
+#line 320
 this.MoveFileValidation("56", "[[sourcePath]]", "", "", "c:\\copyfile47.txt", "\"\"", "\"\"", "ghjghj", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3255,7 +3714,7 @@ this.MoveFileValidation("56", "[[sourcePath]]", "", "", "c:\\copyfile47.txt", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_57()
         {
-#line 308
+#line 320
 this.MoveFileValidation("57", "[[sourcePath]]", "", "", "c:\\copyfile48.txt", "\"\"", "\"\"", "\"\"", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Destination cannot be empty or only white space", "1.Destination cannot be empty or only white space", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3287,7 +3746,7 @@ this.MoveFileValidation("57", "[[sourcePath]]", "", "", "c:\\copyfile48.txt", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_58()
         {
-#line 308
+#line 320
 this.MoveFileValidation("58", "[[sourcePath]]", "", "", "c:\\copyfile49.txt", "[[a&]]", "String", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[a&]] contains invalid character(s)", "1.Username - Variable name [[a&]] contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3319,7 +3778,7 @@ this.MoveFileValidation("58", "[[sourcePath]]", "", "", "c:\\copyfile49.txt", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_59()
         {
-#line 308
+#line 320
 this.MoveFileValidation("59", "[[sourcePath]]", "", "", "c:\\copyfile50.txt", "[[rec(**).a]]", "String", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset index (**) contains invalid character(s)", "1.Username - Recordset index (**) contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3351,7 +3810,7 @@ this.MoveFileValidation("59", "[[sourcePath]]", "", "", "c:\\copyfile50.txt", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_60()
         {
-#line 308
+#line 320
 this.MoveFileValidation("60", "[[sourcePath]]", "", "", "c:\\copyfile51.txt", "[[a]", "String", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3383,7 +3842,7 @@ this.MoveFileValidation("60", "[[sourcePath]]", "", "", "c:\\copyfile51.txt", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_61()
         {
-#line 308
+#line 320
 this.MoveFileValidation("61", "[[sourcePath]]", "", "", "c:\\copyfile52.txt", "[[rec(a]]", "String", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[rec(a]] contains invalid character(s)", "1.Username - Recordset name [[rec(a]] contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3415,7 +3874,7 @@ this.MoveFileValidation("61", "[[sourcePath]]", "", "", "c:\\copyfile52.txt", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_62()
         {
-#line 308
+#line 320
 this.MoveFileValidation("62", "[[sourcePath]]", "", "", "c:\\copyfile53.txt", "[[rec([[inde$x]]).a]]", "String", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[inde$x]]  contains invalid character(s)", "1.Username - Variable name [[inde$x]]  contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3447,7 +3906,7 @@ this.MoveFileValidation("62", "[[sourcePath]]", "", "", "c:\\copyfile53.txt", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_64()
         {
-#line 308
+#line 320
 this.MoveFileValidation("64", "[[sourcePath]]", "", "", "c:\\copyfile55.txt", "[[a&]]", "String", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[a&]] contains invalid character(s)", "1.Destination Username - Variable name [[a&]] contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
@@ -3479,7 +3938,7 @@ this.MoveFileValidation("64", "[[sourcePath]]", "", "", "c:\\copyfile55.txt", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileValidation_65()
         {
-#line 308
+#line 320
 this.MoveFileValidation("65", "[[sourcePath]]", "", "", "c:\\copyfile56.txt", "[[rec(**).a]]", "String", "[[destPath]]", "C:\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset index (**) contains invalid character(s)", "1.Destination Username - Recordset index (**) contains invalid character(s)", "", "", ((string[])(null)));
 #line hidden
         }
