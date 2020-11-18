@@ -778,7 +778,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual(errors[0], "<InnerError>At least 1 activity is required after Suspend Execution.</InnerError>");
+            Assert.AreEqual( "At least 1 activity is required after Suspend Execution.",errors[0]);
         }
 
         [TestMethod]
@@ -850,7 +850,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual(errors[0], "<InnerError>Could not find persistence config. Please configure in Persistence Settings.</InnerError>");
+            Assert.AreEqual("Could not find persistence config. Please configure in Persistence Settings.",errors[0]);
         }
 
         [TestMethod]
