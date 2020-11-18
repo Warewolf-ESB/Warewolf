@@ -16,22 +16,29 @@ using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data.TO;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
+using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
+using Warewolf.Resource.Messages;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("ControlFlow-SuspendExecution", "Suspend Execution", ToolType.Native, "8999E58B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_SuspendExecution")]
-    public class SuspendExecutionActivity : DsfBaseActivity, IEquatable<SuspendExecutionActivity>, IStateNotifierRequired
+    public class SuspendExecutionActivity : DsfBaseActivity, IEquatable<SuspendExecutionActivity>,
+        IStateNotifierRequired
     {
         private IDSFDataObject _dataObject;
         private IStateNotifier _stateNotifier = null;
@@ -43,7 +50,6 @@ namespace Dev2.Activities
         public SuspendExecutionActivity()
             : this(Config.Persistence, new SuspendExecution())
         {
-
         }
 
         public SuspendExecutionActivity(PersistenceSettings config, ISuspendExecution suspendExecution)
@@ -57,6 +63,10 @@ namespace Dev2.Activities
             _persistenceEnabled = config.Enable;
             _scheduler = suspendExecution;
         }
+
+        string _childUniqueId;
+        Guid _originalUniqueID;
+        private string _previousParentId;
 
         public enSuspendOption SuspendOption { get; set; }
 
@@ -91,6 +101,7 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+            _previousParentId = dataObject.ParentInstanceID;
             _dataObject = dataObject;
             _update = update;
             base.ExecuteTool(_dataObject, update);
@@ -100,9 +111,11 @@ namespace Dev2.Activities
         {
             _errorsTo = new ErrorResultTO();
             _suspensionId = "";
+            var allErrors = new ErrorResultTO();
+            var dataObject = _dataObject;
             try
             {
-
+                dataObject.ForEachNestingLevel++;
                 if (!_persistenceEnabled)
                 {
                     throw new Exception(GlobalConstants.PersistenceSettingsNoConfigured);
@@ -113,12 +126,14 @@ namespace Dev2.Activities
                     throw new Exception(GlobalConstants.NextNodeRequiredForSuspendExecution);
                 }
 
-                var activityId = Guid.Parse(NextNodes.First()?.UniqueID ?? throw new Exception(GlobalConstants.NextNodeIDNotFound));
+                var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
+                                            throw new Exception(GlobalConstants.NextNodeIDNotFound));
                 var currentEnvironment = _dataObject.Environment.ToJson();
                 if (EncryptData)
                 {
                     currentEnvironment = DpapiWrapper.Encrypt(currentEnvironment);
                 }
+
                 var values = new Dictionary<string, StringBuilder>
                 {
                     {"resourceID", new StringBuilder(_dataObject.ResourceID.ToString())},
@@ -127,23 +142,34 @@ namespace Dev2.Activities
                     {"versionNumber", new StringBuilder(_dataObject.VersionNumber.ToString())}
                 };
                 var persistScheduleValue = PersistSchedulePersistValue();
-                _suspensionId = _scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
-
-                _stateNotifier?.LogActivityExecuteState(this);
-
                 if (_dataObject.IsDebugMode())
                 {
-                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Execution Suspended: " + _suspensionId, "", true);
-                    AddDebugOutputItem(debugItemStaticDataParams);
-                    debugItemStaticDataParams = new DebugItemStaticDataParams("Allow Manual Resumption: " + AllowManualResumption, "", true);
-                    AddDebugOutputItem(debugItemStaticDataParams);
+                    var debugItemStaticDataParams = new DebugItemStaticDataParams("Allow Manual Resumption: " + AllowManualResumption, "", true);
+                    AddDebugInputItem(debugItemStaticDataParams);
                 }
+
+                DispatchDebug(dataObject, StateType.Before, _update);
+                _suspensionId = _scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
+                _stateNotifier?.LogActivityExecuteState(this);
+
+                dataObject.ParentInstanceID = UniqueID;
+                dataObject.IsDebugNested = true;
+                DispatchDebug(dataObject, StateType.After, _update);
 
                 Response = _suspensionId;
                 _dataObject.Environment.Assign(Result, _suspensionId, 0);
                 _dataObject.Environment.CommitAssign();
                 Dev2Logger.Debug($"{_dataObject.ServiceName} execution suspended: SuspensionId {_suspensionId} scheduled", GlobalConstants.WarewolfDebug);
-                ExecuteSaveDataFunc();
+                if (AllowManualResumption)
+                {
+                    ExecuteSaveDataFunc();
+                }
+
+                if (_dataObject.IsServiceTestExecution && _originalUniqueID == Guid.Empty)
+                {
+                    _originalUniqueID = Guid.Parse(UniqueID);
+                }
+
                 _dataObject.StopExecution = true;
                 return new List<string> {_suspensionId};
             }
@@ -152,14 +178,73 @@ namespace Dev2.Activities
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
                 _dataObject.StopExecution = true;
-                throw new Exception(ex.GetAllMessages());
+                allErrors.AddError(ex.GetAllMessages());
+                throw;
+            }
+            finally
+            {
+                var serviceTestStep = HandleServiceTestExecution(dataObject);
+                dataObject.ParentInstanceID = _previousParentId;
+                dataObject.ForEachNestingLevel--;
+                dataObject.IsDebugNested = false;
+                HandleDebug(dataObject, serviceTestStep);
+                HandleErrors(dataObject, allErrors);
+            }
+        }
+
+        private void HandleDebug(IDSFDataObject dataObject, IServiceTestStep serviceTestStep)
+        {
+            if (dataObject.IsDebugMode())
+            {
+                if (dataObject.IsServiceTestExecution && serviceTestStep != null)
+                {
+                    var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                    debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.ActivityID).ToList();
+                    var debugStates = debugItems.LastOrDefault();
+
+                    var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);
+                    var itemToAdd = new DebugItem();
+                    itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
+                    debugStates?.AssertResultList?.Add(itemToAdd);
+                }
+                DispatchDebugState(dataObject, StateType.Duration, 0);
+            }
+        }
+
+        private void HandleErrors(IDSFDataObject dataObject, IErrorResultTO allErrors)
+        {
+            if (allErrors.HasErrors())
+            {
+                dataObject.ParentInstanceID = _previousParentId;
+                dataObject.ForEachNestingLevel--;
+                dataObject.IsDebugNested = false;
+                // Handle Errors
+                if (allErrors.HasErrors())
+                {
+                    DisplayAndWriteError(nameof(SuspendExecutionActivity), allErrors);
+                    foreach (var fetchError in allErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(fetchError);
+                    }
+
+                    dataObject.ParentInstanceID = _previousParentId;
+                }
+            }
+        }
+
+        private void DispatchDebug(IDSFDataObject dataObject, StateType stateType, int update)
+        {
+            if (dataObject.IsDebugMode())
+            {
+                DispatchDebugState(dataObject, stateType, update);
             }
         }
 
         private void ExecuteSaveDataFunc()
         {
-            if (SaveDataFunc.Handler is IDev2Activity act && AllowManualResumption)
+            if (SaveDataFunc.Handler is IDev2Activity act)
             {
+                _childUniqueId = act.UniqueID;
                 act.Execute(_dataObject, 0);
                 Dev2Logger.Debug("Save SuspensionId: Execute - " + act.GetDisplayName(), _dataObject.ExecutionID.ToString());
             }
@@ -169,7 +254,6 @@ namespace Dev2.Activities
         {
             var debugEvalResult = new DebugEvalResult(PersistValue, "Persist Schedule Value", _dataObject.Environment, _update);
             AddDebugInputItem(debugEvalResult);
-
             var persistValue = string.Empty;
             var debugItemResults = debugEvalResult.GetDebugItemResult();
             if (debugItemResults.Count > 0)
@@ -178,6 +262,48 @@ namespace Dev2.Activities
             }
 
             return persistValue;
+        }
+
+        private IServiceTestStep HandleServiceTestExecution(IDSFDataObject dataObject)
+        {
+            var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.ActivityID == _originalUniqueID);
+            if (dataObject.IsServiceTestExecution)
+            {
+                var serviceTestSteps = serviceTestStep?.Children;
+                UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList());
+                if (serviceTestStep != null)
+                {
+                    var testRunResult = new TestRunResult();
+                    GetFinalTestRunResult(serviceTestStep, testRunResult);
+                    serviceTestStep.Result = testRunResult;
+                }
+            }
+
+            return serviceTestStep;
+        }
+
+        void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
+        {
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, _childUniqueId);
+        }
+
+        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        {
+            var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult != RunResult.TestPassed).ToList();
+            if (nonPassingSteps != null && nonPassingSteps.Count == 0)
+            {
+                testRunResult.Message = Messages.Test_PassedResult;
+                testRunResult.RunTestResult = RunResult.TestPassed;
+            }
+            else
+            {
+                if (nonPassingSteps != null)
+                {
+                    var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
+                    testRunResult.Message = failMessage;
+                }
+                testRunResult.RunTestResult = RunResult.TestFailed;
+            }
         }
 
         public void SetStateNotifier(IStateNotifier stateNotifier)

@@ -391,9 +391,13 @@ namespace Warewolf.Studio.ViewModels
             {
                 ForEachParent(debugItemContent, debugState, parent);
             }
-            if (parent.ActivityType == nameof(GateActivity))
+            else if (parent.ActivityType == nameof(GateActivity))
             {
                 GateParent(debugItemContent, debugState, parent);
+            }
+            else if (parent.ActivityType == nameof(SuspendExecutionActivity))
+            {
+                SuspendExecutionParent(debugItemContent, debugState, parent);
             }
             else if (parent.ActivityType == nameof(DsfSequenceActivity))
             {
@@ -483,6 +487,48 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        void SuspendExecutionParent(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
+        {
+            var model = WorkflowDesignerViewModel?.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
+            if (model?.GetCurrentValue() is SuspendExecutionActivity suspendExecutionActivity && debugState.Children.LastOrDefault() is DebugStateTreeViewItemViewModel childItem)
+            {
+                var act = suspendExecutionActivity.SaveDataFunc.Handler as IDev2Activity;
+                if (act != null)
+                {
+                    var guid = Guid.Parse(act.UniqueID);
+                    childItem.Content.ID = guid;
+                }
+
+                var childItemContent = childItem.Content;
+                var outputs = childItemContent.Outputs;
+
+                var exists = parent.Children.FirstOrDefault(a => a.ActivityID == childItemContent.ID);
+                if (exists == null)
+                {
+                    AddSuspendExecutionChildStep(parent, childItem, act, childItemContent, outputs);
+                }
+            }
+        }
+
+        void AddSuspendExecutionChildStep(IServiceTestStep parent, IDebugTreeViewItemViewModel childItem, IDev2Activity act, IDebugState childItemContent, List<IDebugItem> outputs)
+        {
+            var childStep = CreateAssertChildStep(parent, childItemContent, childItemContent.ID);
+            if (outputs.Count > 0)
+            {
+                AddOutputs(outputs, childStep);
+            }
+            else
+            {
+                AddOutputs(act?.GetOutputs(), childStep);
+            }
+            SetStepIcon(childStep.ActivityType, childStep);
+            parent.Children.Add(childStep);
+            if (childItem.Children?.Count > 0)
+            {
+                AddChildDebugItems(childItemContent, childItem, childStep);
+            }
+        }
+
         void ForEachParent(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
         {
             var model = WorkflowDesignerViewModel?.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
@@ -550,6 +596,7 @@ namespace Warewolf.Studio.ViewModels
                 var seqTypeName = nameof(DsfSequenceActivity);
                 var forEachTypeName = nameof(DsfForEachActivity);
                 var selectApplyTypeName = nameof(DsfSelectAndApplyActivity);
+                var suspendTypeName = nameof(SuspendExecutionActivity);
                 var serviceName = nameof(DsfActivity);
                 var actualType = debugItemContent.ActualType;
                 if (actualType == seqTypeName)
@@ -559,7 +606,6 @@ namespace Warewolf.Studio.ViewModels
                     testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
                     parent = testStep;
                 }
-
                 else if (actualType == forEachTypeName)
                 {
                     SetStepIcon(typeof(DsfForEachActivity), testStep);
@@ -570,6 +616,13 @@ namespace Warewolf.Studio.ViewModels
                 else if (actualType == selectApplyTypeName)
                 {
                     SetStepIcon(typeof(DsfSelectAndApplyActivity), testStep);
+                    testStep.ActivityType = selectApplyTypeName;
+                    testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
+                    parent = testStep;
+                }
+                else if (actualType == suspendTypeName)
+                {
+                    SetStepIcon(typeof(SuspendExecutionActivity), testStep);
                     testStep.ActivityType = selectApplyTypeName;
                     testStep.ActivityID = debugItemContent.WorkSurfaceMappingId;
                     parent = testStep;
@@ -811,6 +864,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 ProcessGate(modelItem);
             }
+            else if (itemType == typeof(SuspendExecutionActivity))
+            {
+                ProcessSuspendExecution(modelItem);
+            }
             else if (itemType == typeof(DsfEnhancedDotNetDllActivity))
             {
                 ProcessEnhancedDotNetDll(modelItem);
@@ -869,6 +926,12 @@ namespace Warewolf.Studio.ViewModels
         {
             var gateActivity = GetCurrentActivity<GateActivity>(modelItem);
             AddGate(gateActivity, null, SelectedServiceTest.TestSteps);
+        }
+
+        void ProcessSuspendExecution(ModelItem modelItem)
+        {
+            var suspendExecutionActivity = GetCurrentActivity<SuspendExecutionActivity>(modelItem);
+            AddSuspendExecution(suspendExecutionActivity, null, SelectedServiceTest.TestSteps);
         }
 
         void ProcessEnhancedDotNetDll(ModelItem modelItem)
@@ -1118,6 +1181,57 @@ namespace Warewolf.Studio.ViewModels
                     if (activity?.GetType() == type)
                     {
                         AddGate(activity as GateActivity, testStep, testStep.Children);
+                    }
+                }
+            }
+
+            if (workFlowService != null)
+            {
+                AddChildActivity(workFlowService, testStep);
+            }
+            if (exists == null)
+            {
+                serviceTestSteps.Add(testStep);
+            }
+        }
+
+        void AddSuspendExecution(SuspendExecutionActivity suspendExecutionActivity, IServiceTestStep parent, ICollection<IServiceTestStep> serviceTestSteps)
+        {
+            if (suspendExecutionActivity == null)
+            {
+                return;
+            }
+            var uniqueId = suspendExecutionActivity.UniqueID;
+            var exists = serviceTestSteps.FirstOrDefault(a => a.ActivityID.ToString() == uniqueId);
+
+            var type = typeof(SuspendExecutionActivity);
+            var testStep = CreateMockChildStep(Guid.Parse(uniqueId), parent, type.Name, suspendExecutionActivity.DisplayName);
+            SetStepIcon(type, testStep);
+            var activity = suspendExecutionActivity.SaveDataFunc.Handler;
+            var act = activity as DsfNativeActivity<string>;
+            var workFlowService = activity as DsfActivity;
+            if (act != null)
+            {
+                if (act.GetType() == typeof(DsfSequenceActivity))
+                {
+                    AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
+                }
+                else
+                {
+                    AddChildActivity(act, testStep);
+                }
+            }
+            else
+            {
+                if (activity?.GetType() == typeof(DsfSelectAndApplyActivity))
+                {
+                    AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
+                }
+                else
+                {
+                    if (activity?.GetType() == type)
+                    {
+                        AddSuspendExecution(activity as SuspendExecutionActivity, testStep, testStep.Children);
                     }
                 }
             }
@@ -1600,6 +1714,15 @@ namespace Warewolf.Studio.ViewModels
                 {
                     uniqueId = act.UniqueID;
                     activityType = typeof(DsfForEachActivity);
+                    displayName = act.DisplayName;
+                }
+            }
+            else if (item.ItemType == typeof(SuspendExecutionActivity))
+            {
+                if (item.GetCurrentValue() is SuspendExecutionActivity act)
+                {
+                    uniqueId = act.UniqueID;
+                    activityType = typeof(SuspendExecutionActivity);
                     displayName = act.DisplayName;
                 }
             }
