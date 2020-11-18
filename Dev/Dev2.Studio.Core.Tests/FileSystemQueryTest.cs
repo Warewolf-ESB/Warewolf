@@ -619,6 +619,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("FileSystemQuery_ShareCollection")]
+        [Ignore]//Ignoring until SVRDEV.premier.local is back online
         public void FileSystemQuery_ShareCollection()
         {
             var shareCollection = new ShareCollection(@"\\SVRDEV.premier.local\");
