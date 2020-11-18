@@ -199,7 +199,6 @@ namespace Warewolf.UIBindingTests.ServerSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
-            var username = @"dev2\IntegrationTester";
             var password = "I73573r0";
 
             var serverSourceDefinition = new Dev2.Common.ServerSource
