@@ -19,6 +19,7 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.State;
 using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -246,7 +247,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var overrideInputVariables = false;
             var variables =  new Dictionary<string, StringBuilder>();
             var mockResumeJob = new Mock<IPersistenceExecution>();
-            mockResumeJob.Setup(o => o.ResumeJob(suspensionId,overrideInputVariables,variables)).Verifiable();
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            mockResumeJob.Setup(o => o.ResumeJob(dataObjectMock.Object,suspensionId,overrideInputVariables,variables)).Verifiable();
             var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
@@ -260,7 +262,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
-            mockResumeJob.Verify(o => o.ResumeJob(suspensionId,overrideInputVariables,variables), Times.Once);
+            mockResumeJob.Verify(o => o.ResumeJob(dataObjectMock.Object,suspensionId,overrideInputVariables,variables), Times.Once);
         }
 
         [TestMethod]

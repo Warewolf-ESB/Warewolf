@@ -12,16 +12,18 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Interfaces;
 using Warewolf.Driver.Persistence.Drivers;
 
 namespace Warewolf.Driver.Persistence
 {
     public class PersistenceExecution : IPersistenceExecution
     {
-        public string ResumeJob(string jobId, bool overrideVariables, Dictionary<string, StringBuilder>  variables)
+        public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, Dictionary<string, StringBuilder> variables)
         {
             var scheduler = GetScheduler();
-            return scheduler.ResumeJob(jobId, overrideVariables, variables);
+
+            return scheduler.ResumeJob(dsfDataObject,jobId, overrideVariables, variables);
         }
 
         public string CreateAndScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)

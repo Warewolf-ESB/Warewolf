@@ -14,7 +14,9 @@ using System.IO;
 using System.Text;
 using Dev2.Common;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 
@@ -185,6 +187,7 @@ namespace Warewolf.Driver.Persistence.Tests
         [TestCategory(nameof(PersistenceExecution))]
         public void PersistenceExecution_ResumeJob_OverrideIsFalse_Hangfire_Success()
         {
+            var dataObjectMock = new Mock<IDSFDataObject>();
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
@@ -199,7 +202,7 @@ namespace Warewolf.Driver.Persistence.Tests
             var scheduler = new PersistenceExecution();
             var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
 
-            var result = scheduler.ResumeJob(jobId, false, values);
+            var result = scheduler.ResumeJob(dataObjectMock.Object,jobId, false, values);
             Assert.AreEqual(GlobalConstants.Success,result);
         }
 
