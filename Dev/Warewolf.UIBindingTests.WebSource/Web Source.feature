@@ -188,7 +188,7 @@ Scenario: Editing saved Web Source
    And Username field is "Visible"
    And Password field is "Visible"
    And Username field as "IntegrationTester"
-   And Password field
+   And Password field is "I73573r0"
    And "Save" is "Enabled"
    When Test Connecton is "Successfull"
    Then "Save" is "Enabled" 
