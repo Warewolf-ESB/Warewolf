@@ -128,9 +128,6 @@ namespace Dev2.Activities
                 };
                 var persistScheduleValue = PersistSchedulePersistValue();
                 _suspensionId = _scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
-
-                _stateNotifier?.LogActivityExecuteState(this);
-
                 if (_dataObject.IsDebugMode())
                 {
                     var debugItemStaticDataParams = new DebugItemStaticDataParams("Execution Suspended: " + _suspensionId, "", true);
@@ -142,6 +139,7 @@ namespace Dev2.Activities
                 Response = _suspensionId;
                 _dataObject.Environment.Assign(Result, _suspensionId, 0);
                 _dataObject.Environment.CommitAssign();
+                _stateNotifier?.LogActivityExecuteState(this);
                 Dev2Logger.Debug($"{_dataObject.ServiceName} execution suspended: SuspensionId {_suspensionId} scheduled", GlobalConstants.WarewolfDebug);
                 ExecuteSaveDataFunc();
                 _dataObject.StopExecution = true;
