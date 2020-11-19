@@ -25,6 +25,9 @@ if ($WarewolfServerProcess) {
 	}
 	Invoke-WebRequest -Uri http://localhost:3142/Secure/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -Headers $Headers -UseBasicParsing
 } else {
+	if (Test-Path "$PSScriptRoot\serverstarted") {
+		Remove-Item "$PSScriptRoot\serverstarted"
+	}
 	if (Test-Path "$PSScriptRoot\Warewolf Server.exe") {
 		$BinPath = "$PSScriptRoot\Warewolf Server.exe"
 	} else {
@@ -149,5 +152,11 @@ if ($NoExit.IsPresent) {
 		} else {
 			ping -t localhost
 		}
+	}
+} else {
+	$LoopCounter = 0
+	while (!(Test-Path "$PSScriptRoot\serverstarted" -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt 12) {
+		Write-Host Still waiting for server to start...
+		Start-Sleep 5
 	}
 }
