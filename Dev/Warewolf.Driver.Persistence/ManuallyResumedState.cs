@@ -8,7 +8,7 @@ namespace Warewolf.Driver.Persistence
 {
     public class ManuallyResumedState : IState
     {
-        public ManuallyResumedState(Dictionary<string, StringBuilder> overrideValues)
+        public ManuallyResumedState(string overrideValues)
         {
             this.ResumedAt = DateTime.UtcNow;
             this.OverrideValues = overrideValues;
@@ -28,7 +28,7 @@ namespace Warewolf.Driver.Persistence
             },
         };
 
-        public Dictionary<string, StringBuilder> OverrideValues { get; }
+        public string OverrideValues { get; }
         public DateTime ResumedAt { get; }
 
         public string Name => StateName;
