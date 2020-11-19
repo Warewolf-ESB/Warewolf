@@ -26,10 +26,11 @@ Scenario Outline: Unzip file at local location
 	Examples:
 	| No | Name            | source   | sourceLocation | username | password | destination | destinationLocation                                                                 | destUsername  | destPassword | selected | archivepassword | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 	| 1  | Local to Local  | [[path]] | C:\test0.zip   | ""       | ""       | [[path1]]   | C:\Temp\ZIP0                                                                        | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 2  | Local to FTP    | [[path]] | C:\test2.zip   | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP0                                | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
-	| 3  | Local to FTPS   | [[path]] | C:\test3.zip   | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP0                                | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 2  | Local to FTP    | [[path]] | C:\test2.zip   | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP0                                | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 3  | Local to FTPS   | [[path]] | C:\test3.zip   | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP0                                | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 #DevOps: Ignoring until SVRDEV.premier.local is back online	| 4  | Local to SFTP   | [[path]] | C:\test4.zip   | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/ZIP0                                                    | dev2          | Q/ulw&]      | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 	
+@Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @UnzipFromFTP
 Scenario Outline: Unzip file at FTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -57,6 +58,7 @@ Scenario Outline: Unzip file at FTP location
 	| 3  | FTP to FTP      | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/test2.zip | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/ZIP2                             | ""            | ""           | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 	| 4  | FTP tp FTPS     | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORUNZIPTESTING/test3.zip | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORUNZIPTESTING/ZIP2                             | Administrator | Dev2@dmin123 | True     | ""              | [[result]] | "Success" | NO           |                      |                           |
 	
+@Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @UnzipFromFTPS
 Scenario Outline: Unzip file at FTPS location
 	Given I have a source path "<source>" with value "<sourceLocation>"
