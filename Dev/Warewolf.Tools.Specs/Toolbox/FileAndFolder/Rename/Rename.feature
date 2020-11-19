@@ -26,12 +26,11 @@ Scenario Outline: Rename file at local location
 	Examples: 
 	| No | Name            | source         | sourceLocation      | username | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 	| 1  | Local to Local  | [[sourcePath]] | C:\renamefile0.txt  | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 2  | Local to FTP    | [[sourcePath]] | C:\renamefile1.txt  | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 3  | Local to FTPS   | [[sourcePath]] | C:\renamefile2.txt  | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt                         | Administrator | Dev2@dmin123 | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | Local to FTP    | [[sourcePath]] | C:\renamefile1.txt  | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | Local to FTPS   | [[sourcePath]] | C:\renamefile2.txt  | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt                         | Administrator | Dev2@dmin123 | True     | [[result]] | "Success" | NO           |                      |                           |
 #DevOps: Ignoring until SVRDEV.premier.local is back online	| 4  | Local to SFTP   | [[sourcePath]] | C:\renamefile3.txt  | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed0.txt                                                     | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
 	| 5  | Local to Local  | [[sourcePath]] | NULL                | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | True     | [[result]] | ""        | AN           |                      |                           |
 
-@Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @FileRenameFromFTP
 @FileRenameFromFTPWithOverwrite
 Scenario Outline: Rename file at FTP location
@@ -60,7 +59,6 @@ Scenario Outline: Rename file at FTP location
 	| 14 | FTP to SFTP     | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile3.txt | ""            | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed2.txt                                                     | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
 	| 15 | FTP to FTP      | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile4.txt | ""            | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed2.txt                         | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 
-@Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @FileRenameFromFTPS
 @FileRenameFromFTPSWithOverwrite
 Scenario Outline: Rename file at FTPS location
@@ -142,12 +140,11 @@ Scenario Outline: Rename file at SFTP location
 	Examples: 
 	| No | Name           | source         | sourceLocation     | username | password | destination  | destinationLocation                                                                          | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 	| 1  | Local to Local | [[sourcePath]] | C:\renamefile0.txt | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 2  | Local to FTP   | [[sourcePath]] | C:\renamefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 3  | Local to FTPS  | [[sourcePath]] | C:\renamefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt                         | Administrator | Dev2@dmin123 | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | Local to FTP   | [[sourcePath]] | C:\renamefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | Local to FTPS  | [[sourcePath]] | C:\renamefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt                         | Administrator | Dev2@dmin123 | False    | [[result]] | "Success" | NO           |                      |                           |
 #DevOps: Ignoring until SVRDEV.premier.local is back online	| 4  | Local to SFTP  | [[sourcePath]] | C:\renamefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed0.txt                                                     | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
 	| 5  | Local to Local | [[sourcePath]] | NULL               | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                              | ""            | ""           | False    | [[result]] | ""        | AN           |                      |                           |
 
-@Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @FileRenameFromFTP
 @FileRenameFromFTPWithoutOverwrite
 	Scenario Outline: Rename file at FTP location with overwrite disabled
@@ -176,7 +173,6 @@ Scenario Outline: Rename file at SFTP location
 	| 4  | FTP to SFTP  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/renamed2.txt                                                     | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
 	| 5  | FTP to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamefile4.txt | ""       |          | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed2.txt                         | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 
-@Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @FileRenameFromFTPS
 @FileRenameFromFTPSWithoutOverwrite
 	Scenario Outline: Rename file at FTPS location with overwrite disabled
@@ -235,7 +231,6 @@ Scenario Outline: Rename file at SFTP location
 	| 5  | SFTP to SFTP    | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile4.txt  | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed4.txt                                                     | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
 	| 6  | SFTP to SFTP PK | [[sourcePath]] | sftp://SVRDEV.premier.local/renamefile41.txt | dev2     | Q/ulw&]  | [[destPath]] | sftp://SVRDEV.premier.local/renamed41.txt                                                    | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
-@Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @FileAndFolderRename
 Scenario Outline: Rename file validation
     Given I have a variable "[[a]]" with a value "<Val1>"
@@ -362,8 +357,8 @@ Scenario Outline: Rename file at location with invalid directories
 	Examples: 
 	| No | Name           | source       | sourceLocation | username | password | destination  | destinationLocation                                       | destUsername      | destPassword | selected | resultVar  | result | 
 	| 1  | Local to Local | [[var]]      | ""             | ""       | ""       | [[destPath]] | C:\renamed0.txt                                           | ""                | ""           | True     | [[result]] |        | 
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 2  | Local to FTP   | [[variable]] |                | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt | ""                | ""           | True     | [[result]] |        | 
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| 3  | Local to FTPS  | 445544       | 445544         | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt | Administrator | Dev2@dmin123     | True     | [[result]] |        | 
+	| 2  | Local to FTP   | [[variable]] |                | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORFILERENAMETESTING/renamed0.txt | ""                | ""           | True     | [[result]] |        | 
+	| 3  | Local to FTPS  | 445544       | 445544         | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORFILERENAMETESTING/renamed0.txt | Administrator | Dev2@dmin123     | True     | [[result]] |        | 
 	| 4  | Local to Local | [[var]]      | E:\tr.txt      | ""       | ""       | [[local]]    |                                                           | ""                | ""           | True     | [[result]] |        | 
 	| 5  | Local to FTP   | [[variable]] | E:\tr.txt      | ""       | ""       | [[v]]        | ""                                                        | ""                | ""           | True     | [[result]] |        | 
 	| 6  | Local to FTPS  | [[path]]     | E:\test.txt    | ""       | ""       | 5453         | 5453                                                      | Administrator | Dev2@dmin123     | True     | [[result]] |        | 
