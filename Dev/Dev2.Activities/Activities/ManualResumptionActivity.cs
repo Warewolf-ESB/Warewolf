@@ -12,19 +12,26 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.TO;
+using Dev2.DataList.Contract;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
+using Warewolf.Resource.Errors;
+using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
@@ -67,6 +74,7 @@ namespace Dev2.Activities
         /// </summary>
         [FindMissing]
         public bool OverrideInputVariables { get; set; }
+
 
         public ActivityFunc<string, bool> OverrideDataFunc { get; set; }
 
@@ -175,18 +183,60 @@ namespace Dev2.Activities
             return suspensionId;
         }
 
+
         private string ExecuteOverrideDataFunc(string startActivityId)
         {
             if (OverrideDataFunc.Handler is IDev2Activity act)
             {
-                //TODO: Return new variables
-
-                var outputs = act.GetOutputs();
-
-                return "";
+                IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.Empty);
+                var innerA = GetInnerActivity(out string error);
+                var origInnerInputMapping = innerA.OrigInnerInputMapping;
+                var inputs = TranslateInputMappingToInputs(origInnerInputMapping);
+                foreach (var serviceInput in inputs)
+                {
+                    var inputName = _dataObject.Environment.EvalToExpression(serviceInput.Value, _update);
+                    var inputValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(inputName, _update, false, true));
+                    dataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
+                }
+               return dataObject.Environment.ToJson();
             }
 
             return "";
+        }
+
+        private static ICollection<IServiceInput> TranslateInputMappingToInputs(string inputMapping)
+        {
+            var inputDefs = DataListFactory.CreateInputParser().Parse(inputMapping);
+            return inputDefs.Select(inputDef => new ServiceInput(inputDef.Name, inputDef.RawValue)
+            {
+                EmptyIsNull = inputDef.EmptyToNull,
+                RequiredField = inputDef.IsRequired
+            }).Cast<IServiceInput>().ToList();
+        }
+
+        ForEachInnerActivityTO GetInnerActivity(out string error)
+        {
+            ForEachInnerActivityTO result = null;
+            error = string.Empty;
+
+            try
+            {
+                if (!(OverrideDataFunc.Handler is IDev2ActivityIOMapping dev2ActivityIOMapping))
+                {
+                    error = ErrorResource.ForEachWithNoContentError;
+                }
+                else
+                {
+                    var tmp = dev2ActivityIOMapping;
+                    result = new ForEachInnerActivityTO(tmp);
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+
+            return result;
         }
 
         public void SetStateNotifier(IStateNotifier stateNotifier)
