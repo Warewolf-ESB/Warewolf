@@ -36,7 +36,16 @@ namespace Warewolf.Driver.Persistence.Drivers
         public HangfireScheduler()
         {
         }
-
+        public string GetStartActivityId(string jobId)
+        {
+            var conn = ConnectionString();
+            GlobalConfiguration.Configuration.UseSqlServerStorage(conn);
+            var monitoringApi = JobStorage.Current.GetMonitoringApi();
+            var jobDetails = monitoringApi.JobDetails(jobId);
+            var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
+            values.TryGetValue("startActivityId", out StringBuilder startActivityId);
+            return startActivityId.ToString();
+        }
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment)
         {
             try
@@ -117,6 +126,8 @@ namespace Warewolf.Driver.Persistence.Drivers
             var jobId = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
             return jobId;
         }
+
+
 
         [AutomaticRetry(Attempts = 0)]
         [DisableConcurrentExecution(timeoutInSeconds: 10 * 60)]

@@ -19,5 +19,6 @@ namespace Warewolf.Driver.Persistence
     {
         string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment);
         string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values);
+        string GetStartActivityId(string jobId);
     }
 }
