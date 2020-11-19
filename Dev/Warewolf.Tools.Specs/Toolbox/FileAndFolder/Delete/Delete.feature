@@ -21,8 +21,8 @@ Scenario Outline: Delete file at location
 	Examples: 
 	| Name       | source   | sourceLocation                                                                                          | username       | password     | resultVar  | result    | errorOccured | sourcePrivateKeyFile |
 	| Local      | [[path]] | c:\filetodelete.txt                                                                                     | ""             | ""           | [[result]] | "Success" | NO           |                      |
-	| FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.txt                                   | ""             | ""           | [[result]] | "Success" | NO           |                      |
-	| FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                                    | Administrator  | Dev2@dmin123 | [[result]] | "Success" | NO           |                      |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.txt                                   | ""             | ""           | [[result]] | "Success" | NO           |                      |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                                    | Administrator  | Dev2@dmin123 | [[result]] | "Success" | NO           |                      |
 #DevOps: Ignoring until SVRDEV.premier.local is back online	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetodelete.txt                                                            | dev2           | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
 #DevOps: Ignoring until SVRDEV.premier.local is back online	| SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetodelete1.txt                                                           | dev2           | Q/ulw&]      | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
 
@@ -38,8 +38,8 @@ Scenario Outline: Delete file at location Null
 	| Name       | source   | sourceLocation                                                           | username                    | password | resultVar  | result    | errorOccured | sourcePrivateKeyFile |
 	| Local      | [[path]] | NULL                                                                     | ""                          | ""       | [[result]] | ""        | AN           |                      |
 	| Local      | [[path]] | G:\filetodelete                                                          | ""                          | ""       | [[result]] | "Failure" | NO           |                      |
-	| FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.xtx | ""                          | ""       | [[result]] | "Success" | NO           |                      |
-	| FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt  | Administrator               | Dev2@dmin123 | [[result]] | ""        | NO           |                      |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.xtx | ""                          | ""       | [[result]] | "Success" | NO           |                      |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online	| FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt  | Administrator               | Dev2@dmin123 | [[result]] | ""        | NO           |                      |
 #DevOps: Ignoring until SVRDEV.premier.local is back online	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/Memo.txt                                     | dev2.local                  | Q/ulw&]  | [[result]] | ""        | NO           |                      |
 
 Scenario Outline: Delete file Validation
