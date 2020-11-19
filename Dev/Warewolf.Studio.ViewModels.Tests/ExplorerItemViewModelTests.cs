@@ -766,7 +766,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(2000)]
         public void TestDeleteCommandResourceTypeServerSourceDeleteSuccess()
         {
             //arrange
