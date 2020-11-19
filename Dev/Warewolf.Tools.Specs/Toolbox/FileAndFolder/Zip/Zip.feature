@@ -30,7 +30,7 @@ Scenario Outline: Zip file at local location
 		| 1 | Local to Local  | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip                                                                               | ""            | ""           | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 2 | Local to FTP    | [[path]] | c:\filetozip2.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip10.txt                             | ""            | ""           | True     |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 3 | Local to FTPS   | [[path]] | c:\filetozip3.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip20.txt                             | Administrator | Dev2@dmin123 | True     |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
-#DevOps: Ignoring until SVRDEV.premier.local is back online		| 4 | Local to SFTP   | [[path]] | c:\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
+		| 4 | Local to SFTP   | [[path]] | c:\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | True     |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @ZipFromFTP
@@ -94,7 +94,6 @@ Scenario Outline: Zip file at FTPS location
 		| 4  | FTPS to SFTP    | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip4.txt | Administrator | Dev2@dmin123 | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | True     |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
 		| 5  | FTPS to FTP     | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip2.txt | Administrator | Dev2@dmin123 | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip13.txt                             | ""            | ""           | True     |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
 
-@Ignore #DevOps: Ignoring until SVRDEV.premier.local is back online
 @ZipFromSFTP
 @ZipFromSFTPWithOverwrite
 Scenario Outline: Zip file at SFTP location
@@ -153,7 +152,7 @@ Scenario Outline: Zip file at local location with overwrite disabled
 		| 1  | Local to Local  | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip                                                                               | ""            | ""           | False    |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 2  | Local to FTP    | [[path]] | c:\filetozip2.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip10.txt                             | ""            | ""           | False    |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 3  | Local to FTPS   | [[path]] | c:\filetozip3.txt | ""       | ""       | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip20.txt                             | Administrator | Dev2@dmin123 | False    |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
-#DevOps: Ignoring until SVRDEV.premier.local is back online		| 4  | Local to SFTP   | [[path]] | c:\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | None            | [[result]] | "Success" | NO           |                      |                           |
+		| 4  | Local to SFTP   | [[path]] | c:\filetozip4.txt | ""       | ""       | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @ZipFromFTP
@@ -217,7 +216,6 @@ Scenario Outline: Zip file at FTPS location with overwrite disabled
 		| 4  | FTPS to FTPS    | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip3.txt | Administrator | Dev2@dmin123 | [[path1]]   | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip23.txt                             | Administrator | Dev2@dmin123 | False    |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
 		| 5  | FTPS to SFTP    | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip4.txt | Administrator | Dev2@dmin123 | [[path1]]   | sftp://SVRDEV.premier.local/filetozip.zip                                                    | dev2          | Q/ulw&]      | False    |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
 
-@Ignore #DevOps: Ignoring until SVRDEV.premier.local is back online
 @ZipFromSFTP
 @ZipFromSFTPWithoutOverwrite
 Scenario Outline: Zip file at SFTP location with overwrite disabled
@@ -269,7 +267,7 @@ Scenario Outline: Zip file at location Null
 		| 2  | Local to FTPS | [[path]] | c:\filetozip0.txt                                                             | ""       | ""           | [[path1]]   | Null                | Administrator | Dev2@dmin123 | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 3  | FTP to Local  | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORZIPTESTING/filetozip0.txt               | ""       | ""           | [[path1]]   | " "                 | ""            | ""           | True     |                 | Default         | [[result]] | Error  | An           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 4  | FTPS to Local | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORZIPTESTING/filetozip0.txt               |          | Dev2@dmin123 | [[path1]]   | c:\My New3.zip      | ""            | ""           | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
-#DevOps: Ignoring until SVRDEV.premier.local is back online		| 5  | SFTP to Local | [[path]] | sftp://SVRDEV.premier.local/filetozip0.txt                                    | dev2     | Q/ulw&]      | [[path1]]   | c:\My New4.zip      | ""            | ""           | True     |                 | None            | [[result]] | Error  | NO           |                      |                           |
+		| 5  | SFTP to Local | [[path]] | sftp://SVRDEV.premier.local/filetozip0.txt                                    | dev2     | Q/ulw&]      | [[path1]]   | c:\My New4.zip      | ""            | ""           | True     |                 | None            | [[result]] | Error  | NO           |                      |                           |
 		
 @Zip
 Scenario Outline: Zip file at location is compressed at ratio
