@@ -245,10 +245,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var suspensionId = "321";
             var overrideInputVariables = false;
-            var variables =  new Dictionary<string, StringBuilder>();
+
             var mockResumeJob = new Mock<IPersistenceExecution>();
             var dataObjectMock = new Mock<IDSFDataObject>();
-            mockResumeJob.Setup(o => o.ResumeJob(dataObjectMock.Object,suspensionId,overrideInputVariables,variables)).Verifiable();
+            mockResumeJob.Setup(o => o.ResumeJob(dataObjectMock.Object,suspensionId,overrideInputVariables,"env")).Verifiable();
             var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
@@ -262,7 +262,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
-            mockResumeJob.Verify(o => o.ResumeJob(dataObjectMock.Object,suspensionId,overrideInputVariables,variables), Times.Once);
+            mockResumeJob.Verify(o => o.ResumeJob(dataObjectMock.Object,suspensionId,overrideInputVariables,"env"), Times.Once);
         }
 
         [TestMethod]

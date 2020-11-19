@@ -202,7 +202,7 @@ namespace Warewolf.Driver.Persistence.Tests
             var scheduler = new PersistenceExecution();
             var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
 
-            var result = scheduler.ResumeJob(dataObjectMock.Object,jobId, false, values);
+            var result = scheduler.ResumeJob(dataObjectMock.Object,jobId, false, "NewEnvironment");
             Assert.AreEqual(GlobalConstants.Success,result);
         }
 
