@@ -368,7 +368,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestConnectException()
         {
@@ -776,7 +776,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_LoadServers_GivenSelectedServer_ResultIsSelectedServer()
