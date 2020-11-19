@@ -11,6 +11,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -129,7 +130,10 @@ namespace Dev2.Activities
                 var overrideVariables = "";
                 if (OverrideInputVariables)
                 {
-                    overrideVariables = ExecuteOverrideDataFunc();
+                    var startActivityId = _scheduler.GetStartActivityId(suspensionId);
+                    //var activityExists = WorkflowInspectionServices.GetActivities(OverrideDataFunc.Handler).FirstOrDefault(o => o.Id == startActivityId);
+
+                    overrideVariables = ExecuteOverrideDataFunc(startActivityId);
                 }
 
                 Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
@@ -171,12 +175,14 @@ namespace Dev2.Activities
             return suspensionId;
         }
 
-        private string ExecuteOverrideDataFunc()
+        private string ExecuteOverrideDataFunc(string startActivityId)
         {
             if (OverrideDataFunc.Handler is IDev2Activity act)
             {
                 //TODO: Return new variables
+
                 var outputs = act.GetOutputs();
+
                 return "";
             }
 
