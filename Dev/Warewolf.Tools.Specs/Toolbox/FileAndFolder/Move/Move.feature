@@ -27,7 +27,7 @@ Scenario Outline: Move file at local location
 	   | 1  | Local to Local   | [[sourcePath]] | c:\movefile0.txt | ""       | ""       | [[destPath]] | C:\moved0.txt                                                                             | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online	   | 2  | Local to FTP     | [[sourcePath]] | c:\movefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt                          | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online	   | 3  | Local to FTPS    | [[sourcePath]] | c:\movefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt                          | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
-#DevOps: Ignoring until SVRDEV.premier.local is back online	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
+	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @FileMoveFromFTP
@@ -85,7 +85,6 @@ Scenario Outline: Move file at FTPS location
 	   | 3  | FTPS to SFTP  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/moved3.txt                                                    | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
 	   | 4  | FTPS to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt                          | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
 
-@Ignore #DevOps: Ignoring until SVRDEV.premier.local is back online
 @FileMoveFromSFTP
 @FileMoveFromSFTPWithOverwrite
 Scenario Outline: Move file at SFTP location
@@ -142,7 +141,7 @@ Scenario Outline: Move file at local location with overwrite disabled
 	   | 1  | Local to Local   | [[sourcePath]] | c:\movefile0.txt | ""       | ""       | [[destPath]] | C:\moved0.txt                                                                             | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online	   | 2  | Local to FTP     | [[sourcePath]] | c:\movefile1.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt                          | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online	   | 3  | Local to FTPS    | [[sourcePath]] | c:\movefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt                          | Administrator     | Dev2@dmin123 | False    | [[result]] | Success | NO           |                      |                           |
-#DevOps: Ignoring until SVRDEV.premier.local is back online	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
+	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                    | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
 
 @Ignore #DevOps: Ignoring until DEVOPSPDC.premier.local is back online
 @FileMoveFromFTP
@@ -200,7 +199,6 @@ Scenario Outline: Move file at FTPS location with overwrite disabled
 	   | 3  | FTPS to SFTP  | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile3.txt | Administrator | Dev2@dmin123 | [[destPath]] | sftp://SVRDEV.premier.local/moved3.txt                                                   | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
 	   | 4  | FTPS to FTP   | [[sourcePath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/movefile4.txt | Administrator | Dev2@dmin123 | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved3.txt                         | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
 
-@Ignore #DevOps: Ignoring until SVRDEV.premier.local is back online
 @FileMoveFromSFTP
 @FileMoveFromSFTPWithoutOverwrite
 Scenario Outline: Move file at SFTP location with overwrite disabled
@@ -252,7 +250,7 @@ Scenario Outline: Move file at location Null
 	   | 2  | Local to Local | [[sourcePath]] | C:\moved0.txt                                                                               | ""       | ""       | [[destPath]] | C:\moved0.txt                                                    | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online	   | 4  | Local to FTP   | [[sourcePath]] | c:\temp\movefile1.txt                                                                       | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORMOVEFILETESTING/moved0.txt | ""            | ""           | True     | [[result]] | Failure | NO           |                      |                           |
 #DevOps: Ignoring until DEVOPSPDC.premier.local is back online	   | 5  | Local to FTPS  | [[sourcePath]] | v:\movefile2.txt                                                                            | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt | Administrator | Dev2@dmin123 | True     | [[result]] | Failure | AN           |                      |                           |
-#DevOps: Ignoring until SVRDEV.premier.local is back online	   | 6  | Local to SFTP  | [[sourcePath]] | " "                                                                                         | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                           | dev2          | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
+	   | 6  | Local to SFTP  | [[sourcePath]] | " "                                                                                         | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                           | dev2          | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
 	 
 @FileAndFolderMove
 Scenario Outline: Move file Validation
