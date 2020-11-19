@@ -153,4 +153,10 @@ if ($NoExit.IsPresent) {
 			ping -t localhost
 		}
 	}
+} else {
+	$LoopCounter = 0;
+	While (!(Test-Path .\serverstarted -ErrorAction SilentlyContinue) -and $LoopCounter++ -lt 12) {
+		Write-Host Still waiting for server to start...
+		Start-Sleep 5
+	}
 }
