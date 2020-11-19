@@ -44,7 +44,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(5000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOAuthSourceViewModelConstructorNullIManageOAuthSourceModel()
         {
