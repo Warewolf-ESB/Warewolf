@@ -37,7 +37,7 @@ namespace Warewolf.Driver.Persistence.Drivers
         {
         }
 
-        public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, Dictionary<string, StringBuilder> variables)
+        public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment)
         {
             try
             {
@@ -61,7 +61,10 @@ namespace Warewolf.Driver.Persistence.Drivers
 
                 if (overrideVariables)
                 {
-                    values = variables;
+                    if(values.ContainsKey("environment"))
+                    {
+                        values["environment"] = new StringBuilder(environment);;
+                    }
                 }
 
                 var workflowResume = new WorkflowResume();
@@ -75,7 +78,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                     return GlobalConstants.Failed;
                 }
                 values.TryGetValue("resourceID", out StringBuilder workflowId);
-                values.TryGetValue("environment", out StringBuilder environment);
+                values.TryGetValue("environment", out StringBuilder environments);
                 values.TryGetValue("startActivityId", out StringBuilder startActivityId);
                 values.TryGetValue("versionNumber", out StringBuilder versionNumber);
 
@@ -83,7 +86,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var audit = new Audit
                 {
                     WorkflowID = workflowId?.ToString(),
-                    Environment = environment?.ToString(),
+                    Environment = environments?.ToString(),
                     VersionNumber = versionNumber?.ToString(),
                     NextActivityId = startActivityId?.ToString(),
                     AuditDate = DateTime.Now,
