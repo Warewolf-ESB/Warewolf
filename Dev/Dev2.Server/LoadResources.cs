@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -129,10 +130,16 @@ namespace Dev2
                 _directory.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
                 _directory.CleanUp(serverBinResources);
             }
-            var dockerfile = Path.Combine(EnvironmentVariables.ApplicationPath, "Dockerfile");
-            if (File.Exists(dockerfile))
+            var sourceFileName = Path.Combine(EnvironmentVariables.ApplicationPath, "Dockerfile");
+            if (!File.Exists(sourceFileName)) return;
+            var destFileName = Path.Combine(EnvironmentVariables.AppDataPath, "Dockerfile");
+            try
             {
-                File.Copy(dockerfile, Path.Combine(EnvironmentVariables.AppDataPath, "Dockerfile"), true);
+                File.Copy(sourceFileName, destFileName, true);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                _writer.WriteLine($"UnauthorizedAccessException writing dockerfile to {destFileName}");
             }
         }
         
