@@ -23,12 +23,10 @@ Scenario Outline: Create file at location
 	Examples: 
 		| No | Name       | destination | destinationLocation                                                                             | selected | username        | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                                   | True     | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 2  | UNC        | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt        | True     | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 3  | UNC Secure | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | True     | ""              | ""           | [[result]] | Success | NO           |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 4  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                | True     | ""              | ""           | [[result]] | Success | NO           |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 5  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                | True     | Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                            | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
-		| 7  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                           | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 2  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                | True     | ""              | ""           | [[result]] | Success | NO           |                           |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 3  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                | True     | Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
+#DevOps: Ignoring until SVRDEV.premier.local is back online		| 4  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                            | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
+#DevOps: Ignoring until SVRDEV.premier.local is back online		| 5  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                           | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 Scenario Outline: Create file at location with overwrite disabled
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
@@ -48,12 +46,10 @@ Scenario Outline: Create file at location with overwrite disabled
 	Examples: 
 		| No | Name       | destination | destinationLocation                                                                             | selected | username        | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                                   | False    | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 2  | UNC        | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt        | False    | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 3  | UNC Secure | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | False    | ""              | ""           | [[result]] | Success | NO           |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 4  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                   | False    | ""              | ""           | [[result]] | Success | NO           |                           |
-#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 5  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                   | False    | Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                            | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
-		| 7  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                           | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 2  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                   | False    | ""              | ""           | [[result]] | Success | NO           |                           |
+#DevOps: Ignoring until DEVOPSPDC.premier.local is back online		| 3  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                   | False    | Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
+#DevOps: Ignoring until SVRDEV.premier.local is back online		| 4  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                            | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
+#DevOps: Ignoring until SVRDEV.premier.local is back online		| 5  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                           | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 
 Scenario Outline: Create file at location Nulls
@@ -68,9 +64,7 @@ Scenario Outline: Create file at location Nulls
 		| No | Name       | destination | destinationLocation                                                                            | selected | username       | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | NULL                                                                                           | True     |                |              | [[result]] | Failure | AN           |                           |
 		| 2  | Local      | [[path]]    | v:\myfile.txt                                                                                  | True     |                |              | [[result]] | Failure | AN           |                           |
-		| 3  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                          | True     | ""             | Q/ulw&]      | [[result]] | Failure | AN           | C:\\Temp\                 |
-#TODO: re-introduce this test in the premier.local domain		| 5  | UNC Secure | [[path]]    | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.tx | True     | Administrator  | Dev2@dmin123 | [[result]] | Failure | AN           |                           |
-
+#DevOps: Ignoring until SVRDEV.premier.local is back online		| 3  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                          | True     | ""             | Q/ulw&]      | [[result]] | Failure | AN           | C:\\Temp\                 |
 
 Scenario Outline: Create file at location with invalid directories
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
