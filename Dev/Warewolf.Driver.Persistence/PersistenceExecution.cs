@@ -19,11 +19,11 @@ namespace Warewolf.Driver.Persistence
 {
     public class PersistenceExecution : IPersistenceExecution
     {
-        public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, Dictionary<string, StringBuilder> variables)
+        public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables,string environments)
         {
             var scheduler = GetScheduler();
 
-            return scheduler.ResumeJob(dsfDataObject,jobId, overrideVariables, variables);
+            return scheduler.ResumeJob(dsfDataObject,jobId, overrideVariables, environments);
         }
 
         public string CreateAndScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)

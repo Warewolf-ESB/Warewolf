@@ -39,7 +39,6 @@ namespace Dev2.Activities
         public ManualResumptionActivity()
             : this(Config.Persistence, new PersistenceExecution())
         {
-
         }
 
         public ManualResumptionActivity(PersistenceSettings config, IPersistenceExecution resumeExecution)
@@ -127,8 +126,13 @@ namespace Dev2.Activities
                     throw new Exception(GlobalConstants.PersistenceSettingsNoConfigured);
                 }
 
-                var overrideVariables = ExecuteOverrideDataFunc();
-                Response = _scheduler.ResumeJob(_dataObject,suspensionId, OverrideInputVariables, overrideVariables);
+                var overrideVariables = "";
+                if (OverrideInputVariables)
+                {
+                    overrideVariables = ExecuteOverrideDataFunc();
+                }
+
+                Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
                 _stateNotifier?.LogActivityExecuteState(this);
 
                 if (_dataObject.IsDebugMode())
@@ -167,15 +171,16 @@ namespace Dev2.Activities
             return suspensionId;
         }
 
-        private Dictionary<string, StringBuilder> ExecuteOverrideDataFunc()
+        private string ExecuteOverrideDataFunc()
         {
-            if (OverrideDataFunc.Handler is IDev2Activity act && OverrideInputVariables)
+            if (OverrideDataFunc.Handler is IDev2Activity act)
             {
                 //TODO: Return new variables
-                return new Dictionary<string, StringBuilder>();
+                var outputs = act.GetOutputs();
+                return "";
             }
 
-            return new Dictionary<string, StringBuilder>();
+            return "";
         }
 
         public void SetStateNotifier(IStateNotifier stateNotifier)
