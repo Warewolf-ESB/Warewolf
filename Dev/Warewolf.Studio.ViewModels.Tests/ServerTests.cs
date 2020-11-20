@@ -431,7 +431,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Sanele Mthembu")]
         public void LoadExplorer_ShouldReturnTools()
         {
