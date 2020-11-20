@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2000)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestRefreshCommand()
@@ -238,7 +238,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public void ExplorerViewModel_TestSelectedItemExplorerViewModel_()
@@ -590,7 +590,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
       
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestRefreshEnvironment()
@@ -621,7 +621,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestRefreshEnvironmentSetsPermissions()

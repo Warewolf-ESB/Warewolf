@@ -1,4 +1,13 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +27,7 @@ namespace Warewolf.Studio.ViewModels
         string _assertOp;
         ObservableCollection<string> _assertOps;
         bool _hasOptionsForValue;
-        bool _isSinglematchCriteriaVisible;
+        bool _isSingleMatchCriteriaVisible;
         bool _isBetweenCriteriaVisible;
         bool _isSearchCriteriaEnabled;
         bool _isSearchCriteriaVisible;
@@ -41,7 +50,7 @@ namespace Warewolf.Studio.ViewModels
             "<=",
             ">="
         };
-        readonly IList<IFindRecsetOptions> _findRecsetOptions;
+        readonly IList<IFindRecsetOptions> _findRecSetOptions;
         bool _testPassed;
         bool _testPending;
         bool _testInvalid;
@@ -60,12 +69,12 @@ namespace Warewolf.Studio.ViewModels
             Value = value;
             From = from;
             To = to;
-            _findRecsetOptions = FindRecsetOptions.FindAllDecision();
-            var collection = _findRecsetOptions.Select(c => c.HandlesType());
+            _findRecSetOptions = FindRecsetOptions.FindAllDecision();
+            var collection = _findRecSetOptions.Select(c => c.HandlesType());
             AssertOps = new ObservableCollection<string>(collection);
             AssertOp = "=";
             CanEditVariable = true;
-            IsSinglematchCriteriaVisible = true;
+            IsSingleMatchCriteriaVisible = true;
             TestPending = true;
         }
 
@@ -152,13 +161,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsSinglematchCriteriaVisible
+        public bool IsSingleMatchCriteriaVisible
         {
-            get => _isSinglematchCriteriaVisible;
+            get => _isSingleMatchCriteriaVisible;
             set
             {
-                _isSinglematchCriteriaVisible = value;
-                OnPropertyChanged(() => IsSinglematchCriteriaVisible);
+                _isSingleMatchCriteriaVisible = value;
+                OnPropertyChanged(() => IsSingleMatchCriteriaVisible);
             }
         }
         public bool IsBetweenCriteriaVisible
@@ -313,7 +322,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void OnSearchTypeChanged()
         {
-            UpdateMatchVisibility(_assertOp, _findRecsetOptions ?? FindRecsetOptions.FindAllDecision());
+            UpdateMatchVisibility(_assertOp, _findRecSetOptions ?? FindRecsetOptions.FindAllDecision());
 
             var requiresCriteria = _requiresSearchCriteria.Contains(_assertOp);
             IsSearchCriteriaEnabled = requiresCriteria;
@@ -333,17 +342,17 @@ namespace Warewolf.Studio.ViewModels
                     case 1:
                         IsSearchCriteriaVisible = false;
                         IsBetweenCriteriaVisible = false;
-                        IsSinglematchCriteriaVisible = false;
+                        IsSingleMatchCriteriaVisible = false;
                         break;
                     case 2:
                         IsSearchCriteriaVisible = true;
                         IsBetweenCriteriaVisible = false;
-                        IsSinglematchCriteriaVisible = true;
+                        IsSingleMatchCriteriaVisible = true;
                         break;
                     case 3:
                         IsSearchCriteriaVisible = true;
                         IsBetweenCriteriaVisible = true;
-                        IsSinglematchCriteriaVisible = false;
+                        IsSingleMatchCriteriaVisible = false;
                         break;
                     default:
                         break;

@@ -228,6 +228,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Dev2.CustomControls.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Specs")]
 [assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.HangfireServer.Tests")]
 "@
     Write-Host $CSharpVersionFileContents
     $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
@@ -276,6 +277,8 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
         (Get-Content $FeatureFile).replace('TestCategoryAttribute("MSTest:DeploymentItem:', 'DeploymentItem("').replace('DeploymentItem("Warewolf_Studio.exe")', 'DeploymentItem("Warewolf Studio.exe")') | Set-Content $FeatureFile
     }
 }
+
+Get-ChildItem App.config -Recurse | % { ((Get-Content -path $_.FullName -Raw) -replace "<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"4.7.0.0`"/>","<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"5.0.0.0`"/>") | Set-Content -Path $_.FullName }
 
 #Compile Solutions
 foreach ($SolutionFile in $KnownSolutionFiles) {

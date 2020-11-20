@@ -44,7 +44,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(5000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOAuthSourceViewModelConstructorNullIManageOAuthSourceModel()
         {
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(2500)]
         public void TestGetAuthTokensWithDropBoxUriWithFakeToken()
         {
             //arrange
@@ -194,7 +194,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2500)]
         public void TestGetAuthTokensWithDropBoxUriWithInvalidToken()
         {
             //arrange

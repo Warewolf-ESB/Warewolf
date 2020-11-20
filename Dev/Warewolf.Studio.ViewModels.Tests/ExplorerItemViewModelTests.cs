@@ -190,7 +190,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         public void TestIsMergeVisibleTrue()
         {
             _target.IsSaveDialog = false;
@@ -766,7 +766,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(2000)]
         public void TestDeleteCommandResourceTypeServerSourceDeleteSuccess()
         {
             //arrange
@@ -871,7 +871,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestExpandCommandResourceTypeWorkflowServiceSingleClick()
         {
             //arrange
@@ -1305,7 +1305,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestAreVersionsVisibleTrue()
         {
             //arrange
@@ -1861,7 +1861,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestCreateNewFolderResourceTypeDbService()
         {
             //arrange

@@ -43,18 +43,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageID>Studio</PackageID>
-    <PackageVersion>$(PackageVersion)</PackageVersion>
-    <Title>$title$</Title>
-    <Authors>$author$</Authors>
-    <Copyright>$copyright$</Copyright>
-    <PackageProjectUrl>https://warewolf.io/</PackageProjectUrl>
-    <PackageLicenseUrl>https://warewolf.io/eula</PackageLicenseUrl>
-    <PackageIconUrl>https://warewolf.io/images/logo.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/warewolf-esb/warewolf</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>

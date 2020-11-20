@@ -1421,7 +1421,7 @@ namespace Dev2.Activities.Specs.Composition
                     {
                         var errors = debugStates.Where(wf => wf.ErrorMessage != "");
                         var errorsMessage = "";
-                        if (errors != null)
+                        if (errors.Count() > 0)
                         {
                             errorsMessage = " There were one or more errors found in other tools on the same workflow though: " + string.Join(", ", errors.Select(wf => wf.ErrorMessage).Distinct().ToArray());
                         }

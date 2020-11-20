@@ -113,7 +113,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(" FileChooserModel_GetDrives")]
         public void FileChooserModel_GetDrivesAndFilterExpectPassThrough()
