@@ -612,6 +612,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                              && step.ActivityID == Guid.Parse(UniqueID)
                                                                              && step.ActivityType != typeof(DsfForEachActivity).Name
                                                                              && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name
+                                                                             && step.ActivityType != typeof(SuspendExecutionActivity).Name
                                                                              && step.ActivityType != typeof(DsfSequenceActivity).Name) ?? new List<IServiceTestStep>();
                 foreach (var stepToBeAsserted in assertSteps)
                 {

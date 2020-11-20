@@ -314,8 +314,15 @@ namespace Dev2.Runtime.ESB.Execution
                 var value = input.Value;
                 if (variable.StartsWith("[[@"))
                 {
-                    var jContainer = JsonConvert.DeserializeObject(value) as JObject;
-                    DataObject.Environment.AddToJsonObjects(variable, jContainer);
+                    try
+                    {
+                        var jContainer = JsonConvert.DeserializeObject(value) as JObject;
+                        DataObject.Environment.AddToJsonObjects(variable, jContainer);
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in exception: " + e.Message, DataObject.ExecutionID.ToString());
+                    }
                 }
                 else
                 {

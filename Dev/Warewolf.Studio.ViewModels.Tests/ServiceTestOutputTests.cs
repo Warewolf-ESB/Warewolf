@@ -347,7 +347,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             Assert.AreEqual(input.IsSearchCriteriaVisible, false);
             Assert.AreEqual(input.IsBetweenCriteriaVisible, false);
-            Assert.AreEqual(input.IsSinglematchCriteriaVisible, false);
+            Assert.AreEqual(input.IsSingleMatchCriteriaVisible, false);
         }
 		
         [TestMethod]
@@ -365,7 +365,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             Assert.AreEqual(input.IsSearchCriteriaVisible, true);
             Assert.AreEqual(input.IsBetweenCriteriaVisible, true);
-            Assert.AreEqual(input.IsSinglematchCriteriaVisible, false);
+            Assert.AreEqual(input.IsSingleMatchCriteriaVisible, false);
         }
     }
 }
