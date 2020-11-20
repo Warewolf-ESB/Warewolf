@@ -126,22 +126,20 @@ namespace Dev2.Activities
                 if (string.IsNullOrWhiteSpace(suspensionId))
                 {
                     Response = GlobalConstants.Failed;
-                    throw new Exception(GlobalConstants.ManualResumptionSuspensionIdBlank);
+                    throw new Exception(ErrorResource.ManualResumptionSuspensionIdBlank);
                 }
 
                 if (!_persistenceEnabled)
                 {
                     Response = GlobalConstants.Failed;
-                    throw new Exception(GlobalConstants.PersistenceSettingsNoConfigured);
+                    throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
                 var overrideVariables = "";
                 if (OverrideInputVariables)
                 {
-                    var startActivityId = _scheduler.GetStartActivityId(suspensionId);
-                    //var activityExists = WorkflowInspectionServices.GetActivities(OverrideDataFunc.Handler).FirstOrDefault(o => o.Id == startActivityId);
-
-                    overrideVariables = ExecuteOverrideDataFunc(startActivityId);
+                    var innerActivity = InnerActivity(suspensionId);
+                    overrideVariables = ExecuteOverrideDataFunc(innerActivity);
                 }
 
                 Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
@@ -183,28 +181,42 @@ namespace Dev2.Activities
             return suspensionId;
         }
 
-
-        private string ExecuteOverrideDataFunc(string startActivityId)
+        private ForEachInnerActivityTO InnerActivity(string suspensionId)
         {
-            if (OverrideDataFunc.Handler is IDev2Activity act)
+            if (!(OverrideDataFunc.Handler is IDev2ActivityIOMapping ioMapping))
             {
-                IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.Empty);
-                var innerA = GetInnerActivity(out string error);
-                var origInnerInputMapping = innerA.OrigInnerInputMapping;
-                var inputs = TranslateInputMappingToInputs(origInnerInputMapping);
-                foreach (var serviceInput in inputs)
-                {
-                    var inputName = _dataObject.Environment.EvalToExpression(serviceInput.Value, _update);
-                    var inputValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(inputName, _update, false, true));
-                    dataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
-                }
-               return dataObject.Environment.ToJson();
+                throw new Exception(ErrorResource.InnerActivityWithNoContentError);
             }
+            var startActivityId = _scheduler.GetStartActivityId(suspensionId);
+            //TODO: Refactor/Rename ForEachInnerActivityTO to not be specific to "ForEach"
+            var innerActivity = new ForEachInnerActivityTO(ioMapping);
 
-            return "";
+            // var hasStartingNode = innerActivity.InnerActivity.NextNodes.Any(o => o.UniqueID == startActivityId);
+            // if (!hasStartingNode)
+            // {
+            //     Response = GlobalConstants.Failed;
+            //     throw new Exception(ErrorResource.InnerActivityWithNoStartActivityError);
+            // }
+            return innerActivity;
         }
 
-        private static ICollection<IServiceInput> TranslateInputMappingToInputs(string inputMapping)
+        private string ExecuteOverrideDataFunc(ForEachInnerActivityTO innerActivity)
+        {
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.Empty);
+
+            var origInnerInputMapping = innerActivity.OrigInnerInputMapping;
+            var inputs = TranslateInputMappingToInputs(origInnerInputMapping);
+            foreach (var serviceInput in inputs)
+            {
+                var inputName = _dataObject.Environment.EvalToExpression(serviceInput.Value, _update);
+                var inputValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(inputName, _update, false, true));
+                dataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
+            }
+
+            return dataObject.Environment.ToJson();
+        }
+
+        private static IEnumerable<IServiceInput> TranslateInputMappingToInputs(string inputMapping)
         {
             var inputDefs = DataListFactory.CreateInputParser().Parse(inputMapping);
             return inputDefs.Select(inputDef => new ServiceInput(inputDef.Name, inputDef.RawValue)
@@ -212,31 +224,6 @@ namespace Dev2.Activities
                 EmptyIsNull = inputDef.EmptyToNull,
                 RequiredField = inputDef.IsRequired
             }).Cast<IServiceInput>().ToList();
-        }
-
-        ForEachInnerActivityTO GetInnerActivity(out string error)
-        {
-            ForEachInnerActivityTO result = null;
-            error = string.Empty;
-
-            try
-            {
-                if (!(OverrideDataFunc.Handler is IDev2ActivityIOMapping dev2ActivityIOMapping))
-                {
-                    error = ErrorResource.ForEachWithNoContentError;
-                }
-                else
-                {
-                    var tmp = dev2ActivityIOMapping;
-                    result = new ForEachInnerActivityTO(tmp);
-                }
-            }
-            catch (Exception e)
-            {
-                error = e.Message;
-            }
-
-            return result;
         }
 
         public void SetStateNotifier(IStateNotifier stateNotifier)
