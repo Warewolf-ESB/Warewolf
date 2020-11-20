@@ -10,7 +10,6 @@
 
 using System;
 using System.Activities;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -19,7 +18,6 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.State;
 using Dev2.DynamicServices;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

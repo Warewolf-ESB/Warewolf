@@ -904,7 +904,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var expectedSuspendId = Guid.NewGuid().ToString();
             const enSuspendOption suspendOption = enSuspendOption.SuspendForSeconds;
-            var mockSuspendExecution = new Mock<ISuspendExecution>();
+            var mockSuspendExecution = new Mock<IPersistenceExecution>();
             mockSuspendExecution.Setup(o =>
                 o.CreateAndScheduleJob(suspendOption, It.IsAny<string>(),
                     It.IsAny<Dictionary<string, StringBuilder>>())).Returns(expectedSuspendId);
