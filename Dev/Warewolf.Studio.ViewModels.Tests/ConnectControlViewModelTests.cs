@@ -26,7 +26,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Testing;
 
-[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
@@ -198,7 +197,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestNewConnectionCommand()
         {
             //arrange
@@ -255,7 +254,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestSelectedConnectionLocalhostLabel()
         {
             //arrange
@@ -369,7 +368,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_TestConnectException()
         {
@@ -592,7 +591,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(1000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ConnectControlViewModel))]
         public void ConnectControlViewModel_EditServerServerIDMatchIsTrue()
@@ -777,7 +776,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_LoadServers_GivenSelectedServer_ResultIsSelectedServer()
