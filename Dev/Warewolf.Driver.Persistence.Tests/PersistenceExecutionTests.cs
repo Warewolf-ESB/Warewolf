@@ -227,27 +227,5 @@ namespace Warewolf.Driver.Persistence.Tests
             Assert.IsNotNull(manuallyResumedAt);
             Assert.AreEqual(val, overrideValues);
         }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(PersistenceExecution))]
-        public void PersistenceExecution_GetStartActivityId_Success()
-        {
-            var values = new Dictionary<string, StringBuilder>
-            {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
-                {"environment", new StringBuilder("")},
-                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
-            };
-
-            var suspendOption = enSuspendOption.SuspendUntil;
-            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
-
-            var scheduler = new PersistenceExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
-
-            var result = scheduler.GetStartActivityId(jobId);
-            Assert.AreEqual("4032a11e-4fb3-4208-af48-b92a0602ab4b",result);
-        }
     }
 }

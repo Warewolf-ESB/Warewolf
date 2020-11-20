@@ -19,12 +19,6 @@ namespace Warewolf.Driver.Persistence
 {
     public class PersistenceExecution : IPersistenceExecution
     {
-        public string GetStartActivityId( string jobId)
-        {
-            var scheduler = GetScheduler();
-
-            return scheduler.GetStartActivityId(jobId);
-        }
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables,string environment)
         {
             var scheduler = GetScheduler();
