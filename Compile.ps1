@@ -228,6 +228,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Dev2.CustomControls.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Specs")]
 [assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.HangfireServer.Tests")]
 "@
     Write-Host $CSharpVersionFileContents
     $CSharpVersionFileContents | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
