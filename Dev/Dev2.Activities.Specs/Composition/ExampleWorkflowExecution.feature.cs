@@ -246,9 +246,11 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Utility - Date and Time example workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void ExampleExecutingUtility_DateAndTimeExampleWorkflow()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Utility - Date and Time example workflow", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Utility - Date and Time example workflow", new string[] {
+                        "Ignore"});
 #line 57
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -1294,14 +1296,16 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing File and Folder - Write File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void ExampleExecutingFileAndFolder_WriteFile()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Write File", ((string[])(null)));
-#line 341
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Write File", new string[] {
+                        "Ignore"});
+#line 342
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 342
+#line 343
    testRunner.Given("I have a workflow \"File and Folder - Write File Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1309,12 +1313,7 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table87.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[Complete]]",
-                        "[[Complete]]"});
-#line 343
+#line 344
    testRunner.And("\"File and Folder - Write File Test\" contains \"File and Folder - Write File\" from " +
                     "server \"localhost\" with mapping as", ((string)(null)), table87, "And ");
 #line 346
