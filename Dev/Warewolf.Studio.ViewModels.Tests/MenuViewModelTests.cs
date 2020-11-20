@@ -637,7 +637,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         public void TestTaskLabelNullOrEmpty()
         {
             //arrange
