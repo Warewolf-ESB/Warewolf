@@ -883,7 +883,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2500)]
         [Owner("Pieter Terblanche")]
         [TestCategory("ServiceTestViewModel_Save")]
         public void ServiceTestViewModel_Save_DuplicateName_ShouldShowPopupError()
