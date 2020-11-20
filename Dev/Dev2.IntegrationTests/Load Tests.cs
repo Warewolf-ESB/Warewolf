@@ -21,11 +21,11 @@ using Moq;
 namespace Dev2.Integration.Tests
 {
     [TestClass]
+    [TestCategory("Load Tests")]
     public class Load_Tests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("Load Tests")]
         public void ExecutionManager_StartRefresh_WaitsForCurrentExecutions()
         {
             //------------Setup for test--------------------------
@@ -47,7 +47,6 @@ namespace Dev2.Integration.Tests
         }
 
         [TestMethod]
-        [TestCategory("Load Tests")]
         public void Single_Token_Perfomance_Op()
         {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
@@ -74,7 +73,6 @@ namespace Dev2.Integration.Tests
         }
 
         [TestMethod]
-        [TestCategory("Load Tests")]
         public void Three_Token_Perfomance_Op()
         {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
@@ -101,7 +99,6 @@ namespace Dev2.Integration.Tests
         }
 
         [TestMethod]
-        [TestCategory("Load Tests")]
         public void PulseTracker_Should()
         {
             var elapsed = false;
@@ -121,7 +118,6 @@ namespace Dev2.Integration.Tests
         }
 
         [TestMethod]
-        [TestCategory("Load Tests")]
         public void SortLargeListOfScalarsExpectedLessThan5500Milliseconds()
         {
             //Initialize
