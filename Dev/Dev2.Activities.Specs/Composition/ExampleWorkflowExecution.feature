@@ -53,7 +53,7 @@ Scenario: Example Executing Utility - Random example workflow
 	  |                      |
 	  | [[License]] = String |
 
-
+@Ignore
 Scenario: Example Executing Utility - Date and Time example workflow
 	  Given I have a workflow "Utility - Date and Time Test"
 	  And "Utility - Date and Time Test" contains "Utility - Date and Time" from server "localhost" with mapping as
@@ -338,6 +338,7 @@ Scenario: Example Executing File and Folder - Unzip
 	  |                        |
 	  | [[Complete]] = Success |
 
+@Ignore
 Scenario: Example Executing File and Folder - Write File
 	  Given I have a workflow "File and Folder - Write File Test"
 	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as
