@@ -373,9 +373,9 @@ namespace Warewolf.Studio.ViewModels
                 {
                     item.IsSearchCriteriaEnabled = true;
                 }
-                if (!item.IsSinglematchCriteriaVisible)
+                if (!item.IsSingleMatchCriteriaVisible)
                 {
-                    item.IsSinglematchCriteriaVisible = true;
+                    item.IsSingleMatchCriteriaVisible = true;
                     item.IsBetweenCriteriaVisible = false;
                 }
             }

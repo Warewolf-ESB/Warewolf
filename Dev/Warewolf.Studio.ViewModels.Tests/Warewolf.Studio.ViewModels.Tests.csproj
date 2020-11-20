@@ -143,6 +143,9 @@
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
     </None>
+    <None Include="JsonResources\DebugInputStates.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="JsonResources\DotnetllDebugStates.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
