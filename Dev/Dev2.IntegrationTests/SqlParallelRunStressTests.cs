@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Integration.Tests.Server_Refresh
 {
     [TestClass]
+    [TestCategory("Load Tests")]
     public class SqlParallelRunStressTests
     {
         [TestMethod]
