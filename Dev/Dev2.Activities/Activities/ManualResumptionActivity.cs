@@ -161,7 +161,7 @@ namespace Dev2.Activities
             {
                 Response = GlobalConstants.Failed;
                 _stateNotifier?.LogExecuteException(ex, this);
-                Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
             }
         }

@@ -32,6 +32,7 @@ using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
+using Warewolf.Resource.Messages;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Activities
