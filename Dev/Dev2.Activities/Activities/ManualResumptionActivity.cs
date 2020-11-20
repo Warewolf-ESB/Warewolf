@@ -138,7 +138,7 @@ namespace Dev2.Activities
                 var overrideVariables = "";
                 if (OverrideInputVariables)
                 {
-                    var innerActivity = InnerActivity(suspensionId);
+                    var innerActivity = InnerActivity();
                     overrideVariables = ExecuteOverrideDataFunc(innerActivity);
                 }
 
@@ -181,22 +181,14 @@ namespace Dev2.Activities
             return suspensionId;
         }
 
-        private ForEachInnerActivityTO InnerActivity(string suspensionId)
+        private ForEachInnerActivityTO InnerActivity()
         {
             if (!(OverrideDataFunc.Handler is IDev2ActivityIOMapping ioMapping))
             {
                 throw new Exception(ErrorResource.InnerActivityWithNoContentError);
             }
-            var startActivityId = _scheduler.GetStartActivityId(suspensionId);
             //TODO: Refactor/Rename ForEachInnerActivityTO to not be specific to "ForEach"
             var innerActivity = new ForEachInnerActivityTO(ioMapping);
-
-            // var hasStartingNode = innerActivity.InnerActivity.NextNodes.Any(o => o.UniqueID == startActivityId);
-            // if (!hasStartingNode)
-            // {
-            //     Response = GlobalConstants.Failed;
-            //     throw new Exception(ErrorResource.InnerActivityWithNoStartActivityError);
-            // }
             return innerActivity;
         }
 
