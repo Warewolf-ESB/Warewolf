@@ -26,6 +26,7 @@ using Dev2.Util;
 using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Activities
@@ -105,12 +106,12 @@ namespace Dev2.Activities
 
                 if (!_persistenceEnabled)
                 {
-                    throw new Exception(GlobalConstants.PersistenceSettingsNoConfigured);
+                    throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
                 if (NextNodes is null)
                 {
-                    throw new Exception(GlobalConstants.NextNodeRequiredForSuspendExecution);
+                    throw new Exception(ErrorResource.NextNodeRequiredForSuspendExecution);
                 }
 
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ?? throw new Exception(GlobalConstants.NextNodeIDNotFound));
