@@ -143,7 +143,6 @@ namespace Dev2.Activities
                     {"versionNumber", new StringBuilder(_dataObject.VersionNumber.ToString())}
                 };
                 var persistScheduleValue = PersistSchedulePersistValue();
-                _suspensionId = _scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
                 if (_dataObject.IsDebugMode())
                 {
                     var debugItemStaticDataParams = new DebugItemStaticDataParams("Allow Manual Resumption: " + AllowManualResumption, "", true);
@@ -152,7 +151,6 @@ namespace Dev2.Activities
 
                 DispatchDebug(dataObject, StateType.Before, _update);
                 _suspensionId = _scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
-
 
                 dataObject.ParentInstanceID = UniqueID;
                 dataObject.IsDebugNested = true;
