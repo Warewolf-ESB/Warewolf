@@ -56,8 +56,6 @@ namespace Warewolf.Driver.Persistence.Drivers
 
                 var monitoringApi = JobStorage.Current.GetMonitoringApi();
                 var jobDetails = monitoringApi.JobDetails(jobId);
-                var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
-
                 var jobIsScheduled = jobDetails.History.Where(i =>
                     i.StateName == "Enqueued" ||
                     i.StateName == "Processing" ||
@@ -68,6 +66,9 @@ namespace Warewolf.Driver.Persistence.Drivers
                     return GlobalConstants.Failed;
                 }
 
+                var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
+                values.TryGetValue("environment", out StringBuilder persistedEnvironment);
+                var decryptEnvironment = persistedEnvironment.ToString().CanBeDecrypted() ? DpapiWrapper.Decrypt(persistedEnvironment.ToString()) : persistedEnvironment.ToString();
                 if (overrideVariables)
                 {
                     if(values.ContainsKey("environment"))
@@ -75,7 +76,10 @@ namespace Warewolf.Driver.Persistence.Drivers
                         values["environment"] = new StringBuilder(environment);;
                     }
                 }
-
+                else
+                {
+                    values["environment"]  = new StringBuilder(decryptEnvironment);
+                }
                 var workflowResume = new WorkflowResume();
                 var result = workflowResume.Execute(values, null);
                 var serializer = new Dev2JsonSerializer();
