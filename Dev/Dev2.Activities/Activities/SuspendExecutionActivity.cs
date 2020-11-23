@@ -192,7 +192,7 @@ namespace Dev2.Activities
                 HandleErrors(dataObject, allErrors);
             }
         }
-
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.SuspendExecution;
         private void HandleDebug(IDSFDataObject dataObject, IServiceTestStep serviceTestStep)
         {
             if (dataObject.IsDebugMode())

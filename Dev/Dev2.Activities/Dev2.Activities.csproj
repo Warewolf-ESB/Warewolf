@@ -146,6 +146,7 @@
     <Compile Include="Comparer\SharepointSearchToComparer.cs" />
     <Compile Include="FindMissingStrategies\ManualResumptionActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\RedisCacheActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\SuspendExecutionActivityFindMissingStrategy.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>

@@ -22,6 +22,7 @@ namespace Dev2
         ForEach,
         Sequence,
         RedisCache,
-        ManualResumption
+        ManualResumption,
+        SuspendExecution
     }
 }
