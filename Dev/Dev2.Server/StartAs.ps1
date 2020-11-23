@@ -5,7 +5,7 @@ Param(
   [string]$Password=$env:SERVER_PASSWORD,
   [string]$ResourcesPath,
   [string]$ServerPath,
-  [bool]$Cleanup=$false
+  [switch]$Cleanup=$false
 )
 if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
@@ -16,7 +16,7 @@ if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 }
 $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
-if ($Cleanup) {
+if ($Cleanup.IsPresent) {
 	if ($WarewolfServerProcess) {
 		$WarewolfServerProcess.Kill()
 		$WarewolfServerProcess = $null
