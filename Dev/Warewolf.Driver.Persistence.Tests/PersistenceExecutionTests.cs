@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using Dev2.Common;
@@ -23,7 +24,7 @@ using Moq;
 namespace Warewolf.Driver.Persistence.Tests
 {
     [TestClass]
-    [DoNotParallelize] //IOException: The process cannot access the file 'C:\ProgramData\Warewolf\Server Settings\persistencesettings.json' because it is being used by another process.
+    [DoNotParallelize]
     public class PersistenceExecutionTests
     {
         private string _settingsFilePath;
@@ -57,9 +58,9 @@ namespace Warewolf.Driver.Persistence.Tests
         }
 
         [TestMethod]
-        [Owner("Candice Daniel")]
+        [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PersistenceExecution))]
-        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForDays_Success()
+        public void PersistenceExecution_CreateAndScheduleJob_Success()
         {
             var values = new Dictionary<string, StringBuilder>
             {
@@ -69,19 +70,24 @@ namespace Warewolf.Driver.Persistence.Tests
                 {"versionNumber", new StringBuilder("1")}
             };
 
-            var suspendOption = enSuspendOption.SuspendForDays;
-            var suspendOptionValue = "1";
+            const enSuspendOption suspendOption = enSuspendOption.SuspendForDays;
+            const string suspendOptionValue = "1";
 
-            var scheduler = new PersistenceExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
+            var mockPersistenceScheduler = new Mock<IPersistenceScheduler>();
+            mockPersistenceScheduler.Setup(o => o.ScheduleJob(suspendOption, suspendOptionValue, values)).Verifiable();
+
+            var scheduler = new PersistenceExecution(mockPersistenceScheduler.Object);
+            scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
+
+            mockPersistenceScheduler.Verify(o => o.ScheduleJob(suspendOption, suspendOptionValue, values), Times.Once);
         }
 
         [TestMethod]
-        [Owner("Candice Daniel")]
+        [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PersistenceExecution))]
-        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForHours_Success()
+        public void PersistenceExecution_ResumeJob_Success()
         {
+            var mockDataObject = new Mock<IDSFDataObject>();
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
@@ -90,142 +96,21 @@ namespace Warewolf.Driver.Persistence.Tests
                 {"versionNumber", new StringBuilder("1")}
             };
 
-            var suspendOption = enSuspendOption.SuspendForHours;
-            var suspendOptionValue = "1";
+            const enSuspendOption suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString(CultureInfo.InvariantCulture);
+            const string expectedJobId = "1234";
+            const string environment = "environment";
 
-            var scheduler = new PersistenceExecution();
+            var mockPersistenceScheduler = new Mock<IPersistenceScheduler>();
+            mockPersistenceScheduler.Setup(o => o.ScheduleJob(suspendOption, suspendOptionValue, values))
+                .Returns(expectedJobId).Verifiable();
+            mockPersistenceScheduler.Setup(o => o.ResumeJob(mockDataObject.Object, expectedJobId, true, environment))
+                .Returns(GlobalConstants.Success).Verifiable();
+
+            var scheduler = new PersistenceExecution(mockPersistenceScheduler.Object);
             var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(PersistenceExecution))]
-        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForMonths_Success()
-        {
-            var values = new Dictionary<string, StringBuilder>
-            {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
-                {"environment", new StringBuilder("")},
-                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
-            };
-
-            var suspendOption = enSuspendOption.SuspendForMonths;
-            var suspendOptionValue = "1";
-
-            var scheduler = new PersistenceExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(PersistenceExecution))]
-        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForMinutes_Success()
-        {
-            var values = new Dictionary<string, StringBuilder>
-            {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
-                {"environment", new StringBuilder("")},
-                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
-            };
-
-            var suspendOption = enSuspendOption.SuspendForMinutes;
-            var suspendOptionValue = "1";
-
-            var scheduler = new PersistenceExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(PersistenceExecution))]
-        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendForSeconds_Success()
-        {
-            var values = new Dictionary<string, StringBuilder>
-            {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
-                {"environment", new StringBuilder("")},
-                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
-            };
-
-            var suspendOption = enSuspendOption.SuspendForSeconds;
-            var suspendOptionValue = "1";
-
-            var scheduler = new PersistenceExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(PersistenceExecution))]
-        public void PersistenceExecution_CreateandScheduleJob_Hangfire_SuspendUntil_Success()
-        {
-            var values = new Dictionary<string, StringBuilder>
-            {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
-                {"environment", new StringBuilder("")},
-                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
-            };
-
-            var suspendOption = enSuspendOption.SuspendUntil;
-            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
-
-            var scheduler = new PersistenceExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
-            Assert.IsInstanceOfType(int.Parse(jobId), typeof(int));
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(PersistenceExecution))]
-        public void PersistenceExecution_ResumeJob_OverrideIsFalse_Hangfire_Success()
-        {
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            var values = new Dictionary<string, StringBuilder>
-            {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
-                {"environment", new StringBuilder("")},
-                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
-            };
-
-            var suspendOption = enSuspendOption.SuspendUntil;
-            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
-
-            var scheduler = new PersistenceExecution();
-            var jobId = scheduler.CreateAndScheduleJob(suspendOption, suspendOptionValue, values);
-
-            var result = scheduler.ResumeJob(dataObjectMock.Object,jobId, false, "NewEnvironment");
-            Assert.AreEqual(GlobalConstants.Success,result);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(PersistenceExecution))]
-        public void PersistenceExecution_ManuallyResumedState_Success()
-        {
-            var values = "environment";
-            var manuallyResumedState = new ManuallyResumedState(values);
-            Assert.AreEqual("Manually Resumed", manuallyResumedState.Reason);
-            Assert.IsTrue(manuallyResumedState.IsFinal);
-            Assert.AreEqual("ManuallyResumed", manuallyResumedState.Name);
-            Assert.IsFalse(manuallyResumedState.IgnoreJobLoadException);
-            Assert.IsNotNull(manuallyResumedState.ResumedAt);
-
-            var data = manuallyResumedState.SerializeData();
-            data.TryGetValue("ManuallyResumedAt", out string manuallyResumedAt);
-            data.TryGetValue("OverrideValues", out string overrideValues);
-            var val = "environment";
-            Assert.AreEqual(2, data.Count);
-            Assert.IsNotNull(manuallyResumedAt);
-            Assert.AreEqual(val, overrideValues);
+            var result = scheduler.ResumeJob(mockDataObject.Object, expectedJobId, true, environment);
+            Assert.AreEqual(GlobalConstants.Success, result);
         }
     }
 }
