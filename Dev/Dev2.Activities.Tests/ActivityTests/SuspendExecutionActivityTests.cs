@@ -930,7 +930,29 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(dataObject.IsDebugNested);
             Assert.AreEqual(0, dataObject.ForEachNestingLevel);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void SuspendExecututionActivity_GetFindMissingType_GivenIsNew_ShouldSetManualResumptionActivity()
+        {
+            //---------------Set up test pack-------------------
 
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var suspendExecutionActivity = new SuspendExecutionActivity();
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var enFindMissingType = suspendExecutionActivity.GetFindMissingType();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(enFindMissingType.SuspendExecution, enFindMissingType);
+
+        }
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
