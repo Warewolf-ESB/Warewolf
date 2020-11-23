@@ -165,7 +165,7 @@ namespace Dev2.Activities
                 throw new Exception(ex.GetAllMessages());
             }
         }
-
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.ManualResumption;
         private string EvalSuspensionId()
         {
             var debugEvalResult = new DebugEvalResult(SuspensionId, nameof(SuspensionId), _dataObject.Environment, _update);

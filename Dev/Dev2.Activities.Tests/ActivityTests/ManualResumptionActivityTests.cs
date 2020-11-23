@@ -509,6 +509,34 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(errors[0], "<InnerError>Could not find persistence config. Please configure in Persistence Settings.</InnerError>");
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_GetFindMissingType_GivenIsNew_ShouldSetManualResumptionActivity()
+        {
+            //---------------Set up test pack-------------------
+
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var manualResumptionActivity = new ManualResumptionActivity()
+            {
+                SuspensionId = "15",
+                OverrideInputVariables = true,
+                OverrideDataFunc = activityFunction,
+                Response = "[[result]]"
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var enFindMissingType = manualResumptionActivity.GetFindMissingType();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(enFindMissingType.ManualResumption, enFindMissingType);
+
+        }
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
