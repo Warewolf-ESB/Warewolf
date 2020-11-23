@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Data.Interfaces.Enums;
@@ -19,21 +20,34 @@ namespace Warewolf.Driver.Persistence
 {
     public class PersistenceExecution : IPersistenceExecution
     {
+        private readonly IPersistenceScheduler _persistenceScheduler;
+
+        [ExcludeFromCodeCoverage]
+        public PersistenceExecution()
+        {
+
+        }
+        public PersistenceExecution(IPersistenceScheduler persistenceScheduler)
+        {
+            _persistenceScheduler = persistenceScheduler;
+        }
+
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables,string environment)
         {
-            var scheduler = GetScheduler();
+            var scheduler = _persistenceScheduler ?? GetScheduler();
 
             return scheduler.ResumeJob(dsfDataObject,jobId, overrideVariables, environment);
         }
 
         public string CreateAndScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)
         {
-            var scheduler = GetScheduler();
+            var scheduler = _persistenceScheduler ?? GetScheduler();
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
             return jobId;
         }
 
-        static IPersistenceScheduler GetScheduler()
+        [ExcludeFromCodeCoverage]
+        private static IPersistenceScheduler GetScheduler()
         {
             if (Config.Persistence.PersistenceScheduler == nameof(Hangfire))
             {
