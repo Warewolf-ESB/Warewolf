@@ -38,7 +38,7 @@ namespace Warewolf.Driver.Persistence.Drivers
 
         public HangfireScheduler()
         {
-            _jobStorage = new SqlServerStorage(ConnectionString());
+            _jobStorage = new SqlServerStorage(ConnectionString);
         }
 
         public HangfireScheduler(JobStorage jobStorage)
@@ -149,19 +149,22 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
         }
 
-        private string ConnectionString()
+        private string ConnectionString
         {
-            var payload = Config.Persistence.PersistenceDataSource.Payload;
-            if (Config.Persistence.EncryptDataSource)
+            get
             {
-                payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
-            }
+                var payload = Config.Persistence.PersistenceDataSource.Payload;
+                if (Config.Persistence.EncryptDataSource)
+                {
+                    payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
+                }
 
-            var source = new Dev2JsonSerializer().Deserialize<DbSource>(payload);
-            return source.ConnectionString;
+                var source = new Dev2JsonSerializer().Deserialize<DbSource>(payload);
+                return source.ConnectionString;
+            }
         }
 
-        private DateTime CalculateResumptionDate(DateTime persistenceDate, enSuspendOption suspendOption, string scheduleValue)
+        public DateTime CalculateResumptionDate(DateTime persistenceDate, enSuspendOption suspendOption, string scheduleValue)
         {
             var resumptionDate = DateTime.UtcNow;
             switch (suspendOption)

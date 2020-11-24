@@ -15,10 +15,10 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
-using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Driver.Persistence;
 
 
 namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
@@ -108,6 +108,107 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
             var result = scheduler.ResumeJob(dataObjectMock.Object,jobId, false, "NewEnvironment");
             Assert.AreEqual(GlobalConstants.Success,result);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_CalculateResumptionDate_SuspendUntil_Success()
+        {
+            var scheduler = new Persistence.Drivers.HangfireScheduler(new MemoryStorage());
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+            var suspensionDate = DateTime.Now;
+            var resumptionDate = scheduler.CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
+            Assert.AreEqual(DateTime.Parse(suspendOptionValue).ToString(),resumptionDate.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_CalculateResumptionDate_SuspendForDays_Success()
+        {
+            var scheduler = new Persistence.Drivers.HangfireScheduler(new MemoryStorage());
+            var suspendOption = enSuspendOption.SuspendForDays;
+            var suspendOptionValue = "1";
+
+            var suspensionDate = DateTime.Now;
+            var resumptionDate = scheduler.CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
+            Assert.AreEqual(suspensionDate.AddDays(int.Parse(suspendOptionValue)).ToString(),resumptionDate.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_CalculateResumptionDate_SuspendForHours_Success()
+        {
+            var scheduler = new Persistence.Drivers.HangfireScheduler(new MemoryStorage());
+            var suspendOption = enSuspendOption.SuspendForHours;
+            var suspendOptionValue = "1";
+
+            var suspensionDate = DateTime.Now;
+            var resumptionDate = scheduler.CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
+            Assert.AreEqual(suspensionDate.AddHours(int.Parse(suspendOptionValue)).ToString(),resumptionDate.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_CalculateResumptionDate_SuspendForMinutes_Success()
+        {
+            var scheduler = new Persistence.Drivers.HangfireScheduler(new MemoryStorage());
+            var suspendOption = enSuspendOption.SuspendForMinutes;
+            var suspendOptionValue = "1";
+
+            var suspensionDate = DateTime.Now;
+            var resumptionDate = scheduler.CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
+            Assert.AreEqual(suspensionDate.AddMinutes(int.Parse(suspendOptionValue)).ToString(),resumptionDate.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_CalculateResumptionDate_SuspendForSeconds_Success()
+        {
+            var scheduler = new Persistence.Drivers.HangfireScheduler(new MemoryStorage());
+            var suspendOption = enSuspendOption.SuspendForSeconds;
+            var suspendOptionValue = "1";
+
+            var suspensionDate = DateTime.Now;
+            var resumptionDate = scheduler.CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
+            Assert.AreEqual(suspensionDate.AddSeconds(int.Parse(suspendOptionValue)).ToString(),resumptionDate.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_CalculateResumptionDate_SuspendForMonths_Success()
+        {
+            var scheduler = new Persistence.Drivers.HangfireScheduler(new MemoryStorage());
+            var suspendOption = enSuspendOption.SuspendForMonths;
+            var suspendOptionValue = "1";
+
+            var suspensionDate = DateTime.Now;
+            var resumptionDate = scheduler.CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
+            Assert.AreEqual(suspensionDate.AddMonths(int.Parse(suspendOptionValue)).ToString(),resumptionDate.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManuallyResumedState))]
+        public void ManuallyResumedState_Success()
+        {
+            var values = "environment";
+            var manuallyResumedState = new ManuallyResumedState(values);
+            Assert.AreEqual("Manually Resumed", manuallyResumedState.Reason);
+            Assert.IsTrue(manuallyResumedState.IsFinal);
+            Assert.AreEqual("ManuallyResumed", manuallyResumedState.Name);
+            Assert.IsFalse(manuallyResumedState.IgnoreJobLoadException);
+            Assert.IsNotNull(manuallyResumedState.ResumedAt);
+
+            var data = manuallyResumedState.SerializeData();
+            data.TryGetValue("ManuallyResumedAt", out string manuallyResumedAt);
+            data.TryGetValue("OverrideValues", out string overrideValues);
+            var val = "environment";
+            Assert.AreEqual(2, data.Count);
+            Assert.IsNotNull(manuallyResumedAt);
+            Assert.AreEqual(val, overrideValues);
         }
     }
 }
