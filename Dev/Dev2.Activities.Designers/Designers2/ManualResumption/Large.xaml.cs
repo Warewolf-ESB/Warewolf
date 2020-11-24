@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -8,16 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
-using System.Text;
-using Dev2.Data.Interfaces.Enums;
-using Dev2.Interfaces;
+using System.Windows;
 
-namespace Warewolf.Driver.Persistence
+namespace Dev2.Activities.Designers2.ManualResumption
 {
-    public interface IPersistenceScheduler
+    public partial class Large
     {
-        string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment);
-        string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values);
+        public Large()
+        {
+            InitializeComponent();
+        }
+
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }
