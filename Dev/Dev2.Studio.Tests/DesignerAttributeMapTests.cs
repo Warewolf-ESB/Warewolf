@@ -113,6 +113,7 @@ using Dev2.Activities.Designers2.RedisRemove;
 using Dev2.Activities.Designers2.RedisCounter;
 using Dev2.Activities.RedisCounter;
 using Dev2.Activities.Designers2.Gate;
+using Dev2.Activities.Designers2.ManualResumption;
 using Dev2.Activities.Designers2.PathOperations.WriteFile;
 using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
@@ -157,7 +158,7 @@ namespace Dev2.Studio.Tests.AppResources.Converters
             //-------------------Act-------------------------
             //-------------------Assert----------------------
             Assert.AreEqual(_expectedExisting.Count, designerAttributes.Count);
-            Assert.AreEqual(99, designerAttributes.Count);
+            Assert.AreEqual(100, designerAttributes.Count);
 
             foreach (var attribute in designerAttributes)
             {
@@ -276,6 +277,7 @@ namespace Dev2.Studio.Tests.AppResources.Converters
             {typeof(RedisCounterActivity), typeof(RedisCounterDesigner)},
             {typeof(GateActivity), typeof(GateDesignerViewModel)},
             {typeof(SuspendExecutionActivity), typeof(SuspendExecutionDesignerViewModel)},
+            {typeof(ManualResumptionActivity), typeof(ManualResumptionViewModel)},
         };
     }
 }
