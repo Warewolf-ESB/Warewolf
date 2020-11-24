@@ -110,6 +110,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 using Dev2.Activities.Designers2.WebGet;
 using Dev2.Activities.Designers2.Web_Put;
 using Dev2.Activities.Designers2.SuspendExecution;
+using Dev2.Activities.Designers2.ManualResumption;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -217,6 +218,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(RedisCounterActivity), typeof(RedisCounterDesigner) },
                 { typeof(GateActivity), typeof(GateDesigner) },
                 { typeof(SuspendExecutionActivity), typeof(SuspendExecutionDesigner) },
+                { typeof(ManualResumptionActivity), typeof(ManualResumptionDesigner) },
             };
         static Hashtable _hashTable;
 

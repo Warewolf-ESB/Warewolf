@@ -8,16 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
-using System.Text;
-using Dev2.Data.Interfaces.Enums;
-using Dev2.Interfaces;
-
-namespace Warewolf.Driver.Persistence
+namespace Dev2.Activities.Designers2.ManualResumption
 {
-    public interface IPersistenceScheduler
+    public partial class ManualResumptionDesigner
     {
-        string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment);
-        string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values);
+        public ManualResumptionDesigner()
+        {
+            InitializeComponent();
+        }
     }
 }

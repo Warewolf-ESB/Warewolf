@@ -19,7 +19,7 @@ namespace Dev2.Tests.Activities {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ActivityStrings {
@@ -693,6 +693,24 @@ namespace Dev2.Tests.Activities {
         internal static string IndexDataListWithDataAndThreeRecordsets {
             get {
                 return ResourceManager.GetString("IndexDataListWithDataAndThreeRecordsets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Inputs&gt;&lt;Input Name=&quot;UUID&quot; Source=&quot;[[UUID]]&quot; IsObject=&quot;False&quot; /&gt;&lt;Input Name=&quot;JourneyName&quot; Source=&quot;[[JourneyName]]&quot; IsObject=&quot;False&quot; /&gt;&lt;/Inputs&gt;.
+        /// </summary>
+        internal static string ManualResumption_Input_Mapping {
+            get {
+                return ResourceManager.GetString("ManualResumption_Input_Mapping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Outputs&gt;&lt;Output Name=&quot;UUID&quot; MapsTo=&quot;[[UUID]]&quot; Value=&quot;[[UUID]]&quot; IsObject=&quot;False&quot; /&gt;&lt;Output  Name=&quot;JourneyName&quot; MapsTo=&quot;[[JourneyName]]&quot; Value=&quot;[[JourneyName]]&quot; IsObject=&quot;False&quot;/&gt;&lt;Output Name=&quot;SuspensionId&quot; MapsTo=&quot;[[SuspensionId]]&quot; Value=&quot;[[SuspensionId]]&quot; IsObject=&quot;False&quot; /&gt;&lt;/Outputs&gt;.
+        /// </summary>
+        internal static string ManualResumption_Output_Mapping {
+            get {
+                return ResourceManager.GetString("ManualResumption_Output_Mapping", resourceCulture);
             }
         }
         
