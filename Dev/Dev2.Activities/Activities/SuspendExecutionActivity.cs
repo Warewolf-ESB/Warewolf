@@ -31,6 +31,7 @@ using Dev2.Util;
 using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
+using Warewolf.Resource.Errors;
 using Warewolf.Resource.Messages;
 using Warewolf.Security.Encryption;
 
@@ -45,14 +46,14 @@ namespace Dev2.Activities
         private int _update;
         private string _suspensionId = "";
         private readonly bool _persistenceEnabled;
-        private readonly ISuspendExecution _scheduler;
+        private readonly IPersistenceExecution _scheduler;
 
         public SuspendExecutionActivity()
-            : this(Config.Persistence, new SuspendExecution())
+            : this(Config.Persistence, new PersistenceExecution())
         {
         }
 
-        public SuspendExecutionActivity(PersistenceSettings config, ISuspendExecution suspendExecution)
+        public SuspendExecutionActivity(PersistenceSettings config, IPersistenceExecution suspendExecution)
         {
             DisplayName = "Suspend Execution";
             SaveDataFunc = new ActivityFunc<string, bool>
@@ -118,12 +119,12 @@ namespace Dev2.Activities
                 dataObject.ForEachNestingLevel++;
                 if (!_persistenceEnabled)
                 {
-                    throw new Exception(GlobalConstants.PersistenceSettingsNoConfigured);
+                    throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
                 if (NextNodes is null)
                 {
-                    throw new Exception(GlobalConstants.NextNodeRequiredForSuspendExecution);
+                    throw new Exception(ErrorResource.NextNodeRequiredForSuspendExecution);
                 }
 
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
@@ -150,7 +151,6 @@ namespace Dev2.Activities
 
                 DispatchDebug(dataObject, StateType.Before, _update);
                 _suspensionId = _scheduler.CreateAndScheduleJob(SuspendOption, persistScheduleValue, values);
-
 
                 dataObject.ParentInstanceID = UniqueID;
                 dataObject.IsDebugNested = true;
@@ -192,7 +192,7 @@ namespace Dev2.Activities
                 HandleErrors(dataObject, allErrors);
             }
         }
-
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.SuspendExecution;
         private void HandleDebug(IDSFDataObject dataObject, IServiceTestStep serviceTestStep)
         {
             if (dataObject.IsDebugMode())

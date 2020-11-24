@@ -502,6 +502,12 @@
   &lt;testScalar/&gt;
 &lt;/ADL&gt;</value>
   </data>
+  <data name="ManualResumption_Input_Mapping" xml:space="preserve">
+   <value>&lt;Inputs&gt;&lt;Input Name="UUID" Source="[[UUID]]" IsObject="False" />&lt;Input Name="JourneyName" Source="[[JourneyName]]" IsObject="False" /&gt;&lt;/Inputs&gt;</value>
+  </data>
+  <data name="ManualResumption_Output_Mapping" xml:space="preserve">
+    <value>&lt;Outputs&gt;&lt;Output Name="UUID" MapsTo="[[UUID]]" Value="[[UUID]]" IsObject="False" />&lt;Output  Name="JourneyName" MapsTo="[[JourneyName]]" Value="[[JourneyName]]" IsObject="False"/&gt;&lt;Output Name="SuspensionId" MapsTo="[[SuspensionId]]" Value="[[SuspensionId]]" IsObject="False" /&gt;&lt;/Outputs&gt;</value>
+  </data>
   <data name="ForEach_Input_Mapping" xml:space="preserve">
     <value>&lt;Inputs&gt;&lt;Input Name="innerrec" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innerrec2" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innerdate" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innertest" Source="[[recset(*).rec2]]" Recordset="innertesting" /&gt;&lt;Input Name="innerScalar" Source="[[recset(*).rec]]" /&gt;&lt;/Inputs&gt;</value>
   </data>

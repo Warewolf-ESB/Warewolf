@@ -1,0 +1,56 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.ManualResumption.Small"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:manualResumption="clr-namespace:Dev2.Activities.Designers2.ManualResumption"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               mc:Ignorable="d"
+                               MinWidth="250"
+                               Width="250"
+                               d:DesignHeight="300" d:DesignWidth="300"
+                               d:DataContext="{d:DesignInstance manualResumption:ManualResumptionViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Text="SuspensionID" />
+
+        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                Grid.Column="1"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                DefaultText="[[SuspensionID]]"
+                                AcceptsReturn="True"
+                                AllowUserInsertLine="False"
+                                WrapInBrackets="False"
+                                Text="{Binding Path=ModelItem.SuspensionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.SuspensionId, StringFormat=UI_{0}_SuspensionId_AutoID}"
+                                ToolTip="{x:Static languages:Tooltips.ManualResumptionSuspensionIdToolTip}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.ManualResumptionSuspensionIdHelpText}"
+                                  DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.SuspensionId"
+                                     SourcePropertyValue="{Binding ModelItem.SuspensionId, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+    </Grid>
+</core:ActivityDesignerTemplate>

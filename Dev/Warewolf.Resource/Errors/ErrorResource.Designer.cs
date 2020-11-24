@@ -3760,5 +3760,50 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("XPathXmlRecordsetIndexErrorTest", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot execute an inner activity with no content.
+        /// </summary>
+        public static string InnerActivityWithNoContentError {
+            get {
+                return ResourceManager.GetString("InnerActivityWithNoContentError", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find the activity to resume from.
+        /// </summary>
+        public static string InnerActivityWithNoStartActivityError {
+            get {
+                return ResourceManager.GetString("InnerActivityWithNoStartActivityError", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to SuspensionID must not be null or empty.
+        /// </summary>
+        public static string ManualResumptionSuspensionIdBlank {
+            get {
+                return ResourceManager.GetString("ManualResumptionSuspensionIdBlank", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find persistence config. Please configure in Persistence Settings.
+        /// </summary>
+        public static string PersistenceSettingsNoConfigured {
+            get {
+                return ResourceManager.GetString("PersistenceSettingsNoConfigured", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to At least 1 activity is required after Suspend Execution.
+        /// </summary>
+        public static string NextNodeRequiredForSuspendExecution {
+            get {
+                return ResourceManager.GetString("NextNodeRequiredForSuspendExecution", resourceCulture);
+            }
+        }
     }
 }
