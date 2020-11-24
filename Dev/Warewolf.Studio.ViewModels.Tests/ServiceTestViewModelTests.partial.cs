@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
@@ -66,7 +65,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             debugStateTreeViewItemViewModel.Content = debugState;
             debugTreeViewItemViewModels.Add(debugStateTreeViewItemViewModel);
             //------------Execute Test---------------------------
-            testFrameworkViewModel.PrepopulateTestsUsingDebug(debugTreeViewItemViewModels);
+            testFrameworkViewModel.PrePopulateTestsUsingDebug(debugTreeViewItemViewModels);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.ErrorExpected);
@@ -105,7 +104,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             debugStateTreeViewItemViewModel.Content = debugState;
             debugTreeViewItemViewModels.Add(debugStateTreeViewItemViewModel);
             //------------Execute Test---------------------------
-            testFrameworkViewModel.PrepopulateTestsUsingDebug(debugTreeViewItemViewModels);
+            testFrameworkViewModel.PrePopulateTestsUsingDebug(debugTreeViewItemViewModels);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             Assert.IsFalse(testFrameworkViewModel.SelectedServiceTest.ErrorExpected);
@@ -156,7 +155,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             debugTreeViewItemViewModels.Add(debugStateTreeViewItemViewModel);
             //------------Execute Test---------------------------
-            testFrameworkViewModel.PrepopulateTestsUsingDebug(debugTreeViewItemViewModels);
+            testFrameworkViewModel.PrePopulateTestsUsingDebug(debugTreeViewItemViewModels);
             //------------Assert Results-------------------------
             Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
             Assert.IsFalse(testFrameworkViewModel.SelectedServiceTest.ErrorExpected);
@@ -360,7 +359,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, popupController.Object, null, null);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
-            testFrameworkViewModel.PrepopulateTestsUsingDebug(newTestFromDebugMessage.RootItems);
+            testFrameworkViewModel.PrePopulateTestsUsingDebug(newTestFromDebugMessage.RootItems);
             Assert.AreEqual(2, testFrameworkViewModel.SelectedServiceTest.TestSteps.Count);
         }
 
@@ -769,6 +768,53 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(500)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServiceTestViewModel))]
+        [DeploymentItem("JsonResources\\DebugInputStates.json", "JsonResources")]
+        public void ServiceTestViewModel_ValidateAddStepType_Should_Update_InputValues()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
+            var resourceId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            contextualResourceModel.ID = resourceId;
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            const string expectedValue = "Bob";
+            mockWorkflowDesignerViewModel.Setup(o => o.GetWorkflowInputs("Name")).Returns(expectedValue).Verifiable();
+            var newTestFromDebugMessage = new NewTestFromDebugMessage();
+            var readAllText = File.ReadAllText("JsonResources\\DebugInputStates.json");
+            var serializer = new Dev2JsonSerializer();
+            var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
+            newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
+            newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
+
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(),
+                new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object,
+                mockWorkflowDesignerViewModel.Object, popupController.Object, newTestFromDebugMessage, null)
+            {
+                WebClient = new Mock<IWarewolfWebClient>().Object
+            };
+            //When the value is parsed in a empty, then it should be set to the debug state value
+            testFrameworkViewModel.SelectedServiceTest.Inputs.Add(new ServiceTestInput("Name", ""));
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("ValidateAddStepType", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel);
+            //---------------Execute Test ----------------------
+            var mockDebugTreeViewItemViewModel = new Mock<IDebugTreeViewItemViewModel>();
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { mockDebugTreeViewItemViewModel.Object, debugStates[0] });
+
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.Inputs.Count);
+            Assert.AreEqual("Name", testFrameworkViewModel.SelectedServiceTest.Inputs.First().Variable);
+            Assert.AreEqual(expectedValue, testFrameworkViewModel.SelectedServiceTest.Inputs.First().Value);
+        }
+
+        [TestMethod]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void SetOutputs_GivenDebugStates_ShouldAddTestOutput()
@@ -1028,6 +1074,54 @@ namespace Warewolf.Studio.ViewModels.Tests
             var o = (IServiceTestStep)parameters[1];
             Assert.AreEqual(uniqueID, o.ActivityID.ToString());
             Assert.AreEqual("Dsipa", o.StepDescription);
+        }
+
+        [TestMethod]
+        [Timeout(500)]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServiceTestViewModel))]
+        public void ServiceTestStepGetParentType_Given_SuspendExecutionActivity_ShouldSetupServiceTestStep()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var newTestFromDebugMessage = new NewTestFromDebugMessage
+            {
+                ResourceModel = mockResourceModel.Object, RootItems = new List<IDebugTreeViewItemViewModel>()
+            };
+
+            var mock = new Mock<IExternalProcessExecutor>();
+            mock.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(),
+                new Mock<IEventAggregator>().Object, mock.Object, mockWorkflowDesignerViewModel.Object,
+                popupController.Object, newTestFromDebugMessage, null)
+            {
+                WebClient = new Mock<IWarewolfWebClient>().Object
+            };
+            testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("ServiceTestStepGetParentType", BindingFlags.NonPublic | BindingFlags.Instance);
+            var activity = new SuspendExecutionActivity();
+            var uniqueId = Guid.NewGuid().ToString();
+            activity.UniqueID = uniqueId;
+            activity.DisplayName = "Suspend Execution";
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel);
+            //---------------Execute Test ----------------------
+            IServiceTestStep serviceTestStep = null;
+
+            var parameters = new object[] { modelItem, serviceTestStep };
+            methodInfo.Invoke(testFrameworkViewModel, parameters);
+            //---------------Test Result -----------------------
+            var o = (IServiceTestStep)parameters[1];
+            Assert.AreEqual(uniqueId, o.ActivityID.ToString());
+            Assert.AreEqual("Suspend Execution", o.StepDescription);
         }
 
         [TestMethod]
@@ -1670,7 +1764,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         [Owner("Nkosinathi Sangweni")]
         public void Stoptest_GivenServiceTests_ShouldSetValuesCorrectly()
         {

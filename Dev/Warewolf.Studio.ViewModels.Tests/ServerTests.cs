@@ -158,7 +158,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }   
         
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Sanele Mthembu")]
         public void GetServerInformation_GivenServerIsNotConnected_ShouldReturnTrue()
         {
@@ -431,7 +431,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Sanele Mthembu")]
         public void LoadExplorer_ShouldReturnTools()
         {

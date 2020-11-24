@@ -198,7 +198,7 @@
                                                             Margin="1"
                                                             Text="{Binding SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                             IsEnabled="{Binding IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
-                                                            Visibility="{Binding IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                            Visibility="{Binding IsSingleMatchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
                                                             Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                             ToolTip="{x:Static languages:Tooltips.FindToolTipMatch}">
                                         <i:Interaction.Behaviors>

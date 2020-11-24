@@ -41,6 +41,6 @@ namespace Dev2.Studio.Interfaces
         bool HasDuplicates();
         void ShowDuplicatePopup();
         void RefreshCommands();
-        void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models);
+        void PrePopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models);
     }
 }

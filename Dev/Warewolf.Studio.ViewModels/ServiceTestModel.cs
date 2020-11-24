@@ -1,8 +1,8 @@
 #pragma warning disable
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -419,23 +419,23 @@ namespace Warewolf.Studio.ViewModels
                     return false;
                 }
                 _isValidatingIsDirty = true;
-                var _isDirty = false;
+                var isDirty = false;
                 var notEquals = !Equals(Item);
                 if (NewTest)
                 {
-                    _isDirty = true;
+                    isDirty = true;
                 }
                 else
                 {
                     if (notEquals)
                     {
-                        _isDirty = true;
+                        isDirty = true;
                     }
                 }
 
-                SetDisplayName(_isDirty);
+                SetDisplayName(isDirty);
                 _isValidatingIsDirty = false;
-                return _isDirty;
+                return isDirty;
             }
         }
 
@@ -520,11 +520,11 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return;
                 }
-                var recsetCols = new List<IScalar>();
+                var scalars = new List<IScalar>();
                 foreach (var column in recordset.Columns)
                 {
                     var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
-                    recsetCols.AddRange(cols);
+                    scalars.AddRange(cols);
                 }
 
                 var numberOfRows = Inputs.Where(c => DataListUtil.ExtractRecordsetNameFromValue(c.Variable) == recordsetNameFromValue);
@@ -544,17 +544,16 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (addRow)
                 {
-                    AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum, dataList);
+                    AddBlankRowToRecordset(itemToAdd, scalars, indexToInsertAt, indexNum, dataList);
                 }
-
             }
         }
 
         void AddBlankRowToRecordset(IServiceTestInput dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum, IDataListModel dataList)
         {
-            IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
+            IList<IScalar> scalars = columns.Distinct(Scalar.Comparer).ToList();
             string colName = null;
-            foreach (var col in recsetCols.Distinct(new ScalarEqualityComparer()))
+            foreach (var col in scalars.Distinct(new ScalarEqualityComparer()))
             {
                 if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                 {
@@ -579,11 +578,11 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return;
                 }
-                var recsetCols = new List<IScalar>();
+                var scalars = new List<IScalar>();
                 foreach (var column in recordset.Columns)
                 {
                     var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Output || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
-                    recsetCols.AddRange(cols);
+                    scalars.AddRange(cols);
                 }
 
                 var numberOfRows = Outputs.Where(c => DataListUtil.ExtractRecordsetNameFromValue(c.Variable) == recordsetNameFromValue);
@@ -603,16 +602,16 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (addRow)
                 {
-                    AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum, dataList);
+                    AddBlankRowToRecordset(itemToAdd, scalars, indexToInsertAt, indexNum, dataList);
                 }
             }
         }
 
         void AddBlankRowToRecordset(IServiceTestOutput dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum, IDataListModel dataList)
         {
-            IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
+            IList<IScalar> scalars = columns.Distinct(Scalar.Comparer).ToList();
             string colName = null;
-            foreach (var col in recsetCols.Distinct(new ScalarEqualityComparer()))
+            foreach (var col in scalars.Distinct(new ScalarEqualityComparer()))
             {
                 if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                 {
@@ -642,9 +641,9 @@ namespace Warewolf.Studio.ViewModels
             var inputCompare = InputCompare(other);
             var outputCompare = OutputCompare(other);
             var testStepCompare = TestStepCompare(other);
-            var @equals = equalsSeq && inputCompare && testStepCompare && outputCompare;
+            var equals = equalsSeq && inputCompare && testStepCompare && outputCompare;
 
-            return @equals;
+            return equals;
         }
 
         bool TestStepCompare(ServiceTestModel other)
@@ -672,7 +671,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (!stepCompare)
                 {
-                    return stepCompare;
+                    return false;
                 }
 
                 var stepOutputs = TestSteps[i].StepOutputs;
@@ -680,10 +679,10 @@ namespace Warewolf.Studio.ViewModels
                 stepCompare = StepOutputsCompare(stepOutputs, otherStepOutputs);
                 if (!stepCompare)
                 {
-                    return stepCompare;
+                    return false;
                 }
             }
-            return stepCompare;
+            return true;
         }
 
         static bool StepChildrenCompare(ObservableCollection<IServiceTestStep> stepChildren, ObservableCollection<IServiceTestStep> otherStepChildren)
@@ -694,7 +693,7 @@ namespace Warewolf.Studio.ViewModels
                 stepCompare &= stepChildren[c].Type == otherStepChildren[c].Type;
                 if (!stepCompare)
                 {
-                    return stepCompare;
+                    return false;
                 }
 
                 var childStepOutputs = stepChildren[c].StepOutputs;
@@ -702,7 +701,7 @@ namespace Warewolf.Studio.ViewModels
                 stepCompare = StepOutputsCompare(childStepOutputs, otherChildStepOutputs);
                 if (!stepCompare)
                 {
-                    return stepCompare;
+                    return false;
                 }
 
                 if (stepChildren[c].Children.Count > 0)
@@ -713,11 +712,11 @@ namespace Warewolf.Studio.ViewModels
                     stepCompare = StepChildrenCompare(stepChildren1, otherStepChildren1);
                     if (!stepCompare)
                     {
-                        return stepCompare;
+                        return false;
                     }
                 }
             }
-            return stepCompare;
+            return true;
         }
 
         static bool StepOutputsCompare(ObservableCollection<IServiceTestOutput> stepOutputs, ObservableCollection<IServiceTestOutput> otherStepOutputs)
@@ -732,10 +731,10 @@ namespace Warewolf.Studio.ViewModels
                 stepCompare &= stepOutputs[c].Variable == otherStepOutputs[c].Variable;
                 if (!stepCompare)
                 {
-                    return stepCompare;
+                    return false;
                 }
             }
-            return stepCompare;
+            return true;
         }
 
         bool InputCompare(ServiceTestModel other)
@@ -756,10 +755,10 @@ namespace Warewolf.Studio.ViewModels
                 inputCompare &= Inputs[i].EmptyIsNull == other.Inputs[i].EmptyIsNull;
                 if (!inputCompare)
                 {
-                    return inputCompare;
+                    return false;
                 }
             }
-            return inputCompare;
+            return true;
         }
 
         bool OutputCompare(ServiceTestModel other)
@@ -782,10 +781,10 @@ namespace Warewolf.Studio.ViewModels
                 outputCompare &= _outputs[i].To == other._outputs[i].To;
                 if (!outputCompare)
                 {
-                    return outputCompare;
+                    return false;
                 }
             }
-            return outputCompare;
+            return true;
         }
 
         bool EqualsSeq(ServiceTestModel other)
