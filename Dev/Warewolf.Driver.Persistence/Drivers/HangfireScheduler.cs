@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -33,28 +34,25 @@ namespace Warewolf.Driver.Persistence.Drivers
     public class HangfireScheduler : IPersistenceScheduler
     {
         private IStateNotifier _stateNotifier = null;
+        private JobStorage _jobStorage;
+
         public HangfireScheduler()
         {
+            _jobStorage = new SqlServerStorage(ConnectionString());
         }
-        public string GetStartActivityId(string jobId)
+
+        public HangfireScheduler(JobStorage jobStorage)
         {
-            var conn = ConnectionString();
-            GlobalConfiguration.Configuration.UseSqlServerStorage(conn);
-            var monitoringApi = JobStorage.Current.GetMonitoringApi();
-            var jobDetails = monitoringApi.JobDetails(jobId);
-            var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
-            values.TryGetValue("startActivityId", out StringBuilder startActivityId);
-            return startActivityId.ToString();
+            _jobStorage = jobStorage;
         }
+
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment)
         {
             try
             {
-                var conn = ConnectionString();
-                GlobalConfiguration.Configuration.UseSqlServerStorage(conn);
-                var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(conn));
+                var backgroundJobClient = new BackgroundJobClient(_jobStorage);
 
-                var monitoringApi = JobStorage.Current.GetMonitoringApi();
+                var monitoringApi = _jobStorage.GetMonitoringApi();
                 var jobDetails = monitoringApi.JobDetails(jobId);
                 var jobIsScheduled = jobDetails.History.Where(i =>
                     i.StateName == "Enqueued" ||
@@ -71,15 +69,17 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var decryptEnvironment = persistedEnvironment.ToString().CanBeDecrypted() ? DpapiWrapper.Decrypt(persistedEnvironment.ToString()) : persistedEnvironment.ToString();
                 if (overrideVariables)
                 {
-                    if(values.ContainsKey("environment"))
+                    if (values.ContainsKey("environment"))
                     {
-                        values["environment"] = new StringBuilder(environment);;
+                        values["environment"] = new StringBuilder(environment);
+                        ;
                     }
                 }
                 else
                 {
-                    values["environment"]  = new StringBuilder(decryptEnvironment);
+                    values["environment"] = new StringBuilder(decryptEnvironment);
                 }
+
                 var workflowResume = new WorkflowResume();
                 var result = workflowResume.Execute(values, null);
                 var serializer = new Dev2JsonSerializer();
@@ -90,6 +90,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                     backgroundJobClient.ChangeState(jobId, failedState, ScheduledState.StateName);
                     return GlobalConstants.Failed;
                 }
+
                 values.TryGetValue("resourceID", out StringBuilder workflowId);
                 values.TryGetValue("environment", out StringBuilder environments);
                 values.TryGetValue("startActivityId", out StringBuilder startActivityId);
@@ -125,14 +126,14 @@ namespace Warewolf.Driver.Persistence.Drivers
             var suspensionDate = DateTime.Now;
             var resumptionDate = CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
             var state = new ScheduledState(resumptionDate.ToUniversalTime());
-            var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(ConnectionString()));
+            var backgroundJobClient = new BackgroundJobClient(_jobStorage);
 
             var jobId = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
             return jobId;
         }
 
 
-
+        [ExcludeFromCodeCoverage]
         [AutomaticRetry(Attempts = 0)]
         [DisableConcurrentExecution(timeoutInSeconds: 10 * 60)]
         public string ResumeWorkflow(Dictionary<string, StringBuilder> values, PerformContext context)
