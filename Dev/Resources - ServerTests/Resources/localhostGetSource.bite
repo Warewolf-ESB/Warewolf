@@ -1,5 +1,4 @@
-
-<Source ID="f9f193e6-d8fc-4cdc-aa99-f45cc7899723" Name="localhostGetSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://localhost:3142/secure/GetFalse.xml?%3CDataList%3E%3C/DataList%3E;DefaultQuery=;AuthenticationType=User;UserName=Administrator;Password=Dev2@dmin123" Type="WebSource" ServerVersion="0.0.6688.21117" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="f9f193e6-d8fc-4cdc-aa99-f45cc7899723" Name="localhostGetSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://localhost:3142/Public/GetFalse.xml?%3CDataList%3E%3C/DataList%3E;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6688.21117" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>localhostGetSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
