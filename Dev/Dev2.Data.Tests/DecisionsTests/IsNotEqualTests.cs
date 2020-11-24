@@ -18,8 +18,8 @@ namespace Dev2.Data.Tests.DecisionsTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("IsNotEqual_Invoke")]
-        public void IsEqual_Invoke_ItemsEqual_ReturnsTrue()
+        [TestCategory(nameof(IsNotEqual))]
+        public void IsNotEqual_Invoke_ItemsEqual_ReturnsTrue()
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotEqual();
@@ -34,8 +34,8 @@ namespace Dev2.Data.Tests.DecisionsTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("IsEqual_Invoke")]
-        public void IsEndsWith_Invoke_NotEqualItems_ReturnsFalse()
+        [TestCategory(nameof(IsNotEqual))]
+        public void IsNotEqual_IsEndsWith_Invoke_NotEqualItems_ReturnsFalse()
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotEqual();
@@ -49,9 +49,41 @@ namespace Dev2.Data.Tests.DecisionsTests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotEqual))]
+        public void IsNotEqual_First_ArrayNull_Invoke_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotEqual();
+            var cols = new string[2];
+            cols[0] = null;
+            cols[1] = "No";
+            //------------Execute Test---------------------------
+            var result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotEqual))]
+        public void IsNotEqual_Second_ArrayItemNull_Invoke_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotEqual();
+            var cols = new string[2];
+            cols[0] = "No";
+            cols[1] = null;
+            //------------Execute Test---------------------------
+            var result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("IsEqual_HandlesType")]
-        public void IsEndsWith_HandlesType_ReturnsIsEndsWithType()
+        [TestCategory(nameof(IsNotEqual))]
+        public void IsNotEqual_IsEndsWith_HandlesType_ReturnsIsEndsWithType()
         {
             var expected = enDecisionType.IsNotEqual;
             //------------Setup for test--------------------------
