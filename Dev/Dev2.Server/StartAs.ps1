@@ -4,7 +4,8 @@ Param(
   [string]$Username=$env:SERVER_USERNAME,
   [string]$Password=$env:SERVER_PASSWORD,
   [string]$ResourcesPath,
-  [string]$ServerPath
+  [string]$ServerPath,
+  [switch]$Cleanup=$false
 )
 if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
@@ -15,6 +16,28 @@ if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 }
 $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
+if ($Cleanup.IsPresent) {
+	if ($WarewolfServerProcess) {
+		$WarewolfServerProcess.Kill()
+		$WarewolfServerProcess = $null
+		$WarewolfServerService = $null
+	}
+	$ToClean = @(
+		"%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat",
+        "%LOCALAPPDATA%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml",
+        "%PROGRAMDATA%\Warewolf\Workspaces",
+        "%PROGRAMDATA%\Warewolf\Server Settings",
+        "%PROGRAMDATA%\Warewolf\VersionControl",
+        "%PROGRAMDATA%\Warewolf\Audits\auditDB.db"
+    )
+	$ToPublish = @(
+		"%PROGRAMDATA%\Warewolf\Resources",
+		"%PROGRAMDATA%\Warewolf\Tests",
+		"%PROGRAMDATA%\Warewolf\VersionControl",
+		"%PROGRAMDATA%\Warewolf\DetailedLogs",
+		"%PROGRAMDATA%\Warewolf\Server Log\wareWolf-Server.log"
+	)
+}
 if ($WarewolfServerProcess) {
 	Sleep 30
 	$pair = "$($Username):$($Password)"
