@@ -1,3 +1,26 @@
+25 November 2020
+======================
+Features 
+------------ 
+Suspend Execution Tool: 
+  - Ability to suspend the execution of a workflow for a stipulated period.
+  - Ability to create test cases where the workflow will execute to completion.
+  
+Manual Resumption Tool: 
+  - Ability to manually resume a previously suspended execution of a workflow.
+  - Ability to create test cases where the activity acts as an input and output for validation.
+
+Enhancements
+---------
+Test Framework
+  - Workflow input values now follow through to the test cases.
+
+Bug Fixes
+---------
+Test Framework
+  - Resolved 'Resource not found' when Object passed in as Null input.
+
+
 Monday 2 November 2020
 ======================
 Enhancements
