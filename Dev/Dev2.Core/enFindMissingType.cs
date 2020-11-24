@@ -21,6 +21,8 @@ namespace Dev2
         DsfActivity,
         ForEach,
         Sequence,
-        RedisCache
+        RedisCache,
+        ManualResumption,
+        SuspendExecution
     }
 }

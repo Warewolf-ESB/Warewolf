@@ -78,7 +78,7 @@ namespace Warewolf.Logger
                 case "LogEntry":
                     _logger.Consume(msg.Audit, parameters);
                     break;
-                case "ResumeExecution":
+                case "LogResumeExecutionState":
                     _writer.WriteLine("Resuming workflow: " + msg.Audit.WorkflowID);
                     _logger.Consume(msg.Audit, parameters);
                     break;
