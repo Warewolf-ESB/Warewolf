@@ -192,6 +192,53 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             mockResumableExecutionContainer.Verify(o => o.Execute(out errors, 0), Times.Once);
             mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob"), Times.Once);
         }
+
+         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_ResumeJob_WorkflowResumeReturnsErrors_Failed()
+        {
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
+
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("NewEnvironment")},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")}
+            };
+
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+
+            var jobstorage = new MemoryStorage();
+            var client  = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+
+            var errors = new ErrorResultTO();
+            errors.AddError("ErrorMessage");
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(CreateServiceEntry());
+
+            CustomContainer.Register(resourceCatalog.Object);
+
+            var mockResumableExecutionContainer = new Mock<IResumableExecutionContainer>();
+            mockResumableExecutionContainer.Setup(o => o.Execute(out errors, 0)).Verifiable();
+
+            var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
+                .Returns(mockResumableExecutionContainer.Object);
+            CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
+
+            var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
+            Assert.AreEqual(GlobalConstants.Failed, result);
+
+            mockResumableExecutionContainer.Verify(o => o.Execute(out errors, 0), Times.Once);
+        }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
