@@ -12,7 +12,9 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Warewolf.Data
 {
@@ -114,7 +116,7 @@ namespace Warewolf.Data
                 if (result.Contains("<") && result.Contains(">"))
                 {
                     var isXml = IsXml(result, out bool isFragment, out bool isHtml);
-                    if (!(isXml && !isFragment && !isHtml))
+                    if ((isXml && !isFragment && !isHtml))
                     {
                         result = result.Replace("<DataList>", "").Replace("</DataList>", "");
                         result = result.Replace(string.Concat("<", AdlRoot, ">"), string.Empty).Replace(string.Concat("</", AdlRoot, ">"), "");

@@ -746,6 +746,7 @@ namespace Dev2.Tests.Runtime.WebServer
             const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
             communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.Content).Returns(new Mock<ICommunicationRequestContent>().Object);
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
             var stringInMemoryStream = new MemoryStream(Encoding.Default.GetBytes(data));
@@ -773,7 +774,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
-        public void AbstractWebRequestHandler_GetPostData_GivenPost_FileStreamData_InContext_ShouldReturnBase64RequestBoundVariables()
+        public void AbstractWebRequestHandler_GetPostData_Given_POST_RequestStream_IsMimeMultipartContent_FormData_ShouldReturnNullRequestBoundVariables1()
         {
             //---------------Set up test pack-------------------
             var data = "this is a test";
@@ -870,6 +871,340 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_Given_POST_RequestStream_IsJSON_ShouldReturnNullRequestBoundVariables1()
+        {
+            //---------------Set up test pack-------------------
+            var data = "{\r\n" +
+                "    \"glossary\": {\r\n" +
+                "        \"title\": \"example glossary\",\r\n\t\t\"GlossDiv\": {\r\n" +
+                "            \"title\": \"S\",\r\n\t\t\t\"GlossList\": {\r\n" +
+                "                \"GlossEntry\": {\r\n" +
+                "                    \"ID\": \"SGML\",\r\n\t\t\t\t\t\"SortAs\": \"SGML\",\r\n\t\t\t\t\t\"GlossTerm\": \"Standard Generalized Markup Language\",\r\n\t\t\t\t\t\"Acronym\": \"SGML\",\r\n\t\t\t\t\t\"Abbrev\": \"ISO 8879:1986\",\r\n\t\t\t\t\t\"GlossDef\": {\r\n" +
+                "                        \"para\": \"A meta-markup language, used to create markup languages such as DocBook.\",\r\n\t\t\t\t\t\t\"GlossSeeAlso\": [\"GML\", \"XML\"]\r\n" +
+                "                    },\r\n\t\t\t\t\t\"GlossSee\": \"markup\"\r\n" +
+                "                }\r\n" +
+                "            }\r\n" +
+                "        }\r\n" +
+                "    }\r\n" +
+                "}";
+
+            var dataBytes = Encoding.ASCII.GetBytes(data);
+            var dataStream = new MemoryStream(dataBytes);
+
+            var mockCommunicationRequestContentHeaders = new Mock<ICommunicationRequestContentHeaders>();
+            mockCommunicationRequestContentHeaders.Setup(o => o.Headers)
+                .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { { "Content-type", "text/plain" } } }.Headers);
+
+            var communicationRequestContent = new Mock<ICommunicationRequestContent>();
+            communicationRequestContent.Setup(o => o.IsMimeMultipartContent("some-mime"))
+                .Returns(true);
+            communicationRequestContent.Setup(o => o.ReadAsStreamAsync())
+                .Returns(Task.FromResult(dataStream as Stream));
+            communicationRequestContent.Setup(o => o.Headers)
+                .Returns(mockCommunicationRequestContentHeaders.Object);
+
+            var communicationContext = new Mock<ICommunicationContext>();
+            const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+
+            communicationContext.Setup(context => context.Request.InputStream).Returns(dataStream);
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.Content).Returns(communicationRequestContent.Object);
+
+            var provider = new MultipartMemoryStreamProvider
+            {
+                Contents =
+                {
+                    {
+                        new HttpContentStub(dataBytes)
+                        {
+                            Headers =
+                            {
+                                { "contant-type", "text/plain" },
+                                { "content-disposition", "form-data; name=testStringData" },
+                            }
+                        }
+                    },
+                    {
+                        new HttpContentStub(new UTF8Encoding(true).GetBytes("This is some text in the file."))
+                        {
+                            Headers =
+                            {
+                                { "contant-type", "text/plain" },
+                                { "content-disposition", "form-data; name=testFileData; filename=MyTest.txt" },
+                            }
+                        }
+                    }
+                }
+            };
+
+            var mockStreamContentWrapper = new Mock<IStreamContentWrapper>();
+
+            mockStreamContentWrapper.Setup(o => o.Headers)
+                .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
+            mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
+                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+            mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
+                .Returns(Task<byte[]>.FromResult(dataBytes));
+
+            var mockStreamContentFactory = new Mock<IStreamContentFactory>();
+            mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
+                .Returns(mockStreamContentWrapper.Object);
+
+            var mockMultipartMemoryStreamProviderFactory = new Mock<IMultipartMemoryStreamProviderFactory>();
+            mockMultipartMemoryStreamProviderFactory.Setup(o => o.New())
+                .Returns(provider);
+
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMockInstance(communicationContext.Object, new StreamWriterFactory(), mockStreamContentFactory.Object, mockMultipartMemoryStreamProviderFactory.Object, new MemoryStreamFactory());
+
+            var contextObject = communicationContext.Object;
+            var requestBoundVariables = contextObject.Request.BoundVariables;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(data, postDataMock);
+            Assert.IsNull(requestBoundVariables.Get("testStringData"), "Request.BoundVariables should be null");
+            Assert.IsNull(requestBoundVariables.Get("testFileData"), "Request.BoundVariables should be null");
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_Given_POST_RequestStream_IsXML_ShouldReturnNullRequestBoundVariables1()
+        {
+            //---------------Set up test pack-------------------
+            var data = "<?xml version='1.0' encoding='UTF-8' ?>" +
+                          "<glossary>" +
+                              "<title> example glossary </title>" +
+                                 "<GlossDiv>" +
+                                     "<title>S</title>"+
+                                     "<GlossList>" +
+                                         "<GlossEntry>" +
+                                             "<ID>SGML</ID>" +
+                                             "<SortAs>SGML</SortAs>" +
+                                             "<GlossTerm>Standard Generalized Markup Language</GlossTerm>" +
+                                                "<Acronym>SGML</Acronym>" +
+                                                "<Abbrev>ISO 8879:1986</Abbrev>" +
+                                                   "<GlossDef>" +
+                                                       "<para> A meta - markup language, used to create markup languages such as DocBook.</para>" +
+                                                            "<GlossSeeAlso>GML</GlossSeeAlso>" +
+                                                            "<GlossSeeAlso>XML</GlossSeeAlso>" +
+                                                        "</GlossDef>" +
+                                                        "<GlossSee>markup</GlossSee>" +
+                                                    "</GlossEntry>" +
+                                                "</GlossList>" +
+                                            "</GlossDiv>" +
+                                        "</glossary>";
+
+            var dataBytes = Encoding.ASCII.GetBytes(data);
+            var dataStream = new MemoryStream(dataBytes);
+
+            var mockCommunicationRequestContentHeaders = new Mock<ICommunicationRequestContentHeaders>();
+            mockCommunicationRequestContentHeaders.Setup(o => o.Headers)
+                .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { { "Content-type", "text/plain" } } }.Headers);
+
+            var communicationRequestContent = new Mock<ICommunicationRequestContent>();
+            communicationRequestContent.Setup(o => o.IsMimeMultipartContent("some-mime"))
+                .Returns(true);
+            communicationRequestContent.Setup(o => o.ReadAsStreamAsync())
+                .Returns(Task.FromResult(dataStream as Stream));
+            communicationRequestContent.Setup(o => o.Headers)
+                .Returns(mockCommunicationRequestContentHeaders.Object);
+
+            var communicationContext = new Mock<ICommunicationContext>();
+            const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+
+            communicationContext.Setup(context => context.Request.InputStream).Returns(dataStream);
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.Content).Returns(communicationRequestContent.Object);
+
+            var provider = new MultipartMemoryStreamProvider
+            {
+                Contents =
+                {
+                    {
+                        new HttpContentStub(dataBytes)
+                        {
+                            Headers =
+                            {
+                                { "contant-type", "text/plain" },
+                                { "content-disposition", "form-data; name=testStringData" },
+                            }
+                        }
+                    },
+                    {
+                        new HttpContentStub(new UTF8Encoding(true).GetBytes("This is some text in the file."))
+                        {
+                            Headers =
+                            {
+                                { "contant-type", "text/plain" },
+                                { "content-disposition", "form-data; name=testFileData; filename=MyTest.txt" },
+                            }
+                        }
+                    }
+                }
+            };
+
+            var mockStreamContentWrapper = new Mock<IStreamContentWrapper>();
+
+            mockStreamContentWrapper.Setup(o => o.Headers)
+                .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
+            mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
+                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+            mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
+                .Returns(Task<byte[]>.FromResult(dataBytes));
+
+            var mockStreamContentFactory = new Mock<IStreamContentFactory>();
+            mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
+                .Returns(mockStreamContentWrapper.Object);
+
+            var mockMultipartMemoryStreamProviderFactory = new Mock<IMultipartMemoryStreamProviderFactory>();
+            mockMultipartMemoryStreamProviderFactory.Setup(o => o.New())
+                .Returns(provider);
+
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMockInstance(communicationContext.Object, new StreamWriterFactory(), mockStreamContentFactory.Object, mockMultipartMemoryStreamProviderFactory.Object, new MemoryStreamFactory());
+
+            var contextObject = communicationContext.Object;
+            var requestBoundVariables = contextObject.Request.BoundVariables;
+            //---------------Test Result -----------------------
+            Assert.AreNotEqual(data, postDataMock, "Should NOT be equal as Warewolf removes namespaces and xml declarations");
+            Assert.AreEqual(data.CleanXmlSOAP(), postDataMock, "Should be equal as Warewolf removes namespaces and xml declarations");
+            Assert.IsNull(requestBoundVariables.Get("testStringData"), "Request.BoundVariables should be null");
+            Assert.IsNull(requestBoundVariables.Get("testFileData"), "Request.BoundVariables should be null");
+
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AbstractWebRequestHandler))]
+        public void AbstractWebRequestHandler_GetPostData_Given_POST_RequestStream_XWWWFormUrlencoded_ShouldReturnNullRequestBoundVariables1()
+        {
+            //---------------Set up test pack-------------------
+            var data = string.Empty;
+
+            var dataBytes = Encoding.ASCII.GetBytes(data);
+            var dataStream = new MemoryStream(dataBytes);
+
+            var mockCommunicationRequestContentHeaders = new Mock<ICommunicationRequestContentHeaders>();
+            mockCommunicationRequestContentHeaders.Setup(o => o.Headers)
+                .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { { "Content-type", "text/plain" } } }.Headers);
+
+            var communicationRequestContent = new Mock<ICommunicationRequestContent>();
+            communicationRequestContent.Setup(o => o.IsMimeMultipartContent("some-mime"))
+                .Returns(true);
+            communicationRequestContent.Setup(o => o.ReadAsStreamAsync())
+                .Returns(Task.FromResult(dataStream as Stream));
+            communicationRequestContent.Setup(o => o.Headers)
+                .Returns(mockCommunicationRequestContentHeaders.Object);
+
+            var communicationContext = new Mock<ICommunicationContext>();
+            const string UriString = "http://127.0.0.1:3142/public/Write_FileToLocal.json?FileContent=testdata&wid=1c349dc1-4f05-424c-b15f-01c209571199";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+
+            communicationContext.Setup(context => context.Request.InputStream).Returns(dataStream);
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection { { "FileContent", "some data" } });
+            communicationContext.Setup(context => context.Request.Content).Returns(communicationRequestContent.Object);
+
+            var provider = new MultipartMemoryStreamProvider
+            {
+                Contents =
+                {
+                    {
+                        new HttpContentStub(dataBytes)
+                        {
+                            Headers =
+                            {
+                                { "contant-type", "text/plain" },
+                                { "content-disposition", "form-data; name=testStringData" },
+                            }
+                        }
+                    },
+                    {
+                        new HttpContentStub(new UTF8Encoding(true).GetBytes("This is some text in the file."))
+                        {
+                            Headers =
+                            {
+                                { "contant-type", "text/plain" },
+                                { "content-disposition", "form-data; name=testFileData; filename=MyTest.txt" },
+                            }
+                        }
+                    }
+                }
+            };
+
+            var mockStreamContentWrapper = new Mock<IStreamContentWrapper>();
+
+            mockStreamContentWrapper.Setup(o => o.Headers)
+                .Returns(new StreamContentWrapper(new MemoryStream()) { Headers = { } }.Headers);
+            mockStreamContentWrapper.Setup(o => o.ReadAsMultipartAsync(provider))
+                .Returns(Task<MultipartMemoryStreamProvider>.FromResult(provider));
+            mockStreamContentWrapper.Setup(o => o.ReadAsByteArrayAsync())
+                .Returns(Task<byte[]>.FromResult(dataBytes));
+
+            var mockStreamContentFactory = new Mock<IStreamContentFactory>();
+            mockStreamContentFactory.Setup(o => o.New(It.IsAny<MemoryStream>()))
+                .Returns(mockStreamContentWrapper.Object);
+
+            var mockMultipartMemoryStreamProviderFactory = new Mock<IMultipartMemoryStreamProviderFactory>();
+            mockMultipartMemoryStreamProviderFactory.Setup(o => o.New())
+                .Returns(provider);
+
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var mockCoverageCatalog = new Mock<ITestCoverageCatalog>();
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(new TestAbstractWebRequestDataObjectFactory(dataObject.Object), authorizationService.Object, resourceCatalog.Object, testCatalog.Object, mockCoverageCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMockInstance(communicationContext.Object, new StreamWriterFactory(), mockStreamContentFactory.Object, mockMultipartMemoryStreamProviderFactory.Object, new MemoryStreamFactory());
+
+            var contextObject = communicationContext.Object;
+            var requestBoundVariables = contextObject.Request.BoundVariables;
+            //---------------Test Result -----------------------
+            var fileContent = requestBoundVariables.Get("FileContent");
+            Assert.AreEqual(string.Empty, postDataMock);
+            Assert.IsNotNull(fileContent, "Request.BoundVariables should NOT be null");
+            Assert.AreEqual("some data", fileContent);
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
         public void AbstractWebRequestHandler_GetPostData_GivenJsonDataInContextAndUnknownWebMethod_ShouldReturnEmpty()
@@ -911,6 +1246,7 @@ namespace Dev2.Tests.Runtime.WebServer
             const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
             communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.Content).Returns(new Mock<ICommunicationRequestContent>().Object);
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
             var xmlData = ConvertJsonToXml(data);
@@ -932,8 +1268,14 @@ namespace Dev2.Tests.Runtime.WebServer
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
             var isXml = StringExtension.IsXml(postDataMock);
+
             Assert.IsTrue(isXml);
-            Assert.AreEqual(xmlData, postDataMock);
+            Assert.AreNotEqual(xmlData, postDataMock, "These are nolonger equal because of the CleanXmlSOAP, which should remove the namespaces");
+            
+            var expected = xmlData.CleanXmlSOAP();
+
+            Assert.AreEqual(expected, postDataMock.ToString(), "This xml string should not contain namespaces");
+
         }
 
         static string ConvertJsonToXml(string data)
