@@ -87,7 +87,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
                 if (executeMessage.HasError)
                 {
-                    var failedState = new FailedState(new Exception(executeMessage.Message.ToString()));
+                    var failedState = new FailedState(new Exception(executeMessage.Message?.ToString()));
                     _client.ChangeState(jobId, failedState, ScheduledState.StateName);
                     return GlobalConstants.Failed;
                 }
