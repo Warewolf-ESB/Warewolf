@@ -12,14 +12,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Dev2;
 using Dev2.Common;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Data.TO;
+using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
+using Dev2.Runtime;
+using Dev2.Runtime.Interfaces;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Hangfire.States;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Auditing;
+using enActionType = Dev2.Common.Interfaces.Core.DynamicServices.enActionType;
 
 namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 {
@@ -94,7 +102,11 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestCategory(nameof(HangfireScheduler))]
         public void HangfireScheduler_ResumeJob_OverrideIsFalse_Success()
         {
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
+
             var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
@@ -110,8 +122,27 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var client  = new BackgroundJobClient(jobstorage);
             var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+
+            var errors = new ErrorResultTO();
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(CreateServiceEntry());
+
+            CustomContainer.Register(resourceCatalog.Object);
+
+            var mockResumableExecutionContainer = new Mock<IResumableExecutionContainer>();
+            mockResumableExecutionContainer.Setup(o => o.Execute(out errors, 0)).Verifiable();
+
+            var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
+                .Returns(mockResumableExecutionContainer.Object);
+            CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
+
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
             Assert.AreEqual(GlobalConstants.Success, result);
+
+            mockResumableExecutionContainer.Verify(o => o.Execute(out errors, 0), Times.Once);
+            mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob"), Times.Once);
         }
 
         [TestMethod]
@@ -119,7 +150,11 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestCategory(nameof(HangfireScheduler))]
         public void HangfireScheduler_ResumeJob_OverrideIsTrue_Success()
         {
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
+
             var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
@@ -135,8 +170,27 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var client  = new BackgroundJobClient(jobstorage);
             var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+
+            var errors = new ErrorResultTO();
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(CreateServiceEntry());
+
+            CustomContainer.Register(resourceCatalog.Object);
+
+            var mockResumableExecutionContainer = new Mock<IResumableExecutionContainer>();
+            mockResumableExecutionContainer.Setup(o => o.Execute(out errors, 0)).Verifiable();
+
+            var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
+                .Returns(mockResumableExecutionContainer.Object);
+            CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
+
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, true, "NewEnvironment_Override");
             Assert.AreEqual(GlobalConstants.Success, result);
+
+            mockResumableExecutionContainer.Verify(o => o.Execute(out errors, 0), Times.Once);
+            mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob"), Times.Once);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -282,5 +336,16 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var resumptionDate = scheduler.CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
             Assert.AreEqual(suspensionDate.AddMonths(int.Parse(suspendOptionValue)).ToString(), resumptionDate.ToString());
         }
+
+        private static DynamicService CreateServiceEntry()
+        {
+            var newDs = new DynamicService { Name = HandlesType() };
+            var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            newDs.Actions.Add(sa);
+
+            return newDs;
+        }
+
+        private static string HandlesType() => "WorkflowResume";
     }
 }
