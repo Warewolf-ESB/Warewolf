@@ -35,23 +35,24 @@ namespace Warewolf.Driver.Persistence.Drivers
     {
         private IStateNotifier _stateNotifier = null;
         private JobStorage _jobStorage;
+        private IBackgroundJobClient _client;
 
         public HangfireScheduler()
         {
             _jobStorage = new SqlServerStorage(ConnectionString);
+            _client = new BackgroundJobClient(_jobStorage);
         }
 
-        public HangfireScheduler(JobStorage jobStorage)
+        public HangfireScheduler(IBackgroundJobClient client, JobStorage jobStorage)
         {
             _jobStorage = jobStorage;
+            _client = client;
         }
 
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment)
         {
             try
             {
-                var backgroundJobClient = new BackgroundJobClient(_jobStorage);
-
                 var monitoringApi = _jobStorage.GetMonitoringApi();
                 var jobDetails = monitoringApi.JobDetails(jobId);
                 var jobIsScheduled = jobDetails.History.Where(i =>
@@ -87,7 +88,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 if (executeMessage.HasError)
                 {
                     var failedState = new FailedState(new Exception(executeMessage.Message.ToString()));
-                    backgroundJobClient.ChangeState(jobId, failedState, ScheduledState.StateName);
+                    _client.ChangeState(jobId, failedState, ScheduledState.StateName);
                     return GlobalConstants.Failed;
                 }
 
@@ -110,7 +111,7 @@ namespace Warewolf.Driver.Persistence.Drivers
 
                 _stateNotifier?.LogAdditionalDetail(audit, nameof(ResumeJob));
                 var manuallyResumedState = new ManuallyResumedState(environments.ToString());
-                backgroundJobClient.ChangeState(jobId, manuallyResumedState, ScheduledState.StateName);
+                _client.ChangeState(jobId, manuallyResumedState, ScheduledState.StateName);
                 return GlobalConstants.Success;
             }
             catch (Exception ex)
@@ -126,9 +127,8 @@ namespace Warewolf.Driver.Persistence.Drivers
             var suspensionDate = DateTime.Now;
             var resumptionDate = CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
             var state = new ScheduledState(resumptionDate.ToUniversalTime());
-            var backgroundJobClient = new BackgroundJobClient(_jobStorage);
 
-            var jobId = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
+            var jobId = _client.Create(() => ResumeWorkflow(values, null), state);
             return jobId;
         }
 
