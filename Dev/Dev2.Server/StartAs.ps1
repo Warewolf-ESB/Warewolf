@@ -18,7 +18,7 @@ $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyCont
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
 if ($Cleanup.IsPresent) {
 	if ($WarewolfServerProcess) {
-		$WarewolfServerProcess.Kill()
+		taskkill /IM "Warewolf Server.exe" /T /F
 		$WarewolfServerProcess = $null
 		$WarewolfServerService = $null
 	}
