@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -155,7 +155,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(5000)]
         public void ManageDbServiceModel_TestDbService()
         {
             var mockDataTable = new Mock<IDatabaseService>();
