@@ -20,7 +20,7 @@ Scenario: Executing mySql For Xml testing workflow base
 
 @SubworkflowExecution
 Scenario: Workflow with an assign and remote workflow
-	Given I depend on a valid remote warewolf server
+	Given I depend on a valid remote Warewolf server
 	And I have a workflow "TestAssignWithRemoteWF"
 	And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
 	| variable      | value |
@@ -76,7 +76,7 @@ Scenario: Executing Workflow Service and Decision tool expected bubling out erro
 
 @SubworkflowExecution
 Scenario: Error from workflow service is expected to bubble out
-	Given I depend on a valid remote warewolf server
+	Given I depend on a valid remote Warewolf server
 	And I have a workflow "TestAssignWithRemoteOutputsErrors"
 	And "TestAssignWithRemoteOutputsErrors" contains an Assign "AssignData" as
 	| variable      | value |
