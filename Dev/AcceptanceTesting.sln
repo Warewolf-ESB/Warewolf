@@ -368,6 +368,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.HangfireServer.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warewolf.Common.NetStandard20", "Warewolf.Common.NetStandard20\Warewolf.Common.NetStandard20.csproj", "{A87F5F4B-4098-4895-BF40-67CA23755FBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Common.Interfaces.NetStandard20", "Warewolf.Common.Interfaces.NetStandard20\Warewolf.Common.Interfaces.NetStandard20.csproj", "{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Run Configurations", "Run Configurations", "{6EF4ACBD-74E6-4450-9EA5-C9B988CE1DCB}"
 	ProjectSection(SolutionItems) = preProject
 		.run\Server.run.xml = .run\Server.run.xml
@@ -1428,6 +1430,14 @@ Global
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Debug|x86.Build.0 = Debug|Any CPU
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{4A455098-FFDD-4861-B873-656F960CF0BA}.Release|x86.ActiveCfg = Debug|Any CPU
+		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Debug|x86.Build.0 = Debug|Any CPU
+		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Release|x86.ActiveCfg = Release|Any CPU
+		{0A953FE8-3BA2-4F2C-9F8C-936E7DDBD2A7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

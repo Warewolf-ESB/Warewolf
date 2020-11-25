@@ -247,8 +247,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
         [TestMethod]
-        [Timeout(2000)]
-        public void TestSelectedEnvironmentChanged()
+        [Timeout(5000)]
+        public void TestSelectedEnvironmentChanged_OnDeploySourceViewModel()
         {
             //arrange
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();

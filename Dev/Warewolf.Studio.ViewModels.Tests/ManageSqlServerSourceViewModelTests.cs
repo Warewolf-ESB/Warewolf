@@ -828,8 +828,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestOkCommandCanExecute()
+        [Timeout(10000)]
+        public void TestOkCommandCanExecute_OnSqlServerSourceViewModel()
         {
             //arrange
             _targetUpdateManagerAggregatorDbSource.TestPassed = true;
@@ -941,8 +941,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCancelDBSourceTestCommandExecute()
+        [Timeout(5000)]
+        public void TestCancelSqlServerDBSourceTestCommandExecute()
         {
             //act
             _targetUpdateManagerAggregatorDbSource.CancelTestCommand.Execute(null);

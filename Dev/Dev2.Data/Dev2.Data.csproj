@@ -330,6 +330,7 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Common.Interfaces.NetStandard20\Warewolf.Common.Interfaces.NetStandard20.csproj" />
     <ProjectReference Include="..\Warewolf.Data\Warewolf.Data.csproj">
       <Project>{66DCB0B3-1F33-490F-B874-913CF1F43E49}</Project>
       <Name>Warewolf.Data</Name>

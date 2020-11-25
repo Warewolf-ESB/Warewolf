@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,8 +14,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Xml.Linq;
+using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// <summary>
         /// This must NEVER be persisted - here so that we only instantiate once!
         /// </summary>
-        public WebClient Client { get; set; }
+        public IWebClientWrapper Client { get; set; }
         
         public WebSource()
         {
