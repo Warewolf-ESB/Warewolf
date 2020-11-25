@@ -163,6 +163,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
             Assert.AreEqual(GlobalConstants.Failed, result);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
@@ -183,6 +184,32 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var jobId = scheduler.ScheduleJob(enSuspendOption.SuspendForSeconds, "1", values);
             var state = new EnqueuedState();
+            client.ChangeState(jobId, state, ScheduledState.StateName);
+
+            var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
+            Assert.AreEqual(GlobalConstants.Failed, result);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_ResumeJob_InSucceededState_Failed()
+        {
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("NewEnvironment")},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")}
+            };
+
+            var jobstorage = new MemoryStorage();
+            var client  = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+
+            var jobId = scheduler.ScheduleJob(enSuspendOption.SuspendForSeconds, "1", values);
+            var o = new object();
+            var state = new SucceededState(o,1,1);
             client.ChangeState(jobId, state, ScheduledState.StateName);
 
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
