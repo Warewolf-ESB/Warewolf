@@ -250,7 +250,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = true
             };
-            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<ISuspendExecution>().Object)
+            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<IPersistenceExecution>().Object)
             {
                 SuspendOption = enSuspendOption.SuspendForDays,
                 PersistValue = "15",
@@ -320,7 +320,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = true
             };
-            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<ISuspendExecution>().Object)
+            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<IPersistenceExecution>().Object)
             {
                 SuspendOption = enSuspendOption.SuspendForMonths,
                 PersistValue = "15",
@@ -390,7 +390,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = true
             };
-            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<ISuspendExecution>().Object)
+            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<IPersistenceExecution>().Object)
             {
                 SuspendOption = enSuspendOption.SuspendForMinutes,
                 PersistValue = "15",
@@ -459,7 +459,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = true
             };
-            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<ISuspendExecution>().Object)
+            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<IPersistenceExecution>().Object)
             {
                 SuspendOption = enSuspendOption.SuspendForSeconds,
                 PersistValue = "20",
@@ -529,7 +529,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = true
             };
-            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<ISuspendExecution>().Object);
+            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<IPersistenceExecution>().Object);
             suspendExecutionActivity.SuspendOption = enSuspendOption.SuspendUntil;
             suspendExecutionActivity.PersistValue = suspendUntil.ToString();
             suspendExecutionActivity.AllowManualResumption = true;
@@ -606,7 +606,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {"versionNumber", new StringBuilder(dataObject.VersionNumber.ToString())}
             };
 
-            var mockSuspendExecution = new Mock<ISuspendExecution>();
+            var mockSuspendExecution = new Mock<IPersistenceExecution>();
             mockSuspendExecution.Setup(o => o.CreateAndScheduleJob(enSuspendOption.SuspendUntil, suspendUntil.ToString(), values)).Verifiable();
             var suspendExecutionActivity = new SuspendExecutionActivity(config, mockSuspendExecution.Object)
             {
@@ -691,7 +691,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {"versionNumber", new StringBuilder(dataObject.VersionNumber.ToString())}
             };
 
-            var mockSuspendExecution = new Mock<ISuspendExecution>();
+            var mockSuspendExecution = new Mock<IPersistenceExecution>();
             mockSuspendExecution.Setup(o => o.CreateAndScheduleJob(enSuspendOption.SuspendUntil, suspendUntil.ToString(), values)).Verifiable();
             var suspendExecutionActivity = new SuspendExecutionActivity(config, mockSuspendExecution.Object)
             {
@@ -762,7 +762,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Enable = true
             };
             var suspendUntil = DateTime.Now.AddDays(1);
-            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<ISuspendExecution>().Object)
+            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<IPersistenceExecution>().Object)
             {
                 SuspendOption = enSuspendOption.SuspendUntil,
                 PersistValue = suspendUntil.ToString(),
@@ -831,7 +831,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Enable = false
             };
-            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<ISuspendExecution>().Object)
+            var suspendExecutionActivity = new SuspendExecutionActivity(config, new Mock<IPersistenceExecution>().Object)
             {
                 SuspendOption = enSuspendOption.SuspendUntil,
                 PersistValue = suspendUntil.ToString(),
@@ -904,7 +904,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var expectedSuspendId = Guid.NewGuid().ToString();
             const enSuspendOption suspendOption = enSuspendOption.SuspendForSeconds;
-            var mockSuspendExecution = new Mock<ISuspendExecution>();
+            var mockSuspendExecution = new Mock<IPersistenceExecution>();
             mockSuspendExecution.Setup(o =>
                 o.CreateAndScheduleJob(suspendOption, It.IsAny<string>(),
                     It.IsAny<Dictionary<string, StringBuilder>>())).Returns(expectedSuspendId);
@@ -930,7 +930,29 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(dataObject.IsDebugNested);
             Assert.AreEqual(0, dataObject.ForEachNestingLevel);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void SuspendExecututionActivity_GetFindMissingType_GivenIsNew_ShouldSetManualResumptionActivity()
+        {
+            //---------------Set up test pack-------------------
 
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var suspendExecutionActivity = new SuspendExecutionActivity();
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var enFindMissingType = suspendExecutionActivity.GetFindMissingType();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(enFindMissingType.SuspendExecution, enFindMissingType);
+
+        }
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();

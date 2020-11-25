@@ -142,7 +142,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(2500)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageexchangeModel_CanTest_False_Returns_Success()

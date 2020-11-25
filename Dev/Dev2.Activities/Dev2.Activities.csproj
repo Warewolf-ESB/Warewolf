@@ -109,6 +109,7 @@
     <Compile Include="Activities\Exchange\DsfExchangeEmailNewActivity.cs" />
     <Compile Include="Activities\Factories\ResponseManagerFactory.cs" />
     <Compile Include="Activities\IAdapterActivity.cs" />
+    <Compile Include="Activities\ManualResumptionActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfFileWrite.cs" />
     <Compile Include="Activities\PathOperations\FileReadWithBase64.cs" />
     <Compile Include="Activities\PathOperations\DsfFolderReadActivity.cs" />
@@ -143,7 +144,9 @@
     <Compile Include="Comparer\SimplePluginComparer.cs" />
     <Compile Include="Comparer\SharepointReadListToComparer.cs" />
     <Compile Include="Comparer\SharepointSearchToComparer.cs" />
+    <Compile Include="FindMissingStrategies\ManualResumptionActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\RedisCacheActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\SuspendExecutionActivityFindMissingStrategy.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>

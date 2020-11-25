@@ -111,8 +111,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
-        public void TestGetNameSpaces()
+        [Timeout(500)]
+        public void TestGetPluginNameSpaces()
         {
             var expectedResult = new ObservableCollection<INamespaceItem>();
             var mockPluginSource = new Mock<IPluginSource>();

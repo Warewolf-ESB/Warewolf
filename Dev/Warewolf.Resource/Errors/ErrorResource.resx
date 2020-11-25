@@ -1352,4 +1352,19 @@ Please contact your Windows System Administrator.</value>
   <data name="RedisSourceHasBeenRemoved" xml:space="preserve">
     <value>Redis Source Has Been Removed</value>
   </data>
+  <data name="InnerActivityWithNoContentError" xml:space="preserve">
+    <value>Cannot execute an inner activity with no content</value>
+  </data>
+  <data name="InnerActivityWithNoStartActivityError" xml:space="preserve">
+    <value>Could not find the activity to resume from.</value>
+  </data>
+  <data name="ManualResumptionSuspensionIdBlank" xml:space="preserve">
+    <value>SuspensionID must not be null or empty.</value>
+  </data>
+  <data name="PersistenceSettingsNoConfigured" xml:space="preserve">
+    <value>Could not find persistence config. Please configure in Persistence Settings.</value>
+  </data>
+  <data name="NextNodeRequiredForSuspendExecution" xml:space="preserve">
+    <value>At least 1 activity is required after Suspend Execution.</value>
+  </data>
 </root>
