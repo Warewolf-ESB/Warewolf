@@ -146,6 +146,10 @@
     <Compile Include="Designers2\ExchangeNewEmail\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\ManualResumption\Large.xaml.cs" />
+    <Compile Include="Designers2\ManualResumption\ManualResumptionDesigner.xaml.cs" />
+    <Compile Include="Designers2\ManualResumption\ManualResumptionViewModel.cs" />
+    <Compile Include="Designers2\ManualResumption\Small.xaml.cs" />
     <Compile Include="Designers2\RabbitMQ\Publish2\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1615,6 +1619,18 @@
     <Page Include="Designers2\FindIndex\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ManualResumption\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\ManualResumption\ManualResumptionDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ManualResumption\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\RabbitMQ\Publish2\Large.xaml">
       <SubType>Designer</SubType>

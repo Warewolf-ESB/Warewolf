@@ -11,11 +11,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Data.Interfaces.Enums;
+using Dev2.Interfaces;
 
 namespace Warewolf.Driver.Persistence
 {
     public interface IPersistenceScheduler
     {
+        string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment);
         string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values);
     }
 }

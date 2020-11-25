@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="ControlFlow-ManualResume">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="F1 M 11.7133,11.1933C 23.4267,-0.519997 42.4267,-0.519997 54.14,11.1933C 65.8533,22.912 65.8533,41.9067 54.14,53.62C 42.4267,65.3333 23.4267,65.3333 11.7133,53.62C -3.97364e-007,41.9067 -3.97364e-007,22.912 11.7133,11.1933 Z M 54.9267,32.4067L 33.9267,16.4067L 33.9267,48.4067M 23.4267,48.4067L 29.124,48.4067L 29.124,16.4067L 23.4267,16.4067L 23.4267,48.4067 Z M 13.9267,48.4067L 19.624,48.4067L 19.624,16.4067L 13.9267,16.4067L 13.9267,48.4067 Z " />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingBrush x:Key="ControlFlow-ManualResume-Icon">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="F1 M 11.7133,11.1933C 23.4267,-0.519997 42.4267,-0.519997 54.14,11.1933C 65.8533,22.912 65.8533,41.9067 54.14,53.62C 42.4267,65.3333 23.4267,65.3333 11.7133,53.62C -3.97364e-007,41.9067 -3.97364e-007,22.912 11.7133,11.1933 Z M 54.9267,32.4067L 33.9267,16.4067L 33.9267,48.4067M 23.4267,48.4067L 29.124,48.4067L 29.124,16.4067L 23.4267,16.4067L 23.4267,48.4067 Z M 13.9267,48.4067L 19.624,48.4067L 19.624,16.4067L 13.9267,16.4067L 13.9267,48.4067 Z " />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+</ResourceDictionary>

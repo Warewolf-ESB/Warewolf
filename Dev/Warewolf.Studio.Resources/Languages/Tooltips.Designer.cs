@@ -2833,6 +2833,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If selected, it allows for the input variables to be altered..
+        /// </summary>
+        public static string ManualResumptionOverrideVariablesToolTip {
+            get {
+                return ResourceManager.GetString("ManualResumptionOverrideVariablesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The result of the manual resumption..
+        /// </summary>
+        public static string ManualResumptionResultToolTip {
+            get {
+                return ResourceManager.GetString("ManualResumptionResultToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the SuspensionID returned for the workflow that was suspended..
+        /// </summary>
+        public static string ManualResumptionSuspensionIdToolTip {
+            get {
+                return ResourceManager.GetString("ManualResumptionSuspensionIdToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The @name of the object you want to put the result into.
         /// </summary>
         public static string MappingsObjectNameTooltip {
@@ -6156,6 +6183,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Tool_Flow_Gate {
             get {
                 return ResourceManager.GetString("Tool_Flow_Gate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags: manual resumption.
+        /// </summary>
+        public static string Tool_Flow_ManualResumption {
+            get {
+                return ResourceManager.GetString("Tool_Flow_ManualResumption", resourceCulture);
             }
         }
         

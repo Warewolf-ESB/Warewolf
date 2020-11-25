@@ -119,7 +119,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(2000)]
+        [Timeout(5000)]
         public void MergeServiceTestEnvironments()
         {
             //arrange
@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
         
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestConstructorExpectedProperties()
         {
             Assert.IsNotNull(_target.MergeConnectControlViewModel);
@@ -140,8 +140,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(2000)]
-        public void TestSelectedEnvironmentChanged()
+        [Timeout(5000)]
+        public void TestSelectedEnvironmentChanged_OnManageServiceViewModel()
         {
             //arrange
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
