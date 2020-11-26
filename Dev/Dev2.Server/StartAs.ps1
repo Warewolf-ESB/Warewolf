@@ -4,7 +4,9 @@ Param(
   [string]$Username=$env:SERVER_USERNAME,
   [string]$Password=$env:SERVER_PASSWORD,
   [string]$ResourcesPath,
-  [string]$ServerPath
+  [string]$ServerPath,
+  [switch]$Cleanup,
+  [switch]$Anonymous
 )
 if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
@@ -15,6 +17,32 @@ if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 }
 $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
+if ($Cleanup.IsPresent) {
+	if ($WarewolfServerProcess) {
+		taskkill /IM "Warewolf Server.exe" /T /F
+		$WarewolfServerProcess = $null
+		$WarewolfServerService = $null
+	}
+	$ToClean = @(
+		"%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat",
+		"%LOCALAPPDATA%\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml",
+		"%PROGRAMDATA%\Warewolf\Workspaces",
+		"%PROGRAMDATA%\Warewolf\Server Settings",
+		"%PROGRAMDATA%\Warewolf\VersionControl",
+		"%PROGRAMDATA%\Warewolf\Audits\auditDB.db"
+    )
+	$ToPublish = @(
+		"%PROGRAMDATA%\Warewolf\Resources",
+		"%PROGRAMDATA%\Warewolf\Tests",
+		"%PROGRAMDATA%\Warewolf\VersionControl",
+		"%PROGRAMDATA%\Warewolf\DetailedLogs",
+		"%PROGRAMDATA%\Warewolf\Server Log\wareWolf-Server.log"
+	)
+}
+if ($Anonymous.IsPresent) {
+	New-Item "C:\ProgramData\Warewolf\Server Settings" -ItemType Directory -ErrorAction Ignore
+	"{`"$id`":`"1`",`"$type`":`"Dev2.Services.Security.SecuritySettingsTO, Dev2.Infrastructure`",`"SecretKey`":`"`",`"AuthenticationOverrideWorkflow`":{`"$id`":`"2`",`"$type`":`"Warewolf.Data.NamedGuid, Warewolf.Interfaces`",`"Name`":`"`",`"Value`":`"00000000-0000-0000-0000-000000000000`"},`"WindowsGroupPermissions`":[{`"$id`":`"3`",`"$type`":`"Dev2.Services.Security.WindowsGroupPermission, Dev2.Infrastructure`",`"IsServer`":true,`"ResourcePath`":null,`"ResourceID`":`"00000000-0000-0000-0000-000000000000`",`"ResourceName`":null,`"WindowsGroup`":`"Warewolf Administrators`",`"IsDeleted`":false,`"CanChangeName`":false,`"EnableCellEditing`":false,`"RemoveRow`":{`"$type`":`"Dev2.Runtime.Configuration.ViewModels.Base.RelayCommand, Dev2.Runtime.Configuration`"},`"CanRemove`":false,`"View`":true,`"Execute`":true,`"Contribute`":true,`"DeployTo`":true,`"DeployFrom`":true,`"Administrator`":true,`"IsNew`":false,`"Path`":null},{`"$id`":`"4`",`"$type`":`"Dev2.Services.Security.WindowsGroupPermission, Dev2.Infrastructure`",`"IsServer`":true,`"ResourcePath`":null,`"ResourceID`":`"00000000-0000-0000-0000-000000000000`",`"ResourceName`":null,`"WindowsGroup`":`"Public`",`"IsDeleted`":false,`"CanChangeName`":false,`"EnableCellEditing`":true,`"RemoveRow`":{`"$type`":`"Dev2.Runtime.Configuration.ViewModels.Base.RelayCommand, Dev2.Runtime.Configuration`"},`"CanRemove`":false,`"View`":true,`"Execute`":true,`"Contribute`":true,`"DeployTo`":true,`"DeployFrom`":true,`"Administrator`":true,`"IsNew`":false,`"Path`":null}],`"CacheTimeout`":`"01:00:00`"}" | Out-File "C:\ProgramData\Warewolf\Server Settings\secure.config"
+}
 if ($WarewolfServerProcess) {
 	Sleep 30
 	$pair = "$($Username):$($Password)"

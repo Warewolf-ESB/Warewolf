@@ -26,6 +26,8 @@ using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Common.Interfaces.NetStandard20;
+using Warewolf.Common.NetStandard20;
 using Warewolf.Storage;
 
 

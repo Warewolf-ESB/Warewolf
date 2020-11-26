@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         #region Test commands
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(1000)]
         public void TestClearFilterCommand()
         {
             //act
@@ -422,7 +422,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void Test_remoteModel_OnserverDisconnected()
         {
             //arrange

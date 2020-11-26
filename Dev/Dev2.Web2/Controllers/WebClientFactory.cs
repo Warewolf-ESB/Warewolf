@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,13 +12,22 @@ using System;
 using System.Collections.Specialized;
 using System.Net;
 
+//TODO: consolidate Dev2.Web2.Controllers.IWebClientFactory.cs and Warewolf.Common.NetStandard20.IWebClientFactory 
+//and remove Dev2.Web2.Controllers.IWebClientFactory.cs. This will enable our move to NetStandard20.
 namespace Dev2.Web2.Controllers
 {
+    /// <summary>
+    /// DO NOT use this interface, unless Warewolf.Common.NetStandard20.IWebClientFactory.cs causes issues.
+    /// </summary>
     public interface IWebClientFactory
     {
         IWebClientWrapper New(string userName, string password);
     }
 
+
+    /// <summary>
+    /// DO NOT use this class, unless Warewolf.Common.NetStandard20.WebClientFactory.cs causes issues.
+    /// </summary>
     public class WebClientFactory : IWebClientFactory
     {
         public IWebClientWrapper New(string userName, string password)
@@ -27,11 +36,19 @@ namespace Dev2.Web2.Controllers
         }
     }
 
+
+    /// <summary>
+    /// DO NOT use this interface, unless Warewolf.Common.NetStandard20.IWebClientWrapper.cs causes issues.
+    /// </summary>
     public interface IWebClientWrapper : IDisposable
     {
         byte[] UploadValues(string wareWolfResumeUrl, string method, NameValueCollection nameValueCollection);
     }
 
+
+    /// <summary>
+    /// DO NOT use this class, unless Warewolf.Common.NetStandard20.WebClientWrapper.cs causes issues.
+    /// </summary>
     public class WebClientWrapper : IWebClientWrapper
     {
         private readonly WebClient _webClient;

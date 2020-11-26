@@ -75,7 +75,16 @@ namespace Dev2.Services.Security
 
         static SecuritySettingsTO ProcessSettingsFile(IResourceNameProvider resourceNameProvider, string encryptedData)
         {
-            var decryptData = SecurityEncryption.Decrypt(encryptedData);
+            string decryptData;
+            try
+            {
+                decryptData = SecurityEncryption.Decrypt(encryptedData);
+            }
+            catch (FormatException)
+            {
+                decryptData = encryptedData;
+            }
+
             Dev2Logger.Debug(decryptData, GlobalConstants.WarewolfDebug);
 
             var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);

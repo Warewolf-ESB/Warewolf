@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -9,11 +9,11 @@
 */
 
 using System;
-using System.Net;
 using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Common.NetStandard20;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
@@ -22,10 +22,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestCategory("Runtime Hosting")]
     public class WebSourceTests
     {
-        #region CTOR
-
         [TestMethod]
-        public void WebSourceContructorWithDefaultExpectedInitializesProperties()
+        [TestCategory(nameof(WebSource))]
+        public void WebSource_Constructor_With_Default_Expected_Initializes_Properties()
         {
             var source = new WebSource();
             Assert.AreEqual(Guid.Empty, source.ResourceID);
@@ -33,14 +32,16 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
+        [TestCategory(nameof(WebSource))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void WebSourceContructorWithNullXmlExpectedThrowsArgumentNullException()
+        public void WebSource_Constructor_With_Null_Xml_Expected_Throws_ArgumentNullException()
         {
-            var source = new WebSource(null);
+            _ = new WebSource(null);
         }
 
         [TestMethod]
-        public void WebSourceContructorWithInvalidXmlExpectedDoesNotThrowExceptionAndInitializesProperties()
+        [TestCategory(nameof(WebSource))]
+        public void WebSource_Constructor_With_Invalid_Xml_Expected_Does_Not_Throw_Exception_And_Initializes_Properties()
         {
             var xml = new XElement("root");
             var source = new WebSource(xml);
@@ -50,7 +51,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
-        public void WebSourceContructorWithValidXmlExpectedInitializesProperties()
+        [TestCategory(nameof(WebSource))]
+        public void WebSource_Constructor_With_Valid_Xml_Expected_Initializes_Properties()
         {
             var xml = XmlResource.Fetch("WebSource");
 
@@ -63,12 +65,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Password1234", source.Password);
         }
 
-        #endregion
-
-        #region ToXml
-
         [TestMethod]
-        public void WebSourceToXmlExpectedSerializesProperties()
+        [TestCategory(nameof(WebSource))]
+        public void WebSource_ToXml_Expected_Serializes_Properties()
         {
             var expected = new WebSource
             {
@@ -91,14 +90,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNull(actual.Response);
         }
 
-        #endregion
-
-        #region Dispose
-
         [TestMethod]
-        public void WebSourceDisposeClientExpectedDisposesAndNullsClient()
+        [TestCategory(nameof(WebSource))]
+        public void WebSource_Dispose_Client_Expected_Disposes_And_Nulls_Client()
         {
-            var source = new WebSource { Client = new WebClient() };
+            var source = new WebSource { Client = new WebClientWrapper() };
 
             Assert.IsNotNull(source.Client);
             source.DisposeClient();
@@ -106,15 +102,14 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         [TestMethod]
-        public void WebSourceDisposeExpectedDisposesAndNullsClient()
+        [TestCategory(nameof(WebSource))]
+        public void WebSource_Dispose_Expected_Disposes_And_Nulls_Client()
         {
-            var source = new WebSource { Client = new WebClient() };
+            var source = new WebSource { Client = new WebClientWrapper() };
 
             Assert.IsNotNull(source.Client);
             source.Dispose();
             Assert.IsNull(source.Client);
         }
-        #endregion
-
     }
 }
