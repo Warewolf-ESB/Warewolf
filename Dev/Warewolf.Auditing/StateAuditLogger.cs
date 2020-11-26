@@ -24,7 +24,6 @@ namespace Warewolf.Auditing
 
     public class StateAuditLogger : IStateAuditLogger, IWarewolfLogWriter
     {
-        private IWebSocketWrapper _ws;
         private readonly IWebSocketPool _webSocketFactory;
 
         public IStateListener NewStateListener(IExecutionContext dataObject) => new StateListener(this, dataObject);
@@ -40,13 +39,17 @@ namespace Warewolf.Auditing
 
         public void LogAuditState(Object logEntry)
         {
+            IWebSocketWrapper _ws = null;
             try
             {
                 Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
                 if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
                 {
                     _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
-                    _ws.Connect();
+                    if (!_ws.IsOpen())
+                    {
+                        _ws.Connect();
+                    }
 
                     var auditCommand = new AuditCommand
                     {
@@ -66,7 +69,6 @@ namespace Warewolf.Auditing
                 if (_ws != null)
                 {
                     _webSocketFactory.Release(_ws);
-                    _ws = null;
                 }
             }
         }
@@ -133,15 +135,6 @@ namespace Warewolf.Auditing
         {
             if (!_isDisposed)
             {
-                if (disposing)
-                {
-                    if (_ws != null)
-                    {
-                        _webSocketFactory.Release(_ws);
-                        _ws = null;
-                    }
-                }
-
                 _isDisposed = true;
             }
         }
