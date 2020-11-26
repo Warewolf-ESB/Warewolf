@@ -330,6 +330,9 @@ namespace Dev2.Activities.Specs.Composition
         [Given("I depend on a valid MSSQL server")]
         public void GivenIGetaValidMSSQLServer() => _containerOps = new Depends(Depends.ContainerType.MSSQL);
 
+        [Given("I depend on a valid remote Warewolf server")]
+        public void GivenIGetaValidRemoteWarewolfServer() => _containerOps = new Depends(Depends.ContainerType.CIRemote);
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
