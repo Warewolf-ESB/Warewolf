@@ -405,8 +405,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestOkCommandCanExecute()
+        [Timeout(10000)]
+        public void TestOkCommandCanExecute_OnNewServerSourceViewModel()
         {
             //arrange
             _target.TestPassed = true;
