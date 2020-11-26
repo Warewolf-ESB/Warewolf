@@ -24,7 +24,7 @@ namespace Warewolf.Auditing
 
     public class StateAuditLogger : IStateAuditLogger, IWarewolfLogWriter
     {
-        private readonly IWebSocketPool _webSocketFactory;
+        private readonly IWebSocketPool _webSocketPool;
 
         public IStateListener NewStateListener(IExecutionContext dataObject) => new StateListener(this, dataObject);
 
@@ -32,9 +32,9 @@ namespace Warewolf.Auditing
         {
         }
 
-        public StateAuditLogger(IWebSocketPool webSocketFactory)
+        public StateAuditLogger(IWebSocketPool webSocketPool)
         {
-            _webSocketFactory = webSocketFactory;
+            _webSocketPool = webSocketPool;
         }
 
         public void LogAuditState(Object logEntry)
@@ -45,7 +45,7 @@ namespace Warewolf.Auditing
                 Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
                 if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
                 {
-                    _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
+                    _ws = _webSocketPool.Acquire(Config.Auditing.Endpoint);
                     if (!_ws.IsOpen())
                     {
                         _ws.Connect();
@@ -68,7 +68,7 @@ namespace Warewolf.Auditing
             {
                 if (_ws != null)
                 {
-                    _webSocketFactory.Release(_ws);
+                    _webSocketPool.Release(_ws);
                 }
             }
         }
