@@ -831,8 +831,8 @@ namespace Dev2.Activities.Specs.Composition
             {
                 if (server == "Remote Connection Integration")
                 {
-                    remoteEnvironment.Connection = new ServerProxy(new Uri(
-                        $"http://{_containerOps.Container.IP}:{_containerOps.Container.Port}"), true);
+                    remoteEnvironment.Connection = new ServerProxy(
+                        $"http://{_containerOps.Container.IP}:{_containerOps.Container.Port}", "\\","");
                 }
 
                 EnsureEnvironmentConnected(remoteEnvironment, EnvironmentConnectionTimeout);
