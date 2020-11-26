@@ -58,10 +58,18 @@ namespace Dev2.Network
             ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
         }
 
-        public ServerProxyWithoutChunking(Uri serverUri)
+        public ServerProxyWithoutChunking(Uri serverUri, bool anonymousAccess=false)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
         {
-            AuthenticationType = AuthenticationType.Windows;
+            if (anonymousAccess)
+            {
+                AuthenticationType = AuthenticationType.Public;
+                Principal = null;
+            }
+            else
+            {
+                AuthenticationType = AuthenticationType.Windows;
+            }
         }
 
         static bool IsShuttingDown { get; set; }
@@ -580,8 +588,8 @@ namespace Dev2.Network
 
     class ServerProxyPersistentConnection : ServerProxyWithoutChunking
     {
-        public ServerProxyPersistentConnection(Uri serverUri)
-            : base(serverUri)
+        public ServerProxyPersistentConnection(Uri serverUri, bool anonymousAccess=false)
+            : base(serverUri, true)
         {
             HubConnection.Start();
             StartHubConnectionWatchdogThread();
