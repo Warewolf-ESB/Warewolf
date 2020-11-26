@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [Owner("Nkosinathi Sangweni")]
         public void DestinationOnPropertyChanged_GivenisConnectedChanged_ShouldHandleDeployChanged()
         {
