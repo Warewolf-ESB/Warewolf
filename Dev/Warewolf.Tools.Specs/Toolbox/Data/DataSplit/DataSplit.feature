@@ -1,4 +1,4 @@
-﻿@Data
+@Data
 @MSTest:DeploymentItem:EnableDocker.txt
 @MSTest:DeploymentItem:x86\SQLite.Interop.dll
 Feature: DataSplit
@@ -416,10 +416,10 @@ Scenario: Sending Error in error variable and calling webservice
 	And assign to variable "[[vowels(*).chars]]" split type "Index" at "*" and Include "unselected" without escaping
 	And the direction is "Backward"
     And assign error to variable "[[error]]"
-    And call the web service "http://tst-ci-remote:3142/services/ONERROR/OnError_WriteToFile.xml?errorLog=[[error]]"
+    And call the web service "http://tst-ci-remote:3142/Public/ONERROR/OnError_WriteToFile.xml?errorLog=[[error]]"
     When the data split tool is executed
     Then the execution has "AN" error
-    And the result from the web service "http://tst-ci-remote:3142/services/ONERROR/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
+    And the result from the web service "http://tst-ci-remote:3142/Public/ONERROR/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
     And the debug inputs as
 	| String to Split   | Process Direction | Skip blank rows | # |                       | With  | Using | Include | Escape |
 	| @!?><":}{+_)(*&^~ | Backward          | No              | 1 | [[vowels(*).chars]] = | Index | *     | No      |        |
