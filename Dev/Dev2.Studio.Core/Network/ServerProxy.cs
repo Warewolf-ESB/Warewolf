@@ -47,10 +47,10 @@ namespace Dev2.Network
     public class ServerProxy :  IEnvironmentConnection
     {
         readonly IEnvironmentConnection _wrappedConnection;
-        public ServerProxy(Uri serverUri, bool anonymousAccess=false)
+        public ServerProxy(Uri serverUri)
         {
-           _wrappedConnection = new ServerProxyPersistentConnection(serverUri, true);
-           SetupPassthroughEvents();
+           _wrappedConnection = new ServerProxyPersistentConnection(serverUri);
+            SetupPassthroughEvents();
         }
 
         void SetupPassthroughEvents()
