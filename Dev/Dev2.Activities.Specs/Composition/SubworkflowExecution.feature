@@ -258,7 +258,7 @@ Scenario: Plugin connector backward Compatiblity
 
 @SubworkflowExecution
 Scenario: Executing WF on a remote server
-	Given I depend on a valid remote Warewolf Server
+	Given I depend on a valid remote Warewolf server
     And I have a workflow "Testing - TestRemoteTools"
     And "Testing - TestRemoteTools" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
     | Input to Service | From Variable | Output from Service | To Variable      |
