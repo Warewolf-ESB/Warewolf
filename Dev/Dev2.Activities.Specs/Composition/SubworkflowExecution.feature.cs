@@ -210,7 +210,7 @@ this.FeatureBackground();
             table611.AddRow(new string[] {
                         "[[inputData]] = hello"});
 #line 41
- testRunner.And("the \"WorkflowUsedBySpecs\" in WorkFlow \"TestAssignWithRemoteWF\" debug inputs as", ((string)(null)), table611, "And ");
+  testRunner.And("the \"WorkflowUsedBySpecs\" in WorkFlow \"TestAssignWithRemoteWF\" debug inputs as", ((string)(null)), table611, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table612 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -332,7 +332,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line 79
- testRunner.Given("I depend on a valid remote Warewolf Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I depend on a valid remote Warewolf server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 80
  testRunner.And("I have a workflow \"TestAssignWithRemoteOutputsErrors\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1144,7 +1144,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line 261
- testRunner.Given("I depend on a valid remote Warewolf Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I depend on a valid remote Warewolf server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 262
     testRunner.And("I have a workflow \"Testing - TestRemoteTools\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
