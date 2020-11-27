@@ -578,6 +578,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var name = contentDisposition.Name.Trim('"');
                     var byteData= content.ReadAsByteArrayAsync().Result;
 
+                    var contentType = content.Headers.ContentType;
+                    var mediaType = contentType?.MediaType;
+                    if (mediaType == null || mediaType == "text/plain")
+                    {
+                        valuePairs.Add(name, byteData.ReadToString());
+                        continue;
+                    }
+
                     valuePairs.Add(name, byteData.ToBase64String());
                 }
 
