@@ -399,14 +399,32 @@ namespace Warewolf.Studio.ViewModels
             {
                 SuspendExecutionParent(debugItemContent, debugState, parent);
             }
-            else if (parent.ActivityType == nameof(DsfSequenceActivity))
+            else if (parent.ActivityType == nameof(DsfSelectAndApplyActivity))
             {
-                var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-                if (model?.GetCurrentValue() is DsfSequenceActivity sequence)
+                var parentId = debugItemContent.ID;
+                var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, parentId);
+                if (model?.GetCurrentValue() is DsfSelectAndApplyActivity selectAndApply)
                 {
-                    parent.ActivityID = Guid.Parse(sequence.UniqueID);
+                    parent.ActivityID = Guid.Parse(selectAndApply.UniqueID);
                     AddChildren(debugState, parent);
                 }
+            }
+            else if (parent.ActivityType == nameof(DsfSequenceActivity))
+            {
+                var parentId = debugItemContent.ID;
+                var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, parentId);
+                var uniqueId = Guid.Empty.ToString();
+                if (model is null)
+                {
+                    //TODO: The model is null due to the design surface only containing one sequence. This resolves the list, but the execution does not handle the activity as it should
+                    uniqueId = parentId.ToString();
+                }
+                if (model?.GetCurrentValue() is DsfSequenceActivity sequence)
+                {
+                    uniqueId = sequence.UniqueID;
+                }
+                parent.ActivityID = Guid.Parse(uniqueId);
+                AddChildren(debugState, parent);
             }
             else
             {
