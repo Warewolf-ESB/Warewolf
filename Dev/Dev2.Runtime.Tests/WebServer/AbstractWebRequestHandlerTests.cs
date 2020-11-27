@@ -774,12 +774,15 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
-        public void AbstractWebRequestHandler_GetPostData_Given_POST_RequestStream_IsMimeMultipartContent_FormData_ShouldReturnNullRequestBoundVariables1()
+        public void AbstractWebRequestHandler_GetPostData_Given_POST_RequestStream_IsMimeMultipartContent_FormData_With_DifferentFileTypes_ShouldReturnRequestBoundVariables()
         {
             //---------------Set up test pack-------------------
             var data = "this is a test";
             var dataBytes = Encoding.ASCII.GetBytes(data);
             var dataStream = new MemoryStream(dataBytes);
+
+            var textFileContent = "This is some text in the file.";
+            var pdfFileContent = "this would be the pdf file content to be converted in Warewolf into base64";
 
             var mockCommunicationRequestContentHeaders = new Mock<ICommunicationRequestContentHeaders>();
             mockCommunicationRequestContentHeaders.Setup(o => o.Headers)
@@ -813,18 +816,28 @@ namespace Dev2.Tests.Runtime.WebServer
                         { 
                             Headers = 
                             { 
-                                { "contant-type", "text/plain" },
+                                { "content-type", "text/plain" },
                                 { "content-disposition", "form-data; name=testStringData" },
                             } 
                         }
                     },
                     {
-                        new HttpContentStub(new UTF8Encoding(true).GetBytes("This is some text in the file."))
+                        new HttpContentStub(new UTF8Encoding(true).GetBytes(textFileContent))
                         {
                             Headers =
                             {
-                                { "contant-type", "text/plain" },
-                                { "content-disposition", "form-data; name=testFileData; filename=MyTest.txt" },
+                                { "content-type", "text/plain" },
+                                { "content-disposition", "form-data; name=textFileData; filename=MyTest.txt" },
+                            }
+                        }
+                    },
+                    {
+                        new HttpContentStub(new UTF8Encoding(true).GetBytes(pdfFileContent))
+                        {
+                            Headers =
+                            {
+                                { "content-type", "application/pdf" },
+                                { "content-disposition", "form-data; name=pdfFileData; filename=MyTest.pdf" },
                             }
                         }
                     }
@@ -865,8 +878,9 @@ namespace Dev2.Tests.Runtime.WebServer
             var requestBoundVariables = contextObject.Request.BoundVariables;
             //---------------Test Result -----------------------
             Assert.AreEqual(string.Empty, postDataMock);
-            Assert.AreEqual("dGhpcyBpcyBhIHRlc3Q=", requestBoundVariables.Get("testStringData"));
-            Assert.AreEqual("VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu", requestBoundVariables.Get("testFileData"));
+            Assert.AreEqual(data, requestBoundVariables.Get("testStringData"), "Text string should not be converted to base64 before being sent into the env variable.");
+            Assert.AreEqual(textFileContent, requestBoundVariables.Get("textFileData"), "Text file should return it content into the env variable.");
+            Assert.AreEqual("dGhpcyB3b3VsZCBiZSB0aGUgcGRmIGZpbGUgY29udGVudCB0byBiZSBjb252ZXJ0ZWQgaW4gV2FyZXdvbGYgaW50byBiYXNlNjQ=", requestBoundVariables.Get("pdfFileData"), "PDF file should return it content into the env variable as base64.");
 
         }
 
@@ -925,7 +939,7 @@ namespace Dev2.Tests.Runtime.WebServer
                         {
                             Headers =
                             {
-                                { "contant-type", "text/plain" },
+                                { "content-type", "text/plain" },
                                 { "content-disposition", "form-data; name=testStringData" },
                             }
                         }
@@ -935,7 +949,7 @@ namespace Dev2.Tests.Runtime.WebServer
                         {
                             Headers =
                             {
-                                { "contant-type", "text/plain" },
+                                { "content-type", "text/plain" },
                                 { "content-disposition", "form-data; name=testFileData; filename=MyTest.txt" },
                             }
                         }
@@ -1046,7 +1060,7 @@ namespace Dev2.Tests.Runtime.WebServer
                         {
                             Headers =
                             {
-                                { "contant-type", "text/plain" },
+                                { "content-type", "text/plain" },
                                 { "content-disposition", "form-data; name=testStringData" },
                             }
                         }
@@ -1056,7 +1070,7 @@ namespace Dev2.Tests.Runtime.WebServer
                         {
                             Headers =
                             {
-                                { "contant-type", "text/plain" },
+                                { "content-type", "text/plain" },
                                 { "content-disposition", "form-data; name=testFileData; filename=MyTest.txt" },
                             }
                         }
@@ -1147,7 +1161,7 @@ namespace Dev2.Tests.Runtime.WebServer
                         {
                             Headers =
                             {
-                                { "contant-type", "text/plain" },
+                                { "content-type", "text/plain" },
                                 { "content-disposition", "form-data; name=testStringData" },
                             }
                         }
@@ -1157,7 +1171,7 @@ namespace Dev2.Tests.Runtime.WebServer
                         {
                             Headers =
                             {
-                                { "contant-type", "text/plain" },
+                                { "content-type", "text/plain" },
                                 { "content-disposition", "form-data; name=testFileData; filename=MyTest.txt" },
                             }
                         }
