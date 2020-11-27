@@ -85,7 +85,7 @@ namespace Warewolf.Logger
                 };
                 socket.OnError = exception =>
                 {
-                    _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}");
+                    _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message + exception.InnerException?.Message}");
                 };
 
                 var innerConsumer = new SeriLogConsumer(_loggerContext);

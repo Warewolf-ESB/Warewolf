@@ -70,12 +70,11 @@ namespace Warewolf.Logger
 
         public Task<ConsumerResult> Consume(AuditCommand item, object parameters)
         {
-            _writer.WriteLine("Logging Server OnMessage: Type:" + item.Type);
-
             var msg = item;
             switch (item.Type)
             {
                 case "LogEntry":
+                    _writer.WriteLine("LogEntry: " + msg.Audit.WorkflowName + ' ' + msg.Audit.AuditType + msg.Audit.ExecutionID);
                     _logger.Consume(msg.Audit, parameters);
                     break;
                 case "LogResumeExecutionState":
