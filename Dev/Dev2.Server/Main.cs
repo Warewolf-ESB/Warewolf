@@ -1,4 +1,4 @@
-﻿#pragma warning disable
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime;
 using System.ServiceProcess;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -50,6 +51,17 @@ namespace Dev2
             SetWorkingDirectory();
 
             const int Result = 0;
+
+            if (Environment.GetEnvironmentVariable("WAREWOLF_SERVER_DEBUG") == "1")
+            {
+                Dev2Logger.Info("** Starting In Debugging Mode **", GlobalConstants.WarewolfInfo);
+                while (!Debugger.IsAttached)
+                {
+                    Thread.Sleep(3000);
+                    Console.WriteLine("Still waiting for remote debugging...");
+                }
+                Console.WriteLine("Ready for remote debugging.");
+            }
 
             if (Environment.UserInteractive || (arguments.Any() && arguments[0] == "--interactive"))
             {
