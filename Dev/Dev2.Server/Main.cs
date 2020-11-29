@@ -52,6 +52,7 @@ namespace Dev2
 
             const int Result = 0;
 
+#if DEBUG
             if (Environment.GetEnvironmentVariable("WAREWOLF_SERVER_DEBUG") == "1")
             {
                 Dev2Logger.Info("** Starting In Debugging Mode **", GlobalConstants.WarewolfInfo);
@@ -62,6 +63,7 @@ namespace Dev2
                 }
                 Console.WriteLine("Ready for remote debugging.");
             }
+#endif
 
             if (Environment.UserInteractive || (arguments.Any() && arguments[0] == "--interactive"))
             {
