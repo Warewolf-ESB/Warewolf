@@ -62,7 +62,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestUpdateManagerNull()
         {
@@ -174,7 +174,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
      
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestOkCommandExecuteSource()
         {
             //arrange
