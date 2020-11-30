@@ -114,7 +114,7 @@ Procedure:
             //---------------Execute Test ----------------------
             var cleanXml = xml.ToCleanXml();
             //---------------Test Result -----------------------
-            Assert.AreEqual("<![CDATA[some stuff]]>", cleanXml);
+            Assert.AreEqual("<ADL><![CDATA[some stuff]]></ADL>", cleanXml);
         }
 
         [Test]
