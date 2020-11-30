@@ -16,8 +16,7 @@ Scenario: Create Windows Server Source
 Scenario: Create User Server Source
 	Given I create a server source as
 	| Address                                 | AuthenticationType |
-	| http://tst-ci-remote.premier.local:3142 | User               |
-	And User as "WarewolfAdmin" and with "W@rEw0lf@dm1n" as password
+	| http://tst-ci-remote.premier.local:3142 | Public             |
 	When I Test the connection
 	Then The result is "success"
 
