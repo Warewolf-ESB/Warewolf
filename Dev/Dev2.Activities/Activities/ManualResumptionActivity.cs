@@ -165,7 +165,9 @@ namespace Dev2.Activities
                 throw new Exception(ex.GetAllMessages());
             }
         }
+
         public override enFindMissingType GetFindMissingType() => enFindMissingType.ManualResumption;
+
         private string EvalSuspensionId()
         {
             var debugEvalResult = new DebugEvalResult(SuspensionId, nameof(SuspensionId), _dataObject.Environment, _update);
@@ -187,6 +189,7 @@ namespace Dev2.Activities
             {
                 throw new Exception(ErrorResource.InnerActivityWithNoContentError);
             }
+
             //TODO: Refactor/Rename ForEachInnerActivityTO to not be specific to "ForEach"
             var innerActivity = new ForEachInnerActivityTO(ioMapping);
             return innerActivity;
@@ -200,11 +203,18 @@ namespace Dev2.Activities
             var inputs = TranslateInputMappingToInputs(origInnerInputMapping);
             foreach (var serviceInput in inputs)
             {
-                var inputName = _dataObject.Environment.EvalToExpression(serviceInput.Value, _update);
-                var inputValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(inputName, _update, false, true));
-                dataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
+                var isVariable = ExecutionEnvironment.IsValidVariableExpression(serviceInput.Value, out string errorMessage, 0);
+                if (isVariable)
+                {
+                    var inputName = _dataObject.Environment.EvalToExpression(serviceInput.Value, _update);
+                    var inputValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(inputName, _update, false, true));
+                    dataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
+                }
+                else
+                {
+                    dataObject.Environment.AssignWithFrame(new AssignValue("[[" + serviceInput.Name + "]]", serviceInput.Value), _update);
+                }
             }
-
             return dataObject.Environment.ToJson();
         }
 

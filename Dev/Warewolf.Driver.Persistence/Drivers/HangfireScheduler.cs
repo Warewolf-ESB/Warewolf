@@ -73,7 +73,6 @@ namespace Warewolf.Driver.Persistence.Drivers
                     if (values.ContainsKey("environment"))
                     {
                         values["environment"] = new StringBuilder(environment);
-                        ;
                     }
                 }
                 else
