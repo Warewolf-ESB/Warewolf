@@ -415,7 +415,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var nextNodeId = Guid.NewGuid();
             var workflowInstanceId = Guid.NewGuid();
             var env = CreateExecutionEnvironment();
-            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[UUID]]", "1234", 0);
             env.Assign("[[JourneyName]]", "whatever", 0);
 
             var mockStateNotifier = new Mock<IStateNotifier>();
@@ -447,9 +447,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var suspensionId = "321";
             var overrideInputVariables = true;
-            var environment = env.ToJson();
+            var overrideEnvironment = env.ToJson();
             var mockResumeJob = new Mock<IPersistenceExecution>();
-            mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment)).Verifiable();
+            mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, overrideEnvironment)).Verifiable();
             var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
@@ -464,7 +464,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dataObject.Environment.AllErrors.Count);
-            mockResumeJob.Verify(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment), Times.Once);
+            mockResumeJob.Verify(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, overrideEnvironment), Times.Once);
         }
 
         [TestMethod]
