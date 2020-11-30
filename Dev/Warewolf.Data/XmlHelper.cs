@@ -116,10 +116,14 @@ namespace Warewolf.Data
                 if (result.Contains("<") && result.Contains(">"))
                 {
                     var isXml = IsXml(result, out bool isFragment, out bool isHtml);
-                    if ((isXml && !isFragment && !isHtml))
+                    if (!(isXml && !isFragment && !isHtml))
                     {
                         result = result.Replace("<DataList>", "").Replace("</DataList>", "");
                         result = result.Replace(string.Concat("<", AdlRoot, ">"), string.Empty).Replace(string.Concat("</", AdlRoot, ">"), "");
+                        result = string.Concat("<", AdlRoot, ">", result, "</", AdlRoot, ">");
+                    }
+                    if (isXml && !result.Contains("<DataList>") && !result.Contains("<root>") && !result.Contains("<ADL>"))
+                    {
                         result = string.Concat("<", AdlRoot, ">", result, "</", AdlRoot, ">");
                     }
                 }
