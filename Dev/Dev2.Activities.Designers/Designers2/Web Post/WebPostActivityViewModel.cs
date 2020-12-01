@@ -1,4 +1,13 @@
-#pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -8,7 +17,6 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.Source;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -22,29 +30,23 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-
-
-
-
-
-namespace Dev2.Activities.Designers2.Web_Service_Post
+namespace Dev2.Activities.Designers2.Web_Post
 {
-    [Obsolete("DsfWebPostActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivity.")]
-    public class WebServicePostViewModel : CustomToolWithRegionBase, IWebServicePostViewModel
+    public class WebPostActivityViewModel : CustomToolWithRegionBase, IWebServicePostViewModel
     {
-        IOutputsToolRegion _outputsRegion;
-        IWebPostInputArea _inputArea;
-        ISourceToolRegion<IWebServiceSource> _sourceRegion;
-        readonly ServiceInputBuilder _builder;
-        IErrorInfo _worstDesignError;
+        private IOutputsToolRegion _outputsRegion;
+        private IWebPostInputArea _inputArea;
+        private ISourceToolRegion<IWebServiceSource> _sourceRegion;
+        private readonly ServiceInputBuilder _builder;
+        private IErrorInfo _worstDesignError;
 
-        const string DoneText = "Done";
-        const string FixText = "Fix";
-        const string OutputDisplayName = " - Outputs";
+        private const string DoneText = "Done";
+        private const string FixText = "Fix";
+        private const string OutputDisplayName = " - Outputs";
 
-        readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
+        private readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
-        public WebServicePostViewModel(ModelItem modelItem)
+        public WebPostActivityViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
@@ -118,15 +120,13 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             UpdateWorstError();
         }
 
-        public WebServicePostViewModel(ModelItem modelItem, IWebServiceModel model)
+        public WebPostActivityViewModel(ModelItem modelItem, IWebServiceModel model)
             : base(modelItem)
         {
             Model = model;
             _builder = new ServiceInputBuilder();
             SetupCommonProperties();
         }
-
-        #region Overrides of ActivityDesignerViewModel
 
         public override void Validate()
         {
@@ -259,7 +259,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
 
         public bool IsWorstErrorReadOnly
         {
-            get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
+            get => (bool)GetValue(IsWorstErrorReadOnlyProperty);
             private set
             {
                 ButtonDisplayValue = value ? DoneText : FixText;
@@ -267,22 +267,21 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             }
         }
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
-            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebServicePostViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(WebPostActivityViewModel), new PropertyMetadata(false));
 
         public ErrorType WorstError
         {
-            get { return (ErrorType)GetValue(WorstErrorProperty); }
-            private set { SetValue(WorstErrorProperty, value); }
+            get => (ErrorType)GetValue(WorstErrorProperty);
+            private set => SetValue(WorstErrorProperty, value);
         }
         public static readonly DependencyProperty WorstErrorProperty =
-        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServicePostViewModel), new PropertyMetadata(ErrorType.None));
+        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebPostActivityViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
 
         public DelegateCommand TestInputCommand { get; set; }
 
         string Type => GetProperty<string>();
-
 
         void AddTitleBarMappingToggle()
         {
@@ -324,10 +323,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        #endregion
-
-        #region Overrides of CustomToolWithRegionBase
-
         public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
@@ -363,16 +358,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         }
         public ErrorRegion ErrorRegion { get; private set; }
 
-        #endregion
-
-        #region Implementation of IWebServicePostViewModel
-
         public IOutputsToolRegion OutputsRegion
         {
-            get
-            {
-                return _outputsRegion;
-            }
+            get => _outputsRegion;
             set
             {
                 _outputsRegion = value;
@@ -381,10 +369,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         }
         public IWebPostInputArea InputArea
         {
-            get
-            {
-                return _inputArea;
-            }
+            get => _inputArea;
             set
             {
                 _inputArea = value;
@@ -393,10 +378,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         }
         public ISourceToolRegion<IWebServiceSource> SourceRegion
         {
-            get
-            {
-                return _sourceRegion;
-            }
+            get => _sourceRegion;
             set
             {
                 _sourceRegion = value;
@@ -459,10 +441,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         IWebServiceModel Model { get; set; }
         public bool GenerateOutputsVisible
         {
-            get
-            {
-                return _generateOutputsVisible;
-            }
+            get => _generateOutputsVisible;
             set
             {
                 _generateOutputsVisible = value;
@@ -478,8 +457,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             ErrorRegion.IsEnabled = value;
             SourceRegion.IsEnabled = value;
         }
-
-        #endregion
     }
 }
 
