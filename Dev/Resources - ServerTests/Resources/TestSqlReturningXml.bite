@@ -1,5 +1,5 @@
 
-<Service ID="821f0cf9-858b-43ab-a740-5a037865d980" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="TestSqlReturningXml" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6655.26663">
+<Service ID="821f0cf9-858b-43ab-a740-5a037865d980" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="TestSqlReturningXml" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.0.0">
   <DisplayName>TestSqlReturningXml</DisplayName>
   <Category>TestSqlReturningXml</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
