@@ -2,7 +2,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -90,29 +90,21 @@ namespace Dev2.FindMissingStrategies
             {
                 return GetDsfODBCDatabaseActivityFields(activity);
             }
-            else if (activityType == typeof(DsfWebPostActivity))
-            {
-                return GetDsfWebPostActivityFields(activity);
-            }
             else if (activityType == typeof(DsfWebDeleteActivity))
             {
                 return GetDsfWebDeleteActivityFields(activity);
-            }
-            else if (activityType == typeof(DsfWebPutActivity))
-            {
-                return GetDsfWebPutActivityFields(activity);
             }
             else if (activityType == typeof(WebPutActivity))
             {
                 return GetWebPutActivityFields(activity);
             }
-            else if (activityType == typeof(DsfWebGetActivity))
-            {
-                return GetDsfWebGetActivityFields(activity);
-            }
             else if (activityType == typeof(WebGetActivity))
             {
                 return GetWebGetActivityFields(activity);
+            }
+            else if (activityType == typeof(WebPostActivity))
+            {
+                return GetWebPostActivityFields(activity);
             }
             else if (activityType == typeof(DsfDotNetDllActivity))
             {
@@ -129,6 +121,19 @@ namespace Dev2.FindMissingStrategies
             else if (activityType == typeof(DsfWcfEndPointActivity))
             {
                 return GetDsfWcfEndPointActivityFields(activity);
+            }
+            //DEPRICATED
+            else if (activityType == typeof(DsfWebGetActivity))
+            {
+                return GetDsfWebGetActivityFields(activity);
+            }
+            else if (activityType == typeof(DsfWebPutActivity))
+            {
+                return GetDsfWebPutActivityFields(activity);
+            }
+            else if (activityType == typeof(DsfWebPostActivity))
+            {
+                return GetDsfWebPostActivityFields(activity);
             }
             else
             {
@@ -609,7 +614,11 @@ namespace Dev2.FindMissingStrategies
                 }
                 if (maAct.Headers != null)
                 {
-                    results.AddRange(AddAllHeaders(maAct));
+                    foreach (var nameValue in maAct.Headers)
+                    {
+                        results.Add(nameValue.Name);
+                        results.Add(nameValue.Value);
+                    }
                 }
                 if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                 {
@@ -631,6 +640,54 @@ namespace Dev2.FindMissingStrategies
                     if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                }
+            }
+            return results;
+        }
+
+        private List<string> GetWebPostActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is WebPostActivity webPostActivity)
+            {
+                if (webPostActivity.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(webPostActivity.Inputs));
+                }
+
+                if (webPostActivity.QueryString != null)
+                {
+                    results.Add(webPostActivity.QueryString);
+                }
+                if (webPostActivity.PostData != null)
+                {
+                    results.Add(webPostActivity.PostData);
+                }
+                if (webPostActivity.Headers != null)
+                {
+                    results.AddRange(AddAllHeaders(webPostActivity));
+                }
+                if (!string.IsNullOrEmpty(webPostActivity.OnErrorVariable))
+                {
+                    results.Add(webPostActivity.OnErrorVariable);
+                }
+                if (!string.IsNullOrEmpty(webPostActivity.OnErrorWorkflow))
+                {
+                    results.Add(webPostActivity.OnErrorWorkflow);
+                }
+                if (webPostActivity.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(webPostActivity.ObjectName))
+                    {
+                        results.Add(webPostActivity.ObjectName);
+                    }
+                }
+                else
+                {
+                    if (webPostActivity.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(webPostActivity.Outputs));
                     }
                 }
             }
@@ -901,10 +958,10 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        static List<string> AddAllHeaders(DsfWebPostActivity maAct)
+        private static IEnumerable<string> AddAllHeaders(WebPostActivity webPostActivity)
         {
             var results = new List<string>();
-            foreach (var nameValue in maAct.Headers)
+            foreach (var nameValue in webPostActivity.Headers)
             {
                 results.Add(nameValue.Name);
                 results.Add(nameValue.Value);
