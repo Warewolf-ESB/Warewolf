@@ -20,42 +20,43 @@ Scenario: Executing mySql For Xml testing workflow base
 
 @SubworkflowExecution
 Scenario: Workflow with an assign and remote workflow
-	Given I have a workflow "TestAssignWithRemoteWF"
-	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
-	  | variable      | value |
-	  | [[inputData]] | hello |
+	Given I depend on a valid remote Warewolf server
+	And I have a workflow "TestAssignWithRemoteWF"
+	And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
+	| variable      | value |
+	| [[inputData]] | hello |
 	And "TestAssignWithRemoteWF" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
 	| inputData        | [[inputData]] | output              | [[output]]       |
 	|                  |               | values(*).up        | [[values().up]]  |
 	|                  |               | values(*).low       | [[values().low]] |
-	  When "TestAssignWithRemoteWF" is executed
-	  Then the workflow execution has "NO" error
-	   And the "AssignData" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
-	  | # | Variable        | New Value |
-	  | 1 | [[inputData]] = | hello     |
-	  And the "AssignData" in Workflow "TestAssignWithRemoteWF" debug outputs as    
-	  | # |                       |
-	  | 1 | [[inputData]] = hello |
-	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
-	  |                       |
-	  | [[inputData]] = hello |
-	  And the "Setup Assign (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
-	  | # |                |
-	  | 1 | [[in]] = hello |
-	  And the "Convert Case (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
-	  | # |                |
-	  | 1 | [[in]] = HELLO |
-	  And the "Final Assign (3)" in Workflow "WorkflowUsedBySpecs" debug outputs as
-	  | # |                             |
-	  | 1 | [[output]] = HELLO          |
-	  | 2 | [[values(1).up]] = HELLO |
-	  | 3 | [[values(1).low]] = hello |	  	 
-	  And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteWF" unsorted debug outputs as
-	  |                           |
-	  | [[values(1).up]] = HELLO  |	 
-	  | [[values(1).low]] = hello |
-	  | [[output]] = HELLO        |
+	When "TestAssignWithRemoteWF" is executed
+	Then the workflow execution has "NO" error
+	And the "AssignData" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
+	| # | Variable        | New Value |
+	| 1 | [[inputData]] = | hello     |
+	And the "AssignData" in Workflow "TestAssignWithRemoteWF" debug outputs as    
+	| # |                       |
+	| 1 | [[inputData]] = hello |
+	And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
+	|                       |
+	| [[inputData]] = hello |
+	And the "Setup Assign (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
+	| # |                |
+	| 1 | [[in]] = hello |
+	And the "Convert Case (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
+	| # |                |
+	| 1 | [[in]] = HELLO |
+	And the "Final Assign (3)" in Workflow "WorkflowUsedBySpecs" debug outputs as
+	| # |                             |
+	| 1 | [[output]] = HELLO          |
+	| 2 | [[values(1).up]] = HELLO |
+	| 3 | [[values(1).low]] = hello |	  	 
+	And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteWF" unsorted debug outputs as
+	|                           |
+	| [[values(1).up]] = HELLO  |	 
+	| [[values(1).low]] = hello |
+	| [[output]] = HELLO        |
 
 @SubworkflowExecution
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
@@ -74,38 +75,39 @@ Scenario: Executing Workflow Service and Decision tool expected bubling out erro
 	  | [[thehero(1).name]] =   Chuck Norris                                 |
 
 @SubworkflowExecution
-Scenario: Error from workflow service is expected to buble out
-	  Given I have a workflow "TestAssignWithRemoteOutputsErrors"
-	  And "TestAssignWithRemoteOutputsErrors" contains an Assign "AssignData" as
-	  | variable      | value |
-	  | [[inputData]] | hello |
-	  And "TestAssignWithRemoteOutputsErrors" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  | inputData        | [[inputData]] | output              | [[output]]       |
-	  |                  |               | values(*).up        | [[values().&up]] |
-	  |                  |               | values(*).low       | [[values().low]] |
-	  When "TestAssignWithRemoteOutputsErrors" is executed
-	  Then the "TestAssignWithRemoteOutputsErrors" workflow execution has "AN" error
-	  And the "AssignData" in WorkFlow "TestAssignWithRemoteOutputsErrors" debug inputs as
-	  | # | Variable        | New Value |
-	  | 1 | [[inputData]] = | hello     |
-	  And the "AssignData" in Workflow "TestAssignWithRemoteOutputsErrors" debug outputs as    
-	  | # |                       |
-	  | 1 | [[inputData]] = hello |
-	   And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteOutputsErrors" debug inputs as
-	  |                       |
-	  | [[inputData]] = hello |
-	  And the "Setup Assign (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
-	  | # |                |
-	  | 1 | [[in]] = hello |
-	  And the "Convert Case (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
-	  | # |                |
-	  | 1 | [[in]] = HELLO |
-	  And the "Final Assign (3)" in Workflow "WorkflowUsedBySpecs" debug outputs as
-	  | # |                             |
-	  | 1 | [[output]] = HELLO          |
-	  | 2 | [[values(1).up]] = HELLO |
-	  | 3 | [[values(1).low]] = hello |
+Scenario: Error from workflow service is expected to bubble out
+	Given I depend on a valid remote Warewolf server
+	And I have a workflow "TestAssignWithRemoteOutputsErrors"
+	And "TestAssignWithRemoteOutputsErrors" contains an Assign "AssignData" as
+	| variable      | value |
+	| [[inputData]] | hello |
+	And "TestAssignWithRemoteOutputsErrors" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable      |
+	| inputData        | [[inputData]] | output              | [[output]]       |
+	|                  |               | values(*).up        | [[values().&up]] |
+	|                  |               | values(*).low       | [[values().low]] |
+	When "TestAssignWithRemoteOutputsErrors" is executed
+	Then the "TestAssignWithRemoteOutputsErrors" workflow execution has "AN" error
+	And the "AssignData" in WorkFlow "TestAssignWithRemoteOutputsErrors" debug inputs as
+	| # | Variable        | New Value |
+	| 1 | [[inputData]] = | hello     |
+	And the "AssignData" in Workflow "TestAssignWithRemoteOutputsErrors" debug outputs as    
+	| # |                       |
+	| 1 | [[inputData]] = hello |
+	 And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteOutputsErrors" debug inputs as
+	|                       |
+	| [[inputData]] = hello |
+	And the "Setup Assign (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
+	| # |                |
+	| 1 | [[in]] = hello |
+	And the "Convert Case (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
+	| # |                |
+	| 1 | [[in]] = HELLO |
+	And the "Final Assign (3)" in Workflow "WorkflowUsedBySpecs" debug outputs as
+	| # |                             |
+	| 1 | [[output]] = HELLO          |
+	| 2 | [[values(1).up]] = HELLO |
+	| 3 | [[values(1).low]] = hello |
 
 @SubworkflowExecution
 Scenario Outline: Workflow to Workflow Mappings 
@@ -255,12 +257,13 @@ Scenario: Plugin connector backward Compatiblity
 	Then the workflow execution has "NO" error
 
 @SubworkflowExecution
-Scenario: Executing WF on a remote server 
-         Given I have a workflow "Testing - TestRemoteTools"
-         And "Testing - TestRemoteTools" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
-         | Input to Service | From Variable | Output from Service | To Variable      |
-         When "Testing - TestRemoteTools" is executed
-         Then the workflow execution has "NO" error
+Scenario: Executing WF on a remote server
+	Given I depend on a valid remote Warewolf server
+    And I have a workflow "Testing - TestRemoteTools"
+    And "Testing - TestRemoteTools" contains "TestRemoteTools" from server "Remote Connection Integration" with mapping as
+    | Input to Service | From Variable | Output from Service | To Variable      |
+    When "Testing - TestRemoteTools" is executed
+    Then the workflow execution has "NO" error
 
 @SubworkflowExecution
 Scenario: ForEach with NestedStarTest and Inner WF
