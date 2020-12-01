@@ -84,7 +84,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(2500)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConnectControlViewModelServerNull()
         {

@@ -120,8 +120,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestDeployCommand()
+        [Timeout(250)]
+        public void TestMenuDeployCommand()
         {
             Assert.AreSame(_deployCommandMock.Object, _target.DeployCommand);
         }
