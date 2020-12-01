@@ -26,6 +26,7 @@ using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Persistence;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Warewolf.Configuration;
@@ -52,6 +53,7 @@ namespace Dev2.Settings.Persistence
         private string _selectedPersistenceScheduler;
         private string _hangfireDashboardUrl;
         readonly IExternalProcessExecutor _processExecutor;
+        private IPopupController _popupController;
 
         //this is here to clone the viewmodel
         [ExcludeFromCodeCoverage]
@@ -89,6 +91,8 @@ namespace Dev2.Settings.Persistence
             UpdateHangfireDashboardUrl();
 
             HangfireDashboardBrowserCommand = new DelegateCommand(HangfireDashboardBrowser);
+
+            _popupController = CustomContainer.Get<IPopupController>();
 
             IsDirty = false;
         }
@@ -272,21 +276,14 @@ namespace Dev2.Settings.Persistence
 
         public virtual void Save(PersistenceSettingsTo settings)
         {
-            if (IsDirty)
+            if (!IsPageComplete())
             {
-                var popupController = CustomContainer.Get<IPopupController>();
-                var result = popupController.ShowPersistenceSettingsChanged();
-                if (result == MessageBoxResult.No || result == MessageBoxResult.Cancel)
-                {
-                    return;
-                }
+                return;
             }
-
             var source = _selectedPersistenceDatabaseSource as DbSource;
-            if (source == null)
+            if (source is null)
             {
-                var popupController = CustomContainer.Get<IPopupController>();
-                var result = popupController.ShowPersistenceSettingsMissingValuesChanged();
+                var result = _popupController.ShowPersistenceSettingsMissingValuesChanged();
                 if (result == MessageBoxResult.No || result == MessageBoxResult.Cancel)
                 {
                     return;
@@ -318,6 +315,43 @@ namespace Dev2.Settings.Persistence
             };
             CurrentEnvironment.ResourceRepository.SavePersistenceSettings(CurrentEnvironment, data);
             SetItem(this);
+        }
+
+        private bool IsPageComplete()
+        {
+            if (_selectedPersistenceScheduler is null)
+            {
+                ShowSaveErrorDialog(StringResources.SaveSettingsPermissionsSchedulerErrorMsg);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(_serverName))
+            {
+                ShowSaveErrorDialog(StringResources.SaveSettingsPermissionsServerErrorMsg);
+                return false;
+            }
+
+            if (_selectedPersistenceDatabaseSource is null)
+            {
+                ShowSaveErrorDialog(StringResources.SaveSettingsPermissionsDataSourceErrorMsg);
+                return false;
+            }
+
+            if (IsDirty)
+            {
+                var result = _popupController.ShowPersistenceSettingsChanged();
+                if (result == MessageBoxResult.No || result == MessageBoxResult.Cancel)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void ShowSaveErrorDialog(string error)
+        {
+            _popupController.ShowSaveErrorDialog(error);
         }
 
         [JsonIgnore]
