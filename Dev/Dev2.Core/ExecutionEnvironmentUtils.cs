@@ -1,4 +1,12 @@
-#pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +18,6 @@ using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
@@ -195,7 +202,7 @@ namespace Dev2
         public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList, int update)
         {
 
-            var toLoad = rawPayload.ToString().ToCleanXml(); // clean up the rubish ;)
+            var toLoad = rawPayload.ToString().ToCleanXml();
             var xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0:N}>{1}</Tmp{0:N}>", Guid.NewGuid(), toLoad);
             xDoc.LoadXml(toLoad);
@@ -447,11 +454,12 @@ namespace Dev2
             }
             Uri.TryCreate(webServerUrl, UriKind.RelativeOrAbsolute, out Uri url);
             var jsonSwaggerInfoObject = BuildJsonSwaggerInfoObject(resource);
+            var jsonSwaggerServerObject = BuildJsonSwaggerServerObject(url);
             var definitionObject = GetParametersDefinition(out List<JObject> parameters, dataList, out bool isScalarInputOnly);
             var parametersForSwagger = isScalarInputOnly ? (JToken)new JArray(parameters) : new JArray(new JObject { { "name", "DataList" }, { "in", "query" }, { "required", true }, { "schema", new JObject { { "$ref", "#/definitions/DataList" } } } });
             var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(url.AbsolutePath, parametersForSwagger);
             var jsonSwaggerResponsesObject = BuildJsonSwaggerResponsesObject();
-            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerPathObject, jsonSwaggerResponsesObject, definitionObject, url.Scheme);
+            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject,jsonSwaggerServerObject, jsonSwaggerPathObject, jsonSwaggerResponsesObject, definitionObject, url.Scheme);
             var resultString = GetSerializedSwaggerObject(jsonSwaggerObject);
             return resultString;
         }
@@ -509,17 +517,15 @@ namespace Dev2
             return resultString;
         }
 
-        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerPathObject, JObject jsonSwaggerResponsesObject, JToken definitionObject, string scheme)
+        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject,JObject jsonSwaggerServerObject, JObject jsonSwaggerPathObject, JObject jsonSwaggerResponsesObject, JToken definitionObject, string scheme)
         {
             var jsonSwaggerObject = new JObject
             {
-                { "swagger", new JValue(2) },
+                { "openapi", new JValue(EnvironmentVariables.OpenAPiVersion) },
                 { "info", jsonSwaggerInfoObject },
-                { "host", new JValue(EnvironmentVariables.PublicWebServerUri) },
-                { "basePath", new JValue("/") },
-                { "schemes", new JArray(scheme) },
-                { "produces", new JArray("application/json","application/xml") },
+                { "servers", new JArray(jsonSwaggerServerObject) },
                 { "paths", jsonSwaggerPathObject },
+                { "produces", new JArray("application/json","application/xml") },
                 { "responses", jsonSwaggerResponsesObject },
                 { "definitions", definitionObject }
             };
@@ -562,13 +568,20 @@ namespace Dev2
             return jsonSwaggerPathObject;
         }
 
+        static JObject BuildJsonSwaggerServerObject(Uri url)
+        {
+            var jsonSwaggerServerObject = new JObject
+            {
+                { "url", new JValue(url.Scheme + "://" + url.Host) }
+            };
+            return jsonSwaggerServerObject;
+        }
         static JObject BuildJsonSwaggerInfoObject(IWarewolfResource resource)
         {
             var versionValue = resource.VersionInfo != null ? new JValue(resource.VersionInfo.VersionNumber) : new JValue("1.0.0");
             var jsonSwaggerInfoObject = new JObject
             {
                 { "title", new JValue(resource.ResourceName) },
-                { "description", new JValue("") },
                 { "version", versionValue }
             };
             return jsonSwaggerInfoObject;

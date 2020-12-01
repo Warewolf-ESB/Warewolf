@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -236,6 +236,7 @@ namespace Dev2.Common
 
         public static string WebServerUri { get; set; }
         public static string PublicWebServerUri => DnsName + ":" + Port + "/";
+        public static string OpenAPiVersion => "3.0.1";
         public static string DnsName { get; set; }
         public static int Port { get; set; }
     }
