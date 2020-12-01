@@ -119,6 +119,7 @@
     <Compile Include="Activities\RedisCache\RedisCacheActivity.cs" />
     <Compile Include="Activities\DsfWebPutActivity.cs" />
     <Compile Include="Activities\SuspendExecutionActivity.cs" />
+    <Compile Include="Activities\WebPostActivity.cs" />
     <Compile Include="Comparer\ActivityComparer.cs" />
     <Compile Include="Comparer\GatherSystemInformationTOComparer.cs" />
     <Compile Include="Comparer\DataSplitDTOComparer.cs" />
