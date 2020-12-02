@@ -19,6 +19,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace ActivityUnitTests.ActivityTests
 {
     [TestClass]
+    [DoNotParallelize]
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {
         [TestInitialize]
