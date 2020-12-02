@@ -35,9 +35,13 @@ if ($Cleanup.IsPresent) {
 if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
 } else {
-	if ($ResourcesPath) {
-		Write-Error -Message "Resources path not found at $ResourcesPath\Resources"
-	}
+    if ($ResourcesPath -and (Test-Path "$PSScriptRoot\Resources - $ResourcesPath\Resources")) {
+	    Copy-Item -Path "$PSScriptRoot\Resources - $ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
+    } else {
+	    if ($ResourcesPath) {
+		    Write-Error -Message "Resources path not found at `"$ResourcesPath\Resources`" or `"$PSScriptRoot\Resources - `$ResourcesPath\Resources`""
+	    }
+    }
 }
 if ($Anonymous.IsPresent) {
 	New-Item "C:\ProgramData\Warewolf\Server Settings" -ItemType Directory -ErrorAction Ignore
