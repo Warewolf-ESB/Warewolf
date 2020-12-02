@@ -8,13 +8,6 @@ Param(
   [switch]$Cleanup,
   [switch]$Anonymous
 )
-if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
-	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
-} else {
-	if ($ResourcesPath) {
-		Write-Error -Message "Resources path not found at $ResourcesPath\Resources"
-	}
-}
 $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
 if ($Cleanup.IsPresent) {
@@ -38,6 +31,13 @@ if ($Cleanup.IsPresent) {
 		"%PROGRAMDATA%\Warewolf\DetailedLogs",
 		"%PROGRAMDATA%\Warewolf\Server Log\wareWolf-Server.log"
 	)
+}
+if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
+	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
+} else {
+	if ($ResourcesPath) {
+		Write-Error -Message "Resources path not found at $ResourcesPath\Resources"
+	}
 }
 if ($Anonymous.IsPresent) {
 	New-Item "C:\ProgramData\Warewolf\Server Settings" -ItemType Directory -ErrorAction Ignore
