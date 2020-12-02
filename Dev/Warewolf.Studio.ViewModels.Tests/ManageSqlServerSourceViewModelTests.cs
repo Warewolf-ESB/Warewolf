@@ -699,8 +699,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestTestCommandExecuteAsyncWorkerSuccess()
+        [Timeout(500)]
+        public void SqlServerTestCommandExecuteAsyncWorkerSuccess()
         {
             //arrange
             _targetUpdateManagerAggregatorDbSource.DatabaseNames = new List<string>() { "someName" };
