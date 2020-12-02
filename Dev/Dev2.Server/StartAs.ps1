@@ -13,8 +13,8 @@ $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyCont
 if ($Cleanup.IsPresent) {
 	if ($WarewolfServerProcess) {
 		taskkill /IM "Warewolf Server.exe" /T /F
+		Wait-Process -Name "Warewolf Server"
 		$WarewolfServerProcess = $null
-		$WarewolfServerService = $null
 	}
 	$ToClean = @(
 		"%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat",
