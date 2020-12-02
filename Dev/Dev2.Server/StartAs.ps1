@@ -33,10 +33,10 @@ if ($Cleanup.IsPresent) {
 	)
 }
 if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
-	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
+	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse -Force
 } else {
     if ($ResourcesPath -and (Test-Path "$PSScriptRoot\Resources - $ResourcesPath\Resources")) {
-	    Copy-Item -Path "$PSScriptRoot\Resources - $ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
+	    Copy-Item -Path "$PSScriptRoot\Resources - $ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse -Force
     } else {
 	    if ($ResourcesPath) {
 		    Write-Error -Message "Resources path not found at `"$ResourcesPath\Resources`" or `"$PSScriptRoot\Resources - `$ResourcesPath\Resources`""
