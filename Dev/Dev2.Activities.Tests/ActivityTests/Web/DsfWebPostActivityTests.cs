@@ -69,7 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
+        [Owner("Siphamandla Dube")]
         [TestCategory("DsfWebPostActivity_Constructed")]
         public void DsfWebPostActivity_Constructed_Correctly_ShouldHaveCorrectProperties()
         {
@@ -78,9 +78,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var attributes = typeof(DsfWebPostActivity).GetCustomAttributes(false);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, attributes.Length);
-            var toolDescriptor = attributes[0] as ToolDescriptorInfo;
-            Assert.IsNotNull(toolDescriptor);
-            Assert.AreEqual("POST", toolDescriptor.Name);
+            var firstAttr = attributes.First();
+            var toolDescriptor = firstAttr as ToolDescriptorInfo;
+            Assert.IsNull(toolDescriptor, "Should now be null, this Activity is now Deprecated");
+            Assert.IsTrue(firstAttr is ObsoleteAttribute);
+            Assert.AreNotEqual("POST", toolDescriptor?.Name, "Should nolonger be equal, activity is now Deprecated");
         }
 
         [TestMethod]
