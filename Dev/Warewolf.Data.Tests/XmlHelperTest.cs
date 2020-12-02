@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -92,7 +92,7 @@ Procedure:
         }
 
         [Test]
-        [Author("Candice Daniel")]
+        [Author("Siphamandla Dube")]
         [Category(nameof(XmlHelper))]
         public void XmlHelper_ToCleanXml_GivenDirtXmlWithnaughtyTagsAndValid_ShouldReuturnCleanXml()
         {
@@ -101,11 +101,11 @@ Procedure:
             //---------------Execute Test ----------------------
             var cleanXml = xml.ToCleanXml();
             //---------------Test Result -----------------------
-            Assert.AreEqual("<Person></Person>", cleanXml);
+            Assert.AreEqual("<ADL><Person></Person></ADL>", cleanXml);
         }
 
         [Test]
-        [Author("Candice Daniel")]
+        [Author("Siphamandla Dube")]
         [Category(nameof(XmlHelper))]
         public void XmlHelper_ToCleanXml_NotisXml_NotisFragment_NotisHtml_ShouldReuturnCleanXml()
         {
@@ -116,6 +116,19 @@ Procedure:
             //---------------Test Result -----------------------
             Assert.AreEqual("<ADL><![CDATA[some stuff]]></ADL>", cleanXml);
         }
-       
+
+        [Test]
+        [Author("Siphamandla Dube")]
+        [Category(nameof(XmlHelper))]
+        public void XmlHelper_ToCleanXml_NotisXml_NotisFragment_NotisHtml_ShouldReuturnCleanXml1()
+        {
+            //---------------Set up test pack-------------------
+            var xml = "<?xml version='1.0' encoding='utf-8'?>"
+                        +"<![CDATA[some stuff]]>";
+            //---------------Execute Test ----------------------
+            var cleanXml = xml.CleanXmlSOAP();
+            //---------------Test Result -----------------------
+            Assert.AreEqual("<![CDATA[some stuff]]>", cleanXml);
+        }
     }
 }

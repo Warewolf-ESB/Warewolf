@@ -96,8 +96,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestDeployCommand()
+        [Timeout(250)]
+        public void TestExplorerDeployCommand()
         {
             //arrange
             //act
@@ -1015,7 +1015,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestDeleteFolderCommandExpectException()
         {
             //arrange

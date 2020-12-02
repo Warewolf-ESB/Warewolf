@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
@@ -99,8 +100,12 @@ namespace Dev2.Activities
 
             tmpErrors.MergeErrors(_errorsTo);
 
+            //TODO: Make sure the below changes are tested
+            var  bytes = webRequestResult.Base64StringToByteArray();
+            var response = bytes.ReadToString();
+
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+            ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
 
         }
 
@@ -127,7 +132,7 @@ namespace Dev2.Activities
 
         public IResponseManager ResponseManager { get; set; }
         
-        protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
+        protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
             return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }

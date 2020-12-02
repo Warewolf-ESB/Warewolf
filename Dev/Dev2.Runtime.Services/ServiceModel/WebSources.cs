@@ -141,7 +141,7 @@ namespace Dev2.Runtime.ServiceModel
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
                 if (contentType != null && contentType.ToLowerInvariant().Contains("multipart"))
                 {
-                    return PerformMultipartWebRequest(client, address, data);
+                    return PerformMultipartWebRequest(new WebRequestFactory(), client, address, data);
                 }
 
                 return method == WebRequestMethod.Get ? client.DownloadData(address).ToBase64String() : client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String();
@@ -203,9 +203,9 @@ namespace Dev2.Runtime.ServiceModel
             return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
         }
 
-        public static string PerformMultipartWebRequest(IWebClientWrapper client, string address, string data)
+        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, string data)
         {
-            var wr = (HttpWebRequest)WebRequest.Create(address); //TODO: use: Dev2.Runtime.ESB.Execution.IWebRequestWrapper try factory: WebRequestFactory
+            var wr = webRequestFactory.New(address);
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
@@ -218,7 +218,7 @@ namespace Dev2.Runtime.ServiceModel
                 requestStream.Close();
             }
 
-            using (var wresp = (HttpWebResponse)wr.GetResponse())
+            using (var wresp = wr.GetResponse())
             {
                 if (wresp.StatusCode == HttpStatusCode.OK)
                 {
@@ -239,11 +239,12 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
+        //TODO: ConvertToHttpNewLine should now be made private and tested using IWebRequest  
         internal static byte[] ConvertToHttpNewLine(ref string data)
         {
             data = data.Replace("\r\n", "\n");
             data = data.Replace("\n", GlobalConstants.HTTPNewLine);
-            var byteData = Encoding.UTF8.GetBytes(data);
+            var byteData = data.ToBytesArray();
             return byteData;
         }
 
