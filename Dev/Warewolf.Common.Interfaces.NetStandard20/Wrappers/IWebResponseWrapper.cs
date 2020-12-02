@@ -12,21 +12,13 @@
 using System;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace Warewolf.Common.Interfaces.NetStandard20
 {
-    public interface IWebRequest
+    public interface IWebResponseWrapper : IDisposable
     {
-        string Method { get; set; }
-        string ContentType { get; set; }
-        long ContentLength { get; set; }
-        bool UseDefaultCredentials { get; set; }
-        WebHeaderCollection Headers { get; set; }
-        ICredentials Credentials { get; set; }
-        Uri RequestUri { get; }
-        Stream GetRequestStream();
-        IWebResponseWrapper GetResponse();
-        Task<WebResponse> GetResponseAsync();
+        HttpStatusCode StatusCode { get; }
+
+        Stream GetResponseStream();
     }
 }
