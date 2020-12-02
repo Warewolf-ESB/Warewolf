@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(5000)]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ManageExchangeModel_Initialize_Properties_Returns_Success()

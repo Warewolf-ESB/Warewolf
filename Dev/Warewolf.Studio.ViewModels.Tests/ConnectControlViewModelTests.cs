@@ -686,7 +686,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_CheckVersionConflict_GivenNoVersionConflicts()
