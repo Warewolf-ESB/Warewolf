@@ -374,6 +374,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Run Configurations", "Run C
 	ProjectSection(SolutionItems) = preProject
 		.run\Server.run.xml = .run\Server.run.xml
 		.run\Studio.run.xml = .run\Studio.run.xml
+		.run\Server.docker.run.xml = .run\Server.docker.run.xml
+		.run\AcceptanceTesting.sln.Dockerfile.run.xml = .run\AcceptanceTesting.sln.Dockerfile.run.xml
 	EndProjectSection
 EndProject
 Global
