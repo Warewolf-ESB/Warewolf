@@ -26,7 +26,7 @@ namespace Warewolf.Common.Interfaces.NetStandard20
         ICredentials Credentials { get; set; }
         Uri RequestUri { get; }
         Stream GetRequestStream();
-        IWebResponseWrapper GetResponse();
+        WebResponse GetResponse();
         Task<WebResponse> GetResponseAsync();
     }
 }
