@@ -358,7 +358,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebRequest.Setup(o => o.GetRequestStream())
                 .Returns(new MemoryStream());
             mockWebRequest.Setup(o => o.GetResponse())
-                .Returns(mockWebResponseWrapper.Object);
+                .Returns((HttpWebResponse)mockWebResponseWrapper.Object);
 
             var mockWebRequestFactory = new Mock<IWebRequestFactory>();
             mockWebRequestFactory.Setup(o => o.New(address))
@@ -425,7 +425,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebRequest.Setup(o => o.GetRequestStream())
                 .Returns(new MemoryStream());
             mockWebRequest.Setup(o => o.GetResponse())
-                .Returns(mockWebResponseWrapper.Object);
+                .Returns((HttpWebResponse)mockWebResponseWrapper.Object);
 
             var mockWebRequestFactory = new Mock<IWebRequestFactory>();
             mockWebRequestFactory.Setup(o => o.New(address))
@@ -497,7 +497,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebRequest.Setup(o => o.GetRequestStream())
                 .Returns(new MemoryStream());
             mockWebRequest.Setup(o => o.GetResponse())
-                .Returns(mockWebResponseWrapper.Object);
+                .Returns((HttpWebResponse)mockWebResponseWrapper.Object);
 
             var mockWebRequestFactory = new Mock<IWebRequestFactory>();
             mockWebRequestFactory.Setup(o => o.New(address))

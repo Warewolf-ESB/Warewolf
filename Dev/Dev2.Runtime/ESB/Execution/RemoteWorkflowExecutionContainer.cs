@@ -213,7 +213,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Executing the remote request.", GlobalConstants.WarewolfDebug);
             if (req != null)
             {
-                using (var response = req.GetResponse() as HttpWebResponse)
+                using (var response = req.GetResponse())
                 {
                     if (response != null)
                     {
@@ -350,8 +350,9 @@ namespace Dev2.Runtime.ESB.Execution
                     return serializableResources.FirstOrDefault(resource => resource.ResourceType == "WorkflowService");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Dev2Logger.Debug(GlobalConstants.WarewolfDebug, "Error fetching remote resource: " + e.Message);
                 return null;
             }
             return null;
