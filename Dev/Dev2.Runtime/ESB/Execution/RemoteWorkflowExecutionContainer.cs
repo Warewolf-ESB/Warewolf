@@ -217,9 +217,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (response != null)
                     {
-                        
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        
                         {
                             result = reader.ReadToEnd();
                         }

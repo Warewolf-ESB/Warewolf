@@ -339,7 +339,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
                 .Returns(responseFromWeb);
 
-            var mockWebResponseWrapper = new Mock<IWebResponseWrapper>();
+            var mockWebResponseWrapper = new Mock<HttpWebResponse>();
             mockWebResponseWrapper.Setup(o => o.StatusCode)
                 .Returns(HttpStatusCode.BadRequest);
 
@@ -358,7 +358,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebRequest.Setup(o => o.GetRequestStream())
                 .Returns(new MemoryStream());
             mockWebRequest.Setup(o => o.GetResponse())
-                .Returns((HttpWebResponse)mockWebResponseWrapper.Object);
+                .Returns(mockWebResponseWrapper.Object);
 
             var mockWebRequestFactory = new Mock<IWebRequestFactory>();
             mockWebRequestFactory.Setup(o => o.New(address))
@@ -406,7 +406,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
                 .Returns(responseFromWeb);
 
-            var mockWebResponseWrapper = new Mock<IWebResponseWrapper>();
+            var mockWebResponseWrapper = new Mock<HttpWebResponse>();
             mockWebResponseWrapper.Setup(o => o.StatusCode)
                 .Returns(HttpStatusCode.OK);
 
@@ -425,7 +425,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebRequest.Setup(o => o.GetRequestStream())
                 .Returns(new MemoryStream());
             mockWebRequest.Setup(o => o.GetResponse())
-                .Returns((HttpWebResponse)mockWebResponseWrapper.Object);
+                .Returns(mockWebResponseWrapper.Object);
 
             var mockWebRequestFactory = new Mock<IWebRequestFactory>();
             mockWebRequestFactory.Setup(o => o.New(address))
@@ -476,7 +476,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
                 .Returns(responseFromWeb);
 
-            var mockWebResponseWrapper = new Mock<IWebResponseWrapper>();
+            var mockWebResponseWrapper = new Mock<HttpWebResponse>();
             mockWebResponseWrapper.Setup(o => o.StatusCode)
                 .Returns(HttpStatusCode.OK);
             mockWebResponseWrapper.Setup(o => o.GetResponseStream())
@@ -497,7 +497,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebRequest.Setup(o => o.GetRequestStream())
                 .Returns(new MemoryStream());
             mockWebRequest.Setup(o => o.GetResponse())
-                .Returns((HttpWebResponse)mockWebResponseWrapper.Object);
+                .Returns(mockWebResponseWrapper.Object);
 
             var mockWebRequestFactory = new Mock<IWebRequestFactory>();
             mockWebRequestFactory.Setup(o => o.New(address))
