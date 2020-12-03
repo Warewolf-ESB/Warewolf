@@ -468,12 +468,10 @@ namespace Dev2
             var jsonSwaggerInfoObject = BuildJsonSwaggerInfoObject(resource);
             var jsonSwaggerServerObject = BuildJsonSwaggerServerObject(url);
             var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(url, dataList);
-            var jsonComponentsObject = BuildComponentsObject(dataList);
-            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerServerObject, jsonSwaggerPathObject, jsonComponentsObject);
+            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerServerObject, jsonSwaggerPathObject);
             var resultString = GetSerializedSwaggerObject(jsonSwaggerObject);
             return resultString;
         }
-
 
         static string GetSerializedSwaggerObject(JObject jsonSwaggerObject)
         {
@@ -486,15 +484,14 @@ namespace Dev2
             return resultString;
         }
 
-        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerServerObject, JObject jsonSwaggerPathObject, JToken jsonComponentsObject)
+        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerServerObject, JObject jsonSwaggerPathObject)
         {
             var jsonSwaggerObject = new JObject
             {
                 {"openapi", new JValue(EnvironmentVariables.OpenAPiVersion)},
                 {"info", jsonSwaggerInfoObject},
                 {"servers", new JArray(jsonSwaggerServerObject)},
-                {"paths", jsonSwaggerPathObject},
-                {"components", new JObject {{"schemas", jsonComponentsObject}}}
+                {"paths", jsonSwaggerPathObject}
             };
             return jsonSwaggerObject;
         }
@@ -547,35 +544,51 @@ namespace Dev2
 
         static JToken BuildParametersObject(string dataList)
         {
+            JArray arrayObj = new JArray();
             var dataListTo = new DataListTO(dataList);
-            var scalarInputs = dataListTo.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
-            var recSetInputs = dataListTo.Inputs.Where(DataListUtil.IsValueRecordset).ToList();
-            bool isScalarInputOnly = !recSetInputs.Any();
-            JArray parameterObject;
 
-            if (isScalarInputOnly)
+            var scalarInputs = dataListTo.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
+            foreach (var input in scalarInputs)
             {
-                var parameters = scalarInputs.Select(scalarInput => new JObject
+                var inputObject = new JObject
                 {
-                    {"name", scalarInput},
+                    {"name", input},
                     {"in", "query"},
                     {"required", true},
-                    {"schema", new JObject {{"type", "string"}, {"nullable", true}}}
-                }).ToList();
-                parameterObject = new JArray(parameters);
-            }
-            else
-            {
-                parameterObject = new JArray(new JObject
-                {
-                    {"name", "DataList"},
-                    {"in", "query"},
-                    {"allowEmptyValue", true},
-                    {"required", true}
-                });
+                    {
+                        "schema", new JObject
+                        {
+                            {"type", "string"}
+                        }
+                    }
+                };
+                arrayObj.Add(inputObject);
             }
 
-            var serialized = JsonConvert.SerializeObject(parameterObject);
+            var recSetInputs = dataListTo.Inputs.Where(DataListUtil.IsValueRecordset).ToList();
+            var groupedRecSets = recSetInputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
+            foreach (var groupedRecSet in groupedRecSets)
+            {
+                var recSetName = groupedRecSet.Key;
+                var propObject = BuildPropertyDefinition(groupedRecSet);
+                var recSchemaObject = new Schema
+                {
+                    Type = "object",
+                    Properties = propObject
+                };
+                var serializedSchema = JsonConvert.SerializeObject(recSchemaObject);
+                var deserializedSchema = JsonConvert.DeserializeObject(serializedSchema) as JToken;
+                var recObject = new JObject
+                {
+                    {"name", recSetName},
+                    {"in", "query"},
+                    {"required", true},
+                    {"schema", deserializedSchema}
+                };
+                arrayObj.Add(recObject);
+            }
+
+            var serialized = JsonConvert.SerializeObject(arrayObj);
             var des = JsonConvert.DeserializeObject(serialized) as JToken;
             var definitionObject = des;
             return definitionObject;
@@ -583,53 +596,34 @@ namespace Dev2
 
         static JObject BuildJsonSwaggerResponsesObject(string dataList)
         {
-            var dataListTo = new DataListTO(dataList);
-            var scalarOutputs = dataListTo.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
-            var recSetOutputs = dataListTo.Outputs.Where(DataListUtil.IsValueRecordset);
-            var responseSchema = new Dictionary<string, Schema>
-            {
-                {
-                    "schema", new Schema
-                    {
-                        Type = "object",
-                        Properties = BuildDefinition(scalarOutputs, recSetOutputs),
-                    }
-                }
-            };
-            var serialized = JsonConvert.SerializeObject(responseSchema);
-            var des = JsonConvert.DeserializeObject(serialized) as JToken;
-            var definitionObject = des;
-            var jsonSwaggerContentObject = new JObject
-            {
-                {
-                    "application/json", definitionObject
-                }
-            };
-
-            var jsonSwagger200OutputObject = new JObject
-            {
-                {"description", new JValue("Success")},
-                {"content", jsonSwaggerContentObject}
-            };
-
             var jsonSwaggerResponsesObject = new JObject
             {
-                {"200", jsonSwagger200OutputObject}
+                {
+                    "200", new JObject
+                    {
+                        {"description", new JValue("Success")},
+                        {
+                            "content", new JObject
+                            {
+                                {
+                                    "application/json", BuildResponseSchema(dataList)
+                                }
+                            }
+                        }
+                    }
+                }
             };
             return jsonSwaggerResponsesObject;
         }
 
-        static JObject BuildComponentsObject(string dataList)
+        private static JToken BuildResponseSchema(string dataList)
         {
-            var componentsObject = new JObject();
+            var dataListTo = new DataListTO(dataList);
+            var scalarOutputs = dataListTo.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
+            var recSetOutputs = dataListTo.Outputs.Where(DataListUtil.IsValueRecordset);
 
-            return componentsObject;
-        }
-
-        static Dictionary<string, Schema> BuildDefinition(IEnumerable<string> scalars, IEnumerable<string> recSets)
-        {
-            var groupedRecSets = recSets.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
-            var recSetItems = scalars.ToDictionary(scalarInput => scalarInput, scalarInput => new Schema {Type = "string"});
+            var propertiesObject = scalarOutputs.ToDictionary(scalarInput => scalarInput, scalarInput => new Schema {Type = "string"});
+            var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
             foreach (var groupedRecSet in groupedRecSets)
             {
                 var recSetName = groupedRecSet.Key;
@@ -640,12 +634,24 @@ namespace Dev2
                     Type = "object",
                     Properties = propObject
                 };
-                recSetItems.Add(recSetName, recObject);
+                propertiesObject.Add(recSetName, recObject);
             }
 
-            return recSetItems;
+            var responseSchema = new Dictionary<string, Schema>
+            {
+                {
+                    "schema", new Schema
+                    {
+                        Type = "object",
+                        Properties = propertiesObject,
+                    }
+                }
+            };
+            var serialized = JsonConvert.SerializeObject(responseSchema);
+            var definitionObject = JsonConvert.DeserializeObject(serialized) as JToken;
+            var res = definitionObject;
+            return res;
         }
-
 
         static Dictionary<string, Schema> BuildPropertyDefinition(IGrouping<string, string> groupedRecSet) => groupedRecSet.ToDictionary(DataListUtil.ExtractFieldNameOnlyFromValue, name => new Schema
         {

@@ -71,11 +71,11 @@ namespace Dev2.Tests
             var versionInfo = new VersionInfo { VersionNumber = "1.0" };
             mockResource.Setup(resource => resource.VersionInfo).Returns(versionInfo);
             const string expectedOpenapi = "\"openapi\":\"3.0.1\"";
-            const string expectedInfo = "\"info\":{\"title\":\"resourceName\",\"version\":\"1.0\"}";
+            const string expectedInfo = "\"info\":{\"title\":\"resourceName\",\"description\":\"resourceName\",\"version\":\"1.0\"}";
             const string expectedServers = "\"servers\":[{\"url\":\"http://servername\"}]";
 
             const string expectedEmptyParameters = "\"parameters\":[]";
-            const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
+            const string expectedEmptyResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{}}}}}}}}}}";
 
             //------------Execute Test---------------------------
             var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
@@ -98,16 +98,10 @@ namespace Dev2.Tests
             var versionInfo = new VersionInfo { VersionNumber = "1.0" };
             mockResource.Setup(resource => resource.VersionInfo).Returns(versionInfo);
             const string expectedOpenapi = "\"openapi\":\"3.0.1\"";
-            const string expectedInfo = "\"info\":{\"title\":\"resourceName\",\"version\":\"1.0\"}";
+            const string expectedInfo = "\"info\":{\"title\":\"resourceName\",\"description\":\"resourceName\",\"version\":\"1.0\"}";
             const string expectedServers = "\"servers\":[{\"url\":\"https://servername\"}]";
-            const string expectedParameters = "\"parameters\":[" +
-                                                        "{" +
-                                                            "\"name\":\"Name\"," +
-                                                            "\"in\":\"query\"," +
-                                                            "\"required\":true," +
-                                                            "\"type\":\"string\"" +
-                                                   "}]";
-            const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
+            const string expectedParameters = "\"parameters\":[{\"name\":\"Name\",\"in\":\"query\",\"required\":true,\"schema\":{\"type\":\"string\"}}]";
+            const string expectedEmptyResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{}}}}}}}}}}";
 
             //------------Execute Test---------------------------
             var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
@@ -130,18 +124,11 @@ namespace Dev2.Tests
             var versionInfo = new VersionInfo { VersionNumber = "1.0" };
             mockResource.Setup(resource => resource.VersionInfo).Returns(versionInfo);
             const string expectedOpenapi = "\"openapi\":\"3.0.1\"";
-            const string expectedInfo = "\"info\":{\"title\":\"resourceName\",\"version\":\"1.0\"}";
+            const string expectedInfo = "\"info\":{\"title\":\"resourceName\",\"description\":\"resourceName\",\"version\":\"1.0\"}";
             const string expectedServers = "\"servers\":[{\"url\":\"http://servername\"}]";
+            const string expectedParameters = "\"parameters\":[{\"name\":\"rc\",\"in\":\"query\",\"required\":true,\"schema\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}}}]";
+            const string expectedEmptyResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{}}}}}}}}}}";
 
-            const string expectedParameters = "\"parameters\":[" +
-                                                        "{" +
-                                                            "\"name\":\"DataList\"," +
-                                                            "\"in\":\"query\"," +
-                                                            "\"required\":true," +
-                                                            "\"schema\":{\"$ref\":\"#/definitions/DataList\"}" +
-                                                   "}]";
-            const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
-            const string expectedDataListDefinition = "\"DataList\":{\"type\":\"object\",\"properties\":{\"rc\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}";
             //------------Execute Test---------------------------
             var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
@@ -150,7 +137,6 @@ namespace Dev2.Tests
             StringAssert.Contains(swaggerOutputForService, expectedServers);
             StringAssert.Contains(swaggerOutputForService, expectedParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
-            StringAssert.Contains(swaggerOutputForService, expectedDataListDefinition);
         }
 
         [TestMethod]
@@ -165,17 +151,10 @@ namespace Dev2.Tests
             mockResource.Setup(resource => resource.VersionInfo).Returns(versionInfo);
 
             const string expectedOpenapi = "\"openapi\":\"3.0.1\"";
-            const string expectedInfo = "\"info\":{\"title\":\"resourceName\",\"version\":\"1.0\"}";
+            const string expectedInfo = "\"info\":{\"title\":\"resourceName\",\"description\":\"resourceName\",\"version\":\"1.0\"}";
             const string expectedServers = "\"servers\":[{\"url\":\"https://servername\"}]";
-            const string expectedParameters = "\"parameters\":[" +
-                                                        "{" +
-                                                            "\"name\":\"DataList\"," +
-                                                            "\"in\":\"query\"," +
-                                                            "\"required\":true," +
-                                                            "\"schema\":{\"$ref\":\"#/definitions/DataList\"}" +
-                                                   "}]";
-            const string expectedEmptyResponse = "\"200\":{\"schema\":{\"$ref\":\"#/definition/Output\"}}";
-            const string expectedDataListDefinition = "\"DataList\":{\"type\":\"object\",\"properties\":{\"Name\":{\"type\":\"string\"},\"rc\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}";
+            const string expectedParameters = "\"parameters\":[{\"name\":\"Name\",\"in\":\"query\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"name\":\"rc\",\"in\":\"query\",\"required\":true,\"schema\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}}}]";
+            const string expectedEmptyResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{}}}}}}}}}}";
             //------------Execute Test---------------------------
             var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
@@ -184,8 +163,6 @@ namespace Dev2.Tests
             StringAssert.Contains(swaggerOutputForService, expectedServers);
             StringAssert.Contains(swaggerOutputForService, expectedParameters);
             StringAssert.Contains(swaggerOutputForService, expectedEmptyResponse);
-            StringAssert.Contains(swaggerOutputForService, expectedDataListDefinition);
-            StringAssert.Contains(swaggerOutputForService, "\"produces\":[\"application/json\",\"application/xml\"]");
         }
 
         [TestMethod]
