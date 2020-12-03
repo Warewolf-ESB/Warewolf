@@ -38,7 +38,7 @@ Scenario: Workflow with an assign and remote workflow
 	And the "AssignData" in Workflow "TestAssignWithRemoteWF" debug outputs as    
 	| # |                       |
 	| 1 | [[inputData]] = hello |
-	And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
+	 And the "WorkflowUsedBySpecs" in WorkFlow "TestAssignWithRemoteWF" debug inputs as
 	|                       |
 	| [[inputData]] = hello |
 	And the "Setup Assign (1)" in Workflow "WorkflowUsedBySpecs" debug outputs as
@@ -198,14 +198,15 @@ Scenario: Executing Advanced Recordset testing workflow
 
 @SubworkflowExecution
 Scenario: Executing Sql Store Procedure Executese once
-	  Given I have a workflow "Testing - Sql For Xml"
-	  And "Testing - Sql For Xml" contains "TestSqlExecutesOnce" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Testing - Sql For Xml" is executed
-	  Then the workflow execution has "NO" error
-	  And the "TestSqlExecutesOnce" in Workflow "TestSqlExecutesOnce" debug outputs as
-	  |                     |
-	  | [[Result]] = Passed |
+	Given I depend on a valid MSSQL server
+	And I have a workflow "Testing - Sql For Xml"
+	And "Testing - Sql For Xml" contains "TestSqlExecutesOnce" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable      |
+	When "Testing - Sql For Xml" is executed
+	Then the workflow execution has "NO" error
+	And the "TestSqlExecutesOnce" in Workflow "TestSqlExecutesOnce" debug outputs as
+	|                     |
+	| [[Result]] = Passed |
 
 @SubworkflowExecution
 Scenario: Executing Asynchrounous testing workflow base
