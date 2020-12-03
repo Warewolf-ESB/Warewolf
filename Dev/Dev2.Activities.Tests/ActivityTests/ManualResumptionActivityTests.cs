@@ -327,10 +327,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(errors[0], "<InnerError>Cannot execute an inner activity with no content</InnerError>");
         }
 
-           [TestMethod]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManualResumptionActivity))]
-        public void ManualResumptionActivity_Execute_OverrideInputVariables_True_Success()
+        public void ManualResumptionActivity_Execute_OverrideInputVariables_VariableInput_True_Success()
         {
             //------------Setup for test--------------------------
             var activity = CreateWorkflow();
@@ -395,6 +395,76 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dataObject.Environment.AllErrors.Count);
             mockResumeJob.Verify(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Execute_OverrideInputVariables_NonVariableInput_True_Success()
+        {
+            //------------Setup for test--------------------------
+            var activity = CreateWorkflowNoVariable();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "1234", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentId = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentId,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var suspensionId = "321";
+            var overrideInputVariables = true;
+            var overrideEnvironment = env.ToJson();
+            var mockResumeJob = new Mock<IPersistenceExecution>();
+            mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, overrideEnvironment)).Verifiable();
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            {
+                Response = "[[result]]",
+                OverrideInputVariables = overrideInputVariables,
+                SuspensionId = suspensionId,
+                OverrideDataFunc = activityFunction,
+            };
+
+            manualResumptionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            manualResumptionActivity.Execute(dataObject, 0);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, dataObject.Environment.AllErrors.Count);
+            mockResumeJob.Verify(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, overrideEnvironment), Times.Once);
         }
 
         [TestMethod]
@@ -535,8 +605,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var enFindMissingType = manualResumptionActivity.GetFindMissingType();
             //---------------Test Result -----------------------
             Assert.AreEqual(enFindMissingType.ManualResumption, enFindMissingType);
-
         }
+
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
@@ -549,6 +619,18 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ServiceName = "InnerService",
                 DisplayName = "TestService",
                 InputMapping = ActivityStrings.ManualResumption_Input_Mapping,
+                OutputMapping = ActivityStrings.ManualResumption_Output_Mapping,
+            };
+
+            return activity;
+        }
+        DsfActivity CreateWorkflowNoVariable()
+        {
+            var activity = new DsfActivity
+            {
+                ServiceName = "InnerService",
+                DisplayName = "TestService",
+                InputMapping = ActivityStrings.ManualResumption_Input_Mapping_NoVariable,
                 OutputMapping = ActivityStrings.ManualResumption_Output_Mapping,
             };
 
