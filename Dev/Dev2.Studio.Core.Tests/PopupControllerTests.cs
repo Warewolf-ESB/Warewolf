@@ -978,7 +978,7 @@ namespace Dev2.Core.Tests
             var resourceName = "testName";
             var buttons = MessageBoxButton.YesNoCancel;
             var expectedDescription = "You are about to make changes to the source assigned to log queries." + Environment.NewLine
-                                                                                                             + "In doing so, you will need to manually restart the logger for the changes to take effect." + Environment.NewLine
+                                                                                                             + "In doing so, you will need to manually restart the warewolf server for the changes to take effect." + Environment.NewLine
                                                                                                              + "Would you like to continue to save the changes? " + Environment.NewLine +
                                                                                                              "-----------------------------------------------------------------" +
                                                                                                              Environment.NewLine +
