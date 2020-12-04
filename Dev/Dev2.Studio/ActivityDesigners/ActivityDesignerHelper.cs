@@ -111,6 +111,7 @@ using Dev2.Activities.Designers2.WebGet;
 using Dev2.Activities.Designers2.Web_Put;
 using Dev2.Activities.Designers2.SuspendExecution;
 using Dev2.Activities.Designers2.ManualResumption;
+using Dev2.Activities.Designers2.Web_Post;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -118,6 +119,13 @@ namespace Dev2.Studio.ActivityDesigners
     {
         public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
             {
+                // DEPRECATED
+                { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
+                { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
+                { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
+                { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
+
+                // EXISTING
                 { typeof(DsfDotNetMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfDotNetMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
@@ -152,7 +160,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPathDelete), typeof(DeleteDesigner) },
                 { typeof(DsfFileRead), typeof(ReadFileDesigner) },
                 { typeof(FileReadWithBase64), typeof(ReadFileWithBase64Designer) },
-                { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
                 { typeof(FileWriteActivity), typeof(WriteFileActivityDesigner) },
                 { typeof(DsfFolderRead), typeof(Activities.Designers2.ReadFolder.ReadFolderDesigner) },
                 { typeof(DsfFolderReadActivity), typeof(Activities.Designers2.ReadFolderNew.ReadFolderDesigner) },
@@ -185,11 +192,9 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfExchangeEmailNewActivity),typeof(Activities.Designers2.ExchangeNewEmail.ExchangeEmailDesigner) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
-                { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                 { typeof(WebGetActivity), typeof(WebGetActivityDesigner) },
-                { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
+                { typeof(WebPostActivity), typeof(WebPostActivityDesigner) },
                 { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
-                { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
                 { typeof(WebPutActivity), typeof(WebPutActivityDesigner) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },

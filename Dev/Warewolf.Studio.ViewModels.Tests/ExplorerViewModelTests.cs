@@ -484,7 +484,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(500)]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(ExplorerViewModel))]
         public async Task ExplorerViewModel_TestServerConnected()

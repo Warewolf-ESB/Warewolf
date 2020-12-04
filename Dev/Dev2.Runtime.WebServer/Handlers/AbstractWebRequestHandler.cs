@@ -19,6 +19,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Web;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
@@ -50,6 +51,7 @@ using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
+    //TODO: this class can be broken down and resulting classes tested independantly 
     public abstract class AbstractWebRequestHandler : IRequestHandler
     {
         string _location;
@@ -520,24 +522,30 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
             {
+                NameValueCollection pairs;
+                if (ctx.Request.Content.IsMimeMultipartContent("form-data"))
+                {
+                    pairs = ExtractMultipartFormDataArgumentsFromDataList(ctx, reader);
+                    return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
+                }
+
                 var data = reader.ReadToEnd();
-                if (DataListUtil.IsXml(data) || DataListUtil.IsJson(data))
+
+                if (data.IsXml(out XDocument _))
+                {
+                    return data.CleanXmlSOAP();
+                }
+
+                if (DataListUtil.IsJson(data))
                 {
                     return data;
                 }
 
-                NameValueCollection pairs;
-                if (ctx.Request.Content.IsMimeMultipartContent("form-data"))
-                {
-                    pairs = ExtractMultipartFormDataArgumentsFromDataList(ctx, data);
-                    return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
-                }
-                
                 pairs = ExtractArgumentsFromDataListOrQueryString(ctx, data);
                 return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
             }
 
-            private NameValueCollection ExtractMultipartFormDataArgumentsFromDataList(ICommunicationContext ctx, string data)
+            private NameValueCollection ExtractMultipartFormDataArgumentsFromDataList(ICommunicationContext ctx, StreamReader reader)
             {
                 var provider = _multipartMemoryStreamProviderFactory.New();
                 var tempStream = _memoryStreamFactory.New();
@@ -545,7 +553,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var reqContentStream = ctx.Request.Content.ReadAsStreamAsync().Result;
                 reqContentStream.CopyTo(tempStream);
 
-                var byteArray = data.Base64StringToByteArray();
+                var byteArray = reader.BaseStream.ToByteArray();
                 var stream = _memoryStreamFactory.New(byteArray);
                 stream.CopyTo(tempStream);
                 
@@ -569,6 +577,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var contentDisposition = content.Headers.ContentDisposition;
                     var name = contentDisposition.Name.Trim('"');
                     var byteData= content.ReadAsByteArrayAsync().Result;
+
+                    var contentType = content.Headers.ContentType;
+                    var mediaType = contentType?.MediaType;
+                    if (mediaType == null || mediaType == "text/plain")
+                    {
+                        valuePairs.Add(name, byteData.ReadToString());
+                        continue;
+                    }
 
                     valuePairs.Add(name, byteData.ToBase64String());
                 }
@@ -614,7 +630,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         continue;
                     }
 
-                    if (key.IsXml() || key.IsJSON() || (key.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && key.ToLowerInvariant().Contains("<\\DataList>".ToLowerInvariant())))
+                    if (key.IsXml(out XDocument _) || key.IsJSON() || (key.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && key.ToLowerInvariant().Contains("<\\DataList>".ToLowerInvariant())))
                     {
                         return key; //We have a workspace id and XML DataList
                     }

@@ -1,5 +1,4 @@
-#pragma warning disable
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -31,15 +30,17 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    [Obsolete("DsfWebPostActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivity.")]
-    public class DsfWebPostActivity:DsfActivity,IEquatable<DsfWebPostActivity>
+    [ToolDescriptorInfo("WebMethods", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Post")]
+    public class WebPostActivity : DsfActivity, IEquatable<WebPostActivity>
     {
         public IList<INameValue> Headers { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
         public string PostData { get; set; }
 
-        public DsfWebPostActivity()
+        public bool IsPostDataBase64 { get; set; }
+
+        public WebPostActivity()
         {
             Type = "POST Web Method";
             DisplayName = "POST Web Method";
@@ -81,8 +82,17 @@ namespace Dev2.Activities
             AddDebugItem(new DebugItemStaticDataParams("", "Post Data"), debugItem);
             AddDebugItem(new DebugEvalResult(PostData, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
+
+            if (IsPostDataBase64)
+            {
+                debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams("", nameof(IsPostDataBase64)), debugItem);
+                AddDebugItem(new DebugEvalResult(IsPostDataBase64.ToString(), "", env, update), debugItem);
+                _debugInputs.Add(debugItem);
+            }
+
             debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "Headers"), debugItem);
+            AddDebugItem(new DebugItemStaticDataParams("", nameof(Headers)), debugItem);
             AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
@@ -100,7 +110,7 @@ namespace Dev2.Activities
 
             tmpErrors.MergeErrors(_errorsTo);
 
-            var  bytes = webRequestResult.Base64StringToByteArray();
+            var bytes = webRequestResult.Base64StringToByteArray();
             var response = bytes.ReadToString();
 
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
@@ -130,13 +140,13 @@ namespace Dev2.Activities
         }
 
         public IResponseManager ResponseManager { get; set; }
-        
-        protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
+
+        protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
         {
             return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
 
-        public WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
+        public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
         {
             ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
             var webclient = new WebClient();
@@ -144,7 +154,7 @@ namespace Dev2.Activities
             {
                 foreach (var nameValue in head)
                 {
-                    if (!String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
+                    if (!string.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
                     {
                         webclient.Headers.Add(nameValue.Name, nameValue.Value);
                     }
@@ -165,8 +175,8 @@ namespace Dev2.Activities
             webclient.BaseAddress = address;
             return webclient;
         }
-        
-        public bool Equals(DsfWebPostActivity other)
+
+        public bool Equals(WebPostActivity other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -178,7 +188,11 @@ namespace Dev2.Activities
                 return true;
             }
 
-            return base.Equals(other) && Equals(Headers, other.Headers) && string.Equals(QueryString, other.QueryString) && Equals(OutputDescription, other.OutputDescription) && string.Equals(PostData, other.PostData);
+            return base.Equals(other) && Equals(Headers, other.Headers) &&
+                   string.Equals(QueryString, other.QueryString) &&
+                   Equals(OutputDescription, other.OutputDescription) &&
+                   string.Equals(PostData, other.PostData) &&
+                   Equals(IsPostDataBase64, other.IsPostDataBase64);
         }
 
         public override bool Equals(object obj)
@@ -198,7 +212,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((DsfWebPostActivity) obj);
+            return Equals((WebPostActivity) obj);
         }
 
         public override int GetHashCode()
@@ -210,6 +224,7 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (PostData != null ? PostData.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (IsPostDataBase64.GetHashCode());
                 return hashCode;
             }
         }

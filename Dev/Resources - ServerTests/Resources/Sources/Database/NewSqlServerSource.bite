@@ -1,0 +1,22 @@
+
+<Source ID="b9184f70-64ea-4dc5-b23b-02fcd5f91082" Name="NewSqlServerSource" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAQsEFqpvBk0yLrFJC0XbDAAQAAAACAAAAAAADZgAAwAAAABAAAAC6b+xXSZIfa1YAOY6+qK6GAAAAAASAAACgAAAAEAAAAG8yd+rn8SoMwhthQ1BbvLXwAAAAKEZs7b6mcwVwzr9heN+2pnW+24Jga1gDk/3YShh8eEhn7jPijlpImfsM0PFgPY4GyNwygl3OM/1THOwCBEFXruPVVZJ65HfHHESlkBzvGIMqQEZHWStjWwe5uCpG54zkQvx+YuPXzWRm7iT/J0iuV0a6DJBORlGMC0yu/zYnpZR9yukzs0Crttszqn7muFY17HFo6s0+yVbRAjyW6/cxDOUlnIO0+S14xAE/BJXfxRu0YEytViJbV1E0eSy0VspvJ8zkGx1RE/0+UibQDHzlUZSNYame+9nJ/Agvz0kpPyXWzESSOn+lL2/+V196Ys/zFAAAAF5YOPXx24oXdfxA+SQjLXgCu9Vl" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>NewSqlServerSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2020-12-01T10:22:38.7139838+02:00" Reason="" User="PREMIER\Siphamandla.Dube" VersionNumber="2" ResourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082" VersionId="f2a7a860-a9b5-45a8-9a43-c79a970711fb" />
+</Source>

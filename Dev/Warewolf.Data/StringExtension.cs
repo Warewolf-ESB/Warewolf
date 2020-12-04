@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Warewolf.Data
 {
@@ -198,6 +199,48 @@ namespace Warewolf.Data
             return stringa == null && stringb == null ||
                 stringa != null &&
                 stringa.ToLowerInvariant().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLowerInvariant().ExceptChars(new[] { ' ', '\t', '\n', '\r' }));
+        }
+
+        public static bool IsXml(this string input, out XDocument output)
+        {
+            if (!string.IsNullOrEmpty(input) && input.TrimStart().StartsWith("<"))
+            {
+                try
+                {
+                    output = XDocument.Parse(input);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    output = new XDocument();
+                    return false;
+                }
+            }
+            else
+            {
+                output = new XDocument();
+                return false;
+            }
+        }
+
+        public static string CleanXmlSOAP(this string input)
+        {
+            if (input.Contains("<?xml"))
+            {
+                input = input.Substring(input.IndexOf("?>") + 2).Trim();
+            }
+
+            if (input.IsXml(out XDocument outputDoc))
+            {
+                outputDoc.Descendants()
+                .Attributes()
+                .Where(o => o.IsNamespaceDeclaration)
+                .Remove();
+
+                input = outputDoc.ToString();
+            }
+
+            return input = Regex.Replace(input, $@"((?<=\</|\<)xmlns:|xmlns=""[^""]+"")", "").Trim();
         }
     }
 }
