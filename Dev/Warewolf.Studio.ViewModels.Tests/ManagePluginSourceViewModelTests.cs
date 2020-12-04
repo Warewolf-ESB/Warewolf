@@ -278,7 +278,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(500)]
         public void TestOkCommandCanExecuteDll()
         {
             //arrange
@@ -658,8 +658,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCanSaveDll()
+        [Timeout(250)]
+        public void TestCanSaveDllPlugin()
         {
             //arrange
             var someassemblynameDll = EnvironmentVariables.WorkspacePath + @"\someAssemblyName.dll";

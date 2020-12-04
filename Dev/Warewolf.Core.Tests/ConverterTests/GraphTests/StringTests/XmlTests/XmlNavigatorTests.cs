@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,40 +21,73 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
     [TestClass]
     public class XmlNavigatorTests
     {
-        string TestData => @"<Company Name='Dev2'>
-    <Motto>Eat lots of cake</Motto>
-    <PreviousMotto/>
-	<Departments TestAttrib='testing'>
-		<Department Name='Dev'>
-			<Employees>
-				<Person Name='Brendon' Surename='Page' />
-				<Person Name='Jayd' Surename='Page' />
-			</Employees>
-		</Department>
-		<Department Name='Accounts'>
-			<Employees>
-				<Person Name='Bob' Surename='Soap' />
-				<Person Name='Joe' Surename='Pants' />
-			</Employees>
-		</Department>
-	</Departments>
-    <InlineRecordSet>
-        RandomData
-    </InlineRecordSet>
-    <InlineRecordSet>
-        RandomData1
-    </InlineRecordSet>
-    <OuterNestedRecordSet>
-        <InnerNestedRecordSet ItemValue='val1' />
-        <InnerNestedRecordSet ItemValue='val2' />
-    </OuterNestedRecordSet>
-    <OuterNestedRecordSet>
-        <InnerNestedRecordSet ItemValue='val3' />
-        <InnerNestedRecordSet ItemValue='val4' />
-    </OuterNestedRecordSet>
-</Company>";
+        string TestData => 
+            @"<Company Name='Dev2'>
+            <Motto>Eat lots of cake</Motto>
+            <PreviousMotto/>
+	        <Departments TestAttrib='testing'>
+		        <Department Name='Dev'>
+			        <Employees>
+				        <Person Name='Brendon' Surename='Page' />
+				        <Person Name='Jayd' Surename='Page' />
+			        </Employees>
+		        </Department>
+		        <Department Name='Accounts'>
+			        <Employees>
+				        <Person Name='Bob' Surename='Soap' />
+				        <Person Name='Joe' Surename='Pants' />
+			        </Employees>
+		        </Department>
+	        </Departments>
+            <InlineRecordSet>
+                RandomData
+            </InlineRecordSet>
+            <InlineRecordSet>
+                RandomData1
+            </InlineRecordSet>
+            <OuterNestedRecordSet>
+                <InnerNestedRecordSet ItemValue='val1' />
+                <InnerNestedRecordSet ItemValue='val2' />
+            </OuterNestedRecordSet>
+            <OuterNestedRecordSet>
+                <InnerNestedRecordSet ItemValue='val3' />
+                <InnerNestedRecordSet ItemValue='val4' />
+            </OuterNestedRecordSet>
+        </Company>";
 
         string GivenSingleNode => @"<Message>Dummy Data</Message>";
+        
+        string GivenComplexedSoapTestData =>
+        @"<?xml version='1.0' encoding='UTF-8'?>
+            <S:Envelope xmlns:S=""http://www.w3.org/2003/05/soap-envelope"">
+	            <S:Body>
+		            <ns2:VNOBalanceEnquiryResponse xmlns:ns2=""http://soa.cellc.co.za/wsdl/BPEL_12050_VNOBalanceEnquiry/1-0/VNOBalanceEnquiry"">
+			            <process>
+				            <asCode>VN101</asCode>
+				            <asCode>VN102</asCode>
+				            <asCode>VN103</asCode>
+                        </process>
+		            </ns2:VNOBalanceEnquiryResponse>
+	            </S:Body>
+            </S:Envelope>";
+
+        string GivenSoapWithManyNamespaces =>
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                "<Envelope" +
+                    " xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"" +
+                    " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
+                    " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
+                    "<soap:Body>" +
+                        "<LoginResponse" +
+                            " xmlns=\"http://schemas.microsoft.com/sharepoint/soap/\">" +
+                            "<LoginResult>" +
+                                "<CookieName>FedAuth</CookieName>" +
+                                "<ErrorCode>NoError</ErrorCode>" +
+                                "<TimeoutSeconds>1800</TimeoutSeconds>" +
+                            "</LoginResult>" +
+                        "</LoginResponse>" +
+                    "</soap:Body>" +
+                "</Envelope>";
 
         [TestMethod]
         [TestCategory(nameof(XmlNavigator))]
@@ -87,38 +120,39 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             using (var xmlNavigator = new XmlNavigator(TestData))
             {
                 var actual = xmlNavigator.SelectScalar(namePath).ToString();
-                const string expected = @"<Company Name=""Dev2"">
-  <Motto>Eat lots of cake</Motto>
-  <PreviousMotto />
-  <Departments TestAttrib=""testing"">
-    <Department Name=""Dev"">
-      <Employees>
-        <Person Name=""Brendon"" Surename=""Page"" />
-        <Person Name=""Jayd"" Surename=""Page"" />
-      </Employees>
-    </Department>
-    <Department Name=""Accounts"">
-      <Employees>
-        <Person Name=""Bob"" Surename=""Soap"" />
-        <Person Name=""Joe"" Surename=""Pants"" />
-      </Employees>
-    </Department>
-  </Departments>
-  <InlineRecordSet>
-        RandomData
-    </InlineRecordSet>
-  <InlineRecordSet>
-        RandomData1
-    </InlineRecordSet>
-  <OuterNestedRecordSet>
-    <InnerNestedRecordSet ItemValue=""val1"" />
-    <InnerNestedRecordSet ItemValue=""val2"" />
-  </OuterNestedRecordSet>
-  <OuterNestedRecordSet>
-    <InnerNestedRecordSet ItemValue=""val3"" />
-    <InnerNestedRecordSet ItemValue=""val4"" />
-  </OuterNestedRecordSet>
-</Company>";
+                const string expected =
+                    "<Company Name=\"Dev2\">\r\n" +
+                    "  <Motto>Eat lots of cake</Motto>\r\n" +
+                    "  <PreviousMotto />\r\n" +
+                    "  <Departments TestAttrib=\"testing\">\r\n" +
+                    "    <Department Name=\"Dev\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Brendon\" Surename=\"Page\" />\r\n" +
+                    "        <Person Name=\"Jayd\" Surename=\"Page\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "    <Department Name=\"Accounts\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Bob\" Surename=\"Soap\" />\r\n" +
+                    "        <Person Name=\"Joe\" Surename=\"Pants\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "  </Departments>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData1\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val1\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val2\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val3\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val4\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n</Company>";
+
 
                 Assert.AreEqual(expected, actual);
             }
@@ -234,46 +268,50 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(XmlNavigator))]
-        public void XmlNavigator_SelectEnumerableValueUsingPathSeperator_Expected_ScalarValue()
+        public void XmlNavigator_SelectEnumerable_ValueUsingPathSeperator_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath(".", ".");
 
             using (var xmlNavigator = new XmlNavigator(TestData))
             {
                 var actual = xmlNavigator.SelectEnumerable(namePath);
-                var expected = new List<object> { @"<Company Name=""Dev2"">
-  <Motto>Eat lots of cake</Motto>
-  <PreviousMotto />
-  <Departments TestAttrib=""testing"">
-    <Department Name=""Dev"">
-      <Employees>
-        <Person Name=""Brendon"" Surename=""Page"" />
-        <Person Name=""Jayd"" Surename=""Page"" />
-      </Employees>
-    </Department>
-    <Department Name=""Accounts"">
-      <Employees>
-        <Person Name=""Bob"" Surename=""Soap"" />
-        <Person Name=""Joe"" Surename=""Pants"" />
-      </Employees>
-    </Department>
-  </Departments>
-  <InlineRecordSet>
-        RandomData
-    </InlineRecordSet>
-  <InlineRecordSet>
-        RandomData1
-    </InlineRecordSet>
-  <OuterNestedRecordSet>
-    <InnerNestedRecordSet ItemValue=""val1"" />
-    <InnerNestedRecordSet ItemValue=""val2"" />
-  </OuterNestedRecordSet>
-  <OuterNestedRecordSet>
-    <InnerNestedRecordSet ItemValue=""val3"" />
-    <InnerNestedRecordSet ItemValue=""val4"" />
-  </OuterNestedRecordSet>
-</Company>" };
+                var expected = new List<object> 
+                {
+                    "<Company Name=\"Dev2\">\r\n" +
+                    "  <Motto>Eat lots of cake</Motto>\r\n" +
+                    "  <PreviousMotto />\r\n" +
+                    "  <Departments TestAttrib=\"testing\">\r\n" +
+                    "    <Department Name=\"Dev\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Brendon\" Surename=\"Page\" />\r\n" +
+                    "        <Person Name=\"Jayd\" Surename=\"Page\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "    <Department Name=\"Accounts\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Bob\" Surename=\"Soap\" />\r\n" +
+                    "        <Person Name=\"Joe\" Surename=\"Pants\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "  </Departments>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData1\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val1\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val2\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val3\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val4\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "</Company>"
+                };
 
                 Assert.AreEqual(expected.FirstOrDefault().ToString(), actual.FirstOrDefault().ToString());
             }
@@ -404,6 +442,44 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelated_UsingScalarPathFrom_Valid_SOAPXml_WherePathMapsToANode_Expected_ScalarValue()
+        {
+            IPath namePath = new XmlPath("Envelope.Body.process().asCode", "Envelope.Body.process.asCode");
+            IList<IPath> paths = new List<IPath>
+            {
+                namePath
+            };
+
+            using (var xmlNavigator = new XmlNavigator(GivenComplexedSoapTestData))
+            {
+                var actual = xmlNavigator.SelectEnumerablesAsRelated(paths);
+
+                Assert.IsTrue(actual[namePath].Contains("VN101"));
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(XmlNavigator))]
+        public void XmlNavigator_SelectEnumerableValuesAsRelated_UsingScalarPathFrom_Valid_SOAPXml_WherePathMapsToANode_Expected_ScalarValue1()
+        {
+            IPath namePath = new XmlPath("Envelope.Body.LoginResponse.LoginResult.CookieName", "Envelope.Body.LoginResponse.LoginResult.CookieName");
+            IList<IPath> paths = new List<IPath>
+            {
+                namePath
+            };
+
+            using (var xmlNavigator = new XmlNavigator(GivenSoapWithManyNamespaces))
+            {
+                var actual = xmlNavigator.SelectEnumerablesAsRelated(paths);
+
+                Assert.IsTrue(actual[namePath].Contains("FedAuth"));
+            }
+        }
+
+        [TestMethod]
         [TestCategory(nameof(XmlNavigator))]
         public void XmlNavigator_SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXml_Where_PathsContainAScalarPath_Expected_FlattenedDataWithValueFromScalarPathRepeatingForEachEnumeration()
         {
@@ -497,6 +573,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(XmlNavigator))]
         public void XmlNavigator_SelectEnumerablesAsRelated_WithSeperatorSymbol_Expected_UnchangedPath()
         {
@@ -506,38 +583,39 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             {
                 var actual = string.Join("|", XmlNavigator.SelectEnumerablesAsRelated(namePath).Values.FirstOrDefault());
 
-                const string expected = @"<Company Name=""Dev2"">
-  <Motto>Eat lots of cake</Motto>
-  <PreviousMotto />
-  <Departments TestAttrib=""testing"">
-    <Department Name=""Dev"">
-      <Employees>
-        <Person Name=""Brendon"" Surename=""Page"" />
-        <Person Name=""Jayd"" Surename=""Page"" />
-      </Employees>
-    </Department>
-    <Department Name=""Accounts"">
-      <Employees>
-        <Person Name=""Bob"" Surename=""Soap"" />
-        <Person Name=""Joe"" Surename=""Pants"" />
-      </Employees>
-    </Department>
-  </Departments>
-  <InlineRecordSet>
-        RandomData
-    </InlineRecordSet>
-  <InlineRecordSet>
-        RandomData1
-    </InlineRecordSet>
-  <OuterNestedRecordSet>
-    <InnerNestedRecordSet ItemValue=""val1"" />
-    <InnerNestedRecordSet ItemValue=""val2"" />
-  </OuterNestedRecordSet>
-  <OuterNestedRecordSet>
-    <InnerNestedRecordSet ItemValue=""val3"" />
-    <InnerNestedRecordSet ItemValue=""val4"" />
-  </OuterNestedRecordSet>
-</Company>";
+                const string expected = 
+                    "<Company Name=\"Dev2\">\r\n" +
+                    "  <Motto>Eat lots of cake</Motto>\r\n" +
+                    "  <PreviousMotto />\r\n" +
+                    "  <Departments TestAttrib=\"testing\">\r\n" +
+                    "    <Department Name=\"Dev\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Brendon\" Surename=\"Page\" />\r\n" +
+                    "        <Person Name=\"Jayd\" Surename=\"Page\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "    <Department Name=\"Accounts\">\r\n" +
+                    "      <Employees>\r\n" +
+                    "        <Person Name=\"Bob\" Surename=\"Soap\" />\r\n" +
+                    "        <Person Name=\"Joe\" Surename=\"Pants\" />\r\n" +
+                    "      </Employees>\r\n" +
+                    "    </Department>\r\n" +
+                    "  </Departments>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <InlineRecordSet>\r\n" +
+                    "                RandomData1\r\n" +
+                    "            </InlineRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val1\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val2\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "  <OuterNestedRecordSet>\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val3\" />\r\n" +
+                    "    <InnerNestedRecordSet ItemValue=\"val4\" />\r\n" +
+                    "  </OuterNestedRecordSet>\r\n" +
+                    "</Company>";
 
                 Assert.AreEqual(expected, actual);
             }

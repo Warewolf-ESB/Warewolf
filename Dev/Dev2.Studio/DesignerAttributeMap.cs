@@ -119,6 +119,7 @@ using Dev2.Activities.Designers2.RabbitMQ.Publish2;
 using Dev2.Activities.Designers2.ReadFileWithBase64;
 using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
 using Dev2.Activities.Designers2.SuspendExecution;
+using Dev2.Activities.Designers2.Web_Post;
 using Dev2.Activities.Designers2.WebGet;
 
 namespace Dev2
@@ -131,6 +132,7 @@ namespace Dev2
             {typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel)},
             {typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel)},
             {typeof(DsfWebPutActivity), typeof(WebServicePutViewModel)},
+            {typeof(DsfWebPostActivity), typeof(WebServicePostViewModel)},
         };
 
         public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
@@ -203,7 +205,7 @@ namespace Dev2
             {typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllEnhancedViewModel)},
             {typeof(DsfComDllActivity), typeof(ComDllViewModel)},
             {typeof(WebGetActivity), typeof(WebGetActivityViewModel)},
-            {typeof(DsfWebPostActivity), typeof(WebServicePostViewModel)},
+            {typeof(WebPostActivity), typeof(WebPostActivityViewModel)},
             {typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteViewModel)},
             {typeof(WebPutActivity), typeof(WebPutActivityViewModel)},
             {typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadViewModel)},
