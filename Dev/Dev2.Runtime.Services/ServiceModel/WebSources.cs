@@ -218,7 +218,7 @@ namespace Dev2.Runtime.ServiceModel
                 requestStream.Close();
             }
 
-            using (var wresp = wr.GetResponse())
+            using (var wresp = wr.GetResponse() as HttpWebResponse)
             {
                 if (wresp.StatusCode == HttpStatusCode.OK)
                 {
