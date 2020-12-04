@@ -2436,7 +2436,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfSqlServerDatabaseActivity") || isWorkflow.Contains("DsfMySqlDatabaseActivity");
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfODBCDatabaseActivity") || isWorkflow.Contains("DsfOracleDatabaseActivity");
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfPostgreSqlActivity") || isWorkflow.Contains("DsfWebDeleteActivity");
-            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfWebGetActivity") || isWorkflow.Contains("DsfWebPostActivity");
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfWebGetActivity") || isWorkflow.Contains("WebPostActivity");
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfWebPutActivity") || isWorkflow.Contains("DsfComDllActivity");
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfEnhancedDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity");
             IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("AdvancedRecordsetActivity");
