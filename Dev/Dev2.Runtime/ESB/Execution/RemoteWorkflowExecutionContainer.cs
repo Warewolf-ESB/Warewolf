@@ -143,7 +143,7 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Executing the remote request.", GlobalConstants.WarewolfDebug);
             if (req != null)
             {
-                using (var response = req.GetResponse() as HttpWebResponse)
+                using (var response = req.GetResponse())
                 {
                     if (response != null)
                     {
