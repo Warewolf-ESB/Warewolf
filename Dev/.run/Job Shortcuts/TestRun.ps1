@@ -1,4 +1,6 @@
+
 param(
+  [Parameter(Mandatory=$true)]
   [String[]] $Projects, 
   [String] $Category,
   [String[]] $ExcludeProjects = @(), 
@@ -13,9 +15,6 @@ param(
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
     exit 1
-}
-if ($Projects -eq $null) {
-
 }
 if ($PreTestRunScript) {
 	if (!(Test-Path .\StartAs.ps1)) {
@@ -94,7 +93,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if (Test-Path "$TestResultsPath\RunTests.ps1") {
 		Move-Item "$TestResultsPath\RunTests.ps1" "$TestResultsPath\RunTests($LoopCounter).ps1"
 	}
-	if ($Coverage.IsPresent) {
+	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 		if (Test-Path "$TestResultsPath\DotCover Runner.xml") {
 			Move-Item "$TestResultsPath\DotCover Runner.xml" "$TestResultsPath\DotCover Runner($LoopCounter).xml"
 		}
@@ -123,7 +122,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
             "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
-			if ($Coverage.IsPresent) {
+			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 			} else {
 				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
@@ -144,14 +143,14 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
             "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
-			if ($Coverage.IsPresent) {
+			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg $CategoryArg</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 			} else {
 				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 			}
 		}
 	}
-	if ($Coverage.IsPresent) {
+	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 		"  <Output>.$TestResultsPath\DotCover.dcvr</Output>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		"  <Scope>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		"    <ScopeEntry>..\Warewolf*.dll</ScopeEntry>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
@@ -183,8 +182,8 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		}
     }
     if (!($RunInDocker.IsPresent)) {
-        &"$TestResultsPath\RunTests.ps1"
         Get-Content "$TestResultsPath\RunTests.ps1"
+        &"$TestResultsPath\RunTests.ps1"
         if ($PreTestRunScript) {
 			sc.exe stop "Warewolf Server"
 			Wait-Process -Name "Warewolf Server"
@@ -194,7 +193,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
         docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
         docker cp . ${ContainerName}:.\BuildUnderTest
         docker start -a $ContainerName
-		if ($Coverage.IsPresent) {
+		if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 			docker cp ${ContainerName}:\BuildUnderTest\TestResults .
 			docker cp ${ContainerName}:\BuildUnderTest\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\TestResults .
 		} else {
