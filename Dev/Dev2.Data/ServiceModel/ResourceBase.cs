@@ -745,9 +745,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         private static bool IsWebSourceName(string localName) => localName.Contains("DsfWebDeleteActivity")
-                                                    || localName.Contains("DsfWebGetActivity")
-                                                    || localName.Contains("DsfWebPostActivity")
-                                                    || localName.Contains("DsfWebPutActivity");
+                                                    || localName.Contains("WebGetActivity")
+                                                    || localName.Contains("WebPostActivity")
+                                                    || localName.Contains("WebPutActivity");
 
         void AddSharepointSources(XElement elementToUse)
         {

@@ -605,8 +605,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestCanSaveDll()
+        [Timeout(250)]
+        public void TestCanSaveCOMDll()
         {
             //arrange
             var selectedDllMock = new Mock<IDllListingModel>();

@@ -98,6 +98,7 @@
     <Compile Include="ActivityComparerTests\RabbitMQ\PublishRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\WebGetActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebPutActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\WebTools\WebPostActivityComparerTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
@@ -263,6 +264,7 @@
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
+    <Compile Include="ActivityTests\Web\WebPostActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebPutActivityTests.cs" />
     <Compile Include="ActivityTests\RecordsetLengthTestNullhandler.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />

@@ -1,123 +1,128 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
+    <!--
+      Microsoft ResX Schema
 
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
+      Version 2.0
+
+      The primary goals of this format is to allow a simple XML format
+      that is mostly human readable. The generation and parsing of the
+      various data types are done through the TypeConverter classes
+      associated with the data types.
+
+      Example:
+
+      ... ado.net/XML headers & schema ...
+      <resheader name="resmimetype">text/microsoft-resx</resheader>
+      <resheader name="version">2.0</resheader>
+      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+          <value>[base64 mime encoded serialized .NET Framework object]</value>
+      </data>
+      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+          <comment>This is a comment</comment>
+      </data>
+
+      There are any number of "resheader" rows that contain simple
+      name/value pairs.
+
+      Each data row contains a name, and value. The row also contains a
+      type or mimetype. Type corresponds to a .NET class that support
+      text/value conversion through the TypeConverter architecture.
+      Classes that don't support this are serialized and stored with the
+      mimetype set.
+
+      The mimetype is used for serialized objects, and tells the
+      ResXResourceReader how to depersist the object. This is currently not
+      extensible. For a given mimetype the value must be set accordingly:
+
+      Note - application/x-microsoft.net.object.binary.base64 is the format
+      that the ResXResourceWriter will generate, however the reader can
+      read any of the formats listed below.
+
+      mimetype: application/x-microsoft.net.object.binary.base64
+      value   : The object must be serialized with
+              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+              : and then encoded with base64 encoding.
+
+      mimetype: application/x-microsoft.net.object.soap.base64
+      value   : The object must be serialized with
+              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+              : and then encoded with base64 encoding.
+
+      mimetype: application/x-microsoft.net.object.bytearray.base64
+      value   : The object must be serialized into a byte array
+              : using a System.ComponentModel.TypeConverter
+              : and then encoded with base64 encoding.
+      -->
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+        <xsd:element name="root" msdata:IsDataSet="true">
             <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string"/>
+                            <xsd:attribute name="type" type="xsd:string"/>
+                            <xsd:attribute name="mimetype" type="xsd:string"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string"/>
+                            <xsd:attribute name="name" type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="recsetDataListShape" xml:space="preserve">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="recsetDataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 &lt;fname&gt;&lt;/fname&gt;
 &lt;lname&gt;&lt;/lname&gt;
@@ -138,7 +143,7 @@
 &lt;/testRecSet1&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="scalarShape" xml:space="preserve">
+    <data name="scalarShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 &lt;fname&gt;&lt;/fname&gt;
 &lt;lname&gt;&lt;/lname&gt;
@@ -155,7 +160,7 @@
 &lt;testName10&gt;&lt;/testName10&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="scalar_in_recordset_adl" xml:space="preserve">
+    <data name="scalar_in_recordset_adl" xml:space="preserve">
     <value>&lt;ADL&gt;
 &lt;a/&gt;
 &lt;b/&gt;
@@ -165,7 +170,7 @@
 &lt;/recset&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="SortDataList" xml:space="preserve">
+    <data name="SortDataList" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset&gt;
         &lt;Id&gt;1&lt;/Id&gt;
@@ -228,7 +233,7 @@
     &lt;/recset&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="mult_assign_expression_both_sides_mult_eval_fields_rs_adl" xml:space="preserve">
+    <data name="mult_assign_expression_both_sides_mult_eval_fields_rs_adl" xml:space="preserve">
     <value>&lt;ADL&gt;
 &lt;rsElement&gt;&lt;/rsElement&gt;
 &lt;rsFieldElement&gt;&lt;/rsFieldElement&gt;
@@ -242,7 +247,7 @@
 &lt;/cRec&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="mult_assign_expression_both_sides_single_rs_adl" xml:space="preserve">
+    <data name="mult_assign_expression_both_sides_single_rs_adl" xml:space="preserve">
     <value>&lt;ADL&gt;
 &lt;gRec&gt;
 &lt;opt&gt;Value1&lt;/opt&gt;
@@ -254,7 +259,7 @@
 &lt;/cRec&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DataSplit_preDataList" xml:space="preserve">
+    <data name="DataSplit_preDataList" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;firstName/&gt;
 	&lt;lastName/&gt;
@@ -273,7 +278,7 @@
 	&lt;OutVar5/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DataSplit_SourceString" xml:space="preserve">
+    <data name="DataSplit_SourceString" xml:space="preserve">
     <value>Title|Fname|LName|TelNo|
 1.Mr|Frank|Williams|0795628443
 2.Mr|Enzo|Ferrari|0821169853
@@ -281,7 +286,7 @@
 4.Ms|Kerrin|deSilvia|0724587310
 5.Sir|Richard|Branson|0812457896</value>
   </data>
-  <data name="DataList_NewPreEx" xml:space="preserve">
+    <data name="DataList_NewPreEx" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;firstName/&gt;
 	&lt;lastName/&gt;
@@ -301,7 +306,7 @@
 	&lt;OutVar5/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="CountRecordsDataListShape" xml:space="preserve">
+    <data name="CountRecordsDataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;recset1&gt;
 	&lt;field1/&gt;
@@ -321,7 +326,7 @@
   &lt;TestCountvar/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="MutiAssignStarDataList" xml:space="preserve">
+    <data name="MutiAssignStarDataList" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;cRec&gt;
     &lt;opt&gt;Value1&lt;/opt&gt;
@@ -393,7 +398,7 @@
   &lt;/gRec&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="NewScalarShape" xml:space="preserve">
+    <data name="NewScalarShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 &lt;fname&gt;&lt;/fname&gt;
 &lt;lname&gt;&lt;/lname&gt;
@@ -410,7 +415,7 @@
 &lt;testName10&gt;&lt;/testName10&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DataSplit_DataListShape" xml:space="preserve">
+    <data name="DataSplit_DataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;firstName/&gt;
 	&lt;lastName/&gt;
@@ -429,7 +434,7 @@
 	&lt;OutVar5/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="MultiAssignStarDataListWithScalar" xml:space="preserve">
+    <data name="MultiAssignStarDataListWithScalar" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;cRec&gt;
     &lt;opt&gt;Value1&lt;/opt&gt;
@@ -502,19 +507,22 @@
   &lt;testScalar/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="ManualResumption_Input_Mapping" xml:space="preserve">
+    <data name="ManualResumption_Input_Mapping_NoVariable" xml:space="preserve">
+   <value>&lt;Inputs&gt;&lt;Input Name="UUID" Source="1234" IsObject="False" />&lt;Input Name="JourneyName" Source="[[JourneyName]]" IsObject="False" /&gt;&lt;/Inputs&gt;</value>
+  </data>
+    <data name="ManualResumption_Input_Mapping" xml:space="preserve">
    <value>&lt;Inputs&gt;&lt;Input Name="UUID" Source="[[UUID]]" IsObject="False" />&lt;Input Name="JourneyName" Source="[[JourneyName]]" IsObject="False" /&gt;&lt;/Inputs&gt;</value>
   </data>
-  <data name="ManualResumption_Output_Mapping" xml:space="preserve">
+    <data name="ManualResumption_Output_Mapping" xml:space="preserve">
     <value>&lt;Outputs&gt;&lt;Output Name="UUID" MapsTo="[[UUID]]" Value="[[UUID]]" IsObject="False" />&lt;Output  Name="JourneyName" MapsTo="[[JourneyName]]" Value="[[JourneyName]]" IsObject="False"/&gt;&lt;Output Name="SuspensionId" MapsTo="[[SuspensionId]]" Value="[[SuspensionId]]" IsObject="False" /&gt;&lt;/Outputs&gt;</value>
   </data>
-  <data name="ForEach_Input_Mapping" xml:space="preserve">
+    <data name="ForEach_Input_Mapping" xml:space="preserve">
     <value>&lt;Inputs&gt;&lt;Input Name="innerrec" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innerrec2" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innerdate" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innertest" Source="[[recset(*).rec2]]" Recordset="innertesting" /&gt;&lt;Input Name="innerScalar" Source="[[recset(*).rec]]" /&gt;&lt;/Inputs&gt;</value>
   </data>
-  <data name="ForEach_Output_Mapping" xml:space="preserve">
+    <data name="ForEach_Output_Mapping" xml:space="preserve">
     <value>&lt;Outputs&gt;&lt;Output Name="innerrec" MapsTo="innerrec" Value="[[recset().rec]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerrec2" MapsTo="innerrec2" Value="[[recset().rec2]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerdate" MapsTo="innerdate" Value="" Recordset="innerrecset" /&gt;&lt;Output Name="innertest" MapsTo="innertest" Value="" Recordset="innertesting" /&gt;&lt;Output Name="innerScalar" MapsTo="innerScalar" Value="[[resultVar]]" /&gt;&lt;/Outputs&gt;</value>
   </data>
-  <data name="ForEachCurrentDataList" xml:space="preserve">
+    <data name="ForEachCurrentDataList" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;testing&gt;
     &lt;test&gt;testVal1&lt;/test&gt;
@@ -544,7 +552,7 @@
     &lt;resultVar&gt;&lt;/resultVar&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="ForEachDataListShape" xml:space="preserve">
+    <data name="ForEachDataListShape" xml:space="preserve">
     <value>&lt;DataList&gt;
     &lt;var Description="" /&gt;
     &lt;recset Description=""&gt;
@@ -557,25 +565,25 @@
     &lt;resultVar Description="" /&gt;
   &lt;/DataList&gt;</value>
   </data>
-  <data name="CaseConvert_DLShape" xml:space="preserve">
+    <data name="CaseConvert_DLShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;testVar/&gt;
 	&lt;NewVar/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="CaseConvert_MixedRegionTypes_CurrentDL" xml:space="preserve">
+    <data name="CaseConvert_MixedRegionTypes_CurrentDL" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;testVar&gt;change this to upper case&lt;/testVar&gt;  
   &lt;testRecSet&gt;&lt;field&gt;change this to upper case&lt;/field&gt;&lt;/testRecSet&gt;  
 &lt;/ADL&gt;</value>
   </data>
-  <data name="CaseConvert_MixedRegionTypes_DLShape" xml:space="preserve">
+    <data name="CaseConvert_MixedRegionTypes_DLShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;testVar/&gt;
   &lt;testRecSet&gt;&lt;field&gt;&lt;/field&gt;&lt;/testRecSet&gt;  
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DateTimeDiff_DataListShape" xml:space="preserve">
+    <data name="DateTimeDiff_DataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;Date1/&gt;
   &lt;Date2/&gt;
@@ -583,7 +591,7 @@
   &lt;Result/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="SortDataList_Shape" xml:space="preserve">
+    <data name="SortDataList_Shape" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset&gt;
         &lt;Id/&gt;
@@ -593,7 +601,7 @@
     &lt;/recset&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="CaseConvert_DLWithRecordSetShape" xml:space="preserve">
+    <data name="CaseConvert_DLWithRecordSetShape" xml:space="preserve">
     <value>&lt;ADL&gt;
             &lt;testRecSet&gt;
 	&lt;testVar/&gt;
@@ -601,7 +609,7 @@
             &lt;NewVar/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DataMergeDataListShape" xml:space="preserve">
+    <data name="DataMergeDataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;Customers&gt;
 		&lt;FirstName&gt;&lt;/FirstName&gt;
@@ -615,7 +623,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DataMergeDataListWithData" xml:space="preserve">
+    <data name="DataMergeDataListWithData" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;Customers&gt;
 		&lt;FirstName&gt;Wallis&lt;/FirstName&gt;
@@ -692,7 +700,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DeleteRecordsDataListShape" xml:space="preserve">
+    <data name="DeleteRecordsDataListShape" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset1&gt;
 		&lt;field1&gt;&lt;/field1&gt;
@@ -701,14 +709,14 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="EmptyRecordSet" xml:space="preserve">
+    <data name="EmptyRecordSet" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset1&gt;
 	&lt;/recset1&gt;	
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="DeleteRecordsDataListWithData" xml:space="preserve">
+    <data name="DeleteRecordsDataListWithData" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset1&gt;
 		&lt;field1&gt;f1r1&lt;/field1&gt;
@@ -737,7 +745,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="EmptyRecordSetNoData" xml:space="preserve">
+    <data name="EmptyRecordSetNoData" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset1&gt;
 		&lt;field1&gt;&lt;/field1&gt;
@@ -746,7 +754,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="IndexDataListShape" xml:space="preserve">
+    <data name="IndexDataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;recset1&gt;
 		&lt;field1&gt;&lt;/field1&gt;
@@ -760,7 +768,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="IndexDataListWithData" xml:space="preserve">
+    <data name="IndexDataListWithData" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;recset1&gt;
 		&lt;field1&gt;Barney&lt;/field1&gt;
@@ -806,7 +814,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="ReplaceDataListShape" xml:space="preserve">
+    <data name="ReplaceDataListShape" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset1&gt;
 		&lt;field1&gt;&lt;/field1&gt;
@@ -823,7 +831,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="ReplaceDataListWithData" xml:space="preserve">
+    <data name="ReplaceDataListWithData" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset1&gt;
 		&lt;field1&gt;barney&lt;/field1&gt;
@@ -875,7 +883,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="IndexDataListWithDataAndThreeRecordsets" xml:space="preserve">
+    <data name="IndexDataListWithDataAndThreeRecordsets" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;recset1&gt;
 		&lt;field1&gt;Barney&lt;/field1&gt;
@@ -924,7 +932,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="IndexDataListShapeWithThreeRecordsets" xml:space="preserve">
+    <data name="IndexDataListShapeWithThreeRecordsets" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;recset1&gt;
 		&lt;field1&gt;&lt;/field1&gt;
@@ -941,7 +949,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="NumberFormatActivity_DataList_Shape" xml:space="preserve">
+    <data name="NumberFormatActivity_DataList_Shape" xml:space="preserve">
     <value>&lt;ADL&gt;
 &lt;recordSet&gt;
 &lt;number&gt;&lt;/number&gt;
@@ -953,7 +961,7 @@
 &lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="NumberFormatActivity_DataList_WithData" xml:space="preserve">
+    <data name="NumberFormatActivity_DataList_WithData" xml:space="preserve">
     <value>&lt;ADL&gt;
 &lt;recordSet&gt;
 &lt;number&gt;123.123&lt;/number&gt;
@@ -968,13 +976,13 @@
 &lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DateTimeDifferenceDataListShape" xml:space="preserve">
+    <data name="DateTimeDifferenceDataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;&lt;recset1&gt;&lt;f1&gt;&lt;/f1&gt;&lt;/recset1&gt;&lt;recset2&gt;&lt;f2&gt;&lt;/f2&gt;&lt;/recset2&gt;&lt;resCol&gt;&lt;res&gt;&lt;/res&gt;&lt;/resCol&gt;&lt;/ADL&gt;</value>
   </data>
-  <data name="DateTimeDifferenceDataListWithData" xml:space="preserve">
+    <data name="DateTimeDifferenceDataListWithData" xml:space="preserve">
     <value>&lt;ADL&gt;&lt;recset1&gt;&lt;f1&gt;14/10/1988&lt;/f1&gt;&lt;/recset1&gt;&lt;recset1&gt;&lt;f1&gt;10/01/1988&lt;/f1&gt;&lt;/recset1&gt;&lt;recset1&gt;&lt;f1&gt;05/05/1988&lt;/f1&gt;&lt;/recset1&gt;&lt;recset2&gt;&lt;f2&gt;03/01/2013&lt;/f2&gt;&lt;/recset2&gt;&lt;recset2&gt;&lt;f2&gt;21/12/2013&lt;/f2&gt;&lt;/recset2&gt;&lt;recset2&gt;&lt;f2&gt;25/03/2013&lt;/f2&gt;&lt;/recset2&gt;&lt;resCol&gt;&lt;res&gt;&lt;/res&gt;&lt;/resCol&gt;&lt;/ADL&gt;</value>
   </data>
-  <data name="DebugDataListShape" xml:space="preserve">
+    <data name="DebugDataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;Customers&gt;
 		&lt;FirstName&gt;&lt;/FirstName&gt;
@@ -992,7 +1000,7 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DebugDataListWithData" xml:space="preserve">
+    <data name="DebugDataListWithData" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;Customers&gt;
 		&lt;FirstName&gt;Wallis&lt;/FirstName&gt;
@@ -1109,13 +1117,13 @@
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DsfActivityInputMapping" xml:space="preserve">
+    <data name="DsfActivityInputMapping" xml:space="preserve">
     <value>&lt;Inputs&gt;&lt;Input Name="innerrec" Source="[[scalar]]" Recordset="innerrecset" /&gt;&lt;Input Name="innerrec2" Source="[[Numeric(1).num]]" Recordset="innerrecset" /&gt;&lt;Input Name="innerdate" Source="[[Numeric(2).num]]" Recordset="innerrecset" /&gt;&lt;Input Name="innertest" Source="[[Numeric(3).num]]" Recordset="innertesting" /&gt;&lt;Input Name="innerScalar" Source="[[Numeric(4).num]]" /&gt;&lt;/Inputs&gt;</value>
   </data>
-  <data name="DsfActivityOutputMapping" xml:space="preserve">
+    <data name="DsfActivityOutputMapping" xml:space="preserve">
     <value>&lt;Outputs&gt;&lt;Output Name="innerrec" MapsTo="innerrec" Value="[[CompanyName]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerrec2" MapsTo="innerrec2" Value="[[Numeric(2).num]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerdate" MapsTo="innerdate" Value="[[Numeric(1).num]]" Recordset="innerrecset" /&gt;&lt;Output Name="innertest" MapsTo="innertest" Value="[[Numeric(3).num]]" Recordset="innertesting" /&gt;&lt;Output Name="innerScalar" MapsTo="innerScalar" Value="[[Customer(1).FirstName]]" /&gt;&lt;/Outputs&gt;</value>
   </data>
-  <data name="RandomActivityDataListShape" xml:space="preserve">
+    <data name="RandomActivityDataListShape" xml:space="preserve">
     <value>&lt;DataList&gt;
 	&lt;firstName/&gt;
 	&lt;lastName/&gt;
@@ -1134,7 +1142,7 @@
 	&lt;OutVar5/&gt;
 &lt;/DataList&gt;</value>
   </data>
-  <data name="RandomActivityDataListWithData" xml:space="preserve">
+    <data name="RandomActivityDataListWithData" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;firstName/&gt;
 	&lt;lastName/&gt;
@@ -1177,25 +1185,25 @@
 	&lt;OutVar5&gt;500&lt;/OutVar5&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="ReplaceSpecialCharsDataListShape" xml:space="preserve">
+    <data name="ReplaceSpecialCharsDataListShape" xml:space="preserve">
     <value>&lt;root&gt;	
 	&lt;SpecialChar&gt;&lt;/SpecialChar&gt;
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="ReplaceSpecialCharsDataListWithData" xml:space="preserve">
+    <data name="ReplaceSpecialCharsDataListWithData" xml:space="preserve">
     <value>&lt;root&gt;	
 	&lt;SpecialChar&gt;\*+?|{[()^$# &lt;/SpecialChar&gt;
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
-  <data name="BaseConvert_DLShape" xml:space="preserve">
+    <data name="BaseConvert_DLShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;testVar/&gt;
 	&lt;NewVar/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="BaseConvert_DLWithRecordSetShape" xml:space="preserve">
+    <data name="BaseConvert_DLWithRecordSetShape" xml:space="preserve">
     <value>&lt;ADL&gt;
             &lt;testRecSet&gt;
 	&lt;testVar/&gt;
@@ -1203,13 +1211,13 @@
             &lt;NewVar/&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="BaseConvert_MixedRegionTypes_CurrentDL" xml:space="preserve">
+    <data name="BaseConvert_MixedRegionTypes_CurrentDL" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;testVar&gt;change this base&lt;/testVar&gt;  
   &lt;testRecSet&gt;&lt;field&gt;change this base&lt;/field&gt;&lt;/testRecSet&gt;  
 &lt;/ADL&gt;</value>
   </data>
-  <data name="BaseConvert_MixedRegionTypes_DLShape" xml:space="preserve">
+    <data name="BaseConvert_MixedRegionTypes_DLShape" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;testVar/&gt;
   &lt;testRecSet&gt;&lt;field&gt;&lt;/field&gt;&lt;/testRecSet&gt;  
