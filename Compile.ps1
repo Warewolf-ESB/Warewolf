@@ -278,7 +278,7 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
     }
 }
 
-Get-ChildItem App.config -Recurse | % { ((Get-Content -path $_.FullName -Raw) -replace "<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"4.7.0.0`"/>","<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"5.0.0.0`"/>") | Set-Content -Path $_.FullName }
+Get-ChildItem "$PSScriptRoot" -Filter app.config -Recurse | % { ((Get-Content -path $_.FullName -Raw) -replace "<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"4.7.0.0`"/>","<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"5.0.0.0`"/>") | Set-Content -Path $_.FullName }
 
 #Compile Solutions
 foreach ($SolutionFile in $KnownSolutionFiles) {
