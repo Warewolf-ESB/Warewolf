@@ -12,7 +12,9 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Warewolf.Data
 {
@@ -118,6 +120,10 @@ namespace Warewolf.Data
                     {
                         result = result.Replace("<DataList>", "").Replace("</DataList>", "");
                         result = result.Replace(string.Concat("<", AdlRoot, ">"), string.Empty).Replace(string.Concat("</", AdlRoot, ">"), "");
+                        result = string.Concat("<", AdlRoot, ">", result, "</", AdlRoot, ">");
+                    }
+                    if (isXml && !result.Contains("<DataList>") && !result.Contains("<root>") && !result.Contains("<ADL>"))
+                    {
                         result = string.Concat("<", AdlRoot, ">", result, "</", AdlRoot, ">");
                     }
                 }

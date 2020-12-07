@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -36,60 +36,57 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
-    public class DsfWebPostActivityTests
+    public class WebPostActivityTests
     {
-
         const string _userAgent = "user-agent";
         const string _contentType = "Content-Type";
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPostActivity_Constructed")]
-        public void DsfWebPostActivity_Constructed_Correctly_ShouldHaveInheritDsfActivity()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Constructed_Correctly_ShouldHaveInheritDsfActivity()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var dsfWebPostActivity = new DsfWebPostActivity();
+            var webPostActivity = new WebPostActivity();
             //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(dsfWebPostActivity, typeof(DsfActivity));
+            Assert.IsInstanceOfType(webPostActivity, typeof(DsfActivity));
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPostActivity_Constructor")]
-        public void DsfWebPostActivity_Constructor_Correctly_ShouldSetTypeDisplayName()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Constructor_Correctly_ShouldSetTypeDisplayName()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var dsfWebPostActivity = new DsfWebPostActivity();
+            var webPostActivity = new WebPostActivity();
             //------------Assert Results-------------------------
-            Assert.AreEqual("POST Web Method", dsfWebPostActivity.DisplayName);
+            Assert.AreEqual("POST Web Method", webPostActivity.DisplayName);
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Siphamandla Dube")]
-        [TestCategory("DsfWebPostActivity_Constructed")]
-        public void DsfWebPostActivity_Constructed_Correctly_ShouldHaveCorrectProperties()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Constructed_Correctly_ShouldHaveCorrectProperties()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var attributes = typeof(DsfWebPostActivity).GetCustomAttributes(false);
+            var attributes = typeof(WebPostActivity).GetCustomAttributes(false);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, attributes.Length);
-            var firstAttr = attributes.First();
-            var toolDescriptor = firstAttr as ToolDescriptorInfo;
-            Assert.IsNull(toolDescriptor, "Should now be null, this Activity is now Deprecated");
-            Assert.IsTrue(firstAttr is ObsoleteAttribute);
-            Assert.AreNotEqual("POST", toolDescriptor?.Name, "Should nolonger be equal, activity is now Deprecated");
+            var toolDescriptor = attributes[0] as ToolDescriptorInfo;
+            Assert.IsNotNull(toolDescriptor);
+            Assert.AreEqual("POST", toolDescriptor.Name);
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPostActivity_Execute")]
-        public void DsfWebPostActivity_Execute_WithNoOutputDescription_ShouldAddError()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Execute_WithNoOutputDescription_ShouldAddError()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -104,32 +101,32 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
-            dsfWebPostActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var webPostActivity = new TestWebPostActivity();
+            webPostActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
-            dsfWebPostActivity.Inputs = serviceInputs;
-            dsfWebPostActivity.Outputs = serviceOutputs;
-            dsfWebPostActivity.ResponseFromWeb = response;
+            webPostActivity.Inputs = serviceInputs;
+            webPostActivity.Outputs = serviceOutputs;
+            webPostActivity.ResponseFromWeb = response;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            dsfWebPostActivity.QueryString = "";
-            dsfWebPostActivity.PostData = "";
-            dsfWebPostActivity.SourceId = Guid.Empty;
-            dsfWebPostActivity.Headers = new List<INameValue>();
+            webPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            webPostActivity.QueryString = "";
+            webPostActivity.PostData = "";
+            webPostActivity.SourceId = Guid.Empty;
+            webPostActivity.Headers = new List<INameValue>();
             //------------Execute Test---------------------------
-            dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
+            webPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
-            Assert.IsNull(dsfWebPostActivity.OutputDescription);
+            Assert.IsNull(webPostActivity.OutputDescription);
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPostActivity_Execute")]
-        public void DsfWebPostActivity_Execute_WithValidWebResponse_ShouldSetVariables()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Execute_WithValidWebResponse_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -144,28 +141,28 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
-            dsfWebPostActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var webPostActivity = new TestWebPostActivity();
+            webPostActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
-            dsfWebPostActivity.Inputs = serviceInputs;
-            dsfWebPostActivity.Outputs = serviceOutputs;
+            webPostActivity.Inputs = serviceInputs;
+            webPostActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
-            dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
-            dsfWebPostActivity.ResponseFromWeb = response;
+            webPostActivity.OutputDescription = service.GetOutputDescription();
+            webPostActivity.ResponseFromWeb = response;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            dsfWebPostActivity.QueryString = "";
-            dsfWebPostActivity.PostData = "";
-            dsfWebPostActivity.SourceId = Guid.Empty;
-            dsfWebPostActivity.Headers = new List<INameValue>();
+            webPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            webPostActivity.QueryString = "";
+            webPostActivity.PostData = "";
+            webPostActivity.SourceId = Guid.Empty;
+            webPostActivity.Headers = new List<INameValue>();
             //------------Execute Test---------------------------
-            dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
+            webPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
-            Assert.IsNotNull(dsfWebPostActivity.OutputDescription);
+            Assert.IsNotNull(webPostActivity.OutputDescription);
             Assert.AreEqual("greater than 7 mile(s):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Visibility]]", 0)));
             Assert.AreEqual("Paris", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Location]]", 0)));
             Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0)));
@@ -174,9 +171,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPostActivity_Execute")]
-        public void DsfWebPostActivity_Execute_WithValidTextResponse_ShouldSetVariables()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Execute_WithValidTextResponse_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -191,43 +188,40 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
-            dsfWebPostActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var webPostActivity = new TestWebPostActivity();
+            webPostActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Response", "[[Response]]", "") };
-            dsfWebPostActivity.Inputs = serviceInputs;
-            dsfWebPostActivity.Outputs = serviceOutputs;
+            webPostActivity.Inputs = serviceInputs;
+            webPostActivity.Outputs = serviceOutputs;
          
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
-            dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
-            dsfWebPostActivity.ResponseFromWeb = response;
+            webPostActivity.OutputDescription = service.GetOutputDescription();
+            webPostActivity.ResponseFromWeb = response;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            dsfWebPostActivity.QueryString = "";
-            dsfWebPostActivity.PostData = "";
-            dsfWebPostActivity.SourceId = Guid.Empty;
-            dsfWebPostActivity.Headers = new List<INameValue>();
-            dsfWebPostActivity.OutputDescription = new OutputDescription();
-            dsfWebPostActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape() { Paths = new List<IPath>() { new StringPath() { ActualPath = "[[Response]]", OutputExpression = "[[Response]]" } } });
+            webPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            webPostActivity.QueryString = "";
+            webPostActivity.PostData = "";
+            webPostActivity.SourceId = Guid.Empty;
+            webPostActivity.Headers = new List<INameValue>();
+            webPostActivity.OutputDescription = new OutputDescription();
+            webPostActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape() { Paths = new List<IPath>() { new StringPath() { ActualPath = "[[Response]]", OutputExpression = "[[Response]]" } } });
 
             //------------Execute Test---------------------------
-            dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
+            webPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
-            Assert.IsNotNull(dsfWebPostActivity.OutputDescription);
+            Assert.IsNotNull(webPostActivity.OutputDescription);
             Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
-
         }
-        
-
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPostActivity_Execute")]
-        public void DsfWebPostActivity_Execute_WithInValidWebResponse_ShouldError()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Execute_WithInValidWebResponse_ShouldError()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -251,39 +245,39 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
-            dsfWebPostActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var webPostActivity = new TestWebPostActivity
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object,
+            };
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
-            dsfWebPostActivity.Inputs = serviceInputs;
-            dsfWebPostActivity.Outputs = serviceOutputs;
+            webPostActivity.Inputs = serviceInputs;
+            webPostActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
-            dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
-            dsfWebPostActivity.ResponseFromWeb = invalidResponse;
+            webPostActivity.OutputDescription = service.GetOutputDescription();
+            webPostActivity.ResponseFromWeb = invalidResponse;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            dsfWebPostActivity.QueryString = "";
-            dsfWebPostActivity.PostData = "";
-            dsfWebPostActivity.SourceId = Guid.Empty;
-            dsfWebPostActivity.Headers = new List<INameValue>();
+            webPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            webPostActivity.QueryString = "";
+            webPostActivity.PostData = "";
+            webPostActivity.SourceId = Guid.Empty;
+            webPostActivity.Headers = new List<INameValue>();
             //------------Execute Test---------------------------
-            dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
+            webPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
-            Assert.IsNotNull(dsfWebPostActivity.OutputDescription);
+            Assert.IsNotNull(webPostActivity.OutputDescription);
             Assert.AreEqual(1, environment.Errors.Count);
             StringAssert.Contains(environment.Errors.ToList()[0], "Invalid character after parsing property name");
         }
 
-
-
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPostActivity_Execute")]
-        public void DsfWebPostActivity_Execute_WithValidXmlEscaped_ShouldSetVariables()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Execute_WithValidXmlEscaped_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response ="<CurrentWeather>" +
@@ -300,40 +294,41 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
-            dsfWebPostActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var webPostActivity = new TestWebPostActivity
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object,
+            };
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
-            dsfWebPostActivity.Inputs = serviceInputs;
-            dsfWebPostActivity.Outputs = serviceOutputs;
+            webPostActivity.Inputs = serviceInputs;
+            webPostActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
-            dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
-            dsfWebPostActivity.ResponseFromWeb = response;
+            webPostActivity.OutputDescription = service.GetOutputDescription();
+            webPostActivity.ResponseFromWeb = response;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            dsfWebPostActivity.QueryString = "";
-            dsfWebPostActivity.PostData = "";
-            dsfWebPostActivity.SourceId = Guid.Empty;
-            dsfWebPostActivity.Headers = new List<INameValue>();
+            webPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            webPostActivity.QueryString = "";
+            webPostActivity.PostData = "";
+            webPostActivity.SourceId = Guid.Empty;
+            webPostActivity.Headers = new List<INameValue>();
             //------------Execute Test---------------------------
-            dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
+            webPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
-            Assert.IsNotNull(dsfWebPostActivity.OutputDescription);
+            Assert.IsNotNull(webPostActivity.OutputDescription);
             Assert.AreEqual("<greater than 7 mile(s):0>", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Visibility]]", 0)));
             Assert.AreEqual("<Paris>", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Location]]", 0)));
             Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0)));
             Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
         }
-        
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPostActivity_Execute")]
-        public void DsfWebPostActivity_Execute_WithInputVariables_ShouldEvalVariablesBeforeExecutingWebRequest()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Execute_WithInputVariables_ShouldEvalVariablesBeforeExecutingWebRequest()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -349,86 +344,89 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             environment.Assign("[[Post]]", "Some data", 0);
-            var dsfWebPostActivity = new TestDsfWebPostActivity
+            var webPostActivity = new TestWebPostActivity
             {
-                Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
+                Headers = new List<INameValue> {new NameValue("Header 1", "[[City]]")},
                 QueryString = "http://www.testing.com/[[CountryName]]",
-                PostData = "This is post:[[Post]]"
+                PostData = "This is post:[[Post]]",
+                ResourceCatalog = new Mock<IResourceCatalog>().Object,
             };
-            dsfWebPostActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
-            dsfWebPostActivity.Outputs = serviceOutputs;
+            webPostActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
-            dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
-            dsfWebPostActivity.ResponseFromWeb = response;
+            webPostActivity.OutputDescription = service.GetOutputDescription();
+            webPostActivity.ResponseFromWeb = response;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            webPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
             //------------Assert Preconditions-------------------
-            Assert.AreEqual(1, dsfWebPostActivity.Headers.Count);
-            Assert.AreEqual("Header 1", dsfWebPostActivity.Headers.ToList()[0].Name);
-            Assert.AreEqual("[[City]]", dsfWebPostActivity.Headers.ToList()[0].Value);
-            Assert.AreEqual("http://www.testing.com/[[CountryName]]", dsfWebPostActivity.QueryString);
-            Assert.AreEqual("This is post:[[Post]]", dsfWebPostActivity.PostData);
+            Assert.AreEqual(1, webPostActivity.Headers.Count);
+            Assert.AreEqual("Header 1", webPostActivity.Headers.ToList()[0].Name);
+            Assert.AreEqual("[[City]]", webPostActivity.Headers.ToList()[0].Value);
+            Assert.AreEqual("http://www.testing.com/[[CountryName]]", webPostActivity.QueryString);
+            Assert.AreEqual("This is post:[[Post]]", webPostActivity.PostData);
             //------------Execute Test---------------------------
-            dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
+            webPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
-            Assert.AreEqual("PMB", dsfWebPostActivity.Head.ToList()[0].Value);
-            Assert.AreEqual("http://www.testing.com/South Africa", dsfWebPostActivity.QueryRes);
-            Assert.AreEqual("This is post:Some data", dsfWebPostActivity.PostValue);
+            Assert.AreEqual("PMB", webPostActivity.Head.ToList()[0].Value);
+            Assert.AreEqual("http://www.testing.com/South Africa", webPostActivity.QueryRes);
+            Assert.AreEqual("This is post:Some data", webPostActivity.PostValue);
         }
-
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void Constructer_GivenHasInstance_ShouldHaveType()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Constructor_GivenHasInstance_ShouldHaveType()
         {
             //---------------Set up test pack-------------------
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
+            var webPostActivity = new TestWebPostActivity();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dsfWebPostActivity);
+            Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
 
             //---------------Test Result -----------------------
-            Assert.IsNotNull(dsfWebPostActivity.Type);
+            Assert.IsNotNull(webPostActivity.Type);
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetFindMissingType_GivenWebPostActivity_ShouldReturnMissingTypeDataGridAcitvity()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_GetFindMissingType_GivenWebPostActivity_ShouldReturnMissingTypeDataGridActivity()
         {
             //---------------Set up test pack-------------------
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
+            var webPostActivity = new TestWebPostActivity();
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dsfWebPostActivity.Type);
-            Assert.IsNotNull(dsfWebPostActivity);
+            Assert.IsNotNull(webPostActivity.Type);
+            Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual(enFindMissingType.DataGridActivity, dsfWebPostActivity.GetFindMissingType());
+            Assert.AreEqual(enFindMissingType.DataGridActivity, webPostActivity.GetFindMissingType());
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetDebugInputs_GivenEnvironmentIsNull_ShouldReturnZeroDebugInputs()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_GetDebugInputs_GivenEnvironmentIsNull_ShouldReturnZeroDebugInputs()
         {
             //---------------Set up test pack-------------------
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
+            var webPostActivity = new TestWebPostActivity();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var debugInputs = dsfWebPostActivity.GetDebugInputs(null, 0);
+            var debugInputs = webPostActivity.GetDebugInputs(null, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugInputs.Count);
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetDebugInputs_GivenMockEnvironment_ShouldAddDebugInputItems()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_GetDebugInputs_GivenMockEnvironment_ShouldAddDebugInputItems()
         {
             //---------------Set up test pack-------------------
             const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
@@ -444,31 +442,31 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             environment.Assign("[[Post]]", "Some data", 0);
-            var dsfWebPostActivity = new TestDsfWebPostActivity
+            var webPostActivity = new TestWebPostActivity
             {
                 Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
-            dsfWebPostActivity.Outputs = serviceOutputs;
+            webPostActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
-            dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
-            dsfWebPostActivity.ResponseFromWeb = response;
+            webPostActivity.OutputDescription = service.GetOutputDescription();
+            webPostActivity.ResponseFromWeb = response;
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            webPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
             var cat = new Mock<IResourceCatalog>();
             var src = new WebSource { Address = "www.example.com" };
             cat.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(src);
-            dsfWebPostActivity.ResourceCatalog = cat.Object;
+            webPostActivity.ResourceCatalog = cat.Object;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(environment);
-            Assert.IsNotNull(dsfWebPostActivity);
+            Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
-            var debugInputs = dsfWebPostActivity.GetDebugInputs(environment, 0);
+            var debugInputs = webPostActivity.GetDebugInputs(environment, 0);
             //---------------Test Result -----------------------
             Assert.IsNotNull(debugInputs);
             Assert.AreEqual(4,debugInputs.Count);
@@ -476,38 +474,39 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateClient_GivenNoHeaders_ShouldHaveTwoHeaders()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_CreateClient_GivenNoHeaders_ShouldHaveTwoHeaders()
         {
             //---------------Set up test pack-------------------
-            var dsfWebPostActivity = new TestDsfWebPostActivity
+            var webPostActivity = new TestWebPostActivity
             {
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
          
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dsfWebPostActivity);
+            Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
-            var webClient = dsfWebPostActivity.CreateClient(null, String.Empty, new WebSource());
+            var webClient = WebPostActivity.CreateClient(null, String.Empty, new WebSource());
             //---------------Test Result -----------------------
             var actualHeaderCount = webClient.Headers.Count;
             Assert.AreEqual(1, actualHeaderCount);
         }
 
-
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CleateClient_GivenNoHeaders_ShouldHaveUserAgentHeader()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_CreateClient_GivenNoHeaders_ShouldHaveUserAgentHeader()
         {
             //---------------Set up test pack-------------------
-            var dsfWebPostActivity = new TestDsfWebPostActivity
+            var webPostActivity = new TestWebPostActivity
             {
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
-            var webClient = dsfWebPostActivity.CreateClient(null, String.Empty, new WebSource());
+            var webClient = WebPostActivity.CreateClient(null, String.Empty, new WebSource());
             //---------------Assert Precondition----------------
             var actualHeaderCount = webClient.Headers.Count;
             Assert.AreEqual(1, actualHeaderCount);
@@ -519,45 +518,44 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual(_userAgent, userAgentHeader);
         }
 
-
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CleateClient_GivenNoHeaders_ShouldGlobalConstantsUserAgent()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_CreateClient_GivenNoHeaders_ShouldGlobalConstantsUserAgent()
         {
             //---------------Set up test pack-------------------
-            var dsfWebPostActivity = new TestDsfWebPostActivity
+            var webPostActivity = new TestWebPostActivity
             {
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
-            var webClient = dsfWebPostActivity.CreateClient(null, String.Empty, new WebSource());
+            var webClient = WebPostActivity.CreateClient(null, String.Empty, new WebSource());
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
             var userAgentValue = webClient.Headers[_userAgent];
             //---------------Test Result -----------------------
             Assert.AreEqual(userAgentValue, GlobalConstants.UserAgentString);
-
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateClient_GivenWebSourceAuthenticationTypeIsUser_ShouldSetWebClientPasswordAndUserName()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_CreateClient_GivenWebSourceAuthenticationTypeIsUser_ShouldSetWebClientPasswordAndUserName()
         {
             //---------------Set up test pack-------------------
-            var dsfWebPostActivity = new TestDsfWebPostActivity
+            var webPostActivity = new TestWebPostActivity
             {
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
             var webSource = new WebSource { AuthenticationType = AuthenticationType.User, UserName = "John1", Password = "Password1"};
-            
 
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var webClient = dsfWebPostActivity.CreateClient(null, String.Empty, webSource);
+            var webClient = WebPostActivity.CreateClient(null, String.Empty, webSource);
             //---------------Test Result -----------------------
             Assert.IsNotNull(webClient);
             var networkCredentialFromWebSource = new NetworkCredential(webSource.UserName, webSource.Password);
@@ -569,32 +567,33 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateClient_GivenAuthenticationTypeIsNotUser_ShouldNotSetCredentials()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_CreateClient_GivenAuthenticationTypeIsNotUser_ShouldNotSetCredentials()
         {
             //---------------Set up test pack-------------------
-            var dsfWebPostActivity = new TestDsfWebPostActivity
+            var webPostActivity = new TestWebPostActivity
             {
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
             var webSource = new WebSource { AuthenticationType = AuthenticationType.Windows, UserName = "John1", Password = "Password1" };
-            var webClient = dsfWebPostActivity.CreateClient(null, String.Empty, webSource);
+            var webClient = WebPostActivity.CreateClient(null, String.Empty, webSource);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webClient);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.IsNull(webClient.Credentials);
-
         }
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateClient_GivenHeaders_ShouldHaveHeadersAdded()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_CreateClient_GivenHeaders_ShouldHaveHeadersAdded()
         {
             //---------------Set up test pack-------------------
-            var dsfWebPostActivity = new TestDsfWebPostActivity
+            var webPostActivity = new TestWebPostActivity
             {
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
@@ -605,57 +604,55 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 new NameValue("Content","text/json")
             };
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dsfWebPostActivity);
+            Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
-            var webClient = dsfWebPostActivity.CreateClient(headers, String.Empty, new WebSource());
+            var webClient = WebPostActivity.CreateClient(headers, String.Empty, new WebSource());
             //---------------Test Result -----------------------
             var actualHeaderCount = webClient.Headers.Count;
             Assert.AreEqual(2, actualHeaderCount);
             Assert.AreEqual("text/json", webClient.Headers["Content"]);
         }
 
-
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfWebPostActivity_Execute")]
-        public void DsfWebPostActivity_Execute_ErrorResponse_ShouldSetVariables()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_Execute_ErrorResponse_ShouldSetVariables()
         {
             //------------Setup for test--------------------------
             const string response = "{\"Message\":\"Error\"}";
             var environment = new ExecutionEnvironment();
 
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
-            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            var webPostActivity = new TestWebPostActivity();
+            webPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var webSource = new WebSource();
             webSource.Address = "http://TFSBLD.premier.local:9910/api/";
             webSource.AuthenticationType = AuthenticationType.Anonymous;
             mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webSource);
-            dsfWebPostActivity.ResourceCatalog = mockResourceCatalog.Object;
+            webPostActivity.ResourceCatalog = mockResourceCatalog.Object;
 
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Message", "[[Message]]", "") };
-            dsfWebPostActivity.Outputs = serviceOutputs;
+            webPostActivity.Outputs = serviceOutputs;
 
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
-            dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
-            dsfWebPostActivity.ResponseFromWeb = response;
-            dsfWebPostActivity.QueryString = "Error";
-            dsfWebPostActivity.SourceId = Guid.Empty;
-            dsfWebPostActivity.Headers = new List<INameValue>();
-
+            webPostActivity.OutputDescription = service.GetOutputDescription();
+            webPostActivity.ResponseFromWeb = response;
+            webPostActivity.QueryString = "Error";
+            webPostActivity.SourceId = Guid.Empty;
+            webPostActivity.Headers = new List<INameValue>();
 
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebPostActivity.SourceId = Guid.Empty;
-            dsfWebPostActivity.Headers = new List<INameValue>();
-            dsfWebPostActivity.OutputDescription = new OutputDescription();
-            dsfWebPostActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape() { Paths = new List<IPath>() { new StringPath() { ActualPath = "[[Response]]", OutputExpression = "[[Response]]" } } });
+            webPostActivity.SourceId = Guid.Empty;
+            webPostActivity.Headers = new List<INameValue>();
+            webPostActivity.OutputDescription = new OutputDescription();
+            webPostActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape() { Paths = new List<IPath>() { new StringPath() { ActualPath = "[[Response]]", OutputExpression = "[[Response]]" } } });
 
             //------------Execute Test---------------------------
-            dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
+            webPostActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Message]]", 0)));
         }
@@ -663,8 +660,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfWebPostActivity))]
-        public void DsfWebPostActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()
         {
             //-----------------------Arrange-------------------------
             const string response = "{\"Message\":\"TEST Error\"}";
@@ -681,7 +678,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-                var dsfWebGetActivity = new TestDsfWebPostActivity
+                var dsfWebGetActivity = new TestWebPostActivity
                 {
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
@@ -693,17 +690,15 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 //-----------------------Act-----------------------------
                 dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
                 //-----------------------Assert--------------------------
-                Assert.IsTrue(errorResultTO.HasErrors());
-                Assert.AreEqual(response, errorResultTO.FetchErrors().First());
+                Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
+                Assert.AreEqual(response, errorResultTO.FetchErrors()[0]);
             }
-
         }
-
 
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfWebPostActivity))]
+        [TestCategory(nameof(WebPostActivity))]
         public void DsfWebPostActivity_ExecutionImpl_ResponseManager_PushResponseIntoEnvironment_GivenJsonResponse_MappedToRecodSet_ShouldSucess()
         {
             //-----------------------Arrange-------------------------
@@ -727,7 +722,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
                 mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
-                var dsfWebGetActivity = new TestDsfWebPostActivity
+                var dsfWebGetActivity = new TestWebPostActivity
                 {
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
@@ -743,7 +738,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                                 MappedFrom = mappingFrom,
                                 MappedTo = mapTo,
                                 RecordSetName = recordSet
-                            } 
+                            }
                         }
                     }
                 };
@@ -770,16 +765,15 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.IsFalse(ress.Item.IsNothing, "Item should contain the recset mapped to the messanger key");
             }
         }
-
     }
 
-    public class TestDsfWebPostActivity : DsfWebPostActivity
+    public class TestWebPostActivity : WebPostActivity
     {
         public string HasErrorMessage { get; set; }
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
+        protected override string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
         {
             Head = head;
             QueryRes = query;
@@ -802,6 +796,5 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
             base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
         }
-
     }
 }
