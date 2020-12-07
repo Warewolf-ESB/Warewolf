@@ -184,7 +184,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
         if ($PreTestRunScript) {
 			sc.exe stop "Warewolf Server"
 			Wait-Process -Name "Warewolf Server"
-			Move-Item "C:\programdata\warewolf\Server Log\warewolf-server.log" "$TestResultsPath\warewolf-server`($LoopCounter`).log"
+			Move-Item "C:\programdata\warewolf\Server Log\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).log"
 		}
     } else {
         docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
@@ -200,6 +200,9 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
             docker cp ${ContainerName}:"\programdata\warewolf\Server Log\warewolf-server.log" .\TestResults\warewolf-server`($LoopCounter`).log
         }
     }
+	if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+		Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
+	}
 	if (Test-Path "$TestResultsPath\*.trx") {
 		[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
 		if ($getXMLFiles.Count -gt 1) {
