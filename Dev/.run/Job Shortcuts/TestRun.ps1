@@ -1,4 +1,3 @@
-
 param(
   [Parameter(Mandatory=$true)]
   [String[]] $Projects, 
@@ -57,9 +56,17 @@ if (!($RunInDocker.IsPresent) -and (!(Test-Path "$VSTestPath\Extensions\TestPlat
 }
 if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
+    if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
+        Write-Error "Cannot install test runner using nuget."
+        exit 1
+    }
 }
 if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
 	&"nuget.exe" "install" "JetBrains.dotCover.CommandLineTools" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
+    if (!(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
+        Write-Error "Cannot install coverage runner using nuget."
+        exit 1
+    }
 }
 if ($RunInDocker.IsPresent) {
     $ContainerName = $Projects.ToLower().replace(" ", "-");
@@ -186,8 +193,11 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
         &"$TestResultsPath\RunTests.ps1"
         if ($PreTestRunScript) {
 			sc.exe stop "Warewolf Server"
-			Wait-Process -Name "Warewolf Server"
+			Wait-Process -Name "Warewolf Server" -ErrorAction SilentlyContinue
 			Move-Item "C:\programdata\warewolf\Server Log\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).log"
+		}
+		if ($Coverage.IsPresent) {
+			Wait-Process -Name "DotCover" -ErrorAction SilentlyContinue
 		}
     } else {
         docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
