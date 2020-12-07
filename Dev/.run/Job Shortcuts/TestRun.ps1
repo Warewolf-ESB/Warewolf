@@ -105,7 +105,11 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			Move-Item "$TestResultsPath\DotCover.log" "$TestResultsPath\DotCover($LoopCounter).log"
 		}
         "<AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml"
-		"  <TargetExecutable>.$VSTestPath\Extensions\TestPlatform\vstest.console.exe</TargetExecutable>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
+        $HandleRelativePath = $VSTestPath
+        if ($VSTestPath.StartsWith(".\")) {
+            $HandleRelativePath = "." + $VSTestPath
+        }
+		"  <TargetExecutable>$HandleRelativePath\Extensions\TestPlatform\vstest.console.exe</TargetExecutable>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		$AssembliesArg = "..\" + ($AssembliesList -join " ..\")
     } else {
 		if ($RunInDocker.IsPresent) {
