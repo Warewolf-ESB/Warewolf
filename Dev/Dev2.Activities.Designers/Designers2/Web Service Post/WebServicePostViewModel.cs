@@ -1,5 +1,5 @@
 #pragma warning disable
-﻿using System;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,6 +29,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Web_Service_Post
 {
+    [Obsolete("DsfWebPostActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivity.")]
     public class WebServicePostViewModel : CustomToolWithRegionBase, IWebServicePostViewModel
     {
         IOutputsToolRegion _outputsRegion;

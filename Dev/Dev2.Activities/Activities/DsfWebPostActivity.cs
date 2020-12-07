@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
@@ -30,7 +31,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("WebMethods", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Post")]
+    [Obsolete("DsfWebPostActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivity.")]
     public class DsfWebPostActivity:DsfActivity,IEquatable<DsfWebPostActivity>
     {
         public IList<INameValue> Headers { get; set; }
@@ -99,8 +100,11 @@ namespace Dev2.Activities
 
             tmpErrors.MergeErrors(_errorsTo);
 
+            var  bytes = webRequestResult.Base64StringToByteArray();
+            var response = bytes.ReadToString();
+
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+            ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
 
         }
 
@@ -127,7 +131,7 @@ namespace Dev2.Activities
 
         public IResponseManager ResponseManager { get; set; }
         
-        protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
+        protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
             return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }

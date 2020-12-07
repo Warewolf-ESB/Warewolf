@@ -417,6 +417,15 @@ You need Administrator permission.</value>
   <data name="SaveSettingsInvalidPermissionEntry" xml:space="preserve">
     <value>To save a resource persmission, you must have Resource Name and Windows group entered</value>
   </data>
+  <data name="SaveSettingsPermissionsSchedulerErrorMsg" xml:space="preserve">
+    <value>Error while saving: Persistence: You have not selected a Scheduler.</value>
+  </data>
+  <data name="SaveSettingsPermissionsServerErrorMsg" xml:space="preserve">
+    <value>Error while saving: Persistence: You have not entered a server name."</value>
+  </data>
+  <data name="SaveSettingsPermissionsDataSourceErrorMsg" xml:space="preserve">
+    <value>Error while saving: Persistence: You have not selected a Data Source.</value>
+  </data>
   <data name="QueueEventsHeader" xml:space="preserve">
     <value>Queues</value>
   </data>

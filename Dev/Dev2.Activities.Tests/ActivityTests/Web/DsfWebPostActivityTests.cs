@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,11 +15,11 @@ using System.Linq;
 using System.Net;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data.TO;
-using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Hagashen Naidu")]
+        [Owner("Siphamandla Dube")]
         [TestCategory("DsfWebPostActivity_Constructed")]
         public void DsfWebPostActivity_Constructed_Correctly_ShouldHaveCorrectProperties()
         {
@@ -78,9 +78,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var attributes = typeof(DsfWebPostActivity).GetCustomAttributes(false);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, attributes.Length);
-            var toolDescriptor = attributes[0] as ToolDescriptorInfo;
-            Assert.IsNotNull(toolDescriptor);
-            Assert.AreEqual("POST", toolDescriptor.Name);
+            var firstAttr = attributes.First();
+            var toolDescriptor = firstAttr as ToolDescriptorInfo;
+            Assert.IsNull(toolDescriptor, "Should now be null, this Activity is now Deprecated");
+            Assert.IsTrue(firstAttr is ObsoleteAttribute);
+            Assert.AreNotEqual("POST", toolDescriptor?.Name, "Should nolonger be equal, activity is now Deprecated");
         }
 
         [TestMethod]
@@ -691,11 +693,84 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 //-----------------------Act-----------------------------
                 dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
                 //-----------------------Assert--------------------------
-                Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
-                Assert.AreEqual(response, errorResultTO.FetchErrors()[0]);
+                Assert.IsTrue(errorResultTO.HasErrors());
+                Assert.AreEqual(response, errorResultTO.FetchErrors().First());
             }
 
         }
+
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebPostActivity))]
+        public void DsfWebPostActivity_ExecutionImpl_ResponseManager_PushResponseIntoEnvironment_GivenJsonResponse_MappedToRecodSet_ShouldSucess()
+        {
+            //-----------------------Arrange-------------------------
+            const string json = "{\"Messanger\":\"jSon response from the request\"}";
+            var response = Convert.ToBase64String(json.ToBytesArray());
+            const string mappingFrom = "mapFrom";
+            const string recordSet = "recset";
+            const string mapTo = "mapTo";
+            const string variableNameMappingTo = "[[recset().mapTo]]";
+
+            var environment = new ExecutionEnvironment();
+
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+
+            var errorResultTO = new ErrorResultTO();
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            {
+                mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+                mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                var dsfWebGetActivity = new TestDsfWebPostActivity
+                {
+                    OutputDescription = service.GetOutputDescription(),
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    QueryString = "test Query",
+                    Headers = new List<INameValue>(),
+                    ResponseFromWeb = response,
+                    IsObject = false,
+                    Outputs = new List<IServiceOutputMapping>
+                    {
+                        {
+                            new ServiceOutputMapping
+                            {
+                                MappedFrom = mappingFrom,
+                                MappedTo = mapTo,
+                                RecordSetName = recordSet
+                            } 
+                        }
+                    }
+                };
+                //-----------------------Act-----------------------------
+                dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
+                //-----------------------Assert--------------------------
+                Assert.IsFalse(errorResultTO.HasErrors());
+
+                //assert first DataSourceShapes
+                var resourceManager = dsfWebGetActivity.ResponseManager;
+                var outputDescription = resourceManager.OutputDescription;
+                var dataShapes = outputDescription.DataSourceShapes;
+                var paths = dataShapes.First().Paths;
+                Assert.IsNotNull(outputDescription);
+                Assert.AreEqual("Messanger", paths.First().ActualPath);
+                Assert.AreEqual("Messanger", paths.First().DisplayPath);
+                Assert.AreEqual(variableNameMappingTo, paths.First().OutputExpression);
+                Assert.AreEqual("jSon response from the request", paths.First().SampleData);
+
+                //assert execution environment
+                var envirVariable = environment.Eval(recordSet, 0);
+                var ress = envirVariable as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                Assert.IsNotNull(envirVariable);
+                Assert.IsFalse(ress.Item.IsNothing, "Item should contain the recset mapped to the messanger key");
+            }
+        }
+
     }
 
     public class TestDsfWebPostActivity : DsfWebPostActivity
@@ -704,7 +779,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
+        protected override string PerformWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
             Head = head;
             QueryRes = query;

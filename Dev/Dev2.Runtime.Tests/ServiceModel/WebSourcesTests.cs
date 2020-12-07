@@ -17,6 +17,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -30,6 +31,32 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [DoNotParallelize]
     public class WebSourcesTests
     {
+        const string postData =
+                @"Accept-Language: en-US,en;q=0.5
+                Accept-Encoding: gzip, deflate
+                Cookie: __atuvc=34%7C7; permanent=0; _gitlab_session=226ad8a0be43681acf38c2fab9497240; __profilin=p%3Dt; request_method=GET
+                Connection: keep-alive
+                Content-Type: multipart/form-data; boundary=---------------------------9051914041544843365972754266
+                Content-Length: 554
+
+                -----------------------------9051914041544843365972754266
+                Content-Disposition: form-data; name=""text""
+
+                text default
+                -----------------------------9051914041544843365972754266
+                Content-Disposition: form-data; name=""file1""; filename=""a.txt""
+                Content-Type: text/plain
+
+                Content of a.txt.
+
+                -----------------------------9051914041544843365972754266
+                Content-Disposition: form-data; name=""file2""; filename=""a.html""
+                Content-Type: text/html
+
+                <!DOCTYPE html><title>Content of a.html.</title>
+
+                -----------------------------9051914041544843365972754266--";
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebSources))]
@@ -302,8 +329,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebSources))]
-        public void WebSources_PerformMultipartWebRequest_SetsContentTypeHeaders()
+        public void WebSources_PerformMultipartWebRequest_SetsContentTypeHeaders_And_ShouldReturnApplicationException()
         {
+            var address = "http://www.msn.com/";
             var responseFromWeb = Encoding.ASCII.GetBytes("response from web request");
             var mockWebClientWrapper = new Mock<IWebClientWrapper>();
 
@@ -311,9 +339,34 @@ namespace Dev2.Tests.Runtime.ServiceModel
             mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
                 .Returns(responseFromWeb);
 
+            var mockWebResponseWrapper = new Mock<HttpWebResponse>();
+            mockWebResponseWrapper.Setup(o => o.StatusCode)
+                .Returns(HttpStatusCode.BadRequest);
+
+            var mockWebRequest = new Mock<IWebRequest>();
+            mockWebRequest.Setup(o => o.Headers)
+                .Returns(new WebHeaderCollection
+                {
+                    "Authorization:bear: sdfsfff",
+                });
+            mockWebRequest.Setup(o => o.ContentType)
+                .Returns("Content-Type: multipart/form-data");
+            mockWebRequest.Setup(o => o.ContentLength)
+                .Returns(Encoding.ASCII.GetBytes(postData).Length);
+            mockWebRequest.Setup(o => o.Method)
+                .Returns("POST");
+            mockWebRequest.Setup(o => o.GetRequestStream())
+                .Returns(new MemoryStream());
+            mockWebRequest.Setup(o => o.GetResponse())
+                .Returns(mockWebResponseWrapper.Object);
+
+            var mockWebRequestFactory = new Mock<IWebRequestFactory>();
+            mockWebRequestFactory.Setup(o => o.New(address))
+                .Returns(mockWebRequest.Object);
+
             var source = new WebSource
             {
-                Address = "http://www.msn.com/",
+                Address = address,
                 AuthenticationType = AuthenticationType.Anonymous,
                 Client = new WebClientWrapper 
                 {
@@ -328,7 +381,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             try
             {
-                WebSources.PerformMultipartWebRequest(source.Client, source.Address, "");
+                Assert.ThrowsException<ApplicationException>(()=> WebSources.PerformMultipartWebRequest(mockWebRequestFactory.Object, source.Client, source.Address, postData), "Error while upload files. Server status code: " + HttpStatusCode.BadRequest);
             }
             catch(WebException e)
             {
@@ -339,6 +392,149 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNotNull(contentType);
             Assert.AreEqual("multipart/form-data", contentType);
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_PerformMultipartWebRequest_SetsContentTypeHeaders_And_ShouldReturnNull()
+        {
+            var address = "http://www.msn.com/";
+            var responseFromWeb = Encoding.ASCII.GetBytes("response from web request");
+            var mockWebClientWrapper = new Mock<IWebClientWrapper>();
+
+            mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { "a:x", "b:e" });
+            mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns(responseFromWeb);
+
+            var mockWebResponseWrapper = new Mock<HttpWebResponse>();
+            mockWebResponseWrapper.Setup(o => o.StatusCode)
+                .Returns(HttpStatusCode.OK);
+
+            var mockWebRequest = new Mock<IWebRequest>();
+            mockWebRequest.Setup(o => o.Headers)
+                .Returns(new WebHeaderCollection
+                {
+                    "Authorization:bear: sdfsfff",
+                });
+            mockWebRequest.Setup(o => o.ContentType)
+                .Returns("Content-Type: multipart/form-data");
+            mockWebRequest.Setup(o => o.ContentLength)
+                .Returns(Encoding.ASCII.GetBytes(postData).Length);
+            mockWebRequest.Setup(o => o.Method)
+                .Returns("POST");
+            mockWebRequest.Setup(o => o.GetRequestStream())
+                .Returns(new MemoryStream());
+            mockWebRequest.Setup(o => o.GetResponse())
+                .Returns(mockWebResponseWrapper.Object);
+
+            var mockWebRequestFactory = new Mock<IWebRequestFactory>();
+            mockWebRequestFactory.Setup(o => o.New(address))
+                .Returns(mockWebRequest.Object);
+
+            var source = new WebSource
+            {
+                Address = address,
+                AuthenticationType = AuthenticationType.Anonymous,
+                Client = new WebClientWrapper
+                {
+                    Headers = new WebHeaderCollection
+                    {
+                        "a:x",
+                        "b:e",
+                        "Content-Type: multipart/form-data"
+                    }
+                }
+            };
+
+            var result = string.Empty;
+            try
+            {
+                result = WebSources.PerformMultipartWebRequest(mockWebRequestFactory.Object, source.Client, source.Address, postData);
+            }
+            catch (WebException e)
+            {
+                Assert.Fail("Error connecting to " + source.Address + "\n" + e.Message);
+            }
+            var client = source.Client;
+            var contentType = client.Headers["Content-Type"];
+            Assert.IsNotNull(contentType);
+            Assert.AreEqual("multipart/form-data", contentType);
+            
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_PerformMultipartWebRequest_SetsContentTypeHeaders_And_ShouldReturnNullWebResponse()
+        {
+            var address = "http://www.msn.com/";
+            var responseFromWeb = Encoding.ASCII.GetBytes("response from web request");
+            var mockWebClientWrapper = new Mock<IWebClientWrapper>();
+
+            mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { "a:x", "b:e" });
+            mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns(responseFromWeb);
+
+            var mockWebResponseWrapper = new Mock<HttpWebResponse>();
+            mockWebResponseWrapper.Setup(o => o.StatusCode)
+                .Returns(HttpStatusCode.OK);
+            mockWebResponseWrapper.Setup(o => o.GetResponseStream())
+                .Returns(new MemoryStream(responseFromWeb));
+
+            var mockWebRequest = new Mock<IWebRequest>();
+            mockWebRequest.Setup(o => o.Headers)
+                .Returns(new WebHeaderCollection
+                {
+                    "Authorization:bear: sdfsfff",
+                });
+            mockWebRequest.Setup(o => o.ContentType)
+                .Returns("Content-Type: multipart/form-data");
+            mockWebRequest.Setup(o => o.ContentLength)
+                .Returns(Encoding.ASCII.GetBytes(postData).Length);
+            mockWebRequest.Setup(o => o.Method)
+                .Returns("POST");
+            mockWebRequest.Setup(o => o.GetRequestStream())
+                .Returns(new MemoryStream());
+            mockWebRequest.Setup(o => o.GetResponse())
+                .Returns(mockWebResponseWrapper.Object);
+
+            var mockWebRequestFactory = new Mock<IWebRequestFactory>();
+            mockWebRequestFactory.Setup(o => o.New(address))
+                .Returns(mockWebRequest.Object);
+
+            var source = new WebSource
+            {
+                Address = address,
+                AuthenticationType = AuthenticationType.Anonymous,
+                Client = new WebClientWrapper
+                {
+                    Headers = new WebHeaderCollection
+                    {
+                        "a:x",
+                        "b:e",
+                        "Content-Type: multipart/form-data"
+                    }
+                }
+            };
+
+            var result = string.Empty;
+            try
+            {
+                result = WebSources.PerformMultipartWebRequest(mockWebRequestFactory.Object, source.Client, source.Address, postData);
+            }
+            catch (WebException e)
+            {
+                Assert.Fail("Error connecting to " + source.Address + "\n" + e.Message);
+            }
+            var client = source.Client;
+            var contentType = client.Headers["Content-Type"];
+            Assert.IsNotNull(contentType);
+            Assert.AreEqual("multipart/form-data", contentType);
+           
+            Assert.AreEqual("response from web request", result);
+        }
+
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -541,5 +737,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 return false;
             }
         }
+
     }
 }

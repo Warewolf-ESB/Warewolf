@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -33,28 +34,26 @@ namespace Warewolf.Driver.Persistence.Drivers
     public class HangfireScheduler : IPersistenceScheduler
     {
         private IStateNotifier _stateNotifier = null;
+        private JobStorage _jobStorage;
+        private IBackgroundJobClient _client;
+
         public HangfireScheduler()
         {
+            _jobStorage = new SqlServerStorage(ConnectionString);
+            _client = new BackgroundJobClient(_jobStorage);
         }
-        public string GetStartActivityId(string jobId)
+
+        public HangfireScheduler(IBackgroundJobClient client, JobStorage jobStorage)
         {
-            var conn = ConnectionString();
-            GlobalConfiguration.Configuration.UseSqlServerStorage(conn);
-            var monitoringApi = JobStorage.Current.GetMonitoringApi();
-            var jobDetails = monitoringApi.JobDetails(jobId);
-            var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
-            values.TryGetValue("startActivityId", out StringBuilder startActivityId);
-            return startActivityId.ToString();
+            _jobStorage = jobStorage;
+            _client = client;
         }
+
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment)
         {
             try
             {
-                var conn = ConnectionString();
-                GlobalConfiguration.Configuration.UseSqlServerStorage(conn);
-                var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(conn));
-
-                var monitoringApi = JobStorage.Current.GetMonitoringApi();
+                var monitoringApi = _jobStorage.GetMonitoringApi();
                 var jobDetails = monitoringApi.JobDetails(jobId);
                 var jobIsScheduled = jobDetails.History.Where(i =>
                     i.StateName == "Enqueued" ||
@@ -71,25 +70,27 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var decryptEnvironment = persistedEnvironment.ToString().CanBeDecrypted() ? DpapiWrapper.Decrypt(persistedEnvironment.ToString()) : persistedEnvironment.ToString();
                 if (overrideVariables)
                 {
-                    if(values.ContainsKey("environment"))
+                    if (values.ContainsKey("environment"))
                     {
-                        values["environment"] = new StringBuilder(environment);;
+                        values["environment"] = new StringBuilder(environment);
                     }
                 }
                 else
                 {
-                    values["environment"]  = new StringBuilder(decryptEnvironment);
+                    values["environment"] = new StringBuilder(decryptEnvironment);
                 }
+
                 var workflowResume = new WorkflowResume();
                 var result = workflowResume.Execute(values, null);
                 var serializer = new Dev2JsonSerializer();
                 var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
                 if (executeMessage.HasError)
                 {
-                    var failedState = new FailedState(new Exception(executeMessage.Message.ToString()));
-                    backgroundJobClient.ChangeState(jobId, failedState, ScheduledState.StateName);
+                    var failedState = new FailedState(new Exception(executeMessage.Message?.ToString()));
+                    _client.ChangeState(jobId, failedState, ScheduledState.StateName);
                     return GlobalConstants.Failed;
                 }
+
                 values.TryGetValue("resourceID", out StringBuilder workflowId);
                 values.TryGetValue("environment", out StringBuilder environments);
                 values.TryGetValue("startActivityId", out StringBuilder startActivityId);
@@ -109,7 +110,7 @@ namespace Warewolf.Driver.Persistence.Drivers
 
                 _stateNotifier?.LogAdditionalDetail(audit, nameof(ResumeJob));
                 var manuallyResumedState = new ManuallyResumedState(environments.ToString());
-                backgroundJobClient.ChangeState(jobId, manuallyResumedState, ScheduledState.StateName);
+                _client.ChangeState(jobId, manuallyResumedState, ScheduledState.StateName);
                 return GlobalConstants.Success;
             }
             catch (Exception ex)
@@ -125,14 +126,13 @@ namespace Warewolf.Driver.Persistence.Drivers
             var suspensionDate = DateTime.Now;
             var resumptionDate = CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
             var state = new ScheduledState(resumptionDate.ToUniversalTime());
-            var backgroundJobClient = new BackgroundJobClient(new SqlServerStorage(ConnectionString()));
 
-            var jobId = backgroundJobClient.Create(() => ResumeWorkflow(values, null), state);
+            var jobId = _client.Create(() => ResumeWorkflow(values, null), state);
             return jobId;
         }
 
 
-
+        [ExcludeFromCodeCoverage]
         [AutomaticRetry(Attempts = 0)]
         [DisableConcurrentExecution(timeoutInSeconds: 10 * 60)]
         public string ResumeWorkflow(Dictionary<string, StringBuilder> values, PerformContext context)
@@ -148,19 +148,22 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
         }
 
-        private string ConnectionString()
+        private string ConnectionString
         {
-            var payload = Config.Persistence.PersistenceDataSource.Payload;
-            if (Config.Persistence.EncryptDataSource)
+            get
             {
-                payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
-            }
+                var payload = Config.Persistence.PersistenceDataSource.Payload;
+                if (Config.Persistence.EncryptDataSource)
+                {
+                    payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
+                }
 
-            var source = new Dev2JsonSerializer().Deserialize<DbSource>(payload);
-            return source.ConnectionString;
+                var source = new Dev2JsonSerializer().Deserialize<DbSource>(payload);
+                return source.ConnectionString;
+            }
         }
 
-        private DateTime CalculateResumptionDate(DateTime persistenceDate, enSuspendOption suspendOption, string scheduleValue)
+        public DateTime CalculateResumptionDate(DateTime persistenceDate, enSuspendOption suspendOption, string scheduleValue)
         {
             var resumptionDate = DateTime.UtcNow;
             switch (suspendOption)

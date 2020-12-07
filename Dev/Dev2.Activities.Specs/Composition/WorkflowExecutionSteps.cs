@@ -330,6 +330,9 @@ namespace Dev2.Activities.Specs.Composition
         [Given("I depend on a valid MSSQL server")]
         public void GivenIGetaValidMSSQLServer() => _containerOps = new Depends(Depends.ContainerType.MSSQL);
 
+        [Given("I depend on a valid remote Warewolf server")]
+        public void GivenIGetaValidRemoteWarewolfServer() => _containerOps = new Depends(Depends.ContainerType.CIRemote);
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
@@ -793,17 +796,20 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
-            if (server == "Remote Connection Integration")
+            if (_containerOps == null)
             {
-                _containerOps = new Depends(Depends.ContainerType.CIRemote);
-            }
-            else if (remoteWf == "TestSqlReturningXml" || remoteWf == "TestSqlExecutesOnce")
-            {
-                _containerOps = new Depends(Depends.ContainerType.MSSQL);
-            }
-            else if (remoteWf == "RabbitMQTest")
-            {
-                _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
+                if (server == "Remote Connection Integration")
+                {
+                    _containerOps = new Depends(Depends.ContainerType.CIRemote);
+                }
+                else if (remoteWf == "TestSqlReturningXml" || remoteWf == "TestSqlExecutesOnce")
+                {
+                    _containerOps = new Depends(Depends.ContainerType.MSSQL);
+                }
+                else if (remoteWf == "RabbitMQTest")
+                {
+                    _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
+                }
             }
 
             var localHostEnv = LocalEnvModel;
@@ -826,8 +832,7 @@ namespace Dev2.Activities.Specs.Composition
                 if (server == "Remote Connection Integration")
                 {
                     remoteEnvironment.Connection = new ServerProxy(
-                        $"http://{_containerOps.Container.IP}:{_containerOps.Container.Port}", "WarewolfAdmin",
-                        "W@rEw0lf@dm1n");
+                        $"http://{_containerOps.Container.IP}:{_containerOps.Container.Port}", "\\","");
                 }
 
                 EnsureEnvironmentConnected(remoteEnvironment, EnvironmentConnectionTimeout);
