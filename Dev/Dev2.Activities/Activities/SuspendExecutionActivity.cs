@@ -130,9 +130,12 @@ namespace Dev2.Activities
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
                                             throw new Exception(GlobalConstants.NextNodeIDNotFound));
                 var currentEnvironment = _dataObject.Environment.ToJson();
+                var currentuserprincipal = _dataObject.ExecutingUser.Identity.Name.ToString();
+                var versionNumber = _dataObject.VersionNumber.ToString();
                 if (EncryptData)
                 {
                     currentEnvironment = DpapiWrapper.Encrypt(currentEnvironment);
+                    currentuserprincipal = DpapiWrapper.Encrypt(currentuserprincipal);
                 }
 
                 var values = new Dictionary<string, StringBuilder>
@@ -140,7 +143,8 @@ namespace Dev2.Activities
                     {"resourceID", new StringBuilder(_dataObject.ResourceID.ToString())},
                     {"environment", new StringBuilder(currentEnvironment)},
                     {"startActivityId", new StringBuilder(activityId.ToString())},
-                    {"versionNumber", new StringBuilder(_dataObject.VersionNumber.ToString())}
+                    {nameof(versionNumber), new StringBuilder(_dataObject.VersionNumber.ToString())},
+                    {nameof(currentuserprincipal), new StringBuilder(currentuserprincipal)}
                 };
                 var persistScheduleValue = PersistSchedulePersistValue();
                 if (_dataObject.IsDebugMode())
