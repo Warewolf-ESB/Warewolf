@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -259,8 +259,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #endregion
 
-        #region Test
-
         [TestMethod]
         public void WebServicesTestWithValidArgsAndNonEmptyResponseExpectedFetchesRecordsetOnly()
         {
@@ -295,7 +293,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        public void WebServicesTestWithInValidArgsExpectedReturnsResponseWithErrorMessage()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_Test_With_InValidArgs_ExpectedReturnsResponseWithErrorMessage()
         {
             var serviceXml = XmlResource.Fetch("WebService");
 
@@ -309,13 +309,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new WebServicesMock();
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
-            Assert.AreEqual("Illegal characters in path.", result.RequestResponse);
+            Assert.AreEqual("The web source has an incomplete web address.", result.RequestResponse);
             Assert.AreEqual(1, result.Recordsets.Count);
             Assert.IsTrue(result.Recordsets[0].HasErrors);
-            Assert.AreEqual("Illegal characters in path.", result.Recordsets[0].ErrorMessage);
+            Assert.AreEqual("The web source has an incomplete web address.", result.Recordsets[0].ErrorMessage);
         }
-
-        #endregion
 
         [TestMethod]
         public void WebServicesTestWithValidArgsAndRecordsetFieldsExpectedDoesNotAddRecordsetFields()

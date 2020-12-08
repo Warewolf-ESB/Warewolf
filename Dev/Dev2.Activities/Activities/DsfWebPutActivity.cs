@@ -17,6 +17,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
@@ -64,10 +65,19 @@ namespace Dev2.Activities
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebRequest(head, query, url, putData);
 
+            var bytes = webRequestResult.Base64StringToByteArray();
+            var response = bytes.ReadToString();
+
             tmpErrors.MergeErrors(_errorsTo);
 
-            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+            ResponseManager = new ResponseManager 
+            { 
+                OutputDescription = OutputDescription, 
+                Outputs = Outputs, 
+                IsObject = IsObject, 
+                ObjectName = ObjectName 
+            };
+            ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
         }
 
         private (IEnumerable<NameValue> head, string query, string data) ConfigureHttp(IDSFDataObject dataObject, int update)
