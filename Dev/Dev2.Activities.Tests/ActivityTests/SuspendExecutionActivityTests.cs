@@ -566,7 +566,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = BuildPrincipal();
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -631,6 +631,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockSuspendExecution.Verify(o => o.CreateAndScheduleJob(enSuspendOption.SuspendUntil, suspendUntil.ToString(), It.IsAny<Dictionary<string, StringBuilder>>()), Times.Once);
         }
 
+        private static IPrincipal BuildPrincipal()
+        {
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            return mockPrincipal.Object;
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SuspendExecutionActivity))]
@@ -650,7 +657,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = BuildPrincipal();
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -778,7 +785,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual( "At least 1 activity is required after Suspend Execution.",errors[0]);
+            Assert.AreEqual("At least 1 activity is required after Suspend Execution.", errors[0]);
         }
 
         [TestMethod]
@@ -850,7 +857,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(0, env.Errors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual("Could not find persistence config. Please configure in Persistence Settings.",errors[0]);
+            Assert.AreEqual("Could not find persistence config. Please configure in Persistence Settings.", errors[0]);
         }
 
         [TestMethod]
@@ -872,7 +879,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = BuildPrincipal();
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -930,6 +937,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(dataObject.IsDebugNested);
             Assert.AreEqual(0, dataObject.ForEachNestingLevel);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManualResumptionActivity))]
@@ -951,8 +959,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var enFindMissingType = suspendExecutionActivity.GetFindMissingType();
             //---------------Test Result -----------------------
             Assert.AreEqual(enFindMissingType.SuspendExecution, enFindMissingType);
-
         }
+
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
