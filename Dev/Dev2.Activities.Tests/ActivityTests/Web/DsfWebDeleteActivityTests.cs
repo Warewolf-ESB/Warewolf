@@ -264,8 +264,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfWebDeleteActivity_Execute")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebDeleteActivity))]
         public void DsfWebDeleteActivity_Execute_WithInValidWebResponse_ShouldNotError()
         {
             //------------Setup for test--------------------------
@@ -302,6 +302,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //dsfWebPostActivity.PostData = "";
             dsfWebDeleteActivity.SourceId = Guid.Empty;
             dsfWebDeleteActivity.Headers = new List<INameValue>();
+            dsfWebDeleteActivity.ResponseFromWeb = response;
             //------------Execute Test---------------------------
             dsfWebDeleteActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
