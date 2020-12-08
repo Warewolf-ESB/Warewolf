@@ -299,7 +299,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var serviceXml = XmlResource.Fetch("WebService");
 
-            var service = new WebService(serviceXml);
+            var service = new WebService(serviceXml)
+            {
+                Source = new WebSource
+                {
+                    Address = "someAddress",
+                }
+            };
 
             foreach(var parameter in service.Method.Parameters)
             {
