@@ -5,14 +5,15 @@ Param(
   [string]$NuGet="",
   [string]$Config="Debug",
   [switch]$AutoVersion,
-  [switch]$SolutionWideOutputs,
+  [switch]$ProjectSpecificOutputs,
   [switch]$AcceptanceTesting,
   [switch]$UITesting,
   [switch]$Server,
   [switch]$Studio,
   [switch]$Release,
   [switch]$Web,
-  [switch]$RegenerateSpecFlowFeatureFiles
+  [switch]$RegenerateSpecFlowFeatureFiles,
+  [switch]$InDockerContainer
 )
 $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
                       "$PSScriptRoot\Dev\UITesting.sln",
@@ -296,10 +297,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-            if ($SolutionWideOutputs.IsPresent) {
-                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
-            } else {
+            if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
+            } else {
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
             if ($FullVersionString -ne $null -and $FullVersionString -ne "") {
                 $NugetPackVersion = ";PackageVersion=$FullVersionString"
