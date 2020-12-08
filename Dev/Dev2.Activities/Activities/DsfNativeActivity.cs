@@ -1024,9 +1024,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    data.Environment.AddError(ex.Message);
                     Dev2Logger.Error("OnExecute", ex, GlobalConstants.WarewolfError);
                 }
+                data.Environment.AddError(ex.Message);
             }
             finally
             {
