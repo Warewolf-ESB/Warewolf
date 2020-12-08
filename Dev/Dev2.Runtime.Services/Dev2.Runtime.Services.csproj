@@ -58,9 +58,6 @@
     <CodeAnalysisRuleSet>Dev2.Runtime.Services.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dev2.Scheduler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Warewolf.Driver.Persistence.Tests\bin\Debug\net48\Dev2.Scheduler.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Oracle.ManagedDataAccess">
@@ -456,10 +453,7 @@
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
-      <Project>{4db41f93-e0b7-454c-b4c4-b7e20671e7ab}</Project>
-      <Name>Dev2.Scheduler</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj" />
     <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
       <Project>{FF3115B2-370E-4E40-99C5-7D239BC28679}</Project>
       <Name>Dev2.Services.Sql</Name>
