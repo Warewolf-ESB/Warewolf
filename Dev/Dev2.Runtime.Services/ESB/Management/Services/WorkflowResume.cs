@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,19 +15,23 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class WorkflowResume : WorkflowManagementEndpointAbstract
     {
+        ISecurityWrapper _securityWrapper;
+        const string Sebatchlogonright = "SeBatchLogonRight";
+
         public override string HandlesType() => nameof(WorkflowResume);
         static string GetUnqualifiedName(string userName)
         {
@@ -71,6 +75,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             var unqualifiedUserName = GetUnqualifiedName(currentuserprincipal.ToString()).Trim();
             var executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            if (!IsWarewolfAuthorised(executingUser.Identity.Name,resourceId))
+            {
+                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity")};
+            }
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
             var executionEnv = new ExecutionEnvironment();
@@ -105,6 +113,21 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
+        }
+
+        private bool IsWarewolfAuthorised(string executingUser, Guid resourceId)
+        {
+            var securityWrapper = new SecurityWrapper(ServerAuthorizationService.Instance);
+            if (!securityWrapper.IsWindowsAuthorised(Sebatchlogonright, executingUser))
+            {
+                return false;
+            }
+            if (!securityWrapper.IsWarewolfAuthorised(Sebatchlogonright, executingUser, resourceId))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
