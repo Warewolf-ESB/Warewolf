@@ -24,6 +24,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
+using Dev2.Runtime.DynamicProxy;
 using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
 
@@ -132,11 +133,13 @@ namespace Dev2.Runtime.ServiceModel
 
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, string data, bool throwError, out ErrorResultTO errors)
         {
-            var client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
+            IWebClientWrapper client = null;
 
             errors = new ErrorResultTO();
             try
             {
+                ValidateSource(source);
+                client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
                 if (contentType != null && contentType.ToLowerInvariant().Contains("multipart"))
@@ -165,12 +168,19 @@ namespace Dev2.Runtime.ServiceModel
             }
             finally
             {
-                client.Dispose();
+                client?.Dispose();
             }
 
             return string.Empty;
         }
 
+        private static void ValidateSource(IWebSource source)
+        {
+            if (string.IsNullOrEmpty(source?.Address))
+            {
+                throw new Exception(Constants.ErrorMessages.WebAddressError);
+            }
+        }
         static string GetAddress(IWebSource source, string relativeUri)
         {
             if (source == null)
