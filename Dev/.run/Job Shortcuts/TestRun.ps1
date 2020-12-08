@@ -1,4 +1,3 @@
-
 param(
   [Parameter(Mandatory=$true)]
   [String[]] $Projects, 
@@ -57,9 +56,17 @@ if (!($RunInDocker.IsPresent) -and (!(Test-Path "$VSTestPath\Extensions\TestPlat
 }
 if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
+    if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
+        Write-Error "Cannot install test runner using nuget."
+        exit 1
+    }
 }
 if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
 	&"nuget.exe" "install" "JetBrains.dotCover.CommandLineTools" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
+    if (!(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
+        Write-Error "Cannot install coverage runner using nuget."
+        exit 1
+    }
 }
 if ($RunInDocker.IsPresent) {
     $ContainerName = $Projects.ToLower().replace(" ", "-");
@@ -150,6 +157,14 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			}
 		}
 	}
+	if ($PreTestRunScript) {
+		"sc.exe stop `"Warewolf Server`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+		"Wait-Process -Name `"Warewolf Server`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+		"Move-Item `"C:\programdata\warewolf\Server Log\warewolf-server.log`" `"$TestResultsPath\warewolf-server($LoopCounter).log`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	}
+	if ($Coverage.IsPresent) {
+		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	}
 	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 		"  <Output>.$TestResultsPath\DotCover.dcvr</Output>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		"  <Scope>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
@@ -184,11 +199,6 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
     if (!($RunInDocker.IsPresent)) {
         Get-Content "$TestResultsPath\RunTests.ps1"
         &"$TestResultsPath\RunTests.ps1"
-        if ($PreTestRunScript) {
-			sc.exe stop "Warewolf Server"
-			Wait-Process -Name "Warewolf Server"
-			Move-Item "C:\programdata\warewolf\Server Log\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).log"
-		}
     } else {
         docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
         docker cp . ${ContainerName}:.\BuildUnderTest
