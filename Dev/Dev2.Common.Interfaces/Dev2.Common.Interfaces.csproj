@@ -346,12 +346,12 @@
     <Compile Include="Scheduler\Interfaces\IScheduledResource.cs" />
     <Compile Include="Scheduler\Interfaces\IScheduledResourceModel.cs" />
     <Compile Include="Scheduler\Interfaces\IScheduleTrigger.cs" />
-    <Compile Include="Scheduler\Interfaces\ISecurityWrapper.cs" />
     <Compile Include="Scheduler\Interfaces\IServerSchedulerFactory.cs" />
     <Compile Include="Scheduler\Interfaces\SchedulerStatus.cs" />
     <Compile Include="Scheduler\Interfaces\ScheduleRunStatus.cs" />
     <Compile Include="Scripting\IScriptingContext.cs" />
     <Compile Include="Search\ISearch.cs" />
+    <Compile Include="Security\ISecurityWrapper.cs" />
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="ServerProxyLayer\IDbSource.cs" />
     <Compile Include="ServerProxyLayer\IElasticsearchSource.cs" />

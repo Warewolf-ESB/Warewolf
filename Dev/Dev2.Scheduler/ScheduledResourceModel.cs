@@ -23,6 +23,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security;
+using Dev2.Common.Interfaces.Security;
 
 namespace Dev2.Scheduler
 {

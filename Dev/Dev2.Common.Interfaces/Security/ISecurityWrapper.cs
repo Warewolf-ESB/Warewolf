@@ -11,12 +11,11 @@
 using System;
 using Warewolf.Data;
 
-namespace Dev2.Common.Interfaces.Scheduler.Interfaces
+namespace Dev2.Common.Interfaces.Security
 {
     public interface ISecurityWrapper : IDisposable
     {
         bool IsWindowsAuthorised(string privilege, string userName);        
-        // bool IsWarewolfAuthorised(string privilege, string userName, string resourceGuid);
         bool IsWarewolfAuthorised(string privilege, string userName, Guid resourceId);
         bool IsWarewolfAuthorised(string privilege, string userName, IWarewolfResource resource);
     }

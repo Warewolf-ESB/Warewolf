@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Common.Interfaces.Security;
 using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.Common.Interfaces.Scheduler.Interfaces
