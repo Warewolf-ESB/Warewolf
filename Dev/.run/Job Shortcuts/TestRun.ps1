@@ -157,6 +157,14 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			}
 		}
 	}
+	if ($PreTestRunScript) {
+		"sc.exe stop `"Warewolf Server`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+		"Wait-Process -Name `"Warewolf Server`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+		"Move-Item `"C:\programdata\warewolf\Server Log\warewolf-server.log`" `"$TestResultsPath\warewolf-server($LoopCounter).log`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	}
+	if ($Coverage.IsPresent) {
+		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	}
 	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 		"  <Output>.$TestResultsPath\DotCover.dcvr</Output>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		"  <Scope>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
@@ -191,14 +199,6 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
     if (!($RunInDocker.IsPresent)) {
         Get-Content "$TestResultsPath\RunTests.ps1"
         &"$TestResultsPath\RunTests.ps1"
-        if ($PreTestRunScript) {
-			sc.exe stop "Warewolf Server"
-			Wait-Process -Name "Warewolf Server" -ErrorAction SilentlyContinue
-			Move-Item "C:\programdata\warewolf\Server Log\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).log"
-		}
-		if ($Coverage.IsPresent) {
-			Wait-Process -Name "DotCover" -ErrorAction SilentlyContinue
-		}
     } else {
         docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
         docker cp . ${ContainerName}:.\BuildUnderTest
