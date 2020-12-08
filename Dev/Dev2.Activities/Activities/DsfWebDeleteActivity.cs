@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
@@ -44,7 +45,16 @@ namespace Dev2.Activities
 
             tmpErrors.MergeErrors(_errorsTo);
 
-            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+            /*var bytes = webRequestResult.Base64StringToByteArray();
+            var response = bytes.ReadToString();*/
+
+            ResponseManager = new ResponseManager 
+            { 
+                OutputDescription = OutputDescription, 
+                Outputs = Outputs, 
+                IsObject = IsObject, 
+                ObjectName = ObjectName 
+            };
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
 
