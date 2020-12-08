@@ -45,8 +45,8 @@ namespace Dev2.Activities
 
             tmpErrors.MergeErrors(_errorsTo);
 
-            /*var bytes = webRequestResult.Base64StringToByteArray();
-            var response = bytes.ReadToString();*/
+            var bytes = webRequestResult.Base64StringToByteArray();
+            var response = bytes.ReadToString();
 
             ResponseManager = new ResponseManager 
             { 
@@ -55,7 +55,7 @@ namespace Dev2.Activities
                 IsObject = IsObject, 
                 ObjectName = ObjectName 
             };
-            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+            ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
         }
 
         private (IEnumerable<NameValue> head, string query, string data) ConfigureHttp(IDSFDataObject dataObject, int update)
