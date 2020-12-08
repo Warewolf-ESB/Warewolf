@@ -115,6 +115,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var source = new WebSource
             {
+                Address = "http://sample.com",
+                DefaultQuery = "/default",
                 Client = mockWebClientWrapper.Object
             };
 
@@ -137,6 +139,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var source = new WebSource
             {
+                Address = "http://example.com",
+                DefaultQuery = "/default",
                 Client = mockWebClientWrapper.Object
             };
 
@@ -152,6 +156,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSources_Test_WithInValidArgs_And_SourceExecuteFails_ExpectedValidInvalidationResult()
         {
             var mockWebSource = new Mock<IWebSource>();
+            mockWebSource.Setup(o => o.Address)
+                .Returns("http://localhost:2121");
             mockWebSource.Setup(o => o.Client)
                 .Throws(new Exception("test: false exception"));
 
