@@ -509,7 +509,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(100)]
         [Owner("Clint Stedman")]
         [TestCategory("ManageRabbitMQSourceViewModel_Properties")]
-        public void TestTestFailed()
+        public void TestRabbitMQSourceTestFailed()
         {
             //arrange
             var expectedValue = true;

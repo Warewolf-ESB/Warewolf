@@ -431,7 +431,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestTestFailed()
+        public void TestPostGresSourceTestFailed()
         {
             //arrange
             var expectedValue = true;

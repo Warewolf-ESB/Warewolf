@@ -576,7 +576,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestTestFailed()
+        public void TestManageSqlServerSourceTestFailed()
         {
             //arrange
             var expectedValue = true;

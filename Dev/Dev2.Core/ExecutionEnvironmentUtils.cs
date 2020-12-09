@@ -1,4 +1,13 @@
-#pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +19,6 @@ using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
@@ -46,9 +54,11 @@ namespace Dev2
                 {
                     TryAddPropToOutput(requestIODirection, update, environment, outputObj, prop);
                 }
+
                 var dataListString = outputObj.ToString(Newtonsoft.Json.Formatting.Indented);
                 return dataListString;
             }
+
             return "{}";
         }
 
@@ -105,7 +115,7 @@ namespace Dev2
             var ioDire = v?.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
             if (ioDire != null)
             {
-                var x = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDire.Value.ToString());
+                var x = (enDev2ColumnArgumentDirection) Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDire.Value.ToString());
                 if ((x == enDev2ColumnArgumentDirection.Both || x == requestIODirection) && (environment.Eval("[[" + objName + "]]", 0) is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfEvalResult))
                 {
                     ParseDataItemToOutputs(outputObj, objName, warewolfEvalResult.Item);
@@ -127,6 +137,7 @@ namespace Dev2
                         AddDataItemToOutputs(val, requestedIODirection, newArray, dataItem);
                     }
                 }
+
                 outputObj.Add(objName, newArray);
             }
         }
@@ -139,7 +150,7 @@ namespace Dev2
             var p = io?.Properties().FirstOrDefault(token => token.Name == "@ColumnIODirection");
             if (p != null)
             {
-                var direction = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
+                var direction = (enDev2ColumnArgumentDirection) Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
                 if (direction == enDev2ColumnArgumentDirection.Both || direction == requestedIODirection)
                 {
                     var i = 0;
@@ -194,8 +205,7 @@ namespace Dev2
 
         public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList, int update)
         {
-
-            var toLoad = rawPayload.ToString().ToCleanXml(); // clean up the rubish ;)
+            var toLoad = rawPayload.ToString().ToCleanXml();
             var xDoc = new XmlDocument();
             toLoad = string.Format("<Tmp{0:N}>{1}</Tmp{0:N}>", Guid.NewGuid(), toLoad);
             xDoc.LoadXml(toLoad);
@@ -210,6 +220,7 @@ namespace Dev2
                 }
             }
         }
+
         public static void UpdateEnvironmentFromInputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
         {
             dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
@@ -226,6 +237,7 @@ namespace Dev2
             {
                 return;
             }
+
             if (!toLoad.IsJSON())
             {
                 toLoad = toLoad.ToCleanXml();
@@ -236,6 +248,7 @@ namespace Dev2
             {
                 inputObject = JsonConvert.DeserializeObject(toLoad) as JObject;
             }
+
             if (inputObject != null)
             {
                 UpdateEnviromentWithMappings(dataObject, mappings, inputObject);
@@ -258,6 +271,7 @@ namespace Dev2
                         continue;
                     }
                 }
+
                 var propsMatching = inputObject.Properties().Where(property => property.Name == inputName).ToList();
                 foreach (var prop in propsMatching)
                 {
@@ -308,6 +322,7 @@ namespace Dev2
                     {
                         UpdateEnvironmentFromJObject(dataObject, recSets, inputName, i, arrayValue[i]);
                     }
+
                     processedRecsets.Add(inputName);
                 }
             }
@@ -427,8 +442,10 @@ namespace Dev2
                 a = a.Replace(GlobalConstants.XMLPrefix, "");
                 a = Encoding.UTF8.GetString(System.Convert.FromBase64String(a));
             }
+
             return a;
         }
+
         public static string GetXmlInputFromEnvironment(IDSFDataObject dataObject, string dataList, int update)
         {
             var xml = JsonConvert.DeserializeXNode(GetJsonForEnvironmentWithColumnIoDirection(dataObject, dataList, enDev2ColumnArgumentDirection.Input, update), "DataList", true);
@@ -441,102 +458,156 @@ namespace Dev2
             {
                 throw new ArgumentNullException(nameof(resource));
             }
+
             if (string.IsNullOrEmpty(dataList))
             {
                 throw new ArgumentNullException(nameof(dataList));
             }
+
             Uri.TryCreate(webServerUrl, UriKind.RelativeOrAbsolute, out Uri url);
             var jsonSwaggerInfoObject = BuildJsonSwaggerInfoObject(resource);
-            var definitionObject = GetParametersDefinition(out List<JObject> parameters, dataList, out bool isScalarInputOnly);
-            var parametersForSwagger = isScalarInputOnly ? (JToken)new JArray(parameters) : new JArray(new JObject { { "name", "DataList" }, { "in", "query" }, { "required", true }, { "schema", new JObject { { "$ref", "#/definitions/DataList" } } } });
-            var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(url.AbsolutePath, parametersForSwagger);
-            var jsonSwaggerResponsesObject = BuildJsonSwaggerResponsesObject();
-            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerPathObject, jsonSwaggerResponsesObject, definitionObject, url.Scheme);
+            var jsonSwaggerServerObject = BuildJsonSwaggerServerObject(url);
+            var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(url, dataList);
+            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerServerObject, jsonSwaggerPathObject);
             var resultString = GetSerializedSwaggerObject(jsonSwaggerObject);
             return resultString;
-        }
-
-        static JToken GetParametersDefinition(out List<JObject> parameters, string dataList, out bool isScalarInputOnly)
-        {
-            var dataListTO = new DataListTO(dataList);
-            var scalarInputs = dataListTO.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
-            var recSetInputs = dataListTO.Inputs.Where(DataListUtil.IsValueRecordset).ToList();
-            var scalarOutputs = dataListTO.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
-            var recSetOutputs = dataListTO.Outputs.Where(DataListUtil.IsValueRecordset);
-            parameters = null;
-            isScalarInputOnly = true;
-            var dataListSchema = new Dictionary<string, Schema>
-            {
-                {
-                    "Output", new Schema
-                    {
-                        Type = "object",
-                        Properties = BuildDefinition(scalarOutputs, recSetOutputs)
-                    }
-                }
-            };
-
-            if (recSetInputs.Any())
-            {
-                dataListSchema.Add("DataList", new Schema
-                {
-                    Type = "object",
-                    Properties = BuildDefinition(scalarInputs, recSetInputs)
-                });
-                isScalarInputOnly = false;
-            }
-            else
-            {
-                parameters = scalarInputs.Select(scalarInput => new JObject
-                {
-                    { "name", scalarInput }, { "in", "query" }, { "required", true }, { "type", "string" }
-                }).ToList();
-            }
-            var serialized = JsonConvert.SerializeObject(dataListSchema);
-            var des = JsonConvert.DeserializeObject(serialized) as JToken;
-            var definitionObject = des;
-            return definitionObject;
         }
 
         static string GetSerializedSwaggerObject(JObject jsonSwaggerObject)
         {
             var converter = new JsonSerializer();
             var result = new StringBuilder();
-            var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) { Formatting = Newtonsoft.Json.Formatting.Indented };
+            var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) {Formatting = Newtonsoft.Json.Formatting.Indented};
             converter.Serialize(jsonTextWriter, jsonSwaggerObject);
             jsonTextWriter.Flush();
             var resultString = Regex.Replace(result.ToString(), @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
             return resultString;
         }
 
-        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerPathObject, JObject jsonSwaggerResponsesObject, JToken definitionObject, string scheme)
+        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerServerObject, JObject jsonSwaggerPathObject)
         {
             var jsonSwaggerObject = new JObject
             {
-                { "swagger", new JValue(2) },
-                { "info", jsonSwaggerInfoObject },
-                { "host", new JValue(EnvironmentVariables.PublicWebServerUri) },
-                { "basePath", new JValue("/") },
-                { "schemes", new JArray(scheme) },
-                { "produces", new JArray("application/json","application/xml") },
-                { "paths", jsonSwaggerPathObject },
-                { "responses", jsonSwaggerResponsesObject },
-                { "definitions", definitionObject }
+                {"openapi", new JValue(EnvironmentVariables.OpenAPiVersion)},
+                {"info", jsonSwaggerInfoObject},
+                {"servers", new JArray(jsonSwaggerServerObject)},
+                {"paths", jsonSwaggerPathObject}
             };
             return jsonSwaggerObject;
         }
 
-        static JObject BuildJsonSwaggerResponsesObject()
+        static JObject BuildJsonSwaggerServerObject(Uri url)
+        {
+            var jsonSwaggerServerObject = new JObject
+            {
+                {"url", new JValue(url.Scheme + "://" + url.Host)}
+            };
+            return jsonSwaggerServerObject;
+        }
+
+        static JObject BuildJsonSwaggerInfoObject(IWarewolfResource resource)
+        {
+            var versionValue = resource.VersionInfo != null ? new JValue(resource.VersionInfo.VersionNumber) : new JValue("1.0.0");
+
+            var jsonSwaggerInfoObject = new JObject
+            {
+                {"title", new JValue(resource.ResourceName)},
+                {"description", new JValue(resource.ResourceName)},
+                {"version", versionValue}
+            };
+            return jsonSwaggerInfoObject;
+        }
+
+        static JObject BuildJsonSwaggerPathObject(Uri path, string dataList)
+        {
+            var parametersObject = BuildParametersObject(dataList);
+            var responseObject = BuildJsonSwaggerResponsesObject(dataList);
+            var pathGetObject = new JObject
+            {
+                {
+                    "get", new JObject
+                    {
+                        {"tags", new JArray("")},
+                        {"description", new JValue("")},
+                        {"parameters", parametersObject},
+                        {"responses", responseObject}
+                    }
+                }
+            };
+
+            var pathObject = new JObject
+            {
+                {path.AbsolutePath.Replace(".api", ""), pathGetObject}
+            };
+            return pathObject;
+        }
+
+        static JToken BuildParametersObject(string dataList)
+        {
+            JArray arrayObj = new JArray();
+            var dataListTo = new DataListTO(dataList);
+
+            var scalarInputs = dataListTo.Inputs.Where(s => !DataListUtil.IsValueRecordset(s));
+            foreach (var input in scalarInputs)
+            {
+                var inputObject = new JObject
+                {
+                    {"name", input},
+                    {"in", "query"},
+                    {"required", true},
+                    {
+                        "schema", new JObject
+                        {
+                            {"type", "string"}
+                        }
+                    }
+                };
+                arrayObj.Add(inputObject);
+            }
+
+            var recSetInputs = dataListTo.Inputs.Where(DataListUtil.IsValueRecordset).ToList();
+            var groupedRecSets = recSetInputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
+            foreach (var groupedRecSet in groupedRecSets)
+            {
+                var recSetName = groupedRecSet.Key;
+                var propObject = BuildPropertyDefinition(groupedRecSet);
+                var recSchemaObject = new Schema
+                {
+                    Type = "object",
+                    Properties = propObject
+                };
+                var serializedSchema = JsonConvert.SerializeObject(recSchemaObject);
+                var deserializedSchema = JsonConvert.DeserializeObject(serializedSchema) as JToken;
+                var recObject = new JObject
+                {
+                    {"name", recSetName},
+                    {"in", "query"},
+                    {"required", true},
+                    {"schema", deserializedSchema}
+                };
+                arrayObj.Add(recObject);
+            }
+
+            var serialized = JsonConvert.SerializeObject(arrayObj);
+            var des = JsonConvert.DeserializeObject(serialized) as JToken;
+            var definitionObject = des;
+            return definitionObject;
+        }
+
+        static JObject BuildJsonSwaggerResponsesObject(string dataList)
         {
             var jsonSwaggerResponsesObject = new JObject
             {
                 {
                     "200", new JObject
                     {
+                        {"description", new JValue("Success")},
                         {
-                            "schema", new JObject
+                            "content", new JObject
                             {
-                                { "$ref", "#/definition/Output" }
+                                {
+                                    "application/json", BuildResponseSchema(dataList)
+                                }
                             }
                         }
                     }
@@ -545,39 +616,14 @@ namespace Dev2
             return jsonSwaggerResponsesObject;
         }
 
-        static JObject BuildJsonSwaggerPathObject(string path, JToken parametersForSwagger)
+        private static JToken BuildResponseSchema(string dataList)
         {
-            var jsonSwaggerPathObject = new JObject
-            {
-                { "serviceName", new JValue(path) },
-                {
-                    "get", new JObject
-                    {
-                        { "summary", new JValue("") },
-                        { "description", new JValue("") },
-                        { "parameters", parametersForSwagger }
-                    }
-                }
-            };
-            return jsonSwaggerPathObject;
-        }
+            var dataListTo = new DataListTO(dataList);
+            var scalarOutputs = dataListTo.Outputs.Where(s => !DataListUtil.IsValueRecordset(s));
+            var recSetOutputs = dataListTo.Outputs.Where(DataListUtil.IsValueRecordset);
 
-        static JObject BuildJsonSwaggerInfoObject(IWarewolfResource resource)
-        {
-            var versionValue = resource.VersionInfo != null ? new JValue(resource.VersionInfo.VersionNumber) : new JValue("1.0.0");
-            var jsonSwaggerInfoObject = new JObject
-            {
-                { "title", new JValue(resource.ResourceName) },
-                { "description", new JValue("") },
-                { "version", versionValue }
-            };
-            return jsonSwaggerInfoObject;
-        }
-
-        static Dictionary<string, Schema> BuildDefinition(IEnumerable<string> scalars, IEnumerable<string> recSets)
-        {
-            var groupedRecSets = recSets.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
-            var recSetItems = scalars.ToDictionary(scalarInput => scalarInput, scalarInput => new Schema { Type = "string" });
+            var propertiesObject = scalarOutputs.ToDictionary(scalarInput => scalarInput, scalarInput => new Schema {Type = "string"});
+            var groupedRecSets = recSetOutputs.GroupBy(DataListUtil.ExtractRecordsetNameFromValue);
             foreach (var groupedRecSet in groupedRecSets)
             {
                 var recSetName = groupedRecSet.Key;
@@ -588,21 +634,37 @@ namespace Dev2
                     Type = "object",
                     Properties = propObject
                 };
-                recSetItems.Add(recSetName, recObject);
+                propertiesObject.Add(recSetName, recObject);
             }
-            return recSetItems;
+
+            var responseSchema = new Dictionary<string, Schema>
+            {
+                {
+                    "schema", new Schema
+                    {
+                        Type = "object",
+                        Properties = propertiesObject,
+                    }
+                }
+            };
+            var serialized = JsonConvert.SerializeObject(responseSchema);
+            var definitionObject = JsonConvert.DeserializeObject(serialized) as JToken;
+            var res = definitionObject;
+            return res;
         }
 
-
-        static Dictionary<string, Schema> BuildPropertyDefinition(IGrouping<string, string> groupedRecSet) => groupedRecSet.ToDictionary(DataListUtil.ExtractFieldNameOnlyFromValue, name => new Schema { Type = "string" });
+        static Dictionary<string, Schema> BuildPropertyDefinition(IGrouping<string, string> groupedRecSet) => groupedRecSet.ToDictionary(DataListUtil.ExtractFieldNameOnlyFromValue, name => new Schema
+        {
+            Type = "string"
+        });
 
 
         public static void ProcessOutputMapping(IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row, IServiceOutputMapping serviceOutputMapping)
         {
             var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
             var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
-            var rs = serviceOutputMapping.RecordSetName;
 
+            var rs = serviceOutputMapping.RecordSetName;
             if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(rs, rsType == enRecordsetIndexType.Star))))
             {
                 if (started)
@@ -622,26 +684,32 @@ namespace Dev2
                     Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 }
             }
+
             GetRowIndex(ref started, ref rowIdx, rsType, rowIndex);
             if (!row.Table.Columns.Contains(serviceOutputMapping.MappedFrom))
             {
                 return;
             }
+
             var value = row[serviceOutputMapping.MappedFrom];
+
             var colDataType = row.Table.Columns[serviceOutputMapping.MappedFrom].DataType;
             if (colDataType.Name == "Byte[]")
             {
                 value = Encoding.UTF8.GetString(value as byte[]);
             }
+
             if (update != 0)
             {
                 rowIdx = update;
             }
+
             var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
             if (rsType == enRecordsetIndexType.Star)
             {
                 displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
             }
+
             environment.Assign(displayExpression, value.ToString(), update);
         }
 
@@ -652,25 +720,19 @@ namespace Dev2
                 rowIdx = 1;
                 started = false;
             }
+
             if (rsType == enRecordsetIndexType.Numeric)
             {
                 rowIdx = int.Parse(rowIndex);
             }
         }
-
     }
 
     public class Schema
     {
-
-
-        [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonProperty("type")] public string Type { get; set; }
 
         [JsonProperty("properties", NullValueHandling = NullValueHandling.Ignore)]
         public IDictionary<string, Schema> Properties { get; set; }
-
     }
-
-
 }
