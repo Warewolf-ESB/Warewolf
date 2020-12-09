@@ -696,7 +696,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(5000)]
         public void TestResourceXamlNonNullEmpty()
         {
             //arrange
@@ -805,7 +805,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestTestFailed()
+        public void TestSharepointServerSourceTestFailed()
         {
             //arrange
             var expectedValue = true;
