@@ -355,12 +355,32 @@ public class SecurityWrapper : ISecurityWrapper
         return false;
     }
 
-    public ClaimsPrincipal BuildUserClaimsPrincipal(string privilege, string unqualifiedUserName)
+    public ClaimsPrincipal BuildUserClaimsPrincipal(string privilege, string unqualifiedUserName, Guid resourceId)
     {
-        var groups = GetGroupsUserBelongsTo(unqualifiedUserName, GetAccountsWithPrivilege(privilege));
-        var tmp = new GenericIdentity(unqualifiedUserName);
-        ClaimsPrincipal identity = new GenericPrincipal(tmp, groups.ToArray());
-        return identity;
+        try
+        {
+            var groups = GetGroupsUserBelongsTo(unqualifiedUserName, GetAccountsWithPrivilege(privilege));
+            var tmp = new GenericIdentity(unqualifiedUserName);
+            ClaimsPrincipal identity = new GenericPrincipal(tmp, groups.ToArray());
+
+            if (!IsWindowsAuthorised(privilege, unqualifiedUserName))
+            {
+                Dev2Logger.Warn("User " + unqualifiedUserName + " was denied permission to Resume a Workflow.", GlobalConstants.WarewolfWarn);
+                return null;
+            }
+
+            if (!IsWarewolfAuthorised(privilege, unqualifiedUserName, resourceId))
+            {
+                Dev2Logger.Warn("User " + unqualifiedUserName + " was denied permission to Resume a Workflow.", GlobalConstants.WarewolfWarn);
+                return null;
+            }
+            return identity;
+        }
+        catch (Exception e)
+        {
+            Dev2Logger.Warn("User " + unqualifiedUserName + " was denied permission to Resume Workflow.", GlobalConstants.WarewolfWarn);
+            return null;
+        }
     }
 
     public bool IsWarewolfAuthorised(string privilege, string userName, Guid resourceId)

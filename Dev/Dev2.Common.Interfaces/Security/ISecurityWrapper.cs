@@ -19,6 +19,6 @@ namespace Dev2.Common.Interfaces.Security
         bool IsWindowsAuthorised(string privilege, string userName);        
         bool IsWarewolfAuthorised(string privilege, string userName, Guid resourceId);
         bool IsWarewolfAuthorised(string privilege, string userName, IWarewolfResource resource);
-        ClaimsPrincipal BuildUserClaimsPrincipal(string privilege,string userName);
+        ClaimsPrincipal BuildUserClaimsPrincipal(string privilege, string unqualifiedUserName, Guid resourceId);
     }
 }

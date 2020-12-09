@@ -33,6 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         const string Sebatchlogonright = "SeBatchLogonRight";
 
         public override string HandlesType() => nameof(WorkflowResume);
+
         static string GetUnqualifiedName(string userName)
         {
             if (userName.Contains("\\"))
@@ -42,6 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return userName;
         }
+
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
@@ -74,19 +76,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             var unqualifiedUserName = GetUnqualifiedName(currentuserprincipal.ToString()).Trim();
-            ClaimsPrincipal executingUser;
-            try
+            var securityWrapper = new SecurityWrapper(ServerAuthorizationService.Instance);
+            var executingUser = securityWrapper.BuildUserClaimsPrincipal(Sebatchlogonright, unqualifiedUserName, resourceId);
+            if (executingUser == null)
             {
-                var securityWrapper = SecurityWrapper;
-                executingUser = securityWrapper.BuildUserClaimsPrincipal(Sebatchlogonright,unqualifiedUserName);
-                if (!IsWarewolfAuthorised(securityWrapper,executingUser.Identity.Name,resourceId))
-                {
-                    return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity")};
-                }
-            }
-            catch (Exception e)
-            {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity")};
+                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Authentication Error resuming. Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity")};
             }
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
@@ -122,23 +116,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
-        }
-        public ISecurityWrapper SecurityWrapper
-        {
-            get => _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
-        }
-        private bool IsWarewolfAuthorised(ISecurityWrapper securityWrapper, string executingUser, Guid resourceId)
-        {
-            if (!securityWrapper.IsWindowsAuthorised(Sebatchlogonright, executingUser))
-            {
-                return false;
-            }
-            if (!securityWrapper.IsWarewolfAuthorised(Sebatchlogonright, executingUser, resourceId))
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }
