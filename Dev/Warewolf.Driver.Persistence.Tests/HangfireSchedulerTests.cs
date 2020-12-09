@@ -207,6 +207,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
+        [Timeout(120000)]
         public void HangfireScheduler_ResumeJob_WorkflowResumeReturnsErrors_Failed()
         {
             var mockStateNotifier = new Mock<IStateNotifier>();
