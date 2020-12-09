@@ -699,7 +699,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivity))]
-        public void DsfWebPostActivity_ExecutionImpl_ResponseManager_PushResponseIntoEnvironment_GivenJsonResponse_MappedToRecodSet_ShouldSucess()
+        public void WebPostActivity_ExecutionImpl_ResponseManager_PushResponseIntoEnvironment_GivenJsonResponse_MappedToRecodSet_ShouldSucess()
         {
             //-----------------------Arrange-------------------------
             const string json = "{\"Messanger\":\"jSon response from the request\"}";
