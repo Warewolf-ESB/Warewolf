@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
@@ -18,6 +19,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Persistence;
 using Dev2.Settings.Persistence;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -319,6 +321,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory(nameof(PersistenceSettingsViewModel))]
         public void PersistenceSettingsViewModel_Save()
         {
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+
             var resourceRepo = new Mock<IResourceRepository>();
             //------------Setup for test--------------------------
             var persistenceSettingsViewModel = CreatePersistenceSettingViewModel(resourceRepo);
@@ -329,7 +333,6 @@ namespace Dev2.Core.Tests.Settings
             persistenceSettingsViewModel.SelectedPersistenceDataSource = mockResource.Object;
             persistenceSettingsViewModel.EncryptDataSource = false;
 
-            CustomContainer.Register(new Mock<IPopupController>().Object);
             //------------Assert Results-------------------------
             persistenceSettingsViewModel.Save(new PersistenceSettingsTo());
             resourceRepo.Verify(o => o.SavePersistenceSettings(It.IsAny<IServer>(), It.IsAny<PersistenceSettingsData>()), Times.Once);
@@ -354,6 +357,7 @@ namespace Dev2.Core.Tests.Settings
             persistenceSettingsViewModel.Save(new PersistenceSettingsTo());
             resourceRepo.Verify(o => o.SavePersistenceSettings(It.IsAny<IServer>(), It.IsAny<PersistenceSettingsData>()), Times.Once);
             Assert.AreEqual(true, persistenceSettingsViewModel.Enable);
+            Assert.AreEqual("Default", persistenceSettingsViewModel.SelectedPersistenceDataSource.ResourceName);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -394,7 +398,117 @@ namespace Dev2.Core.Tests.Settings
             mockExternalProcessExecutor.Verify(o => o.OpenInBrowser(uri), Times.Once);
         }
 
-        private static Mock<IServer> CreateMockServer(Mock<IResourceRepository> resourceRepo = null)
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceSettingsViewModel))]
+        public void PersistenceSettingsViewModel_IsPageComplete_SchedulerErrorMsg()
+        {
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.ShowSaveErrorDialog(StringResources.SaveSettingsPermissionsSchedulerErrorMsg))
+                .Returns(MessageBoxResult.OK).Verifiable();
+            CustomContainer.Register(mockPopupController.Object);
+
+            var resourceRepo = new Mock<IResourceRepository>();
+            //------------Setup for test--------------------------
+            var persistenceSettingsViewModel = CreatePersistenceSettingViewModel(resourceRepo, false);
+            persistenceSettingsViewModel.PersistenceScheduler = null;
+            //------------Execute Test---------------------------
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceName).Returns("Default");
+            mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            persistenceSettingsViewModel.SelectedPersistenceDataSource = mockResource.Object;
+            persistenceSettingsViewModel.EncryptDataSource = false;
+
+            //------------Assert Results-------------------------
+            persistenceSettingsViewModel.Save(new PersistenceSettingsTo());
+            mockPopupController.Verify(o => o.ShowSaveErrorDialog(StringResources.SaveSettingsPermissionsSchedulerErrorMsg), Times.Once);
+            resourceRepo.Verify(o => o.SavePersistenceSettings(It.IsAny<IServer>(), It.IsAny<PersistenceSettingsData>()), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceSettingsViewModel))]
+        public void PersistenceSettingsViewModel_IsPageComplete_ServerErrorMsg()
+        {
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.ShowSaveErrorDialog(StringResources.SaveSettingsPermissionsServerErrorMsg))
+                .Returns(MessageBoxResult.OK).Verifiable();
+            CustomContainer.Register(mockPopupController.Object);
+
+            var resourceRepo = new Mock<IResourceRepository>();
+            //------------Setup for test--------------------------
+            var persistenceSettingsViewModel = CreatePersistenceSettingViewModel(resourceRepo, false);
+            persistenceSettingsViewModel.SelectedPersistenceScheduler = "Hangfire";
+            //------------Execute Test---------------------------
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceName).Returns("Default");
+            mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            persistenceSettingsViewModel.SelectedPersistenceDataSource = mockResource.Object;
+            persistenceSettingsViewModel.EncryptDataSource = false;
+
+            //------------Assert Results-------------------------
+            persistenceSettingsViewModel.Save(new PersistenceSettingsTo());
+            mockPopupController.Verify(o => o.ShowSaveErrorDialog(StringResources.SaveSettingsPermissionsServerErrorMsg), Times.Once);
+            resourceRepo.Verify(o => o.SavePersistenceSettings(It.IsAny<IServer>(), It.IsAny<PersistenceSettingsData>()), Times.Never);
+            Assert.AreEqual("Hangfire", persistenceSettingsViewModel.SelectedPersistenceScheduler);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceSettingsViewModel))]
+        public void PersistenceSettingsViewModel_IsPageComplete_DataSourceErrorMsg()
+        {
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.ShowSaveErrorDialog(StringResources.SaveSettingsPermissionsDataSourceErrorMsg))
+                .Returns(MessageBoxResult.OK).Verifiable();
+            CustomContainer.Register(mockPopupController.Object);
+
+            var resourceRepo = new Mock<IResourceRepository>();
+            //------------Setup for test--------------------------
+            var persistenceSettingsViewModel = CreatePersistenceSettingViewModel(resourceRepo, false);
+            persistenceSettingsViewModel.SelectedPersistenceScheduler = "Hangfire";
+            persistenceSettingsViewModel.ServerName = "servername";
+            //------------Execute Test---------------------------
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceName).Returns("Default");
+            mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            persistenceSettingsViewModel.EncryptDataSource = false;
+
+            //------------Assert Results-------------------------
+            persistenceSettingsViewModel.Save(new PersistenceSettingsTo());
+            mockPopupController.Verify(o => o.ShowSaveErrorDialog(StringResources.SaveSettingsPermissionsDataSourceErrorMsg), Times.Once);
+            resourceRepo.Verify(o => o.SavePersistenceSettings(It.IsAny<IServer>(), It.IsAny<PersistenceSettingsData>()), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceSettingsViewModel))]
+        public void PersistenceSettingsViewModel_IsPageComplete_SettingsChanged()
+        {
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(o => o.ShowPersistenceSettingsChanged())
+                .Returns(MessageBoxResult.No).Verifiable();
+            CustomContainer.Register(mockPopupController.Object);
+
+            var resourceRepo = new Mock<IResourceRepository>();
+            //------------Setup for test--------------------------
+            var persistenceSettingsViewModel = CreatePersistenceSettingViewModel(resourceRepo, false);
+            persistenceSettingsViewModel.SelectedPersistenceScheduler = "Hangfire";
+            persistenceSettingsViewModel.ServerName = "servername";
+            //------------Execute Test---------------------------
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(o => o.ResourceName).Returns("Default");
+            mockResource.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            persistenceSettingsViewModel.SelectedPersistenceDataSource = mockResource.Object;
+            persistenceSettingsViewModel.EncryptDataSource = false;
+
+            //------------Assert Results-------------------------
+            persistenceSettingsViewModel.Save(new PersistenceSettingsTo());
+            mockPopupController.Verify(o => o.ShowPersistenceSettingsChanged(), Times.Once);
+            resourceRepo.Verify(o => o.SavePersistenceSettings(It.IsAny<IServer>(), It.IsAny<PersistenceSettingsData>()), Times.Never);
+        }
+
+        private static Mock<IServer> CreateMockServer(Mock<IResourceRepository> resourceRepo = null, bool addSettings = true)
         {
             var mockServer = new Mock<IServer>();
             if (resourceRepo is null)
@@ -402,23 +516,28 @@ namespace Dev2.Core.Tests.Settings
                 resourceRepo = new Mock<IResourceRepository>();
             }
             var selectedDbSourceId = Guid.NewGuid();
-            var settingsData = new PersistenceSettingsData
+            var settingsData = new PersistenceSettingsData();
+            if (addSettings)
             {
-                PersistenceScheduler = "Hangfire",
-                Enable = true,
-                PersistenceDataSource = new NamedGuidWithEncryptedPayload
+                settingsData = new PersistenceSettingsData
                 {
-                    Name = "Data Source",
-                    Value = selectedDbSourceId,
-                    Payload = "foo"
-                },
-                EncryptDataSource = true,
-                DashboardHostname = "DashboardHostname",
-                DashboardName = "Dashboardname",
-                DashboardPort = "5001",
-                PrepareSchemaIfNecessary = true,
-                ServerName = "servername"
-            };
+                    PersistenceScheduler = "Hangfire",
+                    Enable = true,
+                    PersistenceDataSource = new NamedGuidWithEncryptedPayload
+                    {
+                        Name = "Data Source",
+                        Value = selectedDbSourceId,
+                        Payload = "foo"
+                    },
+                    EncryptDataSource = true,
+                    DashboardHostname = "DashboardHostname",
+                    DashboardName = "Dashboardname",
+                    DashboardPort = "5001",
+                    PrepareSchemaIfNecessary = true,
+                    ServerName = "servername"
+                };
+            }
+
             resourceRepo.Setup(res => res.GetPersistenceSettings<PersistenceSettingsData>(mockServer.Object)).Returns(settingsData);
             resourceRepo.Setup(res => res.SavePersistenceSettings(mockServer.Object, settingsData)).Verifiable();
 
@@ -434,9 +553,9 @@ namespace Dev2.Core.Tests.Settings
             return mockServer;
         }
 
-        private static PersistenceSettingsViewModel CreatePersistenceSettingViewModel(Mock<IResourceRepository> resourceRepo = null)
+        private static PersistenceSettingsViewModel CreatePersistenceSettingViewModel(Mock<IResourceRepository> resourceRepo = null, bool addSettings = true)
         {
-            var env = CreateMockServer(resourceRepo);
+            var env = CreateMockServer(resourceRepo, addSettings);
             var vm = new PersistenceSettingsViewModel(env.Object);
             return vm;
         }

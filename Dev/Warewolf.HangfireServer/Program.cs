@@ -142,6 +142,7 @@ namespace HangfireServer
                     .UseFilter(resumptionAttribute)
                     .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
                     {
+                        PrepareSchemaIfNecessary = _persistence.PrepareSchemaIfNecessary,
                         CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                         SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
                         QueuePollInterval = TimeSpan.Zero,

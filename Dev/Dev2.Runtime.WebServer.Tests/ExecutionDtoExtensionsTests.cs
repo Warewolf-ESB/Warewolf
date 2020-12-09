@@ -13,6 +13,7 @@ using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
@@ -35,6 +36,9 @@ namespace Dev2.Runtime.WebServer.Tests
             var mockDataObject = new Mock<IDSFDataObject>();
             var mockResource = new Mock<IWarewolfResource>();
 
+            mockResource.Setup(resource => resource.ResourceName).Returns("resourceName");
+            var versionInfo = new VersionInfo { VersionNumber = "1.0" };
+            mockResource.Setup(resource => resource.VersionInfo).Returns(versionInfo);
             mockResource.Setup(o => o.DataList).Returns(new StringBuilder("<DataList>the test string to be built</DataList>"));
 
             mockDataObject.Setup(o => o.Environment.HasErrors()).Returns(false);
@@ -42,7 +46,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
             var dataListDataFormat = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
 
-            var webRequestTO = new WebRequestTO { WebServerUrl = "http://serverName:3142/public/resourceName.api" };
+                       var webRequestTO = new WebRequestTO { WebServerUrl = "http://serverName:3142/public/resourceName.api" };
 
             var executionDto = new ExecutionDto
             {
@@ -59,7 +63,8 @@ namespace Dev2.Runtime.WebServer.Tests
             executionDtoExtensions.CreateResponseWriter(new StringResponseWriterFactory());
 
             //-------------------------------Assert-----------------------------------
-            Assert.AreEqual(expected: "{\r\n  \"swagger\": 2,\r\n  \"info\": {\r\n    \"title\": null,\r\n    \"description\": \"\",\r\n    \"version\": \"1.0.0\"\r\n  },\r\n  \"host\": \":0/\",\r\n  \"basePath\": \"/\",\r\n  \"schemes\": [\r\n    \"http\"\r\n  ],\r\n  \"produces\": [\r\n    \"application/json\",\r\n    \"application/xml\"\r\n  ],\r\n  \"paths\": {\r\n    \"serviceName\": \"/public/resourceName.api\",\r\n    \"get\": {\r\n      \"summary\": \"\",\r\n      \"description\": \"\",\r\n      \"parameters\": []\r\n    }\r\n  },\r\n  \"responses\": {\r\n    \"200\": {\r\n      \"schema\": {\r\n        \"$ref\": \"#/definition/Output\"\r\n      }\r\n    }\r\n  },\r\n  \"definitions\": {\r\n    \"Output\": {\r\n      \"type\": \"object\",\r\n      \"properties\": {}\r\n    }\r\n  }\r\n}", actual: executionDto.PayLoad);
+            var expectedPayload = "{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"resourceName\",\r\n    \"description\": \"resourceName\",\r\n    \"version\": \"1.0\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://servername\"\r\n    }\r\n  ],\r\n  \"paths\": {\r\n    \"/public/resourceName\": {\r\n      \"get\": {\r\n        \"tags\": [\r\n          \"\"\r\n        ],\r\n        \"description\": \"\",\r\n        \"parameters\": [],\r\n        \"responses\": {\r\n          \"200\": {\r\n            \"description\": \"Success\",\r\n            \"content\": {\r\n              \"application/json\": {\r\n                \"schema\": {\r\n                  \"type\": \"object\",\r\n                  \"properties\": {}\r\n                }\r\n              }\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}";
+            Assert.AreEqual(expected: expectedPayload, actual: executionDto.PayLoad);
         }
 
         [TestMethod]

@@ -674,7 +674,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestTestFailed()
+        public void TestEmailSourceTestFailed()
         {
             //arrange
             var expectedValue = true;

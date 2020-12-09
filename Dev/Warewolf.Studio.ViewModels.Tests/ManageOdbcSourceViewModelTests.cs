@@ -524,7 +524,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestTestFailed()
+        public void TestManageOdbcSourceTestFailed()
         {
             //arrange
             var expectedValue = true;

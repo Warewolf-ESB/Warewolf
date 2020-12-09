@@ -8,20 +8,13 @@ Param(
   [switch]$Cleanup,
   [switch]$Anonymous
 )
-if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
-	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse
-} else {
-	if ($ResourcesPath) {
-		Write-Error -Message "Resources path not found at $ResourcesPath\Resources"
-	}
-}
 $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
 if ($Cleanup.IsPresent) {
 	if ($WarewolfServerProcess) {
 		taskkill /IM "Warewolf Server.exe" /T /F
+		Wait-Process -Name "Warewolf Server"
 		$WarewolfServerProcess = $null
-		$WarewolfServerService = $null
 	}
 	$ToClean = @(
 		"%LOCALAPPDATA%\Warewolf\DebugData\PersistSettings.dat",
@@ -38,6 +31,17 @@ if ($Cleanup.IsPresent) {
 		"%PROGRAMDATA%\Warewolf\DetailedLogs",
 		"%PROGRAMDATA%\Warewolf\Server Log\wareWolf-Server.log"
 	)
+}
+if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
+	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse -Force
+} else {
+    if ($ResourcesPath -and (Test-Path "$PSScriptRoot\Resources - $ResourcesPath\Resources")) {
+	    Copy-Item -Path "$PSScriptRoot\Resources - $ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse -Force
+    } else {
+	    if ($ResourcesPath) {
+		    Write-Error -Message "Resources path not found at `"$ResourcesPath\Resources`" or `"$PSScriptRoot\Resources - `$ResourcesPath\Resources`""
+	    }
+    }
 }
 if ($Anonymous.IsPresent) {
 	New-Item "C:\ProgramData\Warewolf\Server Settings" -ItemType Directory -ErrorAction Ignore
