@@ -74,7 +74,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             var unqualifiedUserName = GetUnqualifiedName(currentuserprincipal.ToString()).Trim();
-            var executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            WindowsPrincipal executingUser;
+            try
+            {
+                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            }
+            catch (Exception e)
+            {
+                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity")};
+            }
+
             if (!IsWarewolfAuthorised(executingUser.Identity.Name,resourceId))
             {
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity")};
