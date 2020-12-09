@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Security.Principal;
+using System.Security.Claims;
 using System.Text;
 using System.Web;
 using Dev2.Common;
@@ -74,17 +74,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             var unqualifiedUserName = GetUnqualifiedName(currentuserprincipal.ToString()).Trim();
-            WindowsPrincipal executingUser;
+            ClaimsPrincipal executingUser;
             try
             {
-                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+                var securityWrapper = SecurityWrapper;
+                executingUser = securityWrapper.BuildUserClaimsPrincipal(Sebatchlogonright,unqualifiedUserName);
+                if (!IsWarewolfAuthorised(securityWrapper,executingUser.Identity.Name,resourceId))
+                {
+                    return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity")};
+                }
             }
             catch (Exception e)
-            {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity")};
-            }
-
-            if (!IsWarewolfAuthorised(executingUser.Identity.Name,resourceId))
             {
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. Failed to get windows security principal for " + unqualifiedUserName + " as a windows identity")};
             }
@@ -123,10 +123,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
         }
-
-        private bool IsWarewolfAuthorised(string executingUser, Guid resourceId)
+        public ISecurityWrapper SecurityWrapper
         {
-            var securityWrapper = new SecurityWrapper(ServerAuthorizationService.Instance);
+            get => _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
+        }
+        private bool IsWarewolfAuthorised(ISecurityWrapper securityWrapper, string executingUser, Guid resourceId)
+        {
             if (!securityWrapper.IsWindowsAuthorised(Sebatchlogonright, executingUser))
             {
                 return false;

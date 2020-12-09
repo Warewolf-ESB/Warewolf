@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
@@ -43,8 +44,7 @@ struct LSA_UNICODE_STRING
 {
     internal ushort Length;
     internal ushort MaximumLength;
-    [MarshalAs(UnmanagedType.LPWStr)]
-    internal string Buffer;
+    [MarshalAs(UnmanagedType.LPWStr)] internal string Buffer;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -62,15 +62,15 @@ static class Win32Sec
         ref LSA_OBJECT_ATTRIBUTES ObjectAttributes,
         int AccessMask,
         out LSA_HANDLE PolicyHandle
-        );
+    );
 
-    [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true,PreserveSig = true), SuppressUnmanagedCodeSecurity]
+    [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true, PreserveSig = true), SuppressUnmanagedCodeSecurity]
     internal static extern uint LsaEnumerateAccountsWithUserRight(
         LSA_HANDLE PolicyHandle,
         LSA_UNICODE_STRING[] UserRights,
         out IntPtr EnumerationBuffer,
         out ulong CountReturned
-        );
+    );
 
     [DllImport("advapi32")]
     internal static extern int LsaNtStatusToWinError(int NTSTATUS);
@@ -121,7 +121,8 @@ public class SecurityWrapper : ISecurityWrapper
             system = new LSA_UNICODE_STRING[1];
             system[0] = InitLsaString(MachineName);
         }
-        var ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out _lsaHandle);
+
+        var ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int) Access.POLICY_ALL_ACCESS, out _lsaHandle);
         TestReturnValue(ret);
     }
 
@@ -149,6 +150,7 @@ public class SecurityWrapper : ISecurityWrapper
             {
                 return userIsAccount;
             }
+
             return IsUserAMemberOfAccount(unQualifiedUserName, accounts);
         }
         catch (Exception)
@@ -170,6 +172,7 @@ public class SecurityWrapper : ISecurityWrapper
                 }
             }
         }
+
         return false;
     }
 
@@ -197,16 +200,18 @@ public class SecurityWrapper : ISecurityWrapper
             var myLsaus = new LSA_ENUMERATION_INFORMATION();
             for (ulong i = 0; i < count; i++)
             {
-                var itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
-                LsaInfo[i] = (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
+                var itemAddr = new IntPtr(buffer.ToInt64() + (long) (i * (ulong) Marshal.SizeOf(myLsaus)));
+                LsaInfo[i] = (LSA_ENUMERATION_INFORMATION) Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
                 var sid = new SecurityIdentifier(LsaInfo[i].PSid);
                 accountNames.Add(ResolveAccountName(sid));
             }
         }
+
         return accountNames;
     }
 
     static bool IsUserAMemberOfAccount(string userName, IList<string> AccountsToCheck) => GetGroupsUserBelongsTo(userName, AccountsToCheck).Any();
+
     static IList<string> GetGroupsUserBelongsTo(string userName, IList<string> AccountsToCheck)
     {
         var groups = new List<string>();
@@ -228,6 +233,7 @@ public class SecurityWrapper : ISecurityWrapper
                 }
             }
         }
+
         return groups;
     }
 
@@ -238,6 +244,7 @@ public class SecurityWrapper : ISecurityWrapper
         {
             return group.GetMembers().ToArray();
         }
+
         return new Principal[] { };
     }
 
@@ -274,19 +281,23 @@ public class SecurityWrapper : ISecurityWrapper
         {
             return;
         }
+
         if (ReturnValue == ERROR_NO_MORE_ITEMS)
         {
             return;
         }
+
         if (ReturnValue == STATUS_ACCESS_DENIED)
         {
             throw new UnauthorizedAccessException();
         }
+
         if (ReturnValue == STATUS_INSUFFICIENT_RESOURCES || ReturnValue == STATUS_NO_MEMORY)
         {
             return;
         }
-        throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int)ReturnValue));
+
+        throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int) ReturnValue));
     }
 
     public void Dispose()
@@ -296,9 +307,10 @@ public class SecurityWrapper : ISecurityWrapper
             Win32Sec.LsaClose(_lsaHandle);
             _lsaHandle = IntPtr.Zero;
         }
+
         GC.SuppressFinalize(this);
     }
-    
+
     ~SecurityWrapper()
     {
         Dispose();
@@ -311,8 +323,8 @@ public class SecurityWrapper : ISecurityWrapper
             throw new ArgumentException(ErrorResource.StringTooLong);
         }
 
-        var lus = new LSA_UNICODE_STRING { Buffer = Value, Length = (ushort)(Value.Length * sizeof(char)) };
-        lus.MaximumLength = (ushort)(lus.Length + sizeof(char));
+        var lus = new LSA_UNICODE_STRING {Buffer = Value, Length = (ushort) (Value.Length * sizeof(char))};
+        lus.MaximumLength = (ushort) (lus.Length + sizeof(char));
         return lus;
     }
 
@@ -337,10 +349,20 @@ public class SecurityWrapper : ISecurityWrapper
         {
             return true;
         }
+
         Dev2Logger.Warn("User " + unqualifiedUserName + " was denied permission to create a scheduled task.", GlobalConstants.WarewolfWarn);
 
         return false;
     }
+
+    public ClaimsPrincipal BuildUserClaimsPrincipal(string privilege, string unqualifiedUserName)
+    {
+        var groups = GetGroupsUserBelongsTo(unqualifiedUserName, GetAccountsWithPrivilege(privilege));
+        var tmp = new GenericIdentity(unqualifiedUserName);
+        ClaimsPrincipal identity = new GenericPrincipal(tmp, groups.ToArray());
+        return identity;
+    }
+
     public bool IsWarewolfAuthorised(string privilege, string userName, Guid resourceId)
     {
         var unqualifiedUserName = GetUnqualifiedName(userName).Trim();
@@ -362,6 +384,7 @@ public class SecurityWrapper : ISecurityWrapper
         {
             return true;
         }
+
         Dev2Logger.Warn("User " + unqualifiedUserName + " was denied permission to create a scheduled task.", GlobalConstants.WarewolfWarn);
 
         return false;
