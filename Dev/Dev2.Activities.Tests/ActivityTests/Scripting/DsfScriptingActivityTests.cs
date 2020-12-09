@@ -318,7 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
         [TestMethod]
         [Timeout(60000)]
-        public void GivenFunctionNotInExternalFile_Execute_Javascript_ShouldNotExecuteFunction()
+        public void GivenFunctionNotInExternalFile_Execute_JavascriptScriptingActivity_ShouldNotExecuteFunction()
         {
             var activity = new DsfScriptingActivity();
             Assert.IsNotNull(activity);

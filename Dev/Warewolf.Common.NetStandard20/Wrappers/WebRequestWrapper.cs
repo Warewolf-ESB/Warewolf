@@ -64,9 +64,9 @@ namespace Warewolf.Common.NetStandard20
             return _request.GetRequestStream();
         }
 
-        public IWebResponseWrapper GetResponse()
+        public WebResponse GetResponse()
         {
-            return (IWebResponseWrapper)_request.GetResponse();
+            return _request.GetResponse();
         }
 
         public Task<WebResponse> GetResponseAsync()

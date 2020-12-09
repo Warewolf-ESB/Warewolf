@@ -1077,7 +1077,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(500)]
+        [Timeout(2500)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ServiceTestViewModel))]
         public void ServiceTestStepGetParentType_Given_SuspendExecutionActivity_ShouldSetupServiceTestStep()
@@ -1764,7 +1764,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(1000)]
+        [Timeout(5000)]
         [Owner("Nkosinathi Sangweni")]
         public void Stoptest_GivenServiceTests_ShouldSetValuesCorrectly()
         {

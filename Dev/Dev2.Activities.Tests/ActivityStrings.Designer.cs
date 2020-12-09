@@ -706,6 +706,15 @@ namespace Dev2.Tests.Activities {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;Inputs&gt;&lt;Input Name=&quot;UUID&quot; Source=&quot;1234&quot; IsObject=&quot;False&quot; /&gt;&lt;Input Name=&quot;JourneyName&quot; Source=&quot;[[JourneyName]]&quot; IsObject=&quot;False&quot; /&gt;&lt;/Inputs&gt;.
+        /// </summary>
+        internal static string ManualResumption_Input_Mapping_NoVariable {
+            get {
+                return ResourceManager.GetString("ManualResumption_Input_Mapping_NoVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;Outputs&gt;&lt;Output Name=&quot;UUID&quot; MapsTo=&quot;[[UUID]]&quot; Value=&quot;[[UUID]]&quot; IsObject=&quot;False&quot; /&gt;&lt;Output  Name=&quot;JourneyName&quot; MapsTo=&quot;[[JourneyName]]&quot; Value=&quot;[[JourneyName]]&quot; IsObject=&quot;False&quot;/&gt;&lt;Output Name=&quot;SuspensionId&quot; MapsTo=&quot;[[SuspensionId]]&quot; Value=&quot;[[SuspensionId]]&quot; IsObject=&quot;False&quot; /&gt;&lt;/Outputs&gt;.
         /// </summary>
         internal static string ManualResumption_Output_Mapping {

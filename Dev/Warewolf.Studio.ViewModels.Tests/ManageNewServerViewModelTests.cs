@@ -704,7 +704,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestTestFailed()
+        public void TestNewServerSourceTestFailed()
         {
             //arrange
             var expectedValue = true;
