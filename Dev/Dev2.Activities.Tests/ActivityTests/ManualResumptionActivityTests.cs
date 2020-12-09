@@ -218,7 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = BuildPrincipal();
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -281,7 +281,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = BuildPrincipal();
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -352,7 +352,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = BuildPrincipal();
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -422,7 +422,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = BuildPrincipal();
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -486,7 +486,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = BuildPrincipal();
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -541,7 +541,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             env.Assign("[[UUID]]", "public", 0);
             env.Assign("[[JourneyName]]", "whatever", 0);
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = BuildPrincipal();
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = "workflowName",
@@ -623,6 +623,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             return activity;
+        }
+        private static IPrincipal BuildPrincipal()
+        {
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            return mockPrincipal.Object;
         }
         DsfActivity CreateWorkflowNoVariable()
         {
