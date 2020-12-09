@@ -115,6 +115,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var source = new WebSource
             {
+                Address = "http://sample.com",
+                DefaultQuery = "/default",
                 Client = mockWebClientWrapper.Object
             };
 
@@ -137,6 +139,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var source = new WebSource
             {
+                Address = "http://example.com",
+                DefaultQuery = "/default",
                 Client = mockWebClientWrapper.Object
             };
 
@@ -152,6 +156,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSources_Test_WithInValidArgs_And_SourceExecuteFails_ExpectedValidInvalidationResult()
         {
             var mockWebSource = new Mock<IWebSource>();
+            mockWebSource.Setup(o => o.Address)
+                .Returns("http://localhost:2121");
             mockWebSource.Setup(o => o.Client)
                 .Throws(new Exception("test: false exception"));
 
@@ -721,6 +727,37 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(result, Convert.ToBase64String(responseFromWeb));
 
             mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_Execute_Null_WebSource_Expect_Correct_ErrorMessage()
+        {
+            var result = WebSources.Execute(null, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new string[] { });
+
+            Assert.AreEqual("", result);
+            var fetchErrors = errors.FetchErrors();
+            Assert.AreEqual(1, fetchErrors.Count);
+            Assert.AreEqual("The web source has an incomplete web address.", fetchErrors[0]);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_Execute_Incomplete_WebSource_Expect_Correct_ErrorMessage()
+        {
+            var source = new WebSource
+            {
+                Address = "",
+            };
+
+            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new string[] { });
+
+            Assert.AreEqual("", result);
+            var fetchErrors = errors.FetchErrors();
+            Assert.AreEqual(1, fetchErrors.Count);
+            Assert.AreEqual("The web source has an incomplete web address.", fetchErrors[0]);
         }
 
         private static bool IsBase64(string payload)

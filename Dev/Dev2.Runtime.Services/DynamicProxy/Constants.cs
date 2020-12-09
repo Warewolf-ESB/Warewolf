@@ -40,6 +40,9 @@ namespace Dev2.Runtime.DynamicProxy
 
             internal const string MethodNotFound =
                 "The method {0} is not found.";
+
+            internal const string WebAddressError =
+                "The web source has an incomplete web address.";
         }
     } 
 }

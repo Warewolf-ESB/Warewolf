@@ -12,8 +12,8 @@ param(
   [switch] $Coverage
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
-    exit 1
+	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
+	exit 1
 }
 if ($PreTestRunScript) {
 	if (!(Test-Path .\StartAs.ps1)) {
@@ -26,7 +26,7 @@ if ($PreTestRunScript) {
 }
 $TestResultsPath = ".\TestResults"
 if (Test-Path "$TestResultsPath") {
-    Remove-Item -Force -Recurse "$TestResultsPath"
+	Remove-Item -Force -Recurse "$TestResultsPath"
 }
 if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
@@ -56,39 +56,39 @@ if (!($RunInDocker.IsPresent) -and (!(Test-Path "$VSTestPath\Extensions\TestPlat
 }
 if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	&"nuget.exe" "install" "Microsoft.TestPlatform" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
-    if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
-        Write-Error "Cannot install test runner using nuget."
-        exit 1
-    }
+	if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
+		Write-Error "Cannot install test runner using nuget."
+		exit 1
+	}
 }
 if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
 	&"nuget.exe" "install" "JetBrains.dotCover.CommandLineTools" "-ExcludeVersion" "-NonInteractive" "-OutputDirectory" "."
-    if (!(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
-        Write-Error "Cannot install coverage runner using nuget."
-        exit 1
-    }
+	if (!(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
+		Write-Error "Cannot install coverage runner using nuget."
+		exit 1
+	}
 }
 if ($RunInDocker.IsPresent) {
-    $ContainerName = $Projects.ToLower().replace(" ", "-");
-    if ($Category -ne $null -and $Category -ne "") {
-        $ContainerName += "-$Category";
-    }
-    if ("${bamboo.repository.git.branch}" -ne $null -and "${bamboo.repository.git.branch}" -ne "") {
-        $ContainerName += "-${bamboo.repository.git.branch}".replace("/\","-")
-    }
+	$ContainerName = $Projects.ToLower().replace(" ", "-");
+	if ($Category -ne $null -and $Category -ne "") {
+		$ContainerName += "-$Category";
+	}
+	if ("${bamboo.repository.git.branch}" -ne $null -and "${bamboo.repository.git.branch}" -ne "") {
+		$ContainerName += "-${bamboo.repository.git.branch}".replace("/\","-")
+	}
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if ($RunInDocker.IsPresent) {
 		docker rm -f $ContainerName
 	}
-    $AllAssemblies = @()
-    foreach ($project in $Projects) {
-        $AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
-    }
-    if ($AllAssemblies.Count -le 0) {
+	$AllAssemblies = @()
+	foreach ($project in $Projects) {
+		$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
+	}
+	if ($AllAssemblies.Count -le 0) {
 		$ShowError = "Could not find any assemblies in the current environment directory matching the project definition of: " + ($Projects -join ",")
-        Write-Error $ShowError
-    }
+		Write-Error $ShowError
+	}
 	$AssembliesList = @()
 	for ($i = 0; $i -lt $AllAssemblies.Count; $i++) 
 	{
@@ -110,14 +110,14 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		if (Test-Path "$TestResultsPath\DotCover.log") {
 			Move-Item "$TestResultsPath\DotCover.log" "$TestResultsPath\DotCover($LoopCounter).log"
 		}
-        "<AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml"
-        $HandleRelativePath = $VSTestPath
-        if ($VSTestPath.StartsWith(".\")) {
-            $HandleRelativePath = "." + $VSTestPath
-        }
+		"<AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml"
+		$HandleRelativePath = $VSTestPath
+		if ($VSTestPath.StartsWith(".\")) {
+			$HandleRelativePath = "." + $VSTestPath
+		}
 		"  <TargetExecutable>$HandleRelativePath\Extensions\TestPlatform\vstest.console.exe</TargetExecutable>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		$AssembliesArg = "..\" + ($AssembliesList -join " ..\")
-    } else {
+	} else {
 		if ($RunInDocker.IsPresent) {
 			$AssembliesArg = ".\BuildUnderTest\" + ($AssembliesList -join " .\BuildUnderTest\")
 		} else {
@@ -126,7 +126,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	}
 	if ($TestsToRun) {
 		if ($PreTestRunScript) {
-            "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
+			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
@@ -142,12 +142,12 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			$CategoryArg += $ExcludeCategories -join ")&(TestCategory!="
 			$CategoryArg += ")`""
 		} else {
-            if ($Category -ne $null -and $Category -ne "") {
+			if ($Category -ne $null -and $Category -ne "") {
 			    $CategoryArg = "/TestCaseFilter:`"(TestCategory=" + $Category + ")`""
-            }
+			}
 		}
 		if ($PreTestRunScript) {
-            "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
+			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
@@ -195,24 +195,24 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		} else {
 			"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 		}
-    }
-    if (!($RunInDocker.IsPresent)) {
-        Get-Content "$TestResultsPath\RunTests.ps1"
-        &"$TestResultsPath\RunTests.ps1"
-    } else {
-        docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
-        docker cp . ${ContainerName}:.\BuildUnderTest
-        docker start -a $ContainerName
+	}
+	if (!($RunInDocker.IsPresent)) {
+		Get-Content "$TestResultsPath\RunTests.ps1"
+		&"$TestResultsPath\RunTests.ps1"
+	} else {
+		docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
+		docker cp . ${ContainerName}:.\BuildUnderTest
+		docker start -a $ContainerName
 		if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 			docker cp ${ContainerName}:\BuildUnderTest\TestResults .
 			docker cp ${ContainerName}:\BuildUnderTest\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\TestResults .
 		} else {
 			docker cp ${ContainerName}:\TestResults .
 		}
-        if ($PreTestRunScript) {
-            docker cp ${ContainerName}:"\programdata\warewolf\Server Log\warewolf-server.log" .\TestResults\warewolf-server`($LoopCounter`).log
-        }
-    }
+		if ($PreTestRunScript) {
+			docker cp ${ContainerName}:"\programdata\warewolf\Server Log\warewolf-server.log" .\TestResults\warewolf-server`($LoopCounter`).log
+		}
+	}
 	if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
 		Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
 	}
@@ -235,6 +235,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			$getXMLFiles.RemoveAt($MaxCountIndex)
 			$getXMLFiles | % {
 				$getXML = [xml](Get-Content $_.FullName)
+				Write-Host ($getXMl.TestRun.Results.UnitTestResult.Count) tests retried.
 				$getXMl.TestRun.Results.UnitTestResult | % {
 					$RetryUnitTestResult = $_
 					$getBaseXMl.TestRun.Results.UnitTestResult | % {

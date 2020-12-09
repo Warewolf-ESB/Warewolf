@@ -13,6 +13,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -720,6 +721,84 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 //-----------------------Assert--------------------------
                 Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
                 Assert.AreEqual("Some error", errorResultTO.FetchErrors()[0]);
+            }
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_ExecutionImpl_ResponseManager_PushResponseIntoEnvironment_GivenJsonResponse_MappedToRecodSet_ShouldSucess()
+        {
+            //-----------------------Arrange-------------------------
+            const string json = "{\"Messanger\":\"jSon response from the request\"}";
+            var response = Convert.ToBase64String(json.ToBytesArray());
+            const string mappingFrom = "mapFrom";
+            const string recordSet = "recset";
+            const string mapTo = "mapTo";
+            const string variableNameMappingTo = "[[recset().mapTo]]";
+
+            var environment = new ExecutionEnvironment();
+
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+
+            var errorResultTO = new ErrorResultTO();
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            {
+                mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+                mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                var dsfWebGetActivity = new TestWebPutActivity
+                {
+                    OutputDescription = service.GetOutputDescription(),
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    QueryString = "test Query",
+                    Headers = new List<INameValue>(),
+                    ResponseFromWeb = response,
+                    IsObject = false,
+                    Outputs = new List<IServiceOutputMapping>
+                    {
+                        {
+                            new ServiceOutputMapping
+                            {
+                                MappedFrom = mappingFrom,
+                                MappedTo = mapTo,
+                                RecordSetName = recordSet
+                            }
+                        }
+                    }
+                };
+                //-----------------------Act-----------------------------
+                dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
+                //-----------------------Assert--------------------------
+                Assert.IsFalse(errorResultTO.HasErrors());
+
+                //assert first DataSourceShapes
+                var resourceManager = dsfWebGetActivity.ResponseManager;
+                var outputDescription = resourceManager.OutputDescription;
+                var dataShapes = outputDescription.DataSourceShapes;
+                var paths = dataShapes.First().Paths;
+                Assert.IsNotNull(outputDescription);
+                Assert.AreEqual("Messanger", paths.First().ActualPath);
+                Assert.AreEqual("Messanger", paths.First().DisplayPath);
+                Assert.AreEqual(variableNameMappingTo, paths.First().OutputExpression);
+                Assert.AreEqual("jSon response from the request", paths.First().SampleData);
+
+                //assert execution environment
+                var envirVariable = environment.Eval(variableNameMappingTo, 0);
+                var resultItem = (envirVariable as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item;
+                Assert.IsNotNull(envirVariable);
+                if (resultItem.First() is DataStorage.WarewolfAtom.DataString firstItem)
+                {
+                    Assert.AreEqual("jSon response from the request", firstItem.Item);
+                }
+                else
+                {
+                    Assert.Fail("expected jSon response from the request");
+                }
             }
         }
 
