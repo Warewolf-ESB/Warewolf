@@ -44,54 +44,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
-            values.TryGetValue("versionNumber", out StringBuilder versionNumber);
-            if (versionNumber == null)
-            {
-                throw new InvalidDataContractException("no version Number passed");
-            }
-
-            values.TryGetValue("environment", out StringBuilder environmentString);
-            if (environmentString == null)
-            {
-                throw new InvalidDataContractException("no environment passed");
-            }
-
-            values.TryGetValue("startActivityId", out StringBuilder startActivityIdString);
-            if (startActivityIdString == null)
-            {
-                startActivityIdString = new StringBuilder(resourceId.ToString());
-            }
-
-            if (!Guid.TryParse(startActivityIdString.ToString(), out Guid startActivityId))
-            {
-                throw new InvalidDataContractException("startActivityId is not a valid GUID.");
-            }
-
-            values.TryGetValue("currentuserprincipal", out StringBuilder currentuserprincipal);
-            if (currentuserprincipal == null)
-            {
-                throw new InvalidDataContractException("no executing user principal passed");
-            }
-
-            var unqualifiedUserName = GetUnqualifiedName(currentuserprincipal.ToString()).Trim();
-            ClaimsPrincipal executingUser;
-            try
-            {
-                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
-            }
-            catch
-            {
-                var genericIdentity = new GenericIdentity(unqualifiedUserName);
-                executingUser = new GenericPrincipal(genericIdentity, new string[0]);
-            }
-
-            var key = (executingUser, AuthorizationContext.Execute, resourceId.ToString());
+            var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
+            var executingUser = ClaimsPrincipal(resourceId, currentUserPrincipal, out var unqualifiedUserName, out var key);
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
             var executionEnv = new ExecutionEnvironment();
             executionEnv.FromJson(decodedEnv);
-
             Int32.TryParse(versionNumber.ToString(), out int parsedVersionNumber);
+
             var dataObject = new DsfDataObject("", Guid.NewGuid())
             {
                 ResourceID = resourceId,
@@ -126,6 +86,59 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
+        }
+
+        private static ClaimsPrincipal ClaimsPrincipal(Guid resourceId, StringBuilder currentUserPrincipal, out string unqualifiedUserName, out (ClaimsPrincipal executingUser, AuthorizationContext Execute, string) key)
+        {
+            ClaimsPrincipal executingUser;
+            unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal.ToString()).Trim();
+
+            try
+            {
+                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            }
+            catch
+            {
+                var genericIdentity = new GenericIdentity(unqualifiedUserName);
+                executingUser = new GenericPrincipal(genericIdentity, new string[0]);
+            }
+
+            key = (executingUser, AuthorizationContext.Execute, resourceId.ToString());
+            return executingUser;
+        }
+
+        private static StringBuilder IsValid(Dictionary<string, StringBuilder> values, out StringBuilder environmentString, out Guid startActivityId, out StringBuilder currentuserprincipal)
+        {
+            values.TryGetValue("versionNumber", out StringBuilder versionNumber);
+            if (versionNumber == null)
+            {
+                throw new InvalidDataContractException("no version Number passed");
+            }
+
+            values.TryGetValue("environment", out environmentString);
+            if (environmentString == null)
+            {
+                throw new InvalidDataContractException("no environment passed");
+            }
+
+            values.TryGetValue("startActivityId", out StringBuilder startActivityIdString);
+            if (startActivityIdString == null)
+            {
+                throw new InvalidDataContractException("no startActivityId passed.");
+            }
+
+            if (!Guid.TryParse(startActivityIdString.ToString(), out startActivityId))
+            {
+                throw new InvalidDataContractException("startActivityId is not a valid GUID.");
+            }
+
+            values.TryGetValue("currentuserprincipal", out currentuserprincipal);
+            if (currentuserprincipal == null)
+            {
+                throw new InvalidDataContractException("no executing user principal passed");
+            }
+
+            return versionNumber;
         }
     }
 }
