@@ -70,15 +70,6 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
-        public void HangfireScheduler_Default_Constructor()
-        {
-            var scheduler = new Persistence.Drivers.HangfireScheduler();
-            Assert.IsNotNull(scheduler);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(HangfireScheduler))]
         public void HangfireScheduler_ScheduleJob_Success()
         {
             var values = new Dictionary<string, StringBuilder>
@@ -86,7 +77,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
@@ -270,7 +262,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var jobstorage = new MemoryStorage();
@@ -296,7 +289,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var jobstorage = new MemoryStorage();
@@ -322,7 +316,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var jobstorage = new MemoryStorage();
