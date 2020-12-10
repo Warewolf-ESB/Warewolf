@@ -336,11 +336,46 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
             Assert.AreEqual("ErrorMessage", result.Message.ToString());
         }
-        private static DynamicService CreateNullDynamicService()
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(WorkflowResume))]
+        [DoNotParallelize]
+        public void WorkflowResume_Execute_Authentication_Error_Fails()
         {
-            var newDs = new DynamicService();
-            return newDs;
+            //------------Setup for test--------------------------
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder("\\abc")}
+            };
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(CreateServiceEntry());
+            CustomContainer.Register(resourceCatalog.Object);
+
+            var errors = new ErrorResultTO();
+            var mockResumableExecutionContainer = new Mock<IResumableExecutionContainer>();
+            mockResumableExecutionContainer.Setup(o => o.Execute(out errors, 0)).Verifiable();
+
+            var mockResumableExecutionContainerFactory = new Mock<IResumableExecutionContainerFactory>();
+            mockResumableExecutionContainerFactory.Setup(o => o.New(It.IsAny<Guid>(), It.IsAny<ServiceAction>(), It.IsAny<DsfDataObject>()))
+                .Returns(mockResumableExecutionContainer.Object);
+            CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
+            //------------Execute Test---------------------------
+
+            var workflowResume = new WorkflowResume();
+            var jsonResult = workflowResume.Execute(values, null);
+
+            //------------Assert Results-------------------------
+            var serializer = new Dev2JsonSerializer();
+            var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.Message.ToString().Contains("Authentication Error resuming"));
         }
+
         private static DynamicService CreateNullServiceEntry()
         {
             var newDs = new DynamicService {Name = HandlesType()};

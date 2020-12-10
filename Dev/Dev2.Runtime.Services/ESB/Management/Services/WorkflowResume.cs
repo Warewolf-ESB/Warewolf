@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
-            var executingUser = ClaimsPrincipal(resourceId, currentUserPrincipal, out var unqualifiedUserName, out var key);
+            var executingUser = BuildClaimsPrincipal(currentUserPrincipal, out var unqualifiedUserName);
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
             var executionEnv = new ExecutionEnvironment();
@@ -60,8 +60,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 ExecutingUser = executingUser,
                 IsDebug = true
             };
-            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => ServerAuthorizationService.Instance.IsAuthorized(executingUser, AuthorizationContext.Execute, resourceId));
-            if (!isAuthorized)
+
+            if (!CanExecute(dataObject))
             {
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.")};
             }
@@ -88,7 +88,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
         }
 
-        private static ClaimsPrincipal ClaimsPrincipal(Guid resourceId, StringBuilder currentUserPrincipal, out string unqualifiedUserName, out (ClaimsPrincipal executingUser, AuthorizationContext Execute, string) key)
+        private bool CanExecute(DsfDataObject dataObject)
+        {
+            var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.ResourceID.ToString());
+            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.Resource));
+            return isAuthorized;
+        }
+
+        private static ClaimsPrincipal BuildClaimsPrincipal(StringBuilder currentUserPrincipal, out string unqualifiedUserName)
         {
             ClaimsPrincipal executingUser;
             unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal.ToString()).Trim();
@@ -103,7 +110,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 executingUser = new GenericPrincipal(genericIdentity, new string[0]);
             }
 
-            key = (executingUser, AuthorizationContext.Execute, resourceId.ToString());
             return executingUser;
         }
 
