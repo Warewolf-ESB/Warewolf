@@ -130,7 +130,7 @@ namespace Dev2.Activities
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
                                             throw new Exception(GlobalConstants.NextNodeIDNotFound));
                 var currentEnvironment = _dataObject.Environment.ToJson();
-                var currentuserprincipal = _dataObject.ExecutingUser.Identity.Name.ToString();
+                var currentuserprincipal = _dataObject.ExecutingUser.Identity.Name;
                 var versionNumber = _dataObject.VersionNumber.ToString();
                 if (EncryptData)
                 {

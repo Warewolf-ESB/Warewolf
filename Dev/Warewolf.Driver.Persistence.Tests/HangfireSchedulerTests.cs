@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using Dev2;
 using Dev2.Common;
@@ -91,8 +93,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
 
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
             Assert.IsNotNull(jobId);
         }
@@ -105,22 +107,27 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
+            var mockPrincipal = new Mock<ClaimsPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
             var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
 
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
 
             var errors = new ErrorResultTO();
@@ -153,22 +160,27 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
             var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
 
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
 
             var errors = new ErrorResultTO();
@@ -193,30 +205,37 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob"), Times.Once);
         }
 
-         [TestMethod]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
+        [Timeout(120000)]
         public void HangfireScheduler_ResumeJob_WorkflowResumeReturnsErrors_Failed()
         {
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
+
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
             var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
 
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
 
             var errors = new ErrorResultTO();
@@ -239,6 +258,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             mockResumableExecutionContainer.Verify(o => o.Execute(out errors, 0), Times.Once);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
@@ -254,8 +274,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             };
 
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
 
             var jobId = scheduler.ScheduleJob(enSuspendOption.SuspendForSeconds, "1", values);
             var manuallyResumedState = new Persistence.ManuallyResumedState("");
@@ -280,8 +300,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             };
 
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
 
             var jobId = scheduler.ScheduleJob(enSuspendOption.SuspendForSeconds, "1", values);
             var state = new EnqueuedState();
@@ -290,6 +310,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
             Assert.AreEqual(GlobalConstants.Failed, result);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
@@ -305,25 +326,26 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             };
 
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
 
             var jobId = scheduler.ScheduleJob(enSuspendOption.SuspendForSeconds, "1", values);
             var o = new object();
-            var state = new SucceededState(o,1,1);
+            var state = new SucceededState(o, 1, 1);
             client.ChangeState(jobId, state, ScheduledState.StateName);
 
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
             Assert.AreEqual(GlobalConstants.Failed, result);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
         public void HangfireScheduler_CalculateResumptionDate_SuspendUntil_Success()
         {
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var suspendOption = enSuspendOption.SuspendUntil;
             var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
             var suspensionDate = DateTime.Now;
@@ -337,8 +359,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         public void HangfireScheduler_CalculateResumptionDate_SuspendForDays_Success()
         {
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var suspendOption = enSuspendOption.SuspendForDays;
             var suspendOptionValue = "1";
 
@@ -353,8 +375,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         public void HangfireScheduler_CalculateResumptionDate_SuspendForHours_Success()
         {
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var suspendOption = enSuspendOption.SuspendForHours;
             var suspendOptionValue = "1";
 
@@ -369,8 +391,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         public void HangfireScheduler_CalculateResumptionDate_SuspendForMinutes_Success()
         {
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var suspendOption = enSuspendOption.SuspendForMinutes;
             var suspendOptionValue = "1";
 
@@ -385,8 +407,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         public void HangfireScheduler_CalculateResumptionDate_SuspendForSeconds_Success()
         {
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var suspendOption = enSuspendOption.SuspendForSeconds;
             var suspendOptionValue = "1";
 
@@ -401,8 +423,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         public void HangfireScheduler_CalculateResumptionDate_SuspendForMonths_Success()
         {
             var jobstorage = new MemoryStorage();
-            var client  = new BackgroundJobClient(jobstorage);
-            var scheduler = new Persistence.Drivers.HangfireScheduler(client,jobstorage);
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
             var suspendOption = enSuspendOption.SuspendForMonths;
             var suspendOptionValue = "1";
 
@@ -413,8 +435,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
         private static DynamicService CreateServiceEntry()
         {
-            var newDs = new DynamicService { Name = HandlesType() };
-            var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var newDs = new DynamicService {Name = HandlesType()};
+            var sa = new ServiceAction {Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
             newDs.Actions.Add(sa);
 
             return newDs;
