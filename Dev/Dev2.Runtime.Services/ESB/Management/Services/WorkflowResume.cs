@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,15 +13,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -29,6 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class WorkflowResume : WorkflowManagementEndpointAbstract
     {
         public override string HandlesType() => nameof(WorkflowResume);
+
         static string GetUnqualifiedName(string userName)
         {
             if (userName.Contains("\\"))
@@ -38,6 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return userName;
         }
+
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
@@ -70,7 +74,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             var unqualifiedUserName = GetUnqualifiedName(currentuserprincipal.ToString()).Trim();
-            var executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            ClaimsPrincipal executingUser;
+            try
+            {
+                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            }
+            catch
+            {
+                var genericIdentity = new GenericIdentity(unqualifiedUserName);
+                executingUser = new GenericPrincipal(genericIdentity, new string[0]);
+            }
+
+            var key = (executingUser, AuthorizationContext.Execute, resourceId.ToString());
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
             var executionEnv = new ExecutionEnvironment();
@@ -85,6 +100,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 ExecutingUser = executingUser,
                 IsDebug = true
             };
+            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => ServerAuthorizationService.Instance.IsAuthorized(executingUser, AuthorizationContext.Execute, resourceId));
+            if (!isAuthorized)
+            {
+                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.")};
+            }
+
             var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             if (dynamicService is null)
             {
