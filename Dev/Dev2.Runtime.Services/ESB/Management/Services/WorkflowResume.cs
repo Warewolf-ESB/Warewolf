@@ -63,6 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (!CanExecute(dataObject))
             {
+                Dev2Logger.Error($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.", GlobalConstants.WarewolfError);
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.")};
             }
 
@@ -75,6 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var sa = dynamicService.Actions.FirstOrDefault();
             if (sa is null)
             {
+
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
             }
 
