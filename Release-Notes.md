@@ -1,3 +1,30 @@
+10 December 2020
+======================
+Enhancements
+---------
+Workflow Execution
+  - 'DispatchForAfterState' log intercepted null debug state as WarewolfInfo and not WarewolfError.
+
+Swagger
+  - Updated Swagger Specification to OpenApi 3.0.1 Specification.
+  
+Web
+  - Xml+Soap payload can now be parsed to environment variables.
+
+Bug Fixes
+---------
+Suspend Execution Tool
+  - Added validation to Save Persistence Settings.
+  - InputMapping with variable and non-variable expression.
+  
+Test Framework
+  - Resolved equality error on a null recordset.
+  
+Web
+  - POST, PUT, GET and DELETE Method Tools response no longer returning base64 string.
+  - Data posted from outside Warewolf is no longer converted to base64 string.
+  
+
 25 November 2020
 ======================
 Features 

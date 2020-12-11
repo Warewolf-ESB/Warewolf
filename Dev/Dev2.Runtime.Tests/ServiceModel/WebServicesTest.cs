@@ -299,7 +299,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var serviceXml = XmlResource.Fetch("WebService");
 
-            var service = new WebService(serviceXml);
+            var service = new WebService(serviceXml)
+            {
+                Source = new WebSource
+                {
+                    Address = "someAddress",
+                }
+            };
 
             foreach(var parameter in service.Method.Parameters)
             {
@@ -309,10 +315,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new WebServicesMock();
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
-            Assert.AreEqual("The web source has an incomplete web address.", result.RequestResponse);
+            Assert.AreEqual("Illegal characters in path.", result.RequestResponse);
             Assert.AreEqual(1, result.Recordsets.Count);
             Assert.IsTrue(result.Recordsets[0].HasErrors);
-            Assert.AreEqual("The web source has an incomplete web address.", result.Recordsets[0].ErrorMessage);
+            Assert.AreEqual("Illegal characters in path.", result.Recordsets[0].ErrorMessage);
         }
 
         [TestMethod]

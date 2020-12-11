@@ -5,14 +5,15 @@ Param(
   [string]$NuGet="",
   [string]$Config="Debug",
   [switch]$AutoVersion,
-  [switch]$SolutionWideOutputs,
+  [switch]$ProjectSpecificOutputs,
   [switch]$AcceptanceTesting,
   [switch]$UITesting,
   [switch]$Server,
   [switch]$Studio,
   [switch]$Release,
   [switch]$Web,
-  [switch]$RegenerateSpecFlowFeatureFiles
+  [switch]$RegenerateSpecFlowFeatureFiles,
+  [switch]$InDockerContainer
 )
 $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
                       "$PSScriptRoot\Dev\UITesting.sln",
@@ -278,7 +279,7 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
     }
 }
 
-Get-ChildItem App.config -Recurse | % { ((Get-Content -path $_.FullName -Raw) -replace "<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"4.7.0.0`"/>","<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"5.0.0.0`"/>") | Set-Content -Path $_.FullName }
+Get-ChildItem "$PSScriptRoot" -Filter app.config -Recurse | % { ((Get-Content -path $_.FullName -Raw) -replace "<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"4.7.0.0`"/>","<bindingRedirect oldVersion=`"0.0.0.0-4.8.0.0`" newVersion=`"5.0.0.0`"/>") | Set-Content -Path $_.FullName }
 
 #Compile Solutions
 foreach ($SolutionFile in $KnownSolutionFiles) {
@@ -296,10 +297,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-            if ($SolutionWideOutputs.IsPresent) {
-                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
-            } else {
+            if ($ProjectSpecificOutputs.IsPresent) {
                 $OutputProperty = ""
+            } else {
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             }
             if ($FullVersionString -ne $null -and $FullVersionString -ne "") {
                 $NugetPackVersion = ";PackageVersion=$FullVersionString"
@@ -314,7 +315,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
                 exit 1
             }
-            if ($SolutionWideOutputs.IsPresent -and ($Target -eq "/t:Debug" -or $Target -eq "")) {
+            if (!($ProjectSpecificOutputs.IsPresent) -and ($Target -eq "/t:Debug" -or $Target -eq "")) {
                 if (Test-Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll") {
                     Remove-Item -Path "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
                 }
