@@ -23,6 +23,7 @@ using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Warewolf.Storage;
@@ -33,6 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
 
         private IAuthorizationService _authorizationService;
+        private IResourceCatalog _resourceCatalog;
         public override string HandlesType() => nameof(WorkflowResume);
 
         static string GetUnqualifiedName(string userName)
@@ -70,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.")};
             }
 
-            var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+            var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             if (dynamicService is null)
             {
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
@@ -91,6 +93,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
+        }
+        public IResourceCatalog ResourceCatalogInstance
+        {
+            get
+            {
+                return _resourceCatalog ?? ResourceCatalog.Instance;
+            }
+            set
+            {
+                _resourceCatalog = value;
+            }
         }
         public IAuthorizationService AuthorizationService
         {

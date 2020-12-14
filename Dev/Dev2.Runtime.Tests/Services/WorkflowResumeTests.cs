@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.Services
             var sa = new ServiceAction {Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
             newDs.Actions.Add(sa);
             resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(newDs);
-            CustomContainer.Register(resourceCatalog.Object);
+
 
             var errors = new ErrorResultTO();
             var mockResumableExecutionContainer = new Mock<IResumableExecutionContainer>();
@@ -77,6 +77,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             var workflowResume = new WorkflowResume();
+            workflowResume.ResourceCatalogInstance = resourceCatalog.Object;
             var jsonResult = workflowResume.Execute(values, null);
 
             //------------Assert Results-------------------------
@@ -276,9 +277,9 @@ namespace Dev2.Tests.Runtime.Services
             var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
             newDs = null;
             resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceID, "")).Returns(newDs);
-            CustomContainer.Register(resourceCatalog.Object);
 
             var workflowResume = new WorkflowResume();
+            workflowResume.ResourceCatalogInstance = resourceCatalog.Object;
             //------------Execute Test---------------------------
             var jsonResult = workflowResume.Execute(values, null);
             //------------Assert Results-------------------------
@@ -307,11 +308,11 @@ namespace Dev2.Tests.Runtime.Services
             var newDs = new DynamicService {Name = HandlesType()};
             var nullresourceCatalog = new Mock<IResourceCatalog>();
             nullresourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceID, "")).Returns(newDs);
-            CustomContainer.Register(nullresourceCatalog.Object);
 
             //------------Execute Test---------------------------
 
             var workflowResume = new WorkflowResume();
+            workflowResume.ResourceCatalogInstance = nullresourceCatalog.Object;
             var jsonResult = workflowResume.Execute(values, null);
 
             //------------Assert Results-------------------------
@@ -342,7 +343,7 @@ namespace Dev2.Tests.Runtime.Services
             newDs.Actions.Add(sa);
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(newDs);
-            CustomContainer.Register(resourceCatalog.Object);
+
 
             var errors = new ErrorResultTO();
             errors.AddError("ErrorMessage");
@@ -356,6 +357,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             var workflowResume = new WorkflowResume();
+            workflowResume.ResourceCatalogInstance = resourceCatalog.Object;
             var jsonResult = workflowResume.Execute(values, null);
 
             //------------Assert Results-------------------------
@@ -389,7 +391,7 @@ namespace Dev2.Tests.Runtime.Services
             newDs.Actions.Add(sa);
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(newDs);
-            CustomContainer.Register(resourceCatalog.Object);
+
 
             var errors = new ErrorResultTO();
             var mockResumableExecutionContainer = new Mock<IResumableExecutionContainer>();
@@ -402,6 +404,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             var workflowResume = new WorkflowResume();
+            workflowResume.ResourceCatalogInstance = resourceCatalog.Object;
             workflowResume.AuthorizationService = authorizationService.Object;
             var jsonResult = workflowResume.Execute(values, null);
 
