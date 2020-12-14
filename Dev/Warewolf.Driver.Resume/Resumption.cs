@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Studio.Interfaces;
 using Dev2.Util;
@@ -48,7 +49,7 @@ namespace Warewolf.Driver.Resume
             }
         }
 
-        public string Resume(Dictionary<string, StringBuilder> values)
+        public ExecuteMessage Resume(Dictionary<string, StringBuilder> values)
         {
             values.TryGetValue("resourceID", out StringBuilder resourceId);
             values.TryGetValue("environment", out StringBuilder environment);
@@ -57,8 +58,8 @@ namespace Warewolf.Driver.Resume
 
             var resourceCatalogProxyFactory = new ResourceCatalogProxyFactory();
             var resourceCatalogProxy = resourceCatalogProxyFactory.New(_environmentConnection);
-            resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString());
-            return "success";
+            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString());
+            return executeMessage;
         }
 
         public bool Connect()
