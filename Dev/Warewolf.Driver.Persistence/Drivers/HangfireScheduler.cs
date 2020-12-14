@@ -109,8 +109,9 @@ namespace Warewolf.Driver.Persistence.Drivers
                 };
 
                 _stateNotifier?.LogAdditionalDetail(audit, nameof(ResumeJob));
-                var manuallyResumedState = new ManuallyResumedState(environments.ToString());
-                _client.ChangeState(jobId, manuallyResumedState, ScheduledState.StateName);
+                var manuallyResumedState = new ManuallyResumedState(environments?.ToString());
+                var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+                _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
                 return GlobalConstants.Success;
             }
             catch (Exception ex)
