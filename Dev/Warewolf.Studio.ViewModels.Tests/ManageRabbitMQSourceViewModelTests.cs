@@ -323,7 +323,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Timeout(100)]
         [Owner("Clint Stedman")]
         [TestCategory("ManageRabbitMQSourceViewModel_Properties")]
-        public void TestRequestServiceNameViewModel()
+        public void TestRabbitMQSourceRequestServiceNameViewModel()
         {
             //arrange
             var valueMock = new Mock<IRequestServiceNameViewModel>();
