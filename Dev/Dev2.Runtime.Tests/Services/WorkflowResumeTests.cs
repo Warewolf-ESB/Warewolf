@@ -1,9 +1,19 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
@@ -12,6 +22,7 @@ using Dev2.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
+using Dev2.Services.Security;
 using Moq;
 
 namespace Dev2.Tests.Runtime.Services
@@ -341,7 +352,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-        public void WorkflowResume_Execute_Authentication_Error_Fails()
+        public void WorkflowResume_Execute_InvalidUserContext_Return_Authentication_Error_Fails()
         {
             //------------Setup for test--------------------------
             var values = new Dictionary<string, StringBuilder>
@@ -352,6 +363,9 @@ namespace Dev2.Tests.Runtime.Services
                 {"versionNumber", new StringBuilder("1")},
                 {"currentuserprincipal", new StringBuilder("\\abc")}
             };
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(false);
+
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(CreateServiceEntry());
             CustomContainer.Register(resourceCatalog.Object);
@@ -367,6 +381,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             var workflowResume = new WorkflowResume();
+            workflowResume.AuthorizationService = authorizationService.Object;
             var jsonResult = workflowResume.Execute(values, null);
 
             //------------Assert Results-------------------------

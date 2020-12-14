@@ -24,12 +24,15 @@ using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
+using Dev2.Services.Security;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class WorkflowResume : WorkflowManagementEndpointAbstract
     {
+
+        private IAuthorizationService _authorizationService;
         public override string HandlesType() => nameof(WorkflowResume);
 
         static string GetUnqualifiedName(string userName)
@@ -89,11 +92,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
         }
-
+        public IAuthorizationService AuthorizationService
+        {
+            get => _authorizationService ?? ServerAuthorizationService.Instance;
+            set => _authorizationService = value;
+        }
         private bool CanExecute(DsfDataObject dataObject)
         {
             var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.Resource));
+            var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.Resource));
             return isAuthorized;
         }
 
