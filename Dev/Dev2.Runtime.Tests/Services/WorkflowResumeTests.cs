@@ -7,6 +7,7 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -49,16 +50,20 @@ namespace Dev2.Tests.Runtime.Services
         public void WorkflowResume_Execute_Returns_Execution_Completed()
         {
             //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
             var values = new Dictionary<string, StringBuilder>
             {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
                 {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(CreateServiceEntry());
+            var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
+            var sa = new ServiceAction {Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
+            newDs.Actions.Add(sa);
+            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(newDs);
             CustomContainer.Register(resourceCatalog.Object);
 
             var errors = new ErrorResultTO();
@@ -258,14 +263,20 @@ namespace Dev2.Tests.Runtime.Services
         public void WorkflowResume_DynamicServiceIsNull_Fails()
         {
             //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
             var values = new Dictionary<string, StringBuilder>
             {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
                 {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
+            newDs = null;
+            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceID, "")).Returns(newDs);
+            CustomContainer.Register(resourceCatalog.Object);
 
             var workflowResume = new WorkflowResume();
             //------------Execute Test---------------------------
@@ -284,16 +295,18 @@ namespace Dev2.Tests.Runtime.Services
         public void WorkflowResume_ServiceActionNullForResource_Fails()
         {
             //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
             var values = new Dictionary<string, StringBuilder>
             {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
                 {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
+            var newDs = new DynamicService {Name = HandlesType()};
             var nullresourceCatalog = new Mock<IResourceCatalog>();
-            nullresourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(CreateNullServiceEntry());
+            nullresourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, resourceID, "")).Returns(newDs);
             CustomContainer.Register(nullresourceCatalog.Object);
 
             //------------Execute Test---------------------------
@@ -315,16 +328,20 @@ namespace Dev2.Tests.Runtime.Services
         public void WorkflowResume_Execute_HasErrors_Returns_ErrorMessage()
         {
             //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
             var values = new Dictionary<string, StringBuilder>
             {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
                 {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
+            var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
+            var sa = new ServiceAction {Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
+            newDs.Actions.Add(sa);
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(CreateServiceEntry());
+            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(newDs);
             CustomContainer.Register(resourceCatalog.Object);
 
             var errors = new ErrorResultTO();
@@ -355,9 +372,10 @@ namespace Dev2.Tests.Runtime.Services
         public void WorkflowResume_Execute_InvalidUserContext_Return_Authentication_Error_Fails()
         {
             //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
             var values = new Dictionary<string, StringBuilder>
             {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
@@ -366,8 +384,11 @@ namespace Dev2.Tests.Runtime.Services
             var authorizationService = new Mock<IAuthorizationService>();
             authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(false);
 
+            var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
+            var sa = new ServiceAction {Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
+            newDs.Actions.Add(sa);
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(CreateServiceEntry());
+            resourceCatalog.Setup(catalog => catalog.GetService(GlobalConstants.ServerWorkspaceID, It.IsAny<Guid>(), "")).Returns(newDs);
             CustomContainer.Register(resourceCatalog.Object);
 
             var errors = new ErrorResultTO();
@@ -389,21 +410,6 @@ namespace Dev2.Tests.Runtime.Services
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             Assert.IsTrue(result.HasError);
             Assert.IsTrue(result.Message.ToString().Contains("Authentication Error resuming"));
-        }
-
-        private static DynamicService CreateNullServiceEntry()
-        {
-            var newDs = new DynamicService {Name = HandlesType()};
-            return newDs;
-        }
-
-        private static DynamicService CreateServiceEntry()
-        {
-            var newDs = new DynamicService {Name = HandlesType()};
-            var sa = new ServiceAction {Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
-            newDs.Actions.Add(sa);
-
-            return newDs;
         }
 
         private static string HandlesType() => "WorkflowResume";
