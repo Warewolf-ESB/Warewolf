@@ -275,7 +275,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         public void TestSlideClosedCommand_isMenuPanelWidthLess80OverLocktrue()
         {
             //arrange

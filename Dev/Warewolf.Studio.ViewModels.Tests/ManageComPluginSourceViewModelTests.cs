@@ -662,7 +662,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestRequestServiceNameViewModel()
+        public void TestRequestComServiceNameViewModel()
         {
             //arrange
             var expectedValueMock = new Mock<IRequestServiceNameViewModel>();
@@ -813,7 +813,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestAssemblyName()
+        public void TestComPluginAssemblyName()
         {
             //arrange
             var selectedDllMock = new Mock<IDllListingModel>();
