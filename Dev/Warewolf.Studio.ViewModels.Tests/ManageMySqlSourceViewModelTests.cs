@@ -463,7 +463,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestRequestServiceNameViewModel()
+        public void TestMySqlSourceRequestServiceNameViewModel()
         {
             var valueMock = new Mock<IRequestServiceNameViewModel>();
             var expectedValue = Task.FromResult(valueMock.Object);
