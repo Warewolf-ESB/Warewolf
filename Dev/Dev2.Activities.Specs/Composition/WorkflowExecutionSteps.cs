@@ -4859,7 +4859,8 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(resourceModel);
             var env = new ExecutionEnvironment();
             var serEnv = env.ToJson();
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(assignActivity.UniqueID), versionNumber);
+            var user = "Anonymous";
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(assignActivity.UniqueID), versionNumber,user);
             Add("resumeMessage", msg);
         }
 
@@ -4881,7 +4882,8 @@ namespace Dev2.Activities.Specs.Composition
             env.Assign("[[RecSet().Field]]", "Jane", 0);
             env.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"B\"}"), 0);
             var serEnv = env.ToJson();
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), null);
+            var user = "Anonymous";
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), null,user);
             Add("resumeMessage", msg);
         }
         [Then(@"an error ""(.*)""")]
@@ -4981,7 +4983,9 @@ namespace Dev2.Activities.Specs.Composition
             _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[\"Service Execution Error:    at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\DatabaseServiceExecution.cs:line 104\\r\\n   at Dev2.Services.Execution.ServiceExecutionAbstract`2.ExecuteService(ErrorResultTO& errors, Int32 update, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\ServiceExecutionAbstract.cs:line 372\"]}";
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "");
+            var user = "Anonymous";
+
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "",user);
             Add("resumeMessage", msg);
         }
 

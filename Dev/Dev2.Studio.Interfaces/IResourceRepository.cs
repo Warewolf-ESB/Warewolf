@@ -35,7 +35,7 @@ namespace Dev2.Studio.Interfaces
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource, string savePath);
         ExecuteMessage DeleteResource(IResourceModel resource);
-        ExecuteMessage ResumeWorkflowExecution(IResourceModel resource, string environment, Guid startActivityId, string versionNumber);
+        ExecuteMessage ResumeWorkflowExecution(IResourceModel resource, string environment, Guid startActivityId, string versionNumber, string currentUserPrincipal);
         void Add(IResourceModel resource);
         void UpdateServer(IServer server);
         bool IsLoaded { get; }
