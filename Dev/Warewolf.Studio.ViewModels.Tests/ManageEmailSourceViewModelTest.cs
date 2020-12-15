@@ -247,7 +247,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestRequestServiceNameViewModel()
+        public void TestEmailSourceRequestServiceNameViewModel()
         {
             //arrange
             var valueMock = new Mock<IRequestServiceNameViewModel>();

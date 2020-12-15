@@ -732,7 +732,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestRequestServiceNameViewModel()
+        public void TestPluginSourceRequestServiceNameViewModel()
         {
             //arrange
             var expectedValueMock = new Mock<IRequestServiceNameViewModel>();

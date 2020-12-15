@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [Owner("Nkosinathi Sangweni")]
         public void Constuctor_GivenAction_ShouldDefaultPropertyValues()
         {
