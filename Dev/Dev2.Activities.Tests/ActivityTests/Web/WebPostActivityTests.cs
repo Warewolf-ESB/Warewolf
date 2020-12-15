@@ -76,10 +76,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //------------Execute Test---------------------------
             var attributes = typeof(WebPostActivity).GetCustomAttributes(false);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, attributes.Length);
+            Assert.AreEqual(0, attributes.Length, "attributes.Length should be zero after re-instating DsfWebPostActivity");
+            /*Assert.AreEqual(1, attributes.Length);
             var toolDescriptor = attributes[0] as ToolDescriptorInfo;
             Assert.IsNotNull(toolDescriptor);
-            Assert.AreEqual("POST", toolDescriptor.Name);
+            Assert.AreEqual("POST", toolDescriptor.Name);*/
         }
 
         [TestMethod]
