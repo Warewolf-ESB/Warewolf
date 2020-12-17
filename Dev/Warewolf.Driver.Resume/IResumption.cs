@@ -10,12 +10,13 @@
 
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Communication;
 
 namespace Warewolf.Driver.Resume
 {
     public interface IResumption
     {
-        string Resume(Dictionary<string, StringBuilder> values);
+        ExecuteMessage Resume(Dictionary<string, StringBuilder> values);
         bool Connect();
     }
 }
