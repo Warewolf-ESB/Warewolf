@@ -21,7 +21,7 @@ namespace Warewolf.UnitTestAttributes
         };
         private string SelectedHost = "";
         
-        static readonly string BackupServer = "RSAKLFSVRHST1.premier.local";
+        static readonly string BackupServer = "opswolf.com";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
         static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
@@ -219,7 +219,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.MySQL:
                     return "3306";
                 case ContainerType.PostGreSQL:
-                    return "5432";
+                    return "5433";
                 case ContainerType.RabbitMQ:
                     return "5672";
                 case ContainerType.Redis:
