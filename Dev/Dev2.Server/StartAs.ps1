@@ -164,18 +164,14 @@ if ($WarewolfServerProcess) {
 		}
 		sc.exe start "Warewolf Server"
 	} else {
-		if ($NoExit.IsPresent) {
-			&"$BinPath" --interactive
+		if ($WarewolfServerService) {
+			Write-Host Configuring service to $BinPath
+			sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
 		} else {
-			if ($WarewolfServerService) {
-				Write-Host Configuring service to $BinPath
-				sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
-			} else {
-				Write-Host Creating service for $BinPath
-				sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
-			}
-			sc.exe start "Warewolf Server"
+			Write-Host Creating service for $BinPath
+			sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
 		}
+		sc.exe start "Warewolf Server"
 	}
 }
 if ($NoExit.IsPresent) {
