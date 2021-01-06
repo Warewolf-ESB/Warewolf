@@ -23,8 +23,8 @@ Scenario Outline: Delete file at location
 	| Local      | [[path]] | c:\filetodelete.txt                                                                                     | ""             | ""           | [[result]] | "Success" | NO           |                      |
 	| FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.txt                                   | ""             | ""           | [[result]] | "Success" | NO           |                      |
 	| FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt                                    | Administrator  | Dev2@dmin123 | [[result]] | "Success" | NO           |                      |
-	| SFTP       | [[path]] | sftp://opswolf.com/filetodelete.txt                                                            | dev2           | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
-	| SFTP PK    | [[path]] | sftp://opswolf.com/filetodelete1.txt                                                           | dev2           | Q/ulw&]      | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
+	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetodelete.txt                                                            | dev2           | Q/ulw&]      | [[result]] | "Success" | NO           |                      |
+	| SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetodelete1.txt                                                           | dev2           | Q/ulw&]      | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Delete file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -40,7 +40,7 @@ Scenario Outline: Delete file at location Null
 	| Local      | [[path]] | G:\filetodelete                                                          | ""                          | ""       | [[result]] | "Failure" | NO           |                      |
 	| FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORDELETEFILETESTING/filetodelete.xtx | ""                          | ""       | [[result]] | "Success" | NO           |                      |
 	| FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORDELETEFILETESTING/filetodelet.txt  | Administrator               | Dev2@dmin123 | [[result]] | ""        | NO           |                      |
-	| SFTP       | [[path]] | sftp://opswolf.com/Memo.txt                                     | dev2.local                  | Q/ulw&]  | [[result]] | ""        | NO           |                      |
+	| SFTP       | [[path]] | sftp://SVRDEV.premier.local/Memo.txt                                     | dev2.local                  | Q/ulw&]  | [[result]] | ""        | NO           |                      |
 
 Scenario Outline: Delete file Validation
     Given I have a variable "[[a]]" with a value "<Val1>"
