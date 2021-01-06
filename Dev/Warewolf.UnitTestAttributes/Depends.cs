@@ -332,7 +332,7 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.bite",
                 @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.xml"
             };
-            UpdateSourcesConnectionStrings($"Host={Container.IP};Username=postgres;Password=test123;Database=TestDB",
+            UpdateSourcesConnectionStrings($"Host={Container.IP};Port={Container.Port};Username=postgres;Password=test123;Database=TestDB",
                 knownServerSources);
         }
 
