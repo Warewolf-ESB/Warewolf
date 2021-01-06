@@ -197,7 +197,7 @@ this.DeleteFileAtLocation("FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:100
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/filetodelete.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://opswolf.com/filetodelete.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -207,7 +207,7 @@ this.DeleteFileAtLocation("FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:100
         public virtual void DeleteFileAtLocation_SFTP()
         {
 #line 7
-this.DeleteFileAtLocation("SFTP", "[[path]]", "sftp://SVRDEV.premier.local/filetodelete.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+this.DeleteFileAtLocation("SFTP", "[[path]]", "sftp://opswolf.com/filetodelete.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -218,7 +218,7 @@ this.DeleteFileAtLocation("SFTP", "[[path]]", "sftp://SVRDEV.premier.local/filet
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP PK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP PK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/filetodelete1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://opswolf.com/filetodelete1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -228,7 +228,7 @@ this.DeleteFileAtLocation("SFTP", "[[path]]", "sftp://SVRDEV.premier.local/filet
         public virtual void DeleteFileAtLocation_SFTPPK()
         {
 #line 7
-this.DeleteFileAtLocation("SFTP PK", "[[path]]", "sftp://SVRDEV.premier.local/filetodelete1.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+this.DeleteFileAtLocation("SFTP PK", "[[path]]", "sftp://opswolf.com/filetodelete1.txt", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -346,7 +346,7 @@ this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://SVRDEV.premier.local/Memo.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://opswolf.com/Memo.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -356,7 +356,7 @@ this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local
         public virtual void DeleteFileAtLocationNull_Variant4()
         {
 #line 29
-this.DeleteFileAtLocationNull("SFTP", "[[path]]", "sftp://SVRDEV.premier.local/Memo.txt", "dev2.local", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+this.DeleteFileAtLocationNull("SFTP", "[[path]]", "sftp://opswolf.com/Memo.txt", "dev2.local", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
