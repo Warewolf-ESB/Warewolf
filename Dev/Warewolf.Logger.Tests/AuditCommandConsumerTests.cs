@@ -29,6 +29,7 @@ namespace Warewolf.Logger.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AuditCommandConsumer))]
+        [DoNotParallelize]
         public void AuditCommandConsumer_Consume_LogEntry()
         {
             var workflowId = Guid.NewGuid().ToString();
@@ -62,6 +63,7 @@ namespace Warewolf.Logger.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AuditCommandConsumer))]
+        [DoNotParallelize]
         public void AuditCommandConsumer_Consume_ResumeExecution()
         {
             var workflowId = Guid.NewGuid().ToString();
@@ -186,6 +188,7 @@ namespace Warewolf.Logger.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AuditCommandConsumer))]
+        [DoNotParallelize]
         public void AuditCommandConsumer_Consume_LogEntryCommand()
         {
             const string outputTemplate = "";
@@ -218,6 +221,7 @@ namespace Warewolf.Logger.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AuditCommandConsumer))]
+        [DoNotParallelize]
         public void AuditCommandConsumer_Consume_ExecutionAuditCommand()
         {
             var resourceId = Guid.NewGuid();
@@ -253,6 +257,7 @@ namespace Warewolf.Logger.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AuditCommandConsumer))]
+        [DoNotParallelize]
         public void AuditCommandConsumer_Consume_Default()
         {
             object parameters = new object();
