@@ -15,8 +15,6 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder
             "@FileAndFolderCreate",
             "@FileAndFolderDelete",
             "@FileAndFolderMove",
-            "@ReadFile",
-            "@ReadFolder",
             "@FileAndFolderRename",
             "@Unzip",
             "@WriteFile",
