@@ -847,6 +847,9 @@
     <PackageReference Include="FontAwesome.WPF">
       <Version>4.5.0.8</Version>
     </PackageReference>
+    <PackageReference Include="FSharp.Core">
+      <Version>5.0.0</Version>
+    </PackageReference>
     <PackageReference Include="FSharp.Core.3">
       <Version>0.0.2</Version>
     </PackageReference>
