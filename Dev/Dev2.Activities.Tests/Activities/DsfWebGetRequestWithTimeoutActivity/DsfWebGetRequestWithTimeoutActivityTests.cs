@@ -37,7 +37,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         static Depends _containerOps;
         
         [TestInitialize]
-        public void Initialize() => _containerOps = new Depends(Depends.ContainerType.WebApi, false);
+        public void Initialize() => _containerOps = new Depends(Depends.ContainerType.WebApi);
 
         [TestCleanup]
         public void Cleanup() => _containerOps?.Dispose();

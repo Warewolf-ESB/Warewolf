@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _server = new Mock<IServer>();
 
             var serializer = new Dev2JsonSerializer();
-            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch, false);
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             var elasticsearchSource = new ElasticsearchSource
             {

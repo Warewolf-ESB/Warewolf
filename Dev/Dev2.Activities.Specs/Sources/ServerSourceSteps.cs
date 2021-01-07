@@ -79,12 +79,12 @@ namespace Dev2.Activities.Specs.Sources
             var address = table.Rows[0]["Address"];
             if (address == "http://tst-ci-remote.premier.local:3142")
             {
-                declaredDependency = new Depends(Depends.ContainerType.CIRemote);
+                declaredDependency = new Depends(Depends.ContainerType.CIRemote, true);
                 address = "http://" + declaredDependency.Container.IP + ":" + declaredDependency.Container.Port;
             }
             else if (address == "http://wolfs-den.premier.local:3142")
             {
-                declaredDependency = new Depends(Depends.ContainerType.AnonymousWarewolf);
+                declaredDependency = new Depends(Depends.ContainerType.AnonymousWarewolf, true);
                 address = "http://" + declaredDependency.Container.IP + ":" + declaredDependency.Container.Port;
             }
             if (!address.Contains("localhost"))
@@ -207,6 +207,6 @@ namespace Dev2.Activities.Specs.Sources
         protected override void BuildDataList() => throw new NotImplementedException();
 
         [BeforeFeature("ServerSourceTests")]
-        public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf);
+        public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf, true);
     }
 }
