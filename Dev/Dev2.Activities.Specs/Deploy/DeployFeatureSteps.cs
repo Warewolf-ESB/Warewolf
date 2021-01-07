@@ -44,9 +44,9 @@ namespace Dev2.Activities.Specs.Deploy
         [Given(@"localhost and destination server are connected")]
         public void ConnectServers()
         {
-            WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf);
+            WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf, true);
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
-            ConnectToRemoteServerContainer(new Depends(Depends.ContainerType.CIRemote));
+            ConnectToRemoteServerContainer(new Depends(Depends.ContainerType.CIRemote, true));
             var localhost = ServerRepository.Instance.Source;
             _scenarioContext.Add("sourceServer", localhost);
             localhost.Connect();

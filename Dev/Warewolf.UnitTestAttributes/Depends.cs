@@ -130,7 +130,7 @@ namespace Warewolf.UnitTestAttributes
 
         public Depends() => throw new ArgumentNullException("Missing type of the container.");
 
-        public Depends(ContainerType type, bool performSourceInjection = true)
+        public Depends(ContainerType type, bool performSourceInjection = false)
         {
             _containerType = type;
             Container = new Container(_containerType);
