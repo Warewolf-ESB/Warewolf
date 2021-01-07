@@ -21,7 +21,7 @@ namespace Warewolf.UnitTestAttributes
         };
         private string SelectedHost = "";
         
-        static readonly string BackupServer = "RSAKLFSVRHST1.premier.local";
+        static readonly string BackupServer = "opswolf.com";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
         static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
@@ -219,7 +219,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.MySQL:
                     return "3306";
                 case ContainerType.PostGreSQL:
-                    return "5432";
+                    return "5433";
                 case ContainerType.RabbitMQ:
                     return "5672";
                 case ContainerType.Redis:
@@ -332,7 +332,7 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.bite",
                 @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.xml"
             };
-            UpdateSourcesConnectionStrings($"Host={Container.IP};Username=postgres;Password=test123;Database=TestDB",
+            UpdateSourcesConnectionStrings($"Host={Container.IP};Port={Container.Port};Username=postgres;Password=test123;Database=TestDB",
                 knownServerSources);
         }
 

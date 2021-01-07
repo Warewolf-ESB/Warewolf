@@ -322,7 +322,7 @@ namespace Warewolf.Auditing.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId()
+        public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId_EventLevel_Info()
         {
             //setup
             var resourceId = Guid.NewGuid();
