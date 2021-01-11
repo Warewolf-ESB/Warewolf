@@ -55,12 +55,9 @@ namespace Warewolf.Driver.Persistence.Drivers
             {
                 var monitoringApi = _jobStorage.GetMonitoringApi();
                 var jobDetails = monitoringApi.JobDetails(jobId);
-                var jobIsScheduled = jobDetails.History.Where(i =>
-                    i.StateName == "Enqueued" ||
-                    i.StateName == "Processing" ||
-                    i.StateName == "Succeeded" ||
-                    i.StateName == "ManuallyResumed");
-                if (jobIsScheduled.Any())
+                var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+
+                if (currentState?.StateName != "Scheduled" && currentState?.StateName != "Failed" )
                 {
                     return GlobalConstants.Failed;
                 }
@@ -117,7 +114,7 @@ namespace Warewolf.Driver.Persistence.Drivers
 
                 _stateNotifier?.LogAdditionalDetail(audit, nameof(ResumeJob));
                 var manuallyResumedState = new ManuallyResumedState(environments?.ToString());
-                var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+
                 _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
                 return GlobalConstants.Success;
             }

@@ -9,6 +9,7 @@
 */
 
 using System;
+using Castle.Components.DictionaryAdapter.Xml;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,6 +36,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
             var hostName = "http://" + dependency.Container.IP;
             elasticsearchSource.HostName = hostName;
+            elasticsearchSource.Port = dependency.Container.Port;
             var result = handler.Test(elasticsearchSource);
             Assert.IsTrue(result.IsValid);
         }

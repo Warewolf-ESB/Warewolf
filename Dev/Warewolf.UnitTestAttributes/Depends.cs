@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Threading;
 using Newtonsoft.Json;
 
@@ -13,6 +14,7 @@ namespace Warewolf.UnitTestAttributes
     {
         public static readonly List<string> RigOpsHosts =  new List<string>
         {
+            "opswolf.com",
             "RSAKLFSVRHST1.premier.local",
             "t004124.premier.local",
             "rsaklfwynand.premier.local",
@@ -21,11 +23,10 @@ namespace Warewolf.UnitTestAttributes
         };
         private string SelectedHost = "";
         
-        static readonly string BackupServer = "RSAKLFSVRHST1.premier.local";
+        static readonly string BackupServer = "opswolf.com";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
         static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
-        static readonly bool EnableRigOpsWorkflows = false;
 
         public enum ContainerType
         {
@@ -129,57 +130,29 @@ namespace Warewolf.UnitTestAttributes
 
         public Depends() => throw new ArgumentNullException("Missing type of the container.");
 
-        public Depends(ContainerType type, bool performSourceInjection = true)
+        public Depends(ContainerType type, bool performSourceInjection = false)
         {
             _containerType = type;
-            if (EnableRigOpsWorkflows)
+            Container = new Container(_containerType);
+            var retryCount = 0;
+            do
             {
-                using (var client = new WebClientWithExtendedTimeout
-                    {Credentials = CredentialCache.DefaultNetworkCredentials})
+                SelectedHost = RigOpsHosts.ElementAt(retryCount);
+                using (var client = new TcpClient())
                 {
-                    var result = "";
-                    var retryCount = 0;
-                    var containerUrl = GitURL(_containerType);
-                    do
+                    try
                     {
-                        SelectedHost = RigOpsHosts.ElementAt(retryCount);
-                        var address = $"http://{SelectedHost}:3142/public/Container/Run%20From%20Git.json?RepoURL={containerUrl}&ScriptPath={(_containerType==ContainerType.Warewolf?"Dev%5CDev2.Server%5CDockerfile.deploy.bat":"")}";
-                        try
-                        {
-                            result = client.DownloadString(address);
-                        }
-                        catch (WebException)
-                        {
-                            //Retry another Rig Ops host
-                        }
-                        if (result == "" || result.Contains("\"ID\": \"\""))
-                        {
-                            retryCount++;
-                        }
-                        else
-                        {
-                            retryCount = RigOpsHosts.Count;
-                        }
-                    } while (retryCount < RigOpsHosts.Count);
-
-                    Container = JsonConvert.DeserializeObject<Container>(result) ?? new Container();
-
-                    if (!int.TryParse(Container.Port, out _))
-                    {
-                        Container.Port = GetBackupPort(_containerType);
+                        client.Connect(SelectedHost, int.Parse(Container.Port));
+                        retryCount = RigOpsHosts.Count;
                     }
-
-                    Container.IP = SelectedHost;
+                    catch (SocketException)
+                    {
+                        retryCount++;
+                    }
                 }
-            }
-            else
-            {
-                Container = new Container()
-                {
-                    IP = BackupServer,
-                    Port=GetBackupPort(_containerType)
-                };
-            }
+            } while (retryCount < RigOpsHosts.Count);
+
+            Container.IP = SelectedHost;
 
             if (!performSourceInjection) return;
             switch (_containerType)
@@ -208,7 +181,7 @@ namespace Warewolf.UnitTestAttributes
             }
         }
 
-        static string GetBackupPort(ContainerType type)
+        public static string GetBackupPort(ContainerType type)
         {
             switch (type)
             {
@@ -219,7 +192,7 @@ namespace Warewolf.UnitTestAttributes
                 case ContainerType.MySQL:
                     return "3306";
                 case ContainerType.PostGreSQL:
-                    return "5432";
+                    return "5433";
                 case ContainerType.RabbitMQ:
                     return "5672";
                 case ContainerType.Redis:
@@ -332,7 +305,7 @@ namespace Warewolf.UnitTestAttributes
                 @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.bite",
                 @"%programdata%\Warewolf\Resources\Sources\Database\PostgreSourceTest.xml"
             };
-            UpdateSourcesConnectionStrings($"Host={Container.IP};Username=postgres;Password=test123;Database=TestDB",
+            UpdateSourcesConnectionStrings($"Host={Container.IP};Port={Container.Port};Username=postgres;Password=test123;Database=TestDB",
                 knownServerSources);
         }
 
@@ -504,6 +477,10 @@ namespace Warewolf.UnitTestAttributes
 
     public class Container
     {
+        public Container(Depends.ContainerType containerType)
+        {
+            Port = Depends.GetBackupPort(containerType);
+        }
         public string ID { get; set; }
         public string IP { get; set; }
         public string Port { get; set; }
