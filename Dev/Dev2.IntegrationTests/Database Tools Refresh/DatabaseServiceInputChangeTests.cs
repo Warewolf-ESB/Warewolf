@@ -40,7 +40,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         {
             var aggr = new Mock<IEventAggregator>();
             DataListSingleton.SetDataList(new DataListViewModel(aggr.Object));
-            _containerOps = new Depends(Depends.ContainerType.MSSQL);
+            _containerOps = new Depends(Depends.ContainerType.MSSQL, true);
         }
 
         [ClassCleanup]
@@ -108,7 +108,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         [Owner("Nkosinathi Sangweni")]
         public void Change_sql_source_verify_Empty_Inputs()
         {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL);
+            _containerOps = new Depends(Depends.ContainerType.MSSQL, true);
             var newName = Guid.NewGuid().ToString();
             var cleanProcName = newName.Replace("-", "").Replace(" ", "");
             try

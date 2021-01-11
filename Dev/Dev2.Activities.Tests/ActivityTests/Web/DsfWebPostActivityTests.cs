@@ -80,9 +80,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual(1, attributes.Length);
             var firstAttr = attributes.First();
             var toolDescriptor = firstAttr as ToolDescriptorInfo;
-            Assert.IsNull(toolDescriptor, "Should now be null, this Activity is now Deprecated");
+            Assert.IsNotNull(toolDescriptor, "Re-instated after merge error and should not be null");
+            /*Assert.IsNull(toolDescriptor, "Should now be null, this Activity is now Deprecated");
             Assert.IsTrue(firstAttr is ObsoleteAttribute);
-            Assert.AreNotEqual("POST", toolDescriptor?.Name, "Should nolonger be equal, activity is now Deprecated");
+            Assert.AreNotEqual("POST", toolDescriptor?.Name, "Should nolonger be equal, activity is now Deprecated");*/
         }
 
         [TestMethod]

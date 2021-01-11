@@ -292,7 +292,7 @@ namespace Dev2.Integration.Tests.Redis
 
         static void TestAnonymousAuth(out string hostName, out string password, out int port)
         {
-            var dependency = new Depends(Depends.ContainerType.AnonymousRedis);
+            var dependency = new Depends(Depends.ContainerType.AnonymousRedis, true);
             hostName = dependency.Container.IP;
             password = "";
             port = int.Parse(dependency.Container.Port);

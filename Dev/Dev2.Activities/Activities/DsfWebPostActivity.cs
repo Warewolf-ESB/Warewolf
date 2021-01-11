@@ -31,7 +31,9 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    [Obsolete("DsfWebPostActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivity.")]
+    //[Obsolete("DsfWebPostActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivity.")]
+    //Note: re-instating this version of the Post tool after merge error, WebPostActivity is still under development
+    [ToolDescriptorInfo("WebMethods", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Post")]
     public class DsfWebPostActivity:DsfActivity,IEquatable<DsfWebPostActivity>
     {
         public IList<INameValue> Headers { get; set; }

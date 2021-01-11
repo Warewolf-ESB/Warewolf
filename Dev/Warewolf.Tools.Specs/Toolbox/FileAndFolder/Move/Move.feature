@@ -2,7 +2,8 @@ Feature: Move
 	In order to be able to Move a File or Folder 
 	as a Warewolf user
 	I want a tool that will Move File(s) or Folder(s) from a given location to another location
-	
+
+@FileMoveFromLocal
 @FileMoveFromLocalWithOverwrite
 Scenario Outline: Move file at local location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
