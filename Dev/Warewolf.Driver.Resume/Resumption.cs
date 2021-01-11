@@ -59,7 +59,7 @@ namespace Warewolf.Driver.Resume
 
             var resourceCatalogProxyFactory = new ResourceCatalogProxyFactory();
             var resourceCatalogProxy = resourceCatalogProxyFactory.New(_environmentConnection);
-            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString());
+            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString(),currentuserprincipal?.ToString());
             return executeMessage;
         }
 
