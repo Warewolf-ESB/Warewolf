@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going bac
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,10 +16,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Text;
 using System.Threading;
 using System.Xml;
@@ -79,7 +77,6 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using TestingDotnetDllCascading;
-using Warewolf.Sharepoint;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Helpers;
 using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
@@ -88,11 +85,10 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
-using System.Reflection;
+using System.Security.Principal;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Runtime.Hosting;
-using Dev2.Infrastructure.Tests;
 using Warewolf.UnitTestAttributes;
 using Activity = System.Activities.Activity;
 
@@ -4859,7 +4855,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(resourceModel);
             var env = new ExecutionEnvironment();
             var serEnv = env.ToJson();
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(assignActivity.UniqueID), versionNumber);
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(assignActivity.UniqueID), versionNumber, WindowsIdentity.GetCurrent().Name);
             Add("resumeMessage", msg);
         }
 
@@ -4881,7 +4877,7 @@ namespace Dev2.Activities.Specs.Composition
             env.Assign("[[RecSet().Field]]", "Jane", 0);
             env.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"B\"}"), 0);
             var serEnv = env.ToJson();
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), null);
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), null,WindowsIdentity.GetCurrent().Name);
             Add("resumeMessage", msg);
         }
         [Then(@"an error ""(.*)""")]
@@ -4981,7 +4977,7 @@ namespace Dev2.Activities.Specs.Composition
             _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[\"Service Execution Error:    at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\DatabaseServiceExecution.cs:line 104\\r\\n   at Dev2.Services.Execution.ServiceExecutionAbstract`2.ExecuteService(ErrorResultTO& errors, Int32 update, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\ServiceExecutionAbstract.cs:line 372\"]}";
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "");
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "",WindowsIdentity.GetCurrent().Name);
             Add("resumeMessage", msg);
         }
 
