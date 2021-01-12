@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Runtime.Interfaces;
@@ -458,6 +460,65 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
             Assert.AreEqual("val2", _requestBodyEvaluated);
             Assert.AreEqual("val3", _requestUrlEvaluated);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_ExecuteRequest_Base64_WebExecuteString_WebResponse_ShouldBeScrubbed()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+
+            var dummyResponce = "dummy responce from the web request";
+            var bytes = dummyResponce.ToBytesArray();
+            _requestResponse = bytes.ToBase64String();
+            //------------Execute Test---------------------------
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
+            Assert.AreEqual("val2", _requestBodyEvaluated);
+            Assert.AreEqual("val3", _requestUrlEvaluated);
+
+            var isBase64String = service.RequestResponse.IsBase64String(out byte[] _);
+
+            Assert.IsFalse(isBase64String, "The service request responce should not be a base64");
+            Assert.AreEqual(dummyResponce, service.RequestResponse, "The web response base64 should not be return as base64");
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_ExecuteRequest_NonBase64_WebExecuteString_WebResponse_ShouldBeScrubbed()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+
+            var dummyResponce = "dummy responce from the web request";
+            _requestResponse = dummyResponce;
+            //------------Execute Test---------------------------
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
+            Assert.AreEqual("val2", _requestBodyEvaluated);
+            Assert.AreEqual("val3", _requestUrlEvaluated);
+
+            var isBase64String = service.RequestResponse.IsBase64String(out byte[] _);
+
+            Assert.IsFalse(isBase64String, "The service request responce should not be a base64");
+            Assert.AreEqual(dummyResponce, service.RequestResponse, "The web response base64 should not be return as base64");
         }
 
         string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
