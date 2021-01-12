@@ -180,7 +180,10 @@ namespace Dev2.Runtime.ServiceModel
             }
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            service.RequestResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray());
+            var webResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray());
+
+            service.RequestResponse = Scrubber.Scrub(webResponse);
+
             if (!String.IsNullOrEmpty(service.JsonPath))
             {
                 service.ApplyPath();
