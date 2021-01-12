@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,6 +19,7 @@ using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Core.Tests
 {
     /// <summary>
