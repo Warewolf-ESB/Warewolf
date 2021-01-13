@@ -48,14 +48,18 @@ if ($Anonymous.IsPresent) {
 	"{`"$id`":`"1`",`"$type`":`"Dev2.Services.Security.SecuritySettingsTO, Dev2.Infrastructure`",`"SecretKey`":`"`",`"AuthenticationOverrideWorkflow`":{`"$id`":`"2`",`"$type`":`"Warewolf.Data.NamedGuid, Warewolf.Interfaces`",`"Name`":`"`",`"Value`":`"00000000-0000-0000-0000-000000000000`"},`"WindowsGroupPermissions`":[{`"$id`":`"3`",`"$type`":`"Dev2.Services.Security.WindowsGroupPermission, Dev2.Infrastructure`",`"IsServer`":true,`"ResourcePath`":null,`"ResourceID`":`"00000000-0000-0000-0000-000000000000`",`"ResourceName`":null,`"WindowsGroup`":`"Warewolf Administrators`",`"IsDeleted`":false,`"CanChangeName`":false,`"EnableCellEditing`":false,`"RemoveRow`":{`"$type`":`"Dev2.Runtime.Configuration.ViewModels.Base.RelayCommand, Dev2.Runtime.Configuration`"},`"CanRemove`":false,`"View`":true,`"Execute`":true,`"Contribute`":true,`"DeployTo`":true,`"DeployFrom`":true,`"Administrator`":true,`"IsNew`":false,`"Path`":null},{`"$id`":`"4`",`"$type`":`"Dev2.Services.Security.WindowsGroupPermission, Dev2.Infrastructure`",`"IsServer`":true,`"ResourcePath`":null,`"ResourceID`":`"00000000-0000-0000-0000-000000000000`",`"ResourceName`":null,`"WindowsGroup`":`"Public`",`"IsDeleted`":false,`"CanChangeName`":false,`"EnableCellEditing`":true,`"RemoveRow`":{`"$type`":`"Dev2.Runtime.Configuration.ViewModels.Base.RelayCommand, Dev2.Runtime.Configuration`"},`"CanRemove`":false,`"View`":true,`"Execute`":true,`"Contribute`":true,`"DeployTo`":true,`"DeployFrom`":true,`"Administrator`":true,`"IsNew`":false,`"Path`":null}],`"CacheTimeout`":`"01:00:00`"}" | Out-File "C:\ProgramData\Warewolf\Server Settings\secure.config"
 }
 if ($WarewolfServerProcess) {
-	Sleep 30
-	$pair = "$($Username):$($Password)"
-	$encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
-	$basicAuthValue = "Basic $encodedCreds"
-	$Headers = @{
-		Authorization = $basicAuthValue
+	if ($Anonymous.IsPresent) {
+		Invoke-WebRequest -Uri http://localhost:3142/Public/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -UseBasicParsing
+	} else {
+		Sleep 30
+		$pair = "$($Username):$($Password)"
+		$encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
+		$basicAuthValue = "Basic $encodedCreds"
+		$Headers = @{
+			Authorization = $basicAuthValue
+		}
+		Invoke-WebRequest -Uri http://localhost:3142/Secure/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -Headers $Headers -UseBasicParsing
 	}
-	Invoke-WebRequest -Uri http://localhost:3142/Secure/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -Headers $Headers -UseBasicParsing
 } else {
 	if (Test-Path "$PSScriptRoot\serverstarted") {
 		Remove-Item "$PSScriptRoot\serverstarted"
@@ -160,18 +164,14 @@ if ($WarewolfServerProcess) {
 		}
 		sc.exe start "Warewolf Server"
 	} else {
-		if ($NoExit.IsPresent) {
-			&"$BinPath"
+		if ($WarewolfServerService) {
+			Write-Host Configuring service to $BinPath
+			sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
 		} else {
-			if ($WarewolfServerService) {
-				Write-Host Configuring service to $BinPath
-				sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
-			} else {
-				Write-Host Creating service for $BinPath
-				sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
-			}
-			sc.exe start "Warewolf Server"
+			Write-Host Creating service for $BinPath
+			sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
 		}
+		sc.exe start "Warewolf Server"
 	}
 }
 if ($NoExit.IsPresent) {

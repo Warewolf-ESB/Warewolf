@@ -319,19 +319,19 @@ namespace Dev2.Activities.Specs.Composition
         public static IServer LocalEnvModel { get; set; }
 
         [Given("I depend on a valid RabbitMQ server")]
-        public void GivenIGetaValidRabbitMQServer() => _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
+        public void GivenIGetaValidRabbitMQServer() => _containerOps = new Depends(Depends.ContainerType.RabbitMQ, true);
 
         [Given("I depend on a valid PostgreSQL server")]
-        public void GivenIGetaValidPostgreSQLServer() => _containerOps = new Depends(Depends.ContainerType.PostGreSQL);
+        public void GivenIGetaValidPostgreSQLServer() => _containerOps = new Depends(Depends.ContainerType.PostGreSQL, true);
 
         [Given("I depend on a valid MySQL server")]
-        public void GivenIGetaValidMySQLServer() => _containerOps = new Depends(Depends.ContainerType.MySQL);
+        public void GivenIGetaValidMySQLServer() => _containerOps = new Depends(Depends.ContainerType.MySQL, true);
 
         [Given("I depend on a valid MSSQL server")]
-        public void GivenIGetaValidMSSQLServer() => _containerOps = new Depends(Depends.ContainerType.MSSQL);
+        public void GivenIGetaValidMSSQLServer() => _containerOps = new Depends(Depends.ContainerType.MSSQL, true);
 
         [Given("I depend on a valid remote Warewolf server")]
-        public void GivenIGetaValidRemoteWarewolfServer() => _containerOps = new Depends(Depends.ContainerType.CIRemote);
+        public void GivenIGetaValidRemoteWarewolfServer() => _containerOps = new Depends(Depends.ContainerType.CIRemote, true);
 
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
@@ -346,7 +346,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowName == "TestMySqlWFWithMySqlStarIndex" ||
                 workflowName == "TestMySqlWFWithMySqlIntIndex")
             {
-                _containerOps = new Depends(Depends.ContainerType.MySQL);
+                _containerOps = new Depends(Depends.ContainerType.MySQL, true);
             }
             var resourceModel = new ResourceModel(environmentModel)
             {
@@ -800,15 +800,15 @@ namespace Dev2.Activities.Specs.Composition
             {
                 if (server == "Remote Connection Integration")
                 {
-                    _containerOps = new Depends(Depends.ContainerType.CIRemote);
+                    _containerOps = new Depends(Depends.ContainerType.CIRemote, true);
                 }
                 else if (remoteWf == "TestSqlReturningXml" || remoteWf == "TestSqlExecutesOnce")
                 {
-                    _containerOps = new Depends(Depends.ContainerType.MSSQL);
+                    _containerOps = new Depends(Depends.ContainerType.MSSQL, true);
                 }
                 else if (remoteWf == "RabbitMQTest")
                 {
-                    _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
+                    _containerOps = new Depends(Depends.ContainerType.RabbitMQ, true);
                 }
             }
 
@@ -818,7 +818,7 @@ namespace Dev2.Activities.Specs.Composition
 
             if (server == "localhost" && remoteWf == "TestmySqlReturningXml")
             {
-                _containerOps = new Depends(Depends.ContainerType.MySQL);
+                _containerOps = new Depends(Depends.ContainerType.MySQL, true);
             }
 
             var remoteEnvironment = ServerRepository.Instance.FindSingle(model => model.Name == server);
@@ -1658,7 +1658,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (dbSrcName == "NewSqlServerSource" || dbSrcName == "NewSqlBulkInsertSource")
             {
-                _containerOps = new Depends(Depends.ContainerType.MSSQL);
+                _containerOps = new Depends(Depends.ContainerType.MSSQL, true);
             }
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
@@ -4016,7 +4016,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeInto(string parentName, string activityName, string variable)
         {
-            _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
+            _containerOps = new Depends(Depends.ContainerType.RabbitMQ, true);
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
@@ -4057,7 +4057,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" with timeout (.*) seconds into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeWithTimeoutSecondsInto(string parentName, string activityName, int timeout, string variable)
         {
-            _containerOps = new Depends(Depends.ContainerType.RabbitMQ);
+            _containerOps = new Depends(Depends.ContainerType.RabbitMQ, true);
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
@@ -4291,7 +4291,7 @@ namespace Dev2.Activities.Specs.Composition
             //Load Source based on the name
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
-            _containerOps = new Depends(Depends.ContainerType.MySQL);
+            _containerOps = new Depends(Depends.ContainerType.MySQL, true);
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
@@ -4478,7 +4478,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings for testing as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappingsForTesting(string parentName, string serviceName, Table table)
         {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL);
+            _containerOps = new Depends(Depends.ContainerType.MSSQL, true);
             var inputs = GetServiceInputs(table);
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
             //Load Source based on the name
@@ -4550,7 +4550,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL);
+            _containerOps = new Depends(Depends.ContainerType.MSSQL, true);
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
@@ -4934,7 +4934,7 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"I startup the mysql container")]
         public void WhenIStartupTheContainer()
         {
-            _containerOps = new Depends(Depends.ContainerType.MySQL);
+            _containerOps = new Depends(Depends.ContainerType.MySQL, true);
         }
 
         ResourceCatalog ResourceCat { get; set; }

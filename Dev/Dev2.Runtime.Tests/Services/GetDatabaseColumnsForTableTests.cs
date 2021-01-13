@@ -326,7 +326,7 @@ namespace Dev2.Tests.Runtime.Services
 
         static DbSource CreateDev2TestingDbSource()
         {
-            _containerOps = new Depends(Depends.ContainerType.MSSQL, false);
+            _containerOps = new Depends(Depends.ContainerType.MSSQL);
             var dbSource = new DbSource
             {
                 ResourceID = Guid.NewGuid(),

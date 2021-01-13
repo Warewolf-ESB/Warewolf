@@ -211,6 +211,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WfExecutionContainer))]
+        [DoNotParallelize]//CustomContainer.Register is not threadsafe
         public void WfExecutionContainer_LogStopExecutionState()
         {
             var serviceAction = new ServiceAction();

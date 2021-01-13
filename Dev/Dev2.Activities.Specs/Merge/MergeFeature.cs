@@ -65,11 +65,11 @@ namespace Dev2.Activities.Specs.Merge
         {
             if (serverName == "Remote Container")
             {
-                WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf);
+                WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.Warewolf, true);
             }
             if (serverName == "Remote Connection Integration")
             {
-                WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.CIRemote);
+                WorkflowExecutionSteps._containerOps = new Depends(Depends.ContainerType.CIRemote, true);
             }
             if (!serverName.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
             {
