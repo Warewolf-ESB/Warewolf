@@ -6,16 +6,17 @@ Feature: WebRequest
 
 
 Scenario: Enter a URL to download html  
-	Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
-	When the web request tool is executed 
-	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
+	Given I have the url "http://opswolf.com:8080/api/Values" without timeout
+	When the web request tool is executed
+	Then the result should contain the string "value1"
+	And the result should contain the string "value2"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                            | Header |
-	| http://TFSBLD.premier.local:9810/api/products/Get |        |
+	| URL                                | Header |
+	| http://opswolf.com:8080/api/Values |        |
 	And the debug output as 
-	|                                                                                                                   |
-	| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
+	|                                  |
+	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a badly formed URL
 	Given I have the url "www.google.comx" without timeout
@@ -31,10 +32,11 @@ Scenario: Enter a badly formed URL
 
 Scenario: Enter a URL made up of text and variables with no header
     Given I have the url "http://[[site]][[file]]" without timeout
-	And I have a web request variable "[[site]]" equal to "TFSBLD.premier.local:9810/api/products/"	
-	And I have a web request variable "[[file]]" equal to "Get"
-	When the web request tool is executed 
-	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
+	And I have a web request variable "[[site]]" equal to "opswolf.com:8080/api/"	
+	And I have a web request variable "[[file]]" equal to "values"
+	When the web request tool is executed
+	Then the result should contain the string "value1"
+	And the result should contain the string "value2"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| URL                                                                      | Header |
@@ -45,59 +47,61 @@ Scenario: Enter a URL made up of text and variables with no header
 
 
 Scenario: Enter a URL and 2 variables each with a header parameter (json)
-	Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
+	Given I have the url "http://opswolf.com:8080/api/Values" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/json"	
 	And I have the Header "[[ContentType]]: [[Type]]"
 	When the web request tool is executed 
-	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
+	Then the result should contain the string "value1"
+	And the result should contain the string "value2"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                            | Header                                                      |
-	| http://TFSBLD.premier.local:9810/api/products/Get | [[ContentType]]: [[Type]] = Content-Type: application/json" |
+	| URL                                | Header                                                      |
+	| http://opswolf.com:8080/api/Values | [[ContentType]]: [[Type]] = Content-Type: application/json" |
 	And the debug output as 
-	|                                                                                                                   |
-	| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
+	|                                  |
+	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL and 2 variables each with a header parameter (xml)
-	Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
+	Given I have the url "http://opswolf.com:8080/api/Values" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/xml"	
 	And I have the Header "[[ContentType]]: [[Type]]"
 	When the web request tool is executed 
-	Then the result should contain the string "<Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product>"
+	Then the result should contain the string "<string>value1</string><string>value2</string>"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                            | Header                                                     |
-	| http://TFSBLD.premier.local:9810/api/products/Get | [[ContentType]]: [[Type]] = Content-Type: application/xml" |
+	| URL                                | Header                                                     |
+	| http://opswolf.com:8080/api/Values | [[ContentType]]: [[Type]] = Content-Type: application/xml" |
 	And the debug output as 
 	|                                                                                                                   |
-	| [[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.datacontra |
+	| [[result]] = <ArrayOfstring xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.microsoft.c |
 
 Scenario: Enter a URL that returns json
-	Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
-	When the web request tool is executed	
-	Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
+	Given I have the url "http://opswolf.com:8080/api/values" without timeout
+	When the web request tool is executed
+	Then the result should contain the string "value1"
+	And the result should contain the string "value2"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                            | Header |
+	| URL                                               | Header |
 	| http://TFSBLD.premier.local:9810/api/products/Get |        |
 	And the debug output as 
-	|                                                                                                                   |
-	| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
+	|                                   |
+	| [[result]] = ["value1","value2"]  |
 
 Scenario: Enter a URL that returns xml
-	Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
+	Given I have the url "http://opswolf.com:8080/api/values" without timeout
 	And I have the Header "Content-Type: application/xml"
 	When the web request tool is executed	
-	Then the result should contain the string "<Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product>"
+	Then the result should contain the string "<string>value1</string><string>value2</string>"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| URL                                            | Header |
+	| URL                                               | Header |
 	| http://TFSBLD.premier.local:9810/api/products/Get |        |
 	And the debug output as 
 	|                                                                                                                   |
-	| [[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.datacontra |
+	| [[result]] = <ArrayOfstring xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.microsoft.c |
 
 Scenario: Enter a blank URL
 	Given I have the url "" without timeout

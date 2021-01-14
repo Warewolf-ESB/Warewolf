@@ -121,7 +121,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             }
             else
             {
-                var failureMessage = "Result does not contain " + expectedResult;
+                var failureMessage = "Result (" + actualValue + ") does not contain " + expectedResult;
                 Assert.IsNotNull(actualValue, failureMessage);
                 Assert.IsTrue(actualValue.Contains(expectedResult), failureMessage);
             }

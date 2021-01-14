@@ -232,7 +232,8 @@ Scenario: Test WF with Web Delete
 	Then workflow "WebDeleteTestWF" is deleted as cleanup
 
 Scenario: Test WF with Web Post
-	Given I have a workflow "WebPostTestWF"		
+	Given I depend on a valid HTTP web server
+	And I have a workflow "WebPostTestWF"		
 	And "WebPostTestWF" contains a Web Post "testWebPost" result as "[[Response]]"		
 	And I save workflow "WebPostTestWF"
 	Then the test builder is open with "WebPostTestWF"
@@ -251,7 +252,8 @@ Scenario: Test WF with Web Post
 	Then workflow "WebPostTestWF" is deleted as cleanup
 
 Scenario: Test WF with Web Get
-	Given I have a workflow "WebGetTestWF"		 
+	Given I depend on a valid HTTP web server
+	And I have a workflow "WebGetTestWF"		 
 	And "WebGetTestWF" contains a Web Get "testWebGet" result as "[[Response]]"		
 	And I save workflow "WebGetTestWF"
 	Then the test builder is open with "WebGetTestWF"
@@ -273,7 +275,8 @@ Scenario: Test WF with Web Get
 	Then workflow "WebGetTestWF" is deleted as cleanup
 
 Scenario: Test WF with Web Put
-	Given I have a workflow "WebPutTestWF"		
+	Given I depend on a valid HTTP web server
+	And I have a workflow "WebPutTestWF"		
 	And "WebPutTestWF" contains a Web Put "testWebPut" result as "[[Response]]"		
 	And I save workflow "WebPutTestWF"
 	Then the test builder is open with "WebPutTestWF"
