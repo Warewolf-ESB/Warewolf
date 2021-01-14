@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -30,7 +30,6 @@ using Warewolf.Data;
 using Warewolf.Security.Encryption;
 using Warewolf.UnitTestAttributes;
 
-[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
