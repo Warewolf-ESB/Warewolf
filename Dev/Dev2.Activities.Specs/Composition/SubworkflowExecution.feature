@@ -151,7 +151,6 @@ Scenario: Executing Postgres For Xml testing workflow base
 	 |                     |
 	 | [[Result]] = Passed |
 
-@SubworkflowExecution
 @SubworkflowOracleExecution
 Scenario: Executing Oracle For Xml testing workflow base
 	  Given I have a workflow "Testing - Sql For Xml"
