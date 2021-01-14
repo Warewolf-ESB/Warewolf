@@ -210,8 +210,10 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	When I save
 	And I run the test
 	Then test result is Failed
-	Scenario: Test WF with Web Delete
-	Given I have a workflow "WebDeleteTestWF"		
+
+Scenario: Test WF with Web Delete
+	Given I depend on a valid HTTP web server
+	And I have a workflow "WebDeleteTestWF"		
 	And "WebDeleteTestWF" contains a Web Delete "testWebDelete" result as "[[Response]]"		
 	And I save workflow "WebDeleteTestWF"
 	Then the test builder is open with "WebDeleteTestWF"
