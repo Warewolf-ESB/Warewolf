@@ -76,7 +76,12 @@ namespace Warewolf.Driver.Persistence.Drivers
                 {
                     values["environment"] = new StringBuilder(decryptEnvironment);
                 }
-
+                values.TryGetValue("currentuserprincipal", out StringBuilder currentUserPrincipal);
+                var decryptCurrentUserPrincipal = currentUserPrincipal.ToString().CanBeDecrypted() ? DpapiWrapper.Decrypt(currentUserPrincipal.ToString()) : currentUserPrincipal.ToString();
+                if (values.ContainsKey("environment"))
+                {
+                    values["currentuserprincipal"] = new StringBuilder(decryptCurrentUserPrincipal);
+                }
                 var workflowResume = new WorkflowResume();
                 var result = workflowResume.Execute(values, null);
                 var serializer = new Dev2JsonSerializer();
@@ -92,6 +97,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 values.TryGetValue("environment", out StringBuilder environments);
                 values.TryGetValue("startActivityId", out StringBuilder startActivityId);
                 values.TryGetValue("versionNumber", out StringBuilder versionNumber);
+                values.TryGetValue("currentprincipal", out StringBuilder currentprincipal);
 
                 _stateNotifier = dsfDataObject.StateNotifier;
                 var audit = new Audit
@@ -102,7 +108,8 @@ namespace Warewolf.Driver.Persistence.Drivers
                     NextActivityId = startActivityId?.ToString(),
                     AuditDate = DateTime.Now,
                     AuditType = "LogResumeExecutionState",
-                    LogLevel = LogLevel.Info
+                    LogLevel = LogLevel.Info,
+                    User = currentprincipal?.ToString()
                 };
 
                 _stateNotifier?.LogAdditionalDetail(audit, nameof(ResumeJob));

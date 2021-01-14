@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using Dev2;
 using Dev2.Common;
@@ -68,15 +70,6 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
-        public void HangfireScheduler_Default_Constructor()
-        {
-            var scheduler = new Persistence.Drivers.HangfireScheduler();
-            Assert.IsNotNull(scheduler);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(HangfireScheduler))]
         public void HangfireScheduler_ScheduleJob_Success()
         {
             var values = new Dictionary<string, StringBuilder>
@@ -84,7 +77,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
@@ -105,14 +99,19 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
+            var mockPrincipal = new Mock<ClaimsPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
@@ -153,14 +152,19 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
@@ -196,19 +200,26 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
+        [Timeout(120000)]
         public void HangfireScheduler_ResumeJob_WorkflowResumeReturnsErrors_Failed()
         {
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
+
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
@@ -251,7 +262,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var jobstorage = new MemoryStorage();
@@ -277,7 +289,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var jobstorage = new MemoryStorage();
@@ -303,7 +316,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var jobstorage = new MemoryStorage();
@@ -429,7 +443,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
-                {"versionNumber", new StringBuilder("1")}
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;

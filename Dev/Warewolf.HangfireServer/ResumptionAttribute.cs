@@ -90,7 +90,7 @@ namespace HangfireServer
             values.TryGetValue("environment", out StringBuilder environment);
             values.TryGetValue("startActivityId", out StringBuilder startActivityId);
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
-
+            values.TryGetValue("currentuserprincipal", out StringBuilder currentuserprincipal);
             var audit = new Audit
             {
                 WorkflowID = workflowId?.ToString(),
