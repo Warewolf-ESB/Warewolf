@@ -1,3 +1,15 @@
+14 January 2021
+======================
+Enhancements
+------------
+Suspend Execution Tool
+Manual Resumption Tool: 
+  - Workflow will be resumed with the same user the workflow was suspended with
+
+Bug Fixes
+---------
+
+
 10 December 2020
 ======================
 Enhancements
