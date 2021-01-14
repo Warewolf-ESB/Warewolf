@@ -91,8 +91,8 @@ Scenario: Test WF with WebRequest
 	Given I depend on a valid HTTP web server
 	And I have a workflow "WebRequestTestWF"
 	And "WebRequestTestWF" contains WebRequest "TestWebRequest" as
-	| Result       | Url                                            |
-	| "[[Result]]" | http://TFSBLD.premier.local:9810/api/products/Get |
+	| Result       | Url                                         |
+	| "[[Result]]" | http://TFSBLD.premier.local:9810/api/values |
 	And I save workflow "WebRequestTestWF"
 	Then the test builder is open with "WebRequestTestWF"
 	And I click New Test
@@ -100,8 +100,8 @@ Scenario: Test WF with WebRequest
     And test name starts with "Test 1"
 	And I Add "TestWebRequest" as TestStep
 	And I add StepOutputs as 
-	  	 | Variable Name | Condition | Value                                                                                                                                                                                                                                                                                                                                                                                                            |
-	  	 | [[Result]]    | Contains  | [{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0},{"Id":2,"Name":"Refrigerator","Category":"Electronic","Price":23000.0},{"Id":3,"Name":"Mobiles","Category":"Electronic","Price":20000.0},{"Id":4,"Name":"Laptops","Category":"Electronic","Price":45000.0},{"Id":5,"Name":"iPads","Category":"Electronic","Price":67000.0},{"Id":6,"Name":"Toys","Category":"Gift Items","Price":15000.0}] |
+	  	 | Variable Name | Condition | Value               |
+	  	 | [[Result]]    | Contains  | ["value1","value2"] |
 	When I save
 	And I run the test
 	Then test result is Passed

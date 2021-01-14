@@ -3443,7 +3443,7 @@ namespace Dev2.Activities.Specs.Composition
             var resultVariable = table.Rows[0]["Result"];
             var url = table.Rows[0]["Url"];
 
-            if (url == "http://TFSBLD.premier.local:9810/api/products/Get") {
+            if (url == "http://TFSBLD.premier.local:9810/api/values") {
                 url = url.Replace("TFSBLD.premier.local", _containerOps.Container.IP).Replace("9810", _containerOps.Container.Port);
             }
 
