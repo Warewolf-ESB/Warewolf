@@ -356,7 +356,7 @@ this.FeatureBackground();
                         "Url"});
             table1222.AddRow(new string[] {
                         "\"[[Result]]\"",
-                        "http://TFSBLD.premier.local:9810/api/products/Get"});
+                        "http://TFSBLD.premier.local:9810/api/values"});
 #line 93
  testRunner.And("\"WebRequestTestWF\" contains WebRequest \"TestWebRequest\" as", ((string)(null)), table1222, "And ");
 #line 96
@@ -379,7 +379,7 @@ this.FeatureBackground();
             table1223.AddRow(new string[] {
                         "[[Result]]",
                         "Contains",
-                        @"[{""Id"":1,""Name"":""Television"",""Category"":""Electronic"",""Price"":82000.0},{""Id"":2,""Name"":""Refrigerator"",""Category"":""Electronic"",""Price"":23000.0},{""Id"":3,""Name"":""Mobiles"",""Category"":""Electronic"",""Price"":20000.0},{""Id"":4,""Name"":""Laptops"",""Category"":""Electronic"",""Price"":45000.0},{""Id"":5,""Name"":""iPads"",""Category"":""Electronic"",""Price"":67000.0},{""Id"":6,""Name"":""Toys"",""Category"":""Gift Items"",""Price"":15000.0}]"});
+                        "[\"value1\",\"value2\"]"});
 #line 102
  testRunner.And("I add StepOutputs as", ((string)(null)), table1223, "And ");
 #line 105
