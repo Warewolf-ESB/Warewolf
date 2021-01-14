@@ -55,10 +55,11 @@ namespace Warewolf.Driver.Resume
             values.TryGetValue("environment", out StringBuilder environment);
             values.TryGetValue("startActivityId", out StringBuilder startActivityId);
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
+            values.TryGetValue("currentuserprincipal", out StringBuilder currentuserprincipal);
 
             var resourceCatalogProxyFactory = new ResourceCatalogProxyFactory();
             var resourceCatalogProxy = resourceCatalogProxyFactory.New(_environmentConnection);
-            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString());
+            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString(),currentuserprincipal?.ToString());
             return executeMessage;
         }
 
