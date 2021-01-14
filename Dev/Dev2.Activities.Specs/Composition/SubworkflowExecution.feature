@@ -1,4 +1,4 @@
-﻿Feature: SubworkflowExecution
+Feature: SubworkflowExecution
 	In order to execute a subworkflow
 	As a Warewolf user
 	I want to be able to build workflows that contain other workflows from a running server instance
@@ -152,6 +152,7 @@ Scenario: Executing Postgres For Xml testing workflow base
 	 | [[Result]] = Passed |
 
 @SubworkflowExecution
+@SubworkflowOracleExecution
 Scenario: Executing Oracle For Xml testing workflow base
 	  Given I have a workflow "Testing - Sql For Xml"
 	  And "Testing - Sql For Xml" contains "TestOracleReturningXml" from server "localhost" with mapping as
