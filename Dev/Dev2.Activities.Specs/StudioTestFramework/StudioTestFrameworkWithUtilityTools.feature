@@ -88,7 +88,8 @@ Scenario: Test WF with Aggregate Calculate
 	Then workflow "AggrCalculateTestWF" is deleted as cleanup
 
 Scenario: Test WF with WebRequest
-	Given I have a workflow "WebRequestTestWF"
+	Given I depend on a valid HTTP web server
+	And I have a workflow "WebRequestTestWF"
 	And "WebRequestTestWF" contains WebRequest "TestWebRequest" as
 	| Result       | Url                                            |
 	| "[[Result]]" | http://TFSBLD.premier.local:9810/api/products/Get |
