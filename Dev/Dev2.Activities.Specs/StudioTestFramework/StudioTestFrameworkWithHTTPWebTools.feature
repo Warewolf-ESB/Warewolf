@@ -1,4 +1,4 @@
-﻿@StudioTestFrameworkWithHTTPWebTools
+@StudioTestFrameworkWithHTTPWebTools
 Feature: StudioTestFrameworkWithHTTPWebTools
 	In order to test workflows that contain tools from the HTTP web category of tools in warewolf studio
 	As a user
@@ -210,10 +210,8 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	When I save
 	And I run the test
 	Then test result is Failed
-
-Scenario: Test WF with Web Delete
-	Given I depend on a valid HTTP web server
-	And I have a workflow "WebDeleteTestWF"		
+	Scenario: Test WF with Web Delete
+	Given I have a workflow "WebDeleteTestWF"		
 	And "WebDeleteTestWF" contains a Web Delete "testWebDelete" result as "[[Response]]"		
 	And I save workflow "WebDeleteTestWF"
 	Then the test builder is open with "WebDeleteTestWF"
@@ -232,8 +230,7 @@ Scenario: Test WF with Web Delete
 	Then workflow "WebDeleteTestWF" is deleted as cleanup
 
 Scenario: Test WF with Web Post
-	Given I depend on a valid HTTP web server
-	And I have a workflow "WebPostTestWF"		
+	Given I have a workflow "WebPostTestWF"		
 	And "WebPostTestWF" contains a Web Post "testWebPost" result as "[[Response]]"		
 	And I save workflow "WebPostTestWF"
 	Then the test builder is open with "WebPostTestWF"
@@ -252,8 +249,7 @@ Scenario: Test WF with Web Post
 	Then workflow "WebPostTestWF" is deleted as cleanup
 
 Scenario: Test WF with Web Get
-	Given I depend on a valid HTTP web server
-	And I have a workflow "WebGetTestWF"		 
+	Given I have a workflow "WebGetTestWF"		 
 	And "WebGetTestWF" contains a Web Get "testWebGet" result as "[[Response]]"		
 	And I save workflow "WebGetTestWF"
 	Then the test builder is open with "WebGetTestWF"
@@ -275,8 +271,7 @@ Scenario: Test WF with Web Get
 	Then workflow "WebGetTestWF" is deleted as cleanup
 
 Scenario: Test WF with Web Put
-	Given I depend on a valid HTTP web server
-	And I have a workflow "WebPutTestWF"		
+	Given I have a workflow "WebPutTestWF"		
 	And "WebPutTestWF" contains a Web Put "testWebPut" result as "[[Response]]"		
 	And I save workflow "WebPutTestWF"
 	Then the test builder is open with "WebPutTestWF"
