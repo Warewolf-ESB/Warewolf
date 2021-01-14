@@ -333,6 +333,9 @@ namespace Dev2.Activities.Specs.Composition
         [Given("I depend on a valid remote Warewolf server")]
         public void GivenIGetaValidRemoteWarewolfServer() => _containerOps = new Depends(Depends.ContainerType.CIRemote, true);
 
+        [Given("I depend on a valid HTTP web server")]
+        public void GivenIGetaValidHTTPWebServer() => _containerOps = new Depends(Depends.ContainerType.WebApi, true);
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
@@ -3439,6 +3442,10 @@ namespace Dev2.Activities.Specs.Composition
         {
             var resultVariable = table.Rows[0]["Result"];
             var url = table.Rows[0]["Url"];
+
+            if (url == "http://TFSBLD.premier.local:9810/api/products/Get") {
+                url = url.Replace("TFSBLD.premier.local", _containerOps.Container.IP).Replace("9810", _containerOps.Container.Port);
+            }
 
             _commonSteps.AddVariableToVariableList(resultVariable);
             var dsfWebGetRequestActivity = new DsfWebGetRequestActivity
