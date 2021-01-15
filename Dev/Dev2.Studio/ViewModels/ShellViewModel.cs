@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -376,12 +376,16 @@ namespace Dev2.Studio.ViewModels
 
         IResourcePickerDialog CreateResourcePickerDialog()
         {
-            if (_currentResourcePicker == null)
+            if (_currentResourcePicker is null)
             {
                 var environmentViewModels = ExplorerViewModel?.Environments;
                 if (environmentViewModels != null)
                 {
                     var environmentViewModel = environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
+                    if (environmentViewModel is null)
+                    {
+                        environmentViewModel = environmentViewModels.FirstOrDefault(model => model.ResourceId == LocalhostServer.EnvironmentID);
+                    }
                     var res = new ResourcePickerDialog(enDsfActivityType.All, environmentViewModel);
                     ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, environmentViewModel).ContinueWith(a => _currentResourcePicker = a.Result);
                     return res;
