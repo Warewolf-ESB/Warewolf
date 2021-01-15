@@ -147,6 +147,8 @@
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="FileStreamFactory.cs" />
+    <Compile Include="Interfaces\IWebServiceParametersBuilder.cs" />
+    <Compile Include="WebServiceParametersBuilder.cs" />
     <Compile Include="Wrappers\EnvironmentWrapper.cs" />
     <Compile Include="Wrappers\FileSystemWatcherWrapper.cs" />
     <Compile Include="GlobalConstants.cs" />

@@ -22,18 +22,23 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+using Warewolf.UI;
 
 namespace Dev2.Activities.Designers2.Core
 {
     public class WebPostInputRegion : IWebPostInputArea
     {
-        readonly ModelItem _modelItem;
-        readonly ISourceToolRegion<IWebServiceSource> _source;
-        string _queryString;
-        string _requestUrl;
-        ObservableCollection<INameValue> _headers;
-        bool _isEnabled;
-        string _postData;
+        private readonly ModelItem _modelItem;
+        private readonly ISourceToolRegion<IWebServiceSource> _source;
+        private string _queryString;
+        private string _requestUrl;
+        private ObservableCollection<INameValue> _headers;
+        private ObservableCollection<INameValue> _parameters;
+        private bool _isEnabled;
+        private string _postData;
+        private bool _isNoneChecked;
+        private bool _isFormDataChecked;
+        private OptionsWithNotifier _options;
 
         public WebPostInputRegion()
         {
@@ -49,14 +54,14 @@ namespace Dev2.Activities.Designers2.Core
                 foreach (var header in existing)
                 {
                     var nameValue = new NameValue(header.Name, header.Value);
-                    nameValue.PropertyChanged += ValueOnPropertyChanged;
+                    nameValue.PropertyChanged += HeaderValueOnPropertyChanged;
                     headers.Add(nameValue);
                 }
             }
             else
             {
                 var nameValue = new NameValue();
-                nameValue.PropertyChanged += ValueOnPropertyChanged;
+                nameValue.PropertyChanged += HeaderValueOnPropertyChanged;
                 headers.Add(nameValue);
             }
             headers.CollectionChanged += HeaderCollectionOnCollectionChanged;
@@ -70,6 +75,36 @@ namespace Dev2.Activities.Designers2.Core
             SetHeaders();
         }
 
+        private void SetupParameters(ModelItem modelItem)
+        {
+            var existing = modelItem.GetProperty<IList<INameValue>>("Parameters");
+            var parameters = new ObservableCollection<INameValue>();
+            if (existing != null)
+            {
+                foreach (var param in existing)
+                {
+                    var nameValue = new NameValue(param.Name, param.Value);
+                    nameValue.PropertyChanged += ParameterValueOnPropertyChanged;
+                    parameters.Add(nameValue);
+                }
+            }
+            else
+            {
+                var nameValue = new NameValue();
+                nameValue.PropertyChanged += ParameterValueOnPropertyChanged;
+                parameters.Add(nameValue);
+            }
+            parameters.CollectionChanged += ParameterCollectionOnCollectionChanged;
+            Parameters = parameters;
+
+            AddParameters();
+        }
+
+        private void ParameterCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SetParameters();
+        }
+
         public WebPostInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
         {
             ToolRegionName = "PostInputRegion";
@@ -77,7 +112,10 @@ namespace Dev2.Activities.Designers2.Core
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
             IsEnabled = false;
+            IsNoneChecked = true;
+            IsFormDataChecked = false;
             SetupHeaders(modelItem);
+            SetupParameters(modelItem);
             if (source?.SelectedSource != null)
             {
                 RequestUrl = source.SelectedSource.HostName;
@@ -93,7 +131,9 @@ namespace Dev2.Activities.Designers2.Core
                 QueryString = _source.SelectedSource.DefaultQuery;
                 PostData = string.Empty;
                 Headers.Clear();
+                Parameters.Clear();
                 AddHeaders();
+                AddParameters();
                 IsEnabled = true;
             }
 
@@ -129,6 +169,51 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<INameValue> Parameters
+        {
+            get => _parameters;
+            set
+            {
+                _parameters = value;
+                _modelItem.SetProperty("Parameters", value.ToList());
+                OnPropertyChanged();
+            }
+        }
+
+        public OptionsWithNotifier Options
+        {
+            get => _options;
+            set
+            {
+                _options = value;
+                _modelItem.SetProperty("Options", value);
+                OnPropertyChanged(nameof(Options));
+            }
+        }
+
+        public bool IsNoneChecked
+        {
+            get => _modelItem.GetProperty<bool> ("IsNoneChecked");
+            set
+            {
+                _isNoneChecked = value;
+                _modelItem.SetProperty("IsNoneChecked", value);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsFormDataChecked
+        {
+            get => _modelItem.GetProperty<bool>("IsFormDataChecked");
+            set
+            {
+                _isFormDataChecked = value;
+                _modelItem.SetProperty("IsFormDataChecked", value);
+                OnPropertyChanged();
+            }
+        }
+
         public string PostData
         {
             get => _modelItem.GetProperty<string>("PostData") ?? string.Empty;
@@ -150,6 +235,7 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
@@ -158,16 +244,27 @@ namespace Dev2.Activities.Designers2.Core
             foreach (var nameValue in Headers)
             {
                 var value = new NameValue(nameValue.Name,nameValue.Value);
-                value.PropertyChanged += ValueOnPropertyChanged;
+                value.PropertyChanged += HeaderValueOnPropertyChanged;
                 headers2.Add(value);
+            }
+
+            var parameters = new ObservableCollection<INameValue>();
+            foreach (var nameValue in Parameters)
+            {
+                var value = new NameValue(nameValue.Name, nameValue.Value);
+                value.PropertyChanged += HeaderValueOnPropertyChanged;
+                parameters.Add(value);
             }
             return new WebPostInputRegion(_modelItem, _source)
             {
                 Headers = headers2,
+                Parameters = parameters,
                 PostData = PostData,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
-                IsEnabled = IsEnabled
+                IsEnabled = IsEnabled,
+                IsNoneChecked = IsNoneChecked,
+                IsFormDataChecked = IsFormDataChecked
             };
         }
 
@@ -176,6 +273,8 @@ namespace Dev2.Activities.Designers2.Core
             if (toRestore is WebPostInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
+                IsNoneChecked = region.IsNoneChecked;
+                IsFormDataChecked = region.IsFormDataChecked;
                 PostData = region.PostData;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
@@ -189,6 +288,18 @@ namespace Dev2.Activities.Designers2.Core
                         { Name = nameValue.Name, Value = nameValue.Value });
                     }
                     Headers.Remove(Headers.First());
+                }
+
+                Parameters.Clear();
+                AddParameters();
+                if (region.Parameters != null)
+                {
+                    foreach (var nameValue in region.Parameters)
+                    {
+                        Parameters.Add(new ObservableAwareNameValue(Parameters, s => { SetParameters(); })
+                        { Name = nameValue.Name, Value = nameValue.Value });
+                    }
+                    Parameters.Remove(Parameters.First());
                 }
             }
         }
@@ -213,15 +324,46 @@ namespace Dev2.Activities.Designers2.Core
                 _headers.Select(a =>
                 {
                     var nameValue = new NameValue(a.Name, a.Value);
-                    nameValue.PropertyChanged += ValueOnPropertyChanged;
+                    nameValue.PropertyChanged += HeaderValueOnPropertyChanged;
                     return (INameValue) nameValue;
                 }).ToList());
         }
 
-        private void ValueOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void HeaderValueOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             SetHeaders();
             AddHeaders();
+        }
+
+        private void AddParameters()
+        {
+            if (Parameters.Count == 0)
+            {
+                Parameters.Add(new ObservableAwareNameValue(Parameters, s => { SetParameters(); }));
+                return;
+            }
+            var nameValue = Parameters.Last();
+            if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
+            {
+                Parameters.Add(new ObservableAwareNameValue(Parameters, s => { SetParameters(); }));
+            }
+        }
+
+        private void SetParameters()
+        {
+            _modelItem.SetProperty("Parameters",
+                  _parameters.Select(a =>
+                  {
+                      var nameValue = new NameValue(a.Name, a.Value);
+                      nameValue.PropertyChanged += ParameterValueOnPropertyChanged;
+                      return (INameValue)nameValue;
+                  }).ToList());
+        }
+
+        private void ParameterValueOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            SetParameters();
+            AddParameters();
         }
 
         public EventHandler<List<string>> ErrorsHandler

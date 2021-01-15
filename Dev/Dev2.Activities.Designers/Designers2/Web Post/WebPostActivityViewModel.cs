@@ -13,6 +13,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
@@ -32,7 +33,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Web_Post
 {
-    public class WebPostActivityViewModel : CustomToolWithRegionBase, IWebServicePostViewModel
+    public class WebPostActivityViewModel : CustomToolWithRegionBase, IWebPostActivityViewModel
     {
         private IOutputsToolRegion _outputsRegion;
         private IWebPostInputArea _inputArea;
@@ -63,7 +64,7 @@ namespace Dev2.Activities.Designers2.Web_Post
         void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
-            InitialiseViewModel(new ManageWebServiceInputViewModel(this, Model));
+            InitialiseViewModel(new ManageWebPostInputViewModel(this, Model));
             NoError = new ErrorInfo
             {
                 ErrorType = ErrorType.None,
@@ -183,7 +184,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             }
         }
 
-        void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageWebPostInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -237,7 +238,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             }
         }
 
-        public IManageWebServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        public IManageWebPostInputViewModel ManageServiceInputViewModel { get; set; }
 
         public void TestProcedure()
         {
@@ -310,6 +311,8 @@ namespace Dev2.Activities.Designers2.Web_Post
         }
 
         public IHeaderRegion GetHeaderRegion() => InputArea;
+        
+        public IParameterRegion GetParameterRegion() => InputArea;
 
         public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 
@@ -335,7 +338,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 {
                     if (args.PropertyName == "PostData" && InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
                     {
-                        ((ManageWebServiceInputViewModel)ManageServiceInputViewModel).BuidHeaders(InputArea.PostData);
+                        ((ManageWebPostInputViewModel)ManageServiceInputViewModel).BuidHeaders(InputArea.PostData);
                     }
 
                 };
@@ -412,7 +415,10 @@ namespace Dev2.Activities.Designers2.Web_Post
                 Path = "",
                 Id = Guid.NewGuid(),
                 PostData = InputArea.PostData,
+                IsNoneChecked = InputArea.IsNoneChecked,
+                IsFormDataChecked = InputArea.IsFormDataChecked,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
+                Parameters = InputArea.Parameters.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
                 Response = "",
@@ -424,6 +430,7 @@ namespace Dev2.Activities.Designers2.Web_Post
 
         IList<IServiceInput> InputsFromModel()
         {
+            //TODO: this might also be needed for parameters
             var dt = new List<IServiceInput>();
             var s = InputArea.QueryString;
             var postValue = InputArea.PostData;
@@ -457,6 +464,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             ErrorRegion.IsEnabled = value;
             SourceRegion.IsEnabled = value;
         }
+
     }
 }
 
