@@ -8,7 +8,8 @@ Manual Resumption Tool:
 
 Bug Fixes
 ---------
-
+POST and GET Method Tools
+ - Genarate Outputs no longer returning base64 string
 
 10 December 2020
 ======================
