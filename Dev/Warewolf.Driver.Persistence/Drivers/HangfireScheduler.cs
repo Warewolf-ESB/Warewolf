@@ -193,7 +193,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                     break;
             }
 
-            return DateTime.ParseExact(resumptionDate.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), GlobalConstants.Dev2DotNetDefaultDateTimeFormat, CultureInfo.InvariantCulture);
+            return resumptionDate;
         }
     }
 }
