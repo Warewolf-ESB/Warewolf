@@ -1,3 +1,10 @@
+18 January 2021
+======================
+Bug Fixes
+---------
+Studio
+   - Studio no longer freezes when remote server becomes inactive
+
 14 January 2021
 ======================
 Enhancements
