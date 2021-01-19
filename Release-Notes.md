@@ -5,6 +5,9 @@ Bug Fixes
 RabbitMQPublish
    - No longer fails when CorrelationId is null
 
+Suspend Execution Tool
+   - Date format bug fix
+
 18 January 2021
 ======================
 Bug Fixes
