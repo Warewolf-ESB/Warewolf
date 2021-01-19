@@ -23,7 +23,7 @@ namespace Dev2.Integration.Tests
         {
             try
             {
-                var reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", "http://localhost:3142/services/", "Acceptance Testing Resources/SampleEmployeesWorkflow?ResultType=Managers"));
+                var reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", "http://localhost:3142/public/", "Acceptance Testing Resources/SampleEmployeesWorkflow?ResultType=Managers"));
                 Assert.IsNotNull(reponseData);
             }
             catch (WebException e)
