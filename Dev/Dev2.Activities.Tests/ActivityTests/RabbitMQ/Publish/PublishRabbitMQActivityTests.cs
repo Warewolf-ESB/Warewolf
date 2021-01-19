@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -40,7 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             Assert.IsNotNull(publishRabbitMQActivity);
             Assert.AreEqual("RabbitMQ Publish", publishRabbitMQActivity.DisplayName);
         }
-        
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Candice Daniel")]
@@ -52,13 +52,13 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             const string queueName = "Q1", message = "Test Message";
             var param = new Dictionary<string, string> {{"QueueName", queueName}, {"Message", message}};
             var body = Encoding.UTF8.GetBytes(message);
-            
+
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             dataObject.Setup(o => o.ExecutionID).Returns(new Guid?());
             dataObject.Setup(o => o.CustomTransactionID).Returns(new Guid?().ToString());
             dataObject.Setup(o => o.Environment).Returns(env);
-           
+
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
             var connectionFactory = new Mock<ConnectionFactory>();
@@ -99,7 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             Assert.IsTrue(mockBasicProperties.Object.Persistent);
         }
 
-      
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Candice Daniel")]
@@ -334,7 +334,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(o => o.GetResource<RabbitMQSource>(Common.GlobalConstants.ServerWorkspaceID, resourceId))
-            .Returns(new RabbitMQSource());
+                .Returns(new RabbitMQSource());
 
             var mockDataObject = new Mock<IDSFDataObject>();
             mockDataObject.Setup(o => o.Environment)
@@ -373,6 +373,56 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             sut.TestExecuteTool(mockDataObject.Object);
 
             mockBasicProperties.VerifySet(o => o.CorrelationId = value);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
+        public void PublishRabbitMQActivity_Execute_GetCorrelationID_AutoCorrelation_CorrelationIdIsnull_UseExecutionID_Success()
+        {
+            var exp = "[[evalthis]]";
+            var value = "value";
+            var env = new ExecutionEnvironment();
+            env.Assign(exp, value, 0);
+            var resourceId = Guid.NewGuid();
+            var executionId = Guid.NewGuid();
+            
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(o => o.GetResource<RabbitMQSource>(Common.GlobalConstants.ServerWorkspaceID, resourceId))
+                .Returns(new RabbitMQSource());
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(env);
+            mockDataObject.Setup(o => o.ExecutionID).Returns(executionId);
+            var mockBasicProperties = new Mock<IBasicProperties>();
+
+            var mockModel = new Mock<IModel>();
+            mockModel.Setup(o => o.CreateBasicProperties())
+                .Returns(mockBasicProperties.Object);
+
+            var mockConnection = new Mock<IConnection>();
+            mockConnection.Setup(o => o.CreateModel())
+                .Returns(mockModel.Object);
+
+            var mockConnectionFactory = new Mock<ConnectionFactory>();
+            mockConnectionFactory.Setup(o => o.CreateConnection())
+                .Returns(mockConnection.Object);
+
+            var sut = new TestPublishRabbitMQActivity(mockResourceCatalog.Object, mockConnectionFactory.Object)
+            {
+                RabbitMQSourceResourceId = resourceId,
+                QueueName = "queue-one",
+                Message = "test:message",
+                BasicProperties = new Warewolf.Data.Options.RabbitMqPublishOptions
+                {
+                    AutoCorrelation = new Warewolf.Data.Options.ExecutionID()
+                }
+            };
+
+            sut.TestExecuteTool(mockDataObject.Object);
+
+            mockBasicProperties.VerifySet(o => o.CorrelationId = executionId.ToString());
         }
 
         static IExecutionEnvironment CreateExecutionEnvironment()
