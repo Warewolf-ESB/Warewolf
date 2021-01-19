@@ -1,3 +1,10 @@
+19 January 2021
+======================
+Bug Fixes
+---------
+RabbitMQConsume
+   - No longer fails when CorrelationId is null
+
 18 January 2021
 ======================
 Bug Fixes
