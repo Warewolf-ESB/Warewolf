@@ -9,7 +9,8 @@ param(
   [int] $RetryCount=${bamboo.RetryCount},
   [String] $PreTestRunScript,
   [switch] $RunInDocker,
-  [switch] $Coverage
+  [switch] $Coverage,
+  [switch] $RetryRebuild
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
@@ -78,6 +79,14 @@ if ($RunInDocker.IsPresent) {
 	}
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
+	if ($RetryRebuild.IsPresent) {
+		Get-ChildItem -Path  '$PWD' -Recurse |
+Select -ExpandProperty FullName |
+Where {$_ -notlike '$PWD\TestResults*'} |
+sort length -Descending |
+Remove-Item -force -recurse
+		&..\..\Compile.ps1 -AcceptanceTesting
+	}
 	if ($RunInDocker.IsPresent) {
 		docker rm -f $ContainerName
 	}
@@ -151,7 +160,8 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg $CategoryArg</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
+				$XmlSafeCategory = $CategoryArg -replace "`&","`&amp;"
+				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg $XmlSafeCategory</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 			} else {
 				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 			}
@@ -199,11 +209,22 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if (!($RunInDocker.IsPresent)) {
 		Get-Content "$TestResultsPath\RunTests.ps1"
 		&"$TestResultsPath\RunTests.ps1"
-		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-			Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
-		}
 	} else {
-		docker run -t --rm -v "${PWD}":C:\BuildUnderTest --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
+		docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
+		docker cp . ${ContainerName}:.\BuildUnderTest
+		docker start -a $ContainerName
+		if ($Coverage.IsPresent -and !($PreTestRunScript)) {
+			docker cp ${ContainerName}:\BuildUnderTest\TestResults .
+			docker cp ${ContainerName}:\BuildUnderTest\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\TestResults .
+		} else {
+			docker cp ${ContainerName}:\TestResults .
+		}
+		if ($PreTestRunScript) {
+			docker cp ${ContainerName}:"\programdata\warewolf\Server Log\warewolf-server.log" .\TestResults\warewolf-server`($LoopCounter`).log
+		}
+	}
+	if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+		Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
 	}
 	if (Test-Path "$TestResultsPath\*.trx") {
 		[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
