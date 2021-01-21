@@ -241,6 +241,7 @@
     <Compile Include="WCFEndPoint\WcfEndPointViewModelTests.cs" />
     <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
     <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
+    <Compile Include="WebPostTool\WebPostActivityViewModelTests.cs" />
     <Compile Include="WebPutTool\WebPutActivityViewModelTests.cs" />
     <Compile Include="WebPutTool\TestWebPutViewModel.cs" />
     <Compile Include="WebPostTool\TestWebPostViewModel.cs" />

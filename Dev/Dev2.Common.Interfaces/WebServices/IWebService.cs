@@ -27,6 +27,8 @@ namespace Dev2.Common.Interfaces.WebServices
         Guid Id { get; set; }
         List<INameValue> Headers { get; set; }
         string PostData { get; set; }
+        bool IsFormDataChecked { get; set; }
+        bool IsNoneChecked { get; set; }
         bool IsPutDataBase64 { get; set; }
         string SourceUrl { get; set; }
         string Response { get; set; }

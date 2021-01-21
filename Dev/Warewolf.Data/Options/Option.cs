@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,8 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Input;
 using Warewolf.Data;
+using Warewolf.Data.Options;
 
 namespace Warewolf.Options
 {
@@ -764,4 +766,143 @@ namespace Warewolf.Options
                    string.Compare(item.To, To, StringComparison.InvariantCulture);
         }
     }
+
+    public class FormDataOptionConditionExpression : BindableBase, IOption
+    {
+        public string Name { get; set; }
+
+        public ICommand DeleteCommand { get; set; }
+
+        private string _left;
+        public string Left
+        {
+            get => _left;
+            set
+            {
+                SetProperty(ref _left, value);
+            }
+        }
+        public static INamedInt[] MatchTypes { get; } = NamedInt.GetAll(typeof(enFormDataTableType)).ToArray();
+
+        private INamedInt _selectedMatchType;
+        public INamedInt SelectedMatchType
+        {
+            get => _selectedMatchType;
+            set
+            {
+                if (value != null && SetProperty(ref _selectedMatchType, value))
+                {
+                    MatchType = (enFormDataTableType)value.Value;
+                    RaisePropertyChanged(nameof(IsBetween));
+                    RaisePropertyChanged(nameof(IsSingleOperand));
+                }
+            }
+        }
+        public enFormDataTableType MatchType { get; set; }
+
+        private string _right;
+        public string Right
+        {
+            get => _right;
+            set
+            {
+                SetProperty(ref _right, value);
+            }
+        }
+
+        private string _file;
+        public string File
+        {
+            get => _file;
+            set
+            {
+                SetProperty(ref _file, value);
+            }
+        }
+
+        private string _fileName;
+        public string FileName
+        {
+            get => _fileName;
+            set
+            {
+                SetProperty(ref _fileName, value);
+            }
+        }
+        public bool IsBetween => MatchType.IsTripleOperand();
+        public bool IsSingleOperand => MatchType.IsSingleOperand();
+        public bool IsEmptyRow
+        {
+            get
+            {
+                var isEmptyRow = string.IsNullOrEmpty(Left);
+                isEmptyRow &= SelectedMatchType is null;
+                if (IsSingleOperand)
+                {
+                    isEmptyRow &= string.IsNullOrEmpty(Right);
+                }
+                if (IsBetween)
+                {
+                    isEmptyRow &= string.IsNullOrEmpty(File);
+                    isEmptyRow &= string.IsNullOrEmpty(FileName);
+                }
+                return isEmptyRow;
+            }
+        }
+
+        private string _helpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
+
+        private string _tooltip;
+
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
+        public FormDataCondition Cond { get; set; }
+
+        public void RenderDescription(StringBuilder sb)
+        {
+            sb.Append(Left);
+            Cond?.RenderDescription(sb);
+        }
+
+        public object Clone()
+        {
+            return new FormDataOptionConditionExpression
+            {
+                Name = Name,
+                Left = Left,
+                SelectedMatchType = SelectedMatchType,
+                Right = Right,
+                File = File,
+                FileName = FileName,
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            var item = obj as FormDataOptionConditionExpression;
+            if (item is null)
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) |
+                   string.Compare(item.Left, Left, StringComparison.InvariantCulture) |
+                   (item.SelectedMatchType == SelectedMatchType ? 0 : -1) |
+                   string.Compare(item.Right, Right, StringComparison.InvariantCulture) |
+                   string.Compare(item.File, File, StringComparison.InvariantCulture) |
+                   string.Compare(item.FileName, FileName, StringComparison.InvariantCulture);
+        }
+    }
+
 }
