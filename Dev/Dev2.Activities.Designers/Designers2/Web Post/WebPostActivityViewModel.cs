@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,6 +13,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
@@ -29,16 +30,21 @@ using Dev2.Providers.Errors;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+using Warewolf.Data.Options;
+using Warewolf.Options;
+using Warewolf.UI;
 
 namespace Dev2.Activities.Designers2.Web_Post
 {
-    public class WebPostActivityViewModel : CustomToolWithRegionBase, IWebServicePostViewModel
+    public class WebPostActivityViewModel : CustomToolWithRegionBase, IWebServiceBaseViewModel
     {
         private IOutputsToolRegion _outputsRegion;
         private IWebPostInputArea _inputArea;
         private ISourceToolRegion<IWebServiceSource> _sourceRegion;
         private readonly ServiceInputBuilder _builder;
         private IErrorInfo _worstDesignError;
+        private readonly ModelItem _modelItem;
+        private OptionsWithNotifier _options;
 
         private const string DoneText = "Done";
         private const string FixText = "Fix";
@@ -49,6 +55,7 @@ namespace Dev2.Activities.Designers2.Web_Post
         public WebPostActivityViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            _modelItem = modelItem;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -58,6 +65,17 @@ namespace Dev2.Activities.Designers2.Web_Post
             this.RunViewSetup();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Post;
         }
+
+        public WebPostActivityViewModel(ModelItem modelItem, IWebServiceModel model)
+            : base(modelItem)
+        {
+            Model = model;
+            _modelItem = modelItem;
+
+            _builder = new ServiceInputBuilder();
+            SetupCommonProperties();
+        }
+
         Guid UniqueID => GetProperty<Guid>();
 
         void SetupCommonProperties()
@@ -118,14 +136,6 @@ namespace Dev2.Activities.Designers2.Web_Post
                 DesignValidationErrors.Add(error);
             }
             UpdateWorstError();
-        }
-
-        public WebPostActivityViewModel(ModelItem modelItem, IWebServiceModel model)
-            : base(modelItem)
-        {
-            Model = model;
-            _builder = new ServiceInputBuilder();
-            SetupCommonProperties();
         }
 
         public override void Validate()
@@ -216,6 +226,9 @@ namespace Dev2.Activities.Designers2.Web_Post
                     OutputsRegion.IsEnabled = true;
                 }
             }
+
+            LoadOptions();
+            LoadConditionExpressionOptions();
         }
 
         public int LabelWidth { get; set; }
@@ -227,6 +240,135 @@ namespace Dev2.Activities.Designers2.Web_Post
             AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
             AddProperty("Type :", Type);
             AddProperty("Url :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.HostName);
+        }
+
+        public OptionsWithNotifier ConditionExpressionOptions
+        {
+            get => _conditionExpressionOptions;
+            set
+            {
+                _conditionExpressionOptions = value;
+                OnPropertyChanged(nameof(ConditionExpressionOptions));
+                _conditionExpressionOptions.OptionChanged += UpdateConditionExpressionOptionsModelItem;
+            }
+        }
+
+        private void UpdateConditionExpressionOptionsModelItem()
+        {
+            if (ConditionExpressionOptions?.Options != null)
+            {
+                var tmp = OptionConvertor.ConvertToListOfT<FormDataConditionExpression>(ConditionExpressionOptions.Options);
+                _modelItem.Properties["Conditions"]?.SetValue(tmp);
+                AddEmptyConditionExpression();
+                SetExpressionText();
+                foreach (var item in ConditionExpressionOptions.Options)
+                {
+                    if (item is FormDataOptionConditionExpression conditionExpression)
+                    {
+                        conditionExpression.DeleteCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(a => 
+                        { 
+                            RemoveConditionExpression(conditionExpression); 
+                        });
+                    }
+                }
+            }
+        }
+
+        private void RemoveConditionExpression(FormDataOptionConditionExpression conditionExpression)
+        {
+            var count = ConditionExpressionOptions.Options.Count(o => o is FormDataOptionConditionExpression optionCondition && optionCondition.IsEmptyRow);
+            var empty = conditionExpression.IsEmptyRow;
+            var allow = !empty || (empty && count > 1);
+
+            if (_conditionExpressionOptions.Options.Count > 1 && allow)
+            {
+                var list = new List<IOption>(_conditionExpressionOptions.Options);
+                list.Remove(conditionExpression);
+                ConditionExpressionOptions.Options = list;
+                OnPropertyChanged(nameof(ConditionExpressionOptions));
+            }
+        }
+
+        private void SetExpressionText()
+        {
+            var conditionExpressionList = _modelItem.Properties["Conditions"].ComputedValue as IList<FormDataConditionExpression>;
+
+            var text = new StringBuilder();
+            var dds = conditionExpressionList.GetEnumerator();
+            if (dds.MoveNext() && dds.Current.Cond.MatchType != enFormDataTableType.Choose)
+            {
+                dds.Current.RenderDescription(text);
+            }
+            while (dds.MoveNext())
+            {
+                var conditionExpression = dds.Current;
+                if (conditionExpression.Cond.MatchType == enFormDataTableType.Choose)
+                {
+                    continue;
+                }
+
+                text.Append("\n AND \n");
+                conditionExpression.RenderDescription(text);
+            }
+            ConditionExpressionText = text.ToString();
+        }
+
+
+        private void AddEmptyConditionExpression()
+        {
+            var emptyRows = ConditionExpressionOptions.Options.Where(o => o is FormDataOptionConditionExpression optionCondition && optionCondition.IsEmptyRow);
+
+            if (!emptyRows.Any())
+            {
+                var conditionExpression = new FormDataOptionConditionExpression();
+                var list = new List<IOption>(_conditionExpressionOptions.Options)
+                {
+                    conditionExpression
+                };
+                ConditionExpressionOptions.Options = list;
+                OnPropertyChanged(nameof(ConditionExpressionOptions));
+            }
+        }
+
+        private void LoadConditionExpressionOptions()
+        {
+            var conditionExpressionList = _modelItem.Properties["Conditions"].ComputedValue as IList<FormDataConditionExpression>;
+            if (conditionExpressionList is null)
+            {
+                conditionExpressionList = new List<FormDataConditionExpression>();
+            }
+            var result = OptionConvertor.ConvertFromListOfT(conditionExpressionList);
+            ConditionExpressionOptions = new OptionsWithNotifier { Options = result };
+            UpdateConditionExpressionOptionsModelItem();
+        }
+
+
+        private void LoadOptions()
+        {
+            var formDataOptions = _modelItem.Properties["FormDataOptions"].ComputedValue as FormDataOptions;
+            if (formDataOptions is null)
+            {
+                formDataOptions = new FormDataOptions();
+                _modelItem.Properties["FormDataOptions"].SetValue(formDataOptions);
+            }
+
+            formDataOptions.OnChange += UpdateOptionsModelItem;
+            _postFormDataOptionsInst = formDataOptions;
+            var result = new List<IOption>();
+            var failureOptions = OptionConvertor.Convert(formDataOptions);
+            result.AddRange(failureOptions);
+            Options = new OptionsWithNotifier { Options = result };
+        }
+
+        private void UpdateOptionsModelItem()
+        {
+            if (Options?.Options != null)
+            {
+                _modelItem.Properties["FormDataOptions"]?.ClearValue();
+                // Call Convert to ensure the model is _fully_ updated
+                OptionConvertor.Convert(typeof(FormDataOptions), Options.Options, _postFormDataOptionsInst);
+                _modelItem.Properties["FormDataOptions"]?.SetValue(_postFormDataOptionsInst);
+            }
         }
 
         void AddProperty(string key, string value)
@@ -278,6 +420,9 @@ namespace Dev2.Activities.Designers2.Web_Post
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebPostActivityViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
+        private FormDataOptions _postFormDataOptionsInst;
+        private OptionsWithNotifier _conditionExpressionOptions;
+        private string _conditionExpressionText;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -310,7 +455,7 @@ namespace Dev2.Activities.Designers2.Web_Post
         }
 
         public IHeaderRegion GetHeaderRegion() => InputArea;
-
+        
         public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
@@ -412,6 +557,8 @@ namespace Dev2.Activities.Designers2.Web_Post
                 Path = "",
                 Id = Guid.NewGuid(),
                 PostData = InputArea.PostData,
+                IsNoneChecked = InputArea.IsNoneChecked,
+                IsFormDataChecked = InputArea.IsFormDataChecked,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
@@ -449,6 +596,26 @@ namespace Dev2.Activities.Designers2.Web_Post
                 OnPropertyChanged();
             }
         }
+        
+        public OptionsWithNotifier Options
+        {
+            get => _options;
+            set
+            {
+                _options = value;
+                OnPropertyChanged(nameof(Options));
+            }
+        }
+        
+        public string ConditionExpressionText
+        {
+            get => _conditionExpressionText;
+            set
+            {
+                _conditionExpressionText = value;
+                OnPropertyChanged(nameof(ConditionExpressionText));
+            }
+        }
 
         void SetRegionVisibility(bool value)
         {
@@ -457,6 +624,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             ErrorRegion.IsEnabled = value;
             SourceRegion.IsEnabled = value;
         }
+
     }
 }
 
