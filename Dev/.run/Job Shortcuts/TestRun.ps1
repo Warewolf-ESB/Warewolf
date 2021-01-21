@@ -7,7 +7,7 @@ param(
   [String] $TestsToRun="${bamboo.TestsToRun}",
   [String] $VSTestPath="${bamboo.capability.system.builder.devenv.Visual Studio 2019}",
   [String] $NuGet="${bamboo.capability.system.builder.command.NuGet}",
-  [String] $MSBuildPath="${bamboo.capability.system.builder.msbuild.MSBuild v16.0}"
+  [String] $MSBuildPath="${bamboo.capability.system.builder.msbuild.MSBuild v16.0}",
   [int] $RetryCount=${bamboo.RetryCount},
   [String] $PreTestRunScript,
   [switch] $RunInDocker,
