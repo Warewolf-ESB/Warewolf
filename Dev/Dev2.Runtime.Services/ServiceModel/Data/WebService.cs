@@ -25,6 +25,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph;
+using Warewolf.Data.Options;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -89,10 +90,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             Recordsets = CreateOutputsRecordsetList(action);
         }
 
-        public List<INameValue> Headers { get; set; } 
+        public List<INameValue> Headers { get; set; }
+        //TODO: Might need this to save and load Conditions
+        //public IList<FormDataConditionExpression> Conditions { get; set; }
 
         #endregion
-
+        
         #region ToXml
 
         public override XElement ToXml()

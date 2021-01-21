@@ -270,14 +270,14 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 
         [TestMethod]
         [Timeout(60000)]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivity))]
-        public void WebPostActivity_Equals_Given_Same_IsPostDataBase64_IsEqual()
+        public void WebPostActivity_Equals_Given_Same_IsFormDataChecked_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = true};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = true};
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId,  IsFormDataChecked = true};
+            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = true};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -290,12 +290,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WebPostActivity))]
-        public void WebPostActivity_Equals_Given_Same_IsPostDataBase64_IsNotEqual()
+        public void WebPostActivity_Equals_Given_Same_IsFormDataChecked_IsNotEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = false};
-            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = true};
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            var webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = true};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -312,7 +312,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = false};
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
             WebPostActivity webPostActivity1 = null;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -330,7 +330,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = false};
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
             object webPostActivity1 = null;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -348,7 +348,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = false};
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
             object webPostActivity1 = webPostActivity;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -366,7 +366,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = false};
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
             object webGetActivity = new WebGetActivity {UniqueID = uniqueId};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
@@ -384,8 +384,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = false};
-            object webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = true};
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
+            object webPostActivity1 = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = true};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(webPostActivity);
             //---------------Execute Test ----------------------
@@ -402,7 +402,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsPostDataBase64 = false};
+            var webPostActivity = new WebPostActivity {UniqueID = uniqueId, IsFormDataChecked = false};
             //---------------Execute Test ----------------------
             var hashCode = webPostActivity.GetHashCode();
             //---------------Test Result -----------------------

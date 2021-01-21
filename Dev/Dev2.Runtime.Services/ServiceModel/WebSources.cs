@@ -174,6 +174,101 @@ namespace Dev2.Runtime.ServiceModel
             return string.Empty;
         }
 
+        public static string Execute(IWebSource source, WebRequestMethod post, string query, string postData, bool throwError, out ErrorResultTO errorsTo, string[] headers, IEnumerable<INameValue> parameters)
+        {
+            var formDataBoundary = String.Format("----------{0:N}", Guid.NewGuid());
+            var contentType = "multipart/form-data; boundary=" + formDataBoundary;
+
+            var postDataBytes = GetMultipartFormData(parameters, formDataBoundary);
+            var response = GetWebResponse(source, contentType, postDataBytes, headers);
+
+            var responseReader = new StreamReader(response.GetResponseStream());
+            var returnResponseText = responseReader.ReadToEnd();
+            response.Close();
+
+            errorsTo = new ErrorResultTO();
+            return returnResponseText;
+        }
+
+        private static byte[] GetMultipartFormData(IEnumerable<INameValue> postParameters, string boundary)
+        {
+            var encoding = Encoding.UTF8;
+            Stream formDataStream = new MemoryStream();
+            bool needsCLRF = false;
+
+            foreach (var param in postParameters)
+            {
+
+                if (needsCLRF)
+                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+
+                needsCLRF = true;
+
+                if (param.Value.IsBase64String(out byte[] fileToUpload))
+                {
+
+                    var header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
+                        boundary,
+                        param.Name);
+                        /*fileToUpload.FileName ?? param.Name,
+                        fileToUpload.ContentType ?? "application/octet-stream");*/
+
+                    formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
+
+                    formDataStream.Write(fileToUpload, 0, fileToUpload.Length);
+                }
+                else
+                {
+                    var postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
+                        boundary,
+                        param.Name,
+                        param.Value);
+                    formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                }
+            }
+
+            var footer = "\r\n--" + boundary + "--\r\n";
+            formDataStream.Write(encoding.GetBytes(footer), 0, encoding.GetByteCount(footer));
+
+            formDataStream.Position = 0;
+            var formData = new byte[formDataStream.Length];
+            formDataStream.Read(formData, 0, formData.Length);
+            formDataStream.Close();
+
+            return formData;
+        }
+
+
+        private static HttpWebResponse GetWebResponse(IWebSource source, string contentType, byte[] postData, string[] headers)
+        {
+            VerifyArgument.IsNotNull("Web Source", source);
+            VerifyArgument.IsNotNullOrWhitespace("Web Source Address", source.Address);
+
+            if (!(WebRequest.Create(source.Address) is HttpWebRequest request))
+            {
+                throw new NullReferenceException("request is not a http request");
+            }
+
+            var client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
+ 
+            request.Method = "POST";
+            request.ContentType = contentType;
+            request.UserAgent = "user-agent";
+
+            request.CookieContainer = new CookieContainer();
+            request.ContentLength = postData.Length;
+
+            request.Headers = client.Headers; //TODO: miight not have to be like this
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                requestStream.Write(postData, 0, postData.Length);
+                requestStream.Close();
+            }
+
+            return request.GetResponse() as HttpWebResponse;
+        }
+
         private static void ValidateSource(IWebSource source)
         {
             if (string.IsNullOrEmpty(source?.Address))

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -23,29 +24,39 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Data.Options;
+using Warewolf.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    //Note: re-instating the old version of the Post tool after merge error, WebPostActivity is still under development
 
-    //[ToolDescriptorInfo("WebMethods", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Post")]
+    [ToolDescriptorInfo("WebMethods", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Post")]
     public class WebPostActivity : DsfActivity, IEquatable<WebPostActivity>
     {
         public IList<INameValue> Headers { get; set; }
+        public bool IsFormDataChecked { get; set; }
+        public bool IsNoneChecked { get; set; }
+        public IList<FormDataConditionExpression> Conditions { get; set; }
+        public FormDataOptions FormDataOptions { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
+        public IResponseManager ResponseManager { get; set; }
         public string PostData { get; set; }
-
-        public bool IsPostDataBase64 { get; set; }
 
         public WebPostActivity()
         {
             Type = "POST Web Method";
             DisplayName = "POST Web Method";
+
+            if (FormDataOptions is null)
+            {
+                FormDataOptions = new FormDataOptions();
+            }
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
@@ -59,11 +70,7 @@ namespace Dev2.Activities
 
             base.GetDebugInputs(env, update);
 
-            IEnumerable<INameValue> head = null;
-            if (Headers != null)
-            {
-                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
-            }
+            var (head, parameters, _) = GetEnvironmentInputVariables(env, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var headerString=string.Empty;
@@ -80,16 +87,12 @@ namespace Dev2.Activities
             AddDebugItem(new DebugItemStaticDataParams("", "Query String"), debugItem);
             AddDebugItem(new DebugEvalResult(QueryString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
-            debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "Post Data"), debugItem);
-            AddDebugItem(new DebugEvalResult(PostData, "", env, update), debugItem);
-            _debugInputs.Add(debugItem);
 
-            if (IsPostDataBase64)
+            if (IsNoneChecked)
             {
                 debugItem = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams("", nameof(IsPostDataBase64)), debugItem);
-                AddDebugItem(new DebugEvalResult(IsPostDataBase64.ToString(), "", env, update), debugItem);
+                AddDebugItem(new DebugItemStaticDataParams("", "Post Data"), debugItem);
+                AddDebugItem(new DebugEvalResult(PostData, "", env, update), debugItem);
                 _debugInputs.Add(debugItem);
             }
 
@@ -98,54 +101,126 @@ namespace Dev2.Activities
             AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
+            if (IsFormDataChecked)
+            {
+                AddDebugFormDataInputs();
+            }
+
             return _debugInputs;
         }
+
+
+        private void AddDebugFormDataInputs()
+        {
+            var allErrors = new ErrorResultTO();
+
+            try
+            {
+                var dds = Conditions.GetEnumerator();
+                var text = new StringBuilder();
+                if (dds.MoveNext() && dds.Current.Cond.MatchType != enFormDataTableType.Choose)
+                {
+                    dds.Current.RenderDescription(text);
+                }
+                while (dds.MoveNext())
+                {
+                    var conditionExpression = dds.Current;
+                    if (conditionExpression.Cond.MatchType == enFormDataTableType.Choose)
+                    {
+                        continue;
+                    }
+
+                    text.Append("\n ");
+                    conditionExpression.RenderDescription(text);
+                }
+
+                var debugItem = new DebugItem();
+                var s = text.ToString();
+                AddDebugItem(new DebugItemStaticDataParams(s, "Parameters"), debugItem);
+                _debugInputs.Add(debugItem);
+            }
+            catch (JsonSerializationException e)
+            {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+            }
+            catch (Exception e)
+            {
+                allErrors.AddError(e.Message);
+            }
+            finally
+            {
+                if (allErrors.HasErrors())
+                {
+                    var serviceName = GetType().Name;
+                    DisplayAndWriteError(serviceName, allErrors);
+                }
+            }
+        }
+
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
 
-            var (head, query, postData) = ConfigureHttp(dataObject, update);
+            var (head, query, postData) = GetEnvironmentInputVariables(dataObject.Environment, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebPostRequest(head, query, url, postData);
+            var webRequestResult = string.Empty;
+            if (IsFormDataChecked)
+            { 
+                //webRequestResult = PerformFormDataWebPostRequest(head, parameters, query, url, postData);
+            }
+            else if (IsNoneChecked)
+            {
+                webRequestResult = PerformManualWebPostRequest(head, query, url, postData);
+            }
 
             tmpErrors.MergeErrors(_errorsTo);
 
             var bytes = webRequestResult.Base64StringToByteArray();
             var response = bytes.ReadToString();
 
-            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+            ResponseManager = new ResponseManager 
+            { 
+                OutputDescription = OutputDescription, 
+                Outputs = Outputs, 
+                IsObject = IsObject, 
+                ObjectName = ObjectName 
+            };
             ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
 
         }
 
-        private (IEnumerable<NameValue> head, string query, string data) ConfigureHttp(IDSFDataObject dataObject, int update)
+        private (IEnumerable<INameValue> head, string query, string data) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)
         {
-            IEnumerable<NameValue> head = null;
+            IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
-                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Value, update))));
             }
-            var query = "";
+            var query = string.Empty;
             if (QueryString != null)
             {
-                query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
+                query = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(QueryString, update));
             }
-            var postData = "";
-            if (PostData != null)
+            var postData = string.Empty;
+            if (PostData != null && IsNoneChecked)
             {
-                postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PostData, update));
+                postData = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(PostData, update));
             }
 
             return (head, query, postData);
         }
 
-        public IResponseManager ResponseManager { get; set; }
-
-        protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
+        
+        protected virtual string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
             return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
+        }
+
+        protected virtual string PerformFormDataWebPostRequest(IEnumerable<INameValue> head, IEnumerable<INameValue> parameters, string query, IWebSource source, string postData)
+        {
+            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray(), parameters);
         }
 
         public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
@@ -172,7 +247,7 @@ namespace Dev2.Activities
             var address = source.Address;
             if (query != null)
             {
-                address = address + query;
+                address += query;
             }
             webclient.BaseAddress = address;
             return webclient;
@@ -180,7 +255,7 @@ namespace Dev2.Activities
 
         public bool Equals(WebPostActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -194,12 +269,13 @@ namespace Dev2.Activities
                    string.Equals(QueryString, other.QueryString) &&
                    Equals(OutputDescription, other.OutputDescription) &&
                    string.Equals(PostData, other.PostData) &&
-                   Equals(IsPostDataBase64, other.IsPostDataBase64);
+                   Equals(IsNoneChecked, other.IsNoneChecked) &&
+                   Equals(IsFormDataChecked, other.IsFormDataChecked);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -226,7 +302,8 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (PostData != null ? PostData.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (IsPostDataBase64.GetHashCode());
+                hashCode = (hashCode * 397) ^ (IsNoneChecked.GetHashCode());
+                hashCode = (hashCode * 397) ^ (IsFormDataChecked.GetHashCode());
                 return hashCode;
             }
         }
