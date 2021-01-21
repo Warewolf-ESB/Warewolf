@@ -470,7 +470,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var debugInputs = webPostActivity.GetDebugInputs(environment, 0);
             //---------------Test Result -----------------------
             Assert.IsNotNull(debugInputs);
-            Assert.AreEqual(4,debugInputs.Count);
+            Assert.AreEqual(5,debugInputs.Count);
         }
 
         [TestMethod]
@@ -773,8 +773,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         public string HasErrorMessage { get; set; }
 
         public string ResponseFromWeb { private get; set; }
-
-        protected override string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
+        
+        protected override string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
             Head = head;
             QueryRes = query;
