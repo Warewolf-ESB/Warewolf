@@ -179,7 +179,7 @@
                         </controls:Dev2DataGrid>
                     </Grid>
 
-                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" IsEnabled="{Binding InputArea.IsEnabled}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
