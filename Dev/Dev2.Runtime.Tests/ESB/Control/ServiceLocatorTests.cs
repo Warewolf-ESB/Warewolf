@@ -18,6 +18,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 {
     [TestClass]
     [TestCategory("Runtime ESB")]
+    [DoNotParallelize]//CustomContainer.Register is not threadsafe
     public class ServiceLocatorTests
     {
         [ClassInitialize]
