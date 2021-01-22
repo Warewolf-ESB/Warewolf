@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Tooltips {
@@ -2761,7 +2761,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to used a form-data as your payload..
+        ///   Looks up a localized string similar to Check this to use form-data as your payload..
         /// </summary>
         public static string ManageWebServiceRequestFormDataTooltip {
             get {
@@ -2770,7 +2770,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to add your own Post body..
+        ///   Looks up a localized string similar to Check this to add your own Post body..
         /// </summary>
         public static string ManageWebServiceRequestNoneTooltip {
             get {
