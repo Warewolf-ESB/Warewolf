@@ -6,6 +6,8 @@ param(
   [String[]] $ExcludeCategories,
   [String] $TestsToRun="${bamboo.TestsToRun}",
   [String] $VSTestPath="${bamboo.capability.system.builder.devenv.Visual Studio 2019}",
+  [String] $NuGet="${bamboo.capability.system.builder.command.NuGet}",
+  [String] $MSBuildPath="${bamboo.capability.system.builder.msbuild.MSBuild v16.0}",
   [int] $RetryCount=${bamboo.RetryCount},
   [String] $PreTestRunScript,
   [switch] $RunInDocker,
@@ -16,9 +18,9 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
 	exit 1
 }
-if ($PreTestRunScript) {
+if ($PreTestRunScript -and !($RetryRebuild.IsPresent)) {
 	if (!(Test-Path .\StartAs.ps1)) {
-		Write-Error -Message "This script expects to be run from a bin directoy that includes a Warewolf Server or Studio."
+		Write-Error -Message "This script expects to be run from a bin directory that includes a Warewolf Server or Studio."
 		exit 1
 	}
 	if ($Coverage.IsPresent -and !($PreTestRunScript.Contains("-Coverage"))) {
@@ -33,7 +35,7 @@ if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Ex
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
 } else {
 	if ($RunInDocker.IsPresent) {
-		Write-Error "Cannot use VSTestPath paramemter with the RunInDocker paramemter."
+		Write-Error "Cannot use VSTestPath parameter with the RunInDocker parameter."
 		exit 1
 	}
 }
@@ -50,7 +52,7 @@ if (!($RunInDocker.IsPresent) -and (!(Test-Path "$VSTestPath\Extensions\TestPlat
 		$NuGet = "$env:windir\nuget.exe"
 	}
 	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to adirectory in the PATH environment variable like c:\windows\nuget.exe. Or use the -NuGet switch.
+		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to a directory in the PATH environment variable like c:\windows\nuget.exe. Or use the -NuGet switch.
 		sleep 10
 		exit 1
 	}
@@ -85,7 +87,7 @@ Select -ExpandProperty FullName |
 Where {$_ -notlike '$PWD\TestResults*'} |
 sort length -Descending |
 Remove-Item -force -recurse
-		&..\..\Compile.ps1 -AcceptanceTesting
+		&..\..\Compile.ps1 -AcceptanceTesting -NuGet "$NuGet" -MSBuildPath "$MSBuildPath"
 	}
 	if ($RunInDocker.IsPresent) {
 		docker rm -f $ContainerName
@@ -209,22 +211,11 @@ Remove-Item -force -recurse
 	if (!($RunInDocker.IsPresent)) {
 		Get-Content "$TestResultsPath\RunTests.ps1"
 		&"$TestResultsPath\RunTests.ps1"
+		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+			Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
+		}
 	} else {
-		docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
-		docker cp . ${ContainerName}:.\BuildUnderTest
-		docker start -a $ContainerName
-		if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-			docker cp ${ContainerName}:\BuildUnderTest\TestResults .
-			docker cp ${ContainerName}:\BuildUnderTest\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\TestResults .
-		} else {
-			docker cp ${ContainerName}:\TestResults .
-		}
-		if ($PreTestRunScript) {
-			docker cp ${ContainerName}:"\programdata\warewolf\Server Log\warewolf-server.log" .\TestResults\warewolf-server`($LoopCounter`).log
-		}
-	}
-	if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-		Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
+		docker run -t --rm -v "${PWD}":C:\BuildUnderTest --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
 	}
 	if (Test-Path "$TestResultsPath\*.trx") {
 		[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
