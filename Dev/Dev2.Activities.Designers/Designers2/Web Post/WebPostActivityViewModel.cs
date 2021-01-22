@@ -260,6 +260,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 var tmp = OptionConvertor.ConvertToListOfT<FormDataConditionExpression>(ConditionExpressionOptions.Options);
                 _modelItem.Properties["Conditions"]?.SetValue(tmp);
                 AddEmptyConditionExpression();
+                SetExpressionText();
                 foreach (var item in ConditionExpressionOptions.Options)
                 {
                     if (item is FormDataOptionConditionExpression conditionExpression)
@@ -287,6 +288,23 @@ namespace Dev2.Activities.Designers2.Web_Post
                 OnPropertyChanged(nameof(ConditionExpressionOptions));
             }
         }
+
+        private void SetExpressionText()
+        {
+            var conditionExpressionList = _modelItem.Properties["Conditions"].ComputedValue as IList<FormDataConditionExpression>;
+
+            var text = new StringBuilder();
+            var dds = conditionExpressionList.GetEnumerator();
+            while (dds.MoveNext())
+            {
+                var conditionExpression = dds.Current;
+
+                text.Append("\n AND \n");
+                conditionExpression.RenderDescription(text);
+            }
+            ConditionExpressionText = text.ToString();
+        }
+
 
         private void AddEmptyConditionExpression()
         {
@@ -396,6 +414,7 @@ namespace Dev2.Activities.Designers2.Web_Post
         bool _generateOutputsVisible;
         private FormDataOptions _postFormDataOptionsInst;
         private OptionsWithNotifier _conditionExpressionOptions;
+        private string _conditionExpressionText;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -579,6 +598,16 @@ namespace Dev2.Activities.Designers2.Web_Post
                 OnPropertyChanged(nameof(Options));
             }
         }
+        
+        public string ConditionExpressionText
+        {
+            get => _conditionExpressionText;
+            set
+            {
+                _conditionExpressionText = value;
+                OnPropertyChanged(nameof(ConditionExpressionText));
+            }
+        }
 
         void SetRegionVisibility(bool value)
         {
@@ -587,6 +616,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             ErrorRegion.IsEnabled = value;
             SourceRegion.IsEnabled = value;
         }
+
     }
 }
 

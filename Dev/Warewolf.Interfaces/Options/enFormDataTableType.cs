@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -17,9 +17,8 @@ namespace Warewolf.Options
 {
     public enum enFormDataTableType
     {
-        [Index(0)] [DecisionTypeDisplayValue("Choose")] Choose,
-        [Index(1)] [DecisionTypeDisplayValue("Text")] Text,
-        [Index(2)] [DecisionTypeDisplayValue("File")] File,
+        [Index(0)] [DecisionTypeDisplayValue("Text")] Text,
+        [Index(1)] [DecisionTypeDisplayValue("File")] File,
     }
 
     public static class enFormDataTableTypeExtensionMethods
@@ -28,12 +27,6 @@ namespace Warewolf.Options
         {
             return
                 enFormDataTableType == enFormDataTableType.File;
-        }
-
-        public static bool IsSingleOperand(this enFormDataTableType enFormDataTableType)
-        {
-            return
-                enFormDataTableType == enFormDataTableType.Choose;
         }
 
         public static void RenderDescription(this enFormDataTableType enFormDataTableType, StringBuilder sb)

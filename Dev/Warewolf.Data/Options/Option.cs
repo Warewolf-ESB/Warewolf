@@ -794,7 +794,6 @@ namespace Warewolf.Options
                 {
                     MatchType = (enFormDataTableType)value.Value;
                     RaisePropertyChanged(nameof(IsBetween));
-                    RaisePropertyChanged(nameof(IsSingleOperand));
                 }
             }
         }
@@ -830,17 +829,12 @@ namespace Warewolf.Options
             }
         }
         public bool IsBetween => MatchType.IsTripleOperand();
-        public bool IsSingleOperand => MatchType.IsSingleOperand();
         public bool IsEmptyRow
         {
             get
             {
                 var isEmptyRow = string.IsNullOrEmpty(Left);
                 isEmptyRow &= SelectedMatchType is null;
-                if (IsSingleOperand)
-                {
-                    isEmptyRow &= string.IsNullOrEmpty(Right);
-                }
                 if (IsBetween)
                 {
                     isEmptyRow &= string.IsNullOrEmpty(File);

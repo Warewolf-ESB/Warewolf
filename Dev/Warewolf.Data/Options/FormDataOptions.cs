@@ -223,10 +223,6 @@ namespace Warewolf.Data.Options
         {
             sb.Append(" ");
             MatchType.RenderDescription(sb);
-            if (MatchType.IsSingleOperand())
-            {
-                return;
-            }
             sb.Append(" ");
             sb.Append(Right);
         }

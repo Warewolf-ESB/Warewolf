@@ -599,7 +599,6 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
             var emptyCondition = conditions[1] as FormDataOptionConditionExpression;
             Assert.IsNull(emptyCondition.Left);
-            Assert.AreEqual(enFormDataTableType.Choose, emptyCondition.MatchType);
 
         }
 
@@ -652,7 +651,6 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
             var emptyCondition = conditions[0] as FormDataOptionConditionExpression;
             Assert.IsNull(emptyCondition.Left);
-            Assert.AreEqual(enFormDataTableType.Choose, emptyCondition.MatchType);
 
         }
 
