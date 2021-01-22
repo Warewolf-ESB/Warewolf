@@ -26,7 +26,6 @@ namespace Warewolf.UnitTestAttributes
         static readonly string BackupServer = "opswolf.com";
         public static readonly string TFSBLDIP = "TFSBLD.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
-        static readonly string BackupCIRemoteServer = "tst-ci-remote.premier.local";
 
         public enum ContainerType
         {
