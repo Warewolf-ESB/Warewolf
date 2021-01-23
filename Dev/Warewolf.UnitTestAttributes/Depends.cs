@@ -334,6 +334,12 @@ namespace Warewolf.UnitTestAttributes
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.bite"
                 });
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous",
+                new List<string>
+                {
+                    @"%programdata%\Warewolf\Resources\localhostGetSource.xml",
+                    @"%programdata%\Warewolf\Resources\localhostGetSource.bite"
+                });
         }
 
         void InjectSVRDEVIP()
