@@ -1680,6 +1680,46 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table669 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table669.AddRow(new string[] {
+                        "[[Result(1).Id]] = 1"});
+            table669.AddRow(new string[] {
+                        "[[Result(1).Name]] = Toys"});
+            table669.AddRow(new string[] {
+                        "[[Result(1).Category]] = Gift Items"});
+            table669.AddRow(new string[] {
+                        "[[Result(1).Price]] = 1500"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Id]] = 2"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Name]] = Toys"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Category]] = Gift Items"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Price]] = 1500"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Id]] = 3"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Name]] = Toys"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Category]] = Gift Items"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Price]] = 1500"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Id]] = 4"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Name]] = Toys"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Category]] = Gift Items"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Price]] = 1500"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Id]] = 5"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Name]] = Toys"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Category]] = Gift Items"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Price]] = 1500"});
+            table669.AddRow(new string[] {
                         "[[Result(6).Id]] = 6"});
             table669.AddRow(new string[] {
                         "[[Result(6).Name]] = Toys"});

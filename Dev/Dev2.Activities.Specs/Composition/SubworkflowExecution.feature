@@ -407,6 +407,26 @@ Scenario: Executing WebGet Returning False
 	Then the workflow execution has "NO" error
 	And the "GetWebResult" in Workflow "GetWebResult" debug outputs as
 	|                                     |
+	| [[Result(1).Id]] = 1                |
+	| [[Result(1).Name]] = Toys           |
+	| [[Result(1).Category]] = Gift Items |
+	| [[Result(1).Price]] = 1500          |
+	| [[Result(2).Id]] = 2                |
+	| [[Result(2).Name]] = Toys           |
+	| [[Result(2).Category]] = Gift Items |
+	| [[Result(2).Price]] = 1500          |
+	| [[Result(3).Id]] = 3                |
+	| [[Result(3).Name]] = Toys           |
+	| [[Result(3).Category]] = Gift Items |
+	| [[Result(3).Price]] = 1500          |
+	| [[Result(4).Id]] = 4                |
+	| [[Result(4).Name]] = Toys           |
+	| [[Result(4).Category]] = Gift Items |
+	| [[Result(4).Price]] = 1500          |
+	| [[Result(5).Id]] = 5                |
+	| [[Result(5).Name]] = Toys           |
+	| [[Result(5).Category]] = Gift Items |
+	| [[Result(5).Price]] = 1500          |
 	| [[Result(6).Id]] = 6                |
 	| [[Result(6).Name]] = Toys           |
 	| [[Result(6).Category]] = Gift Items |
