@@ -400,11 +400,14 @@ Scenario: Rabbit MQ Test
 
 @SubworkflowExecution
 Scenario: Executing WebGet Returning False
-	  Given I have a workflow "Testing - WebGet"
-	  And "Testing - WebGet" contains "GetWebResult" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Testing - WebGet" is executed
-	  Then the workflow execution has "NO" error
-	  And the "GetWebResult" in Workflow "GetWebResult" debug outputs as
-	  |                    |
-	  | [[Result]] = False |
+	Given I have a workflow "Testing - WebGet"
+	And "Testing - WebGet" contains "GetWebResult" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable      |
+	When "Testing - WebGet" is executed
+	Then the workflow execution has "NO" error
+	And the "GetWebResult" in Workflow "GetWebResult" debug outputs as
+	|                                     |
+	| [[Result(6).Id]] = 6                |
+	| [[Result(6).Name]] = Toys           |
+	| [[Result(6).Category]] = Gift Items |
+	| [[Result(6).Price]] = 1500          |
