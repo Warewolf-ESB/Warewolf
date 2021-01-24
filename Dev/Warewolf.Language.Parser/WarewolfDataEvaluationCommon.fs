@@ -2,7 +2,7 @@
 
 
 open LanguageAST
-open Microsoft.FSharp.Text.Lexing
+open FSharp.Text.Lexing
 open DataStorage
 open WarewolfParserInterop
 open Newtonsoft.Json.Linq

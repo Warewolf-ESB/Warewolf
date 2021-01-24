@@ -4,7 +4,7 @@
 module Lexer
 
 // Opens methods related to fslex.exe
-open Microsoft.FSharp.Text.Lexing
+open FSharp.Text.Lexing
 open Parser
 let newline (lexbuf: LexBuffer<_>) = 
     lexbuf.StartPos <- lexbuf.StartPos.NextLine
@@ -74,87 +74,85 @@ let trans : uint16[] array =
      [| 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; |];
     |] 
 let actions : uint16[] = [|65535us; 0us; 13us; 13us; 3us; 4us; 5us; 6us; 7us; 8us; 10us; 10us; 10us; 11us; 11us; 13us; 14us; 11us; 10us; 10us; 10us; 10us; 10us; 8us; 8us; 65535us; 9us; 9us; 2us; 1us; |]
-let _fslex_tables = Microsoft.FSharp.Text.Lexing.UnicodeTables.Create(trans,actions)
+let _fslex_tables = FSharp.Text.Lexing.UnicodeTables.Create(trans,actions)
 let rec _fslex_dummy () = _fslex_dummy() 
-(* Rule tokenstream *)
-and tokenstream  (lexbuf : Microsoft.FSharp.Text.Lexing.LexBuffer<_>) = _fslex_tokenstream  0 lexbuf
-(* Rule tokenstream *)
-and _fslex_tokenstream  _fslex_state lexbuf =
-  match _fslex_tables.Interpret(_fslex_state,lexbuf) with
+// Rule tokenstream
+and tokenstream  lexbuf =
+  match _fslex_tables.Interpret(0,lexbuf) with
   | 0 -> ( 
 # 34 "WarewolfLanguageLex.fsl"
                               STRING (LexBuffer<char>.LexemeString(lexbuf) ) 
-# 87 "WarewolfLanguageLex.fs"
+# 85 "WarewolfLanguageLex.fs"
           )
   | 1 -> ( 
 # 36 "WarewolfLanguageLex.fsl"
                               OPENLANGUAGE 
-# 92 "WarewolfLanguageLex.fs"
+# 90 "WarewolfLanguageLex.fs"
           )
   | 2 -> ( 
 # 37 "WarewolfLanguageLex.fsl"
                                CLOSELANGAUGE 
-# 97 "WarewolfLanguageLex.fs"
+# 95 "WarewolfLanguageLex.fs"
           )
   | 3 -> ( 
 # 38 "WarewolfLanguageLex.fsl"
                          OPENBRACKET 
-# 102 "WarewolfLanguageLex.fs"
+# 100 "WarewolfLanguageLex.fs"
           )
   | 4 -> ( 
 # 39 "WarewolfLanguageLex.fsl"
                          CLOSEDBRACKET 
-# 107 "WarewolfLanguageLex.fs"
+# 105 "WarewolfLanguageLex.fs"
           )
   | 5 -> ( 
 # 40 "WarewolfLanguageLex.fsl"
                          DOT 
-# 112 "WarewolfLanguageLex.fs"
+# 110 "WarewolfLanguageLex.fs"
           )
   | 6 -> ( 
 # 41 "WarewolfLanguageLex.fsl"
                          STAR 
-# 117 "WarewolfLanguageLex.fs"
+# 115 "WarewolfLanguageLex.fs"
           )
   | 7 -> ( 
 # 42 "WarewolfLanguageLex.fsl"
                          ATIDF 
-# 122 "WarewolfLanguageLex.fs"
+# 120 "WarewolfLanguageLex.fs"
           )
   | 8 -> ( 
 # 43 "WarewolfLanguageLex.fsl"
                                  INT( LexBuffer<char>.LexemeString(lexbuf) ) 
-# 127 "WarewolfLanguageLex.fs"
+# 125 "WarewolfLanguageLex.fs"
           )
   | 9 -> ( 
 # 44 "WarewolfLanguageLex.fsl"
                                  FLOAT(LexBuffer<char>.LexemeString(lexbuf)) 
-# 132 "WarewolfLanguageLex.fs"
+# 130 "WarewolfLanguageLex.fs"
           )
   | 10 -> ( 
 # 45 "WarewolfLanguageLex.fsl"
                                       VARNAME (LexBuffer<char>.LexemeString(lexbuf) )
-# 137 "WarewolfLanguageLex.fs"
+# 135 "WarewolfLanguageLex.fs"
           )
   | 11 -> ( 
 # 46 "WarewolfLanguageLex.fsl"
                                  STRING (LexBuffer<char>.LexemeString(lexbuf) )
-# 142 "WarewolfLanguageLex.fs"
+# 140 "WarewolfLanguageLex.fs"
           )
   | 12 -> ( 
 # 48 "WarewolfLanguageLex.fsl"
                          tokenstream lexbuf 
-# 147 "WarewolfLanguageLex.fs"
+# 145 "WarewolfLanguageLex.fs"
           )
   | 13 -> ( 
 # 51 "WarewolfLanguageLex.fsl"
                           STRING (LexBuffer<char>.LexemeString(lexbuf)) 
-# 152 "WarewolfLanguageLex.fs"
+# 150 "WarewolfLanguageLex.fs"
           )
   | 14 -> ( 
 # 52 "WarewolfLanguageLex.fsl"
                           EOF 
-# 157 "WarewolfLanguageLex.fs"
+# 155 "WarewolfLanguageLex.fs"
           )
   | _ -> failwith "tokenstream"
 
