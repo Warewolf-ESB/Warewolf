@@ -1680,53 +1680,53 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table669 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table669.AddRow(new string[] {
-                        "[[Result(1).Id]] = 1"});
+                        "[[Result(1).Category]] = Electronic"});
             table669.AddRow(new string[] {
-                        "[[Result(1).Name]] = Toys"});
+                        "[[Result(2).Category]] = Electronic"});
             table669.AddRow(new string[] {
-                        "[[Result(1).Category]] = Gift Items"});
+                        "[[Result(3).Category]] = Electronic"});
             table669.AddRow(new string[] {
-                        "[[Result(1).Price]] = 1500"});
+                        "[[Result(4).Category]] = Electronic"});
             table669.AddRow(new string[] {
-                        "[[Result(2).Id]] = 2"});
-            table669.AddRow(new string[] {
-                        "[[Result(2).Name]] = Toys"});
-            table669.AddRow(new string[] {
-                        "[[Result(2).Category]] = Gift Items"});
-            table669.AddRow(new string[] {
-                        "[[Result(2).Price]] = 1500"});
-            table669.AddRow(new string[] {
-                        "[[Result(3).Id]] = 3"});
-            table669.AddRow(new string[] {
-                        "[[Result(3).Name]] = Toys"});
-            table669.AddRow(new string[] {
-                        "[[Result(3).Category]] = Gift Items"});
-            table669.AddRow(new string[] {
-                        "[[Result(3).Price]] = 1500"});
-            table669.AddRow(new string[] {
-                        "[[Result(4).Id]] = 4"});
-            table669.AddRow(new string[] {
-                        "[[Result(4).Name]] = Toys"});
-            table669.AddRow(new string[] {
-                        "[[Result(4).Category]] = Gift Items"});
-            table669.AddRow(new string[] {
-                        "[[Result(4).Price]] = 1500"});
-            table669.AddRow(new string[] {
-                        "[[Result(5).Id]] = 5"});
-            table669.AddRow(new string[] {
-                        "[[Result(5).Name]] = Toys"});
-            table669.AddRow(new string[] {
-                        "[[Result(5).Category]] = Gift Items"});
-            table669.AddRow(new string[] {
-                        "[[Result(5).Price]] = 1500"});
-            table669.AddRow(new string[] {
-                        "[[Result(6).Id]] = 6"});
-            table669.AddRow(new string[] {
-                        "[[Result(6).Name]] = Toys"});
+                        "[[Result(5).Category]] = Electronic"});
             table669.AddRow(new string[] {
                         "[[Result(6).Category]] = Gift Items"});
             table669.AddRow(new string[] {
-                        "[[Result(6).Price]] = 1500"});
+                        "[[Result(1).Id]] = 1"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Id]] = 2"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Id]] = 3"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Id]] = 4"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Id]] = 5"});
+            table669.AddRow(new string[] {
+                        "[[Result(6).Id]] = 6"});
+            table669.AddRow(new string[] {
+                        "[[Result(1).Name]] = Television"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Name]] = Refrigerator"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Name]] = Mobiles"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Name]] = Laptops"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Name]] = iPads"});
+            table669.AddRow(new string[] {
+                        "[[Result(6).Name]] = Toys"});
+            table669.AddRow(new string[] {
+                        "[[Result(1).Price]] = 82000"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Price]] = 23000"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Price]] = 20000"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Price]] = 45000"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Price]] = 67000"});
+            table669.AddRow(new string[] {
+                        "[[Result(6).Price]] = 15000"});
 #line 408
  testRunner.And("the \"GetWebResult\" in Workflow \"GetWebResult\" debug outputs as", ((string)(null)), table669, "And ");
 #line hidden
