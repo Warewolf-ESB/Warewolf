@@ -71,6 +71,6 @@
     </PackageReference>
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="IF NOT EXIST ..\packages\FsLexYacc.10.2.0 (nuget install FsLexYacc -Version 10.2.0 -NonInteractive -OutputDirectory ..\packages)" />
+    <Exec Command="nuget install FsLexYacc -Version 10.2.0 -NonInteractive -OutputDirectory ..\packages" />
   </Target>
 </Project>
