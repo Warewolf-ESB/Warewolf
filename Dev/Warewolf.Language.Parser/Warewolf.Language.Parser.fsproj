@@ -1,10 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    <OutputType>Library</OutputType>
+    <FsLexToolPath>..\packages\FsLexYacc.10.2.0\build\fslex\netcoreapp3.1</FsLexToolPath>
+    <FsYaccToolPath>..\packages\FsLexYacc.10.2.0\build\fsyacc\netcoreapp3.1</FsYaccToolPath>
+    <FsLexToolExe>fslex.dll</FsLexToolExe>
+    <FsYaccToolExe>fsyacc.dll</FsYaccToolExe>
+    <FsLexYaccToolRunner>dotnet </FsLexYaccToolRunner>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.fs" Condition="Exists('..\AssemblyCommonInfo.fs')">
@@ -64,4 +70,7 @@
       <Version>4.5.2</Version>
     </PackageReference>
   </ItemGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="nuget install FsLexYacc -Version 10.2.0 -NonInteractive -OutputDirectory ..\packages" />
+  </Target>
 </Project>
