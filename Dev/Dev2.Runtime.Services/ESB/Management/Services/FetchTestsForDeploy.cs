@@ -20,6 +20,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
+using Warewolf.Security.Encryption;
 
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -47,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var tests = TestCatalog.Fetch(resourceId);
                 foreach(var serviceTestModelTO in tests.Where(to => !string.IsNullOrEmpty(to.Password)))
                 {
-                    serviceTestModelTO.Password = SecurityEncryption.Encrypt(serviceTestModelTO.Password);
+                    serviceTestModelTO.Password = DpapiWrapper.Encrypt(serviceTestModelTO.Password);
                 }
                 var message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(tests));

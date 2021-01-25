@@ -20,6 +20,7 @@ using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -86,7 +87,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         static void DoFileEncryption(string permissions)
         {
             var byteConverter = new ASCIIEncoding();
-            var encryptedData = SecurityEncryption.Encrypt(permissions);
+            var encryptedData = DpapiWrapper.Encrypt(permissions);
             var dataToEncrypt = byteConverter.GetBytes(encryptedData);
             using (var outStream = new FileStream(EnvironmentVariables.ServerSecuritySettingsFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
             {

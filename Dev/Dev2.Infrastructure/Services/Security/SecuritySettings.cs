@@ -17,6 +17,7 @@ using Dev2.Common;
 using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Data;
+using Warewolf.Security.Encryption;
 using Warewolf.Services;
 
 namespace Dev2.Services.Security
@@ -78,7 +79,7 @@ namespace Dev2.Services.Security
             string decryptData;
             try
             {
-                decryptData = SecurityEncryption.Decrypt(encryptedData);
+                decryptData = DpapiWrapper.Decrypt(encryptedData);
             }
             catch (FormatException)
             {
