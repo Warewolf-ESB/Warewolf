@@ -8,7 +8,7 @@ open LanguageAST
 //open LanguageEval
 open CommonFunctions
 open EvaluationFunctions
-open Microsoft.FSharp.Text.Lexing
+open FSharp.Text.Lexing
 open System
 open System.Diagnostics.CodeAnalysis
 open DataStorage

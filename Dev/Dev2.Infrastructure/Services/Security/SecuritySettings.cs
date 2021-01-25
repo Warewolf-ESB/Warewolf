@@ -26,11 +26,11 @@ namespace Dev2.Services.Security
     {
         SecuritySettingsTO ReadSettingsFile(IResourceNameProvider resourceNameProvider);
     }
+
     public class SecuritySettings : ISecuritySettings
     {
         public SecuritySettings()
         {
-
         }
 
         private readonly TimeSpan CacheTimeout = new TimeSpan(1, 0, 0);
@@ -76,16 +76,7 @@ namespace Dev2.Services.Security
 
         static SecuritySettingsTO ProcessSettingsFile(IResourceNameProvider resourceNameProvider, string encryptedData)
         {
-            string decryptData;
-            try
-            {
-                decryptData = DpapiWrapper.Decrypt(encryptedData);
-            }
-            catch (FormatException)
-            {
-                decryptData = encryptedData;
-            }
-
+            var decryptData = DpapiWrapper.Decrypt(encryptedData);
             Dev2Logger.Debug(decryptData, GlobalConstants.WarewolfDebug);
 
             var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
@@ -98,6 +89,7 @@ namespace Dev2.Services.Security
                     {
                         resourceName = perm.ResourcePath ?? string.Empty;
                     }
+
                     perm.ResourceName = resourceName;
                 }
             }
@@ -106,8 +98,6 @@ namespace Dev2.Services.Security
             {
                 var hmac = new HMACSHA256();
                 currentSecuritySettingsTo.SecretKey = Convert.ToBase64String(hmac.Key);
-
-
             }
 
             var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;

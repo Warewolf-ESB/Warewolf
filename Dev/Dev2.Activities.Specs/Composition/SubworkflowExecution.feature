@@ -400,11 +400,34 @@ Scenario: Rabbit MQ Test
 
 @SubworkflowExecution
 Scenario: Executing WebGet Returning False
-	  Given I have a workflow "Testing - WebGet"
-	  And "Testing - WebGet" contains "GetWebResult" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Testing - WebGet" is executed
-	  Then the workflow execution has "NO" error
-	  And the "GetWebResult" in Workflow "GetWebResult" debug outputs as
-	  |                    |
-	  | [[Result]] = False |
+	Given I have a workflow "Testing - WebGet"
+	And "Testing - WebGet" contains "GetWebResult" from server "localhost" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable      |
+	When "Testing - WebGet" is executed
+	Then the workflow execution has "NO" error
+	And the "GetWebResult" in Workflow "GetWebResult" debug outputs as
+	|                                     |
+	| [[Result(1).Category]] = Electronic |
+	| [[Result(2).Category]] = Electronic |
+	| [[Result(3).Category]] = Electronic |
+	| [[Result(4).Category]] = Electronic |
+	| [[Result(5).Category]] = Electronic |
+	| [[Result(6).Category]] = Gift Items |
+	| [[Result(1).Id]] = 1                |
+	| [[Result(2).Id]] = 2                |
+	| [[Result(3).Id]] = 3                |
+	| [[Result(4).Id]] = 4                |
+	| [[Result(5).Id]] = 5                |
+	| [[Result(6).Id]] = 6                |
+	| [[Result(1).Name]] = Television     |
+	| [[Result(2).Name]] = Refrigerator   |
+	| [[Result(3).Name]] = Mobiles        |
+	| [[Result(4).Name]] = Laptops        |
+	| [[Result(5).Name]] = iPads          |
+	| [[Result(6).Name]] = Toys           |
+	| [[Result(1).Price]] = 82000         |
+	| [[Result(2).Price]] = 23000         |
+	| [[Result(3).Price]] = 20000         |
+	| [[Result(4).Price]] = 45000         |
+	| [[Result(5).Price]] = 67000         |
+	| [[Result(6).Price]] = 15000         |
