@@ -306,6 +306,8 @@ namespace Dev2.Runtime.ESB.Control
                             {
                                 Dev2Logger.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]", _dataObject.ExecutionID.ToString());
                                 clonedDataObject.Environment = shapeDefinitionsToEnvironment;
+                                executionContainer.InstanceInputDefinition = _inputDefs;
+                                executionContainer.InstanceOutputDefinition = _outputDefs;
                                 executionContainer.Execute(out var error, update);
                                 return clonedDataObject;
                             })
