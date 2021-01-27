@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -700,6 +700,39 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         }
 
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebPostActivity))]
+        public void DsfWebPostActivity_ExecutionImpl_Given_PostData_With_EnvironmentVariable_NotExist_And_ShouldThrow_True_ShouldThrow()
+        {
+            //-----------------------Arrange-------------------------
+            var environment = new ExecutionEnvironment();
+
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+
+            var errorResultTO = new ErrorResultTO();
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")))
+            {
+                mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+                mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                var dsfWebGetActivity = new TestDsfWebPostActivity
+                {
+                    OutputDescription = service.GetOutputDescription(),
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    QueryString = "test Query",
+                    Headers = new List<INameValue>(),
+                    PostData = "{'valueKey':'[[NotExistVariable]]'}"
+                };
+                //-----------------------Act-----------------------------
+                //-----------------------Assert--------------------------
+                Assert.ThrowsException<Exception>(()=> dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0), "variable [[NotExistVariable]] not found");
+            }
+        }
 
         [TestMethod]
         [Timeout(60000)]
