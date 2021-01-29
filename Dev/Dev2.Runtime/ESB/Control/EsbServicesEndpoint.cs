@@ -291,11 +291,20 @@ namespace Dev2.Runtime.ESB.Control
 
             protected override IExecutionEnvironment ExecuteWorkflow(bool wasTestExecution, int update, bool handleErrors)
             {
+                if (_isLocal && GetResourceById(_workspaceId, _dataObject.ResourceID) == null && GetResourceByName(_workspaceId, _dataObject.ServiceName) == null)
+                {
+                    _errors.AddError(string.Format(ErrorResource.ResourceNotFound, _dataObject.ServiceName));
+                    _dataObject.StartTime = _oldStartTime;
+                    return null;
+                }
+
                 var clonedDataObject = _dataObject.Clone();
                 var invokeErrors = new ErrorResultTO();
                 var executionContainer = _invoker.GenerateInvokeContainer(clonedDataObject, clonedDataObject.ServiceName, _isLocal, _oldId);
+                clonedDataObject.IsServiceTestExecution = wasTestExecution;
                 if (executionContainer != null)
                 {
+                    clonedDataObject.CreateNewEnvironmentFromInputMappings(_inputDefs, update);
                     DoRemoteDataObjectConfiguration(invokeErrors, executionContainer);
 
                     if (!invokeErrors.HasErrors())
