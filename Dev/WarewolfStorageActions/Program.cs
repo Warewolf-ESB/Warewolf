@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -40,12 +40,12 @@ namespace WarewolfStorageActions
                 var destinationFileName = _options.OutputFileName;
                 if (_options.ShouldEncrypt)
                 {
-                    var data = DpapiWrapper.Encrypt(sourceData);
+                    var data = SecurityEncryption.Encrypt(sourceData);
                     File.WriteAllText(destinationFileName, data);
                 }
                 else
                 {
-                    var data = DpapiWrapper.Decrypt(sourceData);
+                    var data = SecurityEncryption.Decrypt(sourceData);
                     File.WriteAllText(destinationFileName, data);
                 }
 

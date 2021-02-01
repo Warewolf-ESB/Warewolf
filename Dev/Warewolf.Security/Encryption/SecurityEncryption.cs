@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,9 +14,9 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Dev2.Services.Security
+namespace Warewolf.Security.Encryption
 {
-    public class SecurityEncryption
+    public static class SecurityEncryption
     {
         const string InitVector = "@1B2c3D4e5F6g7H8";
         const string PassPhrase = "Pas5pr@se";
@@ -25,15 +25,11 @@ namespace Dev2.Services.Security
         const int PasswordIterations = 2;
         const int KeySize = 256;
 
-        protected SecurityEncryption()
-        {
-        }
-
         public static string Encrypt(string plainText)
         {
             var initVectorBytes = Encoding.ASCII.GetBytes(InitVector);
             var saltValueBytes = Encoding.ASCII.GetBytes(SaltValue);
-            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            var plainTextBytes = Encoding.UTF8.GetBytes(plainText.Trim());
             var password = new PasswordDeriveBytes(
                 PassPhrase,
                 saltValueBytes,
@@ -42,7 +38,7 @@ namespace Dev2.Services.Security
 #pragma warning disable 612,618
             var keyBytes = password.GetBytes(KeySize / 8);
 #pragma warning restore 612,618
-            var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC, Padding = PaddingMode.Zeros };
+            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC, Padding = PaddingMode.Zeros};
             var encryptor = symmetricKey.CreateEncryptor(
                 keyBytes,
                 initVectorBytes);
@@ -54,11 +50,12 @@ namespace Dev2.Services.Security
                     cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
                     cryptoStream.FlushFinalBlock();
                 }
+
                 cipherTextBytes = memoryStream.ToArray();
             }
+
             var cipherText = Convert.ToBase64String(cipherTextBytes);
             return cipherText;
-
         }
 
         public static string Decrypt(string cipherText)
@@ -73,8 +70,8 @@ namespace Dev2.Services.Security
                 PasswordIterations);
 #pragma warning disable 612,618
             var keyBytes = password.GetBytes(KeySize / 8);
-#pragma warning restore 612,618            
-            var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC, Padding = PaddingMode.Zeros };
+#pragma warning restore 612,618
+            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC, Padding = PaddingMode.Zeros};
             var decryptor = symmetricKey.CreateDecryptor(
                 keyBytes,
                 initVectorBytes);
@@ -85,10 +82,82 @@ namespace Dev2.Services.Security
                 {
                     cryptoStream.Write(cipherTextBytes, 0, cipherTextBytes.Length);
                 }
+
                 plainTextBytes = memoryStream.ToArray();
             }
-            var plainText = Encoding.UTF8.GetString(plainTextBytes);  
-            return plainText;
+
+            var decrypted = Encoding.UTF8.GetString(plainTextBytes);
+            return decrypted.Trim();
+        }
+
+        public static bool CanBeDecrypted(this string cipher)
+        {
+            if (string.IsNullOrEmpty(cipher))
+            {
+                return false;
+            }
+
+            if (!cipher.IsBase64())
+            {
+                return false;
+            }
+
+            try
+            {
+                Decrypt(cipher);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static string DecryptIfEncrypted(string input)
+        {
+            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || !input.IsBase64())
+            {
+                return input;
+            }
+
+            return Decrypt(input);
+        }
+        public static string EncryptIfDecrypted(string input)
+        {
+            if(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+            {
+                return input;
+            }
+
+            if (input.IsBase64() && input.CanBeDecrypted())
+            {
+                return input;
+            }
+
+            return Encrypt(input);
+        }
+        public static bool IsBase64(this string base64String)
+        {
+            if (base64String.Contains(" ") || base64String.Contains("\t") || base64String.Contains("\r") || base64String.Contains("\n"))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(base64String) || base64String.Length % 4 != 0)
+            {
+                return false;
+            }
+
+            try
+            {
+                Convert.FromBase64String(base64String);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

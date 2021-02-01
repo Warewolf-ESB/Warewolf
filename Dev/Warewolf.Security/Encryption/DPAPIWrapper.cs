@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,11 +15,11 @@ using System.Text;
 
 namespace Warewolf.Security.Encryption
 {
-    public static class DpapiWrapper
+    static class DpapiWrapper
     {
         const DataProtectionScope DataProtectionScope = System.Security.Cryptography.DataProtectionScope.LocalMachine;
 
-        public static string DecryptIfEncrypted(string input)
+        private static string DecryptIfEncrypted(string input)
         {
             if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || !input.IsBase64())
             {
@@ -29,7 +29,7 @@ namespace Warewolf.Security.Encryption
             return Decrypt(input);
         }
 
-        public static string EncryptIfDecrypted(string input)
+        private static string EncryptIfDecrypted(string input)
         {
             if(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
             {
@@ -57,7 +57,7 @@ namespace Warewolf.Security.Encryption
         /// <see cref="SecureString"/> should be used.</remarks>
         /// <exception cref="ArgumentNullException">If <paramref name="plainText"/>
         /// is a null reference.</exception>
-        public static string Encrypt(string plainText)
+        private static string Encrypt(string plainText)
         {
             if (plainText == null)
             {
@@ -84,7 +84,7 @@ namespace Warewolf.Security.Encryption
         /// is essential, <see cref="SecureString"/> should be used.</remarks>
         /// <exception cref="ArgumentNullException">If <paramref name="cipher"/>
         /// is a null reference.</exception>
-        public static string Decrypt(string cipher)
+        private static string Decrypt(string cipher)
         {
             if (cipher == null)
             {
@@ -116,7 +116,7 @@ namespace Warewolf.Security.Encryption
         /// is essential, <see cref="SecureString"/> should be used.</remarks>
         /// <exception cref="ArgumentNullException">If <paramref name="cipher"/>
         /// is a null reference.</exception>
-        public static bool CanBeDecrypted(this string cipher)
+        private static bool CanBeDecrypted(this string cipher)
         {
             if(string.IsNullOrEmpty(cipher))
             {
@@ -142,27 +142,6 @@ namespace Warewolf.Security.Encryption
             }
             return true;
         }
-        
-        public static bool IsBase64(this string base64String)
-        {
-            if (base64String.Contains(" ") || base64String.Contains("\t") || base64String.Contains("\r") || base64String.Contains("\n"))
-            {
-                return false;
-            }
-            if (string.IsNullOrEmpty(base64String) || base64String.Length % 4 != 0)
-            {
-                return false;
-            }
 
-            try
-            {                
-                Convert.FromBase64String(base64String);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
     }
 }

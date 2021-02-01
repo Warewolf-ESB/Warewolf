@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -139,7 +139,7 @@ namespace Dev2.Common.Tests
         [TestCategory(nameof(CommonEqualityOps))]
         public void CommonEqualityOps_PassWordsCompare_ReturnTrue()
         {
-            var areConditionsEqual = CommonEqualityOps.PassWordsCompare(DpapiWrapper.Encrypt("123"), DpapiWrapper.Encrypt("123"));
+            var areConditionsEqual = CommonEqualityOps.PassWordsCompare(SecurityEncryption.Encrypt("123"), SecurityEncryption.Encrypt("123"));
             Assert.IsTrue(areConditionsEqual);
         }
 

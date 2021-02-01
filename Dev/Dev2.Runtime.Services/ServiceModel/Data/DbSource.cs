@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             var conString = xml.AttributeSafe("ConnectionString");
-            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            var connectionString = conString.CanBeDecrypted() ? SecurityEncryption.Decrypt(conString) : conString;
             ResourceType = ServerType.ToString();
             ConnectionString = connectionString;
         }
@@ -282,7 +282,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var result = base.ToXml();
             result.Add(new XAttribute("ServerType", ServerType));
             result.Add(new XAttribute("Type", GetType().Name));
-            result.Add(new XAttribute("ConnectionString", DpapiWrapper.Encrypt(ConnectionString) ?? string.Empty));
+            result.Add(new XAttribute("ConnectionString", SecurityEncryption.Encrypt(ConnectionString) ?? string.Empty));
 
             result.Add(new XElement("AuthorRoles", string.Empty));
             result.Add(new XElement("Comment", string.Empty));

@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,12 +16,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Enums;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
@@ -377,7 +374,7 @@ namespace Dev2.Runtime
                 _fileWrapper.Delete(oldFilePath);
             }
             var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
-            serviceTestModelTo.Password = DpapiWrapper.EncryptIfDecrypted(serviceTestModelTo.Password);
+            serviceTestModelTo.Password = SecurityEncryption.EncryptIfDecrypted(serviceTestModelTo.Password);
             var sw = new StreamWriter(filePath, false);
             _serializer.Serialize(sw, serviceTestModelTo);
         }

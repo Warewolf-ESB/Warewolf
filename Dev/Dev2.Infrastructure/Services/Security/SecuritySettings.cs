@@ -17,6 +17,7 @@ using Dev2.Common;
 using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Data;
+using Warewolf.Security.Encryption;
 using Warewolf.Services;
 
 namespace Dev2.Services.Security

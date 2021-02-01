@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -366,7 +366,7 @@ namespace Dev2.Services.Sql
             var connString = connectionString;
             if (connString.CanBeDecrypted())
             {
-                connString = DpapiWrapper.Decrypt(connectionString);
+                connString = SecurityEncryption.Decrypt(connectionString);
             }
             connString = string.Concat(connString, "MultipleActiveResultSets=true;");
             _connection = _connectionBuilder.BuildConnection(connString);

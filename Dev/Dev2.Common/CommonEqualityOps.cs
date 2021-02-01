@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,7 +52,7 @@ namespace Dev2.Common
             string temPpassword;
             try
             {
-                temPpassword = DpapiWrapper.DecryptIfEncrypted(pass1);
+                temPpassword = SecurityEncryption.DecryptIfEncrypted(pass1);
             }
             catch (Exception)
             {
@@ -62,7 +62,7 @@ namespace Dev2.Common
             string temPpassword1;
             try
             {
-                temPpassword1 = DpapiWrapper.DecryptIfEncrypted(pass2);
+                temPpassword1 = SecurityEncryption.DecryptIfEncrypted(pass2);
             }
             catch (Exception)
             {

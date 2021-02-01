@@ -76,7 +76,7 @@ namespace Dev2.Activities
                 {
                     try
                     {
-                        _password = DpapiWrapper.Encrypt(value);
+                        _password = SecurityEncryption.Encrypt(value);
                     }
                     catch (Exception)
                     {
@@ -92,7 +92,7 @@ namespace Dev2.Activities
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         
-        protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
+        protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : SecurityEncryption.Decrypt(Password);
 
         [FindMissing]
         public string To { get; set; }

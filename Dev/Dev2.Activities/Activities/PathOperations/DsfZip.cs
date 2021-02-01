@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -73,7 +73,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                        _archivePassword = DpapiWrapper.Encrypt(value);
+                        _archivePassword = SecurityEncryption.Encrypt(value);
                     }
                     catch (Exception)
                     {
@@ -91,7 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
-        protected string DecryptedArchivePassword => DataListUtil.NotEncrypted(ArchivePassword) ? ArchivePassword : DpapiWrapper.Decrypt(ArchivePassword);
+        protected string DecryptedArchivePassword => DataListUtil.NotEncrypted(ArchivePassword) ? ArchivePassword : SecurityEncryption.Decrypt(ArchivePassword);
 
 
         /// <summary>

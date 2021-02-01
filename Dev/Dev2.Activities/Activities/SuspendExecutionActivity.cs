@@ -140,8 +140,8 @@ namespace Dev2.Activities
                 var versionNumber = _dataObject.VersionNumber.ToString();
                 if (EncryptData)
                 {
-                    currentEnvironment = DpapiWrapper.Encrypt(currentEnvironment);
-                    currentuserprincipal = DpapiWrapper.Encrypt(currentuserprincipal);
+                    currentEnvironment = SecurityEncryption.Encrypt(currentEnvironment);
+                    currentuserprincipal = SecurityEncryption.Encrypt(currentuserprincipal);
                 }
 
                 var values = new Dictionary<string, StringBuilder>

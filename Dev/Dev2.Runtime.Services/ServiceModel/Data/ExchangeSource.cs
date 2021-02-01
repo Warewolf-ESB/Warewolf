@@ -1,5 +1,14 @@
 #pragma warning disable
-﻿using Dev2.Common.Common;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+using Dev2.Common.Common;
 using Dev2.Common.Exchange;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -8,7 +17,7 @@ using Microsoft.Exchange.WebServices.Data;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Warewolf.Security.Encryption;
+ using Warewolf.Security.Encryption;
 using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -99,7 +108,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
-            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            var connectionString = conString.CanBeDecrypted() ? SecurityEncryption.Decrypt(conString) : conString;
             ParseProperties(connectionString, properties);
 
             AutoDiscoverUrl = properties["AutoDiscoverUrl"];
@@ -186,7 +195,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
 
             result.Add(
-                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
+                new XAttribute("ConnectionString", SecurityEncryption.Encrypt(connectionString)),
                 new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );

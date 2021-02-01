@@ -52,6 +52,7 @@ using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Options;
+using Warewolf.Security.Encryption;
 using Warewolf.Service;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Trigger.Queue;

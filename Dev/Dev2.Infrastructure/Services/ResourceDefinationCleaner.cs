@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -139,7 +139,7 @@ namespace Dev2
                                                                                  {
                                                                                      SearchRegex = new Regex(@"<Source ID=""[a-fA-F0-9\-]+"" .*ConnectionString=""([^""]+)"" .*>"),
                                                                                      GroupNumbers = new[] { 1 },
-                                                                                     TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                     TransformFunction = SecurityEncryption.DecryptIfEncrypted
                                                                                  }
                                                                    },
                                                                    {
@@ -147,7 +147,7 @@ namespace Dev2
                                                                                                   {
                                                                                                       SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfFileWrite|DsfFileRead|DsfFolderRead|DsfPathCopy|DsfPathCreate|DsfPathDelete|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?Password=""([^""]+)"" .*?&gt;"),
                                                                                                       GroupNumbers = new[] { 3 },
-                                                                                                      TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                                      TransformFunction = SecurityEncryption.DecryptIfEncrypted
                                                                                                   }
                                                                    },
                                                                    {
@@ -155,7 +155,7 @@ namespace Dev2
                                                                                                            {
                                                                                                                SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfPathCopy|DsfPathMove|DsfPathRename|DsfZip|DsfUnzip) .*?DestinationPassword=""([^""]+)"" .*?&gt;"),
                                                                                                                GroupNumbers = new[] { 3 },
-                                                                                                               TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                                               TransformFunction = SecurityEncryption.DecryptIfEncrypted
                                                                                                            }
                                                                    },
                                                                    {
@@ -163,7 +163,7 @@ namespace Dev2
                                                                               {
                                                                                   SearchRegex = new Regex(@"&lt;([a-zA-Z0-9]+:)?(DsfZip|DsfUnzip) .*?ArchivePassword=""([^""]+)"" .*?&gt;"),
                                                                                   GroupNumbers = new[] { 3 },
-                                                                                  TransformFunction = DpapiWrapper.DecryptIfEncrypted
+                                                                                  TransformFunction = SecurityEncryption.DecryptIfEncrypted
                                                                               }
                                                                    }
                                                                };

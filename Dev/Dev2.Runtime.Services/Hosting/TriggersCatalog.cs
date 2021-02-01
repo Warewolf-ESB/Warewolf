@@ -245,7 +245,7 @@ namespace Dev2.Runtime.Hosting
         public ITriggerQueue LoadQueueTriggerFromFile(string filename)
         {
             var fileData = _fileWrapper.ReadAllText(filename);
-            var decryptedTrigger = DpapiWrapper.Decrypt(fileData);
+            var decryptedTrigger = SecurityEncryption.Decrypt(fileData);
             var triggerQueue = _serializer.Deserialize<ITriggerQueue>(decryptedTrigger);
             return triggerQueue;
         }
@@ -269,7 +269,7 @@ namespace Dev2.Runtime.Hosting
             }
 
             var serializedData = _serializer.Serialize(triggerQueue);
-            var saveData = DpapiWrapper.Encrypt(serializedData);
+            var saveData = SecurityEncryption.Encrypt(serializedData);
 
             var queueFilePath = GetQueueFilePath(triggerQueue);
             _fileWrapper.WriteAllText(queueFilePath, saveData);

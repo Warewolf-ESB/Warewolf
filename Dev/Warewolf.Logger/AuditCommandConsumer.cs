@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -128,7 +128,7 @@ namespace Warewolf.Logger
                 var payload = Config.Auditing.LoggingDataSource.Payload;
                 if (Config.Auditing.EncryptDataSource)
                 {
-                    payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
+                    payload = payload.CanBeDecrypted() ? SecurityEncryption.Decrypt(payload) : payload;
                 }
 
                 var elasticsearchSource = new Dev2JsonSerializer().Deserialize<ElasticsearchSource>(payload);

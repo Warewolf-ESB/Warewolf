@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -73,7 +73,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _popupController = new Mock<IPopupController>();
             CustomContainer.Register(_popupController.Object);
             var payload = serializer.Serialize(elasticsearchSource);
-            var encryptedPayload = DpapiWrapper.Encrypt(payload);
+            var encryptedPayload = SecurityEncryption.Encrypt(payload);
             var auditingSettingsData = new AuditingSettingsData
             {
                 Endpoint = "ws://127.0.0.1:5000/ws",

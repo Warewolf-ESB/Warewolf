@@ -20,6 +20,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
+using Warewolf.Security.Encryption;
 
 
 namespace Dev2.Runtime.ESB.Management.Services

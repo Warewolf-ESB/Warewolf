@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
-            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            var connectionString = conString.CanBeDecrypted() ? SecurityEncryption.Decrypt(conString) : conString;
             ParseProperties(connectionString, properties);
 
             EndpointUrl = properties["EndpointUrl"];
@@ -116,7 +116,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
 
             result.Add(
-                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
+                new XAttribute("ConnectionString", SecurityEncryption.Encrypt(connectionString)),
                 new XAttribute("Type", ResourceType),
                 new XElement("TypeOf", ResourceType)
                 );

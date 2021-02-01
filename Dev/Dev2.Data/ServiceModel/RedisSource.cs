@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -53,7 +53,7 @@ namespace Dev2.Data.ServiceModel
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
-            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            var connectionString = conString.CanBeDecrypted() ? SecurityEncryption.Decrypt(conString) : conString;
             connectionString = connectionString.UnescapeString();
             ParseProperties(connectionString, properties);
             HostName = properties["HostName"];
@@ -80,7 +80,7 @@ namespace Dev2.Data.ServiceModel
             }
 
             result.Add(
-                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString.EscapeString())),
+                new XAttribute("ConnectionString", SecurityEncryption.Encrypt(connectionString.EscapeString())),
                 new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );
