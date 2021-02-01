@@ -271,7 +271,7 @@ namespace Dev2.Network
             {
                 while (IsConnected == false)
                 {
-                    Task.Delay(300).Wait();
+                    Task.Delay(1000).Wait();
                     Task.Yield();
                 }
                 return true;
