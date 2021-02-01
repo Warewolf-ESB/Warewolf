@@ -177,6 +177,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dataObj.SetupAllProperties();
             dataObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
             dataObj.Setup(o => o.IsRemoteWorkflow());
+            dataObj.Setup(o => o.ServiceName).Returns("SomeName");
             dataObj.Setup(o => o.RunWorkflowAsync).Returns(true);
             dataObj.Setup(o => o.Clone()).Returns(dataObjClon.Object);
             var esbServicesEndpoint = new EsbServicesEndpoint();
@@ -188,7 +189,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
             //---------------Test Result -----------------------
             dataObj.Verify(o => o.IsRemoteWorkflow(), Times.Once);
-            var contains = err.FetchErrors().Contains(ErrorResource.ResourceNotFound);
+            var contains = err.FetchErrors().Contains(string.Format(ErrorResource.ResourceNotFound, "SomeName"));
             Assert.IsTrue(contains);
         }
 
