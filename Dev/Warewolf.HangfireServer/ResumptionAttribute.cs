@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -56,6 +56,7 @@ namespace HangfireServer
         {
             if (context is null)
             {
+                _logger.Error("Failed to perform jobPerformingContext is null");
                 return;
             }
 
@@ -64,23 +65,34 @@ namespace HangfireServer
 
         public void OnPerformResume(PerformingContext context)
         {
-            var jobArg = context.BackgroundJob.Job.Args[0];
-            var backgroundJobId = context.BackgroundJob.Id;
-            var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
-            var resumption = resumptionFactory.New();
-            if (resumption.Connect())
+            try
             {
-                var values = jobArg as Dictionary<string, StringBuilder>;
-                LogResumption(values);
-                var result = resumption.Resume(values);
-                if (result.HasError)
+                var jobArg = context.BackgroundJob.Job.Args[0];
+                var backgroundJobId = context.BackgroundJob.Id;
+                var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
+                var resumption = resumptionFactory.New();
+                _logger.Info("Performing Resume of job {0}, connecting to server....", backgroundJobId);
+                if (resumption.Connect(_logger))
                 {
-                    throw new InvalidOperationException(result.Message?.ToString(),new Exception(result.Message?.ToString()));
+                    _logger.Info("Performing Resume of job {0}, connection established.", backgroundJobId);
+                    var values = jobArg as Dictionary<string, StringBuilder>;
+                    LogResumption(values);
+                    var result = resumption.Resume(values);
+                    if (result.HasError)
+                    {
+                        throw new InvalidOperationException(result.Message?.ToString(), new Exception(result.Message?.ToString()));
+                    }
+                }
+                else
+                {
+                    _logger.Error("Failed to perform job {0}, could not establish a connection.", backgroundJobId);
+                    throw new InvalidOperationException("Failed to perform job " + backgroundJobId + " could not establish a connection.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                _logger.Error("Failed to perform job {0}, could not establish a connection.", backgroundJobId);
+                _logger.Error("Failed to perform job {0}" + ex.InnerException);
+                throw;
             }
         }
 
@@ -107,6 +119,7 @@ namespace HangfireServer
         public void OnPerformed(PerformedContext context)
         {
             _hangfireLogger.InfoFormat("Job {0} has been performed", context.BackgroundJob.Id);
+            _logger.Info("Job {0} has been performed", context.BackgroundJob.Id);
         }
 
         public void OnStateElection(ElectStateContext context)
@@ -122,6 +135,8 @@ namespace HangfireServer
                     context.BackgroundJob.Id,
                     failedState.Exception);
             }
+
+            _logger.Info("Job {0} On State Election ", context.BackgroundJob.Id, context.CandidateState);
         }
 
         public void OnStateApplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
@@ -131,12 +146,20 @@ namespace HangfireServer
                 context.BackgroundJob.Id,
                 context.OldStateName,
                 context.NewState.Name);
+            _logger.Info(
+                "Job {0} state was changed from {1} to {2}",
+                context.BackgroundJob.Id,
+                context.OldStateName,
+                context.NewState.Name);
         }
 
         public void OnStateUnapplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
         {
             _hangfireLogger.InfoFormat(
-                "Job {0} state {1} was unapplied.",
+                "Job {0} state {1} was not applied.",
+                context.BackgroundJob.Id,
+                context.OldStateName);
+            _logger.Info("Job {0} state {1} was not applied.",
                 context.BackgroundJob.Id,
                 context.OldStateName);
         }
