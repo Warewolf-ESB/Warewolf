@@ -240,7 +240,7 @@ namespace Warewolf.Studio.ViewModels
 
             ViewSwaggerCommand = new DelegateCommand(o =>
             {
-                _explorerItemViewModelCommandController.ViewSwaggerCommand(ResourceId, Server);
+                _explorerItemViewModelCommandController.ViewSwaggerCommand(ResourceName, ResourcePath, Server.Connection.WebServerUri, IsFolder);
             });
             MergeCommand = new DelegateCommand(o =>
             {
@@ -494,7 +494,7 @@ namespace Warewolf.Studio.ViewModels
             IsNewFolderVisible = _isFolder;
             IsCreateTestVisible = _isService;
             IsRunAllTestsVisible = _isService || _isFolder;
-            IsViewSwaggerVisible = _isService;
+            IsViewSwaggerVisible = _isService || _isFolder;
             IsMergeVisible = _isService;
             IsViewJsonApisVisible = _isService || _isFolder;
 

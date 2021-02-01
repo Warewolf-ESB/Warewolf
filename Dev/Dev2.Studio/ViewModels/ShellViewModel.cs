@@ -77,6 +77,7 @@ using Warewolf.Data;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
+using Dropbox.Api.Sharing;
 using Warewolf.Core;
 
 namespace Dev2.Studio.ViewModels
@@ -1247,21 +1248,29 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void ViewSwagger(Guid resourceId, IServer server)
+        public void ViewSwagger(string resourceName, string resourcePath, Uri webServerUri, bool isFolder)
         {
-            ViewSwagger(resourceId, server.EnvironmentID);
+            //ViewSwagger(resourceName, resourcePath, webServerUri);
+            var relativeUrl = "";
+            if (!string.IsNullOrWhiteSpace(resourcePath))
+                relativeUrl = $"/secure/{resourcePath}.api";
+            else
+                relativeUrl += $"/secure/{resourceName}.api";
+
+            Uri.TryCreate(webServerUri, relativeUrl, out Uri url);
+            BrowserPopupController.ShowPopup(url.ToString());
         }
 
-        void ViewSwagger(Guid resourceId, Guid environmentId)
-        {
-            var environmentModel = ServerRepository.Get(environmentId);
-            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
-            var workflowUri = contextualResourceModel.GetWorkflowUri("", UrlType.API);
-            if (workflowUri != null)
-            {
-                BrowserPopupController.ShowPopup(workflowUri.ToString());
-            }
-        }
+        // void ViewSwagger(string resourceName, string resourcePath, Uri webServerUri)
+        // {
+        //     // var environmentModel = ServerRepository.Get(environmentId);
+        //     // var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
+        //     // var workflowUri = contextualResourceModel.GetWorkflowUri("", UrlType.API);
+        //     // if (workflowUri != null)
+        //     // {
+        //     //     BrowserPopupController.ShowPopup(workflowUri.ToString());
+        //     // }
+        // }
 
         public void ViewApisJson(string resourcePath, Uri webServerUri)
         {

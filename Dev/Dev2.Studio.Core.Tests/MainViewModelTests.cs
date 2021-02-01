@@ -1858,7 +1858,7 @@ namespace Dev2.Core.Tests
             viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
             viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
 
-            _shellViewModel.ViewSwagger(source.Object.ResourceId, viewModel.Object.ActiveServer);
+            _shellViewModel.ViewSwagger(source.Object.ResourceName, source.Object.ResourcePath, viewModel.Object.ActiveServer.Connection.WebServerUri, source.Object.IsFolder);
         }
 
 
