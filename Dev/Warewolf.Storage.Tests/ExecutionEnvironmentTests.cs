@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -313,6 +313,16 @@ namespace Warewolf.Storage.Tests
             {
                 Assert.AreEqual("not a json array", e.Message);
             }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_GetEnvironmetVariable_NotFound_ShouldThrow()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            Assert.ThrowsException<Exception>(()=> _environment.Eval("[[NotSetVariable]]", 0, true), "variable [[NotSetVariable]] not found");
         }
 
         [TestMethod]

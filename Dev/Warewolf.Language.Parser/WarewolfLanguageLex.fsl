@@ -3,7 +3,7 @@
 module Lexer
 
 // Opens methods related to fslex.exe
-open Microsoft.FSharp.Text.Lexing
+open FSharp.Text.Lexing
 open Parser
 let newline (lexbuf: LexBuffer<_>) = 
     lexbuf.StartPos <- lexbuf.StartPos.NextLine

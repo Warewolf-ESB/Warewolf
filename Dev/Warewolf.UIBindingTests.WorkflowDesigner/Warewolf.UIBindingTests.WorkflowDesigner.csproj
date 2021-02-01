@@ -47,7 +47,6 @@
     <Reference Include="System.Activities.Presentation" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Workflow Designer.cs" />
   </ItemGroup>
