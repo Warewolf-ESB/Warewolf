@@ -208,6 +208,7 @@
     <Compile Include="IFileChooserView.cs" />
     <Compile Include="IFilenameValidator.cs" />
     <Compile Include="IFileResource.cs" />
+    <Compile Include="IFormDataParameters.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="IGraph.cs" />
     <Compile Include="IHelpView.cs" />

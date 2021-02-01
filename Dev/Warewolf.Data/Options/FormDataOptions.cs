@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Warewolf.Data.Decisions.Operations;
 using Warewolf.Options;
 
 namespace Warewolf.Data.Options
@@ -37,7 +36,7 @@ namespace Warewolf.Data.Options
     {
         public enFormDataTableType MatchType { get; set; }
 
-        internal abstract bool Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
+        internal abstract IEnumerable<FormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
         public abstract void SetOptions(FormDataOptionConditionExpression option);
 
         public abstract void RenderDescription(StringBuilder sb);
@@ -48,7 +47,7 @@ namespace Warewolf.Data.Options
     public class FormDataConditionExpression : IOptionConvertable
     {
         [HelpText(nameof(Studio.Resources.Languages.HelpText.FormDataOptionConditionLeftHelpText))]
-        public string Left { get; set; }
+        public string Key { get; set; }
 
         [DataValue(nameof(FormDataCondition.MatchType))]
         [MultiDataProvider(typeof(FormDataConditionMatch), typeof(FormDataConditionBetween))]
@@ -58,7 +57,7 @@ namespace Warewolf.Data.Options
         {
             var option = new FormDataOptionConditionExpression
             {
-                Left = Left
+                Left = Key
             };
             Cond?.SetOptions(option);
             SetSelectedMatchType(option);
@@ -79,7 +78,7 @@ namespace Warewolf.Data.Options
         {
             if (option is FormDataOptionConditionExpression optionConditionExpression)
             {
-                this.Left = optionConditionExpression.Left;
+                this.Key = optionConditionExpression.Left;
                 if (optionConditionExpression.IsBetween)
                 {
                     this.Cond = FormDataConditionBetween.FromOption(optionConditionExpression);
@@ -90,13 +89,14 @@ namespace Warewolf.Data.Options
                 }
             }
         }
-        public bool Eval(Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
+        
+        public IEnumerable<FormDataParameters> Eval(Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
-            if (string.IsNullOrWhiteSpace(Left))
+            if (string.IsNullOrWhiteSpace(Key))
             {
-                return true;
+                return new List<FormDataParameters>();
             }
-            return Cond.Eval(Left, getArgumentsFunc, hasError);
+            return Cond.Eval(Key, getArgumentsFunc, hasError);
         }
 
         public override string ToString()
@@ -108,7 +108,7 @@ namespace Warewolf.Data.Options
 
         public void RenderDescription(StringBuilder sb)
         {
-            sb.Append("Key: "+Left);
+            sb.Append("Key: "+Key);
             Cond?.RenderDescription(sb);
         }
     }
@@ -135,25 +135,32 @@ namespace Warewolf.Data.Options
         }
 
 
-        internal override bool Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
+        internal override IEnumerable<FormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
-            var factory = Dev2WebPostFormDataDecisionFactory.Instance();
-
-            IList<bool> ret = new List<bool>();
+            var ret = new List<FormDataParameters>();
 
             var items = getArgumentsFunc(left, File, FileName);
             foreach (var arguments in items)
             {
                 try
                 {
-                    ret.Add(factory.FetchDecisionFunction(MatchType).Invoke(arguments));
+                    ret.Add(new FileParameter(new FormDataConditionExpression
+                    {
+                        Key = arguments[0],
+                        Cond = new FormDataConditionBetween
+                        {
+                            MatchType = enFormDataTableType.File,
+                            File = arguments[1],
+                            FileName = arguments[2]
+                        }
+                    }));
                 }
                 catch (Exception)
                 {
-                    ret.Add(false);
+                    throw;
                 }
             }
-            return ret.All(o => o);
+            return ret.Select(o => o).ToList();
         }
 
         public override void RenderDescription(StringBuilder sb)
@@ -179,12 +186,12 @@ namespace Warewolf.Data.Options
 
     public class FormDataConditionMatch : FormDataCondition
     {
-        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionRightHelpText))] //TODO: change this to point on the corrent helptext
-        public string Right { get; set; }
+        [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionRightHelpText))]
+        public string Value { get; set; }
         public override void SetOptions(FormDataOptionConditionExpression option)
         {
             option.MatchType = MatchType;
-            option.Right = Right;
+            option.Right = Value;
         }
 
         internal static FormDataCondition FromOption(FormDataOptionConditionExpression optionConditionExpression)
@@ -192,31 +199,37 @@ namespace Warewolf.Data.Options
             return new FormDataConditionMatch
             {
                 MatchType = optionConditionExpression.MatchType,
-                Right = optionConditionExpression.Right,
+                Value = optionConditionExpression.Right,
             };
         }
 
 
-        internal override bool Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
+        internal override IEnumerable<FormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
-            var factory = Dev2WebPostFormDataDecisionFactory.Instance();
+            var ret = new List<FormDataParameters>();
 
-            IList<bool> ret = new List<bool>();
-
-            var items = getArgumentsFunc(left, Right, null);
+            var items = getArgumentsFunc(left, Value, null);
             foreach (var arguments in items)
             {
                 try
                 {
-                    ret.Add(factory.FetchDecisionFunction(MatchType).Invoke(arguments));
+                    ret.Add(new TextParameter(new FormDataConditionExpression
+                    {
+                        Key = arguments[0],
+                        Cond = new FormDataConditionMatch
+                        {
+                            Value = arguments[1],
+                            MatchType = enFormDataTableType.Text
+                        }
+                    }));
 
                 }
                 catch (Exception)
                 {
-                    ret.Add(false);
+                    throw;
                 }
             }
-            return ret.All(o => o);
+            return ret.Select(o => o).ToList();
         }
 
         public override void RenderDescription(StringBuilder sb)
@@ -224,7 +237,7 @@ namespace Warewolf.Data.Options
             sb.Append(" ");
             MatchType.RenderDescription(sb);
             sb.Append(" ");
-            sb.Append(Right);
+            sb.Append(Value);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -357,7 +357,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Headers = new List<INameValue> {new NameValue("Header 1", "[[City]]")},
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]",
-                ResourceCatalog = new Mock<IResourceCatalog>().Object,
                 IsNoneChecked = true
             };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };

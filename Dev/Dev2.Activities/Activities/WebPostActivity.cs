@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,7 +28,6 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Data.Options;
-using Warewolf.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -38,6 +37,8 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("WebMethods", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Post")]
     public class WebPostActivity : DsfActivity, IEquatable<WebPostActivity>
     {
+        private IDSFDataObject _dataObject;
+
         public IList<INameValue> Headers { get; set; }
         public bool IsFormDataChecked { get; set; }
         public bool IsNoneChecked { get; set; }
@@ -70,7 +71,7 @@ namespace Dev2.Activities
 
             base.GetDebugInputs(env, update);
 
-            var (head, parameters, _) = GetEnvironmentInputVariables(env, update);
+            var (head, parameters, _, _) = GetEnvironmentInputVariables(env, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var headerString=string.Empty;
@@ -152,19 +153,20 @@ namespace Dev2.Activities
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
+            _dataObject = dataObject;
             tmpErrors = new ErrorResultTO();
 
-            var (head, query, postData) = GetEnvironmentInputVariables(dataObject.Environment, update);
+            var (head, query, postData, conditions) = GetEnvironmentInputVariables(_dataObject.Environment, update);
 
-            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+            var source = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = string.Empty;
             if (IsFormDataChecked)
-            { 
-                //webRequestResult = PerformFormDataWebPostRequest(head, parameters, query, url, postData);
+            {
+                webRequestResult = PerformFormDataWebPostRequest(source, WebRequestMethod.Post, query, head, conditions);
             }
             else if (IsNoneChecked)
             {
-                webRequestResult = PerformManualWebPostRequest(head, query, url, postData);
+                webRequestResult = PerformManualWebPostRequest(head, query, source, postData);
             }
 
             tmpErrors.MergeErrors(_errorsTo);
@@ -183,7 +185,7 @@ namespace Dev2.Activities
 
         }
 
-        private (IEnumerable<INameValue> head, string query, string data) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)
+        private (IEnumerable<INameValue> head, string query, string data, IEnumerable<FormDataParameters> conditions) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)
         {
             IEnumerable<INameValue> head = null;
             if (Headers != null)
@@ -200,19 +202,50 @@ namespace Dev2.Activities
             {
                 postData = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(PostData, update, true));
             }
+            var conditions = new List<FormDataParameters>();
+            if ((Conditions ?? (Conditions = new List<FormDataConditionExpression>())).Any() && IsFormDataChecked)
+            {
+                _errorsTo = new ErrorResultTO();
+                conditions = Conditions.SelectMany(o => o.Eval(GetArgumentsFunc, _errorsTo.HasErrors())).ToList();
+            }
 
-            return (head, query, postData);
+            return (head, query, postData, conditions);
         }
 
-        
+        private IEnumerable<string[]> GetArgumentsFunc(string col1s, string col2s, string col3s)
+        {
+            if (_dataObject != null)
+            {
+                var col1 = _dataObject.Environment.EvalAsList(col1s, 0, true);
+                var col2 = _dataObject.Environment.EvalAsList(col2s ?? "", 0, true);
+                var col3 = _dataObject.Environment.EvalAsList(col3s ?? "", 0, true);
+
+                var iter = new WarewolfListIterator();
+                var c1 = new WarewolfAtomIterator(col1);
+                var c2 = new WarewolfAtomIterator(col2);
+                var c3 = new WarewolfAtomIterator(col3);
+                iter.AddVariableToIterateOn(c1);
+                iter.AddVariableToIterateOn(c2);
+                iter.AddVariableToIterateOn(c3);
+
+                while (iter.HasMoreData())
+                {
+                    var item = new string[] { iter.FetchNextValue(c1), iter.FetchNextValue(c2), iter.FetchNextValue(c3) };
+                    yield return item;
+                }
+                yield break;
+            }
+            
+        }
+
         protected virtual string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
             return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
 
-        protected virtual string PerformFormDataWebPostRequest(IEnumerable<INameValue> head, IEnumerable<INameValue> parameters, string query, IWebSource source, string postData)
+        protected virtual string PerformFormDataWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> parameters)
         {
-            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray(), parameters);
+            return WebSources.Execute(source, method, query, string.Empty, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray(), parameters);
         }
 
         public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
