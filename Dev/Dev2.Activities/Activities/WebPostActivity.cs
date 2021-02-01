@@ -198,7 +198,7 @@ namespace Dev2.Activities
             var postData = string.Empty;
             if (PostData != null && IsNoneChecked)
             {
-                postData = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(PostData, update));
+                postData = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(PostData, update, true));
             }
 
             return (head, query, postData);
