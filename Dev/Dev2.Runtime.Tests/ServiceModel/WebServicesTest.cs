@@ -23,7 +23,6 @@ using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 1220 - 2013.05.27 - TWR - Created
@@ -31,10 +30,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestCategory("Runtime Hosting")]
     public class WebServicesTest
     {
-        string _requestResponse;
-        string _requestUrlEvaluated;
-        string _requestBodyEvaluated;
-        string[] _requestHeadersEvaluated;
+        private string _requestResponse;
+        private string _requestUrlEvaluated;
+        private string _requestBodyEvaluated;
+        private string[] _requestHeadersEvaluated;
+        private IEnumerable<IFormDataParameters> _requestFormDataParameters;
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -172,7 +172,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -278,7 +278,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -305,7 +305,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 Source = new WebSource
                 {
-                    Address = "someAddress",
+                    Address = "someAddress"
                 }
             };
 
@@ -521,11 +521,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(dummyResponce, service.RequestResponse, "The web response base64 should not be return as base64");
         }
 
-        string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
+        string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null)
         {
             _requestUrlEvaluated = relativeUri;
             _requestBodyEvaluated = data;
             _requestHeadersEvaluated = headers;
+            _requestFormDataParameters = formDataParameters;
 
             errors = new ErrorResultTO();
             return _requestResponse;

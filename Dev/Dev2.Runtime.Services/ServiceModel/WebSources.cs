@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,10 +27,11 @@ using System.Xml.Linq;
 using Dev2.Runtime.DynamicProxy;
 using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
+using Warewolf.Data.Options;
 
 namespace Dev2.Runtime.ServiceModel
 {
-    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null);
+    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null, IEnumerable<IFormDataParameters> formDataParameters = null);
     public delegate string WebExecuteBinary(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null);
 
     public class WebSources : ExceptionManager
@@ -126,12 +127,12 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
-        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
+        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null)
         {
-            return Execute(source, method, headers, relativeUri, data, throwError, out errors);
+            return Execute(source, method, headers, relativeUri, data, throwError, out errors, formDataParameters);
         }
 
-        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, string data, bool throwError, out ErrorResultTO errors)
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null)
         {
             IWebClientWrapper client = null;
 
@@ -142,9 +143,19 @@ namespace Dev2.Runtime.ServiceModel
                 client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
+                //TODO: find a better way to handle the multipart 
+                if (contentType != null && contentType.ToLowerInvariant().Contains("multipart/form-data") && formDataParameters != null)
+                {
+                    var formDataBoundary = string.Format("----------{0:N}", Guid.NewGuid());
+                    contentType = contentType+"; boundary=" + formDataBoundary;
+
+                    var bytesData = GetMultipartFormData(formDataParameters, contentType);
+                    return PerformMultipartWebRequest(new WebRequestFactory(), client, address, bytesData);
+                }
                 if (contentType != null && contentType.ToLowerInvariant().Contains("multipart"))
                 {
-                    return PerformMultipartWebRequest(new WebRequestFactory(), client, address, data);
+                    var bytesData = ConvertToHttpNewLine(ref data);
+                    return PerformMultipartWebRequest(new WebRequestFactory(), client, address, bytesData);
                 }
 
                 return method == WebRequestMethod.Get ? client.DownloadData(address).ToBase64String() : client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String();
@@ -174,55 +185,42 @@ namespace Dev2.Runtime.ServiceModel
             return string.Empty;
         }
 
-        public static string Execute(IWebSource source, WebRequestMethod post, string query, string postData, bool throwError, out ErrorResultTO errorsTo, string[] headers, IEnumerable<INameValue> parameters)
-        {
-            var formDataBoundary = String.Format("----------{0:N}", Guid.NewGuid());
-            var contentType = "multipart/form-data; boundary=" + formDataBoundary;
-
-            var postDataBytes = GetMultipartFormData(parameters, formDataBoundary);
-            var response = GetWebResponse(source, contentType, postDataBytes, headers);
-
-            var responseReader = new StreamReader(response.GetResponseStream());
-            var returnResponseText = responseReader.ReadToEnd();
-            response.Close();
-
-            errorsTo = new ErrorResultTO();
-            return returnResponseText;
-        }
-
-        private static byte[] GetMultipartFormData(IEnumerable<INameValue> postParameters, string boundary)
+        private static byte[] GetMultipartFormData(IEnumerable<IFormDataParameters> postParameters, string boundary)
         {
             var encoding = Encoding.UTF8;
             Stream formDataStream = new MemoryStream();
             bool needsCLRF = false;
 
-            foreach (var param in postParameters)
+            var dds = postParameters.GetEnumerator();
+            while (dds.MoveNext())
             {
+                var conditionExpression = dds.Current;
+                var formValueType = conditionExpression;
 
                 if (needsCLRF)
                     formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
 
                 needsCLRF = true;
 
-                if (param.Value.IsBase64String(out byte[] fileToUpload))
+                if (formValueType is FileParameter fileToUpload)
                 {
-
                     var header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
                         boundary,
-                        param.Name);
-                        /*fileToUpload.FileName ?? param.Name,
-                        fileToUpload.ContentType ?? "application/octet-stream");*/
+                        fileToUpload.Key,
+                        fileToUpload.FileName ?? fileToUpload.Key,
+                        fileToUpload.ContentType ?? "application/octet-stream");
 
                     formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
 
-                    formDataStream.Write(fileToUpload, 0, fileToUpload.Length);
+                    formDataStream.Write(fileToUpload.File, 0, fileToUpload.File.Length);
                 }
-                else
+                else if (formValueType is TextParameter textToUpload)
                 {
+
                     var postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
                         boundary,
-                        param.Name,
-                        param.Value);
+                        textToUpload.Key,
+                        textToUpload.Value);
                     formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
                 }
             }
@@ -238,36 +236,6 @@ namespace Dev2.Runtime.ServiceModel
             return formData;
         }
 
-
-        private static HttpWebResponse GetWebResponse(IWebSource source, string contentType, byte[] postData, string[] headers)
-        {
-            VerifyArgument.IsNotNull("Web Source", source);
-            VerifyArgument.IsNotNullOrWhitespace("Web Source Address", source.Address);
-
-            if (!(WebRequest.Create(source.Address) is HttpWebRequest request))
-            {
-                throw new NullReferenceException("request is not a http request");
-            }
-
-            var client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
- 
-            request.Method = "POST";
-            request.ContentType = contentType;
-            request.UserAgent = "user-agent";
-
-            request.CookieContainer = new CookieContainer();
-            request.ContentLength = postData.Length;
-
-            request.Headers = client.Headers; //TODO: miight not have to be like this
-
-            using (Stream requestStream = request.GetRequestStream())
-            {
-                requestStream.Write(postData, 0, postData.Length);
-                requestStream.Close();
-            }
-
-            return request.GetResponse() as HttpWebResponse;
-        }
 
         private static void ValidateSource(IWebSource source)
         {
@@ -308,18 +276,17 @@ namespace Dev2.Runtime.ServiceModel
             return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
         }
 
-        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, string data)
+        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, byte[] bytesData)
         {
             var wr = webRequestFactory.New(address);
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
-            var byteData = ConvertToHttpNewLine(ref data);
-            wr.ContentLength = byteData.Length;
+            wr.ContentLength = bytesData.Length;
 
             using (var requestStream = wr.GetRequestStream())
             {
-                requestStream.Write(byteData, 0, byteData.Length);
+                requestStream.Write(bytesData, 0, bytesData.Length);
                 requestStream.Close();
             }
 
@@ -343,7 +310,6 @@ namespace Dev2.Runtime.ServiceModel
                 throw new ApplicationException("Error while upload files. Server status code: " + wresp.StatusCode);
             }
         }
-
         //TODO: ConvertToHttpNewLine should now be made private and tested using IWebRequest  
         internal static byte[] ConvertToHttpNewLine(ref string data)
         {
