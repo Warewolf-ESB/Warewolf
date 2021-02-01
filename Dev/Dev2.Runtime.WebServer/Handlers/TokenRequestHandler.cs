@@ -120,16 +120,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                 serviceName += ".json";
             }
 
-            var a = new Executor(_workspaceRepository, _resourceCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
+            var a = new ExecutorB(_workspaceRepository, _resourceCatalog, _authorizationService, _dataObjectFactory, _esbChannelFactory, _jwtManager);
             a.TryExecute(webRequest, serviceName, workspaceId, headers, user);
             var response = a.BuildResponse(webRequest, serviceName);
             return response;
         }
 
 
-        class Executor : ExecutorBase
+        class ExecutorB : ExecutorBase
         {
-            public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
+            public ExecutorB(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
                 : base(workspaceRepository, resourceCatalog, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)
             {
             }

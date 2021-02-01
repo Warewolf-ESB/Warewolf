@@ -17,6 +17,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Services.Security;
+using Dev2.Workspaces;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.WebServer.Handlers

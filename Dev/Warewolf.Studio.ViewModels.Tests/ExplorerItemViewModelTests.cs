@@ -565,7 +565,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
 
-            _shellViewModelMock.Verify(it => it.ViewSwagger(_target.ResourceId, _target.Server));
+            _shellViewModelMock.Verify(it => it.ViewSwagger(_target.ResourceName, _target.ResourcePath, _target.Server.Connection.WebServerUri, _target.IsFolder));
         }
 
         [TestMethod]

@@ -999,7 +999,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                 if (mvm?.ActiveItem != null)
                 {
-                    mvm.ViewSwagger(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
+                    //mvm.ViewSwagger(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
                 }
             }
         }));
