@@ -78,6 +78,7 @@ namespace Warewolf.HangfireServer.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ResumptionAttribute))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void ResumptionAttribute_LogResumption_Connect_False()
         {
             var workflowId = Guid.NewGuid().ToString();
