@@ -78,7 +78,7 @@
     <Reference Include="AdornedControl">
       <HintPath>..\Binaries\AdornedControl.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.AvalonEdit, Version=4.2.0.8649, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+    <Reference Include="ICSharpCode.AvalonEdit">
       <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
@@ -847,11 +847,8 @@
     <PackageReference Include="FontAwesome.WPF">
       <Version>4.5.0.8</Version>
     </PackageReference>
-    <PackageReference Include="FSharp.Core.3">
-      <Version>0.0.2</Version>
-    </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.8</Version>
+      <Version>2.0.12</Version>
     </PackageReference>
     <PackageReference Include="Log4Net.Async">
       <Version>2.0.4</Version>

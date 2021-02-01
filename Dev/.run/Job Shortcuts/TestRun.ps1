@@ -18,7 +18,7 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
 	exit 1
 }
-if ($PreTestRunScript) {
+if ($PreTestRunScript -and !($RetryRebuild.IsPresent)) {
 	if (!(Test-Path .\StartAs.ps1)) {
 		Write-Error -Message "This script expects to be run from a bin directory that includes a Warewolf Server or Studio."
 		exit 1

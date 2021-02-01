@@ -3,7 +3,7 @@
 open LanguageAST
 open EvaluationFunctions
 //open LanguageEval
-open Microsoft.FSharp.Text.Lexing
+open FSharp.Text.Lexing
 open DataStorage
 open CommonFunctions
 

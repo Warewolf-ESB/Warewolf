@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -66,7 +66,7 @@ namespace Warewolf.Storage.Tests
                 Assert.Fail("expected exception variable not found");
             } catch (Exception e)
             {
-                Assert.AreEqual("variable not found", e.Message);
+                Assert.AreEqual("variable [[a]] not found", e.Message);
             }
         }
 
