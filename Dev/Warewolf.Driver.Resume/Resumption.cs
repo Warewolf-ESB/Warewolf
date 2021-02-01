@@ -45,8 +45,7 @@ namespace Warewolf.Driver.Resume
         {
             get
             {
-                var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
-                _serverEndpoint = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
+                _serverEndpoint = new Uri($"https://{Environment.MachineName.ToLowerInvariant()}:3143");
                 return _serverEndpoint;
             }
         }
@@ -70,8 +69,9 @@ namespace Warewolf.Driver.Resume
             try
             {
                 _logger = executionLogPublisher;
+                _logger.Info("Connecting to server: " + ServerEndpoint + "...");
                 var serverProxyFactory = new ServerProxyFactory();
-                _environmentConnection = serverProxyFactory.New(ServerEndpoint);
+                _environmentConnection = serverProxyFactory.New(_serverEndpoint);
                 Task<bool> connectTask = TryConnectingToWarewolfServer(_environmentConnection);
                 if (connectTask.Result is false)
                 {
@@ -93,12 +93,12 @@ namespace Warewolf.Driver.Resume
             try
             {
                 var connectTask = environmentConnection.ConnectAsync(Guid.Empty);
-                connectTask.Wait();
+                connectTask.Wait(600);
                 return connectTask;
             }
             catch (Exception ex)
             {
-                _logger.Error("Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.InnerException + " " + ex.InnerException);
+                _logger.Error("Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message + " " + ex.InnerException);
                 return Task.FromResult(false);
             }
         }
