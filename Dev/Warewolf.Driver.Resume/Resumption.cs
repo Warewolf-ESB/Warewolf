@@ -45,7 +45,7 @@ namespace Warewolf.Driver.Resume
         {
             get
             {
-                _serverEndpoint = new Uri($"https://{Environment.MachineName}:3143");
+                _serverEndpoint = new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
                 return _serverEndpoint;
             }
         }
