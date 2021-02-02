@@ -1248,9 +1248,8 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void ViewSwagger(string resourceName, string resourcePath, Uri webServerUri, bool isFolder)
+        public void ViewSwagger(string resourceName, string resourcePath, Uri webServerUri)
         {
-            //ViewSwagger(resourceName, resourcePath, webServerUri);
             var relativeUrl = "";
             if (!string.IsNullOrWhiteSpace(resourcePath))
                 relativeUrl = $"/secure/{resourcePath}.api";
@@ -1260,17 +1259,6 @@ namespace Dev2.Studio.ViewModels
             Uri.TryCreate(webServerUri, relativeUrl, out Uri url);
             BrowserPopupController.ShowPopup(url.ToString());
         }
-
-        // void ViewSwagger(string resourceName, string resourcePath, Uri webServerUri)
-        // {
-        //     // var environmentModel = ServerRepository.Get(environmentId);
-        //     // var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
-        //     // var workflowUri = contextualResourceModel.GetWorkflowUri("", UrlType.API);
-        //     // if (workflowUri != null)
-        //     // {
-        //     //     BrowserPopupController.ShowPopup(workflowUri.ToString());
-        //     // }
-        // }
 
         public void ViewApisJson(string resourcePath, Uri webServerUri)
         {
