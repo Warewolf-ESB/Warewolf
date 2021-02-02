@@ -71,7 +71,6 @@ namespace HangfireServer
                 var backgroundJobId = context.BackgroundJob.Id;
                 var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
                 var resumption = resumptionFactory.New();
-                _logger.Info("Performing Resume of job {0}, connecting to server....", backgroundJobId);
                 if (resumption.Connect(_logger))
                 {
                     _logger.Info("Performing Resume of job {0}, connection established.", backgroundJobId);
@@ -111,7 +110,8 @@ namespace HangfireServer
                 NextActivityId = startActivityId?.ToString(),
                 AuditDate = DateTime.Now,
                 AuditType = "LogResumeExecutionState",
-                LogLevel = LogLevel.Info
+                LogLevel = LogLevel.Info,
+                ExecutingUser = currentuserprincipal.ToString()
             };
             _logger.LogResumedExecution(audit);
         }
@@ -119,7 +119,6 @@ namespace HangfireServer
         public void OnPerformed(PerformedContext context)
         {
             _hangfireLogger.InfoFormat("Job {0} has been performed", context.BackgroundJob.Id);
-            _logger.Info("Job {0} has been performed", context.BackgroundJob.Id);
         }
 
         public void OnStateElection(ElectStateContext context)
@@ -135,18 +134,11 @@ namespace HangfireServer
                     context.BackgroundJob.Id,
                     failedState.Exception);
             }
-
-            _logger.Info("Job {0} On State Election ", context.BackgroundJob.Id, context.CandidateState);
         }
 
         public void OnStateApplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
         {
             _hangfireLogger.InfoFormat(
-                "Job {0} state was changed from {1} to {2}",
-                context.BackgroundJob.Id,
-                context.OldStateName,
-                context.NewState.Name);
-            _logger.Info(
                 "Job {0} state was changed from {1} to {2}",
                 context.BackgroundJob.Id,
                 context.OldStateName,
@@ -157,9 +149,6 @@ namespace HangfireServer
         {
             _hangfireLogger.InfoFormat(
                 "Job {0} state {1} was not applied.",
-                context.BackgroundJob.Id,
-                context.OldStateName);
-            _logger.Info("Job {0} state {1} was not applied.",
                 context.BackgroundJob.Id,
                 context.OldStateName);
         }
