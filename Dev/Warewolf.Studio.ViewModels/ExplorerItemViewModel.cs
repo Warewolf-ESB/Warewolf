@@ -240,7 +240,7 @@ namespace Warewolf.Studio.ViewModels
 
             ViewSwaggerCommand = new DelegateCommand(o =>
             {
-                _explorerItemViewModelCommandController.ViewSwaggerCommand(ResourceName, ResourcePath, Server.Connection.WebServerUri, IsFolder);
+                _explorerItemViewModelCommandController.ViewSwaggerCommand(ResourceName, ResourcePath, Server.Connection.WebServerUri);
             });
             MergeCommand = new DelegateCommand(o =>
             {

@@ -52,10 +52,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                 isPublic = false;
             }
 
-            ResponseWriter(basePath, isPublic, ctx);
+            WriteReponses(basePath, isPublic, ctx);
         }
 
-        void ResponseWriter(string basePath, bool isPublic, ICommunicationContext ctx)
+        void WriteReponses(string basePath, bool isPublic, ICommunicationContext ctx)
         {
             var webPath = basePath.Replace("\\", "/");
             var searchPath = basePath.Replace("/", "\\").Replace(".api", "");
@@ -67,14 +67,27 @@ namespace Dev2.Runtime.WebServer.Handlers
             var builder = new StringBuilder();
             foreach (var resource in resourceList)
             {
+                var resourceName = $"{resource.ResourceName}.api";
+                var resourceBasePath = basePath;
+                
+                if (basePath.EndsWith(resourceName))
+                    resourceBasePath = resourceBasePath.Replace(resourceName, "").TrimEnd('/');
+                
                 var requestVariables = new NameValueCollection
                 {
-                    {"servicename", $"{basePath.Replace(".api", "")}/{resource.ResourceName}.api"},
+                    {"servicename", $"{resourceBasePath.Replace(".api", "")}/{resource.ResourceName}.api"},
                     {"isPublic", isPublic.ToString()}
                 };
 
-                var uri = new Uri($"{ctx.Request.Uri.ToString().Replace(".api", "")}/{resource.ResourceName}.api");
-                var req = new HttpRequestMessage(HttpMethod.Get, uri) { Content = ctx.Request.Request.Content };
+                var filePath1 = ctx.Request.Uri.ToString();
+                filePath1 = filePath1.Substring(0, filePath1.IndexOf("secure", StringComparison.Ordinal) + 6);
+
+                var filePath2 = resource.FilePath;
+                filePath2 = filePath2.Substring(filePath2.IndexOf("Resources", StringComparison.Ordinal) + 10)
+                    .Replace(".bite", ".api");
+
+                var uri = new Uri($"{filePath1}/{filePath2}");
+                var req = new HttpRequestMessage(HttpMethod.Get, uri) {Content = ctx.Request.Request.Content};
                 var context = new WebServerContext(req, requestVariables) {Request = {User = ctx.Request.User}};
 
                 var request = new WebGetRequestHandler(_resourceCatalog, _testCatalog, _testCoverageCatalog);
@@ -85,6 +98,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     builder.AppendLine(val);
                 }).Wait();
             }
+
             ctx.Send(new StringResponseWriter(builder.ToString(), "application/json"));
         }
     }
