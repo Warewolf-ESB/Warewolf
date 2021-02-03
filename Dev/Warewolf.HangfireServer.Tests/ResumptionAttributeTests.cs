@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Text;
 using Dev2.Communication;
 using Hangfire;
@@ -29,6 +30,7 @@ namespace Warewolf.HangfireServer.Tests
     [DoNotParallelize]
     public class ResumptionAttributeTests
     {
+        string currentuserprincipal = WindowsIdentity.GetCurrent().Name;
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ResumptionAttribute))]
@@ -44,7 +46,8 @@ namespace Warewolf.HangfireServer.Tests
                 {"resourceID", new StringBuilder(workflowId)},
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
-                {"versionNumber", new StringBuilder(startActivityId)}
+                {"versionNumber", new StringBuilder(startActivityId)},
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
 
             var jobId = Guid.NewGuid().ToString();
@@ -91,7 +94,8 @@ namespace Warewolf.HangfireServer.Tests
                 {"resourceID", new StringBuilder(workflowId)},
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
-                {"versionNumber", new StringBuilder(startActivityId)}
+                {"versionNumber", new StringBuilder(startActivityId)},
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
 
             var jobId = Guid.NewGuid().ToString();
@@ -129,12 +133,14 @@ namespace Warewolf.HangfireServer.Tests
             const string versionNumber = "0";
             var startActivityId = Guid.NewGuid().ToString();
 
+
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(workflowId)},
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
-                {"versionNumber", new StringBuilder(startActivityId)}
+                {"versionNumber", new StringBuilder(startActivityId)},
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
 
             var jobId = Guid.NewGuid().ToString();
