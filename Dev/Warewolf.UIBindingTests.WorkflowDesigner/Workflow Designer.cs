@@ -645,8 +645,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("WorkflowDesignerModel_ViewSwaggerCommand")]
-        public void WorkflowDesignerViewModel_ViewSwaggerCommand_CanExecute()
+        [TestCategory("WorkflowDesignerModel_ViewOpenAPICommand")]
+        public void WorkflowDesignerViewModel_ViewOpenAPICommand_CanExecute()
         {
             //------------Setup for test--------------------------
             var workflow = new ActivityBuilder

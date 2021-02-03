@@ -182,7 +182,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
-        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceSwagger_ShouldSetDataObjectAsSwagger()
+        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceOpenAPI_ShouldSetDataObjectAsOpenAPI()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -2090,7 +2090,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
-        public void AbstractWebRequestHandler_SetEmitionType_GivenServiceNameEndsWithapi_ShouldSetDataObjectContentTypeSwagger()
+        public void AbstractWebRequestHandler_SetEmitionType_GivenServiceNameEndsWithapi_ShouldSetDataObjectContentTypeOpenAPI()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.api";

@@ -30,7 +30,7 @@ namespace Dev2.Runtime.WebServer.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ExecutionDtoExtensions))]
-        public void ExecutionDtoExtensions_CreateResponseWriter_NotWasInternalService_And_EmitionTypesSWAGGER_Success()
+        public void ExecutionDtoExtensions_CreateResponseWriter_NotWasInternalService_And_EmitionTypesOPENAPI_Success()
         {
             //-------------------------------Arrange----------------------------------
             var mockDataObject = new Mock<IDSFDataObject>();

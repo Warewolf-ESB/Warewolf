@@ -465,11 +465,11 @@ namespace Dev2
             }
 
             Uri.TryCreate(webServerUrl, UriKind.RelativeOrAbsolute, out Uri url);
-            var jsonSwaggerInfoObject = BuildJsonSwaggerInfoObject(resource);
-            var jsonSwaggerServerObject = BuildJsonSwaggerServerObject(url);
-            var jsonSwaggerPathObject = BuildJsonSwaggerPathObject(url, dataList);
-            var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerServerObject, jsonSwaggerPathObject);
-            var resultString = GetSerializedSwaggerObject(jsonSwaggerObject);
+            var jsonOpenAPIInfoObject = BuildJsonOpenAPIInfoObject(resource);
+            var jsonOpenAPIServerObject = BuildJsonOpenAPIServerObject(url);
+            var jsonOpenAPIPathObject = BuildJsonOpenAPIPathObject(url, dataList);
+            var jsonOpenAPIObject = BuildJsonOpenAPIObject(jsonOpenAPIInfoObject, jsonOpenAPIServerObject, jsonOpenAPIPathObject);
+            var resultString = GetSerializedOpenAPIObject(jsonOpenAPIObject);
             return resultString;
         }
 
@@ -492,7 +492,7 @@ namespace Dev2
                     .Replace(".bite", ".api");
 
                 Uri.TryCreate($"{filePath1}/{filePath2}", UriKind.RelativeOrAbsolute, out Uri url);
-                paths.Add(BuildJsonSwaggerPathObject(url, resource.DataList.ToString()));
+                paths.Add(BuildJsonOpenAPIPathObject(url, resource.DataList.ToString()));
             }
             
             var info =  new JObject
@@ -502,65 +502,65 @@ namespace Dev2
                 {"version", "1"}
             };
             
-            var jsonSwaggerObject = new JObject
+            var jsonOpenAPIObject = new JObject
             {
                 {"openapi", new JValue(EnvironmentVariables.OpenAPiVersion)},
                 {"info", info},
-                {"servers", new JArray(BuildJsonSwaggerServerObject(new Uri(webServerUrl)))},
+                {"servers", new JArray(BuildJsonOpenAPIServerObject(new Uri(webServerUrl)))},
                 {"paths", new JArray(paths)}
             };
-            return GetSerializedSwaggerObject(jsonSwaggerObject);
+            return GetSerializedOpenAPIObject(jsonOpenAPIObject);
         }
 
-        static string GetSerializedSwaggerObject(JObject jsonSwaggerObject)
+        static string GetSerializedOpenAPIObject(JObject jsonOpenAPIObject)
         {
             var converter = new JsonSerializer();
             var result = new StringBuilder();
             var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) {Formatting = Newtonsoft.Json.Formatting.Indented};
-            converter.Serialize(jsonTextWriter, jsonSwaggerObject);
+            converter.Serialize(jsonTextWriter, jsonOpenAPIObject);
             jsonTextWriter.Flush();
             var resultString = Regex.Replace(result.ToString(), @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
             return resultString;
         }
 
-        static JObject BuildJsonSwaggerObject(JObject jsonSwaggerInfoObject, JObject jsonSwaggerServerObject, JObject jsonSwaggerPathObject)
+        static JObject BuildJsonOpenAPIObject(JObject jsonOpenAPIInfoObject, JObject jsonOpenAPIServerObject, JObject jsonOpenAPIPathObject)
         {
-            var jsonSwaggerObject = new JObject
+            var jsonOpenAPIObject = new JObject
             {
                 {"openapi", new JValue(EnvironmentVariables.OpenAPiVersion)},
-                {"info", jsonSwaggerInfoObject},
-                {"servers", new JArray(jsonSwaggerServerObject)},
-                {"paths", jsonSwaggerPathObject}
+                {"info", jsonOpenAPIInfoObject},
+                {"servers", new JArray(jsonOpenAPIServerObject)},
+                {"paths", jsonOpenAPIPathObject}
             };
-            return jsonSwaggerObject;
+            return jsonOpenAPIObject;
         }
 
-        static JObject BuildJsonSwaggerServerObject(Uri url)
+        static JObject BuildJsonOpenAPIServerObject(Uri url)
         {
-            var jsonSwaggerServerObject = new JObject
+            var jsonOpenAPIServerObject = new JObject
             {
                 {"url", new JValue(url.Scheme + "://" + url.Host)}
             };
-            return jsonSwaggerServerObject;
+            return jsonOpenAPIServerObject;
         }
 
-        static JObject BuildJsonSwaggerInfoObject(IWarewolfResource resource)
+        static JObject BuildJsonOpenAPIInfoObject(IWarewolfResource resource)
         {
             var versionValue = resource.VersionInfo != null ? new JValue(resource.VersionInfo.VersionNumber) : new JValue("1.0.0");
 
-            var jsonSwaggerInfoObject = new JObject
+            var jsonOpenAPIInfoObject = new JObject
             {
                 {"title", new JValue(resource.ResourceName)},
                 {"description", new JValue(resource.ResourceName)},
                 {"version", versionValue}
             };
-            return jsonSwaggerInfoObject;
+            return jsonOpenAPIInfoObject;
         }
 
-        static JObject BuildJsonSwaggerPathObject(Uri path, string dataList)
+        static JObject BuildJsonOpenAPIPathObject(Uri path, string dataList)
         {
             var parametersObject = BuildParametersObject(dataList);
-            var responseObject = BuildJsonSwaggerResponsesObject(dataList);
+            var responseObject = BuildJsonOpenAPIResponsesObject(dataList);
             var pathGetObject = new JObject
             {
                 {
@@ -633,9 +633,9 @@ namespace Dev2
             return definitionObject;
         }
 
-        static JObject BuildJsonSwaggerResponsesObject(string dataList)
+        static JObject BuildJsonOpenAPIResponsesObject(string dataList)
         {
-            var jsonSwaggerResponsesObject = new JObject
+            var jsonOpenAPIResponsesObject = new JObject
             {
                 {
                     "200", new JObject
@@ -652,7 +652,7 @@ namespace Dev2
                     }
                 }
             };
-            return jsonSwaggerResponsesObject;
+            return jsonOpenAPIResponsesObject;
         }
 
         private static JToken BuildResponseSchema(string dataList)
