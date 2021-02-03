@@ -560,12 +560,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
 
             //act
-            _target.ViewSwaggerCommand.Execute(null);
+            _target.ViewOpenAPICommand.Execute(null);
             Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
 
             //assert
 
-            _shellViewModelMock.Verify(it => it.ViewSwagger(_target.ResourceName, _target.ResourcePath, _target.Server.Connection.WebServerUri));
+            _shellViewModelMock.Verify(it => it.ViewOpenAPI(_target.ResourceName, _target.ResourcePath, _target.Server.Connection.WebServerUri));
         }
 
         [TestMethod]
@@ -1202,7 +1202,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
             var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
             var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
-            var canViewSwaggerCommand = _target.ViewSwaggerCommand.CanExecute(null);
+            var canViewSwaggerCommand = _target.ViewOpenAPICommand.CanExecute(null);
             var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
 
             //act
@@ -2152,7 +2152,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(_target.IsService);
-            Assert.IsTrue(_target.CanViewSwagger);
+            Assert.IsTrue(_target.CanViewOpenAPI);
             Assert.IsTrue(_target.CanViewApisJson);
         }
 
@@ -2169,7 +2169,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(_target.IsFolder);
-            Assert.IsFalse(_target.CanViewSwagger);
+            Assert.IsFalse(_target.CanViewOpenAPI);
             Assert.IsTrue(_target.CanViewApisJson);
         }
 
@@ -2227,7 +2227,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(_target.IsFolder);
-            Assert.IsFalse(_target.CanViewSwagger);
+            Assert.IsFalse(_target.CanViewOpenAPI);
             Assert.IsTrue(_target.CanViewApisJson);
         }
 

@@ -694,8 +694,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            viewModel.ViewSwaggerCommand.Execute(null);
-            Assert.IsTrue(viewModel.ViewSwaggerCommand.CanExecute(null));
+            viewModel.ViewOpenAPICommand.Execute(null);
+            Assert.IsTrue(viewModel.ViewOpenAPICommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -1042,8 +1042,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             Assert.IsFalse(workflowDesigner.CanCopyUrl);
             Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.CopyUrlTooltip);
 
-            Assert.IsFalse(workflowDesigner.CanViewSwagger);
-            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ViewSwaggerTooltip);
+            Assert.IsFalse(workflowDesigner.CanViewOpenAPI);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ViewOpenAPITooltip);
 
             Assert.IsFalse(workflowDesigner.CanShowDependencies);
             Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ShowDependenciesTooltip);

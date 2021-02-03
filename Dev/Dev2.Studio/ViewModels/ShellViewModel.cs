@@ -1248,7 +1248,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void ViewSwagger(string resourceName, string resourcePath, Uri webServerUri)
+        public void ViewOpenAPI(string resourceName, string resourcePath, Uri webServerUri)
         {
             var relativeUrl = "";
             if (!string.IsNullOrWhiteSpace(resourcePath))

@@ -1464,7 +1464,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("o", result);
             Assert.IsFalse(sut.IsServiceTestExecution);
             Assert.IsNull(sut.TestName);
-            Assert.AreEqual(Web.EmitionTypes.SWAGGER, sut.ReturnType);
+            Assert.AreEqual(Web.EmitionTypes.OPENAPI, sut.ReturnType);
         }
 
         [TestMethod]

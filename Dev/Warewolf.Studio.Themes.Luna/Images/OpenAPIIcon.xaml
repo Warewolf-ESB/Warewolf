@@ -4,7 +4,7 @@
     <ResourceDictionary Source="../Common/Brushes.xaml" />
   </ResourceDictionary.MergedDictionaries>
   
-  <DrawingImage x:Key="SwaggerIcon">
+  <DrawingImage x:Key="OpenAPIIcon">
     <DrawingImage.Drawing>
       <DrawingGroup>
         <DrawingGroup.Children>

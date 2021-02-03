@@ -16,21 +16,22 @@ using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
+using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
-    public class GetSwaggerServiceHandler : AbstractWebRequestHandler
+    public class GetOpenAPIServiceHandler : AbstractWebRequestHandler
     {
         static IAuthorizationService _authorizationService;
         static IResourceCatalog _resourceCatalog;
 
-        public GetSwaggerServiceHandler()
+        public GetOpenAPIServiceHandler()
             : this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
         {
         }
 
 #pragma warning disable S3010 // Used by tests for constructor injection
-        public GetSwaggerServiceHandler(IResourceCatalog catalog, IAuthorizationService auth)
+        public GetOpenAPIServiceHandler(IResourceCatalog catalog, IAuthorizationService auth)
             : base(ResourceCatalog.Instance, TestCatalog.Instance, TestCoverageCatalog.Instance,
                 new DefaultEsbChannelFactory(), new SecuritySettings())
         {
@@ -65,40 +66,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                     resource.ResourceType == "WorkflowService").ToList();
 
             var builder = new StringBuilder();
-            foreach (var resource in resourceList)
-            {
-                var resourceName = $"{resource.ResourceName}.api";
-                var resourceBasePath = basePath;
-                
-                if (basePath.EndsWith(resourceName))
-                    resourceBasePath = resourceBasePath.Replace(resourceName, "").TrimEnd('/');
-                
-                var requestVariables = new NameValueCollection
-                {
-                    {"servicename", $"{resourceBasePath.Replace(".api", "")}/{resource.ResourceName}.api"},
-                    {"isPublic", isPublic.ToString()}
-                };
-
-                var filePath1 = ctx.Request.Uri.ToString();
-                filePath1 = filePath1.Substring(0, filePath1.IndexOf("secure", StringComparison.Ordinal) + 6);
-
-                var filePath2 = resource.FilePath;
-                filePath2 = filePath2.Substring(filePath2.IndexOf("Resources", StringComparison.Ordinal) + 10)
-                    .Replace(".bite", ".api");
-
-                var uri = new Uri($"{filePath1}/{filePath2}");
-                var req = new HttpRequestMessage(HttpMethod.Get, uri) {Content = ctx.Request.Request.Content};
-                var context = new WebServerContext(req, requestVariables) {Request = {User = ctx.Request.User}};
-
-                var request = new WebGetRequestHandler(_resourceCatalog, _testCatalog, _testCoverageCatalog);
-                request.ProcessRequest(context);
-                Task.Run(async () =>
-                {
-                    var val = await context.Response.Response.Content.ReadAsStringAsync();
-                    builder.AppendLine(val);
-                }).Wait();
-            }
-
+            var val = ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(new List<IWarewolfResource>(resourceList), ctx.Request.Uri.ToString());
+            builder.AppendLine(val);
+            
             ctx.Send(new StringResponseWriter(builder.ToString(), "application/json"));
         }
     }

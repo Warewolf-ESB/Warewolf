@@ -163,14 +163,14 @@
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Name="ViewSwagger"
-                          Command="{Binding ViewSwaggerCommand}"
-                          Header="View Swagger" 
-                          IsEnabled="{Binding CanViewSwagger}"
+                <MenuItem Name="ViewOpenAPI"
+                          Command="{Binding ViewOpenAPICommand}"
+                          Header="View OpenAPI" 
+                          IsEnabled="{Binding CanViewOpenAPI}"
                           Style="{StaticResource MenuItemStyle}"
-                          ToolTip="{Binding ViewSwaggerTooltip}">
+                          ToolTip="{Binding ViewOpenAPITooltip}">
                     <MenuItem.Icon>
-                        <Image Style="{StaticResource ViewSwaggerIcon}" Margin="-2,-2,0,0"/>
+                        <Image Style="{StaticResource ViewOpenAPIIcon}" Margin="-2,-2,0,0"/>
                     </MenuItem.Icon>
                 </MenuItem>
 

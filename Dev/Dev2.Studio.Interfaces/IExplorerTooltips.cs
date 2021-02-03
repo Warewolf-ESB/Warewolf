@@ -43,7 +43,7 @@ namespace Dev2.Studio.Interfaces
         string RunAllTestsTooltip { get; set; }
         string DeployTooltip { get; set; }
         string DependenciesTooltip { get; set; }
-        string ViewSwaggerTooltip { get; set; }
+        string ViewOpenAPITooltip { get; set; }
         string ViewApisJsonTooltip { get; set; }
         string ShowHideVersionsTooltip { get; set; }
         string RollbackTooltip { get; set; }

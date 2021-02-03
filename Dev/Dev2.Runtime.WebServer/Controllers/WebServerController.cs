@@ -31,13 +31,13 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("Services/{*__name__}")]
-        public HttpResponseMessage ExecuteService(string __name__) => ExecuteWorkflow(__name__, false, false);
+        public HttpResponseMessage ExecuteService(string name) => ExecuteWorkflow(name, false, false);
 
-        HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic, bool isUrlWithTokenPrefix)
+        HttpResponseMessage ExecuteWorkflow(string name, bool isPublic, bool isUrlWithTokenPrefix)
         {
-            if (__name__.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
+            if (name.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
             {
-                var path = __name__.Split(new[] {"/apis.json"}, StringSplitOptions.RemoveEmptyEntries);
+                var path = name.Split(new[] {"/apis.json"}, StringSplitOptions.RemoveEmptyEntries);
                 if (path.Any() && path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
                 {
                     path[0] = null;
@@ -51,9 +51,9 @@ namespace Dev2.Runtime.WebServer.Controllers
                 return ProcessRequest<GetApisJsonServiceHandler>(requestVar, isUrlWithTokenPrefix);
             }
 
-            if (__name__.EndsWith(".api", StringComparison.OrdinalIgnoreCase))
+            if (name.EndsWith(".api", StringComparison.OrdinalIgnoreCase))
             {
-                var path = __name__.Split(new[] {"/.api"}, StringSplitOptions.RemoveEmptyEntries);
+                var path = name.Split(new[] {"/.api"}, StringSplitOptions.RemoveEmptyEntries);
                 if (path.Any() && path[0].Equals(".api", StringComparison.OrdinalIgnoreCase))
                 {
                     path[0] = null;
@@ -61,18 +61,18 @@ namespace Dev2.Runtime.WebServer.Controllers
             
                 var requestVar = new NameValueCollection
                 {
-                    {"servicename", __name__},
+                    {"servicename", name},
                     {"path", path[0]},
                     {"isPublic", isPublic.ToString()}
                 };
-                return ProcessRequest<GetSwaggerServiceHandler>(requestVar, isUrlWithTokenPrefix);
+                return ProcessRequest<GetOpenAPIServiceHandler>(requestVar, isUrlWithTokenPrefix);
             }
             
             var requestVariables = new NameValueCollection
             {
-                {"servicename", __name__},
+                {"servicename", name},
             };
-            if (__name__.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
+            if (name.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
             {
                 requestVariables.Add("isPublic", isPublic.ToString());
                 requestVariables.Add("IsDebug", true.ToString());
@@ -83,11 +83,11 @@ namespace Dev2.Runtime.WebServer.Controllers
                 : ProcessRequest<WebGetRequestHandler>(requestVariables, isUrlWithTokenPrefix);
         }
 
-        public HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
+        public HttpResponseMessage ExecuteFolderTests(string url, bool isPublic)
         {
             var requestVariables = new NameValueCollection
             {
-                {"path", __url__},
+                {"path", url},
                 {"isPublic", isPublic.ToString()},
                 {"servicename", "*"}
             };
@@ -99,7 +99,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("Secure/{*__name__}")]
-        public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
+        public HttpResponseMessage ExecuteSecureWorkflow(string name)
         {
             if (Request?.RequestUri != null)
             {
@@ -115,13 +115,13 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
             }
 
-            return ExecuteWorkflow(__name__, false, false);
+            return ExecuteWorkflow(name, false, false);
         }
 
         [HttpGet]
         [HttpPost]
         [Route("Public/{*__name__}")]
-        public HttpResponseMessage ExecutePublicWorkflow(string __name__)
+        public HttpResponseMessage ExecutePublicWorkflow(string name)
         {
             if (Request?.RequestUri != null)
             {
@@ -132,15 +132,15 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
             }
 
-            return ExecuteWorkflow(__name__, true, false);
+            return ExecuteWorkflow(name, true, false);
         }
 
         [HttpGet]
         [HttpPost]
         [Route("Token/{*__name__}")]
-        public HttpResponseMessage ExecutePublicTokenWorkflow(string __name__)
+        public HttpResponseMessage ExecutePublicTokenWorkflow(string name)
         {
-            return ExecuteWorkflow(__name__, false, true);
+            return ExecuteWorkflow(name, false, true);
         }
 
         [HttpGet]

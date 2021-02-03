@@ -452,7 +452,7 @@ namespace Dev2
             return xml.ToString();
         }
 
-        public static string GetSwaggerOutputForService(IWarewolfResource resource, string dataList, string webServerUrl)
+        public static string GetOpenAPIOutputForService(IWarewolfResource resource, string dataList, string webServerUrl)
         {
             if (resource == null)
             {
@@ -471,6 +471,45 @@ namespace Dev2
             var jsonSwaggerObject = BuildJsonSwaggerObject(jsonSwaggerInfoObject, jsonSwaggerServerObject, jsonSwaggerPathObject);
             var resultString = GetSerializedSwaggerObject(jsonSwaggerObject);
             return resultString;
+        }
+
+        public static string GetOpenAPIOutputForServiceList(IList<IWarewolfResource> resourceList,
+            string webServerUrl)
+        {
+            if (resourceList == null)
+            {
+                throw new ArgumentNullException(nameof(resourceList));
+            }
+            
+            var paths = new List<JObject>();
+            foreach (var resource in resourceList)
+            {
+                var filePath1 = webServerUrl;
+                filePath1 = filePath1.Substring(0, filePath1.IndexOf("secure", StringComparison.Ordinal) + 6);
+
+                var filePath2 = resource.FilePath;
+                filePath2 = filePath2.Substring(filePath2.IndexOf("Resources", StringComparison.Ordinal) + 10)
+                    .Replace(".bite", ".api");
+
+                Uri.TryCreate($"{filePath1}/{filePath2}", UriKind.RelativeOrAbsolute, out Uri url);
+                paths.Add(BuildJsonSwaggerPathObject(url, resource.DataList.ToString()));
+            }
+            
+            var info =  new JObject
+            {
+                {"title", new JValue(webServerUrl)},
+                {"description", new JValue(webServerUrl)},
+                {"version", "1"}
+            };
+            
+            var jsonSwaggerObject = new JObject
+            {
+                {"openapi", new JValue(EnvironmentVariables.OpenAPiVersion)},
+                {"info", info},
+                {"servers", new JArray(BuildJsonSwaggerServerObject(new Uri(webServerUrl)))},
+                {"paths", new JArray(paths)}
+            };
+            return GetSerializedSwaggerObject(jsonSwaggerObject);
         }
 
         static string GetSerializedSwaggerObject(JObject jsonSwaggerObject)
