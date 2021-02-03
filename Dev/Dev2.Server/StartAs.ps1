@@ -33,9 +33,15 @@ if ($Cleanup.IsPresent) {
 	)
 }
 if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
+	if (!(Test-Path C:\programdata\Warewolf)) {
+		New-Item -ItemType Directory -path C:\programdata\Warewolf
+	}
 	Copy-Item -Path "$ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse -Force
 } else {
     if ($ResourcesPath -and (Test-Path "$PSScriptRoot\Resources - $ResourcesPath\Resources")) {
+		if (!(Test-Path C:\programdata\Warewolf)) {
+			New-Item -ItemType Directory -path C:\programdata\Warewolf
+        }
 	    Copy-Item -Path "$PSScriptRoot\Resources - $ResourcesPath\*" -Destination C:\programdata\Warewolf -Recurse -Force
     } else {
 	    if ($ResourcesPath) {
