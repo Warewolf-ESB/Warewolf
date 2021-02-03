@@ -31,13 +31,13 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("Services/{*__name__}")]
-        public HttpResponseMessage ExecuteService(string name) => ExecuteWorkflow(name, false, false);
+        public HttpResponseMessage ExecuteService(string __name__) => ExecuteWorkflow(__name__, false, false);
 
-        HttpResponseMessage ExecuteWorkflow(string name, bool isPublic, bool isUrlWithTokenPrefix)
+        HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic, bool isUrlWithTokenPrefix)
         {
-            if (name.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
+            if (__name__.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
             {
-                var path = name.Split(new[] {"/apis.json"}, StringSplitOptions.RemoveEmptyEntries);
+                var path = __name__.Split(new[] {"/apis.json"}, StringSplitOptions.RemoveEmptyEntries);
                 if (path.Any() && path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
                 {
                     path[0] = null;
@@ -51,9 +51,9 @@ namespace Dev2.Runtime.WebServer.Controllers
                 return ProcessRequest<GetApisJsonServiceHandler>(requestVar, isUrlWithTokenPrefix);
             }
 
-            if (name.EndsWith(".api", StringComparison.OrdinalIgnoreCase))
+            if (__name__.EndsWith(".api", StringComparison.OrdinalIgnoreCase))
             {
-                var path = name.Split(new[] {"/.api"}, StringSplitOptions.RemoveEmptyEntries);
+                var path = __name__.Split(new[] {"/.api"}, StringSplitOptions.RemoveEmptyEntries);
                 if (path.Any() && path[0].Equals(".api", StringComparison.OrdinalIgnoreCase))
                 {
                     path[0] = null;
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             
                 var requestVar = new NameValueCollection
                 {
-                    {"servicename", name},
+                    {"servicename", __name__},
                     {"path", path[0]},
                     {"isPublic", isPublic.ToString()}
                 };
@@ -70,9 +70,9 @@ namespace Dev2.Runtime.WebServer.Controllers
             
             var requestVariables = new NameValueCollection
             {
-                {"servicename", name},
+                {"servicename", __name__},
             };
-            if (name.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
+            if (__name__.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
             {
                 requestVariables.Add("isPublic", isPublic.ToString());
                 requestVariables.Add("IsDebug", true.ToString());
@@ -99,7 +99,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("Secure/{*__name__}")]
-        public HttpResponseMessage ExecuteSecureWorkflow(string name)
+        public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
         {
             if (Request?.RequestUri != null)
             {
@@ -115,13 +115,13 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
             }
 
-            return ExecuteWorkflow(name, false, false);
+            return ExecuteWorkflow(__name__, false, false);
         }
 
         [HttpGet]
         [HttpPost]
         [Route("Public/{*__name__}")]
-        public HttpResponseMessage ExecutePublicWorkflow(string name)
+        public HttpResponseMessage ExecutePublicWorkflow(string __name__)
         {
             if (Request?.RequestUri != null)
             {
@@ -132,15 +132,15 @@ namespace Dev2.Runtime.WebServer.Controllers
                 }
             }
 
-            return ExecuteWorkflow(name, true, false);
+            return ExecuteWorkflow(__name__, true, false);
         }
 
         [HttpGet]
         [HttpPost]
         [Route("Token/{*__name__}")]
-        public HttpResponseMessage ExecutePublicTokenWorkflow(string name)
+        public HttpResponseMessage ExecutePublicTokenWorkflow(string __name__)
         {
-            return ExecuteWorkflow(name, false, true);
+            return ExecuteWorkflow(__name__, false, true);
         }
 
         [HttpGet]
