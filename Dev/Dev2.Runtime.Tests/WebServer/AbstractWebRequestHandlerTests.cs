@@ -222,7 +222,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
 
-            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Once);
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.OPENAPI, Times.Once);
         }
 
         [TestMethod]
@@ -2104,7 +2104,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
-            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.OPENAPI, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual("hello World", emitionType);
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);

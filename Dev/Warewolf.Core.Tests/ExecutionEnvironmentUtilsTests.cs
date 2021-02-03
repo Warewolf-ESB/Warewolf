@@ -31,7 +31,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            ExecutionEnvironmentUtils.GetSwaggerOutputForService(null, "", "");
+            ExecutionEnvironmentUtils.GetOpenAPIOutputForService(null, "", "");
             //------------Assert Results-------------------------
         }
 
@@ -44,7 +44,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            ExecutionEnvironmentUtils.GetSwaggerOutputForService(new Mock<IResource>().Object, "", "");
+            ExecutionEnvironmentUtils.GetOpenAPIOutputForService(new Mock<IResource>().Object, "", "");
             //------------Assert Results-------------------------
         }
 
@@ -57,7 +57,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            ExecutionEnvironmentUtils.GetSwaggerOutputForService(new Mock<IResource>().Object, null, "");
+            ExecutionEnvironmentUtils.GetOpenAPIOutputForService(new Mock<IResource>().Object, null, "");
             //------------Assert Results-------------------------
         }
 
@@ -79,7 +79,7 @@ namespace Dev2.Tests
             const string expectedEmptyResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{}}}}}}}}}}";
 
             //------------Execute Test---------------------------
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetOpenAPIOutputForService(mockResource.Object, "<DataList></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
             StringAssert.Contains(swaggerOutputForService, expectedOpenapi);
             StringAssert.Contains(swaggerOutputForService, expectedInfo);
@@ -105,7 +105,7 @@ namespace Dev2.Tests
             const string expectedEmptyResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{}}}}}}}}}}";
 
             //------------Execute Test---------------------------
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetOpenAPIOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
             StringAssert.Contains(swaggerOutputForService, expectedOpenapi);
             StringAssert.Contains(swaggerOutputForService, expectedInfo);
@@ -131,7 +131,7 @@ namespace Dev2.Tests
             const string expectedEmptyResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{}}}}}}}}}}";
 
             //------------Execute Test---------------------------
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetOpenAPIOutputForService(mockResource.Object, "<DataList> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
             StringAssert.Contains(swaggerOutputForService, expectedOpenapi);
             StringAssert.Contains(swaggerOutputForService, expectedInfo);
@@ -157,7 +157,7 @@ namespace Dev2.Tests
             const string expectedParameters = "\"parameters\":[{\"name\":\"Name\",\"in\":\"query\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"name\":\"rc\",\"in\":\"query\",\"required\":true,\"schema\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}}}]";
             const string expectedEmptyResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{}}}}}}}}}}";
             //------------Execute Test---------------------------
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetOpenAPIOutputForService(mockResource.Object, "<DataList><Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rc></DataList>", "https://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             //------------Assert Results-------------------------
             StringAssert.Contains(swaggerOutputForService, expectedOpenapi);
             StringAssert.Contains(swaggerOutputForService, expectedInfo);
@@ -378,7 +378,7 @@ namespace Dev2.Tests
             const string expectedParameters = "\"parameters\":[{\"name\":\"Name\",\"in\":\"query\",\"required\":true,\"schema\":{\"type\":\"string\"}}]";
             const string expectedRecordsetResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{\"rc\":{\"type\":\"object\",\"properties\":{\"test\":{\"type\":\"string\"}}}}}}}}}}}}}";
 
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList> <Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /></rc></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetOpenAPIOutputForService(mockResource.Object, "<DataList> <Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <rc Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\"><test Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /></rc></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             StringAssert.Contains(swaggerOutputForService, expectedOpenapi);
             StringAssert.Contains(swaggerOutputForService, expectedInfo);
             StringAssert.Contains(swaggerOutputForService, expectedServers);
@@ -402,7 +402,7 @@ namespace Dev2.Tests
             const string expectedParameters = "\"parameters\":[{\"name\":\"Name\",\"in\":\"query\",\"required\":true,\"schema\":{\"type\":\"string\"}}]";
             const string expectedRecordsetResponse = "\"responses\":{\"200\":{\"description\":\"Success\",\"content\":{\"application/json\":{\"schema\":{\"type\":\"object\",\"properties\":{\"Surname\":{\"type\":\"string\"}}}}}}}}}}}";
 
-            var swaggerOutputForService = ExecutionEnvironmentUtils.GetSwaggerOutputForService(mockResource.Object, "<DataList> <Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <Surname Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
+            var swaggerOutputForService = ExecutionEnvironmentUtils.GetOpenAPIOutputForService(mockResource.Object, "<DataList> <Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /> <Surname Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /></DataList>", "http://serverName:3142/public/resourceName.api").Replace(Environment.NewLine, "").Replace(" ", "");
             StringAssert.Contains(swaggerOutputForService, expectedOpenapi);
             StringAssert.Contains(swaggerOutputForService, expectedInfo);
             StringAssert.Contains(swaggerOutputForService, expectedServers);

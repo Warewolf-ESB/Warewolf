@@ -98,7 +98,7 @@
     <Compile Include="ExecutionDto.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
-    <Compile Include="Handlers\GetSwaggerServiceHandler.cs" />
+    <Compile Include="Handlers\GetOpenAPIServiceHandler.cs" />
     <Compile Include="Handlers\TokenRequestHandler.cs" />
     <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
@@ -127,7 +127,6 @@
     <Compile Include="ServiceTestExecutor.cs" />
     <Compile Include="ServiceTestModelTRXResultBuilder.cs" />
     <Compile Include="ServiceTestModelJObjectResultBuilder.cs" />
-    <Compile Include="SwaggerBuilder.cs" />
     <Compile Include="TestResults.cs" />
     <Compile Include="TransferObjects\WebRequestTO.cs" />
     <Compile Include="WebRequestExtentions.cs" />

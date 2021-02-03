@@ -343,7 +343,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     _dataObject.ExecutionException = new AccessDeniedException(errorMessage);
                 } else
                 {
-                    if (_dataObject.ReturnType != EmitionTypes.SWAGGER)
+                    if (_dataObject.ReturnType != EmitionTypes.OPENAPI)
                     {
                         Thread.CurrentPrincipal = user;
                         _executionDataListId = DoExecution(webRequest, serviceName, _workspaceGuid, _dataObject, user);

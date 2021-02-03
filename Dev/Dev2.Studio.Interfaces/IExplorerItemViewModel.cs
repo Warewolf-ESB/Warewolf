@@ -27,7 +27,7 @@ namespace Dev2.Studio.Interfaces
         bool CanView { get; set; }
         bool CanShowDependencies { get; set; }
         bool IsVersion { get; set; }
-        bool CanViewSwagger { get; set; }
+        bool CanViewOpenAPI { get; set; }
         bool CanMerge { get; set; }
         bool CanDuplicate { get; set; }
         bool CanCreateTest { get; set; }
@@ -38,7 +38,7 @@ namespace Dev2.Studio.Interfaces
         string EditToolTip { get; }
         string ActivityName { get; }
 
-        ICommand ViewSwaggerCommand { get; set; }
+        ICommand ViewOpenAPICommand { get; set; }
         ICommand MergeCommand { get; set; }
         ICommand OpenCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }
