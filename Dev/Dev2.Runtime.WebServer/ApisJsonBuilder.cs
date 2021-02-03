@@ -104,7 +104,7 @@ namespace Dev2.Runtime.WebServer
             };
             var propertyApi = new PropertyApi
             {
-                Type = "Swagger",
+                Type = "OpenAPI",
                 Value = EnvironmentVariables.PublicWebServerUri + accessPath + webPath + ".api"
             };
             singleApi.Properties.Add(propertyApi);

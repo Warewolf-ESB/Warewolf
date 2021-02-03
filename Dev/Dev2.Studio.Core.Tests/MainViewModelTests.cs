@@ -1829,8 +1829,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("MainViewModel_ViewSwagger")]
-        public void MainViewModel_ViewSwagger_Handle_Result()
+        [TestCategory("MainViewModel_ViewOpenAPI")]
+        public void MainViewModel_ViewOpenAPI_Handle_Result()
         {
             //------------Setup for test--------------------------
             CreateFullExportsAndVm();

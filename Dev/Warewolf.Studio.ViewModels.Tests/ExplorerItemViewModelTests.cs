@@ -552,7 +552,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestViewSwaggerCommand()
+        public void TestViewOpenAPICommand()
         {
             //arrange
             _target.ResourceType = "WorkflowService";
@@ -1202,7 +1202,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
             var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
             var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
-            var canViewSwaggerCommand = _target.ViewOpenAPICommand.CanExecute(null);
+            var canViewOpenAPICommand = _target.ViewOpenAPICommand.CanExecute(null);
             var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
 
             //act
@@ -1224,7 +1224,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canCreateNewSharepointSourceSourceCommand);
             Assert.IsTrue(canCreateNewDropboxSourceSourceCommand);
             Assert.IsTrue(canCreateNewRabbitMqSourceSourceCommand);
-            Assert.IsTrue(canViewSwaggerCommand);
+            Assert.IsTrue(canViewOpenAPICommand);
             Assert.IsTrue(canViewApisJsonCommand);
         }
 
@@ -2141,7 +2141,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestCanViewSwaggerIsVisible()
+        public void TestCanViewOpenAPIIsVisible()
         {
             //arrange
             _target.ResourceType = "WorkflowService";
@@ -2158,7 +2158,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Timeout(100)]
-        public void TestCanViewSwaggerIsNotVisible()
+        public void TestCanViewOpenAPIIsNotVisible()
         {
             //arrange
             _target.ResourceType = "Folder";
