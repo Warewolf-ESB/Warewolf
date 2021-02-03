@@ -99,7 +99,7 @@ if ($WarewolfServerProcess) {
 		if (!(Test-Path "$PSScriptRoot\TestResults")) {
 			New-Item -ItemType Directory "$PSScriptRoot\TestResults"
 		}
-		$CoverageConfigPath = "$PSScriptRoot\DotCover Runner.xml"
+		$CoverageConfigPath = "$PSScriptRoot\TestResults\DotCover Runner.xml"
 		@"
 <AnalyseParams>
     <TargetExecutable>$BinPath</TargetExecutable>
@@ -127,7 +127,7 @@ if ($WarewolfServerProcess) {
     </Filters>
 </AnalyseParams>
 "@ | Out-File -FilePath $CoverageConfigPath
-		$BinPath = "\`"$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe\`" cover \`"$CoverageConfigPath\`" /LogFile=\`"$ServerBinFolderPath\DotCover.log\`" --DisableNGen";
+		$BinPath = "\`"$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe\`" cover \`"$CoverageConfigPath\`" /LogFile=\`"$ServerBinFolderPath\TestResults\DotCover.log\`" --DisableNGen";
 	}
 	if ($Username) {
 		Write-Host Starting Warewolf server as $Username
