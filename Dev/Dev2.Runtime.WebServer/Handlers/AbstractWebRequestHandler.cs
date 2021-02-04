@@ -102,7 +102,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return response ?? a.BuildResponse(webRequest, serviceName);
         }
 
-        public class Executor : ExecutorBase
+        class Executor : ExecutorBase
         {
             public Executor(IWorkspaceRepository workspaceRepository, IResourceCatalog resourceCatalog, ITestCatalog testCatalog, ITestCoverageCatalog testCoverageCatalog, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, IJwtManager jwtManager)
                 : base(workspaceRepository, resourceCatalog, testCatalog, testCoverageCatalog, authorizationService, dataObjectFactory, esbChannelFactory, jwtManager)

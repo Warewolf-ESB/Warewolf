@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,11 +22,9 @@ using System.Runtime.Serialization.Json;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http.Controllers;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -45,8 +43,6 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
-using FluentAssertions.Common;
-using Microsoft.Office.SharePoint.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -56,7 +52,6 @@ using Warewolf.Security;
 using Warewolf.Services;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-using Xceed.Wpf.Toolkit.Core.Converters;
 using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Tests.Runtime.WebServer

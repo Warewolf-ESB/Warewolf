@@ -1855,10 +1855,11 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.SetupGet(server1 => server1.IsConnected).Returns(true);
             viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.ActiveServer.Connection).Returns(server.Object.Connection);
             viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
             viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
 
-            _shellViewModel.ViewOpenAPI(source.Object.ResourceName, source.Object.ResourcePath, viewModel.Object.ActiveServer.Connection.WebServerUri);
+            _shellViewModel.ViewOpenAPI(source.Object.ResourceName, source.Object.ResourcePath, new Uri("http://localhost/"));
         }
 
 
