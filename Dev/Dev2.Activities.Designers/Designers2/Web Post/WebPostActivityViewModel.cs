@@ -13,7 +13,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
@@ -193,7 +192,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             }
         }
 
-        void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageWebInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -277,7 +276,7 @@ namespace Dev2.Activities.Designers2.Web_Post
         {
             var count = ConditionExpressionOptions.Options.Count(o => o is FormDataOptionConditionExpression optionCondition && optionCondition.IsEmptyRow);
             var empty = conditionExpression.IsEmptyRow;
-            var allow = !empty || (empty && count > 1);
+            var allow = !empty || count > 1;
 
             if (_conditionExpressionOptions.Options.Count > 1 && allow)
             {
@@ -306,7 +305,7 @@ namespace Dev2.Activities.Designers2.Web_Post
 
         private void LoadConditionExpressionOptions()
         {
-            var conditionExpressionList = _modelItem.Properties["Conditions"].ComputedValue as IList<FormDataConditionExpression>;
+            var conditionExpressionList = _modelItem.Properties["Conditions"]?.ComputedValue as IList<FormDataConditionExpression>;
             if (conditionExpressionList is null)
             {
                 conditionExpressionList = new List<FormDataConditionExpression>();
@@ -319,11 +318,11 @@ namespace Dev2.Activities.Designers2.Web_Post
 
         private void LoadOptions()
         {
-            var formDataOptions = _modelItem.Properties["FormDataOptions"].ComputedValue as FormDataOptions;
+            var formDataOptions = _modelItem.Properties["FormDataOptions"]?.ComputedValue as FormDataOptions;
             if (formDataOptions is null)
             {
                 formDataOptions = new FormDataOptions();
-                _modelItem.Properties["FormDataOptions"].SetValue(formDataOptions);
+                _modelItem.Properties["FormDataOptions"]?.SetValue(formDataOptions);
             }
 
             formDataOptions.OnChange += UpdateOptionsModelItem;
@@ -353,7 +352,7 @@ namespace Dev2.Activities.Designers2.Web_Post
             }
         }
 
-        public IManageWebServiceInputViewModel ManageServiceInputViewModel { get; set; }
+        public IManageWebInputViewModel ManageServiceInputViewModel { get; set; }
 
         public void TestProcedure()
         {
@@ -361,7 +360,9 @@ namespace Dev2.Activities.Designers2.Web_Post
             {
                 var service = ToModel();
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
+                ManageServiceInputViewModel.IsFormDataChecked = service.IsFormDataChecked;
                 ManageServiceInputViewModel.Model = service;
+                ManageServiceInputViewModel.LoadConditionExpressionOptions(ConditionExpressionOptions.Options);
 
                 ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
                 ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;

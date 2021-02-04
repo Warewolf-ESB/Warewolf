@@ -599,7 +599,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
             var emptyCondition = conditions[1] as FormDataOptionConditionExpression;
             Assert.IsNull(emptyCondition.Left);
-
+            Assert.AreEqual(enFormDataTableType.Text, emptyCondition.MatchType);
         }
 
         [TestMethod]
@@ -651,7 +651,40 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
 
             var emptyCondition = conditions[0] as FormDataOptionConditionExpression;
             Assert.IsNull(emptyCondition.Left);
+            Assert.AreEqual(enFormDataTableType.Text, emptyCondition.MatchType);
+        }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostActivityViewModel))]
+        public void WebPostActivityViewModel_TestInputCommand_IsFormDataChecked()
+        {
+            //---------------Set up test pack-------------------
+            var mockModel = GetMockModel();
+            var postActivity = GetPostActivityWithOutPuts(mockModel);
+
+            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(postActivity), mockModel);
+            postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mockModel);
+            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
+            postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
+            postViewModel.InputArea.IsFormDataChecked = true;
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            postViewModel.TestInputCommand.Execute();
+            postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            postViewModel.ManageServiceInputViewModel.IsEnabled = true;
+            postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
+            postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+
+            //---------------Test Result -----------------------
+            Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
+            Assert.AreEqual(1, postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count);
+            Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
+            Assert.AreEqual(0, postViewModel.ManageServiceInputViewModel.Errors.Count);
+            Assert.IsTrue(postViewModel.ManageServiceInputViewModel.IsFormDataChecked);
         }
 
         private Mock<ModelProperty> CreateModelProperty(string name, object value)

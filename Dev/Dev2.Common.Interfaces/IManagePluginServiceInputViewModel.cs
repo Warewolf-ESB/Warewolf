@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebServices;
+using Warewolf.Options;
 
 namespace Dev2.Common.Interfaces
 {
@@ -35,5 +36,11 @@ namespace Dev2.Common.Interfaces
         bool OutputCountExpandAllowed { get; set; }
         bool InputCountExpandAllowed { get; set; }
         bool IsGenerateInputsEmptyRows { get; set; }
+    }
+
+    public interface IManageWebInputViewModel : IManageWebServiceInputViewModel
+    {
+        bool IsFormDataChecked { get; set; }
+        void LoadConditionExpressionOptions(IList<IOption> conditionExpressionOptions);
     }
 }
