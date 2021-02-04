@@ -23,8 +23,7 @@ namespace Warewolf.UnitTestAttributes
         };
         private string SelectedHost = "";
         
-        static readonly string BackupServer = "opswolf.com";
-        public static readonly string TFSBLDIP = "TFSBLD.premier.local";
+        static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
 
         public enum ContainerType
@@ -40,7 +39,8 @@ namespace Warewolf.UnitTestAttributes
             AnonymousWarewolf = 8,
             Elasticsearch = 9,
             AnonymousElasticsearch = 10,
-            WebApi = 11
+            WebApi = 11,
+            HTTPVerbsApi = 12
         }
 
         ContainerType _containerType;
@@ -73,6 +73,8 @@ namespace Warewolf.UnitTestAttributes
                     return "AnonymousElasticsearch";
                 case ContainerType.WebApi:
                     return "WebApi";
+                case ContainerType.HTTPVerbsApi:
+                    return "HTTPVerbsApi";
             }
 
             throw new ArgumentOutOfRangeException();
@@ -175,6 +177,7 @@ namespace Warewolf.UnitTestAttributes
                     InjectElasticContainer();
                     break;
                 case ContainerType.WebApi:
+                case ContainerType.HTTPVerbsApi:
                     InjectWebApiContainer();
                     break;
             }
@@ -208,6 +211,8 @@ namespace Warewolf.UnitTestAttributes
                     return "9400";
                 case ContainerType.WebApi:
                     return "8080";
+                case ContainerType.HTTPVerbsApi:
+                    return "9810";
             }
             throw new ArgumentOutOfRangeException();
         }
