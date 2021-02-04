@@ -9,11 +9,12 @@
 */
 
 
+
 namespace Dev2.Common.Interfaces
 {
-    public interface IFormDataParameters
+    public interface IFormDataConditionExpression
     {
-        string Key { get; set; }
-        IFormDataCondition Cond { get; set; }
+        string Key { get; }
+        IFormDataCondition Cond { get; }
     }
 }

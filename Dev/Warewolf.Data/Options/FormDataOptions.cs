@@ -9,6 +9,7 @@
 */
 
 
+using Dev2.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,26 +33,26 @@ namespace Warewolf.Data.Options
         public event NotifyHandler OnChange;
     }
 
-    public abstract class FormDataCondition
+    public abstract class FormDataCondition : IFormDataCondition
     {
         public enFormDataTableType MatchType { get; set; }
 
-        internal abstract IEnumerable<FormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
-        public abstract void SetOptions(FormDataOptionConditionExpression option);
+        public abstract IEnumerable<IFormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
+        public abstract void SetOptions(IFormDataOptionConditionExpression option);
 
         public abstract void RenderDescription(StringBuilder sb);
 
     }
 
 
-    public class FormDataConditionExpression : IOptionConvertable
+    public class FormDataConditionExpression : IOptionConvertable, IFormDataConditionExpression
     {
         [HelpText(nameof(Studio.Resources.Languages.HelpText.FormDataOptionConditionLeftHelpText))]
         public string Key { get; set; }
 
         [DataValue(nameof(FormDataCondition.MatchType))]
         [MultiDataProvider(typeof(FormDataConditionMatch), typeof(FormDataConditionBetween))]
-        public FormDataCondition Cond { get; set; }
+        public IFormDataCondition Cond { get; set; }
 
         public IOption[] ToOptions()
         {
@@ -90,7 +91,7 @@ namespace Warewolf.Data.Options
             }
         }
         
-        public IEnumerable<FormDataParameters> Eval(Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
+        public IEnumerable<IFormDataParameters> Eval(Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
             if (string.IsNullOrWhiteSpace(Key))
             {
@@ -117,7 +118,7 @@ namespace Warewolf.Data.Options
     {
         public string File { get; set; }
         public string FileName { get; set; }
-        public override void SetOptions(FormDataOptionConditionExpression option)
+        public override void SetOptions(IFormDataOptionConditionExpression option)
         {
             option.MatchType = MatchType;
             option.File = File;
@@ -135,9 +136,9 @@ namespace Warewolf.Data.Options
         }
 
 
-        internal override IEnumerable<FormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
+        public override IEnumerable<IFormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
-            var ret = new List<FormDataParameters>();
+            var ret = new List<IFormDataParameters>();
 
             var items = getArgumentsFunc(left, File, FileName);
             foreach (var arguments in items)
@@ -188,7 +189,7 @@ namespace Warewolf.Data.Options
     {
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionRightHelpText))]
         public string Value { get; set; }
-        public override void SetOptions(FormDataOptionConditionExpression option)
+        public override void SetOptions(IFormDataOptionConditionExpression option)
         {
             option.MatchType = MatchType;
             option.Right = Value;
@@ -204,9 +205,9 @@ namespace Warewolf.Data.Options
         }
 
 
-        internal override IEnumerable<FormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
+        public override IEnumerable<IFormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
-            var ret = new List<FormDataParameters>();
+            var ret = new List<IFormDataParameters>();
 
             var items = getArgumentsFunc(left, Value, null);
             foreach (var arguments in items)

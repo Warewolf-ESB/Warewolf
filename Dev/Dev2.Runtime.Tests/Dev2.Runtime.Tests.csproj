@@ -235,6 +235,7 @@
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
+    <Compile Include="Services\TestWebServiceTests.cs" />
     <None Include="..\Dev2.Server\app.config">
       <Link>app.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

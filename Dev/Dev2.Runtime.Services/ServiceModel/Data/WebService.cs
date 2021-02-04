@@ -49,6 +49,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string JsonPathResult { get; set; }
 
         public List<INameValue> Headers { get; set; }
+        public List<IFormDataParameters> FormDataParamaters { get; internal set; }
         #endregion
 
         #region CTOR
