@@ -32,6 +32,7 @@ using Dev2.Activities.Designers2.Web_Service_Get;
 using System.Threading.Tasks;
 using Dev2;
 using Dev2.Common;
+using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
 {
@@ -54,8 +55,6 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
 
 
         [Given(@"I drag Web Get Request Connector Tool onto the design surface")]
-        [When(@"I drag Web Get Request Connector Tool onto the design surface")]
-        [Then(@"I drag Web Get Request Connector Tool onto the design surface")]
         public void GivenIDragWebGetRequestConnectorToolOntoTheDesignSurface()
         {
             var activity = new WebGetActivity();
@@ -78,13 +77,15 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
                 Id = Guid.NewGuid()
             };
 
-            
-            _weblocalhostsource = new WebServiceSourceDefinition
+            using (var _dependencyOps = new Depends(Depends.ContainerType.HTTPVerbsApi))
             {
-                Name = "LocalhostSource",
-                HostName = @"http://TFSBLD.premier.local:9810/api/products/Get",
-                Id = Guid.NewGuid()
-            };
+                _weblocalhostsource = new WebServiceSourceDefinition
+                {
+                    Name = "LocalhostSource",
+                    HostName = $"http://{_dependencyOps.Container.IP}:{_dependencyOps.Container.Port}/api/products/Get",
+                    Id = Guid.NewGuid()
+                };
+            }
 
             var webService = new WebService
             {
@@ -257,6 +258,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
         {
             GetServiceModel().Verify(model => model.EditSource(It.IsAny<IWebServiceSource>()));
         }
+        
         [Given(@"I click Get Edit")]
         [When(@"I click Get Edit")]
         [Then(@"I click Get Edit")]
@@ -282,6 +284,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
             var webServiceGetViewModel = GetViewModel();
             await webServiceGetViewModel.TestInputCommand.Execute();
         }
+        
         [Given(@"Get the Generate Outputs window is shown")]
         [When(@"Get the Generate Outputs window is shown")]
         [Then(@"Get the Generate Outputs window is shown")]
