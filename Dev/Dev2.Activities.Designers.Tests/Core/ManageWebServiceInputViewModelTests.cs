@@ -13,12 +13,14 @@ using System.Collections.Generic;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Get;
+using Dev2.Activities.Designers2.WebGet;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
-
+using Warewolf.Data.Options;
+using Warewolf.Options;
 
 
 namespace Dev2.Activities.Designers.Tests.Core
@@ -389,6 +391,62 @@ namespace Dev2.Activities.Designers.Tests.Core
             var b = new WebServiceDefinition() { Headers = new List<INameValue>() { new NameValue("a", "b") } };
             vm.Model = b;
             Assert.IsNotNull(vm.Model);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
+        public void ManageWebServiceInputViewModel_LoadConditionExpressionOptions()
+        {
+            var myWebModel = new MyWebModel();
+            var webGetActivity = new WebGetActivity()
+            {
+                SourceId = myWebModel.Sources[0].Id,
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
+                Headers = new List<INameValue> { new NameValue("a", "x") },
+                QueryString = "Bob the builder",
+                ServiceName = "dsfBob"
+            };
+
+            var webGetActivityViewModel = new WebGetActivityViewModel(ModelItemUtils.CreateModelItem(webGetActivity), myWebModel);
+
+            //------------Assert Results-------------------------
+            var inputViewModel = new ManageWebServiceInputViewModel(webGetActivityViewModel, myWebModel)
+            {
+                IsFormDataChecked = true
+            };
+
+            Assert.IsTrue(inputViewModel.IsFormDataChecked);
+            Assert.IsNotNull(inputViewModel.ConditionExpressionOptions);
+            Assert.AreEqual(1, inputViewModel.ConditionExpressionOptions.Options.Count);
+
+            var formDataConditionMatch = new FormDataConditionMatch {Value = enFormDataTableType.Text.ToString()};
+            var formDataOptionConditionExpression = new FormDataOptionConditionExpression
+            {
+                Left = "a", Cond = formDataConditionMatch, Right = "b"
+            };
+            var options = new List<IOption> {formDataOptionConditionExpression};
+            inputViewModel.LoadConditionExpressionOptions(options);
+
+            Assert.IsNotNull(inputViewModel.ConditionExpressionOptions);
+            Assert.AreEqual(2, inputViewModel.ConditionExpressionOptions.Options.Count);
+
+            var expressionWithInput = inputViewModel.ConditionExpressionOptions.Options[0] as FormDataOptionConditionExpression;
+            Assert.IsNotNull(expressionWithInput);
+            Assert.AreEqual("a", expressionWithInput.Left);
+            Assert.AreEqual(enFormDataTableType.Text, expressionWithInput.Cond.MatchType);
+            Assert.AreEqual("b", expressionWithInput.Right);
+
+            var emptyExpression = inputViewModel.ConditionExpressionOptions.Options[1] as FormDataOptionConditionExpression;
+            Assert.IsNotNull(emptyExpression);
+            Assert.IsNull(emptyExpression.Left);
+            Assert.IsNull(emptyExpression.Cond);
+            Assert.IsNull(emptyExpression.Right);
+
+            expressionWithInput.DeleteCommand.Execute(expressionWithInput);
+
+            Assert.AreEqual(1, inputViewModel.ConditionExpressionOptions.Options.Count);
+
         }
     }
 }
