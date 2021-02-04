@@ -16,16 +16,20 @@ namespace Warewolf.Data.Options
 {
     public abstract class FormDataParameters : IFormDataParameters
     {
-        private readonly FormDataConditionExpression _conditionExpression;
-        protected readonly FormDataCondition _formDataCondition;
+        private readonly IFormDataConditionExpression _conditionExpression;
+        protected readonly IFormDataCondition _formDataCondition;
         protected readonly string _key;
 
-        protected FormDataParameters(FormDataConditionExpression conditionExpression)
+
+        protected FormDataParameters(IFormDataConditionExpression conditionExpression)
         {
             _conditionExpression = conditionExpression;
             _formDataCondition = _conditionExpression.Cond;
             _key = _conditionExpression.Key;
         }
+
+        public string Key { get; set; }
+        public IFormDataCondition Cond { get; set; }
 
     }
 
@@ -33,7 +37,7 @@ namespace Warewolf.Data.Options
     {
         private readonly FormDataConditionMatch _conditionMatch;
 
-        public TextParameter(FormDataConditionExpression conditionExpression)
+        public TextParameter(IFormDataConditionExpression conditionExpression)
             : base(conditionExpression)
         {
             _conditionMatch = _formDataCondition as FormDataConditionMatch;
@@ -42,7 +46,6 @@ namespace Warewolf.Data.Options
             Value = _conditionMatch.Value;
         }
 
-        public string Key { get; internal set; }
         public string Value { get; internal set; }
 
     }
@@ -51,7 +54,7 @@ namespace Warewolf.Data.Options
     {
         private readonly FormDataConditionBetween _conditionBetween;
 
-        public FileParameter(FormDataConditionExpression conditionExpression)
+        public FileParameter(IFormDataConditionExpression conditionExpression)
             : base(conditionExpression)
         {
             _conditionBetween = _formDataCondition as FormDataConditionBetween;
@@ -83,6 +86,5 @@ namespace Warewolf.Data.Options
         public string FileName { get; internal set; }
         public string ContentType { get; internal set; }
         public byte[] File { get; internal set; }
-        public string Key { get; internal set; }
     }
 }

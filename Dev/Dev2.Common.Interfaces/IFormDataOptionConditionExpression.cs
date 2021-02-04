@@ -9,11 +9,16 @@
 */
 
 
+
+using Warewolf.Options;
+
 namespace Dev2.Common.Interfaces
 {
-    public interface IFormDataParameters
+    public interface IFormDataOptionConditionExpression
     {
-        string Key { get; set; }
-        IFormDataCondition Cond { get; set; }
+        enFormDataTableType MatchType { get; set; }
+        string File { get; set; }
+        string FileName { get; set; }
+        string Right { get; set; }
     }
 }
