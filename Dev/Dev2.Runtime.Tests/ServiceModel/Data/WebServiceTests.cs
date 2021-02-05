@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,13 +9,19 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Data.TO;
+using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Moq;
+using Warewolf.Data.Options;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
@@ -25,9 +31,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestCategory("Runtime Hosting")]
     public class WebServiceTests
     {
-        #region CTOR
-
-
         [TestMethod]
         public void WebServiceConstructorExpectedCorrectWebService()
         {
@@ -66,9 +69,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("$.apath", webService.JsonPath);
             Assert.IsNotNull(webService.Source);
         }
-        #endregion
-
-        #region CTOR
 
         [TestMethod]
         public void WebServiceContructorWithDefaultExpectedInitializesProperties()
@@ -106,10 +106,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             VerifyEmbeddedWebService(service);
         }
 
-        #endregion
-
-        #region ToXml
-
         [TestMethod]
         public void WebServiceToXmlExpectedSerializesProperties()
         {
@@ -128,8 +124,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 JsonPath = "$.somepath"
             };
 
-            #region setup method parameters
-
             expected.Method.Parameters.AddRange(
                 new[]
                 {
@@ -144,10 +138,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                         DefaultValue = "456"
                     }
                 });
-
-            #endregion
-
-            #region setup rs1
 
             var rs1 = new Recordset
             {
@@ -170,10 +160,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             });
             expected.Recordsets.Add(rs1);
 
-            #endregion
-
-            #region setup rs2
-
             var rs2 = new Recordset
             {
                 Name = "Recordset2()"
@@ -192,8 +178,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 }
             });
             expected.Recordsets.Add(rs2);
-
-            #endregion
 
             var xml = expected.ToXml();
 
@@ -263,11 +247,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             StringAssert.Contains(actual.RequestBody, "\n");
         }
 
-        #endregion
-
-
-        #region Dispose
-
         [TestMethod]
         public void WebServiceDisposeExpectedDisposesAndNullsSource()
         {
@@ -277,10 +256,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             service.Dispose();
             Assert.IsNull(service.Source);
         }
-
-        #endregion
-
-        #region VerifyEmbeddedWebService
 
         public static void VerifyEmbeddedWebService(WebService service)
         {
@@ -302,8 +277,6 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Pressure", service.Recordsets[0].Fields.First(f => f.Name == "Pressure").Alias);
             Assert.AreEqual("Status", service.Recordsets[0].Fields.First(f => f.Name == "Status").Alias);
         }
-
-        #endregion
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -376,6 +349,65 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, webService.RequestResponse);
         }
+
+
+        [TestMethod]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_Test_WithValidArgsAndEmptyResponseExpectedExecutesRequestAndFetchesRecordset()
+        {
+            var serviceXml = XmlResource.Fetch("WebService");
+            var sourceXml = XmlResource.Fetch("WebSource");
+            var responseXml = XmlResource.Fetch("WebServiceResponse");
+
+            var fileKey = "testFileKey";
+            var fileName = "testFileName";
+            var fileContent = "test file content";
+            var fileContentBytes = fileContent.ToBytesArray();
+            var fileContentBase64 = Convert.ToBase64String(fileContentBytes);
+
+            var service = new WebService(serviceXml) 
+            { 
+                Source = new WebSource(sourceXml)
+            };
+
+            service.RequestHeaders = "a:b";
+
+            service.FormDataParamaters = new List<IFormDataParameters> 
+            {
+               new FileParameter(new FormDataConditionExpression
+               {
+                   Key = fileKey,
+                   Cond = new FormDataConditionBetween
+                   {
+                       File = fileContentBase64,
+                       FileName = fileName
+                   }
+               })
+            };
+
+            foreach (var parameter in service.Method.Parameters)
+            {
+                parameter.Value = parameter.DefaultValue;
+            }
+
+            var webExecuteHitCount = 0;
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var services = new WebServicesMock(resourceCatalog.Object,
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
+                {
+                    webExecuteHitCount++;
+                    errors = new ErrorResultTO();
+                    return responseXml.ToString();
+                });
+            var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
+
+            Assert.AreEqual(1, webExecuteHitCount);
+
+            // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
+            Assert.AreEqual(1, result.Recordsets.Count);
+            Assert.AreEqual("", result.Recordsets[0].Name);
+        }
+
 
     }
 }

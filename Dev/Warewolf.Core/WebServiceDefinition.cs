@@ -36,6 +36,6 @@ namespace Warewolf.Core
         public string Response { get; set; }
         public WebRequestMethod Method { get; set; }
 
-        public IList<IFormDataParameters> FormDataParameters { get; set; }
+        public List<IFormDataParameters> FormDataParameters { get; set; }
     }    
 }
