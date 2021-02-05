@@ -17,10 +17,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Communication;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Runtime.ServiceModel.Data;
+using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Core;
 
 namespace Dev2.Tests.Runtime.Services
@@ -52,6 +57,19 @@ namespace Dev2.Tests.Runtime.Services
             var resId = saveWebService.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(SaveWebService))]
+        public void SaveWebService_CreateServiceEntry_Returns_New_Dynamic_Service_DeleteAllTestsService()
+        {
+            //------------Setup for test-------------------------
+            var saveWebService = new SaveWebService();
+            //------------Execute Test---------------------------
+            var dynamicService = saveWebService.CreateServiceEntry();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dynamicService);
         }
 
         [TestMethod]
@@ -154,30 +172,54 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SaveWebService))]
-        public void SaveWebService_Execute_GivenNullSource_ShouldReturnNullSourceMsg()
+        public void SaveWebService_Execute_FormDataParameters_NotNull_ExpectSuccess()
         {
-            //------------Setup for test--------------------------
             var serializer = new Dev2JsonSerializer();
-            var inputs = new Dictionary<string, StringBuilder>();
-            var resourceId = Guid.NewGuid();
             var saveWebService = new SaveWebService();
 
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(catalog => catalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId))
-                .Returns(default(Dev2.Common.Interfaces.Data.IResource));
-            var ws = new Mock<IWorkspace>();
+            var mockWebClientWrapper = new Mock<IWebClientWrapper>();
 
-            var serviceDef = new WebServiceDefinition
+            var mockWebSource = new Mock<IWebSource>();
+            mockWebSource.Setup(o => o.Address).Returns("http://address.co.za/examples");
+            mockWebSource.Setup(o => o.Client).Returns(mockWebClientWrapper.Object);
+            mockWebSource.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Anonymous);
+
+            var serviceOutputMapping = new ServiceOutputMapping("from", "=", "[[rec().a]]");
+            var webService = new WebServiceDefinition
             {
                 Source = new WebServiceSourceDefinition(),
-                OutputMappings = new List<IServiceOutputMapping>(),
+                OutputMappings = new List<IServiceOutputMapping> {serviceOutputMapping},
+                Headers = new List<INameValue>(),
+                FormDataParameters = new List<IFormDataParameters>()
             };
-            inputs.Add("Webservice", serializer.SerializeToBuilder(serviceDef));
-            //------------Execute Test---------------------------
-            var stringBuilder = saveWebService.Execute(inputs, ws.Object);
-            //------------Assert Results-------------------------
-            var msg = serializer.Deserialize<ExecuteMessage>(stringBuilder);
-            Assert.AreEqual("Value cannot be null.\r\nParameter name: source", msg.Message.ToString());
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                { "Webservice", serializer.SerializeToBuilder(webService) }
+            };
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(o => o.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Verifiable();
+            mockResourceCatalog.Setup(o => o.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>()))
+                .Verifiable();
+
+            CustomContainer.Register(mockResourceCatalog.Object);
+
+            var mockExplorerServerResourceRepository = new Mock<IExplorerServerResourceRepository>();
+            mockExplorerServerResourceRepository.Setup(o => o.UpdateItem(It.IsAny<IResource>()))
+                .Verifiable();
+
+            CustomContainer.Register(mockExplorerServerResourceRepository.Object);
+
+            var result = saveWebService.Execute(values, null);
+            var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(executeMessage.HasError);
+            mockResourceCatalog.Verify(o => o.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+            mockResourceCatalog.Verify(o => o.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>()), Times.Once);
+            Assert.AreEqual("Value cannot be null.\r\nParameter name: source", executeMessage.Message.ToString());
         }
     }
 }
