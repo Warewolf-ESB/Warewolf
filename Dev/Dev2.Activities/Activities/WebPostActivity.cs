@@ -185,7 +185,7 @@ namespace Dev2.Activities
 
         }
 
-        private (IEnumerable<INameValue> head, string query, string data, IEnumerable<FormDataParameters> conditions) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)
+        private (IEnumerable<INameValue> head, string query, string data, IEnumerable<IFormDataParameters> conditions) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)
         {
             IEnumerable<INameValue> head = null;
             if (Headers != null)
@@ -202,7 +202,7 @@ namespace Dev2.Activities
             {
                 postData = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(PostData, update, true));
             }
-            var conditions = new List<FormDataParameters>();
+            var conditions = new List<IFormDataParameters>();
             if ((Conditions ?? (Conditions = new List<FormDataConditionExpression>())).Any() && IsFormDataChecked)
             {
                 _errorsTo = new ErrorResultTO();

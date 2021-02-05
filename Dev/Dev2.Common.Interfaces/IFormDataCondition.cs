@@ -9,11 +9,20 @@
 */
 
 
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Warewolf.Options;
+
 namespace Dev2.Common.Interfaces
 {
-    public interface IFormDataParameters
+    public interface IFormDataCondition
     {
-        string Key { get; set; }
-        IFormDataCondition Cond { get; set; }
+        enFormDataTableType MatchType { get; set; }
+
+        IEnumerable<IFormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
+        void SetOptions(IFormDataOptionConditionExpression option);
+
+        void RenderDescription(StringBuilder sb);
     }
 }

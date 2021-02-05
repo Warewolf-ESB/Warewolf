@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
@@ -22,6 +24,7 @@ using Dev2.Tests.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Data.Options;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -498,8 +501,24 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebServices_ExecuteRequest_NonBase64_WebExecuteString_WebResponse_ShouldBeScrubbed()
         {
             //------------Setup for test--------------------------
+            var testKey = "testKey";
+            var testFileContent = "testFile";
+            var testFileName = "testFileName";
+
             var service = CreateDummyWebService();
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.FormDataParamaters = new List<IFormDataParameters>
+            {
+                new FileParameter(new FormDataConditionExpression
+                {
+                    Key = testKey,
+                    Cond = new FormDataConditionBetween
+                    {
+                        File = testFileContent,
+                        FileName = testFileName
+                    }
+                })
+            };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
             service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
@@ -519,6 +538,54 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             Assert.IsFalse(isBase64String, "The service request responce should not be a base64");
             Assert.AreEqual(dummyResponce, service.RequestResponse, "The web response base64 should not be return as base64");
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_ExecuteRequest_NonBase64_WebExecuteString_With_FormDataParamaters_WebResponse_ShouldBeScrubbed()
+        {
+            //------------Setup for test--------------------------
+            var testKey = "testKey";
+            var testFileContent = "testFile";
+            var testFileName = "testFileName";
+
+            var service = CreateDummyWebService();
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.FormDataParamaters = new List<IFormDataParameters>
+            {
+                new FileParameter(new FormDataConditionExpression
+                {
+                    Key = testKey,
+                    Cond = new FormDataConditionBetween
+                    {
+                        File = testFileContent,
+                        FileName = testFileName
+                    }
+                })
+            };
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+
+            var dummyResponce = "dummy responce from the web request";
+            _requestResponse = dummyResponce;
+            //------------Execute Test---------------------------
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
+            Assert.AreEqual("val2", _requestBodyEvaluated);
+            Assert.AreEqual("val3", _requestUrlEvaluated);
+
+            var isBase64String = service.RequestResponse.IsBase64String(out byte[] _);
+            var firstFormDataParameters = service.FormDataParamaters.First() as FileParameter;
+
+            Assert.IsFalse(isBase64String, "The service request responce should not be a base64");
+            Assert.AreEqual(dummyResponce, service.RequestResponse, "The web response base64 should not be return as base64");
+            Assert.AreEqual(Encoding.ASCII.GetBytes(testFileContent).ToString(), firstFormDataParameters.File.ToString());
+            Assert.AreEqual(testFileName, firstFormDataParameters.FileName);
         }
 
         string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null)

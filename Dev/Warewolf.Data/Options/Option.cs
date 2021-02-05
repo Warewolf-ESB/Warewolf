@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -767,7 +768,7 @@ namespace Warewolf.Options
         }
     }
 
-    public class FormDataOptionConditionExpression : BindableBase, IOption
+    public class FormDataOptionConditionExpression : BindableBase, IFormDataOptionConditionExpression, IOption
     {
         public string Name { get; set; }
 

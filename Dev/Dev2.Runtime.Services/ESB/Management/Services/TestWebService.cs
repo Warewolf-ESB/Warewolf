@@ -46,6 +46,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Test Web Connection Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("WebService", out StringBuilder resourceDefinition);
+                
+                VerifyArgument.IsNotNull(nameof(WebService), resourceDefinition);
 
                 var src = serializer.Deserialize<IWebService>(resourceDefinition);
 
@@ -61,6 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = src.Id,
                     RequestBody = src.PostData,
                     Headers = src.Headers,
+                    FormDataParamaters = src.FormDataParameters,
                     RequestHeaders = requestHeader,
                     RequestMethod = src.Method,
                     RequestResponse = src.Response,
