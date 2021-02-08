@@ -509,7 +509,18 @@ namespace Dev2
                 {"servers", new JArray(BuildJsonOpenAPIServerObject(new Uri(webServerUrl)))},
                 {"paths", new JArray(paths)}
             };
-            return GetSerializedOpenAPIObject(jsonOpenAPIObject);
+            var serializedObject = GetSerializedOpenAPIObject(jsonOpenAPIObject);
+            serializedObject = RemovePathsArray(serializedObject);
+
+            return serializedObject;
+        }
+
+        static string RemovePathsArray(string apiObject)
+        {
+            apiObject = apiObject.Replace("\"paths\": [", "\"paths\": ");
+            apiObject = apiObject.Replace("},\r\n    {\r\n      \"/secure", ",\r\n      \"/secure");
+            apiObject = apiObject.Remove(apiObject.LastIndexOf("]"), 1);
+            return apiObject;
         }
 
         static string GetSerializedOpenAPIObject(JObject jsonOpenAPIObject)
