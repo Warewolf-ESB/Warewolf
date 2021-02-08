@@ -24,6 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
     public class WebRequestSteps : RecordSetBases
     {
         readonly ScenarioContext scenarioContext;
+        public static Depends _containerOps;
 
         public WebRequestSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -122,8 +123,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         {
             scenarioContext.Add("resVar", resultVar);
         }
-
-
+        
         [Given(@"I have the url ""(.*)"" with timeoutSeconds ""(.*)""")]
         public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
         {
@@ -131,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             scenarioContext.Add("timeoutSeconds", timeoutSeconds);
         }
 
-
-
+        [Given("I depend on a valid HTTP verbs server")]
+        public void GivenIGetaValidHTTPVerbsServer() => _containerOps = new Depends(Depends.ContainerType.HTTPVerbsApi, true);
     }
 }
