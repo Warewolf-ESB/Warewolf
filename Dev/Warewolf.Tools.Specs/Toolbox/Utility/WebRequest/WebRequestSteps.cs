@@ -60,7 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             var webGet = new DsfWebGetRequestWithTimeoutActivity
                 {
                     Result = resultVariable,
-                    Url = url ?? "",
+                    Url = url.Replace("TFSBLD.premier.local", _containerOps.Container.IP).Replace("9810", _containerOps.Container.Port) ?? "",
                     Headers = header ?? "",
                     TimeoutSeconds = String.IsNullOrEmpty(timeout) ? 100 : int.Parse(timeout),
                     TimeOutText = String.IsNullOrEmpty(timeout) ? "" : timeout
