@@ -1662,19 +1662,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line 403
- testRunner.Given("I have a workflow \"Testing - WebGet\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I depend on a valid HTTP verbs server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 404
+ testRunner.And("I have a workflow \"Testing - WebGet\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table668 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 404
+#line 405
  testRunner.And("\"Testing - WebGet\" contains \"GetWebResult\" from server \"localhost\" with mapping a" +
                     "s", ((string)(null)), table668, "And ");
-#line 406
- testRunner.When("\"Testing - WebGet\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 407
+ testRunner.When("\"Testing - WebGet\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 408
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table669 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1727,7 +1729,7 @@ this.FeatureBackground();
                         "[[Result(5).Price]] = 67000"});
             table669.AddRow(new string[] {
                         "[[Result(6).Price]] = 15000"});
-#line 408
+#line 409
  testRunner.And("the \"GetWebResult\" in Workflow \"GetWebResult\" debug outputs as", ((string)(null)), table669, "And ");
 #line hidden
             this.ScenarioCleanup();
