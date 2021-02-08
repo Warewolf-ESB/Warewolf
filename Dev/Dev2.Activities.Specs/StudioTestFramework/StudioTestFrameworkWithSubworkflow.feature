@@ -103,7 +103,7 @@ Scenario: Run a test expecting error
 	And I remove all Test Steps
 	And I save
 	When I run the test
-	Then the service debug assert message contains "Failed: Expected Error containing 'p' but got 'variable not found'"	
+	Then the service debug assert message contains "Failed: Expected Error containing 'p' but got 'variable [[name]] not found'"	
 	Then test result is Failed	
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
