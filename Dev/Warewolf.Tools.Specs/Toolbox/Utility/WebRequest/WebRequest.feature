@@ -6,7 +6,8 @@ Feature: WebRequest
 
 
 	Scenario: Enter a URL to download html
-		Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
+		Given I depend on a valid HTTP verbs server
+		And I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
 		When the web request tool is executed
 		Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 		And the execution has "NO" error
@@ -18,7 +19,8 @@ Feature: WebRequest
 			| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
 
 	Scenario: Enter a badly formed URL
-		Given I have the url "www.google.comx" without timeout
+		Given I depend on a valid HTTP verbs server
+		And I have the url "www.google.comx" without timeout
 		When the web request tool is executed
 		Then the result should contain the string ""
 		And the execution has "AN" error
