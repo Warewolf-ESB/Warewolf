@@ -11,7 +11,7 @@ Feature: WebRequest
 		Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 		And the execution has "NO" error
 		And the debug inputs as
-			| URL                                            | Header |
+			| URL                                               | Header |
 			| http://TFSBLD.premier.local:9810/api/products/Get |        |
 		And the debug output as
 			|                                                                                                                   |
@@ -32,7 +32,7 @@ Feature: WebRequest
 	Scenario: Enter a URL made up of text and variables with no header
 		Given I depend on a valid HTTP verbs server
 		And I have the url "http://[[site]][[file]]" without timeout
-		And I have a web request variable "[[site]]" equal to "TFSBLD.premier.local:9810/api/products/"
+		And I have a web request variable "[[site]]" equal to "opswolf.com:9810/api/products/"
 		And I have a web request variable "[[file]]" equal to "Get"
 		When the web request tool is executed
 		Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
