@@ -175,8 +175,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Utility.WebRequest
 #line 34
   testRunner.And("I have the url \"http://[[site]][[file]]\" without timeout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
-  testRunner.And("I have a web request variable \"[[site]]\" equal to \"TFSBLD.premier.local:9810/api/" +
-                    "products/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a web request variable \"[[site]]\" equal to \"opswolf.com:9810/api/products/" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
   testRunner.And("I have a web request variable \"[[file]]\" equal to \"Get\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
