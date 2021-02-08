@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = src.Id,
                     RequestBody = src.PostData,
                     Headers = src.Headers,
-                    FormDataParamaters = src.FormDataParameters,
+                    FormDataParameters = src.FormDataParameters,
                     RequestHeaders = requestHeader,
                     RequestMethod = src.Method,
                     RequestResponse = src.Response,

@@ -507,7 +507,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var service = CreateDummyWebService();
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
-            service.FormDataParamaters = new List<IFormDataParameters>
+            service.FormDataParameters = new List<IFormDataParameters>
             {
                 new FileParameter(new FormDataConditionExpression
                 {
@@ -552,7 +552,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var service = CreateDummyWebService();
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
-            service.FormDataParamaters = new List<IFormDataParameters>
+            service.FormDataParameters = new List<IFormDataParameters>
             {
                 new FileParameter(new FormDataConditionExpression
                 {
@@ -580,7 +580,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("val3", _requestUrlEvaluated);
 
             var isBase64String = service.RequestResponse.IsBase64String(out byte[] _);
-            var firstFormDataParameters = service.FormDataParamaters.First() as FileParameter;
+            var firstFormDataParameters = service.FormDataParameters.First() as FileParameter;
 
             Assert.IsFalse(isBase64String, "The service request responce should not be a base64");
             Assert.AreEqual(dummyResponce, service.RequestResponse, "The web response base64 should not be return as base64");
