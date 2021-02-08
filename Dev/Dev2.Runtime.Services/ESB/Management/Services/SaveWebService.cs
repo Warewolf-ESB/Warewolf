@@ -70,7 +70,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Recordsets = recordsetList,
                     Source = source,
                     Headers = src.Headers,
-                    FormDataParamaters = src.FormDataParameters,
+                    FormDataParameters = src.FormDataParameters,
+                    IsNoneChecked = src.IsNoneChecked,
+                    IsFormDataChecked = src.IsFormDataChecked,
                     RequestMethod = src.Method,
                     RequestResponse = src.Response
                 };

@@ -190,7 +190,9 @@ namespace Dev2.Tests.Runtime.Services
                 Source = new WebServiceSourceDefinition(),
                 OutputMappings = new List<IServiceOutputMapping> {serviceOutputMapping},
                 Headers = new List<INameValue>(),
-                FormDataParameters = new List<IFormDataParameters>()
+                FormDataParameters = new List<IFormDataParameters>(),
+                IsNoneChecked = false,
+                IsFormDataChecked = true,
             };
 
             var values = new Dictionary<string, StringBuilder>

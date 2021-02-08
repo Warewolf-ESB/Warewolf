@@ -372,7 +372,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             service.RequestHeaders = "a:b";
 
-            service.FormDataParamaters = new List<IFormDataParameters> 
+            service.FormDataParameters = new List<IFormDataParameters>
             {
                new FileParameter(new FormDataConditionExpression
                {

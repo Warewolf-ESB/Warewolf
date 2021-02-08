@@ -81,8 +81,6 @@ namespace Dev2.Activities.Designers2.Core
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
             IsEnabled = false;
-            IsNoneChecked = true;
-            IsFormDataChecked = false;
             SetupHeaders(modelItem);
             if (source?.SelectedSource != null)
             {
