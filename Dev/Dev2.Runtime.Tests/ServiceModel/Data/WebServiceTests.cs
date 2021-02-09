@@ -21,6 +21,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Data.Options;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
@@ -393,7 +394,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
