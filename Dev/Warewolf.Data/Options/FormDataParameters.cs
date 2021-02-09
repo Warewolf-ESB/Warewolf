@@ -10,6 +10,7 @@
 
 
 using Dev2.Common.Interfaces;
+using Newtonsoft.Json;
 using System;
 
 namespace Warewolf.Data.Options
@@ -20,6 +21,10 @@ namespace Warewolf.Data.Options
         protected readonly IFormDataCondition _formDataCondition;
         protected readonly string _key;
 
+        public FormDataParameters()
+        {
+
+        }
 
         protected FormDataParameters(IFormDataConditionExpression conditionExpression)
         {
@@ -33,41 +38,27 @@ namespace Warewolf.Data.Options
 
     }
 
-    public class TextParameter : FormDataParameters
+    public class TextParameter : IFormDataParameters
     {
-        private readonly FormDataConditionMatch _conditionMatch;
-
-        public TextParameter(IFormDataConditionExpression conditionExpression)
-            : base(conditionExpression)
+        public TextParameter()
         {
-            _conditionMatch = _formDataCondition as FormDataConditionMatch;
 
-            Key = _key;
-            Value = _conditionMatch.Value;
         }
 
         public string Value { get; internal set; }
-
+        public string Key { get; set; }
+        public IFormDataCondition Cond { get; set; }
     }
 
-    public class FileParameter : FormDataParameters
+    public class FileParameter : IFormDataParameters
     {
-        private readonly FormDataConditionBetween _conditionBetween;
-
-        public FileParameter(IFormDataConditionExpression conditionExpression)
-            : base(conditionExpression)
+        public FileParameter()
         {
-            _conditionBetween = _formDataCondition as FormDataConditionBetween;
-
-            Key = _key;
-            FileName = _conditionBetween.FileName;
-            File = GetFileByteArray();
-            ContentType = null;
         }
 
         private byte[] GetFileByteArray()
         {
-            var fileString = _conditionBetween.File;
+            var fileString = FileBase64;
 
             try
             {
@@ -85,6 +76,12 @@ namespace Warewolf.Data.Options
 
         public string FileName { get; internal set; }
         public string ContentType { get; internal set; }
-        public byte[] File { get; internal set; }
+
+        [JsonIgnore]
+        public byte[] FileBytes => GetFileByteArray();
+
+        public string FileBase64 { get; internal set; }
+        public string Key { get; set; }
+        public IFormDataCondition Cond { get; set; }
     }
 }

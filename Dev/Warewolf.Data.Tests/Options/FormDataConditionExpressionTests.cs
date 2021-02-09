@@ -10,12 +10,14 @@
 
 
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Warewolf.Data.Options;
 using Warewolf.Options;
 using Warewolf.Storage;
@@ -45,12 +47,12 @@ namespace Warewolf.Data.Tests.Options
 
             var result = sut.Eval(getTestArgumentsFunc, true);
 
-            Assert.IsInstanceOfType(result, typeof(List<FormDataParameters>));
+            Assert.IsInstanceOfType(result, typeof(List<IFormDataParameters>));
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        public void FormDataConditionExpression_FormDataConditionBetween_File_With_InvalidBase64String_ExpectFormatException()
+        public void FormDataConditionExpression_FormDataConditionBetween_File_With_InvalidBase64String_ExpectNotFormatException()
         {
             var environment = new ExecutionEnvironment();
 
@@ -70,7 +72,9 @@ namespace Warewolf.Data.Tests.Options
                 }
             };
 
-            Assert.ThrowsException<FormatException>(()=> sut.Eval(getTestArgumentsFunc, true), "Invalid length for a Base-64 char array or string.");
+            var result = sut.Eval(getTestArgumentsFunc, true);
+
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -109,7 +113,7 @@ namespace Warewolf.Data.Tests.Options
             Assert.IsNotNull(firstResult);
             Assert.AreEqual(firstResult.Key, testKey);
             Assert.AreEqual(firstResult.FileName, testFileName);
-            Assert.AreEqual(firstResult.File.ToString(), bytesFileContent.ToString());
+            Assert.AreEqual(firstResult.FileBytes.ToString(), bytesFileContent.ToString());
         }
 
         [TestMethod]
@@ -154,7 +158,7 @@ namespace Warewolf.Data.Tests.Options
             Assert.IsNotNull(firstResult);
             Assert.AreEqual(firstResult.Key, testKey);
             Assert.AreEqual(firstResult.FileName, testFileName);
-            Assert.AreEqual(firstResult.File.ToString(), bytesFileContent.ToString());
+            Assert.AreEqual(firstResult.FileBytes.ToString(), bytesFileContent.ToString());
         }
 
         [TestMethod]
@@ -173,7 +177,7 @@ namespace Warewolf.Data.Tests.Options
 
             var result = sut.Eval(getTestArgumentsFunc, true);
 
-            Assert.IsInstanceOfType(result, typeof(List<FormDataParameters>));
+            Assert.IsInstanceOfType(result, typeof(List<IFormDataParameters>));
         }
 
         [TestMethod]
@@ -281,6 +285,234 @@ namespace Warewolf.Data.Tests.Options
             Assert.AreEqual(firstResult.Value, testValue);
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void FormDataConditionExpression_ToFormDataParameter_FormDataConditionMatch_With_AllValues_StoredEnvironmentVarible_ExpectSuccess()
+        {
+            var testKey = "testKey";
+            var testValue = "good text message";
+
+            var testKeyName = "[[storedKeyName]]";
+            var testValueName = "[[storedValueName]]";
+
+            var environment = new ExecutionEnvironment();
+            environment.Assign(testValueName, testValue, 0);
+            environment.Assign(testKeyName, testKey, 0);
+
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+
+            _dataObject = mockDSFDataObject.Object;
+
+            var sut = new FormDataConditionExpression
+            {
+                Key = testKeyName,
+                Cond = new FormDataConditionMatch
+                {
+                    Value = testValueName,
+                    MatchType = enFormDataTableType.Text
+                }
+            }.ToFormDataParameter();
+
+            var result = sut as TextParameter;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.Key, testKeyName);
+            Assert.AreEqual(result.Value, testValueName);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void FormDataConditionExpression_ToFormDataParameter_FormDataConditionBetween_With_AllValues_StoredEnvironmentVarible_ExpectSuccess()
+        {
+            var testKey = "testKey";
+            var testFileName = "testFileName";
+            var testValue = "good text message";
+
+            var testKeyName = "[[storedKeyName]]";
+            var testValueName = "[[storedValueName]]";
+
+            var environment = new ExecutionEnvironment();
+            environment.Assign(testValueName, testValue, 0);
+            environment.Assign(testKeyName, testKey, 0);
+
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+
+            _dataObject = mockDSFDataObject.Object;
+
+            var sut = new FormDataConditionExpression
+            {
+                Key = testKeyName,
+                Cond = new FormDataConditionBetween
+                {
+                    File = testValueName,
+                    FileName = testFileName,
+                    MatchType = enFormDataTableType.Text
+                }
+            }.ToFormDataParameter();
+
+            var result = sut as FileParameter;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.Key, testKeyName);
+            Assert.AreEqual(result.FileName, testFileName);
+            Assert.AreEqual(result.FileBase64, testValueName);
+            Assert.ThrowsException<FormatException>(() => result.FileBytes, "this is an invalid format string, expecting base64 string");
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void FormDataConditionExpression_ToString_FormDataConditionBetween_With_AllValues_StoredEnvironmentVarible_ExpectSuccess()
+        {
+            var testKey = "testKey";
+            var testFileName = "testFileName";
+            var testValue = "good text message";
+
+            var testKeyName = "[[storedKeyName]]";
+            var testValueName = "[[storedValueName]]";
+
+            var environment = new ExecutionEnvironment();
+            environment.Assign(testValueName, testValue, 0);
+            environment.Assign(testKeyName, testKey, 0);
+
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+
+            _dataObject = mockDSFDataObject.Object;
+
+            var sut = new FormDataConditionExpression
+            {
+                Key = testKeyName,
+                Cond = new FormDataConditionBetween
+                {
+                    File = testValueName,
+                    FileName = testFileName,
+                    MatchType = enFormDataTableType.Text
+                }
+            }.ToString();
+
+            var result = sut;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Key: [[storedKeyName]] [[storedValueName]]Text testFileName", result);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void FormDataConditionExpression_RenderDescription_FormDataConditionMatch_With_AllValues_StoredEnvironmentVarible_ExpectSuccess()
+        {
+            var testKey = "testKey";
+            var testValue = "good text message";
+
+            var testKeyName = "[[storedKeyName]]";
+            var testValueName = "[[storedValueName]]";
+
+            var environment = new ExecutionEnvironment();
+            environment.Assign(testValueName, testValue, 0);
+            environment.Assign(testKeyName, testKey, 0);
+
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+
+            _dataObject = mockDSFDataObject.Object;
+
+            var sb = new StringBuilder();
+            new FormDataConditionExpression
+            {
+                Key = testKeyName,
+                Cond = new FormDataConditionMatch
+                {
+                    Value = testValueName,
+                    MatchType = enFormDataTableType.Text
+                }
+            }.RenderDescription(sb);
+
+            var result = sb;
+
+            var testSb = new StringBuilder();
+            testSb.Append("Key: " + testKeyName);
+            testSb.Append(" ");
+            enFormDataTableType.Text.RenderDescription(testSb);
+            testSb.Append(" ");
+            testSb.Append(testValueName);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(testSb.ToString(), result.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void FormDataConditionExpression_ToOptions_FormDataConditionMatch_With_AllValues_StoredEnvironmentVarible_ExpectSuccess()
+        {
+            var testKey = "testKey";
+            var testValue = "good text message";
+
+            var testKeyName = "[[storedKeyName]]";
+            var testValueName = "[[storedValueName]]";
+
+            var environment = new ExecutionEnvironment();
+            environment.Assign(testValueName, testValue, 0);
+            environment.Assign(testKeyName, testKey, 0);
+
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+
+            _dataObject = mockDSFDataObject.Object;
+
+            var sut = new FormDataConditionExpression
+            {
+                Key = testKeyName,
+                Cond = new FormDataConditionMatch
+                {
+                    Value = testValueName,
+                    MatchType = enFormDataTableType.Text
+                }
+            }.ToOptions();
+
+            var result = sut.First() as FormDataOptionConditionExpression;
+
+            Assert.AreEqual(testKeyName, result.Left);
+            Assert.AreEqual(testValueName, result.Right);
+            Assert.AreEqual(enFormDataTableType.Text.ToString(), result.SelectedMatchType.Name);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void FormDataConditionExpression_FromOption_FormDataConditionMatch_With_AllValues_StoredEnvironmentVarible_ExpectSuccess()
+        {
+            var testKey = "testKey";
+            var testValue = "good text message";
+
+            var testKeyName = "[[storedKeyName]]";
+            var testValueName = "[[storedValueName]]";
+
+            var environment = new ExecutionEnvironment();
+            environment.Assign(testValueName, testValue, 0);
+            environment.Assign(testKeyName, testKey, 0);
+
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+
+            _dataObject = mockDSFDataObject.Object;
+
+            var sut = new FormDataConditionExpression
+            {
+                Key = testKeyName
+            };
+
+            sut.FromOption(new FormDataOptionConditionExpression
+            {
+                Left = testKeyName,
+                Right = testValueName
+            });
+
+            var result = sut.Cond as FormDataConditionMatch;
+
+            Assert.AreEqual(testKeyName, sut.Key);
+            Assert.AreEqual(testValueName, result.Value);
+            Assert.AreEqual(enFormDataTableType.Text, result.MatchType);
+        }
 
         private IEnumerable<string[]> getTestArgumentsFunc(string col1s, string col2s, string col3s)
         {

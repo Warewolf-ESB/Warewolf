@@ -212,7 +212,7 @@ namespace Dev2.Runtime.ServiceModel
 
                     formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
 
-                    formDataStream.Write(fileToUpload.File, 0, fileToUpload.File.Length);
+                    formDataStream.Write(fileToUpload.FileBytes, 0, fileToUpload.FileBytes.Length);
                 }
                 else if (formValueType is TextParameter textToUpload)
                 {

@@ -10,6 +10,7 @@
 
 
 
+using Warewolf;
 using Warewolf.Options;
 
 namespace Dev2.Common.Interfaces
@@ -20,5 +21,6 @@ namespace Dev2.Common.Interfaces
         string File { get; set; }
         string FileName { get; set; }
         string Right { get; set; }
+        INamedInt SelectedMatchType { get; set; }
     }
 }
