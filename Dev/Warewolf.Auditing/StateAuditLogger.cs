@@ -40,34 +40,35 @@ namespace Warewolf.Auditing
 
         public void LogAuditState(Object logEntry)
         {
+            Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
+            if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
+            {
+                var auditCommand = new AuditCommand
+                {
+                    Audit = auditLog,
+                    Type = "LogEntry"
+                };
+                var jsonLogEntry = JsonConvert.SerializeObject(auditCommand);
+                SendMessage(jsonLogEntry);
+            }
+        }
+
+        private void SendMessage(string jsonLogEntry)
+        {
+            IWebSocketWrapper client = null;
             try
             {
-                Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
-                if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
-                {
-                    _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
-                    _ws.Connect();
+                client = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
 
-                    var auditCommand = new AuditCommand
-                    {
-                        Audit = auditLog,
-                        Type = "LogEntry"
-                    };
-                    string json = JsonConvert.SerializeObject(auditCommand);
-                    _ws.SendMessage(json);
-                }
+                client.SendMessage(jsonLogEntry);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Dev2Logger.Error("LogAuditState", e.Message);
+                Dev2Logger.Error("LogAuditState", ex.InnerException.Message + ex);
             }
             finally
             {
-                if (_ws != null)
-                {
-                    _webSocketFactory.Release(_ws);
-                    _ws = null;
-                }
+                _webSocketFactory.Release(client);
             }
         }
 
@@ -133,15 +134,6 @@ namespace Warewolf.Auditing
         {
             if (!_isDisposed)
             {
-                if (disposing)
-                {
-                    if (_ws != null)
-                    {
-                        _webSocketFactory.Release(_ws);
-                        _ws = null;
-                    }
-                }
-
                 _isDisposed = true;
             }
         }
