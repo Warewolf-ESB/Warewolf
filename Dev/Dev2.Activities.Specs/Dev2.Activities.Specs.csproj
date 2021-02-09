@@ -256,7 +256,7 @@
       <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.8</Version>
+      <Version>2.0.12</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk">
       <Version>16.8.3</Version>

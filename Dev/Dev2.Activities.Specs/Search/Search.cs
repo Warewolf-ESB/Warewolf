@@ -100,7 +100,7 @@ namespace Dev2.Activities.Specs.Search
         public void ThenTheSearchResultContains(Table table)
         {
             var results = localHost.ResourceRepository.Filter(searchValue);
-
+            Assert.IsNotNull(results, "Local Warewolf server service named: \"GetFilterListService\" returned null.");
             var resourceId = Guid.Parse(table.Rows[0]["ResourceId"]);
             var name = table.Rows[0]["Name"];
             var path = table.Rows[0]["Path"];
