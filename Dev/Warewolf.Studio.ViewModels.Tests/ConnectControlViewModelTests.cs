@@ -722,7 +722,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(250)]
         [TestCategory(nameof(ConnectControlViewModel))]
         [Owner("Sanele Mthembu")]
         public void ConnectControlViewModel_ConnectOrDisconnect_GivenServerIsConnectAndServerHasNotLoaded()

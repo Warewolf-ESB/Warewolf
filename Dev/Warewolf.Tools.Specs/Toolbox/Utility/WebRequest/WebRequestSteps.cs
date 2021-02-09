@@ -24,6 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
     public class WebRequestSteps : RecordSetBases
     {
         readonly ScenarioContext scenarioContext;
+        public static Depends _containerOps;
 
         public WebRequestSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -59,7 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             var webGet = new DsfWebGetRequestWithTimeoutActivity
                 {
                     Result = resultVariable,
-                    Url = url ?? "",
+                    Url = (url ?? "").Replace("TFSBLD.premier.local", _containerOps.Container.IP).Replace("9810", _containerOps.Container.Port),
                     Headers = header ?? "",
                     TimeoutSeconds = String.IsNullOrEmpty(timeout) ? 100 : int.Parse(timeout),
                     TimeOutText = String.IsNullOrEmpty(timeout) ? "" : timeout
@@ -73,7 +74,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         }
 
         [Given(@"I have the url ""(.*)"" without timeout")]
-        public void GivenIHaveTheUrl(string url) => scenarioContext.Add("url", url);
+        public void GivenIHaveTheUrl(string url) => scenarioContext.Add("url", (url ?? "").Replace("TFSBLD.premier.local", _containerOps.Container.IP).Replace("9810", _containerOps.Container.Port));
 
         [When(@"the web request tool is executed")]
         public void WhenTheWebRequestToolIsExecuted()
@@ -122,8 +123,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         {
             scenarioContext.Add("resVar", resultVar);
         }
-
-
+        
         [Given(@"I have the url ""(.*)"" with timeoutSeconds ""(.*)""")]
         public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
         {
@@ -131,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             scenarioContext.Add("timeoutSeconds", timeoutSeconds);
         }
 
-
-
+        [Given("I depend on a valid HTTP verbs server")]
+        public void GivenIGetaValidHTTPVerbsServer() => _containerOps = new Depends(Depends.ContainerType.HTTPVerbsApi, true);
     }
 }
