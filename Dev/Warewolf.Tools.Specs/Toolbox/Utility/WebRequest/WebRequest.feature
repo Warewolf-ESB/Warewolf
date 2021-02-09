@@ -6,19 +6,21 @@ Feature: WebRequest
 
 
 	Scenario: Enter a URL to download html
-		Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
+		Given I depend on a valid HTTP verbs server
+		And I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
 		When the web request tool is executed
 		Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 		And the execution has "NO" error
 		And the debug inputs as
-			| URL                                            | Header |
+			| URL                                               | Header |
 			| http://TFSBLD.premier.local:9810/api/products/Get |        |
 		And the debug output as
 			|                                                                                                                   |
 			| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
 
 	Scenario: Enter a badly formed URL
-		Given I have the url "www.google.comx" without timeout
+		Given I depend on a valid HTTP verbs server
+		And I have the url "www.google.comx" without timeout
 		When the web request tool is executed
 		Then the result should contain the string ""
 		And the execution has "AN" error
@@ -30,14 +32,15 @@ Feature: WebRequest
 			| [[result]] = |
 
 	Scenario: Enter a URL made up of text and variables with no header
-		Given I have the url "http://[[site]][[file]]" without timeout
-		And I have a web request variable "[[site]]" equal to "TFSBLD.premier.local:9810/api/products/"
+		Given I depend on a valid HTTP verbs server
+		And I have the url "http://[[site]][[file]]" without timeout
+		And I have a web request variable "[[site]]" equal to "opswolf.com:9810/api/products/"
 		And I have a web request variable "[[file]]" equal to "Get"
 		When the web request tool is executed
 		Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 		And the execution has "NO" error
 		And the debug inputs as
-			| URL                                                                      | Header |
+			| URL                                                                         | Header |
 			| http://[[site]][[file]] = http://TFSBLD.premier.local:9810/api/products/Get |        |
 		And the debug output as
 			|                     |
@@ -45,7 +48,8 @@ Feature: WebRequest
 
 
 	Scenario: Enter a URL and 2 variables each with a header parameter (json)
-		Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
+		Given I depend on a valid HTTP verbs server
+		And I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
 		And I have a web request variable "[[ContentType]]" equal to "Content-Type"
 		And I have a web request variable "[[Type]]" equal to "application/json"
 		And I have the Header "[[ContentType]]: [[Type]]"
@@ -60,7 +64,8 @@ Feature: WebRequest
 			| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
 
 	Scenario: Enter a URL and 2 variables each with a header parameter (xml)
-		Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
+		Given I depend on a valid HTTP verbs server
+		And I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
 		And I have a web request variable "[[ContentType]]" equal to "Content-Type"
 		And I have a web request variable "[[Type]]" equal to "application/xml"
 		And I have the Header "[[ContentType]]: [[Type]]"
@@ -75,7 +80,8 @@ Feature: WebRequest
 			| [[result]] = <ArrayOfProduct xmlns:i= http://www.w3.org/2001/XMLSchema-instance  xmlns= http://schemas.datacontra |
 
 	Scenario: Enter a URL that returns json
-		Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
+		Given I depend on a valid HTTP verbs server
+		And I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
 		When the web request tool is executed
 		Then the result should contain the string "{"Id":1,"Name":"Television","Category":"Electronic","Price":82000.0}"
 		And the execution has "NO" error
@@ -87,7 +93,8 @@ Feature: WebRequest
 			| [[result]] = [{ Id :1, Name : Television , Category : Electronic , Price :82000.0},{ Id :2, Name : Refrigerator , |
 
 	Scenario: Enter a URL that returns xml
-		Given I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
+		Given I depend on a valid HTTP verbs server
+		And I have the url "http://TFSBLD.premier.local:9810/api/products/Get" without timeout
 		And I have the Header "Content-Type: application/xml"
 		When the web request tool is executed
 		Then the result should contain the string "<Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product>"
@@ -188,6 +195,6 @@ Feature: WebRequest
 		When the web request tool is executed
 		Then the execution has "NO" error
 		And the debug inputs as
-			| URL                                                                     | Header |
+			| URL                                                                          | Header |
 			| [[urls(1).url]] = http://TFSBLD.premier.local/IntegrationTestSite/Proxy.ashx |        |
-			| [[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15  |        |
+			| [[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15       |        |
