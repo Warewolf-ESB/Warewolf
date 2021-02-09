@@ -374,7 +374,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             service.FormDataParameters = new List<IFormDataParameters>
             {
-               new FileParameter(new FormDataConditionExpression
+               new FormDataConditionExpression
                {
                    Key = fileKey,
                    Cond = new FormDataConditionBetween
@@ -382,7 +382,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                        File = fileContentBase64,
                        FileName = fileName
                    }
-               })
+               }.ToFormDataParameter()
             };
 
             foreach (var parameter in service.Method.Parameters)

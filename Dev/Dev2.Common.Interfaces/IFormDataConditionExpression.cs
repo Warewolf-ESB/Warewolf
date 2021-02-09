@@ -10,11 +10,20 @@
 
 
 
+using System;
+using System.Collections.Generic;
+using System.Text;
+
 namespace Dev2.Common.Interfaces
 {
     public interface IFormDataConditionExpression
     {
         string Key { get; }
         IFormDataCondition Cond { get; }
+
+        void RenderDescription(StringBuilder text);
+        IEnumerable<IFormDataParameters> Eval(Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool v);
+
+        IFormDataParameters ToFormDataParameter();
     }
 }

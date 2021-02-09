@@ -821,9 +821,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Client = mockWebClientWrapper.Object
             };
 
-            var formDataParameters = new List<FormDataParameters> 
+            var formDataParameters = new List<IFormDataParameters> 
             {
-                new FileParameter(new FormDataConditionExpression
+                new FormDataConditionExpression
                 {
                     Key = "[[textKey]]",
                     Cond = new FormDataConditionBetween
@@ -832,7 +832,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         File = "VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu",
                         FileName = "test file name"
                     }
-                })
+                }.ToFormDataParameter()
             };
 
             var result = WebSources.Execute(source, WebRequestMethod.Post, relativeUri,string.Empty, true, out var errors, new string[] { }, formDataParameters);

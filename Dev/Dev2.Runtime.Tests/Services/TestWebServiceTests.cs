@@ -146,7 +146,7 @@ namespace Dev2.Tests.Runtime.Services
                 Headers = new List<INameValue> { new NameValue("Content-Type", "multipart/form-data") },
                 FormDataParameters = new List<IFormDataParameters>
                 {
-                   new FileParameter(new FormDataConditionExpression
+                   new FormDataConditionExpression
                    {
                        Key = testFileKey,
                        Cond = new FormDataConditionBetween
@@ -154,14 +154,14 @@ namespace Dev2.Tests.Runtime.Services
                            File = testFileContentBase64,
                            FileName = testFileName
                        }
-                   })
+                   }.ToFormDataParameter()
                 }
 
             };
 
             var values = new Dictionary<string, StringBuilder>
             {
-                { "WebService", webService.SerializeToJsonStringBuilder() }
+                { "WebService", serializer.SerializeToBuilder(webService) }
             };
 
             var result = sut.Execute(values, null);

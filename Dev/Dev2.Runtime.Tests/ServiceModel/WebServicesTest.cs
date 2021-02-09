@@ -509,7 +509,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.FormDataParameters = new List<IFormDataParameters>
             {
-                new FileParameter(new FormDataConditionExpression
+                new FormDataConditionExpression
                 {
                     Key = testKey,
                     Cond = new FormDataConditionBetween
@@ -517,7 +517,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         File = testFileContent,
                         FileName = testFileName
                     }
-                })
+                }.ToFormDataParameter()
             };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
@@ -554,7 +554,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.FormDataParameters = new List<IFormDataParameters>
             {
-                new FileParameter(new FormDataConditionExpression
+                new FormDataConditionExpression
                 {
                     Key = testKey,
                     Cond = new FormDataConditionBetween
@@ -562,7 +562,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         File = testFileContent,
                         FileName = testFileName
                     }
-                })
+                }.ToFormDataParameter()
             };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
@@ -584,7 +584,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             Assert.IsFalse(isBase64String, "The service request responce should not be a base64");
             Assert.AreEqual(dummyResponce, service.RequestResponse, "The web response base64 should not be return as base64");
-            Assert.AreEqual(Encoding.ASCII.GetBytes(testFileContent).ToString(), firstFormDataParameters.File.ToString());
+            Assert.AreEqual(Encoding.ASCII.GetBytes(testFileContent).ToString(), firstFormDataParameters.FileBytes.ToString());
             Assert.AreEqual(testFileName, firstFormDataParameters.FileName);
         }
 

@@ -41,7 +41,6 @@ namespace Warewolf.Data.Options
         public abstract void SetOptions(IFormDataOptionConditionExpression option);
 
         public abstract void RenderDescription(StringBuilder sb);
-
     }
 
 
@@ -95,10 +94,36 @@ namespace Warewolf.Data.Options
         {
             if (string.IsNullOrWhiteSpace(Key))
             {
-                return new List<FormDataParameters>();
+                return new List<IFormDataParameters>();
             }
             return Cond.Eval(Key, getArgumentsFunc, hasError);
         }
+
+        public IFormDataParameters ToFormDataParameter()
+        {
+            var cond = this.Cond;
+            if (cond is FormDataConditionMatch)
+            {
+                var conditionMatch = cond as FormDataConditionMatch;
+                return new TextParameter
+                {
+                    Key = this.Key,
+                    Value = conditionMatch.Value
+                };
+            }
+            if (cond is FormDataConditionBetween)
+            {
+                var conditionBetween = cond as FormDataConditionBetween;
+                return new FileParameter
+                {
+                    Key = this.Key,
+                    FileBase64 = conditionBetween.File,
+                    FileName = conditionBetween.FileName
+                };
+            }
+            return null;
+        }
+
 
         public override string ToString()
         {
@@ -145,7 +170,7 @@ namespace Warewolf.Data.Options
             {
                 try
                 {
-                    ret.Add(new FileParameter(new FormDataConditionExpression
+                    ret.Add(new FormDataConditionExpression
                     {
                         Key = arguments[0],
                         Cond = new FormDataConditionBetween
@@ -154,7 +179,7 @@ namespace Warewolf.Data.Options
                             File = arguments[1],
                             FileName = arguments[2]
                         }
-                    }));
+                    }.ToFormDataParameter());
                 }
                 catch (Exception)
                 {
@@ -214,7 +239,7 @@ namespace Warewolf.Data.Options
             {
                 try
                 {
-                    ret.Add(new TextParameter(new FormDataConditionExpression
+                    ret.Add(new FormDataConditionExpression
                     {
                         Key = arguments[0],
                         Cond = new FormDataConditionMatch
@@ -222,7 +247,7 @@ namespace Warewolf.Data.Options
                             Value = arguments[1],
                             MatchType = enFormDataTableType.Text
                         }
-                    }));
+                    }.ToFormDataParameter());
 
                 }
                 catch (Exception)
