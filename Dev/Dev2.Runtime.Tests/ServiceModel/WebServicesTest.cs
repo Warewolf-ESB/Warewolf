@@ -24,6 +24,7 @@ using Dev2.Tests.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Data.Options;
 
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -59,7 +60,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -94,7 +95,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -175,7 +176,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -281,7 +282,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -588,7 +589,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(testFileName, firstFormDataParameters.FileName);
         }
 
-        string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null)
+        string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
         {
             _requestUrlEvaluated = relativeUri;
             _requestBodyEvaluated = data;

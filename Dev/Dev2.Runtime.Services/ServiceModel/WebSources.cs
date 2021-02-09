@@ -31,7 +31,7 @@ using Warewolf.Data.Options;
 
 namespace Dev2.Runtime.ServiceModel
 {
-    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null, IEnumerable<IFormDataParameters> formDataParameters = null);
+    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null);
     public delegate string WebExecuteBinary(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null);
 
     public class WebSources : ExceptionManager
@@ -127,14 +127,19 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
-        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null)
+        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
         {
-            return Execute(source, method, headers, relativeUri, data, throwError, out errors, formDataParameters);
+            return Execute(source, method, headers, relativeUri, data, throwError, out errors, formDataParameters, webRequestFactory);
         }
 
-        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null)
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
         {
             IWebClientWrapper client = null;
+
+            if (webRequestFactory == null)
+            {
+                webRequestFactory = new WebRequestFactory();
+            }
 
             errors = new ErrorResultTO();
             try
@@ -150,12 +155,12 @@ namespace Dev2.Runtime.ServiceModel
                     contentType = contentType+"; boundary=" + formDataBoundary;
 
                     var bytesData = GetMultipartFormData(formDataParameters, contentType);
-                    return PerformMultipartWebRequest(new WebRequestFactory(), client, address, bytesData);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
                 if (contentType != null && contentType.ToLowerInvariant().Contains("multipart"))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
-                    return PerformMultipartWebRequest(new WebRequestFactory(), client, address, bytesData);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
 
                 return method == WebRequestMethod.Get ? client.DownloadData(address).ToBase64String() : client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String();
@@ -204,15 +209,19 @@ namespace Dev2.Runtime.ServiceModel
 
                 if (formValueType is FileParameter fileToUpload)
                 {
+
+                    var fileKey = fileToUpload.Key;
                     var header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
                         boundary,
-                        fileToUpload.Key,
-                        fileToUpload.FileName ?? fileToUpload.Key,
+                        fileKey,
+                        fileToUpload.FileName ?? fileKey,
                         fileToUpload.ContentType ?? "application/octet-stream");
 
-                    formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
+                    var fileBytes = fileToUpload.FileBytes;
 
-                    formDataStream.Write(fileToUpload.FileBytes, 0, fileToUpload.FileBytes.Length);
+                    formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
+                    
+                    formDataStream.Write(fileBytes, 0, fileBytes.Length);
                 }
                 else if (formValueType is TextParameter textToUpload)
                 {
