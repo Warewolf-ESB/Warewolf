@@ -14,6 +14,5 @@ namespace Dev2.Common.Interfaces
     public interface IFormDataParameters
     {
         string Key { get; set; }
-        IFormDataCondition Cond { get; set; }
     }
 }
