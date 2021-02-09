@@ -10,7 +10,6 @@
 
 
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
@@ -23,12 +22,11 @@ using System.Collections.Generic;
 using System.Text;
 using Warewolf.Core;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces;
 using Warewolf.Common.Interfaces.NetStandard20;
-using Warewolf.Common.NetStandard20;
 using Warewolf.Data.Options;
-using Newtonsoft.Json;
+using Dev2.Runtime.ServiceModel;
+using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -81,7 +79,13 @@ namespace Dev2.Tests.Runtime.Services
         public void TestWebService_Execute_FormDataParameters_Null_ExpectSuccess()
         {
             var serializer = new Dev2JsonSerializer();
-            var sut = new TestWebService();
+
+            var mockWebServices = new Mock<IWebServices>();
+            var sut = new TestWebService
+            {
+                WebServices = mockWebServices.Object,
+                ResourceCatalogue = new Mock<IResourceCatalog>().Object
+            };
 
             var mockWebClientWrapper = new Mock<IWebClientWrapper>();
 
@@ -110,10 +114,10 @@ namespace Dev2.Tests.Runtime.Services
             var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(executeMessage.HasError);
-            //TODO: should not be like this after WebRequestFactory DI in WebService.Execute outstanding refactor
-            Assert.IsTrue(executeMessage.Message.Contains("Unable to connect to the remote server"));
+            Assert.IsFalse(executeMessage.HasError);
+            Assert.IsTrue(executeMessage.Message.ToString().Contains("\"FormDataParameters\":null"));
 
+            mockWebServices.Verify(o => o.TestWebService(It.IsAny<WebService>()), Times.Once);
             mockWebSource.Verify(o => o.Client, Times.Never);
         }
 
@@ -128,7 +132,14 @@ namespace Dev2.Tests.Runtime.Services
             var testFileContentBase64 = testFileContentBytes.ToBase64String();
 
             var serializer = new Dev2.Communication.Dev2JsonSerializer();
-            var sut = new TestWebService();
+
+            var mockWebServices = new Mock<IWebServices>();
+
+            var sut = new TestWebService
+            {
+                WebServices = mockWebServices.Object,
+                ResourceCatalogue = new Mock<IResourceCatalog>().Object
+            };
 
             var mockWebClientWrapper = new Mock<IWebClientWrapper>();
 
@@ -158,7 +169,7 @@ namespace Dev2.Tests.Runtime.Services
                 }
 
             };
-
+            
             var values = new Dictionary<string, StringBuilder>
             {
                 { "WebService", serializer.SerializeToBuilder(webService) }
@@ -170,9 +181,9 @@ namespace Dev2.Tests.Runtime.Services
 
             Assert.IsNotNull(result);
             Assert.IsFalse(executeMessage.HasError);
-            //TODO: should not be like this after WebRequestFactory DI in WebService.Execute outstanding refactor
-            Assert.IsTrue(executeMessage.Message.Contains("Unable to connect to the remote server"));
+            Assert.IsTrue(executeMessage.Message.ToString().Contains("\"FileName\":\"testFileName\",\"ContentType\":null,\"FileBase64\":\"dGhpcyBjYW4gYmUgYW55IGZpbGUgdHlwZSBwYXJzZWQgaW50byBiYXNlNjQgc3RyaW5n\",\"Key\":\"testFileKey\""));
 
+            mockWebServices.Verify(o => o.TestWebService(It.IsAny<WebService>()), Times.Once);
             mockWebSource.Verify(o => o.Client, Times.Never);
         }
 
