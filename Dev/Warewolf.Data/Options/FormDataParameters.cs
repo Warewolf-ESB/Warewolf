@@ -34,8 +34,6 @@ namespace Warewolf.Data.Options
         }
 
         public string Key { get; set; }
-        public IFormDataCondition Cond { get; set; }
-
     }
 
     public class TextParameter : IFormDataParameters
@@ -45,9 +43,8 @@ namespace Warewolf.Data.Options
 
         }
 
-        public string Value { get; internal set; }
+        public string Value { get; set; }
         public string Key { get; set; }
-        public IFormDataCondition Cond { get; set; }
     }
 
     public class FileParameter : IFormDataParameters
@@ -74,14 +71,13 @@ namespace Warewolf.Data.Options
             }
         }
 
-        public string FileName { get; internal set; }
-        public string ContentType { get; internal set; }
+        public string FileName { get; set; }
+        public string ContentType { get; set; }
 
         [JsonIgnore]
         public byte[] FileBytes => GetFileByteArray();
 
-        public string FileBase64 { get; internal set; }
+        public string FileBase64 { get; set; }
         public string Key { get; set; }
-        public IFormDataCondition Cond { get; set; }
     }
 }
