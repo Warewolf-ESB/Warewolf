@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.WebServer
     /// </summary>
     [TestClass]
     [TestCategory("Runtime WebServer")]
-    public class GetOpenAPIServiceHandlerTest
+    public class GetOpenAPIServiceHandlerTests
     {
         NameValueCollection LocalQueryString => new NameValueCollection
         {
@@ -45,10 +45,10 @@ namespace Dev2.Tests.Runtime.WebServer
             { "rid", "resourceid" }
         };
         
-                [TestMethod]
+        [TestMethod]
         [Owner("Njabulo Nxele")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
+        public void GetOpenAPIServiceHandler_ProcessRequest_GiveNullCommunicationContext_ThrowsException()
         {
             //------------Setup for test-------------------------
             var handler = new GetOpenAPIServiceHandler();
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Njabulo Nxele")]
-        public void ProcessRequest_GiveNoPathAndNonPublicRequest()
+        public void GetOpenAPIServiceHandler_ProcessRequest_GiveNoPathAndNonPublicRequest()
         {
             var collection = new NameValueCollection
             {
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Njabulo Nxele")]
-        public void ProcessRequest_GivePublicRequest()
+        public void GetOpenAPIServiceHandler_ProcessRequest_GivePublicRequest()
         {
             var collection = new NameValueCollection
             {

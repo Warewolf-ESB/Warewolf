@@ -481,6 +481,11 @@ namespace Dev2
                 throw new ArgumentNullException(nameof(resourceList));
             }
             
+            if (string.IsNullOrEmpty(webServerUrl))
+            {
+                throw new ArgumentNullException(nameof(webServerUrl));
+            }
+
             var paths = new List<JObject>();
             foreach (var resource in resourceList)
             {
