@@ -31,7 +31,7 @@ namespace Dev2.Data.PathOperations
 
         public void Dispose()
         {
-            _context.Dispose();
+            //_context.Dispose();
         }
 
         public void Undo()
