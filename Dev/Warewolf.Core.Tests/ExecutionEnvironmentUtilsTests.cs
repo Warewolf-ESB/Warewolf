@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
@@ -424,6 +425,47 @@ namespace Dev2.Tests
             Assert.IsNotNull(values);
             Assert.AreEqual(1, values.Count);
             Assert.AreEqual("123<1234", values[0]);
+        }
+        
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(ExecutionEnvironmentUtils))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_NullServiceName_ExpectedException()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(null, "");
+            //------------Assert Results-------------------------
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(ExecutionEnvironmentUtils))]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_EmptyURL_ExpectedException()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(
+                new List<IWarewolfResource>(), "");
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(ExecutionEnvironmentUtils))]
+        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_EmptyResourceList()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(
+                new List<IWarewolfResource>(), "http://localhost/secure");
+            //------------Assert Results-------------------------
         }
     }
 }
