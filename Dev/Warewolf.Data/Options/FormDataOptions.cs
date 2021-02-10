@@ -18,21 +18,6 @@ using Warewolf.Options;
 
 namespace Warewolf.Data.Options
 {
-    public class FormDataOptions : IOptionConvertParameter
-    {
-        public FormDataOptions()
-        {
-
-        }
-
-        public void Notify()
-        {
-            OnChange?.Invoke();
-        }
-        public delegate void NotifyHandler();
-        public event NotifyHandler OnChange;
-    }
-
     public abstract class FormDataCondition : IFormDataCondition
     {
         public enFormDataTableType MatchType { get; set; }
@@ -46,8 +31,14 @@ namespace Warewolf.Data.Options
 
     public class FormDataConditionExpression : IOptionConvertable, IFormDataConditionExpression
     {
+        private string _key;
+
         [HelpText(nameof(Studio.Resources.Languages.HelpText.FormDataOptionConditionLeftHelpText))]
-        public string Key { get; set; }
+        public string Key
+        {
+            get => _key;
+            set => _key = value;
+        }
 
         [DataValue(nameof(FormDataCondition.MatchType))]
         [MultiDataProvider(typeof(FormDataConditionMatch), typeof(FormDataConditionBetween))]
