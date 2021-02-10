@@ -28,6 +28,9 @@ namespace Warewolf.Core
         public string RequestUrl { get; set; }
         public Guid Id { get; set; }
         public List<INameValue> Headers { get; set; }
+        public List<INameValue> Parameters { get; set; }
+        public bool IsFormDataChecked { get; set; }
+        public bool IsNoneChecked { get; set; }
         public string PostData { get; set; }
         public bool IsPutDataBase64 { get; set; }
         public string SourceUrl { get; set; }

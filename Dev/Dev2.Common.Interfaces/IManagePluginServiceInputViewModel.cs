@@ -36,4 +36,9 @@ namespace Dev2.Common.Interfaces
         bool InputCountExpandAllowed { get; set; }
         bool IsGenerateInputsEmptyRows { get; set; }
     }
+
+    public interface IManageWebPostInputViewModel : IManageWebServiceInputViewModel
+    {
+        
+    }
 }

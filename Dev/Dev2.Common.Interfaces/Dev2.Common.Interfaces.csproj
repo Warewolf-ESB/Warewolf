@@ -386,6 +386,7 @@
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
     <Compile Include="ToolBase\IGenerateInputArea.cs" />
     <Compile Include="ToolBase\IGenerateOutputArea.cs" />
+    <Compile Include="ToolBase\IParameterRegion.cs" />
     <Compile Include="ToolBase\IHeaderRegion.cs" />
     <Compile Include="ToolBase\IOutputsToolRegion.cs" />
     <Compile Include="ToolBase\ISourceToolRegion.cs" />
@@ -398,6 +399,7 @@
     <Compile Include="ToolBase\IWebServiceBaseViewModel.cs" />
     <Compile Include="ToolBase\IWebServiceDeleteViewModel.cs" />
     <Compile Include="ToolBase\IWebServiceGetViewModel.cs" />
+    <Compile Include="ToolBase\IWebPostActivityViewModel.cs" />
     <Compile Include="ToolBase\IWebServicePostViewModel.cs" />
     <Compile Include="ToolBase\IWebServicePutViewModel.cs" />
     <Compile Include="ToolBase\WCF\IWcfEndPointViewModel.cs" />

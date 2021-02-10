@@ -135,6 +135,7 @@
     <Compile Include="Designers2\Core\ActionRegion\WcfActionMemento.cs" />
     <Compile Include="Designers2\Core\InputRegion\ServiceInputNameComparer.cs" />
     <Compile Include="Designers2\Core\ManageSqliteServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageWebPostInputViewModel.cs" />
     <Compile Include="Designers2\Core\ViewPropertyBuilder.cs" />
     <Compile Include="Designers2\ExchangeNewEmail\ExchangeEmailDesigner.xaml.cs">
       <DependentUpon>ExchangeEmailDesigner.xaml</DependentUpon>
