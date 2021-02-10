@@ -17,7 +17,7 @@ namespace Warewolf.Security.Encryption
 {
     public static class DpapiWrapper
     {
-        const DataProtectionScope DataProtectionScope = System.Security.Cryptography.DataProtectionScope.LocalMachine;
+        const DataProtectionScope DataProtectionScope = System.Security.Cryptography.DataProtectionScope.CurrentUser;
 
         public static string DecryptIfEncrypted(string input)
         {

@@ -52,6 +52,7 @@ using Newtonsoft.Json;
 using Warewolf.Configuration;
 using Warewolf.Data;
 using Warewolf.Options;
+using Warewolf.Security.Encryption;
 using Warewolf.Service;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Trigger.Queue;
@@ -1626,7 +1627,7 @@ namespace BusinessDesignStudio.Unit.Tests
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
             const string plainText = "pass.word1";
-            var decrypt = SecurityEncryption.Encrypt(plainText);
+            var decrypt = DpapiWrapper.Encrypt(plainText);
             var serviceTestModel = new List<IServiceTestModelTO>
             {
                 new ServiceTestModelTO
@@ -1651,7 +1652,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var serviceTestModels = result.LoadResourceTestsForDeploy(Guid.NewGuid());
             //------------Assert Results-------------------------
             var isEncryted = serviceTestModels.Single().Password == decrypt;
-            var old = SecurityEncryption.Decrypt(serviceTestModels.Single().Password);
+            var old = DpapiWrapper.Decrypt(serviceTestModels.Single().Password);
 
             Assert.IsTrue(isEncryted);
             Assert.IsTrue(old.Contains(plainText));
@@ -1758,7 +1759,7 @@ namespace BusinessDesignStudio.Unit.Tests
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
             const string plainText = "pass.word1";
-            var decrypt = SecurityEncryption.Encrypt(plainText);
+            var decrypt = DpapiWrapper.Encrypt(plainText);
             var triggerQueues = new List<ITriggerQueue>
             {
                 new TriggerQueue
@@ -1781,7 +1782,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var serviceTestModels = result.LoadResourceTriggersForDeploy(Guid.NewGuid());
             //------------Assert Results-------------------------
             var isEncrypted = serviceTestModels.Single().Password == decrypt;
-            var old = SecurityEncryption.Decrypt(serviceTestModels.Single().Password);
+            var old = DpapiWrapper.Decrypt(serviceTestModels.Single().Password);
 
             Assert.IsTrue(isEncrypted);
             Assert.IsTrue(old.Contains(plainText));
