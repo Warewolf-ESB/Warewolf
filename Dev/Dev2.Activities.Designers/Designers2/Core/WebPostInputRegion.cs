@@ -86,6 +86,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 RequestUrl = source.SelectedSource.HostName;
                 IsEnabled = true;
+                IsFormDataChecked = modelItem.GetProperty<bool>("IsFormDataChecked");
+                IsNoneChecked = modelItem.GetProperty<bool>("IsNoneChecked");
             }
         }
 
@@ -99,6 +101,7 @@ namespace Dev2.Activities.Designers2.Core
                 Headers.Clear();
                 AddHeaders();
                 IsEnabled = true;
+                IsNoneChecked = true;
             }
 
             OnPropertyChanged(nameof(IsEnabled));

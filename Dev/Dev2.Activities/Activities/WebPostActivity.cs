@@ -43,7 +43,6 @@ namespace Dev2.Activities
         public bool IsFormDataChecked { get; set; }
         public bool IsNoneChecked { get; set; }
         public IList<FormDataConditionExpression> Conditions { get; set; }
-        public FormDataOptions FormDataOptions { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
         public IResponseManager ResponseManager { get; set; }
@@ -53,11 +52,6 @@ namespace Dev2.Activities
         {
             Type = "POST Web Method";
             DisplayName = "POST Web Method";
-
-            if (FormDataOptions is null)
-            {
-                FormDataOptions = new FormDataOptions();
-            }
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;

@@ -12,6 +12,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
@@ -26,6 +27,7 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
@@ -226,7 +228,6 @@ namespace Dev2.Activities.Designers2.Web_Post
                 }
             }
 
-            LoadOptions();
             LoadConditionExpressionOptions();
         }
 
@@ -315,35 +316,6 @@ namespace Dev2.Activities.Designers2.Web_Post
             UpdateConditionExpressionOptionsModelItem();
         }
 
-
-        private void LoadOptions()
-        {
-            var formDataOptions = _modelItem.Properties["FormDataOptions"]?.ComputedValue as FormDataOptions;
-            if (formDataOptions is null)
-            {
-                formDataOptions = new FormDataOptions();
-                _modelItem.Properties["FormDataOptions"]?.SetValue(formDataOptions);
-            }
-
-            formDataOptions.OnChange += UpdateOptionsModelItem;
-            _postFormDataOptionsInst = formDataOptions;
-            var result = new List<IOption>();
-            var failureOptions = OptionConvertor.Convert(formDataOptions);
-            result.AddRange(failureOptions);
-            Options = new OptionsWithNotifier { Options = result };
-        }
-
-        private void UpdateOptionsModelItem()
-        {
-            if (Options?.Options != null)
-            {
-                _modelItem.Properties["FormDataOptions"]?.ClearValue();
-                // Call Convert to ensure the model is _fully_ updated
-                OptionConvertor.Convert(typeof(FormDataOptions), Options.Options, _postFormDataOptionsInst);
-                _modelItem.Properties["FormDataOptions"]?.SetValue(_postFormDataOptionsInst);
-            }
-        }
-
         void AddProperty(string key, string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -395,7 +367,6 @@ namespace Dev2.Activities.Designers2.Web_Post
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebPostActivityViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private FormDataOptions _postFormDataOptionsInst;
         private OptionsWithNotifier _conditionExpressionOptions;
 
         public DelegateCommand TestInputCommand { get; set; }
