@@ -16,10 +16,8 @@ using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Communication;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.Interfaces;
-using Dev2.Workspaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
@@ -27,6 +25,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Core;
+using Warewolf.Data.Options;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -170,12 +169,37 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SaveWebService))]
         public void SaveWebService_Execute_FormDataParameters_NotNull_ExpectSuccess()
         {
+            var testFileKey = "testFileKey";
+            var testFileName = "testFileName";
+            var testFileValue = "testFileContent";
+
+            var testTextKey = "testTextKey";
+            var testTextValue = "testTextValue";
+
+            var resourcePath = "c:\\path/to/save/resource.ext";
+
             var serializer = new Dev2JsonSerializer();
-            var saveWebService = new SaveWebService();
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(o => o.GetResource<WebSource>(Guid.Empty, Guid.Empty))
+                .Returns(new Mock<WebSource>().Object)
+                .Verifiable();
+            mockResourceCatalog.Setup(o => o.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>()))
+                .Verifiable();
+
+            var mockExplorerServerResourceRepository = new Mock<IExplorerServerResourceRepository>();
+            mockExplorerServerResourceRepository.Setup(o => o.UpdateItem(It.IsAny<IResource>()))
+                .Verifiable();
+
+            var saveWebService = new SaveWebService
+            {
+                ResourceCatalogue = mockResourceCatalog.Object,
+                ServerExplorerRepo = mockExplorerServerResourceRepository.Object
+            };
 
             var mockWebClientWrapper = new Mock<IWebClientWrapper>();
 
@@ -187,10 +211,30 @@ namespace Dev2.Tests.Runtime.Services
             var serviceOutputMapping = new ServiceOutputMapping("from", "=", "[[rec().a]]");
             var webService = new WebServiceDefinition
             {
+                Path = resourcePath,
                 Source = new WebServiceSourceDefinition(),
-                OutputMappings = new List<IServiceOutputMapping> {serviceOutputMapping},
+                OutputMappings = new List<IServiceOutputMapping> { serviceOutputMapping },
                 Headers = new List<INameValue>(),
-                FormDataParameters = new List<IFormDataParameters>(),
+                FormDataParameters = new List<IFormDataParameters>
+                {
+                    new FormDataConditionExpression
+                    { 
+                        Key = testFileKey,
+                        Cond = new FormDataConditionBetween
+                        {
+                            File = testFileValue,
+                            FileName = testFileName
+                        }
+                    }.ToFormDataParameter(),
+                    new FormDataConditionExpression
+                    {
+                        Key = testTextKey,
+                        Cond = new FormDataConditionMatch
+                        {
+                            Value = testTextValue
+                        }
+                    }.ToFormDataParameter()
+                },
                 IsNoneChecked = false,
                 IsFormDataChecked = true,
             };
@@ -200,28 +244,14 @@ namespace Dev2.Tests.Runtime.Services
                 { "Webservice", serializer.SerializeToBuilder(webService) }
             };
 
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            mockResourceCatalog.Setup(o => o.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Verifiable();
-            mockResourceCatalog.Setup(o => o.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>()))
-                .Verifiable();
-
-            CustomContainer.Register(mockResourceCatalog.Object);
-
-            var mockExplorerServerResourceRepository = new Mock<IExplorerServerResourceRepository>();
-            mockExplorerServerResourceRepository.Setup(o => o.UpdateItem(It.IsAny<IResource>()))
-                .Verifiable();
-
-            CustomContainer.Register(mockExplorerServerResourceRepository.Object);
-
             var result = saveWebService.Execute(values, null);
             var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(executeMessage.HasError);
-            mockResourceCatalog.Verify(o => o.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
-            mockResourceCatalog.Verify(o => o.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>()), Times.Once);
-            Assert.AreEqual("Value cannot be null.\r\nParameter name: source", executeMessage.Message.ToString());
+            Assert.IsFalse(executeMessage.HasError);
+            mockResourceCatalog.Verify(o => o.GetResource<WebSource>(Guid.Empty, Guid.Empty), Times.Once);
+            mockResourceCatalog.Verify(o => o.SaveResource(Guid.Empty, It.IsAny<IResource>(), resourcePath), Times.Once);
+            mockExplorerServerResourceRepository.Verify(o => o.UpdateItem(It.IsAny<IResource>()), Times.Once);
         }
     }
 }
