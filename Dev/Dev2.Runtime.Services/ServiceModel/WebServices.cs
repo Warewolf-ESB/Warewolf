@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -180,7 +180,10 @@ namespace Dev2.Runtime.ServiceModel
             }
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            service.RequestResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray());
+            var webResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray());
+
+            service.RequestResponse = Scrubber.Scrub(webResponse);
+
             if (!String.IsNullOrEmpty(service.JsonPath))
             {
                 service.ApplyPath();

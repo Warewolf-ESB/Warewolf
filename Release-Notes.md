@@ -1,3 +1,40 @@
+9 February 2021
+=================
+Bug Fixes
+---------
+Hangfire
+   - Fixed error where logs where getting stuck in a processing state
+
+19 January 2021
+======================
+Bug Fixes
+---------
+RabbitMQPublish
+   - No longer fails when CorrelationId is null
+
+Suspend Execution Tool
+   - Date format bug fix
+
+18 January 2021
+======================
+Bug Fixes
+---------
+Studio
+   - Studio no longer freezes when remote server becomes inactive
+
+14 January 2021
+======================
+Enhancements
+------------
+Suspend Execution Tool
+Manual Resumption Tool: 
+  - Workflow will be resumed with the same user the workflow was suspended with
+
+Bug Fixes
+---------
+POST and GET Method Tools
+ - Genarate Outputs no longer returning base64 string
+
 10 December 2020
 ======================
 Enhancements

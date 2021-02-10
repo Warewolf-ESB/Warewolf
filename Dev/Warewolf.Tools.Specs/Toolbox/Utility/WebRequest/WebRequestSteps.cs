@@ -24,6 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
     public class WebRequestSteps : RecordSetBases
     {
         readonly ScenarioContext scenarioContext;
+        public static Depends _containerOps;
 
         public WebRequestSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -59,7 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             var webGet = new DsfWebGetRequestWithTimeoutActivity
                 {
                     Result = resultVariable,
-                    Url = url ?? "",
+                    Url = (url ?? "").Replace("TFSBLD.premier.local", _containerOps.Container.IP).Replace("9810", _containerOps.Container.Port),
                     Headers = header ?? "",
                     TimeoutSeconds = String.IsNullOrEmpty(timeout) ? 100 : int.Parse(timeout),
                     TimeOutText = String.IsNullOrEmpty(timeout) ? "" : timeout
@@ -73,7 +74,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         }
 
         [Given(@"I have the url ""(.*)"" without timeout")]
-        public void GivenIHaveTheUrl(string url) => scenarioContext.Add("url", ResolveTFSBLDDependancy(url));
+        public void GivenIHaveTheUrl(string url) => scenarioContext.Add("url", (url ?? "").Replace("TFSBLD.premier.local", _containerOps.Container.IP).Replace("9810", _containerOps.Container.Port));
 
         [When(@"the web request tool is executed")]
         public void WhenTheWebRequestToolIsExecuted()
@@ -93,21 +94,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, ResolveTFSBLDDependancy(value)));
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
         [Given(@"I have the Header ""(.*)""")]
         public void GivenIHaveTheHeader(string header) => scenarioContext.Add("header", header);
-
-        string ResolveTFSBLDDependancy(string addressContainer)
-        {
-            var TFSBLDAddress = "TFSBLD.premier.local";
-            if (addressContainer.Contains(TFSBLDAddress) && string.IsNullOrEmpty(Depends.GetIPAddress(TFSBLDAddress)))
-            {
-                return addressContainer.Replace("TFSBLD.premier.local", Depends.TFSBLDIP);
-            }
-            return addressContainer;
-        }
 
         [Then(@"the result should contain the string ""(.*)""")]
         public void ThenTheResultShouldContainTheString(string expectedResult)
@@ -121,7 +112,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             }
             else
             {
-                var failureMessage = "Result does not contain " + expectedResult;
+                var failureMessage = "Result (" + actualValue + ") does not contain " + expectedResult;
                 Assert.IsNotNull(actualValue, failureMessage);
                 Assert.IsTrue(actualValue.Contains(expectedResult), failureMessage);
             }
@@ -132,8 +123,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         {
             scenarioContext.Add("resVar", resultVar);
         }
-
-
+        
         [Given(@"I have the url ""(.*)"" with timeoutSeconds ""(.*)""")]
         public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
         {
@@ -141,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             scenarioContext.Add("timeoutSeconds", timeoutSeconds);
         }
 
-
-
+        [Given("I depend on a valid HTTP verbs server")]
+        public void GivenIGetaValidHTTPVerbsServer() => _containerOps = new Depends(Depends.ContainerType.HTTPVerbsApi, true);
     }
 }

@@ -692,25 +692,27 @@ this.FeatureBackground();
         public virtual void TestWFWithWebDelete()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Web Delete", ((string[])(null)));
-#line 213
- this.ScenarioSetup(scenarioInfo);
+#line 214
+this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 214
- testRunner.Given("I have a workflow \"WebDeleteTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 215
- testRunner.And("\"WebDeleteTestWF\" contains a Web Delete \"testWebDelete\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I depend on a valid HTTP verbs server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 216
- testRunner.And("I save workflow \"WebDeleteTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a workflow \"WebDeleteTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 217
- testRunner.Then("the test builder is open with \"WebDeleteTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("\"WebDeleteTestWF\" contains a Web Delete \"testWebDelete\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 218
- testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I save workflow \"WebDeleteTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 219
- testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the test builder is open with \"WebDeleteTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 220
-    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 221
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 222
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 223
  testRunner.And("I Add \"testWebDelete\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1192 = new TechTalk.SpecFlow.Table(new string[] {
@@ -721,19 +723,19 @@ this.FeatureBackground();
                         "[[Response]]",
                         "=",
                         ""});
-#line 222
+#line 224
  testRunner.And("I add StepOutputs as", ((string)(null)), table1192, "And ");
-#line 225
- testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 226
- testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 227
- testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 228
- testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 229
- testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 230
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 231
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 232
  testRunner.Then("workflow \"WebDeleteTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -746,25 +748,27 @@ this.FeatureBackground();
         public virtual void TestWFWithWebPost()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Web Post", ((string[])(null)));
-#line 232
+#line 234
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 233
- testRunner.Given("I have a workflow \"WebPostTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 234
- testRunner.And("\"WebPostTestWF\" contains a Web Post \"testWebPost\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 235
- testRunner.And("I save workflow \"WebPostTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I depend on a valid HTTP verbs server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 236
- testRunner.Then("the test builder is open with \"WebPostTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I have a workflow \"WebPostTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 237
- testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WebPostTestWF\" contains a Web Post \"testWebPost\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 238
- testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I save workflow \"WebPostTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
-    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the test builder is open with \"WebPostTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 240
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 241
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 242
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 243
  testRunner.And("I Add \"testWebPost\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1193 = new TechTalk.SpecFlow.Table(new string[] {
@@ -775,19 +779,19 @@ this.FeatureBackground();
                         "[[Response]]",
                         "=",
                         ""});
-#line 241
- testRunner.And("I add StepOutputs as", ((string)(null)), table1193, "And ");
 #line 244
- testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 245
- testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 246
- testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1193, "And ");
 #line 247
- testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 248
- testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 249
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 250
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 251
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 252
  testRunner.Then("workflow \"WebPostTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -800,25 +804,27 @@ this.FeatureBackground();
         public virtual void TestWFWithWebGet()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Web Get", ((string[])(null)));
-#line 251
+#line 254
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 252
- testRunner.Given("I have a workflow \"WebGetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 253
- testRunner.And("\"WebGetTestWF\" contains a Web Get \"testWebGet\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 254
- testRunner.And("I save workflow \"WebGetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 255
- testRunner.Then("the test builder is open with \"WebGetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I depend on a valid HTTP verbs server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 256
- testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a workflow \"WebGetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 257
- testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WebGetTestWF\" contains a Web Get \"testWebGet\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
-    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I save workflow \"WebGetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 259
+ testRunner.Then("the test builder is open with \"WebGetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 260
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 261
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 262
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 263
  testRunner.And("I Add \"testWebGet\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1194 = new TechTalk.SpecFlow.Table(new string[] {
@@ -841,19 +847,19 @@ this.FeatureBackground();
                         "[[UnnamedArrayData(6).Price]]",
                         "=",
                         "15000"});
-#line 260
+#line 264
  testRunner.And("I add StepOutputs as", ((string)(null)), table1194, "And ");
-#line 266
- testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 267
- testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 268
- testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 269
- testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 270
- testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 271
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 272
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 273
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 274
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 275
  testRunner.Then("workflow \"WebGetTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -866,25 +872,27 @@ this.FeatureBackground();
         public virtual void TestWFWithWebPut()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Web Put", ((string[])(null)));
-#line 273
+#line 277
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
-#line 274
- testRunner.Given("I have a workflow \"WebPutTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 275
- testRunner.And("\"WebPutTestWF\" contains a Web Put \"testWebPut\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 276
- testRunner.And("I save workflow \"WebPutTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
- testRunner.Then("the test builder is open with \"WebPutTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 278
- testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I depend on a valid HTTP verbs server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 279
- testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a workflow \"WebPutTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 280
-    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WebPutTestWF\" contains a Web Put \"testWebPut\" result as \"[[Response]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 281
+ testRunner.And("I save workflow \"WebPutTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 282
+ testRunner.Then("the test builder is open with \"WebPutTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 283
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 284
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 285
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 286
  testRunner.And("I Add \"testWebPut\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1195 = new TechTalk.SpecFlow.Table(new string[] {
@@ -895,19 +903,19 @@ this.FeatureBackground();
                         "[[Response]]",
                         "=",
                         ""});
-#line 282
- testRunner.And("I add StepOutputs as", ((string)(null)), table1195, "And ");
-#line 285
- testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 286
- testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 287
- testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 288
- testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 289
- testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I add StepOutputs as", ((string)(null)), table1195, "And ");
 #line 290
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 291
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 292
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 293
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 294
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 295
  testRunner.Then("workflow \"WebPutTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

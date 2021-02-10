@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -56,6 +56,7 @@ namespace HangfireServer
         {
             if (context is null)
             {
+                _logger.Error("Failed to perform jobPerformingContext is null");
                 return;
             }
 
@@ -64,23 +65,33 @@ namespace HangfireServer
 
         public void OnPerformResume(PerformingContext context)
         {
-            var jobArg = context.BackgroundJob.Job.Args[0];
-            var backgroundJobId = context.BackgroundJob.Id;
-            var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
-            var resumption = resumptionFactory.New();
-            if (resumption.Connect())
+            try
             {
-                var values = jobArg as Dictionary<string, StringBuilder>;
-                LogResumption(values);
-                var result = resumption.Resume(values);
-                if (result.HasError)
+                var jobArg = context.BackgroundJob.Job.Args[0];
+                var backgroundJobId = context.BackgroundJob.Id;
+                var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
+                var resumption = resumptionFactory.New();
+                if (resumption.Connect(_logger))
                 {
-                    throw new InvalidOperationException(result.Message?.ToString(),new Exception(result.Message?.ToString()));
+                    _logger.Info("Performing Resume of job {0}, connection established.", backgroundJobId);
+                    var values = jobArg as Dictionary<string, StringBuilder>;
+                    LogResumption(values);
+                    var result = resumption.Resume(values);
+                    if (result.HasError)
+                    {
+                        throw new InvalidOperationException(result.Message?.ToString(), new Exception(result.Message?.ToString()));
+                    }
+                }
+                else
+                {
+                    _logger.Error("Failed to perform job {0}, could not establish a connection.", backgroundJobId);
+                    throw new InvalidOperationException("Failed to perform job " + backgroundJobId + " could not establish a connection.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                _logger.Error("Failed to perform job {0}, could not establish a connection.", backgroundJobId);
+                _logger.Error("Failed to perform job {0}" + ex.InnerException);
+                throw;
             }
         }
 
@@ -90,7 +101,7 @@ namespace HangfireServer
             values.TryGetValue("environment", out StringBuilder environment);
             values.TryGetValue("startActivityId", out StringBuilder startActivityId);
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
-
+            values.TryGetValue("currentuserprincipal", out StringBuilder currentuserprincipal);
             var audit = new Audit
             {
                 WorkflowID = workflowId?.ToString(),
@@ -99,7 +110,8 @@ namespace HangfireServer
                 NextActivityId = startActivityId?.ToString(),
                 AuditDate = DateTime.Now,
                 AuditType = "LogResumeExecutionState",
-                LogLevel = LogLevel.Info
+                LogLevel = LogLevel.Info,
+                ExecutingUser = currentuserprincipal.ToString()
             };
             _logger.LogResumedExecution(audit);
         }
@@ -136,7 +148,7 @@ namespace HangfireServer
         public void OnStateUnapplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
         {
             _hangfireLogger.InfoFormat(
-                "Job {0} state {1} was unapplied.",
+                "Job {0} state {1} was not applied.",
                 context.BackgroundJob.Id,
                 context.OldStateName);
         }

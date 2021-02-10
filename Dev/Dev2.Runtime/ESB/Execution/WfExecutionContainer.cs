@@ -38,6 +38,7 @@ namespace Dev2.Runtime.ESB.Execution
     public abstract class WfExecutionContainerBase : EsbExecutionContainer
     {
         protected readonly IResourceCatalog _resourceCatalog;
+
         protected WfExecutionContainerBase(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObj, theWorkspace, esbChannel, ResourceCatalog.Instance)
         {
@@ -60,7 +61,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             SetDataObjectProperties();
 
-            var user = Thread.CurrentPrincipal;
+            var user = DataObject.ExecutingUser ?? Thread.CurrentPrincipal;
             var dataObjectExecutionId = DataObject.ExecutionID.ToString();
             if (!DataObject.IsSubExecution)
             {
@@ -68,6 +69,7 @@ namespace Dev2.Runtime.ESB.Execution
                 Dev2Logger.Debug(string.Format(GlobalConstants.ExecuteWebRequestString, DataObject.ServiceName, userIdentity?.Name, userIdentity?.AuthenticationType, userIdentity?.IsAuthenticated, DataObject.RawPayload), dataObjectExecutionId);
                 Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl + " ]", dataObjectExecutionId);
             }
+
             Dev2Logger.Debug("Entered Wf Container", dataObjectExecutionId);
             DataObject.ServiceName = ServiceAction.ServiceName;
 
@@ -75,9 +77,8 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Info("Started " + executionForServiceString, dataObjectExecutionId);
             SetExecutionOrigin();
 
-            var userPrinciple = Thread.CurrentPrincipal; // TODO: can we remove this second call the get_CurrentPrincipal
             var result = GlobalConstants.NullDataListID;
-            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = ExecuteWf(); });
+            Common.Utilities.PerformActionInsideImpersonatedContext(user, () => { result = ExecuteWf(); });
 
             errors = AddErrors();
 
@@ -96,21 +97,24 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
-                IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
+                IExecutionToken exeToken = new ExecutionToken {IsUserCanceled = false};
                 DataObject.ExecutionToken = exeToken;
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, out invokeErrors, true, false, false);
                 }
+
                 var resourceId = DataObject.ResourceID;
                 if (CanExecute(resourceId, DataObject, AuthorizationContext.Execute))
                 {
                     Eval(resourceId, DataObject);
                 }
+
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
                 }
+
                 result = DataObject.DataListID;
             }
             catch (InvalidWorkflowException iwe)
@@ -130,6 +134,7 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.ExecutionException = ex;
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, out invokeErrors);
             }
+
             return result;
         }
 
@@ -141,6 +146,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 dataObject.Environment.AddError(string.Format(ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser?.Identity.Name, dataObject.ServiceName));
             }
+
             return isAuthorized;
         }
 
@@ -162,6 +168,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
             }
+
             if (DataObject.ServerID == Guid.Empty)
             {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
@@ -175,10 +182,12 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 errors.AddError(err, true);
             }
+
             foreach (var err in DataObject.Environment.AllErrors)
             {
                 errors.AddError(err, true);
             }
+
             return errors;
         }
 
@@ -199,6 +208,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
     }
+
     public class WfExecutionContainer : WfExecutionContainerBase
     {
         readonly IExecutionManager _executionManager;
@@ -246,6 +256,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 stateNotifierRequired.SetStateNotifier(dsfDataObject.StateNotifier);
             }
+
             return activity.Execute(dsfDataObject, update);
         }
 
@@ -265,9 +276,9 @@ namespace Dev2.Runtime.ESB.Execution
                     Dev2Logger.Debug("Waiting", GlobalConstants.WarewolfDebug);
                     _executionManager.Wait();
                     Dev2Logger.Debug("Continued Execution", GlobalConstants.WarewolfDebug);
-
                 }
             }
+
             if (resource == null)
             {
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
@@ -277,8 +288,8 @@ namespace Dev2.Runtime.ESB.Execution
         private static void ExecuteNode(IDSFDataObject dsfDataObject, int update, ref IDev2Activity next, ref IDev2Activity lastActivity)
         {
             var environment = dsfDataObject.Environment;
-            try 
-            { 
+            try
+            {
                 Dev2Logger.Debug("Executing first node", GlobalConstants.WarewolfDebug);
                 while (next != null)
                 {
@@ -294,6 +305,7 @@ namespace Dev2.Runtime.ESB.Execution
                         {
                             dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
                         }
+
                         break;
                     }
                 }
@@ -350,6 +362,7 @@ namespace Dev2.Runtime.ESB.Execution
             return new ResumableExecutionContainer(startActivityId, sa, dataObject);
         }
     }
+
     public class ResumableExecutionContainer : WfExecutionContainer, IResumableExecutionContainer
     {
         readonly Guid _resumeActivityId;
@@ -358,7 +371,6 @@ namespace Dev2.Runtime.ESB.Execution
         public ResumableExecutionContainer(Guid resumeActivityId, ServiceAction sa, IDSFDataObject dataObject)
             : this(resumeActivityId, dataObject.Environment, sa, dataObject, WorkspaceRepository.Instance.ServerWorkspace, new EsbServicesEndpoint())
         {
-
         }
 
         public ResumableExecutionContainer(Guid resumeActivityId, IExecutionEnvironment env, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)

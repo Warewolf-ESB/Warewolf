@@ -6,23 +6,24 @@ param(
   [String[]] $ExcludeCategories,
   [String] $TestsToRun="${bamboo.TestsToRun}",
   [String] $VSTestPath="${bamboo.capability.system.builder.devenv.Visual Studio 2019}",
+  [String] $NuGet="${bamboo.capability.system.builder.command.NuGet}",
+  [String] $MSBuildPath="${bamboo.capability.system.builder.msbuild.MSBuild v16.0}",
   [int] $RetryCount=${bamboo.RetryCount},
   [String] $PreTestRunScript,
+  [String] $PostTestRunScript,
   [switch] $RunInDocker,
-  [switch] $Coverage
+  [switch] $Coverage,
+  [switch] $RetryRebuild
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
 	exit 1
 }
-if ($PreTestRunScript) {
-	if (!(Test-Path .\StartAs.ps1)) {
-		Write-Error -Message "This script expects to be run from a bin directoy that includes a Warewolf Server or Studio."
-		exit 1
-	}
-	if ($Coverage.IsPresent -and !($PreTestRunScript.Contains("-Coverage"))) {
-		$PreTestRunScript += " -Coverage"
-	}
+if ($PreTestRunScript -and $Coverage.IsPresent -and !($PreTestRunScript.Contains("-Coverage"))) {
+	$PreTestRunScript += " -Coverage"
+}
+if ($PostTestRunScript -and $Coverage.IsPresent -and !($PostTestRunScript.Contains("-Coverage"))) {
+	$PostTestRunScript += " -Coverage"
 }
 $TestResultsPath = ".\TestResults"
 if (Test-Path "$TestResultsPath") {
@@ -32,11 +33,11 @@ if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Ex
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
 } else {
 	if ($RunInDocker.IsPresent) {
-		Write-Error "Cannot use VSTestPath paramemter with the RunInDocker paramemter."
-		exit 1
+		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the RunInDocker parameter."
+		$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\Common7\IDE"
 	}
 }
-if (!($RunInDocker.IsPresent) -and (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe") -or ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")))) {
+if (!(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe") -or ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe"))) {
 	#Find NuGet
 	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 		$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
@@ -49,7 +50,7 @@ if (!($RunInDocker.IsPresent) -and (!(Test-Path "$VSTestPath\Extensions\TestPlat
 		$NuGet = "$env:windir\nuget.exe"
 	}
 	if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
-		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to adirectory in the PATH environment variable like c:\windows\nuget.exe. Or use the -NuGet switch.
+		Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to a directory in the PATH environment variable like c:\windows\nuget.exe. Or use the -NuGet switch.
 		sleep 10
 		exit 1
 	}
@@ -69,15 +70,25 @@ if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\
 	}
 }
 if ($RunInDocker.IsPresent) {
-	$ContainerName = $Projects.ToLower().replace(" ", "-");
+	$ContainerName = ""
+	$ContainerName = ($Projects -join "-")
+	$ContainerName = $ContainerName.ToLower().replace(" ", "-")
 	if ($Category -ne $null -and $Category -ne "") {
-		$ContainerName += "-$Category";
+		$ContainerName = "$ContainerName-$Category";
 	}
 	if ("${bamboo.repository.git.branch}" -ne $null -and "${bamboo.repository.git.branch}" -ne "") {
-		$ContainerName += "-${bamboo.repository.git.branch}".replace("/\","-")
+		$ContainerName = "$ContainerName-${bamboo.repository.git.branch}".replace("/\","-")
 	}
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
+	if ($RetryRebuild.IsPresent) {
+		Get-ChildItem -Path  '$PWD' -Recurse |
+Select -ExpandProperty FullName |
+Where {$_ -notlike '$PWD\TestResults*'} |
+sort length -Descending |
+Remove-Item -force -recurse
+		&..\..\Compile.ps1 -AcceptanceTesting -NuGet "$NuGet" -MSBuildPath "$MSBuildPath"
+	}
 	if ($RunInDocker.IsPresent) {
 		docker rm -f $ContainerName
 	}
@@ -100,6 +111,9 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if (Test-Path "$TestResultsPath\RunTests.ps1") {
 		Move-Item "$TestResultsPath\RunTests.ps1" "$TestResultsPath\RunTests($LoopCounter).ps1"
 	}
+	if (Test-Path "$TestResultsPath\warewolf-server.log") {
+		Move-Item "$TestResultsPath\warewolf-server.log" "$TestResultsPath\warewolf-server($LoopCounter).ps1"
+	}
 	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 		if (Test-Path "$TestResultsPath\DotCover Runner.xml") {
 			Move-Item "$TestResultsPath\DotCover Runner.xml" "$TestResultsPath\DotCover Runner($LoopCounter).xml"
@@ -118,11 +132,7 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		"  <TargetExecutable>$HandleRelativePath\Extensions\TestPlatform\vstest.console.exe</TargetExecutable>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		$AssembliesArg = "..\" + ($AssembliesList -join " ..\")
 	} else {
-		if ($RunInDocker.IsPresent) {
-			$AssembliesArg = ".\BuildUnderTest\" + ($AssembliesList -join " .\BuildUnderTest\")
-		} else {
-			$AssembliesArg = ".\" + ($AssembliesList -join " .\")
-		}
+		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	}
 	if ($TestsToRun) {
 		if ($PreTestRunScript) {
@@ -150,17 +160,16 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
-			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg $CategoryArg</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
+			if ($Coverage.IsPresent) {
+				$XmlSafeCategory = $CategoryArg -replace "`&","`&amp;"
+				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg $XmlSafeCategory</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 			} else {
 				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 			}
 		}
 	}
-	if ($PreTestRunScript) {
-		"sc.exe stop `"Warewolf Server`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-		"Wait-Process -Name `"Warewolf Server`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-		"Move-Item `"C:\programdata\warewolf\Server Log\warewolf-server.log`" `"$TestResultsPath\warewolf-server($LoopCounter).log`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	if ($PostTestRunScript) {
+		"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	if ($Coverage.IsPresent) {
 		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
@@ -190,31 +199,22 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 		"  </Filters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		"</AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		Get-Content "$TestResultsPath\DotCover Runner.xml"
-		if ($RunInDocker.IsPresent) {
-			"&`".\BuildUnderTest\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `".\BuildUnderTest\TestResults\DotCover Runner.xml`" /LogFile=`".\BuildUnderTest\TestResults\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
-		} else {
-			"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
-		}
+		"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 	}
+	Get-Content "$TestResultsPath\RunTests.ps1"
 	if (!($RunInDocker.IsPresent)) {
-		Get-Content "$TestResultsPath\RunTests.ps1"
 		&"$TestResultsPath\RunTests.ps1"
+		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+			Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
+		}
 	} else {
-		docker create --name=$ContainerName --entrypoint="powershell -File .\BuildUnderTest\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
+		docker create --name=$ContainerName --entrypoint="cmd /c cd BuildUnderTest && powershell -File .\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
 		docker cp . ${ContainerName}:.\BuildUnderTest
 		docker start -a $ContainerName
 		if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-			docker cp ${ContainerName}:\BuildUnderTest\TestResults .
 			docker cp ${ContainerName}:\BuildUnderTest\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\TestResults .
-		} else {
-			docker cp ${ContainerName}:\TestResults .
 		}
-		if ($PreTestRunScript) {
-			docker cp ${ContainerName}:"\programdata\warewolf\Server Log\warewolf-server.log" .\TestResults\warewolf-server`($LoopCounter`).log
-		}
-	}
-	if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-		Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
+		docker cp ${ContainerName}:\BuildUnderTest\TestResults .
 	}
 	if (Test-Path "$TestResultsPath\*.trx") {
 		[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
@@ -235,7 +235,6 @@ for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 			$getXMLFiles.RemoveAt($MaxCountIndex)
 			$getXMLFiles | % {
 				$getXML = [xml](Get-Content $_.FullName)
-				Write-Host ($getXMl.TestRun.Results.UnitTestResult.Count) tests retried.
 				$getXMl.TestRun.Results.UnitTestResult | % {
 					$RetryUnitTestResult = $_
 					$getBaseXMl.TestRun.Results.UnitTestResult | % {

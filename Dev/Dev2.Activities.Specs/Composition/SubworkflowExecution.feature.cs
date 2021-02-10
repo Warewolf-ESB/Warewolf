@@ -752,11 +752,11 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Oracle For Xml testing workflow base")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SubworkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SubworkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SubworkflowOracleExecution")]
         public virtual void ExecutingOracleForXmlTestingWorkflowBase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Oracle For Xml testing workflow base", new string[] {
-                        "SubworkflowExecution"});
+                        "SubworkflowOracleExecution"});
 #line 155
 this.ScenarioSetup(scenarioInfo);
 #line 6
@@ -1662,27 +1662,75 @@ this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line 403
-   testRunner.Given("I have a workflow \"Testing - WebGet\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I depend on a valid HTTP verbs server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 404
+ testRunner.And("I have a workflow \"Testing - WebGet\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table668 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 404
-   testRunner.And("\"Testing - WebGet\" contains \"GetWebResult\" from server \"localhost\" with mapping a" +
+#line 405
+ testRunner.And("\"Testing - WebGet\" contains \"GetWebResult\" from server \"localhost\" with mapping a" +
                     "s", ((string)(null)), table668, "And ");
-#line 406
-   testRunner.When("\"Testing - WebGet\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 407
-   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("\"Testing - WebGet\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 408
+ testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table669 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table669.AddRow(new string[] {
-                        "[[Result]] = False"});
-#line 408
-   testRunner.And("the \"GetWebResult\" in Workflow \"GetWebResult\" debug outputs as", ((string)(null)), table669, "And ");
+                        "[[Result(1).Category]] = Electronic"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Category]] = Electronic"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Category]] = Electronic"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Category]] = Electronic"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Category]] = Electronic"});
+            table669.AddRow(new string[] {
+                        "[[Result(6).Category]] = Gift Items"});
+            table669.AddRow(new string[] {
+                        "[[Result(1).Id]] = 1"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Id]] = 2"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Id]] = 3"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Id]] = 4"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Id]] = 5"});
+            table669.AddRow(new string[] {
+                        "[[Result(6).Id]] = 6"});
+            table669.AddRow(new string[] {
+                        "[[Result(1).Name]] = Television"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Name]] = Refrigerator"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Name]] = Mobiles"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Name]] = Laptops"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Name]] = iPads"});
+            table669.AddRow(new string[] {
+                        "[[Result(6).Name]] = Toys"});
+            table669.AddRow(new string[] {
+                        "[[Result(1).Price]] = 82000"});
+            table669.AddRow(new string[] {
+                        "[[Result(2).Price]] = 23000"});
+            table669.AddRow(new string[] {
+                        "[[Result(3).Price]] = 20000"});
+            table669.AddRow(new string[] {
+                        "[[Result(4).Price]] = 45000"});
+            table669.AddRow(new string[] {
+                        "[[Result(5).Price]] = 67000"});
+            table669.AddRow(new string[] {
+                        "[[Result(6).Price]] = 15000"});
+#line 409
+ testRunner.And("the \"GetWebResult\" in Workflow \"GetWebResult\" debug outputs as", ((string)(null)), table669, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

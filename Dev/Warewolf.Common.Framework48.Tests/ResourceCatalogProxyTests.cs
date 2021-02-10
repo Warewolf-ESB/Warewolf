@@ -13,6 +13,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Security.Principal;
 using System.Text;
 using Dev2.Communication;
 
@@ -63,7 +64,7 @@ namespace Warewolf.Common.Framework48.Tests
             const string resourceId = "acb75027-ddeb-47d7-814e-a54c37247ec1";
             const string startActivity = "bd557ca7-113b-4197-afc3-de5d086dfc69";
             const string version = "0";
-            var resource = proxy.ResumeWorkflowExecution(resourceId,"{}",startActivity,version);
+            var resource = proxy.ResumeWorkflowExecution(resourceId,"{}",startActivity,version,new Mock<IPrincipal>().Object.ToString());
 
             Assert.AreEqual("success", resource.Message.ToString());
         }

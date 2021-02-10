@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using ActivityUnitTests;
@@ -566,7 +567,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            var mockPrincipal = new Mock<ClaimsPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -574,7 +576,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 WorkflowInstanceId = workflowInstanceId,
                 WebUrl = url,
                 ServerID = Guid.NewGuid(),
-                ExecutingUser = User,
+                ExecutingUser = mockPrincipal.Object,
                 IsDebug = true,
                 EnvironmentID = environmentId,
                 Environment = env,
@@ -603,7 +605,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {"resourceID", new StringBuilder(dataObject.ResourceID.ToString())},
                 {"environment", new StringBuilder(DpapiWrapper.Encrypt(currentEnvironment))},
                 {"startActivityId", new StringBuilder(nextNodeId.ToString())},
-                {"versionNumber", new StringBuilder(dataObject.VersionNumber.ToString())}
+                {"versionNumber", new StringBuilder(dataObject.VersionNumber.ToString())},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var mockSuspendExecution = new Mock<IPersistenceExecution>();
@@ -650,7 +653,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            var mockPrincipal = new Mock<ClaimsPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -658,7 +662,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 WorkflowInstanceId = workflowInstanceId,
                 WebUrl = url,
                 ServerID = Guid.NewGuid(),
-                ExecutingUser = User,
+                ExecutingUser = mockPrincipal.Object,
                 IsDebug = true,
                 EnvironmentID = environmentId,
                 Environment = env,
@@ -688,7 +692,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {"resourceID", new StringBuilder(dataObject.ResourceID.ToString())},
                 {"environment", new StringBuilder(currentEnvironment)},
                 {"startActivityId", new StringBuilder(nextNodeId.ToString())},
-                {"versionNumber", new StringBuilder(dataObject.VersionNumber.ToString())}
+                {"versionNumber", new StringBuilder(dataObject.VersionNumber.ToString())},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
             };
 
             var mockSuspendExecution = new Mock<IPersistenceExecution>();
@@ -872,7 +877,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            var mockPrincipal = new Mock<ClaimsPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -880,7 +886,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 WorkflowInstanceId = workflowInstanceId,
                 WebUrl = url,
                 ServerID = Guid.NewGuid(),
-                ExecutingUser = User,
+                ExecutingUser = mockPrincipal.Object,
                 IsDebug = true,
                 EnvironmentID = environmentId,
                 Environment = env,

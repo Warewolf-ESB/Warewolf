@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,7 +35,7 @@ namespace Dev2.Studio.Interfaces
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource, string savePath);
         ExecuteMessage DeleteResource(IResourceModel resource);
-        ExecuteMessage ResumeWorkflowExecution(IResourceModel resource, string environment, Guid startActivityId, string versionNumber);
+        ExecuteMessage ResumeWorkflowExecution(IResourceModel resource, string environment, Guid startActivityId, string versionNumber,string currentUserPrincipal);
         void Add(IResourceModel resource);
         void UpdateServer(IServer server);
         bool IsLoaded { get; }
