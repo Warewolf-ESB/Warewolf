@@ -12,6 +12,7 @@
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
 using System;
+using System.Text;
 
 namespace Warewolf.Data.Options
 {
@@ -34,6 +35,8 @@ namespace Warewolf.Data.Options
         }
 
         public string Key { get; set; }
+
+        public abstract void RenderDescription(StringBuilder text);
     }
 
     public class TextParameter : IFormDataParameters
@@ -45,6 +48,15 @@ namespace Warewolf.Data.Options
 
         public string Value { get; set; }
         public string Key { get; set; }
+
+        public void RenderDescription(StringBuilder text)
+        {
+            text.Append("Key: " + Key);
+            text.Append(" ");
+            text.Append("Text:");
+            text.Append(" ");
+            text.Append(Value);
+        }
     }
 
     public class FileParameter : IFormDataParameters
@@ -69,6 +81,15 @@ namespace Warewolf.Data.Options
             {
                 throw;
             }
+        }
+
+        public void RenderDescription(StringBuilder text)
+        {
+            text.Append("Key: " + Key);
+            text.Append(" File Content: ");
+            text.Append(FileBase64);
+            text.Append(" File Name: ");
+            text.Append(FileName);
         }
 
         public string FileName { get; set; }

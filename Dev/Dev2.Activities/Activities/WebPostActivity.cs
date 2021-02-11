@@ -71,7 +71,7 @@ namespace Dev2.Activities
 
             base.GetDebugInputs(env, update);
 
-            var (head, parameters, _, _) = GetEnvironmentInputVariables(env, update);
+            var (head, parameters, _, conditions) = GetEnvironmentInputVariables(env, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var headerString=string.Empty;
@@ -89,6 +89,11 @@ namespace Dev2.Activities
             AddDebugItem(new DebugEvalResult(QueryString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", nameof(Headers)), debugItem);
+            AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            
             if (IsNoneChecked)
             {
                 debugItem = new DebugItem();
@@ -97,39 +102,34 @@ namespace Dev2.Activities
                 _debugInputs.Add(debugItem);
             }
 
-            debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", nameof(Headers)), debugItem);
-            AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
-            _debugInputs.Add(debugItem);
-
             if (IsFormDataChecked)
             {
-                AddDebugFormDataInputs();
+                AddDebugFormDataInputs(conditions);
             }
 
             return _debugInputs;
         }
 
 
-        private void AddDebugFormDataInputs()
+        private void AddDebugFormDataInputs(IEnumerable<IFormDataParameters> conditions)
         {
             var allErrors = new ErrorResultTO();
 
             try
             {
-                var dds = Conditions.GetEnumerator();
+                var dds = conditions.GetEnumerator();
                 var text = new StringBuilder();
                 while (dds.MoveNext())
                 {
                     var conditionExpression = dds.Current;
 
-                    text.Append("\n ");
+                    text.Append("\n");
                     conditionExpression.RenderDescription(text);
                 }
 
                 var debugItem = new DebugItem();
-                var s = text.ToString();
-                AddDebugItem(new DebugItemStaticDataParams(s, "Parameters"), debugItem);
+                var sb = text.ToString();
+                AddDebugItem(new DebugItemStaticDataParams(sb, "Parameters"), debugItem);
                 _debugInputs.Add(debugItem);
             }
             catch (JsonSerializationException e)
@@ -209,16 +209,11 @@ namespace Dev2.Activities
                 conditions = Conditions.SelectMany(o => o.Eval(GetArgumentsFunc, _errorsTo.HasErrors())).ToList();
             }
 
-            return (head, query, postData, conditions);
-        }
-
-        private IEnumerable<string[]> GetArgumentsFunc(string col1s, string col2s, string col3s)
-        {
-            if (_dataObject != null)
+            IEnumerable<string[]> GetArgumentsFunc(string col1s, string col2s, string col3s)
             {
-                var col1 = _dataObject.Environment.EvalAsList(col1s, 0, true);
-                var col2 = _dataObject.Environment.EvalAsList(col2s ?? "", 0, true);
-                var col3 = _dataObject.Environment.EvalAsList(col3s ?? "", 0, true);
+                var col1 = environment.EvalAsList(col1s, 0, true);
+                var col2 = environment.EvalAsList(col2s ?? "", 0, true);
+                var col3 = environment.EvalAsList(col3s ?? "", 0, true);
 
                 var iter = new WarewolfListIterator();
                 var c1 = new WarewolfAtomIterator(col1);
@@ -235,7 +230,8 @@ namespace Dev2.Activities
                 }
                 yield break;
             }
-            
+
+            return (head, query, postData, conditions);
         }
 
         protected virtual string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)

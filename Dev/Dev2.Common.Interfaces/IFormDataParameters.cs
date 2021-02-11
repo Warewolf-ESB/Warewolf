@@ -9,10 +9,14 @@
 */
 
 
+using System.Text;
+
 namespace Dev2.Common.Interfaces
 {
     public interface IFormDataParameters
     {
         string Key { get; set; }
+
+        void RenderDescription(StringBuilder text);
     }
 }

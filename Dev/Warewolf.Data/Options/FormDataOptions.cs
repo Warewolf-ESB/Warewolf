@@ -191,21 +191,10 @@ namespace Warewolf.Data.Options
 
         public override void RenderDescription(StringBuilder sb)
         {
-            if (MatchType == enFormDataTableType.File)
-            {
-                sb.Append(" File Content: ");
-                sb.Append(File);
-                sb.Append(" File Name: ");
-                sb.Append(FileName);
-            }
-            else
-            {
-                sb.Append(" ");
-                sb.Append(File);
-                MatchType.RenderDescription(sb);
-                sb.Append(" ");
-                sb.Append(FileName);
-            }
+            sb.Append(" File Content: ");
+            sb.Append(File);
+            sb.Append(" File Name: ");
+            sb.Append(FileName);
         }
     }
 
@@ -262,7 +251,7 @@ namespace Warewolf.Data.Options
         {
             sb.Append(" ");
             MatchType.RenderDescription(sb);
-            sb.Append(" ");
+            sb.Append(": ");
             sb.Append(Value);
         }
     }
