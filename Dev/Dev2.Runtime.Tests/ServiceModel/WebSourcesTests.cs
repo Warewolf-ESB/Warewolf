@@ -736,13 +736,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebSources))]
-        public void WebSources_Execute_WebRequestMethod_Post_Given_FormData_With_Text_MatchType_Expect()
+        public void WebSources_Execute_WebRequestMethod_Post_Given_NoContentType_And_ThrowError_False_ExpectErrorMessage()
         {
             var responseFromWeb = Encoding.ASCII.GetBytes("response from web request");
             var mockWebClientWrapper = new Mock<IWebClientWrapper>();
 
             mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { });
-            mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))//(address+query, method.ToString().ToUpperInvariant(), putData.ToBytesArray()))
+            mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
                 .Returns(responseFromWeb);
 
             var source = new WebSource
@@ -752,25 +752,36 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Client = mockWebClientWrapper.Object
             };
 
-            var conditionExpressionList = new List<FormDataConditionExpression>
+            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", isNoneChecked: false, isFormDataChecked: true, "", throwError: false, out var errors, new List<FormDataParameters> { });
+
+            Assert.IsTrue(errors.HasErrors());
+            Assert.AreEqual("The argument must not be null or empty and must contain non-whitespace characters must\r\nParameter name: Content-Type", errors.MakeDisplayReady());
+            
+            mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_Execute_WebRequestMethod_Post_Given_NoContentType_And_ThrowError_True_ExpectArgumentException()
+        {
+            var responseFromWeb = Encoding.ASCII.GetBytes("response from web request");
+            var mockWebClientWrapper = new Mock<IWebClientWrapper>();
+
+            mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { });
+            mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns(responseFromWeb);
+
+            var source = new WebSource
             {
-                new FormDataConditionExpression
-                {
-                    Key = "[[textKey]]",
-                    Cond = new FormDataConditionMatch
-                    {
-                        MatchType = enFormDataTableType.Text,
-                        Value = "this can be any text message"
-                    }
-                }
+                Address = "http://www.msn.com/",
+                AuthenticationType = AuthenticationType.Anonymous,
+                Client = mockWebClientWrapper.Object
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new string[] { }, new List<FormDataParameters> { });
+            Assert.ThrowsException<ArgumentNullException>(()=> WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", isNoneChecked: false, isFormDataChecked: true, "", throwError: true, out var errors, new List<FormDataParameters> { }));
 
-            Assert.IsTrue(IsBase64(result));
-            Assert.AreEqual(result, Convert.ToBase64String(responseFromWeb));
-
-            mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Once);
+            mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Never);
         }
 
         [TestMethod]
@@ -836,7 +847,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 }.ToFormDataParameter()
             };
 
-            Assert.ThrowsException<ApplicationException>(() => WebSources.Execute(source, WebRequestMethod.Post, relativeUri, string.Empty, true, out var errors, new string[] { }, formDataParameters, mockWebRequestFactory.Object), "Error while upload files. Server status code: BadRequest");
+            Assert.ThrowsException<ApplicationException>(() => WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri,isNoneChecked: false, isFormDataChecked: true, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object), "Error while upload files. Server status code: BadRequest");
         }
 
         [TestMethod]
@@ -901,7 +912,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 }.ToFormDataParameter()
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, relativeUri,string.Empty, true, out var errors, new string[] { }, formDataParameters, mockWebRequestFactory.Object);
+            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri, isNoneChecked: false, isFormDataChecked: true, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object);
             
             Assert.AreEqual("response from web request", result);
 
@@ -970,7 +981,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 }.ToFormDataParameter()
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, relativeUri, string.Empty, true, out var errors, new string[] { }, formDataParameters, mockWebRequestFactory.Object);
+            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, relativeUri, isNoneChecked: false, isFormDataChecked: true, string.Empty, true, out var errors, formDataParameters, mockWebRequestFactory.Object);
 
             Assert.IsFalse(IsBase64(result));
 

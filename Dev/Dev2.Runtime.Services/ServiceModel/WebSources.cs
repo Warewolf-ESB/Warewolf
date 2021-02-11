@@ -129,10 +129,10 @@ namespace Dev2.Runtime.ServiceModel
         public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
         public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
         {
-            return Execute(source, method, headers, relativeUri, data, throwError, out errors, formDataParameters, webRequestFactory);
+            return Execute(source, method, headers, relativeUri, isNoneChecked: true, isFormDataChecked: false, data, throwError, out errors, formDataParameters, webRequestFactory);
         }
 
-        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
         {
             IWebClientWrapper client = null;
 
@@ -148,16 +148,17 @@ namespace Dev2.Runtime.ServiceModel
                 client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
-                //TODO: find a better way to handle the multipart 
-                if (contentType != null && contentType.ToLowerInvariant().Contains("multipart/form-data") && formDataParameters != null)
+
+                if (isFormDataChecked)
                 {
+                    VerifyArgument.IsNotNullOrWhitespace("Content-Type", contentType);
                     var formDataBoundary = string.Format("----------{0:N}", Guid.NewGuid());
                     contentType = contentType+"; boundary=" + formDataBoundary;
 
                     var bytesData = GetMultipartFormData(formDataParameters, contentType);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
-                if (contentType != null && contentType.ToLowerInvariant().Contains("multipart"))
+                if (isNoneChecked && (contentType != null && contentType.ToLowerInvariant().Contains("multipart")))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
