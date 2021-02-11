@@ -36,8 +36,7 @@ namespace QueueWorker
             {
                 if (_serverEndpoint is null)
                 {
-                    var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
-                    _serverEndpoint = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
+                    _serverEndpoint = new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
                 }
                 return _serverEndpoint;
             }

@@ -1,3 +1,10 @@
+9 February 2021
+=================
+Bug Fixes
+---------
+Hangfire
+   - Fixed error where logs where getting stuck in a processing state
+
 19 January 2021
 ======================
 Bug Fixes
