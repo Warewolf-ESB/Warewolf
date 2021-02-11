@@ -395,7 +395,7 @@ namespace Warewolf.Data.Tests.Options
             var result = sut;
 
             Assert.IsNotNull(result);
-            Assert.AreEqual("Key: [[storedKeyName]] [[storedValueName]]Text testFileName", result);
+            Assert.AreEqual("Key: [[storedKeyName]] File Content: [[storedValueName]] File Name: testFileName", result);
         }
 
         [TestMethod]
@@ -434,7 +434,7 @@ namespace Warewolf.Data.Tests.Options
             testSb.Append("Key: " + testKeyName);
             testSb.Append(" ");
             enFormDataTableType.Text.RenderDescription(testSb);
-            testSb.Append(" ");
+            testSb.Append(": ");
             testSb.Append(testValueName);
 
             Assert.IsNotNull(result);
