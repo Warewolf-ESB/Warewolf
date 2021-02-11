@@ -1,3 +1,8 @@
+11 February 2021
+======================
+
+Allow OpenAPI(Swagger) request at folder level
+
 19 January 2021
 ======================
 Bug Fixes
