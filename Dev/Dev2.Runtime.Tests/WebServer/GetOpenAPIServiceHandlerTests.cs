@@ -12,21 +12,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
-using System.Net.Http;
-using System.Text;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Services.Security;
-using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
