@@ -493,68 +493,6 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivityViewModel))]
-        public void WebPostActivityViewModel_LoadOptions_IsNull_ExpectDefault_FormDataOptions_Not_Null()
-        {
-            //------------Setup for test--------------------------
-            var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
-            act.FormDataOptions = null;
-            //------------Execute Test---------------------------
-            var formDataDesignerViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var options = formDataDesignerViewModel.Options.Options.ToList();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, options.Count);
-            Assert.IsNotNull(act.FormDataOptions);
-
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebPostActivityViewModel))]
-        public void WebPostActivityViewModel_UpdateOptionsModelItem_ShouldNotBeDefault()
-        {
-            //------------Setup for test--------------------------
-            var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
-            var model = ModelItemUtils.CreateModelItem(act);
-
-            var formDataOptions = new FormDataOptions();
-
-            act.FormDataOptions = formDataOptions;
-            //------------Execute Test---------------------------
-            var formDataDesignerViewModel = new WebPostActivityViewModel(model, mod);
-            var options = formDataDesignerViewModel.Options.Options.ToList();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, options.Count);
-            Assert.IsNotNull(act.FormDataOptions);
-
-            formDataOptions.Notify();               
-
-            Assert.AreNotEqual(formDataOptions, model.Properties["FormDataOptions"], "When the FormDataOptions OnChange event is raised the the Model property should be updated to new value");
-
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebPostActivityViewModel))]
-        public void WebPostActivityViewModel_LoadConditionExpressionOptions_IsNull_ExpectDefault_FormDataOptions_Not_Null()
-        {
-            //------------Setup for test--------------------------
-            var mod = GetMockModel();
-            var act = GetPostActivityWithOutPuts(mod);
-            act.FormDataOptions = null;
-            //------------Execute Test---------------------------
-            var formDataDesignerViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var options = formDataDesignerViewModel.Options.Options.ToList();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, options.Count);
-            Assert.IsNotNull(act.FormDataOptions);
-
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(WebPostActivityViewModel))]
         public void WebPostActivityViewModel_LoadConditions()
         {
             //------------Setup for test--------------------------

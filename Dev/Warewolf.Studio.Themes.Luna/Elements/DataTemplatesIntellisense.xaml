@@ -21,6 +21,7 @@
         <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
         <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
         <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
+        <luna:SharedResourceDictionary Source="../ActivityStyles/ActivityResources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector" />
@@ -268,9 +269,11 @@
                                     AllowMultilinePaste="True"
                                     AcceptsReturn="True"
                                     AllowUserInsertLine="True"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                     MaxHeight="52"
                                     Focusable="True"
-                                    Text="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                    Text="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                     ToolTip="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                     Margin="-1,1,1,0"
                                     Grid.Column="1">
