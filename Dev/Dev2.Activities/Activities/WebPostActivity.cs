@@ -230,12 +230,12 @@ namespace Dev2.Activities
 
         protected virtual string PerformManualWebPostRequest(IEnumerable<INameValue> head, string query, IWebSource source, string postData)
         {
-            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
+            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, throwError: true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
 
         protected virtual string PerformFormDataWebPostRequest(IWebSource source, WebRequestMethod method, string query, IEnumerable<INameValue> head, IEnumerable<IFormDataParameters> parameters)
         {
-            return WebSources.Execute(source, method, query, string.Empty, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray(), parameters);
+            return WebSources.Execute(source, method, head.Select(h => h.Name + ":" + h.Value).ToArray(), query, isNoneChecked: false, isFormDataChecked: true, data: string.Empty, throwError: true, out _errorsTo, parameters);
         }
 
         public static WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
