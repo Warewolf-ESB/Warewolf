@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
@@ -50,8 +51,22 @@ namespace Dev2.Data.PathOperations
             {
                 using (safeToken)
                 {
-                    var newID = new WindowsIdentity(safeToken.DangerousGetHandle());
-                    return new WindowsImpersonationContextImpl(newID.Impersonate());
+                    WindowsPrincipal executingUser = null;
+                    try
+                    {
+                        executingUser = new WindowsPrincipal(new WindowsIdentity(path.Username));
+                        return new WindowsImpersonationContextImpl(((WindowsIdentity)executingUser.Identity).Impersonate());
+                    }
+                    catch
+                    {
+                        var genericIdentity = new GenericIdentity(path.Username);
+                        var a = new GenericPrincipal(genericIdentity, new string[0]);
+                        //executingUser = new WindowsPrincipal(genericIdentity);
+                    }
+
+                    // var newID = new WindowsIdentity(safeToken.DangerousGetHandle());
+                    // return new WindowsImpersonationContextImpl(newID.Impersonate());
+                    return new WindowsImpersonationContextImpl(((WindowsIdentity)executingUser.Identity).Impersonate());
                 }
             }
             return null;
