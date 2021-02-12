@@ -593,7 +593,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivityViewModel))]
         public void WebPostActivityViewModel_TestInputCommand_IsFormDataChecked()
         {
@@ -606,7 +606,19 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
             postViewModel.InputArea.IsFormDataChecked = true;
-            //---------------Assert Precondition----------------
+            postViewModel.ConditionExpressionOptions.Options = new List<IOption>
+            {
+                new FormDataOptionConditionExpression
+                {
+                    Left = "l",
+                    Right = "r",
+                    Cond = new FormDataConditionMatch
+                    {
+                        MatchType = enFormDataTableType.Text,
+                        Value = "this can be any text message"
+                    },
+                }
+            };
             //---------------Execute Test ----------------------
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
@@ -623,6 +635,14 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.AreEqual(0, postViewModel.ManageServiceInputViewModel.Errors.Count);
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.IsFormDataChecked);
+            
+            var options = postViewModel.ManageServiceInputViewModel.ConditionExpressionOptions.Options;
+            Assert.IsTrue(options.Count == 2);
+            var item1 = options.First() as FormDataOptionConditionExpression;
+            Assert.AreEqual("l", item1.Left);
+            Assert.AreEqual("r", item1.Right);
+            Assert.AreEqual(enFormDataTableType.Text, item1.Cond.MatchType);
+            Assert.AreEqual("this can be any text message", (item1.Cond as FormDataConditionMatch).Value);
         }
 
         private Mock<ModelProperty> CreateModelProperty(string name, object value)
