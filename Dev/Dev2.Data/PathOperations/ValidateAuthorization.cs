@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,7 +32,7 @@ namespace Dev2.Data.PathOperations
 
         public void Dispose()
         {
-            //_context.Dispose();
+            _context.Dispose();
         }
 
         public void Undo()
@@ -51,22 +51,8 @@ namespace Dev2.Data.PathOperations
             {
                 using (safeToken)
                 {
-                    WindowsPrincipal executingUser = null;
-                    try
-                    {
-                        executingUser = new WindowsPrincipal(new WindowsIdentity(path.Username));
-                        return new WindowsImpersonationContextImpl(((WindowsIdentity)executingUser.Identity).Impersonate());
-                    }
-                    catch
-                    {
-                        var genericIdentity = new GenericIdentity(path.Username);
-                        var a = new GenericPrincipal(genericIdentity, new string[0]);
-                        //executingUser = new WindowsPrincipal(genericIdentity);
-                    }
-
-                    // var newID = new WindowsIdentity(safeToken.DangerousGetHandle());
-                    // return new WindowsImpersonationContextImpl(newID.Impersonate());
-                    return new WindowsImpersonationContextImpl(((WindowsIdentity)executingUser.Identity).Impersonate());
+                    var newID = new WindowsIdentity(safeToken.DangerousGetHandle());
+                    return new WindowsImpersonationContextImpl(newID.Impersonate());
                 }
             }
             return null;
