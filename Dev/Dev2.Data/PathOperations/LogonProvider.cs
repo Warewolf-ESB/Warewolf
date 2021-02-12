@@ -36,9 +36,6 @@ namespace Dev2.Data.PathOperations
     {
         const int LOGON32_LOGON_INTERACTIVE = 2;
         const int LOGON32_LOGON_NETWORK = 3;
-        
-        const int LOGON32_LOGON_NETWORK_CLEARTEXT = 8;
-        const int LOGON32_LOGON_NEW_CREDENTIALS = 9;
 
         const int LOGON32_PROVIDER_DEFAULT = 0;
         const int LOGON32_PROVIDER_WINNT50 = 3;
@@ -71,11 +68,6 @@ namespace Dev2.Data.PathOperations
                 if (loggedOn)
                 {
                     return safeTokenHandle;
-                }
-                loggedOn = _loginApi.LogonUser($"{lpszDomain}\\{lpszUsername}", "", lpszPassword, LOGON32_LOGON_NEW_CREDENTIALS, LOGON32_PROVIDER_WINNT50, out SafeTokenHandle safeTokenHandle3);
-                if (loggedOn)
-                {
-                    return safeTokenHandle3;
                 }
             }
 
