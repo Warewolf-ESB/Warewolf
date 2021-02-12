@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Dev2.Common.Interfaces;
@@ -11,9 +11,8 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class FileChooserModelTests
     {
-
         [TestMethod]
-        [Timeout(100)]
+        [Timeout(1000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory(" FileChooserModel_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
