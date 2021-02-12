@@ -1,4 +1,4 @@
-﻿@FileAndFolderCreate
+﻿﻿@FileAndFolderCreate
 Feature: Create
 	In order to be able to create files
 	as a Warewolf user
@@ -23,10 +23,10 @@ Scenario Outline: Create file at location
 	Examples: 
 		| No | Name       | destination | destinationLocation                                                                             | selected | username        | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                                   | True     | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 2  | FTP        | [[path]]    | ftp://opswolf.com/FORCREATEFILETESTING/test.txt                                | True     | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 3  | FTPS       | [[path]]    | ftp://opswolf.com:1002/FORCREATEFILETESTING/test.txt                                | True     | Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
-		| 4  | SFTP       | [[path]]    | sftp://opswolf.com/test.txt                                                            | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
-		| 5  | SFTP       | [[path]]    | sftp://opswolf.com/test1.txt                                                           | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+		| 2  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                | True     | ""              | ""           | [[result]] | Success | NO           |                           |
+		| 3  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                | True     | Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
+		| 4  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                            | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
+		| 5  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                           | True     | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 Scenario Outline: Create file at location with overwrite disabled
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
@@ -46,10 +46,10 @@ Scenario Outline: Create file at location with overwrite disabled
 	Examples: 
 		| No | Name       | destination | destinationLocation                                                                             | selected | username        | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                                   | False    | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 2  | FTP        | [[path]]    | ftp://opswolf.com/FORCREATEFILETESTING/test.txt                                   | False    | ""              | ""           | [[result]] | Success | NO           |                           |
-		| 3  | FTPS       | [[path]]    | ftp://opswolf.com:1002/FORCREATEFILETESTING/test.txt                                   | False    | Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
-		| 4  | SFTP       | [[path]]    | sftp://opswolf.com/test.txt                                                            | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
-		| 5  | SFTP       | [[path]]    | sftp://opswolf.com/test1.txt                                                           | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+		| 2  | FTP        | [[path]]    | ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt                                   | False    | ""              | ""           | [[result]] | Success | NO           |                           |
+		| 3  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                                   | False    | Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
+		| 4  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                            | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
+		| 5  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                           | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 
 Scenario Outline: Create file at location Nulls
@@ -64,7 +64,7 @@ Scenario Outline: Create file at location Nulls
 		| No | Name       | destination | destinationLocation                                                                            | selected | username       | password     | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | NULL                                                                                           | True     |                |              | [[result]] | Failure | AN           |                           |
 		| 2  | Local      | [[path]]    | v:\myfile.txt                                                                                  | True     |                |              | [[result]] | Failure | AN           |                           |
-		| 3  | SFTP       | [[path]]    | sftp://opswolf.com/test1.txt                                                          | True     | ""             | Q/ulw&]      | [[result]] | Failure | AN           | C:\\Temp\                 |
+		| 3  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                          | True     | ""             | Q/ulw&]      | [[result]] | Failure | AN           | C:\\Temp\                 |
 
 Scenario Outline: Create file at location with invalid directories
 	Given I have a destination path "<destination>" with value "<destinationLocation>"

@@ -162,7 +162,7 @@ this.CreateFileAtLocation("1", "Local", "[[path]]", "c:\\myfile.txt", "True", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://opswolf.com/FORCREATEFILETESTING/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -173,7 +173,7 @@ this.CreateFileAtLocation("1", "Local", "[[path]]", "c:\\myfile.txt", "True", "\
         public virtual void CreateFileAtLocation_2()
         {
 #line 8
-this.CreateFileAtLocation("2", "FTP", "[[path]]", "ftp://opswolf.com/FORCREATEFILETESTING/test.txt", "True", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocation("2", "FTP", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt", "True", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -185,7 +185,7 @@ this.CreateFileAtLocation("2", "FTP", "[[path]]", "ftp://opswolf.com/FORCREATEFI
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://opswolf.com:1002/FORCREATEFILETESTING/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
@@ -196,7 +196,7 @@ this.CreateFileAtLocation("2", "FTP", "[[path]]", "ftp://opswolf.com/FORCREATEFI
         public virtual void CreateFileAtLocation_3()
         {
 #line 8
-this.CreateFileAtLocation("3", "FTPS", "[[path]]", "ftp://opswolf.com:1002/FORCREATEFILETESTING/test.txt", "True", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocation("3", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt", "True", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -208,7 +208,7 @@ this.CreateFileAtLocation("3", "FTPS", "[[path]]", "ftp://opswolf.com:1002/FORCR
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://opswolf.com/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -219,7 +219,7 @@ this.CreateFileAtLocation("3", "FTPS", "[[path]]", "ftp://opswolf.com:1002/FORCR
         public virtual void CreateFileAtLocation_4()
         {
 #line 8
-this.CreateFileAtLocation("4", "SFTP", "[[path]]", "sftp://opswolf.com/test.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocation("4", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -231,7 +231,7 @@ this.CreateFileAtLocation("4", "SFTP", "[[path]]", "sftp://opswolf.com/test.txt"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://opswolf.com/test1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -242,7 +242,7 @@ this.CreateFileAtLocation("4", "SFTP", "[[path]]", "sftp://opswolf.com/test.txt"
         public virtual void CreateFileAtLocation_5()
         {
 #line 8
-this.CreateFileAtLocation("5", "SFTP", "[[path]]", "sftp://opswolf.com/test1.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+this.CreateFileAtLocation("5", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test1.txt", "True", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -324,7 +324,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("1", "Local", "[[path]]", "c:\\my
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://opswolf.com/FORCREATEFILETESTING/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -335,7 +335,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("1", "Local", "[[path]]", "c:\\my
         public virtual void CreateFileAtLocationWithOverwriteDisabled_2()
         {
 #line 31
-this.CreateFileAtLocationWithOverwriteDisabled("2", "FTP", "[[path]]", "ftp://opswolf.com/FORCREATEFILETESTING/test.txt", "False", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocationWithOverwriteDisabled("2", "FTP", "[[path]]", "ftp://DEVOPSPDC.premier.local:1001/FORCREATEFILETESTING/test.txt", "False", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -347,7 +347,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("2", "FTP", "[[path]]", "ftp://op
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://opswolf.com:1002/FORCREATEFILETESTING/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "Administrator")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Dev2@dmin123")]
@@ -358,7 +358,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("2", "FTP", "[[path]]", "ftp://op
         public virtual void CreateFileAtLocationWithOverwriteDisabled_3()
         {
 #line 31
-this.CreateFileAtLocationWithOverwriteDisabled("3", "FTPS", "[[path]]", "ftp://opswolf.com:1002/FORCREATEFILETESTING/test.txt", "False", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocationWithOverwriteDisabled("3", "FTPS", "[[path]]", "ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt", "False", "Administrator", "Dev2@dmin123", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -370,7 +370,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("3", "FTPS", "[[path]]", "ftp://o
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://opswolf.com/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -381,7 +381,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("3", "FTPS", "[[path]]", "ftp://o
         public virtual void CreateFileAtLocationWithOverwriteDisabled_4()
         {
 #line 31
-this.CreateFileAtLocationWithOverwriteDisabled("4", "SFTP", "[[path]]", "sftp://opswolf.com/test.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
+this.CreateFileAtLocationWithOverwriteDisabled("4", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -393,7 +393,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("4", "SFTP", "[[path]]", "sftp://
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://opswolf.com/test1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -404,7 +404,7 @@ this.CreateFileAtLocationWithOverwriteDisabled("4", "SFTP", "[[path]]", "sftp://
         public virtual void CreateFileAtLocationWithOverwriteDisabled_5()
         {
 #line 31
-this.CreateFileAtLocationWithOverwriteDisabled("5", "SFTP", "[[path]]", "sftp://opswolf.com/test1.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
+this.CreateFileAtLocationWithOverwriteDisabled("5", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test1.txt", "False", "dev2", "Q/ulw&]", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -485,7 +485,7 @@ this.CreateFileAtLocationNulls("2", "Local", "[[path]]", "v:\\myfile.txt", "True
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://opswolf.com/test1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://SVRDEV.premier.local/test1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
@@ -496,7 +496,7 @@ this.CreateFileAtLocationNulls("2", "Local", "[[path]]", "v:\\myfile.txt", "True
         public virtual void CreateFileAtLocationNulls_3()
         {
 #line 55
-this.CreateFileAtLocationNulls("3", "SFTP", "[[path]]", "sftp://opswolf.com/test1.txt", "True", "\"\"", "Q/ulw&]", "[[result]]", "Failure", "AN", "C:\\Temp\\", ((string[])(null)));
+this.CreateFileAtLocationNulls("3", "SFTP", "[[path]]", "sftp://SVRDEV.premier.local/test1.txt", "True", "\"\"", "Q/ulw&]", "[[result]]", "Failure", "AN", "C:\\Temp\\", ((string[])(null)));
 #line hidden
         }
         
