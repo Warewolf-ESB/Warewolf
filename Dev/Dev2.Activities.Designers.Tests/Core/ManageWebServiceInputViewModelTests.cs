@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,15 +9,23 @@
 */
 
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Web_Post;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Activities.Designers2.WebGet;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.WebService;
+using Dev2.Common.Interfaces.WebServices;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Options;
@@ -447,6 +455,58 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             Assert.AreEqual(1, inputViewModel.ConditionExpressionOptions.Options.Count);
 
+        }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ManageWebServiceInputViewModel))]
+        public void ManageWebServiceInputViewModel_ExecuteTest_ExpectSuccess()
+        {
+            var mockWebServiceModel = new Mock<IWebServiceModel>();
+            mockWebServiceModel.Setup(o => o.RetrieveSources())
+                .Returns(new List<IWebServiceSource> 
+                {
+                   new WebServiceSourceDefinition()
+                });
+            
+            var myWebModel = mockWebServiceModel.Object;
+            var webGetActivity = new WebPostActivity()
+            {
+                SourceId = Guid.NewGuid(),
+                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
+                Headers = new List<INameValue> { new NameValue("a", "x") },
+                Conditions = new List<FormDataConditionExpression>
+                { 
+                    new FormDataConditionExpression
+                    {
+                        Key = "testKey",
+                        Cond = new FormDataConditionMatch
+                        {
+                          Value = "this can be any text value" 
+                        }
+                    }
+                },
+                QueryString = "Bob the builder",
+                ServiceName = "dsfBob"
+            };
+
+            var webPostActivityViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(webGetActivity), myWebModel);
+            webPostActivityViewModel.SourceRegion.SelectedSource = webPostActivityViewModel.SourceRegion.Sources.First();
+            webPostActivityViewModel.TestInputCommand.Execute();
+            webPostActivityViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            //------------Assert Results-------------------------
+            var inputViewModel = new ManageWebServiceInputViewModel(webPostActivityViewModel, myWebModel)
+            {
+                IsFormDataChecked = true,
+                
+            };
+
+            Assert.IsTrue(inputViewModel.IsFormDataChecked);
+            Assert.IsNotNull(inputViewModel.ConditionExpressionOptions);
+            Assert.AreEqual(1, inputViewModel.ConditionExpressionOptions.Options.Count);
+
+            mockWebServiceModel.Verify(o => o.TestService(It.IsAny<IWebService>()), Times.Once);
         }
     }
 }

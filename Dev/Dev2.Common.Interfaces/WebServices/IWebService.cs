@@ -33,6 +33,6 @@ namespace Dev2.Common.Interfaces.WebServices
         string SourceUrl { get; set; }
         string Response { get; set; }
         WebRequestMethod Method { get;set; }
-        List<IFormDataParameters> FormDataParameters { get; }
+        List<IFormDataParameters> FormDataParameters { get; set; }
     }
 }

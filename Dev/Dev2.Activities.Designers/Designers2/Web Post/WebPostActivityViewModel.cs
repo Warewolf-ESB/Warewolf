@@ -12,7 +12,6 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
@@ -27,7 +26,6 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
-using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
@@ -505,6 +503,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 IsNoneChecked = InputArea.IsNoneChecked,
                 IsFormDataChecked = InputArea.IsFormDataChecked,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
+                FormDataParameters = BuildFormDataParameters(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
                 Response = "",
@@ -512,6 +511,21 @@ namespace Dev2.Activities.Designers2.Web_Post
 
             };
             return webServiceDefinition;
+        }
+
+        private List<IFormDataParameters> BuildFormDataParameters()
+        {
+            var formDataParameters = new List<IFormDataParameters>();
+            foreach (var item in ConditionExpressionOptions.Options)
+            {
+                if (!(item as FormDataOptionConditionExpression).IsEmptyRow)
+                {
+                    var expression = new FormDataConditionExpression();
+                    expression.FromOption(item);
+                    formDataParameters.Add(expression.ToFormDataParameter());
+                }
+            }
+            return formDataParameters;
         }
 
         IList<IServiceInput> InputsFromModel()

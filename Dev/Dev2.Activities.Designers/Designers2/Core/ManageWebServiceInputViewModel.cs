@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers2.Core
         bool _testFailed;
         readonly IWebServiceHeaderBuilder _serviceHeaderBuilder;
         private bool _isFormDataChecked;
-        private OptionsWithNotifier _conditionExpressionOptions;
+        private IOptionsWithNotifier _conditionExpressionOptions;
 
         public ManageWebServiceInputViewModel(IWebServiceHeaderBuilder serviceHeaderBuilder)
         {
@@ -259,7 +259,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public OptionsWithNotifier ConditionExpressionOptions
+        public IOptionsWithNotifier ConditionExpressionOptions
         {
             get => _conditionExpressionOptions;
             set

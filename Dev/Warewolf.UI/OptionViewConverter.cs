@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,8 +18,7 @@ using Warewolf.Options;
 
 namespace Warewolf.UI
 {
-    public delegate void OptionChangedHandler();
-    public class OptionsWithNotifier
+    public class OptionsWithNotifier : IOptionsWithNotifier
     {
         public event OptionChangedHandler OptionChanged;
         public IList<IOption> Options { get; set; }
