@@ -60,7 +60,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -176,7 +176,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -282,7 +282,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -589,12 +589,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(testFileName, firstFormDataParameters.FileName);
         }
 
-        string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
+        string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs)
         {
             _requestUrlEvaluated = relativeUri;
             _requestBodyEvaluated = data;
             _requestHeadersEvaluated = headers;
-            _requestFormDataParameters = formDataParameters;
 
             errors = new ErrorResultTO();
             return _requestResponse;

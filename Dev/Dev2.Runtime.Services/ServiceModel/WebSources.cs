@@ -31,7 +31,15 @@ using Warewolf.Data.Options;
 
 namespace Dev2.Runtime.ServiceModel
 {
-    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null);
+    public class WebExecuteStringArgs
+    {
+        public IEnumerable<IFormDataParameters> FormDataParameters { get; set; }
+        public IWebRequestFactory WebRequestFactory { get; set; }
+        public bool IsNoneChecked { get; set; }
+        public bool IsFormDataChecked { get; set; }
+    }
+
+    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null, WebExecuteStringArgs webExecuteStringArgs = null);
     public delegate string WebExecuteBinary(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null);
 
     public class WebSources : ExceptionManager
@@ -127,11 +135,21 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
-        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
+        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs = null)
         {
-            return Execute(source, method, headers, relativeUri, isNoneChecked: true, isFormDataChecked: false, data, throwError, out errors, formDataParameters, webRequestFactory);
+            if (webExecuteStringArgs == null)
+            {
+                webExecuteStringArgs = new WebExecuteStringArgs
+                {
+                    IsNoneChecked = true,
+                    IsFormDataChecked = false,
+                    FormDataParameters = new List<IFormDataParameters>(),
+                    WebRequestFactory = new WebRequestFactory()
+                };
+            }
+            return Execute(source, method, headers, relativeUri, webExecuteStringArgs.IsNoneChecked, webExecuteStringArgs.IsFormDataChecked, data, throwError, out errors, webExecuteStringArgs?.FormDataParameters, webExecuteStringArgs.WebRequestFactory);
         }
-
+        
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
         {
             IWebClientWrapper client = null;
