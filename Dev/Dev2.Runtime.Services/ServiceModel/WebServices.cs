@@ -180,7 +180,14 @@ namespace Dev2.Runtime.ServiceModel
             }
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            var webResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray(), service.FormDataParameters);
+            var webExecuteStringArgs = new WebExecuteStringArgs
+            {
+                IsNoneChecked = service.IsNoneChecked,
+                IsFormDataChecked = service.IsFormDataChecked,
+                FormDataParameters = service.FormDataParameters,
+                WebRequestFactory = null
+            };
+            var webResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray(), webExecuteStringArgs);
 
             service.RequestResponse = Scrubber.Scrub(webResponse);
 

@@ -394,7 +394,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, IEnumerable<IFormDataParameters> formDataParameters, IWebRequestFactory webRequestFactory) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
