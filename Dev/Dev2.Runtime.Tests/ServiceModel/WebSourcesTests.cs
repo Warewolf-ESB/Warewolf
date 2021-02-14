@@ -601,9 +601,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        [Owner("Candice Daniel")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebSources))]
-        public void WebSources_HttpNewLine()
+        public void WebSources_Execute_ToTest_ConvertToHttpNewLine_ExpectedRequestData()
         {
             const string data = 
                 @"Accept-Language: en-US,en;q=0.5
@@ -630,20 +630,64 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 <!DOCTYPE html><title>Content of a.html.</title>
 
                 -----------------------------9051914041544843365972754266--";
-            var rData = data;
-            var byteData = WebSources.ConvertToHttpNewLine(ref rData);
 
-            string expected = data;
-            string result = Encoding.UTF8.GetString(byteData);
+            var relativeUri = string.Empty;
+            var responseFromWeb = Encoding.ASCII.GetBytes("response from web request");
 
-            Assert.AreEqual(expected, result);
+            var address = "http://www.msn.com/";
+            var requestStream = new MemoryStream();
+            var responseStrem = new MemoryStream(responseFromWeb);
 
-            rData = data.Replace("\r\n", "\n");
-            byteData = WebSources.ConvertToHttpNewLine(ref rData);
+            var mockWebResponseWrapper = new Mock<HttpWebResponse>();
+            mockWebResponseWrapper.Setup(o => o.StatusCode)
+                .Returns(HttpStatusCode.OK);
+            mockWebResponseWrapper.Setup(o => o.GetResponseStream())
+                .Returns(responseStrem);
 
-            result = Encoding.UTF8.GetString(byteData);
+            var mockWebRequest = new Mock<IWebRequest>();
+            mockWebRequest.Setup(o => o.Headers)
+                .Returns(new WebHeaderCollection
+                {
+                    "Authorization:bear: sdfsfff",
+                });
+            mockWebRequest.Setup(o => o.ContentType)
+                .Returns("Content-Type: multipart/form-data");
+            mockWebRequest.Setup(o => o.ContentLength)
+                .Returns(Encoding.ASCII.GetBytes(postData).Length);
+            mockWebRequest.Setup(o => o.Method)
+                .Returns("POST");
+            mockWebRequest.Setup(o => o.GetRequestStream())
+                .Returns(requestStream);
+            mockWebRequest.Setup(o => o.GetResponse())
+                .Returns(mockWebResponseWrapper.Object);
 
-            Assert.AreEqual(expected, result);
+            var mockWebRequestFactory = new Mock<IWebRequestFactory>();
+            mockWebRequestFactory.Setup(o => o.New(address))
+                .Returns(mockWebRequest.Object);
+
+            var mockWebClientWrapper = new Mock<IWebClientWrapper>();
+
+            mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { "Content-Type:multipart/form-data" });
+            mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns(responseFromWeb);
+
+            var source = new WebSource
+            {
+                Address = "http://www.msn.com/",
+                AuthenticationType = AuthenticationType.Anonymous,
+                Client = mockWebClientWrapper.Object
+            };
+
+            _ = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, string.Empty, isNoneChecked: true, isFormDataChecked: false, data, true, out var errors, new List<IFormDataParameters>(), mockWebRequestFactory.Object);
+
+            var bytes = requestStream.GetBuffer();
+            using (var memoryStream = new MemoryStream(bytes))
+            {
+                var streamReader = new StreamReader(memoryStream);
+                var expectedRequestPayload = streamReader.ReadToEnd();
+
+                Assert.AreEqual(data, expectedRequestPayload); 
+            }
         }
 
         [TestMethod]
