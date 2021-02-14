@@ -338,8 +338,8 @@ namespace Dev2.Runtime.ServiceModel
                 throw new ApplicationException("Error while upload files. Server status code: " + wresp.StatusCode);
             }
         }
-        //TODO: ConvertToHttpNewLine should now be made private and tested using IWebRequest  
-        internal static byte[] ConvertToHttpNewLine(ref string data)
+
+        private static byte[] ConvertToHttpNewLine(ref string data)
         {
             data = data.Replace("\r\n", "\n");
             data = data.Replace("\n", GlobalConstants.HTTPNewLine);
