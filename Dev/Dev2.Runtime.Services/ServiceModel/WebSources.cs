@@ -169,11 +169,11 @@ namespace Dev2.Runtime.ServiceModel
 
                 if (isFormDataChecked)
                 {
-                    VerifyArgument.IsNotNullOrWhitespace("Content-Type", contentType);
                     var formDataBoundary = string.Format("----------{0:N}", Guid.NewGuid());
                     contentType = contentType+"; boundary=" + formDataBoundary;
 
-                    var bytesData = GetMultipartFormData(formDataParameters, contentType);
+                    client.Headers[HttpRequestHeader.ContentType] = contentType;
+                    var bytesData = GetMultipartFormData(formDataParameters, formDataBoundary);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
                 if (isNoneChecked && (contentType != null && contentType.ToLowerInvariant().Contains("multipart")))
