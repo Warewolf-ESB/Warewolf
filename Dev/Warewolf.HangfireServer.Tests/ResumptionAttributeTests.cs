@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Text;
 using Dev2.Communication;
 using Hangfire;
@@ -29,6 +30,7 @@ namespace Warewolf.HangfireServer.Tests
     [DoNotParallelize]
     public class ResumptionAttributeTests
     {
+        string currentuserprincipal = WindowsIdentity.GetCurrent().Name;
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ResumptionAttribute))]
@@ -44,7 +46,8 @@ namespace Warewolf.HangfireServer.Tests
                 {"resourceID", new StringBuilder(workflowId)},
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
-                {"versionNumber", new StringBuilder(startActivityId)}
+                {"versionNumber", new StringBuilder(startActivityId)},
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
 
             var jobId = Guid.NewGuid().ToString();
@@ -60,7 +63,7 @@ namespace Warewolf.HangfireServer.Tests
             };
 
             var mockResumption = new Mock<IResumption>();
-            mockResumption.Setup(o => o.Connect()).Returns(true);
+            mockResumption.Setup(o => o.Connect(mockLogger.Object)).Returns(true);
             mockResumption.Setup(o => o.Resume(values)).Returns(executeMessage);
 
             var mockResumptionFactory = new Mock<IResumptionFactory>();
@@ -70,7 +73,7 @@ namespace Warewolf.HangfireServer.Tests
             resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
 
             mockResumptionFactory.Verify(o => o.New(), Times.Once);
-            mockResumption.Verify(o => o.Connect(), Times.Once);
+            mockResumption.Verify(o => o.Connect(mockLogger.Object), Times.Once);
             mockLogger.Verify(o => o.LogResumedExecution(It.IsAny<Audit>()), Times.Once);
             mockResumption.Verify(o => o.Resume(values), Times.Once);
         }
@@ -78,6 +81,7 @@ namespace Warewolf.HangfireServer.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ResumptionAttribute))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void ResumptionAttribute_LogResumption_Connect_False()
         {
             var workflowId = Guid.NewGuid().ToString();
@@ -90,7 +94,8 @@ namespace Warewolf.HangfireServer.Tests
                 {"resourceID", new StringBuilder(workflowId)},
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
-                {"versionNumber", new StringBuilder(startActivityId)}
+                {"versionNumber", new StringBuilder(startActivityId)},
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
 
             var jobId = Guid.NewGuid().ToString();
@@ -101,7 +106,7 @@ namespace Warewolf.HangfireServer.Tests
             mockLogger.Setup(o => o.Error("Failed to perform job {0}, could not establish a connection.", jobId)).Verifiable();
 
             var mockResumption = new Mock<IResumption>();
-            mockResumption.Setup(o => o.Connect()).Returns(false);
+            mockResumption.Setup(o => o.Connect(mockLogger.Object)).Returns(false);
             mockResumption.Setup(o => o.Resume(values)).Verifiable();
 
             var mockResumptionFactory = new Mock<IResumptionFactory>();
@@ -111,7 +116,7 @@ namespace Warewolf.HangfireServer.Tests
             resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
 
             mockResumptionFactory.Verify(o => o.New(), Times.Once);
-            mockResumption.Verify(o => o.Connect(), Times.Once);
+            mockResumption.Verify(o => o.Connect(mockLogger.Object), Times.Once);
             mockLogger.Verify(o => o.LogResumedExecution(It.IsAny<Audit>()), Times.Never);
             mockResumption.Verify(o => o.Resume(values), Times.Never);
             mockLogger.Verify(o => o.Error("Failed to perform job {0}, could not establish a connection.", jobId), Times.Once);
@@ -128,12 +133,14 @@ namespace Warewolf.HangfireServer.Tests
             const string versionNumber = "0";
             var startActivityId = Guid.NewGuid().ToString();
 
+
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(workflowId)},
                 {"environment", new StringBuilder(environment)},
                 {"startActivityId", new StringBuilder(versionNumber)},
-                {"versionNumber", new StringBuilder(startActivityId)}
+                {"versionNumber", new StringBuilder(startActivityId)},
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
 
             var jobId = Guid.NewGuid().ToString();
@@ -149,7 +156,7 @@ namespace Warewolf.HangfireServer.Tests
             };
 
             var mockResumption = new Mock<IResumption>();
-            mockResumption.Setup(o => o.Connect()).Returns(true);
+            mockResumption.Setup(o => o.Connect(mockLogger.Object)).Returns(true);
             mockResumption.Setup(o => o.Resume(values)).Returns(executeMessage);
 
             var mockResumptionFactory = new Mock<IResumptionFactory>();

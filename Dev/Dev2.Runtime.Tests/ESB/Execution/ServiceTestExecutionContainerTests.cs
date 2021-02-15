@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -640,7 +640,6 @@ Test Failed because of some reasons
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
-		[DoNotParallelize]
         public void ServiceTestExecutionContainer_TryExecuteWf_DataObject_StopExecutionFalse_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------

@@ -137,7 +137,7 @@ namespace Dev2.Runtime.WebServer
 
             if (isApi)
             {
-                dataObject.ReturnType = EmitionTypes.SWAGGER;
+                dataObject.ReturnType = EmitionTypes.OPENAPI;
             }
 
             dataObject.ServiceName = serviceName;

@@ -38,7 +38,7 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
         $MSBuildPath = $GetMSBuildCommand.Path
     }
 }
-if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+if ($MSBuildPath -ne $null -and !(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     $GetvswhereCommand = Get-Command vswhere -ErrorAction SilentlyContinue
     if ($GetvswhereCommand) {
         $VswherePath = $GetvswhereCommand.Path

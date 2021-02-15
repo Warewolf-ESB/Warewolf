@@ -28,7 +28,6 @@ using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Common.Interfaces.Versioning;
 using Dev2.Factory;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.Security;
@@ -36,7 +35,6 @@ using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Settings;
 using Dev2.Studio.AppResources.Comparers;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -76,7 +74,6 @@ using Dev2.Studio.Enums;
 using Warewolf.Data;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
-using Dev2.DataList.Contract;
 using Warewolf.Core;
 
 namespace Dev2.Studio.ViewModels
@@ -1247,20 +1244,16 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void ViewSwagger(Guid resourceId, IServer server)
+        public void ViewOpenAPI(string resourceName, string resourcePath, Uri webServerUri)
         {
-            ViewSwagger(resourceId, server.EnvironmentID);
-        }
+            var relativeUrl = "";
+            if (!string.IsNullOrWhiteSpace(resourcePath))
+                relativeUrl = $"/secure/{resourcePath}.api";
+            else
+                relativeUrl += $"/secure/{resourceName}.api";
 
-        void ViewSwagger(Guid resourceId, Guid environmentId)
-        {
-            var environmentModel = ServerRepository.Get(environmentId);
-            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
-            var workflowUri = contextualResourceModel.GetWorkflowUri("", UrlType.API);
-            if (workflowUri != null)
-            {
-                BrowserPopupController.ShowPopup(workflowUri.ToString());
-            }
+            Uri.TryCreate(webServerUri, relativeUrl, out Uri url);
+            BrowserPopupController.ShowPopup(url.ToString());
         }
 
         public void ViewApisJson(string resourcePath, Uri webServerUri)
