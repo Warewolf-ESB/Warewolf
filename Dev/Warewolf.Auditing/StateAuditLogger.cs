@@ -59,12 +59,22 @@ namespace Warewolf.Auditing
             try
             {
                 client = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
-
+                if (!client.IsOpen())
+                {
+                    client = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
+                }
                 client.SendMessage(jsonLogEntry);
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("LogAuditState", ex.InnerException.Message + ex);
+                if (ex.InnerException == null)
+                {
+                    Dev2Logger.Error("LogAuditState", ex.Message + ex);
+                }
+                else
+                {
+                    Dev2Logger.Error("LogAuditState", ex.InnerException.Message + ex);
+                }
             }
             finally
             {
