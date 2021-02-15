@@ -3,8 +3,6 @@
 # Queue Bamboo build.
 # This script can take a branch name as a commandline parameter.
 #
-BambooUsername="$BambooUsername"
-BambooPassword="$BambooPassword"
 DefaultCIBambooPlanKey="WOLF-CI"
 DefaultBranchName="develop"
 
