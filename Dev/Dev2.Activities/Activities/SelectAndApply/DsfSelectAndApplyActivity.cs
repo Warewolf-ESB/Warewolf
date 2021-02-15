@@ -151,11 +151,12 @@ namespace Dev2.Activities.SelectAndApply
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dsfdataObject, int update)
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var allErrors = new ErrorResultTO();
+            var dataObject = dsfdataObject;
             InitializeDebug(dataObject);
 
             if (string.IsNullOrEmpty(DataSource))
@@ -221,12 +222,12 @@ namespace Dev2.Activities.SelectAndApply
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
 
+                var applyActivityFunc = ApplyActivityFunc.Handler;
                 foreach (var exp in expressions)
                 {
                     //Assign the warewolfAtom to Alias using new environment
                     scopedEnvironment.SetDataSource(exp);
-
-                    if (ApplyActivityFunc.Handler is IDev2Activity exeAct)
+                    if (applyActivityFunc is IDev2Activity exeAct)
                     {
                         _childUniqueID = exeAct.UniqueID;
                         exeAct.Execute(dataObject, 0);
