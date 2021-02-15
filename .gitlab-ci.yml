@@ -2,7 +2,7 @@
 # see https://docs.gitlab.com/ee/ci/yaml/README.html for all available options
 
 # you can delete this line if you're not using Docker
-image: busybox:latest
+image: curlimages/curl:latest
 
 build:
   stage: build
