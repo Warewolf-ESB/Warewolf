@@ -10,11 +10,7 @@ DefaultCIBambooPlanKey="WOLF-CI"
 DefaultBranchName="develop"
 
 function QueueBuild {
-	if [ -e "./wget.exe" ]; then
-		build=$(./wget.exe -O - "http://$1/rest/api/latest/queue/$2.json?os_authType=basic" --user=$BambooUsername --password=$BambooPassword --post-data="" -q)
-	else
-		build=$(wget -O - "http://$1/rest/api/latest/queue/$2.json?os_authType=basic" --user=$BambooUsername --password=$BambooPassword --post-data="" -q)
-	fi
+	build=$(wget -O - "http://$1/rest/api/latest/queue/$2.json?os_authType=basic" --user=$BambooUsername --password=$BambooPassword --post-data="" -q)
 	echo $(echo $build | cut -d '"' -f 20)
 }
 
