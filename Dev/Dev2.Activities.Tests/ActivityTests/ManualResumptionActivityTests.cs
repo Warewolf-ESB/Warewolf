@@ -312,6 +312,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var environment = env.ToJson();
             var mockResumeJob = new Mock<IPersistenceExecution>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment)).Verifiable();
+            mockResumeJob.Setup(o => o.GetSuspendedEnvironment(suspensionId)).Returns("Anything").Verifiable();
             var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
@@ -383,6 +384,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var environment = env.ToJson();
             var mockResumeJob = new Mock<IPersistenceExecution>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment)).Verifiable();
+            mockResumeJob.Setup(o => o.GetSuspendedEnvironment(suspensionId)).Returns("Anything").Verifiable();
             var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
@@ -453,6 +455,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var overrideEnvironment = env.ToJson();
             var mockResumeJob = new Mock<IPersistenceExecution>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, overrideEnvironment)).Verifiable();
+            mockResumeJob.Setup(o => o.GetSuspendedEnvironment(suspensionId)).Returns("Anything").Verifiable();
             var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
