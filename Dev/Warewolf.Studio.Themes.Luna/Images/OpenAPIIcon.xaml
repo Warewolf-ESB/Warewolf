@@ -4,7 +4,7 @@
     <ResourceDictionary Source="../Common/Brushes.xaml" />
   </ResourceDictionary.MergedDictionaries>
   
-  <DrawingImage x:Key="SwaggerIcon">
+  <DrawingImage x:Key="OpenAPIIcon">
     <DrawingImage.Drawing>
       <DrawingGroup>
         <DrawingGroup.Children>
@@ -18,7 +18,7 @@
       </DrawingGroup>
     </DrawingImage.Drawing>
   </DrawingImage>
-  <DrawingImage x:Key="SwaggerIconOrange">
+  <DrawingImage x:Key="OpenAPIIconOrange">
     <DrawingImage.Drawing>
       <DrawingGroup>
         <DrawingGroup.Children>
@@ -32,7 +32,7 @@
       </DrawingGroup>
     </DrawingImage.Drawing>
   </DrawingImage>
-    <DrawingBrush x:Key="SwaggerIconBrush">
+    <DrawingBrush x:Key="OpenAPIIconBrush">
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>

@@ -21,6 +21,7 @@ namespace Dev2.Runtime.WebServer
 {
     public interface ICommunicationRequest
     {
+        HttpRequestMessage Request { get; }
         string Method { get; }
         Uri Uri { get; }
         IPrincipal User { get; set; }
