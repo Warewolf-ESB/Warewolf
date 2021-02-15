@@ -32,11 +32,7 @@ if [ "$branch" == "$DefaultBranchName" ]; then
 	QueueBuild $BambooUrl $CIBambooPlanKey
 else
 	branch=${branch//\//-}
-	if [ -e "./wget.exe" ]; then
-		JSONDATA=$(./wget.exe -O - "http://$BambooUrl/rest/api/latest/plan/$CIBambooPlanKey.json?os_authType=basic&expand=branches&max-result=99" --user=$BambooUsername --password=$BambooPassword -q)
-	else
-		JSONDATA=$(wget -O - "http://$BambooUrl/rest/api/latest/plan/$CIBambooPlanKey.json?os_authType=basic&expand=branches&max-result=99" --user=$BambooUsername --password=$BambooPassword -q)
-	fi
+	JSONDATA=$(wget -O - "http://$BambooUrl/rest/api/latest/plan/$CIBambooPlanKey.json?os_authType=basic&expand=branches&max-result=99" --user=$BambooUsername --password=$BambooPassword -q)
 	FindBranchName=$(echo $JSONDATA | grep -o "$branch.*")
 	FindBranchKey=$(echo $FindBranchName | grep -o "\"key\":\".*")
 	BranchKey=$(echo $FindBranchKey | cut -d '"' -f 4)
