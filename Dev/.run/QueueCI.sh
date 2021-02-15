@@ -6,7 +6,7 @@
 DefaultBranchName="develop"
 
 function QueueBuild {
-	build=$(wget -O - "http://bamboo.opswolf.com/rest/api/latest/queue/$1.json?os_username=$BambooUsername&os_password=$BambooPassword" -q)
+	build=$(curl -s "http://bamboo.opswolf.com/rest/api/latest/queue/$1.json?os_username=$BambooUsername&os_password=$BambooPassword")
 	echo $(echo $build | cut -d '"' -f 20)
 }
 
@@ -23,7 +23,7 @@ if [ "$branch" == "$DefaultBranchName" ]; then
 	QueueBuild "WOLF-CI"
 else
 	branch=${branch//\//-}
-	JSONDATA=$(wget -O - "http://bamboo.opswolf.com/rest/api/latest/plan/WOLF-CI.json?os_username=$BambooUsername&os_password=$BambooPassword&expand=branches&max-result=99" -q)
+	JSONDATA=$(curl -s "http://bamboo.opswolf.com/rest/api/latest/plan/WOLF-CI.json?os_username=$BambooUsername&os_password=$BambooPassword&expand=branches&max-result=99")
 	FindBranchName=$(echo $JSONDATA | grep -o "$branch.*")
 	FindBranchKey=$(echo $FindBranchName | grep -o "\"key\":\".*")
 	BranchKey=$(echo $FindBranchKey | cut -d '"' -f 4)
