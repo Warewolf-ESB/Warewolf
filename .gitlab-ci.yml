@@ -7,5 +7,4 @@ image: busybox:latest
 build:
   stage: build
   script:
-    - opkg update; opkg install wget
     - sh ./Dev/.run/QueueCI.sh $CI_COMMIT_BRANCH
