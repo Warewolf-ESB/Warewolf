@@ -6,8 +6,7 @@
 DefaultBranchName="develop"
 
 function QueueBuild {
-	build=$(curl -s "http://bamboo.opswolf.com/rest/api/latest/queue/$1.json?os_username=$BambooUsername&os_password=$BambooPassword")
-	echo $(echo $build | cut -d '"' -f 20)
+	curl -X POST "http://bamboo.opswolf.com/rest/api/latest/queue/$1.json?os_username=$BambooUsername&os_password=$BambooPassword"
 }
 
 #Parse Arguments
