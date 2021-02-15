@@ -171,7 +171,7 @@ namespace Dev2.Activities
 
             if (dataObject.IsDebugMode())
             {
-                _debugInputs = CreateDebugInputs(dataObject.Environment);
+                _debugInputs = CreateDebugInputs(dataObject);
                 DispatchDebugState(dataObject, StateType.Before, 0);
             }
 
@@ -280,7 +280,7 @@ namespace Dev2.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfDecision", allErrors);
+                    DisplayAndWriteError(dataObject, nameof(DsfDecision), allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
@@ -294,12 +294,12 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
+        List<DebugItem> CreateDebugInputs(IDSFDataObject dataObject)
         {
             var result = new List<IDebugItem>();
 
             var allErrors = new ErrorResultTO();
-
+            var env = dataObject.Environment;
             try
             {
                 var dds = Conditions;
@@ -344,7 +344,7 @@ namespace Dev2.Activities
                 if (allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(serviceName, allErrors);
+                    DisplayAndWriteError(dataObject, serviceName, allErrors);
                 }
             }
 
