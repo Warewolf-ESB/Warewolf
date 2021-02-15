@@ -81,6 +81,7 @@
     <Compile Include="ExecutionEnvironmentUtilsTests.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="InputsFromJsonTests.cs" />
     <Compile Include="InterfaceImplementorsTests\CoverageDataContextTests.cs" />
     <Compile Include="MathOperationTest\FunctionEvaluatorTest.cs" />
     <Compile Include="MathOperationTest\FunctionRepositoryTest.cs" />
