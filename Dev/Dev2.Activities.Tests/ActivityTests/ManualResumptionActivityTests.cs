@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 
 using System;
 using System.Activities;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -18,9 +19,11 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.State;
 using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Warewolf.Auditing;
 using Warewolf.Driver.Persistence;
 using Warewolf.Storage;
@@ -605,6 +608,81 @@ namespace Dev2.Tests.Activities.ActivityTests
             var enFindMissingType = manualResumptionActivity.GetFindMissingType();
             //---------------Test Result -----------------------
             Assert.AreEqual(enFindMissingType.ManualResumption, enFindMissingType);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_GetFindMissingType_GivenIsNew_ShouldSetManualResumptionActivity1()
+        {
+            //---------------Set up test pack-------------------
+
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            const string dataList = "{\"Environment\":{\"scalars\":{\"a\":1,\"b\":2,\"c\":3},\"record_sets\":{\"rec\":{\"WarewolfPositionColumn\":[1],\"d\":[\"4\"],\"e\":[\"5\"],\"f\":[\"6\"]}},\"json_objects\":{\"obj\":{\r\n\"x\":{\r\n\"y\":{\r\n\"z\":1\r\n\"\"}\r\n}\r\n}}},\"Errors\":[],\"AllErrors\":[]}";
+
+            var manualResumptionActivity = new ManualResumptionActivity()
+            {
+                SuspensionId = "15",
+                OverrideInputVariables = true,
+                OverrideDataFunc = activityFunction,
+                Response = "[[result]]"
+            };
+
+            var mockDev2Activity = new Mock<IDev2ActivityIOMapping>();
+            mockDev2Activity.Setup(o => o.InputMapping).Returns("<Inputs><Input Name=\"a\" Source=\"[[a]]\" IsObject=\"False\" /><Input Name=\"b\" Source=\"[[b]]\" IsObject=\"False\" /><Input Name=\"c\" Source=\"[[c]]\" IsObject=\"False\" /><Input Name=\"d\" Source=\"[[rec(*).d]]\" IsObject=\"False\" Recordset=\"rec\" /><Input Name=\"e\" Source=\"[[rec(*).e]]\" IsObject=\"False\" Recordset=\"rec\" /><Input Name=\"f\" Source=\"[[rec(*).f]]\" IsObject=\"False\" Recordset=\"rec\" /><Input Name=\"@obj\" Source=\"[[@obj]]\" IsObject=\"True\" /></Inputs>");
+            var forEachInnerActivityTo = new ForEachInnerActivityTO(mockDev2Activity.Object);
+
+            var nameCount = 0;
+            var valueCount = 0;
+            var expectedNameList = new List<string>
+            {
+                "[[a]]",
+                "[[b]]",
+                "[[c]]",
+                "[[rec(1).d]]",
+                "[[rec(1).e]]",
+                "[[rec(1).f]]",
+                "[[@obj]]",
+            };
+            var expectedValueList = new List<string>
+            {
+                "100",
+                "50",
+                "3",
+                "200",
+                "5",
+                "6",
+                "{\"l\":{\"m\":{\"o\":4}}}",
+            };
+
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+            mockExecutionEnvironment.Setup(o => o.EvalToExpression(It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(() =>
+                {
+                    var expectedName = expectedNameList[nameCount];
+                    nameCount++;
+                    return expectedName;
+                });
+            mockExecutionEnvironment.Setup(o => o.Eval(It.IsAny<string>(), It.IsAny<int>(), false, true))
+                .Returns(() =>
+                {
+                    var expectedValue = expectedValueList[valueCount];
+                    valueCount++;
+                    return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(expectedValue));
+                });
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(mockExecutionEnvironment.Object);
+
+            var environmentToJson = manualResumptionActivity.ExecuteOverrideDataFunc(forEachInnerActivityTo, dataList, mockDataObject.Object);
+
+            Assert.AreEqual("{\"Environment\":{\"scalars\":{\"a\":100,\"b\":50,\"c\":3},\"record_sets\":{\"rec\":{\"WarewolfPositionColumn\":[1],\"d\":[200],\"e\":[5],\"f\":[6]}},\"json_objects\":{\"obj\":{\"l\":{\"m\":{\"o\":4}}}}},\"Errors\":[],\"AllErrors\":[]}", environmentToJson);
         }
 
         static IExecutionEnvironment CreateExecutionEnvironment()
