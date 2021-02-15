@@ -466,8 +466,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (Exception err)
                 {
-                    Dev2Logger.Error("DispatchDebugState", err, GlobalConstants.WarewolfError);
-                    AddErrorToDataList(err, dataObject);
+                    if (err.Message.Contains("Object reference not set to an instance of an object."))
+                    {
+                        Dev2Logger.Info("DispatchForBeforeState", err, GlobalConstants.WarewolfInfo);
+                    }
+                    else
+                    {
+                        AddErrorToDataList(err, dataObject);
+                    }
                     var errorMessage = dataObject.Environment.FetchErrors();
                     _debugState.ErrorMessage = errorMessage;
                     _debugState.HasError = true;
