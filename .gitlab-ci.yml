@@ -7,4 +7,4 @@ image: busybox:latest
 build:
   stage: build
   script:
-    - sh ./Dev/.run/QueueCI.sh
+    - sh ./Dev/.run/QueueCI.sh $CI_COMMIT_BRANCH
