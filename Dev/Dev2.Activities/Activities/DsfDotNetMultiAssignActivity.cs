@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                //Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -127,8 +127,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                allErrors.AddError(e.Message);
+                //Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                allErrors.AddError(e.Message  + " " + t.FieldName + ":" + t.FieldValue);
             }
 
             return innerCount;
@@ -160,7 +160,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             } catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                //Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
 
