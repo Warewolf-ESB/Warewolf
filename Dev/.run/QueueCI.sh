@@ -3,11 +3,10 @@
 # Queue Bamboo build.
 # This script can take a branch name as a commandline parameter.
 #
-DefaultCIBambooPlanKey="WOLF-CI"
 DefaultBranchName="develop"
 
 function QueueBuild {
-	build=$(wget -O - "http://bamboo.opswolf.com/rest/api/latest/queue/$2.json?os_username=$BambooUsername&os_password=$BambooPassword" -q)
+	build=$(wget -O - "http://bamboo.opswolf.com/rest/api/latest/queue/$1.json?os_username=$BambooUsername&os_password=$BambooPassword" -q)
 	echo $(echo $build | cut -d '"' -f 20)
 }
 
@@ -17,19 +16,14 @@ if [ "$1" != "" ]; then
 	branch=${branch#*refs/heads/}
 else
 	branch=$DefaultBranchName
-fi 
-if [ "$4" != "" ]; then
-	CIBambooPlanKey="$4"
-else
-	CIBambooPlanKey=$DefaultCIBambooPlanKey
-fi 
+fi
 
 #Queue Builds
 if [ "$branch" == "$DefaultBranchName" ]; then
-	QueueBuild $CIBambooPlanKey
+	QueueBuild "WOLF-CI"
 else
 	branch=${branch//\//-}
-	JSONDATA=$(wget -O - "http://bamboo.opswolf.com/rest/api/latest/plan/$CIBambooPlanKey.json?os_username=$BambooUsername&os_password=$BambooPassword&expand=branches&max-result=99" -q)
+	JSONDATA=$(wget -O - "http://bamboo.opswolf.com/rest/api/latest/plan/WOLF-CI.json?os_username=$BambooUsername&os_password=$BambooPassword&expand=branches&max-result=99" -q)
 	FindBranchName=$(echo $JSONDATA | grep -o "$branch.*")
 	FindBranchKey=$(echo $FindBranchName | grep -o "\"key\":\".*")
 	BranchKey=$(echo $FindBranchKey | cut -d '"' -f 4)
