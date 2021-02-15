@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -103,7 +103,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(DsfMultiAssignActivity), e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -135,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(DsfMultiAssignActivity), e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             return allErrors;
@@ -167,7 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             } catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(nameof(DsfMultiAssignActivity), e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
 
