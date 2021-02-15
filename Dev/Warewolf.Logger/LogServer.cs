@@ -31,7 +31,6 @@ namespace Warewolf.Logger
     {
         public LogServerFactory()
         {
-
         }
 
         public ILogServer New(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext)
@@ -59,6 +58,7 @@ namespace Warewolf.Logger
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
             _loggerContext = loggerContext ?? throw new ArgumentNullException(nameof(loggerContext));
         }
+
         public LogServer(IWebSocketServerFactory webSocketServerFactory, IWriter writer, ILoggerContext loggerContext, IAuditCommandConsumerFactory auditCommandConsumerFactory)
             : this(webSocketServerFactory, writer, loggerContext)
         {
@@ -71,22 +71,18 @@ namespace Warewolf.Logger
             var loggerConfig = _loggerContext.LoggerConfig;
 
             _server = _webSocketServerFactory.New(loggerConfig.Endpoint);
+
             _server.Start(socket =>
             {
                 socket.OnOpen = () =>
                 {
-                    _writer.WriteLine("Logging Server OnOpen...");
                     clients.Add(socket);
                 };
                 socket.OnClose = () =>
                 {
-                    _writer.WriteLine("Logging Server OnClose...");
                     clients.Remove(socket);
                 };
-                socket.OnError = exception =>
-                {
-                    _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}");
-                };
+                socket.OnError = exception => { _writer.WriteLine($"Logging Server OnError, Error details:{exception.Message}"); };
 
                 var innerConsumer = new SeriLogConsumer(_loggerContext);
                 var defaultConsumer = _auditCommandConsumerFactory?.New(innerConsumer, socket, _writer) ?? new AuditCommandConsumerFactory().New(innerConsumer, socket, _writer);
