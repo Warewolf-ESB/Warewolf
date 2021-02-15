@@ -16,6 +16,7 @@ namespace Dev2.Common.Interfaces
     public interface IFormDataParameters
     {
         string Key { get; set; }
+        bool IsEmptyRow { get; }
 
         void RenderDescription(StringBuilder text);
     }

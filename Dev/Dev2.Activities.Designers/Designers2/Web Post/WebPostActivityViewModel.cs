@@ -541,6 +541,27 @@ namespace Dev2.Activities.Designers2.Web_Post
                 _builder.GetValue(nameValue.Name, dt);
                 _builder.GetValue(nameValue.Value, dt);
             }
+
+            foreach (var parameter in BuildFormDataParameters())
+            {
+                if (!string.IsNullOrEmpty(parameter.Key))
+                {
+                    if (parameter is FileParameter)
+                    {
+                        var paramm = (FileParameter)parameter;
+                        _builder.GetValue(paramm.Key, dt);
+                        _builder.GetValue(paramm.FileName, dt);
+                        _builder.GetValue(paramm.FileBase64, dt);
+                    }
+                    else if (parameter is TextParameter)
+                    {
+                        var paramm = (TextParameter)parameter;
+                        _builder.GetValue(paramm.Key, dt);
+                        _builder.GetValue(paramm.Value, dt);
+
+                    }
+                }
+            }
             return dt;
         }
 
