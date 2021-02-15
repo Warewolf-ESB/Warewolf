@@ -268,70 +268,71 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Actions on Oracle Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ChangingOracleActions")]
         public virtual void ChangingActionsOnOracleTool()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Actions on Oracle Tool", new string[] {
-                        "Database"});
-#line 72
+                        "ChangingOracleActions"});
+#line 71
 this.ScenarioSetup(scenarioInfo);
-#line 73
+#line 72
  testRunner.Given("I open workflow with Oracle connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 74
+#line 73
  testRunner.And("Oracle Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 74
  testRunner.And("Oracle Source is \"testingDBSrc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 75
  testRunner.And("Oracle Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
+#line 76
  testRunner.And("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2421 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2367 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table2421.AddRow(new string[] {
+            table2367.AddRow(new string[] {
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
-#line 78
- testRunner.Then("Oracle Inputs appear as", ((string)(null)), table2421, "Then ");
-#line 81
+#line 77
+ testRunner.Then("Oracle Inputs appear as", ((string)(null)), table2367, "Then ");
+#line 80
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2422 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2368 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table2422.AddRow(new string[] {
+            table2368.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table2422.AddRow(new string[] {
+            table2368.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 82
- testRunner.Then("Oracle Outputs appear as", ((string)(null)), table2422, "Then ");
-#line 86
+#line 81
+ testRunner.Then("Oracle Outputs appear as", ((string)(null)), table2368, "Then ");
+#line 85
  testRunner.And("Oracle Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 86
  testRunner.When("Oracle Action is changed from to dbo.ImportOrder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 88
+#line 87
  testRunner.And("Inputs is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2423 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2369 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Value",
                         "Empty is Null"});
-            table2423.AddRow(new string[] {
+            table2369.AddRow(new string[] {
                         "ProductId",
                         "[[ProductId]]",
                         "false"});
-#line 89
- testRunner.Then("Oracle Inputs appear as", ((string)(null)), table2423, "Then ");
-#line 92
+#line 88
+ testRunner.Then("Oracle Inputs appear as", ((string)(null)), table2369, "Then ");
+#line 91
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Recordset Name on Oracle Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
