@@ -1367,4 +1367,7 @@ Please contact your Windows System Administrator.</value>
   <data name="NextNodeRequiredForSuspendExecution" xml:space="preserve">
     <value>At least 1 activity is required after Suspend Execution.</value>
   </data>
+  <data name="ManualResumptionSuspensionEnvBlank" xml:space="preserve">
+    <value>The suspended environment could not be loaded from the provided id.</value>
+  </data>
 </root>
