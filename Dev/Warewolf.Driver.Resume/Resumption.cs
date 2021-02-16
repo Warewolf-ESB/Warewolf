@@ -30,7 +30,7 @@ namespace Warewolf.Driver.Resume
     {
         public IResumption New()
         {
-            return new Resumption();
+            return new Resumption(new ServerProxyFactory(), new ResourceCatalogProxyFactory());
         }
     }
 
@@ -40,6 +40,14 @@ namespace Warewolf.Driver.Resume
 
         private IEnvironmentConnection _environmentConnection;
         private IExecutionLogPublisher _logger;
+        private readonly IServerProxyFactory _serverProxyFactory;
+        private readonly IResourceCatalogProxyFactory _resourceCatalogProxyFactory;
+
+        public Resumption(IServerProxyFactory serverProxyFactory, IResourceCatalogProxyFactory resourceCatalogProxyFactory)
+        {
+            _serverProxyFactory = serverProxyFactory;
+            _resourceCatalogProxyFactory = resourceCatalogProxyFactory;
+        }
 
         private Uri ServerEndpoint
         {
@@ -52,14 +60,17 @@ namespace Warewolf.Driver.Resume
 
         public ExecuteMessage Resume(Dictionary<string, StringBuilder> values)
         {
-            values.TryGetValue("resourceID", out StringBuilder resourceId);
-            values.TryGetValue("environment", out StringBuilder environment);
-            values.TryGetValue("startActivityId", out StringBuilder startActivityId);
-            values.TryGetValue("versionNumber", out StringBuilder versionNumber);
-            values.TryGetValue("currentuserprincipal", out StringBuilder currentuserprincipal);
+            values.TryGetValue("resourceID", out var resourceId);
+            values.TryGetValue("environment", out var environment);
+            values.TryGetValue("startActivityId", out var startActivityId);
+            values.TryGetValue("versionNumber", out var versionNumber);
+            values.TryGetValue("currentuserprincipal", out var currentuserprincipal);
 
-            var resourceCatalogProxyFactory = new ResourceCatalogProxyFactory();
-            var resourceCatalogProxy = resourceCatalogProxyFactory.New(_environmentConnection);
+            if (_environmentConnection is null)
+            {
+                _environmentConnection = _serverProxyFactory.New(ServerEndpoint);
+            }
+            var resourceCatalogProxy = _resourceCatalogProxyFactory.New(_environmentConnection);
             var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString(), currentuserprincipal?.ToString());
             return executeMessage;
         }
@@ -70,8 +81,7 @@ namespace Warewolf.Driver.Resume
             {
                 _logger = executionLogPublisher;
                 _logger.Info("Connecting to server: " + ServerEndpoint + "...");
-                var serverProxyFactory = new ServerProxyFactory();
-                _environmentConnection = serverProxyFactory.New(_serverEndpoint);
+                _environmentConnection = _serverProxyFactory.New(_serverEndpoint);
                 Task<bool> connectTask = TryConnectingToWarewolfServer(_environmentConnection);
                 if (connectTask.Result is false)
                 {
@@ -83,7 +93,13 @@ namespace Warewolf.Driver.Resume
             }
             catch (Exception ex)
             {
-                _logger.Error("Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.InnerException + " " + ex.InnerException);
+                var exMessage = "Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message;
+                if (ex.InnerException != null)
+                {
+                    exMessage += " " + ex.InnerException.Message;
+                }
+
+                _logger.Error(exMessage);
                 return false;
             }
         }
@@ -98,7 +114,12 @@ namespace Warewolf.Driver.Resume
             }
             catch (Exception ex)
             {
-                _logger.Error("Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message + " " + ex.InnerException);
+                var exMessage = "Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message;
+                if (ex.InnerException != null)
+                {
+                    exMessage += " " + ex.InnerException.Message;
+                }
+                _logger.Error(exMessage);
                 return Task.FromResult(false);
             }
         }
