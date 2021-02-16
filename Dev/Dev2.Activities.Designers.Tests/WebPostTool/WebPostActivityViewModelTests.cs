@@ -645,6 +645,80 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual("this can be any text message", (item1.Cond as FormDataConditionMatch).Value);
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPostActivityViewModel))]
+        public void WebPostActivityViewModel_ToModel_Given_IsNoneChecked_True_ExpectFromPostDataVariableInputs()
+        {
+            //---------------Set up test pack-------------------
+            var mockModel = GetMockModel();
+            var postActivity = GetPostActivityWithOutPuts(mockModel);
+
+            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(postActivity), mockModel);
+            postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mockModel);
+            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
+            postViewModel.InputArea.Headers.Add(new NameValue("a", "asa"));
+            postViewModel.InputArea.PostData = "this is a test body with a [[VariableToExpose]]";
+            postViewModel.InputArea.IsNoneChecked = true;
+            postViewModel.InputArea.IsFormDataChecked = false;
+            postViewModel.ConditionExpressionOptions.Options = new List<IOption>
+            {
+                new FormDataOptionConditionExpression
+                {
+                    Left = "l",
+                    Right = "[[VariableNotToExpose]]",
+                    Cond = new FormDataConditionMatch
+                    {
+                        MatchType = enFormDataTableType.Text,
+                        Value = ""
+                    },
+                }
+            };
+            //---------------Execute Test ----------------------
+            var result = postViewModel.ToModel();
+
+            var actualInputs = result.Inputs;
+            Assert.IsTrue(actualInputs.Count == 1);
+            Assert.IsTrue(actualInputs.First().Name == "[[VariableToExpose]]");
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPostActivityViewModel))]
+        public void WebPostActivityViewModel_ToModel_Given_IsFormDataChecked_True_ExpectFromFormDataVariableInputs()
+        {
+            //---------------Set up test pack-------------------
+            var mockModel = GetMockModel();
+            var postActivity = GetPostActivityWithOutPuts(mockModel);
+
+            var postViewModel = new WebPostActivityViewModel(ModelItemUtils.CreateModelItem(postActivity), mockModel);
+            postViewModel.ManageServiceInputViewModel = new InputViewForWebPostTest(postViewModel, mockModel);
+            postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
+            postViewModel.InputArea.Headers.Add(new NameValue("a", "asa"));
+            postViewModel.InputArea.PostData = "this is a test body with a [[VariableNotToExpose]]";
+            postViewModel.InputArea.IsNoneChecked = false;
+            postViewModel.InputArea.IsFormDataChecked = true;
+            postViewModel.ConditionExpressionOptions.Options = new List<IOption>
+            {
+                new FormDataOptionConditionExpression
+                {
+                    Left = "l",
+                    Right = "[[VariableToExpose]]",
+                    Cond = new FormDataConditionMatch
+                    {
+                        MatchType = enFormDataTableType.Text,
+                        Value = ""
+                    },
+                }
+            };
+            //---------------Execute Test ----------------------
+            var result = postViewModel.ToModel();
+
+            var actualInputs = result.Inputs;
+            Assert.IsTrue(actualInputs.Count == 1);
+            Assert.IsTrue(actualInputs.First().Name == "[[VariableToExpose]]");
+        }
+
         private Mock<ModelProperty> CreateModelProperty(string name, object value)
         {
             var prop = new Mock<ModelProperty>();
