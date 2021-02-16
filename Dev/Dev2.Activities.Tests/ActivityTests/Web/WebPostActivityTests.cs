@@ -810,61 +810,61 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 const string response = "{\"Message\":\"Error\"}";
                 var environment = new ExecutionEnvironment();
 
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(new WebSource
-                {
-                    Address = $"http://{dependency.Container.IP}:{dependency.Container.Port}/api/";
-                    AuthenticationType = AuthenticationType.Anonymous
-                });
-
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
-            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-
-            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
-            {
-                var webPostActivity = new TestWebPostActivity
-                {
-                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
-                    ResourceCatalog = mockResourceCatalog.Object,
-                    IsNoneChecked = true,
-                    Outputs = new List<IServiceOutputMapping> 
+                var mockResourceCatalog = new Mock<IResourceCatalog>();
+                mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                    .Returns(new WebSource
                     {
-                        new ServiceOutputMapping("Message", "[[Message]]", "") 
+                        Address = $"http://{dependency.Container.IP}:{dependency.Container.Port}/api/",
+                        AuthenticationType = AuthenticationType.Anonymous
+                    });
+
+                var dataObjectMock = new Mock<IDSFDataObject>();
+                dataObjectMock.Setup(o => o.Environment).Returns(environment);
+                dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+                {
+                    var webPostActivity = new TestWebPostActivity
+                    {
+                        ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                        ResourceCatalog = mockResourceCatalog.Object,
+                        IsNoneChecked = true,
+                        Outputs = new List<IServiceOutputMapping>
+                    {
+                        new ServiceOutputMapping("Message", "[[Message]]", "")
                     },
 
-                    OutputDescription = new OutputDescription 
-                    {
-                        DataSourceShapes = new List<IDataSourceShape> 
+                        OutputDescription = new OutputDescription
                         {
-                            new DataSourceShape 
-                            { 
-                                Paths = new List<IPath> 
-                                { 
+                            DataSourceShapes = new List<IDataSourceShape>
+                        {
+                            new DataSourceShape
+                            {
+                                Paths = new List<IPath>
+                                {
                                     new StringPath
-                                    { 
-                                        ActualPath = "[[Response]]", 
-                                        OutputExpression = "[[Response]]" 
-                                    } 
-                                } 
+                                    {
+                                        ActualPath = "[[Response]]",
+                                        OutputExpression = "[[Response]]"
+                                    }
+                                }
                             }
                         }
-                    },
-                    ResponseFromWeb = response,
-                    QueryString = "Error",
-                    SourceId = Guid.Empty,
-                    Headers = new List<INameValue>()
-                };
+                        },
+                        ResponseFromWeb = response,
+                        QueryString = "Error",
+                        SourceId = Guid.Empty,
+                        Headers = new List<INameValue>()
+                    };
 
-                //------------Execute Test---------------------------
-                webPostActivity.Execute(dataObjectMock.Object, 0);
-                //------------Assert Results-------------------------
-                Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Message]]", 0)));
+                    //------------Execute Test---------------------------
+                    webPostActivity.Execute(dataObjectMock.Object, 0);
+                    //------------Assert Results-------------------------
+                    Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Message]]", 0)));
+                }
+
             }
-
         }
-
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
