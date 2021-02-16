@@ -90,9 +90,18 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var jobDetails = monitoringApi.JobDetails(jobId);
                 var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
 
-                if (currentState?.StateName != "Scheduled" && currentState?.StateName != "Failed" )
+                var errMsg = "Failed: ";
+                if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
                 {
-                    return GlobalConstants.Failed;
+                    return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
+                }
+                if (currentState?.StateName == "Enqueued")
+                {
+                    return  errMsg + ErrorResource.ManualResumptionEnqueued;
+                }
+                if (currentState?.StateName == "Processing")
+                {
+                    return  errMsg + ErrorResource.ManualResumptionProcessing;
                 }
 
                 var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
@@ -123,7 +132,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 {
                     var failedState = new FailedState(new Exception(executeMessage.Message?.ToString()));
                     _client.ChangeState(jobId, failedState, ScheduledState.StateName);
-                    return GlobalConstants.Failed;
+                    return executeMessage.Message?.ToString();
                 }
 
                 values.TryGetValue("resourceID", out StringBuilder workflowId);
