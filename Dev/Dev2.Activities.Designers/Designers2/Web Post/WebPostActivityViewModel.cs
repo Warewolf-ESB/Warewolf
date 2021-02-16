@@ -531,37 +531,46 @@ namespace Dev2.Activities.Designers2.Web_Post
         IList<IServiceInput> InputsFromModel()
         {
             var dt = new List<IServiceInput>();
-            var s = InputArea.QueryString;
-            var postValue = InputArea.PostData;
 
+            var s = InputArea.QueryString;
             _builder.GetValue(s, dt);
-            _builder.GetValue(postValue, dt);
+            
             foreach (var nameValue in InputArea.Headers)
             {
                 _builder.GetValue(nameValue.Name, dt);
                 _builder.GetValue(nameValue.Value, dt);
             }
 
-            foreach (var parameter in BuildFormDataParameters())
+            if (InputArea.IsNoneChecked)
             {
-                if (!string.IsNullOrEmpty(parameter.Key))
-                {
-                    if (parameter is FileParameter)
-                    {
-                        var paramm = (FileParameter)parameter;
-                        _builder.GetValue(paramm.Key, dt);
-                        _builder.GetValue(paramm.FileName, dt);
-                        _builder.GetValue(paramm.FileBase64, dt);
-                    }
-                    else if (parameter is TextParameter)
-                    {
-                        var paramm = (TextParameter)parameter;
-                        _builder.GetValue(paramm.Key, dt);
-                        _builder.GetValue(paramm.Value, dt);
+                var postValue = InputArea.PostData;
+                _builder.GetValue(postValue, dt);
+            }
 
+            if (InputArea.IsFormDataChecked)
+            {
+                foreach (var parameter in BuildFormDataParameters())
+                {
+                    if (!string.IsNullOrEmpty(parameter.Key))
+                    {
+                        if (parameter is FileParameter)
+                        {
+                            var paramm = (FileParameter)parameter;
+                            _builder.GetValue(paramm.Key, dt);
+                            _builder.GetValue(paramm.FileName, dt);
+                            _builder.GetValue(paramm.FileBase64, dt);
+                        }
+                        else if (parameter is TextParameter)
+                        {
+                            var paramm = (TextParameter)parameter;
+                            _builder.GetValue(paramm.Key, dt);
+                            _builder.GetValue(paramm.Value, dt);
+
+                        }
                     }
                 }
             }
+
             return dt;
         }
 
