@@ -1042,7 +1042,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception ex)
             {
-                if (_debugState is null || ex is NullReferenceException || ex.Message.Contains("Object reference not set to an instance of an object."))
+                if (ex is NullReferenceException || ex.Message.Contains("Object reference not set to an instance of an object."))
                 {
                     Dev2Logger.Info("OnExecute", ex, GlobalConstants.WarewolfInfo);
                 }
