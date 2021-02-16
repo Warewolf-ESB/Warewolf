@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -103,6 +103,7 @@ namespace Warewolf.Logger.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogServer))]
+        [TestCategory("Logger")]
         public void LogServer_PerformingStartAction_ShouldCallActionOnTheWrapper()
         {
             //--------------------------------Arrange-------------------------------
@@ -137,6 +138,7 @@ namespace Warewolf.Logger.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(LogServer))]
+        [TestCategory("Logger")]
         public void LogServer_PerformingClientOnOpen_ShouldCallAction()
         {
             //--------------------------------Arrange-------------------------------
@@ -177,6 +179,7 @@ namespace Warewolf.Logger.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LogServer))]
+        [TestCategory("Logger")]
         public void LogServer_PerformingClientOnClose_ShouldCallAction_And_OnMessage_ShouldTryConsume_Success()
         {
             //--------------------------------Arrange-------------------------------
