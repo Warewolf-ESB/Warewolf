@@ -24,7 +24,6 @@ using Dev2.Tests.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Data.Options;
 
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -38,7 +37,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         private string _requestUrlEvaluated;
         private string _requestBodyEvaluated;
         private string[] _requestHeadersEvaluated;
-        private IEnumerable<IFormDataParameters> _requestFormDataParameters;
+        private IEnumerable<IFormDataParameters> _requestFormDataParametersEvaluated;
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -423,8 +422,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("Services_Execute")]
-        public void Services_Execute_WhenHasJsonPath_ShouldReturnValid()
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_Execute_WhenHasJsonPath_ShouldReturnValid()
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
@@ -445,18 +444,88 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("Services_Execute")]
-        public void Services_Execute_WithVariablesInAllField_ShouldUseEvaluatedValues()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_Execute_IsFormDataChecked_WithVariablesInAllField_ShouldUseEvaluatedValues()
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
-            service.Headers = new List<INameValue> {new NameValue {Name="Accept",Value = "[[test1]]" } };
+            service.IsFormDataChecked = true;
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.FormDataParameters = new List<IFormDataParameters>
+            {
+               new TextParameter
+               {
+                   Key = "to",
+                   Value = "[[test4]]"
+               },
+               new FileParameter
+               {
+                   Key = "attachment",
+                   FileName = "[[test5]]",
+                   FileBase64 = "[[test6]]"
+               }
+            };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
             service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
             service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
             service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test4", Value = "val4" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test5", Value = "val5" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test6", Value = "val6" });
+
+            //------------Execute Test---------------------------
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
+            Assert.AreEqual(string.Empty, _requestBodyEvaluated, "the body must only be evaluated when the IsNoneChecked");
+            Assert.AreEqual("val3", _requestUrlEvaluated);
+
+            Assert.IsTrue(_requestFormDataParametersEvaluated.Count() == 2);
+
+            var item1 = _requestFormDataParametersEvaluated.First() as TextParameter;
+            var item2 = _requestFormDataParametersEvaluated.ToArray()[1] as FileParameter;
+
+            Assert.AreEqual("to", item1.Key);
+            Assert.AreEqual("val4", item1.Value);
+
+            Assert.AreEqual("attachment", item2.Key);
+            Assert.AreEqual("val5", item2.FileName);
+            Assert.AreEqual("val6", item2.FileBase64);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_Execute_IsNoneChecked_WithVariablesInAllField_ShouldUseEvaluatedValues()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.IsNoneChecked = true;
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.FormDataParameters = new List<IFormDataParameters>
+            {
+               new TextParameter
+               {
+                   Key = "to",
+                   Value = "[[test4]]"
+               },
+               new FileParameter
+               {
+                   Key = "attachment",
+                   FileName = "[[test5]]",
+                   FileBase64 = "[[test6]]"
+               }
+            };
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test4", Value = "val4" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test5", Value = "val5" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test6", Value = "val6" });
 
             //------------Execute Test---------------------------
             WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
@@ -464,6 +533,19 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
             Assert.AreEqual("val2", _requestBodyEvaluated);
             Assert.AreEqual("val3", _requestUrlEvaluated);
+
+            Assert.IsTrue(_requestFormDataParametersEvaluated.Count() == 2);
+            
+            var item1 = _requestFormDataParametersEvaluated.First() as TextParameter;
+            var item2 = _requestFormDataParametersEvaluated.ToArray()[1] as FileParameter;
+
+            const string errorMessage = "the form data parameters must only be evaluated when the IsFormDataChecked";
+            Assert.AreEqual("to", item1.Key);
+            Assert.AreEqual("[[test4]]", item1.Value, errorMessage);
+
+            Assert.AreEqual("attachment", item2.Key, errorMessage);
+            Assert.AreEqual("[[test5]]", item2.FileName, errorMessage);
+            Assert.AreEqual("[[test6]]", item2.FileBase64, errorMessage);
         }
 
         [TestMethod]
@@ -473,6 +555,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
+            service.IsNoneChecked = true;
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
@@ -507,6 +590,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var testFileName = "testFileName";
 
             var service = CreateDummyWebService();
+            service.IsNoneChecked = true;
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.FormDataParameters = new List<IFormDataParameters>
             {
@@ -552,6 +636,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var testFileName = "testFileName";
 
             var service = CreateDummyWebService();
+            service.IsNoneChecked = true;
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.FormDataParameters = new List<IFormDataParameters>
             {
@@ -594,7 +679,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             _requestUrlEvaluated = relativeUri;
             _requestBodyEvaluated = data;
             _requestHeadersEvaluated = headers;
-
+            _requestFormDataParametersEvaluated = webExecuteStringArgs.FormDataParameters;
             errors = new ErrorResultTO();
             return _requestResponse;
         }
