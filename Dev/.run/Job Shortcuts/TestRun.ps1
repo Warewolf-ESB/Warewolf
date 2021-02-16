@@ -11,7 +11,7 @@ param(
   [int] $RetryCount=${bamboo.RetryCount},
   [String] $PreTestRunScript,
   [String] $PostTestRunScript,
-  [switch] $RunInDocker,
+  [switch] $InContainer,
   [switch] $Coverage,
   [switch] $RetryRebuild
 )
@@ -32,7 +32,7 @@ if (Test-Path "$TestResultsPath") {
 if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
 } else {
-	if ($RunInDocker.IsPresent) {
+	if ($InContainer.IsPresent) {
 		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the RunInDocker parameter."
 		$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\Common7\IDE"
 	}
@@ -69,16 +69,16 @@ if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\
 		exit 1
 	}
 }
-if ($RunInDocker.IsPresent) {
+if ($InContainer.IsPresent) {
 	$ContainerName = ""
 	$ContainerName = ($Projects -join "-")
-	$ContainerName = $ContainerName.ToLower().replace(" ", "-")
 	if ($Category -ne $null -and $Category -ne "") {
 		$ContainerName = "$ContainerName-$Category";
 	}
 	if ("${bamboo.repository.git.branch}" -ne $null -and "${bamboo.repository.git.branch}" -ne "") {
-		$ContainerName = "$ContainerName-${bamboo.repository.git.branch}".replace("/\","-")
+		$ContainerName = "$ContainerName-${bamboo.repository.git.branch}"
 	}
+	$ContainerName = $ContainerName.ToLower().replace(" ", "-").replace("/","-")
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if ($RetryRebuild.IsPresent) {
@@ -89,7 +89,7 @@ sort length -Descending |
 Remove-Item -force -recurse
 		&..\..\Compile.ps1 -AcceptanceTesting -NuGet "$NuGet" -MSBuildPath "$MSBuildPath"
 	}
-	if ($RunInDocker.IsPresent) {
+	if ($InContainer.IsPresent) {
 		docker rm -f $ContainerName
 	}
 	$AllAssemblies = @()
@@ -135,7 +135,7 @@ Remove-Item -force -recurse
 		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	}
 	if ($TestsToRun) {
-		if ($RunInDocker.IsPresent) {
+		if ($InContainer.IsPresent) {
 			"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:.\Administrator Dev2@dmin123" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 		}
 		if ($PreTestRunScript) {
@@ -205,7 +205,7 @@ Remove-Item -force -recurse
 		"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
 	}
 	Get-Content "$TestResultsPath\RunTests.ps1"
-	if (!($RunInDocker.IsPresent)) {
+	if (!($InContainer.IsPresent)) {
 		&"$TestResultsPath\RunTests.ps1"
 		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
 			Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
