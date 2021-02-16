@@ -104,7 +104,7 @@ namespace Dev2.Studio.Interfaces
         void CloseResource(Guid resourceId, Guid environmentId);
         void CloseResource(IContextualResourceModel currentResourceModel, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName, string json);
-        void ViewSwagger(Guid resourceId, IServer server);
+        void ViewOpenAPI(string resourceName, string resourcePath, Uri webServerUri);
         void ViewApisJson(string resourcePath, Uri webServerUri);
         void CreateTest(Guid resourceId);
         void OpenSelectedTest(Guid resourceId, string testName);

@@ -212,10 +212,10 @@ namespace Dev2.Runtime.WebServer
                     {
                         return ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
                     }
-                    case EmitionTypes.SWAGGER:
+                    case EmitionTypes.OPENAPI:
                     {
-                        formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                        return ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
+                        formatter = DataListFormat.CreateFormat("OPENAPI", EmitionTypes.OPENAPI, "application/json");
+                        return ExecutionEnvironmentUtils.GetOpenAPIOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
                     }
                     default:
                     case EmitionTypes.JSON:
@@ -243,7 +243,7 @@ namespace Dev2.Runtime.WebServer
                         return $"<Error>{dataObject.ExecutionException.Message}</Error>";
                     }
                     default:
-                    case EmitionTypes.SWAGGER:
+                    case EmitionTypes.OPENAPI:
                     case EmitionTypes.JSON:
                     {
                         return JsonConvert.SerializeObject(new {Message = dataObject.ExecutionException.Message});

@@ -51,6 +51,23 @@ namespace Dev2.Runtime.WebServer.Controllers
                 return ProcessRequest<GetApisJsonServiceHandler>(requestVar, isUrlWithTokenPrefix);
             }
 
+            if (__name__.EndsWith(".api", StringComparison.OrdinalIgnoreCase))
+            {
+                var path = __name__.Split(new[] {"/.api"}, StringSplitOptions.RemoveEmptyEntries);
+                if (path.Any() && path[0].Equals(".api", StringComparison.OrdinalIgnoreCase))
+                {
+                    path[0] = null;
+                }
+            
+                var requestVar = new NameValueCollection
+                {
+                    {"servicename", __name__},
+                    {"path", path[0]},
+                    {"isPublic", isPublic.ToString()}
+                };
+                return ProcessRequest<GetOpenAPIServiceHandler>(requestVar, isUrlWithTokenPrefix);
+            }
+            
             var requestVariables = new NameValueCollection
             {
                 {"servicename", __name__},
@@ -66,11 +83,11 @@ namespace Dev2.Runtime.WebServer.Controllers
                 : ProcessRequest<WebGetRequestHandler>(requestVariables, isUrlWithTokenPrefix);
         }
 
-        public HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
+        public HttpResponseMessage ExecuteFolderTests(string url, bool isPublic)
         {
             var requestVariables = new NameValueCollection
             {
-                {"path", __url__},
+                {"path", url},
                 {"isPublic", isPublic.ToString()},
                 {"servicename", "*"}
             };
