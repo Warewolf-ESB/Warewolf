@@ -143,6 +143,10 @@ namespace Dev2.Activities
                     {
                         throw new Exception(ErrorResource.ManualResumptionSuspensionEnvBlank);
                     }
+                    if (suspendedEnv == GlobalConstants.Failed)
+                    {
+                        throw new Exception();
+                    }
                     var innerActivity = InnerActivity();
                     overrideVariables = ExecuteOverrideDataFunc(innerActivity, suspendedEnv, _dataObject);
                 }
