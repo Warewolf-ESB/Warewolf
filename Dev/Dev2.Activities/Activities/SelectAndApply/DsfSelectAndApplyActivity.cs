@@ -236,8 +236,7 @@ namespace Dev2.Activities.SelectAndApply
             }
             catch (NullDataSource e)
             {
-                //Dev2Logger.Error(nameof(DsfSelectAndApplyActivity), e, GlobalConstants.WarewolfError);
-                allErrors.AddError(e.Message);
+              //Already added to allErrors: DO nothing
             }
             catch (Exception e)
             {
