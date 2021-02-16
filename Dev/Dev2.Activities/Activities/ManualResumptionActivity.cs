@@ -125,13 +125,13 @@ namespace Dev2.Activities
                 var suspensionId = EvalSuspensionId();
                 if (string.IsNullOrWhiteSpace(suspensionId))
                 {
-                    Response = GlobalConstants.Failed;
+                    Response = ErrorResource.ManualResumptionSuspensionIdBlank;
                     throw new Exception(ErrorResource.ManualResumptionSuspensionIdBlank);
                 }
 
                 if (!_persistenceEnabled)
                 {
-                    Response = GlobalConstants.Failed;
+                    Response = ErrorResource.PersistenceSettingsNoConfigured;
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
@@ -139,14 +139,17 @@ namespace Dev2.Activities
                 if (OverrideInputVariables)
                 {
                     var suspendedEnv = _scheduler.GetSuspendedEnvironment(suspensionId);
+
                     if (string.IsNullOrEmpty(suspendedEnv))
                     {
                         throw new Exception(ErrorResource.ManualResumptionSuspensionEnvBlank);
                     }
-                    if (suspendedEnv == GlobalConstants.Failed)
+
+                    if (suspendedEnv.StartsWith("Failed:"))
                     {
-                        throw new Exception();
+                        throw new Exception(suspendedEnv);
                     }
+
                     var innerActivity = InnerActivity();
                     overrideVariables = ExecuteOverrideDataFunc(innerActivity, suspendedEnv, _dataObject);
                 }
@@ -168,7 +171,7 @@ namespace Dev2.Activities
             }
             catch (Exception ex)
             {
-                Response = GlobalConstants.Failed;
+                Response = ex.Message;
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
@@ -245,6 +248,7 @@ namespace Dev2.Activities
                         {
                             recName = o.Name.Remove(0, o.Name.IndexOf(".", StringComparison.Ordinal) + 1);
                         }
+
                         return recName == serviceInput.Name;
                     });
                 }
@@ -263,6 +267,7 @@ namespace Dev2.Activities
 
                 newDataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
             }
+
             return newDataObject.Environment.ToJson();
         }
 

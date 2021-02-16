@@ -24,6 +24,7 @@ using Hangfire.Server;
 using Hangfire.SqlServer;
 using Hangfire.States;
 using Warewolf.Auditing;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Dev2JsonSerializer = Dev2.Common.Serializers.Dev2JsonSerializer;
 using LogLevel = Warewolf.Logging.LogLevel;
@@ -53,10 +54,18 @@ namespace Warewolf.Driver.Persistence.Drivers
             var monitoringApi = _jobStorage.GetMonitoringApi();
             var jobDetails = monitoringApi.JobDetails(jobId);
             var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
-
-            if (currentState?.StateName != "Scheduled" && currentState?.StateName != "Failed")
+            var errMsg = "Failed: ";
+            if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
             {
-                return GlobalConstants.Failed;
+                return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
+            }
+            if (currentState?.StateName == "Enqueued")
+            {
+                return  errMsg + ErrorResource.ManualResumptionEnqueued;
+            }
+            if (currentState?.StateName == "Processing")
+            {
+                return  errMsg + ErrorResource.ManualResumptionProcessing;
             }
 
             if (jobDetails.Job.Args[0] is Dictionary<string, StringBuilder> values)
