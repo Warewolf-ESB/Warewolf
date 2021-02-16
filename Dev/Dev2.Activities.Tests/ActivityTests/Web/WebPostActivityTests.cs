@@ -33,6 +33,7 @@ using Warewolf.Core;
 using Warewolf.Data.Options;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
@@ -803,15 +804,17 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestCategory(nameof(WebPostActivity))]
         public void WebPostActivity_Execute_ErrorResponse_ShouldSetVariables()
         {
-            //------------Setup for test--------------------------
-            const string response = "{\"Message\":\"Error\"}";
-            var environment = new ExecutionEnvironment();
+            using (var dependency = new Depends(Depends.ContainerType.HTTPVerbsApi))
+            {
+                //------------Setup for test--------------------------
+                const string response = "{\"Message\":\"Error\"}";
+                var environment = new ExecutionEnvironment();
 
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(new WebSource
                 {
-                    Address = "http://TFSBLD.premier.local:9910/api/",
+                    Address = $"http://{dependency.Container.IP}:{dependency.Container.Port}/api/";
                     AuthenticationType = AuthenticationType.Anonymous
                 });
 

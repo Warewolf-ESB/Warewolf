@@ -320,9 +320,9 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.ViewApisJson(resourcePath, webServerUri);
         }
 
-        public void ViewSwaggerCommand(Guid resourceId, IServer server)
+        public void ViewOpenAPICommand(string resourceName, string resourcePath, Uri webServerUri)
         {
-            _shellViewModel.ViewSwagger(resourceId, server);
+            _shellViewModel.ViewOpenAPI(resourceName, resourcePath, webServerUri);
         }
 
         public void MergeCommand(IExplorerItemViewModel explorerItemViewModel, IServer server)

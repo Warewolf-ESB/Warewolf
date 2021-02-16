@@ -32,6 +32,7 @@ using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
@@ -621,43 +622,53 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [TestCategory("DsfWebPostActivity_Execute")]
         public void DsfWebPostActivity_Execute_ErrorResponse_ShouldSetVariables()
         {
-            //------------Setup for test--------------------------
-            const string response = "{\"Message\":\"Error\"}";
-            var environment = new ExecutionEnvironment();
+            using (var dependency = new Depends(Depends.ContainerType.HTTPVerbsApi))
+            {
+                //------------Setup for test--------------------------
+                const string response = "{\"Message\":\"Error\"}";
+                var environment = new ExecutionEnvironment();
 
-            var dsfWebPostActivity = new TestDsfWebPostActivity();
-            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var webSource = new WebSource();
-            webSource.Address = "http://TFSBLD.premier.local:9910/api/";
-            webSource.AuthenticationType = AuthenticationType.Anonymous;
-            mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webSource);
-            dsfWebPostActivity.ResourceCatalog = mockResourceCatalog.Object;
+                var dsfWebPostActivity = new TestDsfWebPostActivity();
+                dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+                var mockResourceCatalog = new Mock<IResourceCatalog>();
+                var webSource = new WebSource();
+                webSource.Address = $"http://{dependency.Container.IP}:{dependency.Container.Port}/api/";
+                webSource.AuthenticationType = AuthenticationType.Anonymous;
+                mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                    .Returns(webSource);
+                dsfWebPostActivity.ResourceCatalog = mockResourceCatalog.Object;
 
-            var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Message", "[[Message]]", "") };
-            dsfWebPostActivity.Outputs = serviceOutputs;
+                var serviceOutputs = new List<IServiceOutputMapping>
+                    {new ServiceOutputMapping("Message", "[[Message]]", "")};
+                dsfWebPostActivity.Outputs = serviceOutputs;
 
-            var serviceXml = XmlResource.Fetch("WebService");
-            var service = new WebService(serviceXml) { RequestResponse = response };
-            dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
-            dsfWebPostActivity.ResponseFromWeb = response;
-            dsfWebPostActivity.QueryString = "Error";
-            dsfWebPostActivity.SourceId = Guid.Empty;
-            dsfWebPostActivity.Headers = new List<INameValue>();
+                var serviceXml = XmlResource.Fetch("WebService");
+                var service = new WebService(serviceXml) {RequestResponse = response};
+                dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
+                dsfWebPostActivity.ResponseFromWeb = response;
+                dsfWebPostActivity.QueryString = "Error";
+                dsfWebPostActivity.SourceId = Guid.Empty;
+                dsfWebPostActivity.Headers = new List<INameValue>();
 
 
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
-            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            dsfWebPostActivity.SourceId = Guid.Empty;
-            dsfWebPostActivity.Headers = new List<INameValue>();
-            dsfWebPostActivity.OutputDescription = new OutputDescription();
-            dsfWebPostActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape() { Paths = new List<IPath>() { new StringPath() { ActualPath = "[[Response]]", OutputExpression = "[[Response]]" } } });
+                var dataObjectMock = new Mock<IDSFDataObject>();
+                dataObjectMock.Setup(o => o.Environment).Returns(environment);
+                dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+                dsfWebPostActivity.SourceId = Guid.Empty;
+                dsfWebPostActivity.Headers = new List<INameValue>();
+                dsfWebPostActivity.OutputDescription = new OutputDescription();
+                dsfWebPostActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape()
+                {
+                    Paths = new List<IPath>()
+                        {new StringPath() {ActualPath = "[[Response]]", OutputExpression = "[[Response]]"}}
+                });
 
-            //------------Execute Test---------------------------
-            dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Message]]", 0)));
+                //------------Execute Test---------------------------
+                dsfWebPostActivity.Execute(dataObjectMock.Object, 0);
+
+                //------------Assert Results-------------------------
+                Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Message]]", 0)));
+            }
         }
 
         [TestMethod]

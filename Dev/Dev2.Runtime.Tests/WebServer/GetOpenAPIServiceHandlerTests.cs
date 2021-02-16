@@ -1,3 +1,4 @@
+﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,49 +28,31 @@ namespace Dev2.Tests.Runtime.WebServer
     /// </summary>
     [TestClass]
     [TestCategory("Runtime WebServer")]
-    public class GetApisJsonServiceHandlerTest
+    public class GetOpenAPIServiceHandlerTests
     {
         NameValueCollection LocalQueryString => new NameValueCollection
         {
-            {"Name", "the_name"},
-            {"isPublic", ""},
-            {"wid", "workflowid"},
-            {"rid", "resourceid"}
+            { "Name", "the_name" },
+            { "isPublic", "" },
+            { "wid", "workflowid" },
+            { "rid", "resourceid" }
         };
-
+        
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Njabulo Nxele")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
+        public void GetOpenAPIServiceHandler_ProcessRequest_GiveNullCommunicationContext_ThrowsException()
         {
             //------------Setup for test-------------------------
-            var handler = new GetApisJsonServiceHandler();
+            var handler = new GetOpenAPIServiceHandler();
             //------------Execute Test---------------------------
             handler.ProcessRequest(null);
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void ProcessRequest_GiveNoPathAndNonPublicRequest()
-        {
-            var communicationContext = new Mock<ICommunicationContext>();
-            var request = new Mock<ICommunicationRequest>();
-            request.Setup(communicationRequest => communicationRequest.BoundVariables).Returns(LocalQueryString);
-            communicationContext.Setup(context => context.Request).Returns(request.Object);
-            //------------Setup for test-------------------------
-            var auth = new Mock<IAuthorizationService>();
-            var cat = new Mock<IResourceCatalog>();
-            cat.Setup(catalog => catalog.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource>());
-            var handler = new GetApisJsonServiceHandler(cat.Object, auth.Object);
-            //------------Execute Test---------------------------
-            handler.ProcessRequest(communicationContext.Object);
-            //------------Assert Results-------------------------
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void ProcessRequest_GivePublicRequest()
+        [Owner("Njabulo Nxele")]
+        public void GetOpenAPIServiceHandler_ProcessRequest_GiveNoPathAndNonPublicRequest()
         {
             var collection = new NameValueCollection
             {
@@ -79,10 +62,40 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var communicationContext = new Mock<ICommunicationContext>();
             var request = new Mock<ICommunicationRequest>();
+
             request.Setup(communicationRequest => communicationRequest.BoundVariables).Returns(collection);
+            request.Setup(communicationRequest => communicationRequest.Uri).Returns(new Uri("http://localhost:3142/secure"));
             communicationContext.Setup(context => context.Request).Returns(request.Object);
+            
             //------------Setup for test-------------------------
-            var handler = new GetApisJsonServiceHandler();
+            var auth = new Mock<IAuthorizationService>();
+            var cat = new Mock<IResourceCatalog>();
+            cat.Setup(catalog => catalog.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource>());
+            var handler = new GetOpenAPIServiceHandler(cat.Object, auth.Object);
+            //------------Execute Test---------------------------
+            handler.ProcessRequest(communicationContext.Object);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        public void GetOpenAPIServiceHandler_ProcessRequest_GivePublicRequest()
+        {
+            var collection = new NameValueCollection
+            {
+                {"Name", "the_name"},
+                {"isPublic", "true"},
+                {"path", ""},
+            };
+            var communicationContext = new Mock<ICommunicationContext>();
+            var request = new Mock<ICommunicationRequest>();
+            
+            request.Setup(communicationRequest => communicationRequest.BoundVariables).Returns(collection);
+            request.Setup(communicationRequest => communicationRequest.Uri).Returns(new Uri("http://localhost:3142/secure"));
+            communicationContext.Setup(context => context.Request).Returns(request.Object);
+            
+            //------------Setup for test-------------------------
+            var handler = new GetOpenAPIServiceHandler();
             //------------Execute Test---------------------------
             handler.ProcessRequest(communicationContext.Object);
             //------------Assert Results-------------------------

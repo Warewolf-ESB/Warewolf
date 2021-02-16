@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,10 +23,8 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Common.Interfaces.Versioning;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Data;
 using Warewolf.Studio.Core;
@@ -150,7 +148,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _canCreateTest;
         private bool _canViewRunAllTests;
         private bool _canCreateSource;
-        private bool _canViewSwagger;
+        private bool _canViewOpenAPI;
         private bool _canViewApisJson;
         private bool _canCreateWorkflowService;
         private bool _canDebugInputs;
@@ -170,7 +168,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isOpenVersionVisible;
         private bool _isRollbackVisible;
         private bool _isShowVersionHistoryVisible;
-        private bool _isViewSwaggerVisible;
+        private bool _isViewOpenAPIVisible;
         private bool _isSource;
         private bool _isTriggersVisible;
         private bool _isScheduleVisible;
@@ -216,7 +214,7 @@ namespace Warewolf.Studio.ViewModels
 
             _candrop = true;
             _canDrag = true;
-            CanViewSwagger = false;
+            CanViewOpenAPI = false;
             CanMerge = false;
         }
 
@@ -238,9 +236,9 @@ namespace Warewolf.Studio.ViewModels
             });
             RenameCommand = new DelegateCommand(o => IsRenaming = true);
 
-            ViewSwaggerCommand = new DelegateCommand(o =>
+            ViewOpenAPICommand = new DelegateCommand(o =>
             {
-                _explorerItemViewModelCommandController.ViewSwaggerCommand(ResourceId, Server);
+                _explorerItemViewModelCommandController.ViewOpenAPICommand(ResourceName, ResourcePath, Server.Connection.WebServerUri);
             });
             MergeCommand = new DelegateCommand(o =>
             {
@@ -494,7 +492,7 @@ namespace Warewolf.Studio.ViewModels
             IsNewFolderVisible = _isFolder;
             IsCreateTestVisible = _isService;
             IsRunAllTestsVisible = _isService || _isFolder;
-            IsViewSwaggerVisible = _isService;
+            IsViewOpenAPIVisible = _isService || _isFolder;
             IsMergeVisible = _isService;
             IsViewJsonApisVisible = _isService || _isFolder;
 
@@ -512,7 +510,7 @@ namespace Warewolf.Studio.ViewModels
             IsQueueEventVisible = _isService;
 
             CanViewApisJson = (_isFolder || _isService) && _canView;
-            CanViewSwagger = _isService && _canView;
+            CanViewOpenAPI = _isService && _canView;
             CanMerge = _isService && _canView;
         }
 
@@ -686,7 +684,7 @@ namespace Warewolf.Studio.ViewModels
         {
             CanExecute = IsService && !isDeploy;
             CanViewApisJson = true;
-            CanViewSwagger = true;
+            CanViewOpenAPI = true;
             CanMerge = true;
             CanDebugInputs = true;
             CanContribute = false;
@@ -701,7 +699,7 @@ namespace Warewolf.Studio.ViewModels
             CanContribute = false;
             CanShowVersions = true;
             CanViewApisJson = true;
-            CanViewSwagger = true;
+            CanViewOpenAPI = true;
             CanMerge = true;
         }
 
@@ -728,7 +726,7 @@ namespace Warewolf.Studio.ViewModels
             CanView = false;
             CanViewApisJson = false;
             CanMove = false;
-            CanViewSwagger = false;
+            CanViewOpenAPI = false;
             CanMerge = false;
             CanShowVersions = false;
         }
@@ -749,7 +747,7 @@ namespace Warewolf.Studio.ViewModels
             CanView = true;
             CanViewApisJson = true;
             CanMove = true;
-            CanViewSwagger = true;
+            CanViewOpenAPI = true;
             CanMerge = true;
             CanShowVersions = true;
             CanShowDependencies = true;
@@ -778,7 +776,7 @@ namespace Warewolf.Studio.ViewModels
             CanShowVersions = true;
             CanMove = true;
             CanViewApisJson = true;
-            CanViewSwagger = true;
+            CanViewOpenAPI = true;
             CanMerge = true;
             CanDebugInputs = true;
             CanDebugStudio = true;
@@ -962,7 +960,7 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
-        public ICommand ViewSwaggerCommand { get; set; }
+        public ICommand ViewOpenAPICommand { get; set; }
         public ICommand MergeCommand { get; set; }
         public bool CanViewExecutionLogging { get; set; }
         public ICommand ViewApisJsonCommand { get; set; }
@@ -1166,14 +1164,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool CanViewSwagger
+        public bool CanViewOpenAPI
         {
-            get => _canViewSwagger && !IsSaveDialog;
+            get => _canViewOpenAPI && !IsSaveDialog;
             set
             {
-                _canViewSwagger = value;
-                ExplorerTooltips.ViewSwaggerTooltip = _canViewSwagger ? Resources.Languages.Tooltips.ViewSwaggerToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                OnPropertyChanged(() => CanViewSwagger);
+                _canViewOpenAPI = value;
+                ExplorerTooltips.ViewOpenAPITooltip = _canViewOpenAPI ? Resources.Languages.Tooltips.ViewOpenAPIToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                OnPropertyChanged(() => CanViewOpenAPI);
             }
         }
 
@@ -1826,13 +1824,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsViewSwaggerVisible
+        public bool IsViewOpenAPIVisible
         {
-            get => _isViewSwaggerVisible && !IsSaveDialog;
+            get => _isViewOpenAPIVisible && !IsSaveDialog;
             set
             {
-                _isViewSwaggerVisible = value;
-                OnPropertyChanged(() => IsViewSwaggerVisible);
+                _isViewOpenAPIVisible = value;
+                OnPropertyChanged(() => IsViewOpenAPIVisible);
             }
         }
 
