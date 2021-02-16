@@ -399,10 +399,10 @@
     </Style>
     <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="igMenu:XamMenuItem" />
 
-    <Style TargetType="Image" x:Key="ViewSwaggerIcon">
+    <Style TargetType="Image" x:Key="ViewOpenAPIIcon">
         <Setter Property="Height" Value="21"/>
         <Setter Property="Width" Value="21"/>
-        <Setter Property="Source" Value="{StaticResource SwaggerIcon}"/>
+        <Setter Property="Source" Value="{StaticResource OpenAPIIcon}"/>
     </Style>
     <Style TargetType="Image" x:Key="ViewApisJsonIcon">
         <Setter Property="Height" Value="15"/>

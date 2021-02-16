@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
         string _runAllTestsTooltip;
         string _deployTooltip;
         string _dependenciesTooltip;
-        string _viewSwaggerTooltip;
+        string _viewOpenAPITooltip;
         string _viewApisJsonTooltip;
         string _showHideVersionsTooltip;
         string _rollbackTooltip;
@@ -374,13 +374,13 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => DependenciesTooltip);
             }
         }
-        public string ViewSwaggerTooltip
+        public string ViewOpenAPITooltip
         {
-            get => _viewSwaggerTooltip;
+            get => _viewOpenAPITooltip;
             set
             {
-                _viewSwaggerTooltip = value;
-                OnPropertyChanged(() => ViewSwaggerTooltip);
+                _viewOpenAPITooltip = value;
+                OnPropertyChanged(() => ViewOpenAPITooltip);
             }
         }
         public string ViewApisJsonTooltip
