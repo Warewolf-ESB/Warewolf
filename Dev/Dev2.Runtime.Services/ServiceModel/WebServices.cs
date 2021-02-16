@@ -12,11 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Runtime.Interfaces;
@@ -24,6 +26,7 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
+using Warewolf.Data.Options;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -178,8 +181,39 @@ namespace Dev2.Runtime.ServiceModel
             {
                 headers.AddRange(service.Headers.Select(nameValue => nameValue.Name + ":" + SetParameters(service.Method.Parameters, nameValue.Value)).ToList());
             }
+
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
-            var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
+            
+            var requestBody = string.Empty;
+            if (service.IsNoneChecked)
+            {
+                requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
+            }
+
+            var formDataParameters = new List<IFormDataParameters>();
+            if (service.IsFormDataChecked && service.FormDataParameters != null)
+            {
+                formDataParameters.AddRange(service.FormDataParameters.Select(o =>
+                {
+                    if (o is TextParameter)
+                    {
+                        var param = (TextParameter)o;
+                        param.Key = SetParameters(service.Method.Parameters, param.Key);
+                        param.Value = SetParameters(service.Method.Parameters, param.Value);
+                        return param;
+                    }
+                    else if (o is FileParameter)
+                    {
+                        var param = (FileParameter)o;
+                        param.Key = SetParameters(service.Method.Parameters, param.Key);
+                        param.FileName = SetParameters(service.Method.Parameters, param.FileName);
+                        param.FileBase64 = SetParameters(service.Method.Parameters, param.FileBase64);
+                        return param;
+                    }
+                    return o;
+                }).ToList());
+
+            }
             var webExecuteStringArgs = new WebExecuteStringArgs
             {
                 IsNoneChecked = service.IsNoneChecked,
