@@ -135,14 +135,17 @@ Remove-Item -force -recurse
 		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	}
 	if ($TestsToRun) {
+		if ($RunInDocker.IsPresent) {
+			"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:.\Administrator Dev2@dmin123" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
+		}
 		if ($PreTestRunScript) {
-			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
+			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	} else {
