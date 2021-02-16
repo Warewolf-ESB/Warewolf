@@ -51,8 +51,35 @@ namespace Warewolf.Driver.Persistence
             {
                 throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
             }
+            if (string.IsNullOrEmpty(suspendOptionValue))
+            {
+                var message = ErrorResource.SuspendOptionValueNotSet;
+                message = message.Replace("[value]", GetSuspendVaidationMessageType(suspendOption));
+                throw new Exception(message);
+            }
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
             return jobId;
+        }
+
+        private string GetSuspendVaidationMessageType(enSuspendOption suspendOption)
+        {
+            switch (suspendOption)
+            {
+                case enSuspendOption.SuspendUntil:
+                    return "Date";
+                case enSuspendOption.SuspendForSeconds:
+                    return "Seconds";
+                case enSuspendOption.SuspendForMinutes:
+                    return "Minutes";
+                case enSuspendOption.SuspendForHours:
+                    return "Hours";
+                case enSuspendOption.SuspendForDays:
+                    return "Days";
+                case enSuspendOption.SuspendForMonths:
+                    return "Months";
+                default:
+                    return "";
+            }
         }
 
         [ExcludeFromCodeCoverage]
