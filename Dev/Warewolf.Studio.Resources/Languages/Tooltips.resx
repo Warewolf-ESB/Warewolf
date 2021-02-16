@@ -215,8 +215,8 @@ Returns the response text of the web get request.</value>
   <data name="WebInsertToolTipColumn" xml:space="preserve">
     <value>Test data for the execution</value>
   </data>
-  <data name="ViewSwaggerToolTip" xml:space="preserve">
-    <value>View Swagger source for the current resource</value>
+  <data name="ViewOpenAPIToolTip" xml:space="preserve">
+    <value>View OpenAPI source for the current resource</value>
   </data>
   <data name="ViewMergeTooltip" xml:space="preserve">
     <value>Select between two resources to merge</value>

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -356,12 +356,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.json",
                 Properties = new List<PropertyApi>()
             };
-            var swagger1 = new PropertyApi
+            var openAPI1 = new PropertyApi
             {
-                Type = "Swagger",
+                Type = "OpenAPI",
                 Value = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.api"
             };
-            singleApi1.Properties.Add(swagger1);
+            singleApi1.Properties.Add(openAPI1);
             
             var singleApi2 = new SingleApi
             {
@@ -370,12 +370,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
                 Properties = new List<PropertyApi>()
             };
-            var swagger2 = new PropertyApi
+            var openAPI2 = new PropertyApi
             {
-                Type = "Swagger",
+                Type = "OpenAPI",
                 Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
             };
-            singleApi2.Properties.Add(swagger2);
+            singleApi2.Properties.Add(openAPI2);
             var singleApi3 = new SingleApi
             {
                 Name = "9139Local",
@@ -383,12 +383,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
                 Properties = new List<PropertyApi>()
             };
-            var swagger3 = new PropertyApi
+            var openAPI3 = new PropertyApi
             {
-                Type = "Swagger",
+                Type = "OpenAPI",
                 Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
             };
-            singleApi3.Properties.Add(swagger3);
+            singleApi3.Properties.Add(openAPI3);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi1);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi2);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi3);
@@ -414,12 +414,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.json",
                 Properties = new List<PropertyApi>()
             };
-            var swagger1 = new PropertyApi
+            var openAPI1 = new PropertyApi
             {
-                Type = "Swagger",
+                Type = "OpenAPI",
                 Value = EnvironmentVariables.PublicWebServerUri + "secure/Hello World.api"
             };
-            singleApi1.Properties.Add(swagger1);
+            singleApi1.Properties.Add(openAPI1);
             
             var singleApi3 = new SingleApi
             {
@@ -428,12 +428,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
                 Properties = new List<PropertyApi>()
             };
-            var swagger3 = new PropertyApi
+            var openAPI3 = new PropertyApi
             {
-                Type = "Swagger",
+                Type = "OpenAPI",
                 Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
             };
-            singleApi3.Properties.Add(swagger3);
+            singleApi3.Properties.Add(openAPI3);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi1);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi3);
             return exceptedApisJsonForServerNoSecurity;
@@ -459,12 +459,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
                 Properties = new List<PropertyApi>()
             };
-            var swagger2 = new PropertyApi
+            var openAPI2 = new PropertyApi
             {
-                Type = "Swagger",
+                Type = "OpenAPI",
                 Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
             };
-            singleApi2.Properties.Add(swagger2);
+            singleApi2.Properties.Add(openAPI2);
             var singleApi3 = new SingleApi
             {
                 Name = "9139Local",
@@ -472,12 +472,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
                 Properties = new List<PropertyApi>()
             };
-            var swagger3 = new PropertyApi
+            var openAPI3 = new PropertyApi
             {
-                Type = "Swagger",
+                Type = "OpenAPI",
                 Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
             };
-            singleApi3.Properties.Add(swagger3);
+            singleApi3.Properties.Add(openAPI3);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi2);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi3);
             return exceptedApisJsonForServerNoSecurity;
@@ -507,12 +507,12 @@ namespace Dev2.Tests.Runtime.WebServer
                 Version = "1.0",
                 Tags = new List<string>()
             };
-            var swagger2 = new PropertyApi
+            var openAPI2 = new PropertyApi
             {
-                Type = "Swagger",
+                Type = "OpenAPI",
                 Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.api"
             };
-            singleApi2.Properties.Add(swagger2);
+            singleApi2.Properties.Add(openAPI2);
             
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi2);
             return exceptedApisJsonForServerNoSecurity;
