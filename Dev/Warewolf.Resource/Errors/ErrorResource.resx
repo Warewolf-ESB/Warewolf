@@ -1367,4 +1367,7 @@ Please contact your Windows System Administrator.</value>
   <data name="NextNodeRequiredForSuspendExecution" xml:space="preserve">
     <value>At least 1 activity is required after Suspend Execution.</value>
   </data>
+  <data name="SuspendOptionValueNotSet" xml:space="preserve">
+    <value>Suspend option [value] not set. Please set suspend [value] in the workflow configuration.</value>
+  </data>
 </root>
