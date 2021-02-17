@@ -798,9 +798,80 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", isNoneChecked: false, isFormDataChecked: true, "", throwError: false, out var errors, new List<FormDataParameters> { });
 
-            Assert.IsFalse(errors.HasErrors(), "This error should no longer happen, the handling of the Content-Type for form-data request should be done on the backend");
-            Assert.AreNotEqual("The argument must not be null or empty and must contain non-whitespace characters must\r\nParameter name: Content-Type", errors.MakeDisplayReady());
+            Assert.IsTrue(errors.HasErrors(), "This error should now happen, the handling of the Content-Type for form-data request should no longer be done on the backend, the user should be able to edd his own");
+            Assert.AreEqual("The argument must not be null or empty and must contain non-whitespace characters must\r\nParameter name: Content-Type", errors.MakeDisplayReady());
             
+            mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_Execute_WebRequestMethod_Post_Given_WithCorrectContentType_And_ThrowError_False_ExpectSuccess()
+        {
+            var responseFromWeb = Encoding.ASCII.GetBytes("response from web request");
+
+            var address = "http://www.msn.com/";
+            var requestStream = new MemoryStream();
+            var responseStrem = new MemoryStream(responseFromWeb);
+
+            var mockWebResponseWrapper = new Mock<HttpWebResponse>();
+            mockWebResponseWrapper.Setup(o => o.StatusCode)
+                .Returns(HttpStatusCode.OK);
+            mockWebResponseWrapper.Setup(o => o.GetResponseStream())
+                .Returns(responseStrem);
+
+            var mockWebRequest = new Mock<IWebRequest>();
+            mockWebRequest.Setup(o => o.Headers)
+                .Returns(new WebHeaderCollection
+                {
+                    "Authorization:bear: sdfsfff",
+                });
+            mockWebRequest.Setup(o => o.ContentType)
+                .Returns("Content-Type: multipart/form-data");
+            mockWebRequest.Setup(o => o.ContentLength)
+                .Returns(Encoding.ASCII.GetBytes(postData).Length);
+            mockWebRequest.Setup(o => o.Method)
+                .Returns("POST");
+            mockWebRequest.Setup(o => o.GetRequestStream())
+                .Returns(requestStream);
+            mockWebRequest.Setup(o => o.GetResponse())
+                .Returns(mockWebResponseWrapper.Object);
+
+            var mockWebRequestFactory = new Mock<IWebRequestFactory>();
+            mockWebRequestFactory.Setup(o => o.New(address))
+                .Returns(mockWebRequest.Object);
+
+            var mockWebClientWrapper = new Mock<IWebClientWrapper>();
+            mockWebClientWrapper.Setup(o => o.Headers)
+                .Returns(new WebHeaderCollection
+                { 
+                    { 
+                        HttpRequestHeader.ContentType, "multipart/form-data; boundry=------thisshoulbesentinbythecaller" 
+                    } 
+                });
+            mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns(responseFromWeb);
+
+            var source = new WebSource
+            {
+                Address = "http://www.msn.com/",
+                AuthenticationType = AuthenticationType.Anonymous,
+                Client = mockWebClientWrapper.Object
+            };
+
+            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", isNoneChecked: false, isFormDataChecked: true, "", throwError: false, out var errors, new List<FormDataParameters> { }, mockWebRequestFactory.Object);
+
+            Assert.IsFalse(errors.HasErrors(), "This error should not happen, the Content-Type for form-data request is overriden if there are any misspells");
+            
+            //make sure the data sent is as expected
+            var bytes = requestStream.GetBuffer();
+            using (var memoryStream = new MemoryStream(bytes))
+            {
+                var streamReader = new StreamReader(memoryStream);
+                var expectedRequestPayload = streamReader.ReadToEnd();
+                StringAssert.Contains(expectedRequestPayload, "\r\n--------thisshoulbesentinbythecaller--");
+            }
             mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Never);
         }
 
@@ -823,10 +894,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Client = mockWebClientWrapper.Object
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", isNoneChecked: false, isFormDataChecked: true, "", throwError: true, out var errors, new List<FormDataParameters> { });
+            Assert.ThrowsException<ArgumentNullException>(()=> WebSources.Execute(source, WebRequestMethod.Post, headers: new string[] { }, "http://www.msn.com/", isNoneChecked: false, isFormDataChecked: true, "", throwError: true, out var errors, new List<FormDataParameters> { }));
 
-            Assert.IsNotNull(result);
-            Assert.IsFalse(errors.HasErrors());
             mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Never);
         }
 
