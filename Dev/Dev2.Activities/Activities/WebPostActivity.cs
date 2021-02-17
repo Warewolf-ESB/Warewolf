@@ -184,7 +184,40 @@ namespace Dev2.Activities
             IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
+                //TODO: Refactor, wrap this implimentation into a helper object
                 head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Value, update))));
+                if (IsFormDataChecked)
+                {
+                    const string contentTypeString = "Content-Type";
+                    const string multipatFormDataString = "multipart/form-data";
+                    var headEvaluated = head.FirstOrDefault(o => o.Name == contentTypeString); ; 
+                    var contentTypeName = headEvaluated?.Name;
+                    var contentTypeValue = headEvaluated?.Value;
+                    
+                    var headers = head.ToList();
+                    var formDataBoundary = string.Format("----------{0:N}", Guid.NewGuid());
+                    if (headEvaluated == null)
+                    {
+                        contentTypeValue = multipatFormDataString + "; boundary=" + formDataBoundary;
+
+                        var addItem = new NameValue(contentTypeString, contentTypeValue);
+                        headers.Add(addItem);
+                        Headers.Add(addItem);
+                    }
+
+                    if (!contentTypeValue.Contains("boundary="))
+                    {
+                        var headNotEvaluated = Headers.FirstOrDefault(o => o.Name == contentTypeString);
+                        Headers.Remove(new NameValue(headNotEvaluated.Name, headNotEvaluated.Value));
+                        headers.Remove(new NameValue(contentTypeName, contentTypeValue));
+
+                        contentTypeValue = multipatFormDataString + "; boundary=" + formDataBoundary;
+
+                        var addItem = new NameValue(contentTypeString, contentTypeValue);
+                        headers.Add(addItem);
+                        Headers.Add(addItem);
+                    }
+                }
             }
             var query = string.Empty;
             if (QueryString != null)
