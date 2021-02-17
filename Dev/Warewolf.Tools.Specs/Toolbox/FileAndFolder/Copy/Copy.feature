@@ -60,7 +60,7 @@ Scenario Outline: Copy file at local location
 			| 5  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile5.txt | ""                | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copied1.txt | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 
 
-	@CopyFileFromFTP
+@CopyFileFromFTP
 @CopyFileFromFTPWithOverwrite
 Scenario Outline: Copy file at FTP location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
@@ -175,6 +175,7 @@ Scenario Outline: Copy file at local location with overwrite disabled
 		 | 5  | [[sourcePath]] | c:\copyfile4.txt | ""                | ""           | [[destPath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copied0.txt | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 		 | 6  | [[sourcePath]] | c:\copyfile5.txt | ""                | ""           | [[destPath]] | sftp://SVRDEV.premier.local/copied61.txt                                                     | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |                           |
 
+@CopyFileFromUNC
 @CopyFileFromUNCWithoutOverwrite
 Scenario Outline: Copy file at UNC location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
