@@ -694,6 +694,111 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_GetDebugInputs_IsFormDataChecked_Given_MultipartHeader_WithEnvironmentVariablesToEval_ShouldAddDebugInputItems()
+        {
+            //---------------Set up test pack-------------------
+            var multipartFormDataVar = "multipart/form-data";
+
+            var environment = new ExecutionEnvironment();
+            environment.Assign("[[multipartFormDataVar]]", multipartFormDataVar, 0);
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(environment);
+            mockDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new WebSource
+                {
+                    Address = "www.example.com"
+                });
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            {
+                var webPostActivity = new TestWebPostActivity
+                {
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    Headers = new List<INameValue> { new NameValue("Content-Type", "[[multipartFormDataVar]]") },
+                    QueryString = "http://www.testing.com/[[CountryName]]",
+                    IsFormDataChecked = true,
+                    ResourceCatalog = mockResourceCatalog.Object,
+                    Conditions = new List<FormDataConditionExpression> { }
+                };
+
+                //---------------Assert Precondition----------------
+                Assert.IsNotNull(environment);
+                Assert.IsNotNull(webPostActivity);
+                //---------------Execute Test ----------------------
+                var debugInputs = webPostActivity.GetDebugInputs(environment, 0);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(debugInputs);
+                Assert.AreEqual(4, debugInputs.Count);
+
+                var item2 = debugInputs[2].FetchResultsList();
+                var item4First = item2.First();
+                Assert.AreEqual(2, item2.Count);
+                Assert.AreEqual("Headers", item4First.Label);
+                StringAssert.Contains(item2[1].Value, "Content-Type : multipart/form-data; boundary=----------");
+                
+            }
+
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_GetDebugInputs_IsFormDataChecked_Given_MultipartHeader_WithNoEnvironmentVariablesToEval_ShouldAddDebugInputItems()
+        {
+            //---------------Set up test pack-------------------
+
+            var environment = new ExecutionEnvironment();
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(environment);
+            mockDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new WebSource
+                {
+                    Address = "www.example.com"
+                });
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            {
+                var webPostActivity = new TestWebPostActivity
+                {
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    Headers = new List<INameValue> { new NameValue("Content-Type", "multipart/form-data") },
+                    QueryString = "http://www.testing.com/[[CountryName]]",
+                    IsFormDataChecked = true,
+                    ResourceCatalog = mockResourceCatalog.Object,
+                    Conditions = new List<FormDataConditionExpression> { }
+                };
+
+                //---------------Assert Precondition----------------
+                Assert.IsNotNull(environment);
+                Assert.IsNotNull(webPostActivity);
+                //---------------Execute Test ----------------------
+                var debugInputs = webPostActivity.GetDebugInputs(environment, 0);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(debugInputs);
+                Assert.AreEqual(4, debugInputs.Count);
+
+                var item2 = debugInputs[2].FetchResultsList();
+                var item4First = item2.First();
+                Assert.AreEqual(2, item2.Count);
+                Assert.AreEqual("Headers", item4First.Label);
+                StringAssert.Contains(item2[1].Value, "Content-Type : multipart/form-data; boundary=----------");
+            }
+
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WebPostActivity))]
         public void WebPostActivity_CreateClient_GivenNoHeaders_ShouldHaveTwoHeaders()
