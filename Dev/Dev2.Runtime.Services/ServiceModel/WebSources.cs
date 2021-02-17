@@ -28,6 +28,7 @@ using Dev2.Runtime.DynamicProxy;
 using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
 using Warewolf.Data.Options;
+using System.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -169,10 +170,8 @@ namespace Dev2.Runtime.ServiceModel
 
                 if (isFormDataChecked)
                 {
-                    var formDataBoundary = string.Format("----------{0:N}", Guid.NewGuid());
-                    contentType = contentType+"; boundary=" + formDataBoundary;
-
-                    client.Headers[HttpRequestHeader.ContentType] = contentType;
+                    VerifyArgument.IsNotNullOrWhitespace("Content-Type", contentType);
+                    var formDataBoundary = contentType.Split('=').Last();
                     var bytesData = GetMultipartFormData(formDataParameters, formDataBoundary);
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
