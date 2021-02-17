@@ -190,7 +190,7 @@ namespace Dev2.Activities
                 {
                     const string contentTypeString = "Content-Type";
                     const string multipatFormDataString = "multipart/form-data";
-                    var headEvaluated = head.FirstOrDefault(o => o.Name == contentTypeString); ; 
+                    var headEvaluated = head.FirstOrDefault(o => o.Name == contentTypeString);
                     var contentTypeName = headEvaluated?.Name;
                     var contentTypeValue = headEvaluated?.Value;
                     
