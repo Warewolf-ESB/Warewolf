@@ -53,8 +53,7 @@ namespace Warewolf.Driver.Persistence
             }
             if (string.IsNullOrEmpty(suspendOptionValue))
             {
-                var message = ErrorResource.SuspendOptionValueNotSet;
-                message = message.Replace("[value]", GetSuspendVaidationMessageType(suspendOption));
+                var message = string.Format(ErrorResource.SuspendOptionValueNotSet, GetSuspendVaidationMessageType(suspendOption));
                 throw new Exception(message);
             }
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
