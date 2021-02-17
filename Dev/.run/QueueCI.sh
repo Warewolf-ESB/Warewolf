@@ -3,15 +3,10 @@
 # Queue Bamboo build.
 # This script can take a branch name as a commandline parameter.
 #
-BambooUrl="bamboo.opswolf.com"
-BambooUsername="$BambooUsername"
-BambooPassword="$BambooPassword"
-DefaultCIBambooPlanKey="WOLF-CI"
 DefaultBranchName="develop"
 
 function QueueBuild {
-	build=$(wget -O - "http://$1/rest/api/latest/queue/$2.json?os_authType=basic" --user=$BambooUsername --password='$BambooPassword' --post-data="" -q)
-	echo $(echo $build | cut -d '"' -f 20)
+	curl -X POST -H "Content-type: application/json" "http://bamboo.opswolf.com/rest/api/latest/queue/$1.json?os_username=$BambooUsername&os_password=$BambooPassword"
 }
 
 #Parse Arguments
@@ -20,22 +15,17 @@ if [ "$1" != "" ]; then
 	branch=${branch#*refs/heads/}
 else
 	branch=$DefaultBranchName
-fi 
-if [ "$4" != "" ]; then
-	CIBambooPlanKey="$4"
-else
-	CIBambooPlanKey=$DefaultCIBambooPlanKey
-fi 
+fi
 
 #Queue Builds
 if [ "$branch" == "$DefaultBranchName" ]; then
-	QueueBuild $BambooUrl $CIBambooPlanKey
+	QueueBuild "WOLF-CI"
 else
 	branch=${branch//\//-}
-	JSONDATA=$(wget -O - "http://$BambooUrl/rest/api/latest/plan/$CIBambooPlanKey.json?os_authType=basic&expand=branches&max-result=99" --user=$BambooUsername --password='$BambooPassword' -q)
+	JSONDATA=$(curl -H "Content-type: application/json" "http://bamboo.opswolf.com/rest/api/latest/plan/WOLF-CI.json?os_username=$BambooUsername&os_password=$BambooPassword&expand=branches&max-result=99")
 	FindBranchName=$(echo $JSONDATA | grep -o "$branch.*")
 	FindBranchKey=$(echo $FindBranchName | grep -o "\"key\":\".*")
 	BranchKey=$(echo $FindBranchKey | cut -d '"' -f 4)
 	ShortBranchKey=$(echo $BranchKey | cut -d '-' -f 1)-$(echo $BranchKey | cut -d '-' -f 2)
-	QueueBuild $BambooUrl $ShortBranchKey
+	QueueBuild $ShortBranchKey
 fi

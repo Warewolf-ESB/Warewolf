@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,26 +26,32 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly IDirectory _dirWrapper;
 
         public DoPathExistOperation(IActivityIOPath path)
-            :this(path, new LogonProvider(), new FileWrapper(), new DirectoryWrapper(), ValidateAuthorization.RequiresAuth)
+            : this(path, new LogonProvider(), new FileWrapper(), new DirectoryWrapper(),
+                ValidateAuthorization.RequiresAuth)
         {
         }
 
-        public DoPathExistOperation(IActivityIOPath path, IDev2LogonProvider dev2LogonProvider, IFile fileWrapper, IDirectory directory, ImpersonationDelegate impersonationDelegate)
-            :base(impersonationDelegate)
+        public DoPathExistOperation(IActivityIOPath path, IDev2LogonProvider dev2LogonProvider, IFile fileWrapper,
+            IDirectory directory, ImpersonationDelegate impersonationDelegate)
+            : base(impersonationDelegate)
         {
-            _logOnProvider = dev2LogonProvider; 
-            _fileWrapper = fileWrapper;  
-            _dirWrapper = directory; 
+            _logOnProvider = dev2LogonProvider;
+            _fileWrapper = fileWrapper;
+            _dirWrapper = directory;
             _path = path;
             _impersonatedUser = _impersonationDelegate(_path, _logOnProvider);
         }
+
         public override bool ExecuteOperation()
         {
             if (_impersonatedUser != null)
             {
                 return ExecuteOperationWithAuth();
             }
-            return PathIs(_path, _fileWrapper, _dirWrapper) == enPathType.Directory ? _dirWrapper.Exists(_path.Path) : _fileWrapper.Exists(_path.Path);
+
+            return PathIs(_path, _fileWrapper, _dirWrapper) == enPathType.Directory
+                ? _dirWrapper.Exists(_path.Path)
+                : _fileWrapper.Exists(_path.Path);
         }
 
         public override bool ExecuteOperationWithAuth()
@@ -54,19 +60,16 @@ namespace Dev2.Data.PathOperations.Operations
             {
                 try
                 {
-                    return PathIs(_path, _fileWrapper, _dirWrapper) == enPathType.Directory ? _dirWrapper.Exists(_path.Path) : _fileWrapper.Exists(_path.Path);
+                    return PathIs(_path, _fileWrapper, _dirWrapper) == enPathType.Directory
+                        ? _dirWrapper.Exists(_path.Path)
+                        : _fileWrapper.Exists(_path.Path);
                 }
                 catch (Exception ex)
                 {
                     Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
                     return false;
                 }
-                finally
-                {
-                    _impersonatedUser?.Undo();
-                }
             }
         }
     }
 }
-
