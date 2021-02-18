@@ -648,7 +648,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivityViewModel))]
-        public void WebPostActivityViewModel_ToModel_Given_IsNoneChecked_True_ExpectFromPostDataVariableInputs()
+        public void WebPostActivityViewModel_ToModel_Given_IsManualChecked_True_ExpectFromPostDataVariableInputs()
         {
             //---------------Set up test pack-------------------
             var mockModel = GetMockModel();
@@ -659,7 +659,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("a", "asa"));
             postViewModel.InputArea.PostData = "this is a test body with a [[VariableToExpose]]";
-            postViewModel.InputArea.IsNoneChecked = true;
+            postViewModel.InputArea.IsManualChecked = true;
             postViewModel.InputArea.IsFormDataChecked = false;
             postViewModel.ConditionExpressionOptions.Options = new List<IOption>
             {
@@ -692,7 +692,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             postViewModel.InputArea.Headers.Add(new NameValue("a", "asa"));
             postViewModel.InputArea.PostData = "this is a test body with a [[VariableNotToExpose]]";
-            postViewModel.InputArea.IsNoneChecked = false;
+            postViewModel.InputArea.IsManualChecked = false;
             postViewModel.InputArea.IsFormDataChecked = true;
             postViewModel.ConditionExpressionOptions.Options = new List<IOption>
             {

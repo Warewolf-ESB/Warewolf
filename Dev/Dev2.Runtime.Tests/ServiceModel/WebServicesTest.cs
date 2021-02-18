@@ -479,7 +479,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
             //------------Assert Results-------------------------
             Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
-            Assert.AreEqual(string.Empty, _requestBodyEvaluated, "the body must only be evaluated when the IsNoneChecked");
+            Assert.AreEqual(string.Empty, _requestBodyEvaluated, "the body must only be evaluated when the IsManualChecked");
             Assert.AreEqual("val3", _requestUrlEvaluated);
 
             Assert.IsTrue(_requestFormDataParametersEvaluated.Count() == 2);
@@ -498,11 +498,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServices))]
-        public void WebServices_Execute_IsNoneChecked_WithVariablesInAllField_ShouldUseEvaluatedValues()
+        public void WebServices_Execute_IsManualChecked_WithVariablesInAllField_ShouldUseEvaluatedValues()
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
-            service.IsNoneChecked = true;
+            service.IsManualChecked = true;
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.FormDataParameters = new List<IFormDataParameters>
             {
@@ -555,7 +555,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
-            service.IsNoneChecked = true;
+            service.IsManualChecked = true;
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
@@ -590,7 +590,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var testFileName = "testFileName";
 
             var service = CreateDummyWebService();
-            service.IsNoneChecked = true;
+            service.IsManualChecked = true;
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.FormDataParameters = new List<IFormDataParameters>
             {
@@ -636,7 +636,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var testFileName = "testFileName";
 
             var service = CreateDummyWebService();
-            service.IsNoneChecked = true;
+            service.IsManualChecked = true;
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.FormDataParameters = new List<IFormDataParameters>
             {

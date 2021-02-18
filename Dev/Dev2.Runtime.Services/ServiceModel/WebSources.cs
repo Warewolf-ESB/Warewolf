@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ServiceModel
     {
         public IEnumerable<IFormDataParameters> FormDataParameters { get; set; }
         public IWebRequestFactory WebRequestFactory { get; set; }
-        public bool IsNoneChecked { get; set; }
+        public bool IsManualChecked { get; set; }
         public bool IsFormDataChecked { get; set; }
     }
 
@@ -142,13 +142,13 @@ namespace Dev2.Runtime.ServiceModel
             {
                 webExecuteStringArgs = new WebExecuteStringArgs
                 {
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     IsFormDataChecked = false,
                     FormDataParameters = new List<IFormDataParameters>(),
                     WebRequestFactory = new WebRequestFactory()
                 };
             }
-            return Execute(source, method, headers, relativeUri, webExecuteStringArgs.IsNoneChecked, webExecuteStringArgs.IsFormDataChecked, data, throwError, out errors, webExecuteStringArgs?.FormDataParameters, webExecuteStringArgs.WebRequestFactory);
+            return Execute(source, method, headers, relativeUri, webExecuteStringArgs.IsManualChecked, webExecuteStringArgs.IsFormDataChecked, data, throwError, out errors, webExecuteStringArgs?.FormDataParameters, webExecuteStringArgs.WebRequestFactory);
         }
         
         public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)

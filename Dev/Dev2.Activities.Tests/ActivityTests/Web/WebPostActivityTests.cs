@@ -164,7 +164,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 {
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     ResourceCatalog = new Mock<IResourceCatalog>().Object,
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     Inputs = new List<IServiceInput> 
                     { 
                         new ServiceInput("CityName", "[[City]]"), 
@@ -222,7 +222,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             {
                 ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                 ResourceCatalog = new Mock<IResourceCatalog>().Object,
-                IsNoneChecked = true,
+                IsManualChecked = true,
                 ResponseFromWeb = response,
                 Outputs = new List<IServiceOutputMapping>
                 { 
@@ -293,7 +293,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 {
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     ResourceCatalog = new Mock<IResourceCatalog>().Object,
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     OutputDescription = service.GetOutputDescription(),
                     PostData = "",
                     QueryString = "",
@@ -353,7 +353,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 {
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     ResourceCatalog = new Mock<IResourceCatalog>().Object,
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     PostData = "",
                     OutputDescription = service.GetOutputDescription(),
                     ResponseFromWeb = response,
@@ -414,7 +414,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     Headers = new List<INameValue> {new NameValue("Header 1", "[[City]]")},
                     QueryString = "http://www.testing.com/[[CountryName]]",
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     PostData = "This is post:[[Post]]",
                     OutputDescription = service.GetOutputDescription(),
                     Outputs = new List<IServiceOutputMapping> 
@@ -495,7 +495,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivity))]
-        public void WebPostActivity_GetDebugInputs_IsNoneChecked_GivenMockEnvironment_ShouldAddDebugInputItems()
+        public void WebPostActivity_GetDebugInputs_IsManualChecked_GivenMockEnvironment_ShouldAddDebugInputItems()
         {
             //---------------Set up test pack-------------------
             var environment = new ExecutionEnvironment();
@@ -513,7 +513,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 {
                     Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                     QueryString = "http://www.testing.com/[[CountryName]]",
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     PostData = "This is post:[[Post]]",
                     ResourceCatalog = mockResourceCatalog.Object,
                 };
@@ -933,7 +933,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     {
                         ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                         ResourceCatalog = mockResourceCatalog.Object,
-                        IsNoneChecked = true,
+                        IsManualChecked = true,
                         Outputs = new List<IServiceOutputMapping>
                     {
                         new ServiceOutputMapping("Message", "[[Message]]", "")
@@ -996,7 +996,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     ResourceCatalog = new Mock<IResourceCatalog>().Object,               
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     QueryString = "test Query",
                     Headers = new List<INameValue>(),
                     ResponseFromWeb = response,
@@ -1109,7 +1109,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     QueryString = "test Query",
                     Headers = new List<INameValue>(),
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     PostData = "{'valueKey':'[[NotExistVariable]]'}"
                 };
                 //-----------------------Act-----------------------------
