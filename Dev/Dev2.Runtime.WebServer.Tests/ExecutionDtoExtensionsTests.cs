@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace Dev2.Runtime.WebServer.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ExecutionDtoExtensions))]
-        public void ExecutionDtoExtensions_CreateResponseWriter_NotWasInternalService_And_EmitionTypesSWAGGER_Success()
+        public void ExecutionDtoExtensions_CreateResponseWriter_NotWasInternalService_And_EmitionTypesOPENAPI_Success()
         {
             //-------------------------------Arrange----------------------------------
             var mockDataObject = new Mock<IDSFDataObject>();
@@ -42,9 +42,9 @@ namespace Dev2.Runtime.WebServer.Tests
             mockResource.Setup(o => o.DataList).Returns(new StringBuilder("<DataList>the test string to be built</DataList>"));
 
             mockDataObject.Setup(o => o.Environment.HasErrors()).Returns(false);
-            mockDataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.SWAGGER);
+            mockDataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.OPENAPI);
 
-            var dataListDataFormat = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
+            var dataListDataFormat = DataListFormat.CreateFormat("OPENAPI", EmitionTypes.OPENAPI, "application/json");
 
                        var webRequestTO = new WebRequestTO { WebServerUrl = "http://serverName:3142/public/resourceName.api" };
 
