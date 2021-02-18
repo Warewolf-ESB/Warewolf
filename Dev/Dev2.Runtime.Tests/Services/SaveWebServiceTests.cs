@@ -220,16 +220,16 @@ namespace Dev2.Tests.Runtime.Services
                     new FormDataConditionExpression
                     { 
                         Key = testFileKey,
-                        Cond = new FormDataConditionBetween
+                        Cond = new FormDataConditionFile
                         {
-                            File = testFileValue,
+                            FileBase64 = testFileValue,
                             FileName = testFileName
                         }
                     }.ToFormDataParameter(),
                     new FormDataConditionExpression
                     {
                         Key = testTextKey,
-                        Cond = new FormDataConditionMatch
+                        Cond = new FormDataConditionText
                         {
                             Value = testTextValue
                         }

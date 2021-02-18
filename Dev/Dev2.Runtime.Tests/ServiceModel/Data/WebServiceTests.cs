@@ -378,9 +378,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                new FormDataConditionExpression
                {
                    Key = fileKey,
-                   Cond = new FormDataConditionBetween
+                   Cond = new FormDataConditionFile
                    {
-                       File = fileContentBase64,
+                       FileBase64 = fileContentBase64,
                        FileName = fileName
                    }
                }.ToFormDataParameter()

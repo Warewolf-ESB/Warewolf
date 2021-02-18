@@ -428,10 +428,10 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsNotNull(inputViewModel.ConditionExpressionOptions);
             Assert.AreEqual(1, inputViewModel.ConditionExpressionOptions.Options.Count);
 
-            var formDataConditionMatch = new FormDataConditionMatch {Value = enFormDataTableType.Text.ToString()};
+            var formDataConditionMatch = new FormDataConditionText {Value = enFormDataTableType.Text.ToString()};
             var formDataOptionConditionExpression = new FormDataOptionConditionExpression
             {
-                Left = "a", Cond = formDataConditionMatch, Right = "b"
+                Key = "a", Cond = formDataConditionMatch, Value = "b"
             };
             var options = new List<IOption> {formDataOptionConditionExpression};
             inputViewModel.LoadConditionExpressionOptions(options);
@@ -441,15 +441,15 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var expressionWithInput = inputViewModel.ConditionExpressionOptions.Options[0] as FormDataOptionConditionExpression;
             Assert.IsNotNull(expressionWithInput);
-            Assert.AreEqual("a", expressionWithInput.Left);
-            Assert.AreEqual(enFormDataTableType.Text, expressionWithInput.Cond.MatchType);
-            Assert.AreEqual("b", expressionWithInput.Right);
+            Assert.AreEqual("a", expressionWithInput.Key);
+            Assert.AreEqual(enFormDataTableType.Text, expressionWithInput.Cond.TableType);
+            Assert.AreEqual("b", expressionWithInput.Value);
 
             var emptyExpression = inputViewModel.ConditionExpressionOptions.Options[1] as FormDataOptionConditionExpression;
             Assert.IsNotNull(emptyExpression);
-            Assert.IsNull(emptyExpression.Left);
+            Assert.IsNull(emptyExpression.Key);
             Assert.IsNull(emptyExpression.Cond);
-            Assert.IsNull(emptyExpression.Right);
+            Assert.IsNull(emptyExpression.Value);
 
             expressionWithInput.DeleteCommand.Execute(expressionWithInput);
 
@@ -481,7 +481,7 @@ namespace Dev2.Activities.Designers.Tests.Core
                     new FormDataConditionExpression
                     {
                         Key = "testKey",
-                        Cond = new FormDataConditionMatch
+                        Cond = new FormDataConditionText
                         {
                           Value = "this can be any text value" 
                         }

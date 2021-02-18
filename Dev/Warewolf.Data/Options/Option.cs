@@ -774,49 +774,49 @@ namespace Warewolf.Options
 
         public ICommand DeleteCommand { get; set; }
 
-        private string _left;
-        public string Left
+        private string _key;
+        public string Key
         {
-            get => _left;
+            get => _key;
             set
             {
-                SetProperty(ref _left, value);
+                SetProperty(ref _key, value);
             }
         }
-        public static INamedInt[] MatchTypes { get; } = NamedInt.GetAll(typeof(enFormDataTableType)).ToArray();
+        public static INamedInt[] TableTypes { get; } = NamedInt.GetAll(typeof(enFormDataTableType)).ToArray();
 
-        private INamedInt _selectedMatchType;
-        public INamedInt SelectedMatchType
+        private INamedInt _selectedTableType;
+        public INamedInt SelectedTableType
         {
-            get => _selectedMatchType;
+            get => _selectedTableType;
             set
             {
-                if (value != null && SetProperty(ref _selectedMatchType, value))
+                if (value != null && SetProperty(ref _selectedTableType, value))
                 {
-                    MatchType = (enFormDataTableType)value.Value;
-                    RaisePropertyChanged(nameof(IsBetween));
+                    TableType = (enFormDataTableType)value.Value;
+                    RaisePropertyChanged(nameof(IsTripleOperand));
                 }
             }
         }
-        public enFormDataTableType MatchType { get; set; }
+        public enFormDataTableType TableType { get; set; }
 
-        private string _right;
-        public string Right
+        private string _value;
+        public string Value
         {
-            get => _right;
+            get => _value;
             set
             {
-                SetProperty(ref _right, value);
+                SetProperty(ref _value, value);
             }
         }
 
-        private string _file;
-        public string File
+        private string _fileBase64;
+        public string FileBase64
         {
-            get => _file;
+            get => _fileBase64;
             set
             {
-                SetProperty(ref _file, value);
+                SetProperty(ref _fileBase64, value);
             }
         }
 
@@ -829,17 +829,18 @@ namespace Warewolf.Options
                 SetProperty(ref _fileName, value);
             }
         }
-        public bool IsBetween => MatchType.IsTripleOperand();
+
+        public bool IsTripleOperand => TableType.IsTripleOperand();
         public bool IsEmptyRow
         {
             get
             {
-                var isEmptyRow = string.IsNullOrEmpty(Left);
-                isEmptyRow &= SelectedMatchType is null;
-                if (IsBetween)
+                var isEmptyRow = string.IsNullOrEmpty(Key);
+                isEmptyRow &= SelectedTableType is null;
+                if (IsTripleOperand)
                 {
-                    isEmptyRow &= string.IsNullOrEmpty(File);
                     isEmptyRow &= string.IsNullOrEmpty(FileName);
+                    isEmptyRow &= string.IsNullOrEmpty(FileBase64);
                 }
                 return isEmptyRow;
             }
@@ -860,22 +861,16 @@ namespace Warewolf.Options
             set => SetProperty(ref _tooltip, value);
         }
         public FormDataCondition Cond { get; set; }
-
-        public void RenderDescription(StringBuilder sb)
-        {
-            sb.Append(Left);
-            Cond?.RenderDescription(sb);
-        }
-
+        
         public object Clone()
         {
             return new FormDataOptionConditionExpression
             {
                 Name = Name,
-                Left = Left,
-                SelectedMatchType = SelectedMatchType,
-                Right = Right,
-                File = File,
+                Key = Key,
+                SelectedTableType = SelectedTableType,
+                Value = Value,
+                FileBase64 = FileBase64,
                 FileName = FileName,
             };
         }
@@ -886,17 +881,17 @@ namespace Warewolf.Options
             {
                 return -1;
             }
-            var item = obj as FormDataOptionConditionExpression;
-            if (item is null)
+            if (!(obj is FormDataOptionConditionExpression item))
             {
                 return -1;
             }
             return string.Compare(item.Name, Name, StringComparison.InvariantCulture) |
-                   string.Compare(item.Left, Left, StringComparison.InvariantCulture) |
-                   (item.SelectedMatchType == SelectedMatchType ? 0 : -1) |
-                   string.Compare(item.Right, Right, StringComparison.InvariantCulture) |
-                   string.Compare(item.File, File, StringComparison.InvariantCulture) |
-                   string.Compare(item.FileName, FileName, StringComparison.InvariantCulture);
+                   string.Compare(item.Key, Key, StringComparison.InvariantCulture) |
+                   (item.SelectedTableType == SelectedTableType ? 0 : -1) |
+                   string.Compare(item.Value, Value, StringComparison.InvariantCulture) |
+                   string.Compare(item.FileBase64, FileBase64, StringComparison.InvariantCulture) |
+                   string.Compare(item.FileName, FileName, StringComparison.InvariantCulture) |
+                   string.Compare(item.FileBase64, FileBase64, StringComparison.InvariantCulture);
         }
     }
 

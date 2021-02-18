@@ -572,7 +572,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                         new FormDataConditionExpression
                         {
                            Key = testTextKey,
-                           Cond = new FormDataConditionMatch
+                           Cond = new FormDataConditionText
                            {
                                Value = testTextValue
                            }
@@ -580,9 +580,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                         new FormDataConditionExpression
                         {
                             Key = testFileKey,
-                            Cond = new FormDataConditionBetween
+                            Cond = new FormDataConditionFile
                             {
-                                File = testFileContent,
+                                FileBase64 = testFileContent,
                                 FileName = testFileName
                             }
                         }
@@ -656,7 +656,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                         new FormDataConditionExpression
                         {
                            Key = "[[testTextKeyVName]]",
-                           Cond = new FormDataConditionMatch
+                           Cond = new FormDataConditionText
                            {
                                Value = "[[testTextValueVName]]"
                            }
@@ -664,9 +664,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                         new FormDataConditionExpression
                         {
                             Key = "[[testFileKeyVName]]",
-                            Cond = new FormDataConditionBetween
+                            Cond = new FormDataConditionFile
                             {
-                                File = "[[testFileContentVName]]",
+                                FileBase64 = "[[testFileContentVName]]",
                                 FileName = "[[testFileNameVName]]"
                             }
                         }

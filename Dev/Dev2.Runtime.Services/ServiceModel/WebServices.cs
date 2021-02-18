@@ -193,6 +193,7 @@ namespace Dev2.Runtime.ServiceModel
             var formDataParameters = new List<IFormDataParameters>();
             if (service.IsFormDataChecked && service.FormDataParameters != null)
             {
+                //TODO: user headersHelper to correct the the Content-Type before request is sent
                 formDataParameters.AddRange(service.FormDataParameters.Select(o =>
                 {
                     if (o is TextParameter)
