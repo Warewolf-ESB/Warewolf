@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -1037,12 +1037,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(SuspendExecutionActivity))]
         public void SuspendExecutionActivity_GetSuspendVaidationMessageType_Validate()
         {
-            Assert.AreEqual("Date",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendUntil));
-            Assert.AreEqual("Seconds",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForSeconds));
-            Assert.AreEqual("Minutes",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForMinutes));
-            Assert.AreEqual("Hours",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForHours));
-            Assert.AreEqual("Days",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForDays));
-            Assert.AreEqual("Months",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForMonths));
+            Assert.AreEqual("Date",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendUntil));
+            Assert.AreEqual("Seconds",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForSeconds));
+            Assert.AreEqual("Minutes",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForMinutes));
+            Assert.AreEqual("Hours",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForHours));
+            Assert.AreEqual("Days",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForDays));
+            Assert.AreEqual("Months",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForMonths));
         }
 
         static IExecutionEnvironment CreateExecutionEnvironment()
