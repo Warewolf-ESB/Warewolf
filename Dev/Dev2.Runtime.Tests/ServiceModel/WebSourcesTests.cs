@@ -953,10 +953,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 new FormDataConditionExpression
                 {
                     Key = "[[textKey]]",
-                    Cond = new FormDataConditionBetween
+                    Cond = new FormDataConditionFile
                     {
-                        MatchType = enFormDataTableType.File,
-                        File = "VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu",
+                        TableType = enFormDataTableType.File,
+                        FileBase64 = "VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu",
                         FileName = "test file name"
                     }
                 }.ToFormDataParameter()
@@ -1018,10 +1018,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 new FormDataConditionExpression
                 {
                     Key = "[[textKey]]",
-                    Cond = new FormDataConditionBetween
+                    Cond = new FormDataConditionFile
                     {
-                        MatchType = enFormDataTableType.File,
-                        File = "VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu",
+                        TableType = enFormDataTableType.File,
+                        FileBase64 = "VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu",
                         FileName = "test file name"
                     }
                 }.ToFormDataParameter()
@@ -1087,10 +1087,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 new FormDataConditionExpression
                 {
                     Key = "[[textKey]]",
-                    Cond = new FormDataConditionBetween
+                    Cond = new FormDataConditionFile
                     {
-                        MatchType = enFormDataTableType.File,
-                        File = "VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu",
+                        TableType = enFormDataTableType.File,
+                        FileBase64 = "VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu",
                         FileName = "test file name"
                     }
                 }.ToFormDataParameter()
@@ -1162,10 +1162,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 new FormDataConditionExpression
                 {
                     Key = "[[textKey]]",
-                    Cond = new FormDataConditionBetween
+                    Cond = new FormDataConditionFile
                     {
-                        MatchType = enFormDataTableType.File,
-                        File = "VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu",
+                        TableType = enFormDataTableType.File,
+                        FileBase64 = "VGhpcyBpcyBzb21lIHRleHQgaW4gdGhlIGZpbGUu",
                         FileName = "test file name.txt"
                     }
                 }.ToFormDataParameter()

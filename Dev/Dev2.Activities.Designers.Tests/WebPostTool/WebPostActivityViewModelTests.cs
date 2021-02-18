@@ -502,9 +502,9 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
                 new FormDataConditionExpression
                 {
                     Key = "[[a]]",
-                    Cond = new FormDataConditionMatch
+                    Cond = new FormDataConditionText
                     {
-                        MatchType = enFormDataTableType.Text,
+                        TableType = enFormDataTableType.Text,
                         Value = "this can be any text message"
                     },
 
@@ -531,13 +531,13 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual(2, conditions.Count);
 
             var condition = conditions[0] as FormDataOptionConditionExpression;
-            Assert.AreEqual("[[a]]", condition.Left);
-            Assert.AreEqual(enFormDataTableType.Text, condition.MatchType);
-            Assert.AreEqual("this can be any text message", condition.Right);
+            Assert.AreEqual("[[a]]", condition.Key);
+            Assert.AreEqual(enFormDataTableType.Text, condition.TableType);
+            Assert.AreEqual("this can be any text message", condition.Value);
 
             var emptyCondition = conditions[1] as FormDataOptionConditionExpression;
-            Assert.IsNull(emptyCondition.Left);
-            Assert.AreEqual(enFormDataTableType.Text, emptyCondition.MatchType);
+            Assert.IsNull(emptyCondition.Key);
+            Assert.AreEqual(enFormDataTableType.Text, emptyCondition.TableType);
         }
 
         [TestMethod]
@@ -552,9 +552,9 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
                 new FormDataConditionExpression
                 {
                     Key = "[[a]]",
-                    Cond = new FormDataConditionMatch
+                    Cond = new FormDataConditionText
                     {
-                        MatchType = enFormDataTableType.Text,
+                        TableType = enFormDataTableType.Text,
                         Value = "this can be any text message"
                     }
                 }
@@ -580,7 +580,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual(2, conditions.Count);
 
             var optionConditionExpression = conditions[0] as FormDataOptionConditionExpression;
-            optionConditionExpression.SelectedMatchType = new NamedInt { Name = "Text", Value = 1 };
+            optionConditionExpression.SelectedTableType = new NamedInt { Name = "Text", Value = 1 };
             optionConditionExpression.DeleteCommand.Execute(optionConditionExpression);
 
             conditions = gateDesignerViewModel.ConditionExpressionOptions.Options.ToList();
@@ -588,8 +588,8 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual(1, conditions.Count);
 
             var emptyCondition = conditions[0] as FormDataOptionConditionExpression;
-            Assert.IsNull(emptyCondition.Left);
-            Assert.AreEqual(enFormDataTableType.Text, emptyCondition.MatchType);
+            Assert.IsNull(emptyCondition.Key);
+            Assert.AreEqual(enFormDataTableType.Text, emptyCondition.TableType);
         }
 
         [TestMethod]
@@ -610,11 +610,11 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             {
                 new FormDataOptionConditionExpression
                 {
-                    Left = "l",
-                    Right = "r",
-                    Cond = new FormDataConditionMatch
+                    Key = "l",
+                    Value = "r",
+                    Cond = new FormDataConditionText
                     {
-                        MatchType = enFormDataTableType.Text,
+                        TableType = enFormDataTableType.Text,
                         Value = "this can be any text message"
                     },
                 }
@@ -639,10 +639,10 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var options = postViewModel.ManageServiceInputViewModel.ConditionExpressionOptions.Options;
             Assert.IsTrue(options.Count == 2);
             var item1 = options.First() as FormDataOptionConditionExpression;
-            Assert.AreEqual("l", item1.Left);
-            Assert.AreEqual("r", item1.Right);
-            Assert.AreEqual(enFormDataTableType.Text, item1.Cond.MatchType);
-            Assert.AreEqual("this can be any text message", (item1.Cond as FormDataConditionMatch).Value);
+            Assert.AreEqual("l", item1.Key);
+            Assert.AreEqual("r", item1.Value);
+            Assert.AreEqual(enFormDataTableType.Text, item1.Cond.TableType);
+            Assert.AreEqual("this can be any text message", (item1.Cond as FormDataConditionText).Value);
         }
 
         [TestMethod]
@@ -665,13 +665,9 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             {
                 new FormDataOptionConditionExpression
                 {
-                    Left = "l",
-                    Right = "[[VariableNotToExpose]]",
-                    Cond = new FormDataConditionMatch
-                    {
-                        MatchType = enFormDataTableType.Text,
-                        Value = ""
-                    },
+                    Key = "l",
+                    Value = "[[VariableNotToExpose]]",
+                    TableType = enFormDataTableType.Text
                 }
             };
             //---------------Execute Test ----------------------
@@ -702,11 +698,11 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             {
                 new FormDataOptionConditionExpression
                 {
-                    Left = "l",
-                    Right = "[[VariableToExpose]]",
-                    Cond = new FormDataConditionMatch
+                    Key = "l",
+                    Value = "[[VariableToExpose]]",
+                    Cond = new FormDataConditionText
                     {
-                        MatchType = enFormDataTableType.Text,
+                        TableType = enFormDataTableType.Text,
                         Value = ""
                     },
                 }
