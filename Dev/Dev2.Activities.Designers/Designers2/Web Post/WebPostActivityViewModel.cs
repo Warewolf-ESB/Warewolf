@@ -553,18 +553,16 @@ namespace Dev2.Activities.Designers2.Web_Post
                 {
                     if (!string.IsNullOrEmpty(parameter.Key))
                     {
-                        if (parameter is FileParameter)
+                        if (parameter is FileParameter fileParam)
                         {
-                            var param = (FileParameter)parameter;
-                            _builder.GetValue(param.Key, dt);
-                            _builder.GetValue(param.FileName, dt);
-                            _builder.GetValue(param.FileBase64, dt);
+                            _builder.GetValue(fileParam.Key, dt);
+                            _builder.GetValue(fileParam.FileName, dt);
+                            _builder.GetValue(fileParam.FileBase64, dt);
                         }
-                        else if (parameter is TextParameter)
+                        else if (parameter is TextParameter textParam)
                         {
-                            var param = (TextParameter)parameter;
-                            _builder.GetValue(param.Key, dt);
-                            _builder.GetValue(param.Value, dt);
+                            _builder.GetValue(textParam.Key, dt);
+                            _builder.GetValue(textParam.Value, dt);
 
                         }
                     }
