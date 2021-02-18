@@ -96,7 +96,7 @@ namespace Dev2.Activities.Designers.Tests.Core
                 Assert.AreEqual(clone.Errors.Count, 0);
                 Assert.AreEqual(clone.PostData, "bob");
                 Assert.IsTrue(clone.IsFormDataChecked);
-                Assert.IsFalse(clone.IsNoneChecked);
+                Assert.IsFalse(clone.IsManualChecked);
             }
         }
 

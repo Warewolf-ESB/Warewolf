@@ -500,7 +500,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 Path = "",
                 Id = Guid.NewGuid(),
                 PostData = InputArea.PostData,
-                IsNoneChecked = InputArea.IsNoneChecked,
+                IsManualChecked = InputArea.IsManualChecked,
                 IsFormDataChecked = InputArea.IsFormDataChecked,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
                 FormDataParameters = BuildFormDataParameters(),
@@ -541,7 +541,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 _builder.GetValue(nameValue.Value, dt);
             }
 
-            if (InputArea.IsNoneChecked)
+            if (InputArea.IsManualChecked)
             {
                 var postValue = InputArea.PostData;
                 _builder.GetValue(postValue, dt);

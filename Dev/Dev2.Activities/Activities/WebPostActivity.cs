@@ -41,7 +41,7 @@ namespace Dev2.Activities
 
         public IList<INameValue> Headers { get; set; }
         public bool IsFormDataChecked { get; set; }
-        public bool IsNoneChecked { get; set; }
+        public bool IsManualChecked { get; set; }
         public IList<FormDataConditionExpression> Conditions { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
@@ -88,7 +88,7 @@ namespace Dev2.Activities
             AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
             
-            if (IsNoneChecked)
+            if (IsManualChecked)
             {
                 debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", "Post Data"), debugItem);
@@ -158,7 +158,7 @@ namespace Dev2.Activities
             {
                 webRequestResult = PerformFormDataWebPostRequest(source, WebRequestMethod.Post, query, head, conditions);
             }
-            else if (IsNoneChecked)
+            else if (IsManualChecked)
             {
                 webRequestResult = PerformManualWebPostRequest(head, query, source, postData);
             }
@@ -184,7 +184,40 @@ namespace Dev2.Activities
             IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
+                //TODO: Refactor, wrap this implimentation into a helper object
                 head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Value, update))));
+                if (IsFormDataChecked)
+                {
+                    const string contentTypeString = "Content-Type";
+                    const string multipatFormDataString = "multipart/form-data";
+                    var headEvaluated = head.FirstOrDefault(o => o.Name == contentTypeString);
+                    var contentTypeName = headEvaluated?.Name;
+                    var contentTypeValue = headEvaluated?.Value;
+                    
+                    var headers = head.ToList();
+                    var formDataBoundary = string.Format("----------{0:N}", Guid.NewGuid());
+                    if (headEvaluated == null)
+                    {
+                        contentTypeValue = multipatFormDataString + "; boundary=" + formDataBoundary;
+
+                        var addItem = new NameValue(contentTypeString, contentTypeValue);
+                        headers.Add(addItem);
+                        Headers.Add(addItem);
+                    }
+
+                    if (!contentTypeValue.Contains("boundary="))
+                    {
+                        var headNotEvaluated = Headers.FirstOrDefault(o => o.Name == contentTypeString);
+                        Headers.Remove(new NameValue(headNotEvaluated.Name, headNotEvaluated.Value));
+                        headers.Remove(new NameValue(contentTypeName, contentTypeValue));
+
+                        contentTypeValue = multipatFormDataString + "; boundary=" + formDataBoundary;
+
+                        var addItem = new NameValue(contentTypeString, contentTypeValue);
+                        headers.Add(addItem);
+                        Headers.Add(addItem);
+                    }
+                }
             }
             var query = string.Empty;
             if (QueryString != null)
@@ -192,7 +225,7 @@ namespace Dev2.Activities
                 query = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(QueryString, update));
             }
             var postData = string.Empty;
-            if (PostData != null && IsNoneChecked)
+            if (PostData != null && IsManualChecked)
             {
                 postData = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(PostData, update, true));
             }
@@ -284,7 +317,7 @@ namespace Dev2.Activities
                    string.Equals(QueryString, other.QueryString) &&
                    Equals(OutputDescription, other.OutputDescription) &&
                    string.Equals(PostData, other.PostData) &&
-                   Equals(IsNoneChecked, other.IsNoneChecked) &&
+                   Equals(IsManualChecked, other.IsManualChecked) &&
                    Equals(IsFormDataChecked, other.IsFormDataChecked);
         }
 
@@ -317,7 +350,7 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (PostData != null ? PostData.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (IsNoneChecked.GetHashCode());
+                hashCode = (hashCode * 397) ^ (IsManualChecked.GetHashCode());
                 hashCode = (hashCode * 397) ^ (IsFormDataChecked.GetHashCode());
                 return hashCode;
             }

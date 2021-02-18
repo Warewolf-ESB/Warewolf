@@ -164,7 +164,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 {
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     ResourceCatalog = new Mock<IResourceCatalog>().Object,
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     Inputs = new List<IServiceInput> 
                     { 
                         new ServiceInput("CityName", "[[City]]"), 
@@ -222,7 +222,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             {
                 ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                 ResourceCatalog = new Mock<IResourceCatalog>().Object,
-                IsNoneChecked = true,
+                IsManualChecked = true,
                 ResponseFromWeb = response,
                 Outputs = new List<IServiceOutputMapping>
                 { 
@@ -293,7 +293,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 {
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     ResourceCatalog = new Mock<IResourceCatalog>().Object,
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     OutputDescription = service.GetOutputDescription(),
                     PostData = "",
                     QueryString = "",
@@ -353,7 +353,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 {
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     ResourceCatalog = new Mock<IResourceCatalog>().Object,
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     PostData = "",
                     OutputDescription = service.GetOutputDescription(),
                     ResponseFromWeb = response,
@@ -414,7 +414,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     Headers = new List<INameValue> {new NameValue("Header 1", "[[City]]")},
                     QueryString = "http://www.testing.com/[[CountryName]]",
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     PostData = "This is post:[[Post]]",
                     OutputDescription = service.GetOutputDescription(),
                     Outputs = new List<IServiceOutputMapping> 
@@ -495,7 +495,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebPostActivity))]
-        public void WebPostActivity_GetDebugInputs_IsNoneChecked_GivenMockEnvironment_ShouldAddDebugInputItems()
+        public void WebPostActivity_GetDebugInputs_IsManualChecked_GivenMockEnvironment_ShouldAddDebugInputItems()
         {
             //---------------Set up test pack-------------------
             var environment = new ExecutionEnvironment();
@@ -513,7 +513,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 {
                     Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                     QueryString = "http://www.testing.com/[[CountryName]]",
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     PostData = "This is post:[[Post]]",
                     ResourceCatalog = mockResourceCatalog.Object,
                 };
@@ -572,7 +572,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                         new FormDataConditionExpression
                         {
                            Key = testTextKey,
-                           Cond = new FormDataConditionMatch
+                           Cond = new FormDataConditionText
                            {
                                Value = testTextValue
                            }
@@ -580,9 +580,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                         new FormDataConditionExpression
                         {
                             Key = testFileKey,
-                            Cond = new FormDataConditionBetween
+                            Cond = new FormDataConditionFile
                             {
-                                File = testFileContent,
+                                FileBase64 = testFileContent,
                                 FileName = testFileName
                             }
                         }
@@ -656,7 +656,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                         new FormDataConditionExpression
                         {
                            Key = "[[testTextKeyVName]]",
-                           Cond = new FormDataConditionMatch
+                           Cond = new FormDataConditionText
                            {
                                Value = "[[testTextValueVName]]"
                            }
@@ -664,9 +664,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                         new FormDataConditionExpression
                         {
                             Key = "[[testFileKeyVName]]",
-                            Cond = new FormDataConditionBetween
+                            Cond = new FormDataConditionFile
                             {
-                                File = "[[testFileContentVName]]",
+                                FileBase64 = "[[testFileContentVName]]",
                                 FileName = "[[testFileNameVName]]"
                             }
                         }
@@ -688,6 +688,111 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual("Parameters", item4First.Label);
                 Assert.AreEqual("\nKey: testTextKey Text: testTextValue\nKey: testFileKey File Content: this can be any file type converted to base64 string File Name: testFileName.ext", item4First.Value);
 
+            }
+
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_GetDebugInputs_IsFormDataChecked_Given_MultipartHeader_WithEnvironmentVariablesToEval_ShouldAddDebugInputItems()
+        {
+            //---------------Set up test pack-------------------
+            var multipartFormDataVar = "multipart/form-data";
+
+            var environment = new ExecutionEnvironment();
+            environment.Assign("[[multipartFormDataVar]]", multipartFormDataVar, 0);
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(environment);
+            mockDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new WebSource
+                {
+                    Address = "www.example.com"
+                });
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            {
+                var webPostActivity = new TestWebPostActivity
+                {
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    Headers = new List<INameValue> { new NameValue("Content-Type", "[[multipartFormDataVar]]") },
+                    QueryString = "http://www.testing.com/[[CountryName]]",
+                    IsFormDataChecked = true,
+                    ResourceCatalog = mockResourceCatalog.Object,
+                    Conditions = new List<FormDataConditionExpression> { }
+                };
+
+                //---------------Assert Precondition----------------
+                Assert.IsNotNull(environment);
+                Assert.IsNotNull(webPostActivity);
+                //---------------Execute Test ----------------------
+                var debugInputs = webPostActivity.GetDebugInputs(environment, 0);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(debugInputs);
+                Assert.AreEqual(4, debugInputs.Count);
+
+                var item2 = debugInputs[2].FetchResultsList();
+                var item4First = item2.First();
+                Assert.AreEqual(2, item2.Count);
+                Assert.AreEqual("Headers", item4First.Label);
+                StringAssert.Contains(item2[1].Value, "Content-Type : multipart/form-data; boundary=----------");
+                
+            }
+
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebPostActivity))]
+        public void WebPostActivity_GetDebugInputs_IsFormDataChecked_Given_MultipartHeader_WithNoEnvironmentVariablesToEval_ShouldAddDebugInputItems()
+        {
+            //---------------Set up test pack-------------------
+
+            var environment = new ExecutionEnvironment();
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(environment);
+            mockDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            mockResourceCatalog.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new WebSource
+                {
+                    Address = "www.example.com"
+                });
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = string.Empty })
+            {
+                var webPostActivity = new TestWebPostActivity
+                {
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    Headers = new List<INameValue> { new NameValue("Content-Type", "multipart/form-data") },
+                    QueryString = "http://www.testing.com/[[CountryName]]",
+                    IsFormDataChecked = true,
+                    ResourceCatalog = mockResourceCatalog.Object,
+                    Conditions = new List<FormDataConditionExpression> { }
+                };
+
+                //---------------Assert Precondition----------------
+                Assert.IsNotNull(environment);
+                Assert.IsNotNull(webPostActivity);
+                //---------------Execute Test ----------------------
+                var debugInputs = webPostActivity.GetDebugInputs(environment, 0);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(debugInputs);
+                Assert.AreEqual(4, debugInputs.Count);
+
+                var item2 = debugInputs[2].FetchResultsList();
+                var item4First = item2.First();
+                Assert.AreEqual(2, item2.Count);
+                Assert.AreEqual("Headers", item4First.Label);
+                StringAssert.Contains(item2[1].Value, "Content-Type : multipart/form-data; boundary=----------");
             }
 
         }
@@ -828,7 +933,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     {
                         ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                         ResourceCatalog = mockResourceCatalog.Object,
-                        IsNoneChecked = true,
+                        IsManualChecked = true,
                         Outputs = new List<IServiceOutputMapping>
                     {
                         new ServiceOutputMapping("Message", "[[Message]]", "")
@@ -891,7 +996,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     ResourceCatalog = new Mock<IResourceCatalog>().Object,               
                     OutputDescription = service.GetOutputDescription(),
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     QueryString = "test Query",
                     Headers = new List<INameValue>(),
                     ResponseFromWeb = response,
@@ -1004,7 +1109,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
                     QueryString = "test Query",
                     Headers = new List<INameValue>(),
-                    IsNoneChecked = true,
+                    IsManualChecked = true,
                     PostData = "{'valueKey':'[[NotExistVariable]]'}"
                 };
                 //-----------------------Act-----------------------------

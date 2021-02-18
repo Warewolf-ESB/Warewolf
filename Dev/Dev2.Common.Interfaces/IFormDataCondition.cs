@@ -18,7 +18,7 @@ namespace Dev2.Common.Interfaces
 {
     public interface IFormDataCondition
     {
-        enFormDataTableType MatchType { get; set; }
+        enFormDataTableType TableType { get; set; }
 
         IEnumerable<IFormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
         void SetOptions(IFormDataOptionConditionExpression option);
