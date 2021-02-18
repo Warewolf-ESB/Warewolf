@@ -81,6 +81,7 @@ namespace Dev2.Activities.Designers2.Core
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
             IsEnabled = false;
+            ParameterGroup = $"ParameterGroup{Guid.NewGuid()}";
             SetupHeaders(modelItem);
             if (source?.SelectedSource != null)
             {
@@ -90,6 +91,8 @@ namespace Dev2.Activities.Designers2.Core
                 IsNoneChecked = modelItem.GetProperty<bool>("IsNoneChecked");
             }
         }
+
+        public string ParameterGroup { get; }
 
         void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
