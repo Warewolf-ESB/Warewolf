@@ -177,9 +177,11 @@ namespace Dev2.Runtime.ServiceModel
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors, WebExecuteString webExecute)
         {
             var headers = new List<string>();
+            var evaluatedHeaders = new List<INameValue>();
             if (service.Headers !=null)
             {
-                headers.AddRange(service.Headers.Select(nameValue => nameValue.Name + ":" + SetParameters(service.Method.Parameters, nameValue.Value)).ToList());
+                evaluatedHeaders = service.Headers.Select(o => new NameValue(SetParameters(service.Method.Parameters, o.Name), SetParameters(service.Method.Parameters, o.Value)) as INameValue).ToList();
+                headers.AddRange(ToHeaderStringList(evaluatedHeaders));
             }
 
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
@@ -193,7 +195,11 @@ namespace Dev2.Runtime.ServiceModel
             var formDataParameters = new List<IFormDataParameters>();
             if (service.IsFormDataChecked && service.FormDataParameters != null)
             {
-                //TODO: user headersHelper to correct the the Content-Type before request is sent
+
+                var headersHelper = new WebRequestHeadersHelper(service.Headers, evaluatedHeaders);
+                var evaluated = headersHelper.CalculateFormDataContentType();
+                headers = ToHeaderStringList(evaluated.ToList());
+
                 formDataParameters.AddRange(service.FormDataParameters.Select(o =>
                 {
                     if (o is TextParameter)
@@ -231,6 +237,11 @@ namespace Dev2.Runtime.ServiceModel
                 service.ApplyPath();
             }
             errors = new ErrorResultTO();
+        }
+
+        private static List<string> ToHeaderStringList(List<INameValue> headers)
+        {
+            return headers.Select(o => o.Name + ":" + o.Value).ToList();
         }
 
         #endregion
