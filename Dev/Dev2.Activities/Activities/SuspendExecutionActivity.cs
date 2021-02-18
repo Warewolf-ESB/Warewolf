@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,6 @@ using System.Linq;
 using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -131,7 +130,7 @@ namespace Dev2.Activities
 
                 if (string.IsNullOrEmpty(persistScheduleValue))
                 {
-                    throw new Exception(string.Format(ErrorResource.SuspendOptionValueNotSet, GetSuspendVaidationMessageType(SuspendOption)));
+                    throw new Exception(string.Format(ErrorResource.SuspendOptionValueNotSet, GetSuspendValidationMessageType(SuspendOption)));
                 }
 
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
@@ -203,7 +202,7 @@ namespace Dev2.Activities
             }
         }
 
-        public static string GetSuspendVaidationMessageType(enSuspendOption suspendOption)
+        public static string GetSuspendValidationMessageType(enSuspendOption suspendOption)
         {
             switch (suspendOption)
             {
