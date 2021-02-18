@@ -188,19 +188,19 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <RadioButton x:Name="none" 
+                        <RadioButton x:Name="none"
                                      Grid.Row="1"
                                      Grid.Column="0"
-                                     GroupName="datatype" 
+                                     GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
                                      HorizontalAlignment="Left"
-                                     IsChecked="{Binding InputArea.IsNoneChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                     
+                                     IsChecked="{Binding InputArea.IsNoneChecked, UpdateSourceTrigger=PropertyChanged}"
                                      ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestNoneTooltip}">Manual</RadioButton>
-                        <RadioButton x:Name="formdata" 
-                                     Grid.Row="1" 
-                                     GroupName="datatype"
-                                     Grid.Column="1" 
-                                     HorizontalAlignment="Left" 
-                                     IsChecked="{Binding InputArea.IsFormDataChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <RadioButton x:Name="formdata"
+                                     Grid.Row="1"
+                                     GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Left"
+                                     IsChecked="{Binding InputArea.IsFormDataChecked, UpdateSourceTrigger=PropertyChanged}"
                                      ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestFormDataTooltip}">multipart/form-data</RadioButton>
                     </Grid>
 
@@ -215,8 +215,8 @@
 
                         <TextBox Grid.Row="2"
                                  x:Name="RequestBody"
-                                 Text="{Binding InputArea.PostData}" 
-                                 HorizontalAlignment="Stretch" 
+                                 Text="{Binding InputArea.PostData}"
+                                 HorizontalAlignment="Stretch"
                                  AcceptsReturn="True"
                                  Height="Auto"
                                  MinHeight="60"
@@ -233,7 +233,7 @@
                             </i:Interaction.Behaviors>
                         </TextBox>
                     </Grid>
-                    <Grid Grid.Row="2" Visibility="{Binding IsChecked, ElementName=formdata, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid Grid.Row="2" Visibility="{Binding InputArea.IsFormDataChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
@@ -242,52 +242,38 @@
 
 
                         <Grid Grid.Row="1" IsEnabled="{Binding InputArea.IsEnabled}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="25" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="110" MinWidth="110" MaxWidth="110" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <Grid Grid.Column="0"
-                                  Grid.ColumnSpan="2"
-                                  HorizontalAlignment="Stretch" >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="25" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="110" MinWidth="110" MaxWidth="110" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <Border Grid.Column="0" BorderThickness="1,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
-                                        <TextBlock Text="#" HorizontalAlignment="Center" />
-                                    </Border>
-                                    <Border Grid.Column="1" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
-                                        <TextBlock Text="Key" HorizontalAlignment="Center" />
-                                    </Border>
-                                    <Border Grid.Column="2" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
-                                        <TextBlock Text="File Type" HorizontalAlignment="Center" />
-                                    </Border>
-                                    <Border Grid.Column="3" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
-                                        <TextBlock Text="Value" HorizontalAlignment="Center" />
-                                    </Border>
-                                </Grid>
-                                <ListBox x:Name="FormDataConditionsListBox" 
-                                     Grid.Row="1"
-                                     ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}" 
-                                     ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
-                                     ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
-                                     Padding="1,0,1,1">
-                                </ListBox>
+                                <Border Grid.Column="0" BorderThickness="1,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="#" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="1" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="Key" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="File Type" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="3" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="Value" HorizontalAlignment="Center" />
+                                </Border>
                             </Grid>
-
+                            <ListBox x:Name="FormDataConditionsListBox"
+                                 Grid.Row="1"
+                                 ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}"
+                                 ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                                 ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                                 Padding="1,0,1,1">
+                            </ListBox>
                         </Grid>
                     </Grid>
 
