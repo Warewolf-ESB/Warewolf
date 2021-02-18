@@ -50,6 +50,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="InputsFromJson.cs" />
     <Compile Include="SqliteService.cs" />
     <Compile Include="WebServiceDefinition.cs" />
     <None Include="Warewolf.Core.ruleset" />
