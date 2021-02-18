@@ -193,7 +193,7 @@
                                      Grid.Column="0"
                                      GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
                                      HorizontalAlignment="Left"
-                                     IsChecked="{Binding InputArea.IsNoneChecked, UpdateSourceTrigger=PropertyChanged}"
+                                     IsChecked="{Binding InputArea.IsManualChecked, UpdateSourceTrigger=PropertyChanged}"
                                      ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestNoneTooltip}">Manual</RadioButton>
                         <RadioButton x:Name="formdata"
                                      Grid.Row="1"

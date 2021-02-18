@@ -20,9 +20,9 @@ namespace Warewolf.Data.Options
 {
     public abstract class FormDataCondition : IFormDataCondition
     {
-        public enFormDataTableType MatchType { get; set; }
+        public enFormDataTableType TableType { get; set; }
 
-        public abstract IEnumerable<IFormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
+        public abstract IEnumerable<IFormDataParameters> Eval(string key, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError);
         public abstract void SetOptions(IFormDataOptionConditionExpression option);
 
         public abstract void RenderDescription(StringBuilder sb);
@@ -40,15 +40,15 @@ namespace Warewolf.Data.Options
             set => _key = value;
         }
 
-        [DataValue(nameof(FormDataCondition.MatchType))]
-        [MultiDataProvider(typeof(FormDataConditionMatch), typeof(FormDataConditionBetween))]
+        [DataValue(nameof(FormDataCondition.TableType))]
+        [MultiDataProvider(typeof(FormDataConditionText), typeof(FormDataConditionFile))]
         public IFormDataCondition Cond { get; set; }
 
         public IOption[] ToOptions()
         {
             var option = new FormDataOptionConditionExpression
             {
-                Left = Key
+                Key = Key
             };
             Cond?.SetOptions(option);
             SetSelectedMatchType(option);
@@ -60,23 +60,23 @@ namespace Warewolf.Data.Options
         private void SetSelectedMatchType(FormDataOptionConditionExpression option)
         {
             var sb = new StringBuilder();
-            Cond.MatchType.RenderDescription(sb);
-            var item = NamedInt.GetAll(Cond.MatchType.GetType()).First(o => o.Name == sb.ToString());
-            option.SelectedMatchType = new NamedInt { Name = item.Name, Value = item.Value };
+            Cond.TableType.RenderDescription(sb);
+            var item = NamedInt.GetAll(Cond.TableType.GetType()).First(o => o.Name == sb.ToString());
+            option.SelectedTableType = new NamedInt { Name = item.Name, Value = item.Value };
         }
 
         public void FromOption(IOption option)
         {
             if (option is FormDataOptionConditionExpression optionConditionExpression)
             {
-                this.Key = optionConditionExpression.Left;
-                if (optionConditionExpression.IsBetween)
+                this.Key = optionConditionExpression.Key;
+                if (optionConditionExpression.IsTripleOperand)
                 {
-                    this.Cond = FormDataConditionBetween.FromOption(optionConditionExpression);
+                    this.Cond = FormDataConditionFile.FromOption(optionConditionExpression);
                 }
                 else
                 {
-                    this.Cond = FormDataConditionMatch.FromOption(optionConditionExpression);
+                    this.Cond = FormDataConditionText.FromOption(optionConditionExpression);
                 }
             }
         }
@@ -93,22 +93,22 @@ namespace Warewolf.Data.Options
         public IFormDataParameters ToFormDataParameter()
         {
             var cond = this.Cond;
-            if (cond is FormDataConditionMatch)
+            if (cond is FormDataConditionText)
             {
-                var conditionMatch = cond as FormDataConditionMatch;
+                var conditionMatch = cond as FormDataConditionText;
                 return new TextParameter
                 {
                     Key = this.Key,
                     Value = conditionMatch.Value
                 };
             }
-            if (cond is FormDataConditionBetween)
+            if (cond is FormDataConditionFile)
             {
-                var conditionBetween = cond as FormDataConditionBetween;
+                var conditionBetween = cond as FormDataConditionFile;
                 return new FileParameter
                 {
                     Key = this.Key,
-                    FileBase64 = conditionBetween.File,
+                    FileBase64 = conditionBetween.FileBase64,
                     FileName = conditionBetween.FileName
                 };
             }
@@ -130,33 +130,34 @@ namespace Warewolf.Data.Options
         }
     }
 
-    public class FormDataConditionBetween : FormDataCondition
+    public class FormDataConditionFile : FormDataCondition
     {
-        public string File { get; set; }
+        public string FileBase64 { get; set; }
         public string FileName { get; set; }
+
         public override void SetOptions(IFormDataOptionConditionExpression option)
         {
-            option.MatchType = MatchType;
-            option.File = File;
+            option.TableType = TableType;
+            option.FileBase64 = FileBase64;
             option.FileName = FileName;
         }
 
         internal static FormDataCondition FromOption(FormDataOptionConditionExpression optionConditionExpression)
         {
-            return new FormDataConditionBetween
+            return new FormDataConditionFile
             {
-                MatchType = optionConditionExpression.MatchType,
-                File = optionConditionExpression.File,
+                TableType = optionConditionExpression.TableType,
+                FileBase64 = optionConditionExpression.FileBase64,
                 FileName = optionConditionExpression.FileName,
             };
         }
 
 
-        public override IEnumerable<IFormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
+        public override IEnumerable<IFormDataParameters> Eval(string key, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
             var ret = new List<IFormDataParameters>();
 
-            var items = getArgumentsFunc(left, File, FileName);
+            var items = getArgumentsFunc(key, FileBase64, FileName);
             foreach (var arguments in items)
             {
                 try
@@ -164,10 +165,10 @@ namespace Warewolf.Data.Options
                     ret.Add(new FormDataConditionExpression
                     {
                         Key = arguments[0],
-                        Cond = new FormDataConditionBetween
+                        Cond = new FormDataConditionFile
                         {
-                            MatchType = enFormDataTableType.File,
-                            File = arguments[1],
+                            TableType = enFormDataTableType.File,
+                            FileBase64 = arguments[1],
                             FileName = arguments[2]
                         }
                     }.ToFormDataParameter());
@@ -183,38 +184,38 @@ namespace Warewolf.Data.Options
         public override void RenderDescription(StringBuilder sb)
         {
             sb.Append(" File Content: ");
-            sb.Append(File);
+            sb.Append(FileBase64);
             sb.Append(" File Name: ");
             sb.Append(FileName);
         }
     }
 
 
-    public class FormDataConditionMatch : FormDataCondition
+    public class FormDataConditionText : FormDataCondition
     {
         [HelpText(nameof(Studio.Resources.Languages.HelpText.OptionConditionRightHelpText))]
         public string Value { get; set; }
         public override void SetOptions(IFormDataOptionConditionExpression option)
         {
-            option.MatchType = MatchType;
-            option.Right = Value;
+            option.TableType = TableType;
+            option.Value = Value;
         }
 
         internal static FormDataCondition FromOption(FormDataOptionConditionExpression optionConditionExpression)
         {
-            return new FormDataConditionMatch
+            return new FormDataConditionText
             {
-                MatchType = optionConditionExpression.MatchType,
-                Value = optionConditionExpression.Right,
+                TableType = optionConditionExpression.TableType,
+                Value = optionConditionExpression.Value,
             };
         }
 
 
-        public override IEnumerable<IFormDataParameters> Eval(string left, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
+        public override IEnumerable<IFormDataParameters> Eval(string key, Func<string, string, string, IEnumerable<string[]>> getArgumentsFunc, bool hasError)
         {
             var ret = new List<IFormDataParameters>();
 
-            var items = getArgumentsFunc(left, Value, null);
+            var items = getArgumentsFunc(key, Value, null);
             foreach (var arguments in items)
             {
                 try
@@ -222,10 +223,10 @@ namespace Warewolf.Data.Options
                     ret.Add(new FormDataConditionExpression
                     {
                         Key = arguments[0],
-                        Cond = new FormDataConditionMatch
+                        Cond = new FormDataConditionText
                         {
                             Value = arguments[1],
-                            MatchType = enFormDataTableType.Text
+                            TableType = enFormDataTableType.Text
                         }
                     }.ToFormDataParameter());
 
@@ -241,7 +242,7 @@ namespace Warewolf.Data.Options
         public override void RenderDescription(StringBuilder sb)
         {
             sb.Append(" ");
-            MatchType.RenderDescription(sb);
+            TableType.RenderDescription(sb);
             sb.Append(": ");
             sb.Append(Value);
         }

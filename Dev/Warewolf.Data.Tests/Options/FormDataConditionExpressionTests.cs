@@ -37,11 +37,11 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression 
             {
                 Key = string.Empty,
-                Cond = new FormDataConditionBetween 
+                Cond = new FormDataConditionFile 
                 {
-                    File = "file content",
+                    FileBase64 = "file content",
                     FileName = "testFileName",
-                    MatchType = enFormDataTableType.File
+                    TableType = enFormDataTableType.File
                 }
             };
 
@@ -64,11 +64,11 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = "testKey",
-                Cond = new FormDataConditionBetween
+                Cond = new FormDataConditionFile
                 {
-                    File = "bad file content",
+                    FileBase64 = "bad file content",
                     FileName = "testFileName",
-                    MatchType = enFormDataTableType.File
+                    TableType = enFormDataTableType.File
                 }
             };
 
@@ -98,11 +98,11 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = testKey,
-                Cond = new FormDataConditionBetween
+                Cond = new FormDataConditionFile
                 {
-                    File = testFileContentName,
+                    FileBase64 = testFileContentName,
                     FileName = testFileName,
-                    MatchType = enFormDataTableType.File
+                    TableType = enFormDataTableType.File
                 }
             };
 
@@ -143,11 +143,11 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = testKeyName,
-                Cond = new FormDataConditionBetween
+                Cond = new FormDataConditionFile
                 {
-                    File = testFileContentName,
+                    FileBase64 = testFileContentName,
                     FileName = testFileName_Name,
-                    MatchType = enFormDataTableType.File
+                    TableType = enFormDataTableType.File
                 }
             };
 
@@ -168,10 +168,10 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = string.Empty,
-                Cond = new FormDataConditionMatch
+                Cond = new FormDataConditionText
                 {
                     Value = "test txt message",
-                    MatchType = enFormDataTableType.Text
+                    TableType = enFormDataTableType.Text
                 }
             };
 
@@ -197,10 +197,10 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = testKey,
-                Cond = new FormDataConditionMatch
+                Cond = new FormDataConditionText
                 {
                     Value = testValue,
-                    MatchType = enFormDataTableType.Text
+                    TableType = enFormDataTableType.Text
                 }
             };
 
@@ -231,10 +231,10 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = testKey,
-                Cond = new FormDataConditionMatch
+                Cond = new FormDataConditionText
                 {
                     Value = testFileContentName,
-                    MatchType = enFormDataTableType.Text
+                    TableType = enFormDataTableType.Text
                 }
             };
 
@@ -269,10 +269,10 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = testKeyName,
-                Cond = new FormDataConditionMatch
+                Cond = new FormDataConditionText
                 {
                     Value = testValueName,
-                    MatchType = enFormDataTableType.Text
+                    TableType = enFormDataTableType.Text
                 }
             };
 
@@ -307,10 +307,10 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = testKeyName,
-                Cond = new FormDataConditionMatch
+                Cond = new FormDataConditionText
                 {
                     Value = testValueName,
-                    MatchType = enFormDataTableType.Text
+                    TableType = enFormDataTableType.Text
                 }
             }.ToFormDataParameter();
 
@@ -344,11 +344,11 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = testKeyName,
-                Cond = new FormDataConditionBetween
+                Cond = new FormDataConditionFile
                 {
-                    File = testValueName,
+                    FileBase64 = testValueName,
                     FileName = testFileName,
-                    MatchType = enFormDataTableType.Text
+                    TableType = enFormDataTableType.Text
                 }
             }.ToFormDataParameter();
 
@@ -384,11 +384,11 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = testKeyName,
-                Cond = new FormDataConditionBetween
+                Cond = new FormDataConditionFile
                 {
-                    File = testValueName,
+                    FileBase64 = testValueName,
                     FileName = testFileName,
-                    MatchType = enFormDataTableType.Text
+                    TableType = enFormDataTableType.Text
                 }
             }.ToString();
 
@@ -421,10 +421,10 @@ namespace Warewolf.Data.Tests.Options
             new FormDataConditionExpression
             {
                 Key = testKeyName,
-                Cond = new FormDataConditionMatch
+                Cond = new FormDataConditionText
                 {
                     Value = testValueName,
-                    MatchType = enFormDataTableType.Text
+                    TableType = enFormDataTableType.Text
                 }
             }.RenderDescription(sb);
 
@@ -463,18 +463,18 @@ namespace Warewolf.Data.Tests.Options
             var sut = new FormDataConditionExpression
             {
                 Key = testKeyName,
-                Cond = new FormDataConditionMatch
+                Cond = new FormDataConditionText
                 {
                     Value = testValueName,
-                    MatchType = enFormDataTableType.Text
+                    TableType = enFormDataTableType.Text
                 }
             }.ToOptions();
 
             var result = sut.First() as FormDataOptionConditionExpression;
 
-            Assert.AreEqual(testKeyName, result.Left);
-            Assert.AreEqual(testValueName, result.Right);
-            Assert.AreEqual(enFormDataTableType.Text.ToString(), result.SelectedMatchType.Name);
+            Assert.AreEqual(testKeyName, result.Key);
+            Assert.AreEqual(testValueName, result.Value);
+            Assert.AreEqual(enFormDataTableType.Text.ToString(), result.SelectedTableType.Name);
         }
 
         [TestMethod]
@@ -503,15 +503,15 @@ namespace Warewolf.Data.Tests.Options
 
             sut.FromOption(new FormDataOptionConditionExpression
             {
-                Left = testKeyName,
-                Right = testValueName
+                Key = testKeyName,
+                Value = testValueName
             });
 
-            var result = sut.Cond as FormDataConditionMatch;
+            var result = sut.Cond as FormDataConditionText;
 
             Assert.AreEqual(testKeyName, sut.Key);
             Assert.AreEqual(testValueName, result.Value);
-            Assert.AreEqual(enFormDataTableType.Text, result.MatchType);
+            Assert.AreEqual(enFormDataTableType.Text, result.TableType);
         }
 
         private IEnumerable<string[]> getTestArgumentsFunc(string col1s, string col2s, string col3s)

@@ -17,10 +17,10 @@ namespace Dev2.Common.Interfaces
 {
     public interface IFormDataOptionConditionExpression
     {
-        enFormDataTableType MatchType { get; set; }
-        string File { get; set; }
+        enFormDataTableType TableType { get; set; }
+        string FileBase64 { get; set; }
         string FileName { get; set; }
-        string Right { get; set; }
-        INamedInt SelectedMatchType { get; set; }
+        string Value { get; set; }
+        INamedInt SelectedTableType { get; set; }
     }
 }
