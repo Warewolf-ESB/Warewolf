@@ -1394,17 +1394,17 @@
                         <Style>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding InputCountExpandAllowed}" Value="True">
-                                    <Setter Property="RowDefinition.Height" Value="*"/>
-                                    <Setter Property="RowDefinition.MaxHeight" Value="210"/>
+                                    <Setter Property="RowDefinition.Height" Value="60*"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding InputCountExpandAllowed}" Value="False">
                                     <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                    <Setter Property="RowDefinition.MaxHeight" Value="300"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="40*"/>
             </Grid.RowDefinitions>
 
             <Grid>
