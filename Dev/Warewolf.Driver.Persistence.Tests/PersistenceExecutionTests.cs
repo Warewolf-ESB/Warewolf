@@ -114,6 +114,46 @@ namespace Warewolf.Driver.Persistence.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceExecution))]
+        [ExpectedException(typeof(Exception))]
+        public void PersistenceExecution_GetSuspendedEnvironment_PersistenceSettingsNoConfigured()
+        {
+            const string expectedJobId = "1234";
+            Config.Persistence.PersistenceScheduler = "";
+            var scheduler = new PersistenceExecution(null);
+            scheduler.GetSuspendedEnvironment(expectedJobId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_GetSuspendedEnvironment_Success()
+        {
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")}
+            };
+
+            const enSuspendOption suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString(CultureInfo.InvariantCulture);
+            const string expectedJobId = "1234";
+            Config.Persistence.PersistenceScheduler = nameof(Hangfire);
+            var mockPersistenceScheduler = new Mock<IPersistenceScheduler>();
+            mockPersistenceScheduler.Setup(o => o.ScheduleJob(suspendOption, suspendOptionValue, values))
+                .Returns(expectedJobId).Verifiable();
+            mockPersistenceScheduler.Setup(o => o.GetSuspendedEnvironment(expectedJobId))
+                .Returns(GlobalConstants.Success).Verifiable();
+
+            var scheduler = new PersistenceExecution(mockPersistenceScheduler.Object);
+            var result = scheduler.GetSuspendedEnvironment(expectedJobId);
+            Assert.AreEqual(GlobalConstants.Success, result);
+        }
+
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PersistenceExecution))]
         [ExpectedException(typeof(Exception))]
