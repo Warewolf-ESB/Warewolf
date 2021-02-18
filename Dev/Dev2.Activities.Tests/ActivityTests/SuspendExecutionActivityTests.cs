@@ -26,6 +26,7 @@ using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
 using Warewolf.Driver.Persistence;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -781,9 +782,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             suspendExecutionActivity.Execute(dataObject, 0);
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, env.Errors.Count);
+            Assert.AreEqual(1, env.AllErrors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual( "At least 1 activity is required after Suspend Execution.",errors[0]);
+            Assert.AreEqual("<InnerError>" + ErrorResource.NextNodeRequiredForSuspendExecution + "</InnerError>",errors[0]);
         }
 
         [TestMethod]
@@ -853,9 +854,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             suspendExecutionActivity.Execute(dataObject, 0);
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, env.Errors.Count);
+            Assert.AreEqual(1, env.AllErrors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual("Could not find persistence config. Please configure in Persistence Settings.",errors[0]);
+            Assert.AreEqual("<InnerError>" + ErrorResource.PersistenceSettingsNoConfigured + "</InnerError>",errors[0]);
         }
 
         [TestMethod]
@@ -959,8 +960,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(enFindMissingType.SuspendExecution, enFindMissingType);
 
         }
-        
-        
+
         [TestMethod]
         [Owner("Njabulo Nxele")]
         [TestCategory(nameof(SuspendExecutionActivity))]
@@ -1020,18 +1020,31 @@ namespace Dev2.Tests.Activities.ActivityTests
                     PersistValue = string.Empty,
                     AllowManualResumption = true,
                     SaveDataFunc = activityFunction,
-                    Response = "[[result]]",
                     NextNodes = dev2Activities,
                 };
 
             suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
             //------------Execute Test---------------------------
             suspendExecutionActivity.Execute(dataObject, 0);
-
             Assert.AreEqual(null, suspendExecutionActivity.Response);
+            Assert.AreEqual(1, env.AllErrors.Count);
+            var errors = env.AllErrors.ToList();
+            Assert.AreEqual( "<InnerError>Suspend option Date value must not be null or empty.</InnerError>",errors[0]);
         }
-        
-        
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_GetSuspendVaidationMessageType_Validate()
+        {
+            Assert.AreEqual("Date",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendUntil));
+            Assert.AreEqual("Seconds",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForSeconds));
+            Assert.AreEqual("Minutes",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForMinutes));
+            Assert.AreEqual("Hours",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForHours));
+            Assert.AreEqual("Days",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForDays));
+            Assert.AreEqual("Months",SuspendExecutionActivity.GetSuspendVaidationMessageType(enSuspendOption.SuspendForMonths));
+        }
+
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();

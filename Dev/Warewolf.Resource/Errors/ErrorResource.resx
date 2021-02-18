@@ -1368,6 +1368,6 @@ Please contact your Windows System Administrator.</value>
     <value>At least 1 activity is required after Suspend Execution.</value>
   </data>
   <data name="SuspendOptionValueNotSet" xml:space="preserve">
-    <value>Suspend option {0} not set. Please set suspend {0} in the workflow configuration.</value>
+    <value>Suspend option {0} value must not be null or empty.</value>
   </data>
 </root>

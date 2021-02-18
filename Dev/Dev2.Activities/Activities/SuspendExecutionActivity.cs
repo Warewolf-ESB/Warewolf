@@ -127,6 +127,13 @@ namespace Dev2.Activities
                     throw new Exception(ErrorResource.NextNodeRequiredForSuspendExecution);
                 }
 
+                var persistScheduleValue = PersistSchedulePersistValue();
+
+                if (string.IsNullOrEmpty(persistScheduleValue))
+                {
+                    throw new Exception(string.Format(ErrorResource.SuspendOptionValueNotSet, GetSuspendVaidationMessageType(SuspendOption)));
+                }
+
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
                                             throw new Exception(GlobalConstants.NextNodeIDNotFound));
                 var currentEnvironment = _dataObject.Environment.ToJson();
@@ -146,7 +153,7 @@ namespace Dev2.Activities
                     {nameof(versionNumber), new StringBuilder(_dataObject.VersionNumber.ToString())},
                     {nameof(currentuserprincipal), new StringBuilder(currentuserprincipal)}
                 };
-                var persistScheduleValue = PersistSchedulePersistValue();
+
                 if (_dataObject.IsDebugMode())
                 {
                     var debugItemStaticDataParams = new DebugItemStaticDataParams("Allow Manual Resumption: " + AllowManualResumption, "", true);
@@ -183,7 +190,6 @@ namespace Dev2.Activities
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
                 _dataObject.StopExecution = true;
-                allErrors.AddError(ex.GetAllMessages());
                 throw;
             }
             finally
@@ -196,7 +202,30 @@ namespace Dev2.Activities
                 HandleErrors(dataObject, allErrors);
             }
         }
+
+        public static string GetSuspendVaidationMessageType(enSuspendOption suspendOption)
+        {
+            switch (suspendOption)
+            {
+                case enSuspendOption.SuspendUntil:
+                    return "Date";
+                case enSuspendOption.SuspendForSeconds:
+                    return "Seconds";
+                case enSuspendOption.SuspendForMinutes:
+                    return "Minutes";
+                case enSuspendOption.SuspendForHours:
+                    return "Hours";
+                case enSuspendOption.SuspendForDays:
+                    return "Days";
+                case enSuspendOption.SuspendForMonths:
+                    return "Months";
+                default:
+                    return "";
+            }
+        }
+
         public override enFindMissingType GetFindMissingType() => enFindMissingType.SuspendExecution;
+
         private void HandleDebug(IDSFDataObject dataObject, IServiceTestStep serviceTestStep)
         {
             if (dataObject.IsDebugMode())
@@ -212,6 +241,7 @@ namespace Dev2.Activities
                     itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
                     debugStates?.AssertResultList?.Add(itemToAdd);
                 }
+
                 DispatchDebugState(dataObject, StateType.Duration, 0);
             }
         }
@@ -307,6 +337,7 @@ namespace Dev2.Activities
                     var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
                     testRunResult.Message = failMessage;
                 }
+
                 testRunResult.RunTestResult = RunResult.TestFailed;
             }
         }
