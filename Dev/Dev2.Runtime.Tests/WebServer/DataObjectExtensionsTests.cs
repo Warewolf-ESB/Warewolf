@@ -1452,7 +1452,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DataObjectExtensions))]
-        public void DataObjectExtensions_SetEmissionType_API_NotEmptyServiceName_And_NotNullHeaders_ExpectEmitionTypesSWAGGER()
+        public void DataObjectExtensions_SetEmissionType_API_NotEmptyServiceName_And_NotNullHeaders_ExpectEmitionTypesOPENAPI()
         {
             var sut = new DsfDataObject(string.Empty, Guid.NewGuid())
             {
@@ -1464,7 +1464,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("o", result);
             Assert.IsFalse(sut.IsServiceTestExecution);
             Assert.IsNull(sut.TestName);
-            Assert.AreEqual(Web.EmitionTypes.SWAGGER, sut.ReturnType);
+            Assert.AreEqual(Web.EmitionTypes.OPENAPI, sut.ReturnType);
         }
 
         [TestMethod]

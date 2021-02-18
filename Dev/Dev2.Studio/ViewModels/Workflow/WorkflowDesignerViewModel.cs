@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -244,13 +244,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanDebugStudio = true;
             CanDebugBrowser = true;
             CanRunAllTests = !ResourceModel.IsNewWorkflow;
-            CanViewSwagger = !ResourceModel.IsNewWorkflow;
+            CanViewOpenAPI = !ResourceModel.IsNewWorkflow;
             CanCopyUrl = !ResourceModel.IsNewWorkflow;
         }
 
         void SetViewPermissions()
         {
-            CanViewSwagger = !ResourceModel.IsVersionResource;
+            CanViewOpenAPI = !ResourceModel.IsVersionResource;
             CanCopyUrl = !ResourceModel.IsVersionResource;
         }
 
@@ -267,7 +267,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanDeploy = false;
             CanMerge = false;
             CanShowDependencies = false;
-            CanViewSwagger = false;
+            CanViewOpenAPI = false;
             CanCopyUrl = false;
         }
 
@@ -284,7 +284,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanDeploy = !ResourceModel.IsNewWorkflow;
             CanMerge = !ResourceModel.IsNewWorkflow;
             CanShowDependencies = !ResourceModel.IsNewWorkflow;
-            CanViewSwagger = !ResourceModel.IsNewWorkflow;
+            CanViewOpenAPI = !ResourceModel.IsNewWorkflow;
             CanCopyUrl = !ResourceModel.IsNewWorkflow;
         }
 
@@ -301,7 +301,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanDeploy = !ResourceModel.IsNewWorkflow;
             CanMerge = !ResourceModel.IsNewWorkflow;
             CanShowDependencies = !ResourceModel.IsNewWorkflow;
-            CanViewSwagger = !ResourceModel.IsNewWorkflow;
+            CanViewOpenAPI = !ResourceModel.IsNewWorkflow;
             CanCopyUrl = !ResourceModel.IsNewWorkflow;
         }
 
@@ -326,24 +326,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public bool CanViewSwagger
+        public bool CanViewOpenAPI
         {
-            get => _canViewSwagger;
+            get => _canViewOpenAPI;
             set
             {
-                _canViewSwagger = value;
-                ViewSwaggerTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canViewSwagger ? Warewolf.Studio.Resources.Languages.Tooltips.ViewSwaggerToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                OnPropertyChanged("CanViewSwagger");
+                _canViewOpenAPI = value;
+                ViewOpenAPITooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canViewOpenAPI ? Warewolf.Studio.Resources.Languages.Tooltips.ViewOpenAPIToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
+                OnPropertyChanged("CanViewOpenAPI");
             }
         }
 
-        public string ViewSwaggerTooltip
+        public string ViewOpenAPITooltip
         {
-            get => _viewSwaggerTooltip;
+            get => _viewOpenAPITooltip;
             set
             {
-                _viewSwaggerTooltip = value;
-                OnPropertyChanged("ViewSwaggerTooltip");
+                _viewOpenAPITooltip = value;
+                OnPropertyChanged("ViewOpenAPITooltip");
             }
         }
 
@@ -992,14 +992,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }));
 
-        public ICommand ViewSwaggerCommand => _viewSwaggerCommand ?? (_viewSwaggerCommand = new DelegateCommand(param =>
+        public ICommand ViewOpenAPICommand => _viewOpenAPICommand ?? (_viewOpenAPICommand = new DelegateCommand(param =>
         {
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
                 var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                 if (mvm?.ActiveItem != null)
                 {
-                    mvm.ViewSwagger(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
+                    mvm.ViewOpenAPI(mvm.ActiveItem.ContextualResourceModel.ResourceName, mvm.ActiveItem.ContextualResourceModel.ResourceName, mvm.ActiveServer.Connection.WebServerUri);
                 }
             }
         }));
@@ -2514,7 +2514,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         ICommand _duplicateCommand;
         ICommand _deployCommand;
         ICommand _showDependenciesCommand;
-        ICommand _viewSwaggerCommand;
+        ICommand _viewOpenAPICommand;
         ICommand _copyUrlCommand;
         DebugOutputViewModel _debugOutputViewModel;
         IDataListViewModel _dataListViewModel;
@@ -2528,10 +2528,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _canDuplicate;
         bool _canDeploy;
         bool _canShowDependencies;
-        bool _canViewSwagger;
+        bool _canViewOpenAPI;
         bool _canCopyUrl;
         string _copyUrlTooltip;
-        string _viewSwaggerTooltip;
+        string _viewOpenAPITooltip;
         string _debugInputsTooltip;
         string _debugStudioTooltip;
         string _debugBrowserTooltip;

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -645,8 +645,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("WorkflowDesignerModel_ViewSwaggerCommand")]
-        public void WorkflowDesignerViewModel_ViewSwaggerCommand_CanExecute()
+        [TestCategory("WorkflowDesignerModel_ViewOpenAPICommand")]
+        public void WorkflowDesignerViewModel_ViewOpenAPICommand_CanExecute()
         {
             //------------Setup for test--------------------------
             var workflow = new ActivityBuilder
@@ -694,8 +694,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            viewModel.ViewSwaggerCommand.Execute(null);
-            Assert.IsTrue(viewModel.ViewSwaggerCommand.CanExecute(null));
+            viewModel.ViewOpenAPICommand.Execute(null);
+            Assert.IsTrue(viewModel.ViewOpenAPICommand.CanExecute(null));
             //------------Assert Results-------------------------
         }
 
@@ -1042,8 +1042,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             Assert.IsFalse(workflowDesigner.CanCopyUrl);
             Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.CopyUrlTooltip);
 
-            Assert.IsFalse(workflowDesigner.CanViewSwagger);
-            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ViewSwaggerTooltip);
+            Assert.IsFalse(workflowDesigner.CanViewOpenAPI);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ViewOpenAPITooltip);
 
             Assert.IsFalse(workflowDesigner.CanShowDependencies);
             Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ShowDependenciesTooltip);

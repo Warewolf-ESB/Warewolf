@@ -6804,11 +6804,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View Swagger source for the current resource.
+        ///   Looks up a localized string similar to View OpenAPI source for the current resource.
         /// </summary>
-        public static string ViewSwaggerToolTip {
+        public static string ViewOpenAPIToolTip {
             get {
-                return ResourceManager.GetString("ViewSwaggerToolTip", resourceCulture);
+                return ResourceManager.GetString("ViewOpenAPIToolTip", resourceCulture);
             }
         }
         

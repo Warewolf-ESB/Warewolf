@@ -56,6 +56,8 @@ namespace Dev2.Runtime.WebServer
             InitializeQueryString();
         }
 
+        public HttpRequestMessage Request => _request;
+
         public string Method { get; }
         public Uri Uri { get; }
         public IPrincipal User { get; set; }
