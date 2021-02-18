@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -125,21 +125,33 @@ namespace Dev2.Activities
                 var suspensionId = EvalSuspensionId();
                 if (string.IsNullOrWhiteSpace(suspensionId))
                 {
-                    Response = GlobalConstants.Failed;
+                    Response = ErrorResource.ManualResumptionSuspensionIdBlank;
                     throw new Exception(ErrorResource.ManualResumptionSuspensionIdBlank);
                 }
 
                 if (!_persistenceEnabled)
                 {
-                    Response = GlobalConstants.Failed;
+                    Response = ErrorResource.PersistenceSettingsNoConfigured;
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
                 var overrideVariables = "";
                 if (OverrideInputVariables)
                 {
+                    var suspendedEnv = _scheduler.GetSuspendedEnvironment(suspensionId);
+
+                    if (string.IsNullOrEmpty(suspendedEnv))
+                    {
+                        throw new Exception(ErrorResource.ManualResumptionSuspensionEnvBlank);
+                    }
+
+                    if (suspendedEnv.StartsWith("Failed:"))
+                    {
+                        throw new Exception(suspendedEnv);
+                    }
+
                     var innerActivity = InnerActivity();
-                    overrideVariables = ExecuteOverrideDataFunc(innerActivity);
+                    overrideVariables = ExecuteOverrideDataFunc(innerActivity, suspendedEnv, _dataObject);
                 }
 
                 Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
@@ -159,7 +171,7 @@ namespace Dev2.Activities
             }
             catch (Exception ex)
             {
-                Response = GlobalConstants.Failed;
+                Response = ex.Message;
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
@@ -195,27 +207,68 @@ namespace Dev2.Activities
             return innerActivity;
         }
 
-        private string ExecuteOverrideDataFunc(ForEachInnerActivityTO innerActivity)
+        public string ExecuteOverrideDataFunc(ForEachInnerActivityTO innerActivity, string suspendedEnv, IDSFDataObject dataObject)
         {
-            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.Empty);
+            IDSFDataObject newDataObject = new DsfDataObject(string.Empty, Guid.Empty);
+
+            var serviceInputs = new List<IServiceInput>();
+            InputsFromJson.FromJson(suspendedEnv, serviceInputs);
 
             var origInnerInputMapping = innerActivity.OrigInnerInputMapping;
             var inputs = TranslateInputMappingToInputs(origInnerInputMapping);
+
             foreach (var serviceInput in inputs)
             {
+                string inputName;
+                string inputValue;
+                IServiceInput storedInput = null;
+
                 var isVariable = ExecutionEnvironment.IsValidVariableExpression(serviceInput.Value, out string errorMessage, 0);
                 if (isVariable)
                 {
-                    var inputName = _dataObject.Environment.EvalToExpression(serviceInput.Value, _update);
-                    var inputValue = ExecutionEnvironment.WarewolfEvalResultToString(_dataObject.Environment.Eval(inputName, _update, false, true));
-                    dataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
+                    inputName = dataObject.Environment.EvalToExpression(serviceInput.Value, _update);
+                    inputValue = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(inputName, _update, false, true));
                 }
                 else
                 {
-                    dataObject.Environment.AssignWithFrame(new AssignValue("[[" + serviceInput.Name + "]]", serviceInput.Value), _update);
+                    inputName = "[[" + serviceInput.Name + "]]";
+                    inputValue = serviceInput.Value;
                 }
+
+                if (ExecutionEnvironment.IsScalar(serviceInput.Value))
+                {
+                    storedInput = serviceInputs.FirstOrDefault(o => o.Name == serviceInput.Name);
+                }
+                else if (ExecutionEnvironment.IsRecordsetIdentifier(serviceInput.Value))
+                {
+                    storedInput = serviceInputs.FirstOrDefault(o =>
+                    {
+                        var recName = o.Name;
+                        if (o.Name.Contains("."))
+                        {
+                            recName = o.Name.Remove(0, o.Name.IndexOf(".", StringComparison.Ordinal) + 1);
+                        }
+
+                        return recName == serviceInput.Name;
+                    });
+                }
+                else
+                {
+                    if (serviceInput.Name.StartsWith("@"))
+                    {
+                        storedInput = serviceInputs.FirstOrDefault(o => o.Name == serviceInput.Name);
+                    }
+                }
+
+                if (storedInput != null && inputValue is null)
+                {
+                    inputValue = storedInput.Value;
+                }
+
+                newDataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
             }
-            return dataObject.Environment.ToJson();
+
+            return newDataObject.Environment.ToJson();
         }
 
         private static IEnumerable<IServiceInput> TranslateInputMappingToInputs(string inputMapping)

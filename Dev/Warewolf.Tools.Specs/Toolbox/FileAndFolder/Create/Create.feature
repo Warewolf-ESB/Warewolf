@@ -52,8 +52,7 @@ Scenario Outline: Create file at location with overwrite disabled
 		| 4  | FTPS       | [[path]]    | ftp://DEVOPSPDC.premier.local:1002/FORCREATEFILETESTING/test.txt                            | False    | Administrator   | Dev2@dmin123 | [[result]] | Success | NO           |                           |
 		| 5  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test.txt                                                        | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           |                           |
 		| 6  | SFTP       | [[path]]    | sftp://SVRDEV.premier.local/test1.txt                                                       | False    | dev2            | Q/ulw&]      | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
-
-
+	
 Scenario Outline: Create file at location Nulls
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
 	And overwrite is "<selected>"
