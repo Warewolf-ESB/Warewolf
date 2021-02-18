@@ -47,7 +47,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public List<INameValue> Headers { get; set; }
         public List<IFormDataParameters> FormDataParameters { get; internal set; }
         public bool IsFormDataChecked { get; set; }
-        public bool IsNoneChecked { get; set; }
+        public bool IsManualChecked { get; set; }
 
         public WebService()
         {

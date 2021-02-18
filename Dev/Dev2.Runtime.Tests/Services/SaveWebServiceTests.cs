@@ -235,7 +235,7 @@ namespace Dev2.Tests.Runtime.Services
                         }
                     }.ToFormDataParameter()
                 },
-                IsNoneChecked = false,
+                IsManualChecked = false,
                 IsFormDataChecked = true,
             };
 

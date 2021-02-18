@@ -16,7 +16,7 @@ namespace Dev2.Common.Interfaces.ToolBase
         string PostData { get; set; }
         string QueryString { get; set; }
         string RequestUrl { get; set; }
-        bool IsNoneChecked { get; set; }
+        bool IsManualChecked { get; set; }
         bool IsFormDataChecked { get; set; }
     }
 }

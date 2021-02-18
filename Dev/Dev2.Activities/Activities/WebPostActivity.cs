@@ -41,7 +41,7 @@ namespace Dev2.Activities
 
         public IList<INameValue> Headers { get; set; }
         public bool IsFormDataChecked { get; set; }
-        public bool IsNoneChecked { get; set; }
+        public bool IsManualChecked { get; set; }
         public IList<FormDataConditionExpression> Conditions { get; set; }
         public string QueryString { get; set; }
         public IOutputDescription OutputDescription { get; set; }
@@ -88,7 +88,7 @@ namespace Dev2.Activities
             AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
             
-            if (IsNoneChecked)
+            if (IsManualChecked)
             {
                 debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", "Post Data"), debugItem);
@@ -158,7 +158,7 @@ namespace Dev2.Activities
             {
                 webRequestResult = PerformFormDataWebPostRequest(source, WebRequestMethod.Post, query, head, conditions);
             }
-            else if (IsNoneChecked)
+            else if (IsManualChecked)
             {
                 webRequestResult = PerformManualWebPostRequest(head, query, source, postData);
             }
@@ -225,7 +225,7 @@ namespace Dev2.Activities
                 query = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(QueryString, update));
             }
             var postData = string.Empty;
-            if (PostData != null && IsNoneChecked)
+            if (PostData != null && IsManualChecked)
             {
                 postData = ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(PostData, update, true));
             }
@@ -317,7 +317,7 @@ namespace Dev2.Activities
                    string.Equals(QueryString, other.QueryString) &&
                    Equals(OutputDescription, other.OutputDescription) &&
                    string.Equals(PostData, other.PostData) &&
-                   Equals(IsNoneChecked, other.IsNoneChecked) &&
+                   Equals(IsManualChecked, other.IsManualChecked) &&
                    Equals(IsFormDataChecked, other.IsFormDataChecked);
         }
 
@@ -350,7 +350,7 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (PostData != null ? PostData.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (IsNoneChecked.GetHashCode());
+                hashCode = (hashCode * 397) ^ (IsManualChecked.GetHashCode());
                 hashCode = (hashCode * 397) ^ (IsFormDataChecked.GetHashCode());
                 return hashCode;
             }

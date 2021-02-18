@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = src.Id,
                     Headers = src.Headers,
                     RequestBody = src.PostData,
-                    IsNoneChecked = src.IsNoneChecked,
+                    IsManualChecked = src.IsManualChecked,
                     IsFormDataChecked = src.IsFormDataChecked,
                     FormDataParameters = src.FormDataParameters.Where(o => o.IsEmptyRow != true).ToList(),
                     RequestHeaders = requestHeader,

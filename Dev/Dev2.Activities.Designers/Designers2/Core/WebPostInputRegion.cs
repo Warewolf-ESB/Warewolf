@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers2.Core
         private ObservableCollection<INameValue> _parameters;
         private bool _isEnabled;
         private string _postData;
-        private bool _isNoneChecked;
+        private bool _isManualChecked;
         private bool _isFormDataChecked;
 
         public WebPostInputRegion()
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core
                 RequestUrl = source.SelectedSource.HostName;
                 IsEnabled = true;
                 IsFormDataChecked = modelItem.GetProperty<bool>("IsFormDataChecked");
-                IsNoneChecked = modelItem.GetProperty<bool>("IsNoneChecked");
+                IsManualChecked = modelItem.GetProperty<bool>("IsManualChecked");
             }
         }
 
@@ -101,7 +101,7 @@ namespace Dev2.Activities.Designers2.Core
                 Headers.Clear();
                 AddHeaders();
                 IsEnabled = true;
-                IsNoneChecked = true;
+                IsManualChecked = true;
             }
 
             OnPropertyChanged(nameof(IsEnabled));
@@ -137,13 +137,13 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public bool IsNoneChecked
+        public bool IsManualChecked
         {
-            get => _modelItem.GetProperty<bool> ("IsNoneChecked");
+            get => _modelItem.GetProperty<bool> ("IsManualChecked");
             set
             {
-                _isNoneChecked = value;
-                _modelItem.SetProperty("IsNoneChecked", value);
+                _isManualChecked = value;
+                _modelItem.SetProperty("IsManualChecked", value);
                 OnPropertyChanged();
             }
         }
@@ -200,7 +200,7 @@ namespace Dev2.Activities.Designers2.Core
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled,
-                IsNoneChecked = IsNoneChecked,
+                IsManualChecked = IsManualChecked,
                 IsFormDataChecked = IsFormDataChecked
             };
         }
@@ -210,7 +210,7 @@ namespace Dev2.Activities.Designers2.Core
             if (toRestore is WebPostInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
-                IsNoneChecked = region.IsNoneChecked;
+                IsManualChecked = region.IsManualChecked;
                 IsFormDataChecked = region.IsFormDataChecked;
                 PostData = region.PostData;
                 QueryString = region.QueryString;

@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Source = source,
                     Headers = src.Headers,
                     FormDataParameters = src.FormDataParameters,
-                    IsNoneChecked = src.IsNoneChecked,
+                    IsManualChecked = src.IsManualChecked,
                     IsFormDataChecked = src.IsFormDataChecked,
                     RequestMethod = src.Method,
                     RequestResponse = src.Response
