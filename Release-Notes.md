@@ -4,7 +4,6 @@ Enhancements
 -------------
 OpenApi 
    - Generate OpenApi from folder level
-   - Renamed from Swagger to OpenApi
 
 Manual Resumption
    - Override individual input variables
@@ -16,11 +15,6 @@ File Write
    - Read and Write from UNC path no longer gives safe handle error
 
 
-Code Coverage 
--------------
-Resumption
-
-
 9 February 2021
 ===============
 Bug Fixes
@@ -30,6 +24,7 @@ Hangfire
  
 Triggers
    -Trigger will now execute within Kubernetes Cluster
+
 19 January 2021
 ======================
 Bug Fixes
