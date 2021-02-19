@@ -52,9 +52,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var src = serializer.Deserialize<IWebService>(resourceDefinition);
 
                 var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
-                
-                var requestHeaders = src.Headers.Select(nameValue => nameValue.Name + ":" + nameValue.Value).ToList();
-                var requestHeader = string.Join(";", requestHeaders).TrimEnd(':',';');
+
+                var requestHeaders = new List<string>();
+                var requestHeader = string.Empty;
+               
+                requestHeaders = src.Headers.Select(nameValue => nameValue.Name + ":" + nameValue.Value).ToList();
+                requestHeader = string.Join(";", requestHeaders).TrimEnd(':', ';');
+
+
                 var res = new WebService
                 {
                     Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), "test"),
@@ -65,7 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     RequestBody = src.PostData,
                     IsManualChecked = src.IsManualChecked,
                     IsFormDataChecked = src.IsFormDataChecked,
-                    FormDataParameters = src.FormDataParameters.Where(o => o.IsEmptyRow != true).ToList(),
+                    FormDataParameters = src.FormDataParameters.Where(o => !o.IsEmptyRow).ToList(),
                     RequestHeaders = requestHeader,
                     RequestMethod = src.Method,
                     RequestResponse = src.Response,
