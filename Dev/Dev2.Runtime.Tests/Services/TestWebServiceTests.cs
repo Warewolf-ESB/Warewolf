@@ -93,7 +93,7 @@ namespace Dev2.Tests.Runtime.Services
             mockWebSource.Setup(o => o.Address)
                 .Returns("http://address.co.za/examples");
             mockWebSource.Setup(o => o.Client)
-                .Returns(mockWebClientWrapper.Object); //Ensure this is not instanciated here
+                .Returns(mockWebClientWrapper.Object); //Ensure this is not instantiated here
             mockWebSource.Setup(o => o.AuthenticationType)
                 .Returns(AuthenticationType.Anonymous);
 
@@ -114,10 +114,10 @@ namespace Dev2.Tests.Runtime.Services
             var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
 
             Assert.IsNotNull(result);
-            Assert.IsFalse(executeMessage.HasError, "FormDataParameters cannot be null");
+            Assert.IsFalse(executeMessage.HasError, "FormDataParameters can be null");
             Assert.IsFalse(executeMessage.Message.ToString().Contains("Value cannot be null.\r\nParameter name: source"));
 
-            mockWebServices.Verify(o => o.TestWebService(It.IsAny<WebService>()), Times.Once, "Some request do not set FormDataParameters and hance it is not required field");
+            mockWebServices.Verify(o => o.TestWebService(It.IsAny<WebService>()), Times.Once, "Some request do not set FormDataParameters and hence it is not required field");
             mockWebSource.Verify(o => o.Client, Times.Never);
         }
 
