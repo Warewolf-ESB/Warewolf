@@ -698,20 +698,24 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             {
                 new FormDataOptionConditionExpression
                 {
-                    Key = "l",
+                    Key = "k",
                     Value = "[[VariableToExpose]]",
                     Cond = new FormDataConditionText
                     {
                         TableType = enFormDataTableType.Text,
                         Value = ""
                     },
-                }
+                },
+                new FormDataOptionConditionExpression
+                {
+                    Key = "k"
+                },
             };
             //---------------Execute Test ----------------------
             var result = postViewModel.ToModel();
 
             var actualInputs = result.Inputs;
-            Assert.IsTrue(actualInputs.Count == 1);
+            Assert.IsTrue(actualInputs.Count == 1, "An incomplete object should not be added to list of FormDataParameters");
             Assert.IsTrue(actualInputs.First().Name == "[[VariableToExpose]]");
         }
 

@@ -38,6 +38,9 @@ namespace Warewolf.Data.Options
 
         [JsonIgnore]
         public bool IsEmptyRow { get; }
+        
+        [JsonIgnore]
+        public bool IsIncompleteRow { get; }
 
         public abstract void RenderDescription(StringBuilder text);
     }
@@ -59,6 +62,17 @@ namespace Warewolf.Data.Options
             {
                 var isEmptyRow = string.IsNullOrEmpty(Key);
                 isEmptyRow &= string.IsNullOrEmpty(Value);
+                return isEmptyRow;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsIncompleteRow
+        {
+            get
+            {
+                var isEmptyRow = string.IsNullOrEmpty(Key);
+                isEmptyRow |= string.IsNullOrEmpty(Value);
                 return isEmptyRow;
             }
         }
@@ -124,6 +138,18 @@ namespace Warewolf.Data.Options
                 isEmptyRow &= string.IsNullOrEmpty(FileName);
                 isEmptyRow &= string.IsNullOrEmpty(FileBase64);
                 return isEmptyRow;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsIncompleteRow
+        {
+            get
+            {
+                var isIncompleteRow = string.IsNullOrEmpty(Key);
+                isIncompleteRow |= string.IsNullOrEmpty(FileName);
+                isIncompleteRow |= string.IsNullOrEmpty(FileBase64);
+                return isIncompleteRow;
             }
         }
     }
