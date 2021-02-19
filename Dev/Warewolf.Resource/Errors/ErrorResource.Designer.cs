@@ -3831,5 +3831,11 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("ManualResumptionEnqueued", resourceCulture);
             }
         }
+        
+        public static string SuspendOptionValueNotSet {
+            get {
+                return ResourceManager.GetString("SuspendOptionValueNotSet", resourceCulture);
+            }
+        }
     }
 }
