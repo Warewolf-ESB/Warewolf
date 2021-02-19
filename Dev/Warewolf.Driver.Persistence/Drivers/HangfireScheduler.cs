@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -25,6 +24,7 @@ using Hangfire.Server;
 using Hangfire.SqlServer;
 using Hangfire.States;
 using Warewolf.Auditing;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Dev2JsonSerializer = Dev2.Common.Serializers.Dev2JsonSerializer;
 using LogLevel = Warewolf.Logging.LogLevel;
@@ -49,6 +49,39 @@ namespace Warewolf.Driver.Persistence.Drivers
             _client = client;
         }
 
+        public string GetSuspendedEnvironment(string jobId)
+        {
+            var monitoringApi = _jobStorage.GetMonitoringApi();
+            var jobDetails = monitoringApi.JobDetails(jobId);
+            var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+            var errMsg = "Failed: ";
+            if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
+            {
+                return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
+            }
+            if (currentState?.StateName == "Enqueued")
+            {
+                return  errMsg + ErrorResource.ManualResumptionEnqueued;
+            }
+            if (currentState?.StateName == "Processing")
+            {
+                return  errMsg + ErrorResource.ManualResumptionProcessing;
+            }
+
+            if (jobDetails.Job.Args[0] is Dictionary<string, StringBuilder> values)
+            {
+                values.TryGetValue("environment", out StringBuilder persistedEnvironment);
+
+                var decryptEnvironment = persistedEnvironment.ToString().CanBeDecrypted()
+                    ? DpapiWrapper.Decrypt(persistedEnvironment.ToString())
+                    : persistedEnvironment.ToString();
+
+                return decryptEnvironment;
+            }
+
+            return string.Empty;
+        }
+
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment)
         {
             try
@@ -57,9 +90,18 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var jobDetails = monitoringApi.JobDetails(jobId);
                 var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
 
-                if (currentState?.StateName != "Scheduled" && currentState?.StateName != "Failed" )
+                var errMsg = "Failed: ";
+                if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
                 {
-                    return GlobalConstants.Failed;
+                    return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
+                }
+                if (currentState?.StateName == "Enqueued")
+                {
+                    return  errMsg + ErrorResource.ManualResumptionEnqueued;
+                }
+                if (currentState?.StateName == "Processing")
+                {
+                    return  errMsg + ErrorResource.ManualResumptionProcessing;
                 }
 
                 var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
@@ -78,7 +120,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 }
                 values.TryGetValue("currentuserprincipal", out StringBuilder currentUserPrincipal);
                 var decryptCurrentUserPrincipal = currentUserPrincipal.ToString().CanBeDecrypted() ? DpapiWrapper.Decrypt(currentUserPrincipal.ToString()) : currentUserPrincipal.ToString();
-                if (values.ContainsKey("environment"))
+                if (values.ContainsKey("currentuserprincipal"))
                 {
                     values["currentuserprincipal"] = new StringBuilder(decryptCurrentUserPrincipal);
                 }
@@ -90,7 +132,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 {
                     var failedState = new FailedState(new Exception(executeMessage.Message?.ToString()));
                     _client.ChangeState(jobId, failedState, ScheduledState.StateName);
-                    return GlobalConstants.Failed;
+                    return executeMessage.Message?.ToString();
                 }
 
                 values.TryGetValue("resourceID", out StringBuilder workflowId);

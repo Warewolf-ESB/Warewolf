@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,6 +29,9 @@ using Hangfire.States;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Auditing;
+using Warewolf.Resource.Errors;
+using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using enActionType = Dev2.Common.Interfaces.Core.DynamicServices.enActionType;
 
 namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
@@ -144,11 +147,20 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob"), Times.Once);
         }
 
+        static IExecutionEnvironment CreateExecutionEnvironment()
+        {
+            return new ExecutionEnvironment();
+        }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
         public void HangfireScheduler_ResumeJob_OverrideIsTrue_Success()
         {
+            var executionEnvironment = CreateExecutionEnvironment();
+            executionEnvironment.Assign("[[UUID]]", "public", 0);
+            executionEnvironment.Assign("[[JourneyName]]", "whatever", 0);
+            var env = executionEnvironment.ToJson();
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
@@ -161,7 +173,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
-                {"environment", new StringBuilder("NewEnvironment")},
+                {"environment", new StringBuilder(env)},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
                 {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
@@ -190,7 +202,11 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 .Returns(mockResumableExecutionContainer.Object);
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
 
-            var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, true, "NewEnvironment_Override");
+            var newexecutionEnvironment = CreateExecutionEnvironment();
+            newexecutionEnvironment.Assign("[[UUID]]", "public", 0);
+            newexecutionEnvironment.Assign("[[JourneyName]]", "whatever", 0);
+
+            var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, true, newexecutionEnvironment.ToJson());
             Assert.AreEqual(GlobalConstants.Success, result);
 
             mockResumableExecutionContainer.Verify(o => o.Execute(out errors, 0), Times.Once);
@@ -246,9 +262,142 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             CustomContainer.Register(mockResumableExecutionContainerFactory.Object);
 
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
-            Assert.AreEqual(GlobalConstants.Failed, result);
+            Assert.AreEqual("ErrorMessage", result);
 
             mockResumableExecutionContainer.Verify(o => o.Execute(out errors, 0), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        [Timeout(120000)]
+        public void HangfireScheduler_GetSuspendedEnvironment_Success()
+        {
+            var executionEnvironment = CreateExecutionEnvironment();
+            executionEnvironment.Assign("[[UUID]]", "public", 0);
+            executionEnvironment.Assign("[[JourneyName]]", "whatever", 0);
+            var env = executionEnvironment.ToJson();
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
+
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder(env)},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+            };
+
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+
+            var jobstorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
+            var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+
+
+            var result = scheduler.GetSuspendedEnvironment(jobId);
+            Assert.AreEqual(env, result);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        [Timeout(120000)]
+        public void HangfireScheduler_GetSuspendedEnvironment_EnqueuedState_Fails()
+        {
+            var executionEnvironment = CreateExecutionEnvironment();
+            executionEnvironment.Assign("[[UUID]]", "public", 0);
+            executionEnvironment.Assign("[[JourneyName]]", "whatever", 0);
+            var env = executionEnvironment.ToJson();
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
+
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder(env)},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+            };
+
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+
+            var jobstorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
+            var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+
+            var state = new EnqueuedState();
+            client.ChangeState(jobId, state, ScheduledState.StateName);
+
+            var result = scheduler.GetSuspendedEnvironment(jobId);
+            Assert.AreEqual("Failed: The suspended workflow is in a Enqueued state.", result);
+        }
+
+    [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        [Timeout(120000)]
+        public void HangfireScheduler_GetSuspendedEnvironment_ManuallyResumedState_Fails()
+        {
+            var executionEnvironment = CreateExecutionEnvironment();
+            executionEnvironment.Assign("[[UUID]]", "public", 0);
+            executionEnvironment.Assign("[[JourneyName]]", "whatever", 0);
+            var env = executionEnvironment.ToJson();
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
+
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder(env)},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+            };
+
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+
+            var jobstorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
+            var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+
+            var state = new Persistence.ManuallyResumedState("");
+            client.ChangeState(jobId, state, ScheduledState.StateName);
+
+            var result = scheduler.GetSuspendedEnvironment(jobId);
+            Assert.AreEqual("Failed: " + ErrorResource.ManualResumptionAlreadyResumed, result);
         }
 
         [TestMethod]
@@ -275,7 +424,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             client.ChangeState(jobId, manuallyResumedState, ScheduledState.StateName);
 
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
-            Assert.AreEqual(GlobalConstants.Failed, result);
+            Assert.AreEqual("Failed: " + ErrorResource.ManualResumptionAlreadyResumed, result);
         }
 
         [TestMethod]
@@ -302,7 +451,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             client.ChangeState(jobId, state, ScheduledState.StateName);
 
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
-            Assert.AreEqual(GlobalConstants.Failed, result);
+            Assert.AreEqual("Failed: " + ErrorResource.ManualResumptionEnqueued, result);
         }
 
         [TestMethod]
@@ -330,7 +479,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             client.ChangeState(jobId, state, ScheduledState.StateName);
 
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
-            Assert.AreEqual(GlobalConstants.Failed, result);
+            Assert.AreEqual("Failed: " + ErrorResource.ManualResumptionAlreadyResumed, result);
         }
 
         [TestMethod]
