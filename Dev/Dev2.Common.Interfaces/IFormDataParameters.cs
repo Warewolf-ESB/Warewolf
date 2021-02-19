@@ -17,6 +17,7 @@ namespace Dev2.Common.Interfaces
     {
         string Key { get; set; }
         bool IsEmptyRow { get; }
+        bool IsIncompleteRow { get; }
 
         void RenderDescription(StringBuilder text);
     }

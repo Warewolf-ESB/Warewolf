@@ -202,20 +202,18 @@ namespace Dev2.Runtime.ServiceModel
 
                 formDataParameters.AddRange(service.FormDataParameters.Select(o =>
                 {
-                    if (o is TextParameter)
+                    if (o is TextParameter textParam)
                     {
-                        var param = (TextParameter)o;
-                        param.Key = SetParameters(service.Method.Parameters, param.Key);
-                        param.Value = SetParameters(service.Method.Parameters, param.Value);
-                        return param;
+                        textParam.Key = SetParameters(service.Method.Parameters, textParam.Key);
+                        textParam.Value = SetParameters(service.Method.Parameters, textParam.Value);
+                        return textParam;
                     }
-                    else if (o is FileParameter)
+                    else if (o is FileParameter fileParam)
                     {
-                        var param = (FileParameter)o;
-                        param.Key = SetParameters(service.Method.Parameters, param.Key);
-                        param.FileName = SetParameters(service.Method.Parameters, param.FileName);
-                        param.FileBase64 = SetParameters(service.Method.Parameters, param.FileBase64);
-                        return param;
+                        fileParam.Key = SetParameters(service.Method.Parameters, fileParam.Key);
+                        fileParam.FileName = SetParameters(service.Method.Parameters, fileParam.FileName);
+                        fileParam.FileBase64 = SetParameters(service.Method.Parameters, fileParam.FileBase64);
+                        return fileParam;
                     }
                     return o;
                 }).ToList());
