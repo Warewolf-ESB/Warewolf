@@ -114,10 +114,10 @@ namespace Dev2.Tests.Runtime.Services
             var executeMessage = serializer.Deserialize<ExecuteMessage>(result);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(executeMessage.HasError, "FormDataParameters cannot be null");
-            Assert.IsTrue(executeMessage.Message.ToString().Contains("Value cannot be null.\r\nParameter name: source"));
+            Assert.IsFalse(executeMessage.HasError, "FormDataParameters cannot be null");
+            Assert.IsFalse(executeMessage.Message.ToString().Contains("Value cannot be null.\r\nParameter name: source"));
 
-            mockWebServices.Verify(o => o.TestWebService(It.IsAny<WebService>()), Times.Never);
+            mockWebServices.Verify(o => o.TestWebService(It.IsAny<WebService>()), Times.Once, "Some request do not set FormDataParameters and hance it is not required field");
             mockWebSource.Verify(o => o.Client, Times.Never);
         }
 
