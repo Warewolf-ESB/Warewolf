@@ -335,7 +335,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 ManageServiceInputViewModel.LoadConditionExpressionOptions(ConditionExpressionOptions.Options);
 
                 ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
-                ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
+                ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 2 || service.FormDataParameters.Count > 2;
 
                 GenerateOutputsVisible = true;
                 SetDisplayName(OutputDisplayName);
@@ -398,7 +398,7 @@ namespace Dev2.Activities.Designers2.Web_Post
         }
 
         public IHeaderRegion GetHeaderRegion() => InputArea;
-        
+
         public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
@@ -534,7 +534,7 @@ namespace Dev2.Activities.Designers2.Web_Post
 
             var queryString = InputArea.QueryString;
             _builder.GetValue(queryString, dt);
-            
+
             foreach (var nameValue in InputArea.Headers)
             {
                 _builder.GetValue(nameValue.Name, dt);
@@ -553,18 +553,16 @@ namespace Dev2.Activities.Designers2.Web_Post
                 {
                     if (!string.IsNullOrEmpty(parameter.Key))
                     {
-                        if (parameter is FileParameter)
+                        if (parameter is FileParameter fileParam)
                         {
-                            var param = (FileParameter)parameter;
-                            _builder.GetValue(param.Key, dt);
-                            _builder.GetValue(param.FileName, dt);
-                            _builder.GetValue(param.FileBase64, dt);
+                            _builder.GetValue(fileParam.Key, dt);
+                            _builder.GetValue(fileParam.FileName, dt);
+                            _builder.GetValue(fileParam.FileBase64, dt);
                         }
-                        else if (parameter is TextParameter)
+                        else if (parameter is TextParameter textParam)
                         {
-                            var param = (TextParameter)parameter;
-                            _builder.GetValue(param.Key, dt);
-                            _builder.GetValue(param.Value, dt);
+                            _builder.GetValue(textParam.Key, dt);
+                            _builder.GetValue(textParam.Value, dt);
 
                         }
                     }
@@ -585,7 +583,7 @@ namespace Dev2.Activities.Designers2.Web_Post
                 OnPropertyChanged();
             }
         }
-        
+
         public OptionsWithNotifier Options
         {
             get => _options;

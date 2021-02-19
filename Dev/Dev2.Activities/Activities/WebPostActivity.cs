@@ -68,7 +68,7 @@ namespace Dev2.Activities
             var (head, parameters, _, conditions) = GetEnvironmentInputVariables(env, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var headerString=string.Empty;
+            var headerString = string.Empty;
             if (head != null)
             {
                 headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
@@ -87,7 +87,7 @@ namespace Dev2.Activities
             AddDebugItem(new DebugItemStaticDataParams("", nameof(Headers)), debugItem);
             AddDebugItem(new DebugEvalResult(headerString, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
-            
+
             if (IsManualChecked)
             {
                 debugItem = new DebugItem();
@@ -168,12 +168,12 @@ namespace Dev2.Activities
             var bytes = webRequestResult.Base64StringToByteArray();
             var response = bytes.ReadToString();
 
-            ResponseManager = new ResponseManager 
-            { 
-                OutputDescription = OutputDescription, 
-                Outputs = Outputs, 
-                IsObject = IsObject, 
-                ObjectName = ObjectName 
+            ResponseManager = new ResponseManager
+            {
+                OutputDescription = OutputDescription,
+                Outputs = Outputs,
+                IsObject = IsObject,
+                ObjectName = ObjectName
             };
             ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
 
@@ -184,39 +184,11 @@ namespace Dev2.Activities
             IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
-                //TODO: Refactor, wrap this implimentation into a helper object
                 head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval(a.Value, update))));
                 if (IsFormDataChecked)
                 {
-                    const string contentTypeString = "Content-Type";
-                    const string multipatFormDataString = "multipart/form-data";
-                    var headEvaluated = head.FirstOrDefault(o => o.Name == contentTypeString);
-                    var contentTypeName = headEvaluated?.Name;
-                    var contentTypeValue = headEvaluated?.Value;
-                    
-                    var headers = head.ToList();
-                    var formDataBoundary = string.Format("----------{0:N}", Guid.NewGuid());
-                    if (headEvaluated == null)
-                    {
-                        contentTypeValue = multipatFormDataString + "; boundary=" + formDataBoundary;
-
-                        var addItem = new NameValue(contentTypeString, contentTypeValue);
-                        headers.Add(addItem);
-                        Headers.Add(addItem);
-                    }
-
-                    if (!contentTypeValue.Contains("boundary="))
-                    {
-                        var headNotEvaluated = Headers.FirstOrDefault(o => o.Name == contentTypeString);
-                        Headers.Remove(new NameValue(headNotEvaluated.Name, headNotEvaluated.Value));
-                        headers.Remove(new NameValue(contentTypeName, contentTypeValue));
-
-                        contentTypeValue = multipatFormDataString + "; boundary=" + formDataBoundary;
-
-                        var addItem = new NameValue(contentTypeString, contentTypeValue);
-                        headers.Add(addItem);
-                        Headers.Add(addItem);
-                    }
+                    var headersHelper = new WebRequestHeadersHelper(notEvaluatedHeaders: Headers, evaluatedHeaders: head);
+                    head = headersHelper.CalculateFormDataContentType();
                 }
             }
             var query = string.Empty;
@@ -338,7 +310,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((WebPostActivity) obj);
+            return Equals((WebPostActivity)obj);
         }
 
         public override int GetHashCode()
@@ -356,4 +328,5 @@ namespace Dev2.Activities
             }
         }
     }
+
 }
