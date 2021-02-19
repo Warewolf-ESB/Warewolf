@@ -3805,5 +3805,37 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("NextNodeRequiredForSuspendExecution", resourceCulture);
             }
         }
+
+        public static string ManualResumptionSuspensionEnvBlank {
+            get {
+                return ResourceManager.GetString("ManualResumptionSuspensionEnvBlank", resourceCulture);
+            }
+        }
+        public static string ManualResumptionFailed {
+            get {
+                return ResourceManager.GetString("ManualResumptionFailed", resourceCulture);
+            }
+        }
+        public static string ManualResumptionAlreadyResumed {
+            get {
+                return ResourceManager.GetString("ManualResumptionAlreadyResumed", resourceCulture);
+            }
+        }
+        public static string ManualResumptionProcessing {
+            get {
+                return ResourceManager.GetString("ManualResumptionProcessing", resourceCulture);
+            }
+        }
+        public static string ManualResumptionEnqueued {
+            get {
+                return ResourceManager.GetString("ManualResumptionEnqueued", resourceCulture);
+            }
+        }
+        
+        public static string SuspendOptionValueNotSet {
+            get {
+                return ResourceManager.GetString("SuspendOptionValueNotSet", resourceCulture);
+            }
+        }
     }
 }
