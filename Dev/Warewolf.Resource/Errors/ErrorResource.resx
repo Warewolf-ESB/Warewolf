@@ -1382,4 +1382,7 @@ Please contact your Windows System Administrator.</value>
   <data name="ManualResumptionEnqueued" xml:space="preserve">
     <value>The suspended workflow is in a Enqueued state.</value>
   </data>
+  <data name="SuspendOptionValueNotSet" xml:space="preserve">
+    <value>Suspend option {0} value must not be null or empty.</value>
+  </data>
 </root>

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,6 +26,7 @@ using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Auditing;
 using Warewolf.Driver.Persistence;
+using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -781,9 +782,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             suspendExecutionActivity.Execute(dataObject, 0);
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, env.Errors.Count);
+            Assert.AreEqual(1, env.AllErrors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual( "At least 1 activity is required after Suspend Execution.",errors[0]);
+            Assert.AreEqual("<InnerError>" + ErrorResource.NextNodeRequiredForSuspendExecution + "</InnerError>",errors[0]);
         }
 
         [TestMethod]
@@ -853,9 +854,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             suspendExecutionActivity.Execute(dataObject, 0);
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, env.Errors.Count);
+            Assert.AreEqual(1, env.AllErrors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual("Could not find persistence config. Please configure in Persistence Settings.",errors[0]);
+            Assert.AreEqual("<InnerError>" + ErrorResource.PersistenceSettingsNoConfigured + "</InnerError>",errors[0]);
         }
 
         [TestMethod]
@@ -959,6 +960,91 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(enFindMissingType.SuspendExecution, enFindMissingType);
 
         }
+
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_Execute_Empty_SuspendOptionValue()
+        {
+            //------------Setup for test--------------------------
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentId = Guid.Empty;
+            var mockPrincipal = new Mock<ClaimsPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = mockPrincipal.Object,
+                IsDebug = true,
+                EnvironmentID = environmentId,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var dev2Activities = new List<IDev2Activity> {mockActivity.Object};
+            var activity = CreateWorkflow();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+
+            var suspendExecutionActivity =
+                new SuspendExecutionActivity(config, new Mock<IPersistenceExecution>().Object)
+                {
+                    SuspendOption = enSuspendOption.SuspendUntil,
+                    PersistValue = string.Empty,
+                    AllowManualResumption = true,
+                    SaveDataFunc = activityFunction,
+                    NextNodes = dev2Activities,
+                };
+
+            suspendExecutionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            suspendExecutionActivity.Execute(dataObject, 0);
+            Assert.AreEqual(null, suspendExecutionActivity.Response);
+            Assert.AreEqual(1, env.AllErrors.Count);
+            var errors = env.AllErrors.ToList();
+            Assert.AreEqual( "<InnerError>Suspend option Date value must not be null or empty.</InnerError>",errors[0]);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(SuspendExecutionActivity))]
+        public void SuspendExecutionActivity_GetSuspendVaidationMessageType_Validate()
+        {
+            Assert.AreEqual("Date",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendUntil));
+            Assert.AreEqual("Seconds",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForSeconds));
+            Assert.AreEqual("Minutes",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForMinutes));
+            Assert.AreEqual("Hours",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForHours));
+            Assert.AreEqual("Days",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForDays));
+            Assert.AreEqual("Months",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForMonths));
+        }
+
         static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();

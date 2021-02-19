@@ -61,6 +61,7 @@ namespace Warewolf.Driver.Persistence
             {
                 throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
             }
+
             var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
             return jobId;
         }
