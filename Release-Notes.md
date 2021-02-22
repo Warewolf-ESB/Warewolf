@@ -1,4 +1,4 @@
-19 February 2021
+22 February 2021
 ================
 Enhancements
 -------------
@@ -7,6 +7,9 @@ OpenApi
 
 Manual Resumption
    - Override individual input variables
+
+Web Post
+   - Web Post Tool can now post multi-part form data
 
 Bug Fixes
 ---------
