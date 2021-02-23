@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,13 +22,17 @@ namespace HangfireServer
         [ExcludeFromCodeCoverage]
         public void Configuration(IAppBuilder app)
         {
-            app.UseHangfireDashboard("/" + Dev2.Common.Config.Persistence.DashboardName);
+            app.UseHangfireDashboard("/" + Dev2.Common.Config.Persistence.DashboardName, new DashboardOptions()
+            {
+                Authorization = new[] { new HangFireAuthorizationFilter () },
+                IgnoreAntiforgeryToken = true
+            });
             app.UseHangfireServer(new BackgroundJobServerOptions()
             {
                 ServerName = Dev2.Common.Config.Persistence.ServerName,
-                ServerTimeout = TimeSpan.FromMinutes(10)
+                ServerTimeout = TimeSpan.FromMinutes(10),
+                WorkerCount = Environment.ProcessorCount * 5
             });
-
         }
     }
 }

@@ -58,6 +58,11 @@ namespace Warewolf.Storage
             }
             catch (Exception e)
             {
+                if (throwsifnotexists && e is NullValueInVariableException && e.Message.Contains("variable not found"))
+                {
+                    throw new Exception(string.Format("variable {0} not found", (e as NullValueInVariableException).VariableName));
+                }
+
                 if (throwsifnotexists || e is IndexOutOfRangeException || e.Message.Contains(@"index was not an int"))
                 {
                     throw;

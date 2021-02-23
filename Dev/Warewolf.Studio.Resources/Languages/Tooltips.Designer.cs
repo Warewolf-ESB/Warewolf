@@ -2761,6 +2761,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check to used a form-data as your payload..
+        /// </summary>
+        public static string ManageWebServiceRequestFormDataTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServiceRequestFormDataTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check to add your own Post body..
+        /// </summary>
+        public static string ManageWebServiceRequestNoneTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServiceRequestNoneTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the webservice host you want to use.
         /// </summary>
         public static string ManageWebServiceSourcesTooltip {
@@ -6804,11 +6822,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View Swagger source for the current resource.
+        ///   Looks up a localized string similar to View OpenAPI source for the current resource.
         /// </summary>
-        public static string ViewSwaggerToolTip {
+        public static string ViewOpenAPIToolTip {
             get {
-                return ResourceManager.GetString("ViewSwaggerToolTip", resourceCulture);
+                return ResourceManager.GetString("ViewOpenAPIToolTip", resourceCulture);
             }
         }
         

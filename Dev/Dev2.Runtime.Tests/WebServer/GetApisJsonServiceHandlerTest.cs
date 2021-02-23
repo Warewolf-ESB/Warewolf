@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,23 +31,23 @@ namespace Dev2.Tests.Runtime.WebServer
     {
         NameValueCollection LocalQueryString => new NameValueCollection
         {
-            { "Name", "the_name" },
-            { "isPublic", "" },
-            { "wid", "workflowid" },
-            { "rid", "resourceid" }
+            {"Name", "the_name"},
+            {"isPublic", ""},
+            {"wid", "workflowid"},
+            {"rid", "resourceid"}
         };
 
-            [TestMethod]
-            [Owner("Sanele Mthembu")]
-            [ExpectedException(typeof(ArgumentNullException))]
-            public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
-            {
-                //------------Setup for test-------------------------
-                var handler = new GetApisJsonServiceHandler();
-                //------------Execute Test---------------------------
-                handler.ProcessRequest(null);
-                //------------Assert Results-------------------------
-            }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
+        {
+            //------------Setup for test-------------------------
+            var handler = new GetApisJsonServiceHandler();
+            //------------Execute Test---------------------------
+            handler.ProcessRequest(null);
+            //------------Assert Results-------------------------
+        }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -73,9 +73,9 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             var collection = new NameValueCollection
             {
-                { "Name", "the_name" },
-                { "isPublic", "true" },
-                { "path", "" },
+                {"Name", "the_name"},
+                {"isPublic", "true"},
+                {"path", ""},
             };
             var communicationContext = new Mock<ICommunicationContext>();
             var request = new Mock<ICommunicationRequest>();

@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,11 +22,9 @@ using System.Runtime.Serialization.Json;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http.Controllers;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -45,8 +43,6 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
-using FluentAssertions.Common;
-using Microsoft.Office.SharePoint.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -56,7 +52,6 @@ using Warewolf.Security;
 using Warewolf.Services;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-using Xceed.Wpf.Toolkit.Core.Converters;
 using StringExtension = Dev2.Common.ExtMethods.StringExtension;
 
 namespace Dev2.Tests.Runtime.WebServer
@@ -182,7 +177,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
-        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceSwagger_ShouldSetDataObjectAsSwagger()
+        public void AbstractWebRequestHandler_CreateForm_GivenValidArgsContainsIsServiceOpenAPI_ShouldSetDataObjectAsOpenAPI()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -222,7 +217,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
 
-            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Once);
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.OPENAPI, Times.Once);
         }
 
         [TestMethod]
@@ -2090,7 +2085,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(AbstractWebRequestHandler))]
-        public void AbstractWebRequestHandler_SetEmitionType_GivenServiceNameEndsWithapi_ShouldSetDataObjectContentTypeSwagger()
+        public void AbstractWebRequestHandler_SetEmitionType_GivenServiceNameEndsWithapi_ShouldSetDataObjectContentTypeOpenAPI()
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.api";
@@ -2104,7 +2099,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var emitionType = dataObject.Object.SetEmissionType(null, ServiceName, collection);
             //---------------Test Result -----------------------
-            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.OPENAPI, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual("hello World", emitionType);
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);

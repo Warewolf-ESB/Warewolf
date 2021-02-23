@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
@@ -53,8 +53,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         #endregion Test initialize
 
         [TestMethod]
-        [Timeout(100)]
-        public void TestRetrieveSources()
+        [Timeout(250)]
+        public void TestRetrievePluginSources()
         {
             var expectedResult = new ObservableCollection<IPluginSource>();
             _mockQueryManager.Setup(it => it.FetchPluginSources()).Returns(expectedResult);

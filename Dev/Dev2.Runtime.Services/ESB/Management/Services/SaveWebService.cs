@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,15 +20,16 @@ using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SaveWebService : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
+        private IResourceCatalog _resourceCatalogue;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
@@ -49,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 
                 var parameters = src.Inputs?.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
                 
-                var source = ResourceCatalog.Instance.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
+                var source = ResourceCatalogue.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
                 var output = new List<MethodOutput>(src.OutputMappings.Select(a => new MethodOutput(a.MappedFrom, a.MappedTo, "", false, a.RecordSetName, false, "", false, "", false)));
                 var recset = new Recordset();
                 recset.Fields.AddRange(new List<RecordsetField>(src.OutputMappings.Select(a => new RecordsetField { Name = a.MappedFrom, Alias = a.MappedTo, RecordsetAlias = a.RecordSetName })));
@@ -69,15 +70,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Recordsets = recordsetList,
                     Source = source,
                     Headers = src.Headers,
+                    FormDataParameters = src.FormDataParameters,
+                    IsManualChecked = src.IsManualChecked,
+                    IsFormDataChecked = src.IsFormDataChecked,
                     RequestMethod = src.Method,
                     RequestResponse = src.Response
-     
                 };
                 res.Method.Name = src.Name;
                 res.Method.Parameters = parameters;
                 res.Method.Outputs = output;
                 res.Method.OutputDescription = res.GetOutputDescription();
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.Path);
+                ResourceCatalogue.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.Path);
                 ServerExplorerRepo.UpdateItem(res);
 
                 msg.HasError = false;
@@ -88,7 +91,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
-
             }
 
             return serializer.SerializeToBuilder(msg);
@@ -98,6 +100,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             get => _serverExplorerRepository ?? ServerExplorerRepository.Instance;
             set => _serverExplorerRepository = value;
+        }
+
+        public IResourceCatalog ResourceCatalogue
+        {
+            get => _resourceCatalogue ?? ResourceCatalog.Instance;
+            set => _resourceCatalogue = value;
         }
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><DbService ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");

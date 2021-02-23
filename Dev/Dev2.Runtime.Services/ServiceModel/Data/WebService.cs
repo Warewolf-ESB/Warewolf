@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,13 +14,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Utils;
 using Dev2.Data.Util;
-using Dev2.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -32,7 +30,6 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         bool _disposed;
 
-        #region Properties
         public string RequestUrl { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
@@ -47,9 +44,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string RequestMessage { get; set; }
         public string JsonPathResult { get; set; }
 
-        #endregion
-
-        #region CTOR
+        public List<INameValue> Headers { get; set; }
+        public List<IFormDataParameters> FormDataParameters { get; internal set; }
+        public bool IsFormDataChecked { get; set; }
+        public bool IsManualChecked { get; set; }
 
         public WebService()
         {
@@ -89,12 +87,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             Recordsets = CreateOutputsRecordsetList(action);
         }
 
-        public List<INameValue> Headers { get; set; } 
-
-        #endregion
-
-        #region ToXml
-
         public override XElement ToXml()
         {
             var result = CreateXml(enActionType.InvokeWebService, Source, Recordsets,
@@ -106,10 +98,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
             return result;
         }
-
-        #endregion
-
-        #region GetOutputDescription
 
         public IOutputDescription GetOutputDescription()
         {
@@ -138,11 +126,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             return result;
         }
 
-        #endregion
-
-        #region Implementation of IDisposable
-
-        // This destructor will run only if the Dispose method does not get called. 
+        // This destructor will run only if the Dispose method does not get called.
         ~WebService()
         {
             // Do not re-create Dispose clean-up code here. 
@@ -195,8 +179,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        #endregion
-
         public void ApplyPath()
         {
             if(String.IsNullOrEmpty(RequestResponse) || String.IsNullOrEmpty(JsonPath))
@@ -220,6 +202,5 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Dev2Logger.Error(je, GlobalConstants.WarewolfError);
             }
         }
-
     }
 }

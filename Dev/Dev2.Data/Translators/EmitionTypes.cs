@@ -15,7 +15,7 @@ namespace Dev2.Web
     {
         XML,
         JSON,
-        SWAGGER,
+        OPENAPI,
         TEST,
         TRX,
         Cover,

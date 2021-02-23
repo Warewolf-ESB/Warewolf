@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,7 @@ using Dev2.Network;
 using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Warewolf.Common;
+using Warewolf.Execution;
 
 namespace Warewolf.Driver.Resume
 {
@@ -29,7 +30,7 @@ namespace Warewolf.Driver.Resume
     {
         public IResumption New()
         {
-            return new Resumption();
+            return new Resumption(new ServerProxyFactory(), new ResourceCatalogProxyFactory());
         }
     }
 
@@ -38,47 +39,67 @@ namespace Warewolf.Driver.Resume
         private Uri _serverEndpoint;
 
         private IEnvironmentConnection _environmentConnection;
+        private IExecutionLogPublisher _logger;
+        private readonly IServerProxyFactory _serverProxyFactory;
+        private readonly IResourceCatalogProxyFactory _resourceCatalogProxyFactory;
+
+        public Resumption(IServerProxyFactory serverProxyFactory, IResourceCatalogProxyFactory resourceCatalogProxyFactory)
+        {
+            _serverProxyFactory = serverProxyFactory;
+            _resourceCatalogProxyFactory = resourceCatalogProxyFactory;
+        }
 
         private Uri ServerEndpoint
         {
             get
             {
-                var applicationServerUri = new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"https://{Environment.MachineName.ToLowerInvariant()}:3143" : AppUsageStats.LocalHost);
-                _serverEndpoint = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
+                _serverEndpoint = new Uri($"https://{System.Net.Dns.GetHostName()}:3143");
                 return _serverEndpoint;
             }
         }
 
         public ExecuteMessage Resume(Dictionary<string, StringBuilder> values)
         {
-            values.TryGetValue("resourceID", out StringBuilder resourceId);
-            values.TryGetValue("environment", out StringBuilder environment);
-            values.TryGetValue("startActivityId", out StringBuilder startActivityId);
-            values.TryGetValue("versionNumber", out StringBuilder versionNumber);
-            values.TryGetValue("currentuserprincipal", out StringBuilder currentuserprincipal);
+            values.TryGetValue("resourceID", out var resourceId);
+            values.TryGetValue("environment", out var environment);
+            values.TryGetValue("startActivityId", out var startActivityId);
+            values.TryGetValue("versionNumber", out var versionNumber);
+            values.TryGetValue("currentuserprincipal", out var currentuserprincipal);
 
-            var resourceCatalogProxyFactory = new ResourceCatalogProxyFactory();
-            var resourceCatalogProxy = resourceCatalogProxyFactory.New(_environmentConnection);
-            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString(),currentuserprincipal?.ToString());
+            if (_environmentConnection is null)
+            {
+                _environmentConnection = _serverProxyFactory.New(ServerEndpoint);
+            }
+            var resourceCatalogProxy = _resourceCatalogProxyFactory.New(_environmentConnection);
+            var executeMessage = resourceCatalogProxy.ResumeWorkflowExecution(resourceId?.ToString(), environment?.ToString(), startActivityId?.ToString(), versionNumber?.ToString(), currentuserprincipal?.ToString());
             return executeMessage;
         }
 
-        public bool Connect()
+        public bool Connect(IExecutionLogPublisher executionLogPublisher)
         {
             try
             {
-                var serverProxyFactory = new ServerProxyFactory();
-                _environmentConnection = serverProxyFactory.New(ServerEndpoint);
+                _logger = executionLogPublisher;
+                _logger.Info("Connecting to server: " + ServerEndpoint + "...");
+                _environmentConnection = _serverProxyFactory.New(_serverEndpoint);
                 Task<bool> connectTask = TryConnectingToWarewolfServer(_environmentConnection);
                 if (connectTask.Result is false)
                 {
-                    //TODO: Add with logging: _logger.Error("Connecting to server: " + _serverEndpoint + "... unsuccessful");
+                    _logger.Error("Connecting to server: " + _serverEndpoint + "... unsuccessful");
                     return false;
                 }
+                _logger.Info("Connecting to server: " + _serverEndpoint + "... successful");
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var exMessage = "Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message;
+                if (ex.InnerException != null)
+                {
+                    exMessage += " " + ex.InnerException.Message;
+                }
+
+                _logger.Error(exMessage);
                 return false;
             }
         }
@@ -88,12 +109,17 @@ namespace Warewolf.Driver.Resume
             try
             {
                 var connectTask = environmentConnection.ConnectAsync(Guid.Empty);
-                connectTask.Wait();
+                connectTask.Wait(600);
                 return connectTask;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO: Add with logging: _logger.Error(ex.Message, _options.ServerEndpoint);
+                var exMessage = "Connecting to server: " + _serverEndpoint + "... unsuccessful " + ex.Message;
+                if (ex.InnerException != null)
+                {
+                    exMessage += " " + ex.InnerException.Message;
+                }
+                _logger.Error(exMessage);
                 return Task.FromResult(false);
             }
         }

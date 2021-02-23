@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -28,11 +28,14 @@ namespace Warewolf.Core
         public string RequestUrl { get; set; }
         public Guid Id { get; set; }
         public List<INameValue> Headers { get; set; }
+        public bool IsFormDataChecked { get; set; }
+        public bool IsManualChecked { get; set; }
         public string PostData { get; set; }
         public bool IsPutDataBase64 { get; set; }
         public string SourceUrl { get; set; }
         public string Response { get; set; }
         public WebRequestMethod Method { get; set; }
 
+        public List<IFormDataParameters> FormDataParameters { get; set; }
     }    
 }
