@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -987,6 +987,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 errorBuilder.AppendLine($"--[ Execution Exception ]--\r\nService Name = {serviceName}\r\nError Message = {e} \r\n--[ End Execution Exception ]--");
             }
             Dev2Logger.Error("DsfNativeActivity", new Exception(errorBuilder.ToString()), GlobalConstants.WarewolfError);
+        }
+
+        protected void DisplayAndWriteError(IDSFDataObject dataObject, string serviceName, IErrorResultTO errors)
+        {
+            var errorBuilder = new StringBuilder();
+            var loggedErrorBuilder = new StringBuilder();
+            foreach (var e in errors.FetchErrors())
+            {
+                var isErrorDuplicate = loggedErrorBuilder.Contains(e);
+                if (!isErrorDuplicate)
+                {
+                    loggedErrorBuilder.Append($"{serviceName} - {e}\r\n");
+                    errorBuilder.AppendLine($"--[ Execution Exception ]--\r\nService Name = {serviceName}\r\nError Message = {e} \r\n--[ End Execution Exception ]--");
+                }
+            }
+
+            dataObject.StateNotifier?.LogExecuteException(new Exception(loggedErrorBuilder.ToString()), this);
+            Dev2Logger.Error("DsfNativeActivity" + "-" + serviceName, new Exception(errorBuilder.ToString()), GlobalConstants.WarewolfError);
         }
 
         public abstract IList<DsfForEachItem> GetForEachInputs();
