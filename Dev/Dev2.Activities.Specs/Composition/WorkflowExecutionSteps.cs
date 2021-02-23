@@ -332,6 +332,9 @@ namespace Dev2.Activities.Specs.Composition
         [Given("I depend on a valid HTTP web server")]
         public void GivenIGetaValidHTTPWebServer() => _containerOps = new Depends(Depends.ContainerType.WebApi, true);
 
+        [Given("I depend on a valid HTTP verbs server")]
+        public void GivenIGetaValidHTTPVerbsServer() => _containerOps = new Depends(Depends.ContainerType.HTTPVerbsApi, true);
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {

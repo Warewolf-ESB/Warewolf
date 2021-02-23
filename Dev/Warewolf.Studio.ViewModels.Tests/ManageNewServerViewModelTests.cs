@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -151,7 +151,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test construction
 
         [TestMethod]
-        [Timeout(250)]
+        [Timeout(5000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ManageNewServerViewModelExecutorNull()
         {

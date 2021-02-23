@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,11 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Input;
 using Warewolf.Data;
+using Warewolf.Data.Options;
 
 namespace Warewolf.Options
 {
@@ -764,4 +767,132 @@ namespace Warewolf.Options
                    string.Compare(item.To, To, StringComparison.InvariantCulture);
         }
     }
+
+    public class FormDataOptionConditionExpression : BindableBase, IFormDataOptionConditionExpression, IOption
+    {
+        public string Name { get; set; }
+
+        public ICommand DeleteCommand { get; set; }
+
+        private string _key;
+        public string Key
+        {
+            get => _key;
+            set
+            {
+                SetProperty(ref _key, value);
+            }
+        }
+        public static INamedInt[] TableTypes { get; } = NamedInt.GetAll(typeof(enFormDataTableType)).ToArray();
+
+        private INamedInt _selectedTableType;
+        public INamedInt SelectedTableType
+        {
+            get => _selectedTableType;
+            set
+            {
+                if (value != null && SetProperty(ref _selectedTableType, value))
+                {
+                    TableType = (enFormDataTableType)value.Value;
+                    RaisePropertyChanged(nameof(IsTripleOperand));
+                }
+            }
+        }
+        public enFormDataTableType TableType { get; set; }
+
+        private string _value;
+        public string Value
+        {
+            get => _value;
+            set
+            {
+                SetProperty(ref _value, value);
+            }
+        }
+
+        private string _fileBase64;
+        public string FileBase64
+        {
+            get => _fileBase64;
+            set
+            {
+                SetProperty(ref _fileBase64, value);
+            }
+        }
+
+        private string _fileName;
+        public string FileName
+        {
+            get => _fileName;
+            set
+            {
+                SetProperty(ref _fileName, value);
+            }
+        }
+
+        public bool IsTripleOperand => TableType.IsTripleOperand();
+        public bool IsEmptyRow
+        {
+            get
+            {
+                var isEmptyRow = string.IsNullOrEmpty(Key);
+                isEmptyRow &= SelectedTableType is null;
+                if (IsTripleOperand)
+                {
+                    isEmptyRow &= string.IsNullOrEmpty(FileName);
+                    isEmptyRow &= string.IsNullOrEmpty(FileBase64);
+                }
+                return isEmptyRow;
+            }
+        }
+
+        private string _helpText;
+        public string HelpText
+        {
+            get => _helpText;
+            set => SetProperty(ref _helpText, value);
+        }
+
+        private string _tooltip;
+
+        public string Tooltip
+        {
+            get => _tooltip;
+            set => SetProperty(ref _tooltip, value);
+        }
+        public FormDataCondition Cond { get; set; }
+        
+        public object Clone()
+        {
+            return new FormDataOptionConditionExpression
+            {
+                Name = Name,
+                Key = Key,
+                SelectedTableType = SelectedTableType,
+                Value = Value,
+                FileBase64 = FileBase64,
+                FileName = FileName,
+            };
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return -1;
+            }
+            if (!(obj is FormDataOptionConditionExpression item))
+            {
+                return -1;
+            }
+            return string.Compare(item.Name, Name, StringComparison.InvariantCulture) |
+                   string.Compare(item.Key, Key, StringComparison.InvariantCulture) |
+                   (item.SelectedTableType == SelectedTableType ? 0 : -1) |
+                   string.Compare(item.Value, Value, StringComparison.InvariantCulture) |
+                   string.Compare(item.FileBase64, FileBase64, StringComparison.InvariantCulture) |
+                   string.Compare(item.FileName, FileName, StringComparison.InvariantCulture) |
+                   string.Compare(item.FileBase64, FileBase64, StringComparison.InvariantCulture);
+        }
+    }
+
 }

@@ -1829,8 +1829,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("MainViewModel_ViewSwagger")]
-        public void MainViewModel_ViewSwagger_Handle_Result()
+        [TestCategory("MainViewModel_ViewOpenAPI")]
+        public void MainViewModel_ViewOpenAPI_Handle_Result()
         {
             //------------Setup for test--------------------------
             CreateFullExportsAndVm();
@@ -1855,10 +1855,11 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.SetupGet(server1 => server1.IsConnected).Returns(true);
             viewModel.SetupGet(model => model.ActiveServer).Returns(server.Object);
+            viewModel.SetupGet(model => model.ActiveServer.Connection).Returns(server.Object.Connection);
             viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
             viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
 
-            _shellViewModel.ViewSwagger(source.Object.ResourceId, viewModel.Object.ActiveServer);
+            _shellViewModel.ViewOpenAPI(source.Object.ResourceName, source.Object.ResourcePath, new Uri("http://localhost/"));
         }
 
 

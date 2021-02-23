@@ -81,6 +81,7 @@
     <Compile Include="ExecutionEnvironmentUtilsTests.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="InputsFromJsonTests.cs" />
     <Compile Include="InterfaceImplementorsTests\CoverageDataContextTests.cs" />
     <Compile Include="MathOperationTest\FunctionEvaluatorTest.cs" />
     <Compile Include="MathOperationTest\FunctionRepositoryTest.cs" />
@@ -131,7 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk">
-      <Version>16.8.0</Version>
+      <Version>16.8.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
       <Version>16.8.0</Version>

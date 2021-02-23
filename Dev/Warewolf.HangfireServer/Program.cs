@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -120,7 +120,11 @@ namespace HangfireServer
                     WebApp.Start<Dashboard>(options);
                     _writer.WriteLine("Hangfire dashboard started...");
                     _logger.Info("Hangfire dashboard started...");
-                    _ = new BackgroundJobServer();
+                    var backgroundJobServerOptions = new BackgroundJobServerOptions
+                    {
+                        WorkerCount = Environment.ProcessorCount * 5
+                    };
+                    _ = new BackgroundJobServer(backgroundJobServerOptions);
                     _writer.WriteLine("Hangfire server started...");
                     _logger.Info("Hangfire server started...");
                 }

@@ -1367,4 +1367,22 @@ Please contact your Windows System Administrator.</value>
   <data name="NextNodeRequiredForSuspendExecution" xml:space="preserve">
     <value>At least 1 activity is required after Suspend Execution.</value>
   </data>
+  <data name="ManualResumptionSuspensionEnvBlank" xml:space="preserve">
+    <value>The suspended environment could not be loaded from the provided id.</value>
+  </data>
+  <data name="ManualResumptionFailed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="ManualResumptionAlreadyResumed" xml:space="preserve">
+    <value>The suspended workflow has already been resumed.</value>
+  </data>
+  <data name="ManualResumptionProcessing" xml:space="preserve">
+    <value>The suspended workflow is in a Processing state.</value>
+  </data>
+  <data name="ManualResumptionEnqueued" xml:space="preserve">
+    <value>The suspended workflow is in a Enqueued state.</value>
+  </data>
+  <data name="SuspendOptionValueNotSet" xml:space="preserve">
+    <value>Suspend option {0} value must not be null or empty.</value>
+  </data>
 </root>

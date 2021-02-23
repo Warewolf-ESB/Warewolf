@@ -1,6 +1,15 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,10 +29,13 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
 using Warewolf.Core;
+using Warewolf.Data.Options;
+using Warewolf.Options;
+using Warewolf.UI;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ManageWebServiceInputViewModel : IManageWebServiceInputViewModel
+    public class ManageWebServiceInputViewModel : IManageWebInputViewModel
     {
         string _testResults;
         bool _testResultsAvailable;
@@ -45,6 +57,8 @@ namespace Dev2.Activities.Designers2.Core
         bool _testPassed;
         bool _testFailed;
         readonly IWebServiceHeaderBuilder _serviceHeaderBuilder;
+        private bool _isFormDataChecked;
+        private IOptionsWithNotifier _conditionExpressionOptions;
 
         public ManageWebServiceInputViewModel(IWebServiceHeaderBuilder serviceHeaderBuilder)
         {
@@ -65,14 +79,12 @@ namespace Dev2.Activities.Designers2.Core
             Errors = new List<string>();
             _viewmodel = model;
             _serverModel = serviceModel;
+            LoadConditionExpressionOptions();
         }
 
         public bool OutputCountExpandAllowed
         {
-            get
-            {
-                return _outputCountExpandAllowed;
-            }
+            get => _outputCountExpandAllowed;
             set
             {
                 _outputCountExpandAllowed = value;
@@ -82,10 +94,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool InputCountExpandAllowed
         {
-            get
-            {
-                return _inputCountExpandAllowed;
-            }
+            get => _inputCountExpandAllowed;
             set
             {
                 _inputCountExpandAllowed = value;
@@ -104,6 +113,7 @@ namespace Dev2.Activities.Designers2.Core
                 Console.Write(e.Message);
             }
         }
+
         public void ExecuteTest()
         {
             ViewErrors = new List<IActionableErrorInfo>();
@@ -129,16 +139,15 @@ namespace Dev2.Activities.Designers2.Core
 
                     Description = responseService.GetOutputDescription();
                 }
-                
+
                 var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                 {
                     var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
-                
+
                 _generateOutputArea.IsEnabled = true;
                 _generateOutputArea.Outputs = outputMapping;
-
 
                 if (TestResults != null)
                 {
@@ -240,12 +249,94 @@ namespace Dev2.Activities.Designers2.Core
 
         public IGenerateInputArea InputArea => _generateInputArea;
 
+        public bool IsFormDataChecked
+        {
+            get => _isFormDataChecked;
+            set
+            {
+                _isFormDataChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IOptionsWithNotifier ConditionExpressionOptions
+        {
+            get => _conditionExpressionOptions;
+            set
+            {
+                _conditionExpressionOptions = value;
+                OnPropertyChanged(nameof(ConditionExpressionOptions));
+                _conditionExpressionOptions.OptionChanged += UpdateConditionExpressionOptions;
+            }
+        }
+
+        private void LoadConditionExpressionOptions()
+        {
+            var conditionExpressions = new List<FormDataConditionExpression>();
+            var result = OptionConvertor.ConvertFromListOfT(conditionExpressions);
+            ConditionExpressionOptions = new OptionsWithNotifier { Options = result };
+            UpdateConditionExpressionOptions();
+        }
+
+        private void UpdateConditionExpressionOptions()
+        {
+            if (ConditionExpressionOptions?.Options != null)
+            {
+                AddEmptyConditionExpression();
+                foreach (var item in ConditionExpressionOptions.Options)
+                {
+                    if (item is FormDataOptionConditionExpression conditionExpression)
+                    {
+                        conditionExpression.DeleteCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(a =>
+                        {
+                            RemoveConditionExpression(conditionExpression);
+                        });
+                    }
+                }
+            }
+        }
+
+        private void RemoveConditionExpression(FormDataOptionConditionExpression conditionExpression)
+        {
+            var count = ConditionExpressionOptions.Options.Count(o => o is FormDataOptionConditionExpression optionCondition && optionCondition.IsEmptyRow);
+            var empty = conditionExpression.IsEmptyRow;
+            var allow = !empty || count > 1;
+
+            if (_conditionExpressionOptions.Options.Count > 1 && allow)
+            {
+                var list = new List<IOption>(_conditionExpressionOptions.Options);
+                list.Remove(conditionExpression);
+                ConditionExpressionOptions.Options = list;
+                OnPropertyChanged(nameof(ConditionExpressionOptions));
+            }
+        }
+
+        private void AddEmptyConditionExpression()
+        {
+            var emptyRows = ConditionExpressionOptions.Options.Where(o => o is FormDataOptionConditionExpression optionCondition && optionCondition.IsEmptyRow);
+
+            if (!emptyRows.Any())
+            {
+                var conditionExpression = new FormDataOptionConditionExpression();
+                var list = new List<IOption>(_conditionExpressionOptions.Options)
+                {
+                    conditionExpression
+                };
+                ConditionExpressionOptions.Options = list;
+                OnPropertyChanged(nameof(ConditionExpressionOptions));
+            }
+        }
+
+        public void LoadConditionExpressionOptions(IList<IOption> options)
+        {
+            ConditionExpressionOptions.Options = new List<IOption>(options);
+            UpdateConditionExpressionOptions();
+            OnPropertyChanged(nameof(ConditionExpressionOptions));
+        }
+
         public string TestResults
         {
-            get
-            {
-                return _testResults;
-            }
+            get => _testResults;
             set
             {
                 _testResults = value;
@@ -259,7 +350,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool OkSelected
         {
-            get { return _okSelected; }
+            get => _okSelected;
             set
             {
                 _okSelected = value;
@@ -271,7 +362,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool TestPassed
         {
-            get { return _testPassed; }
+            get => _testPassed;
             set
             {
                 _testPassed = value;
@@ -281,7 +372,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool TestFailed
         {
-            get { return _testFailed; }
+            get => _testFailed;
             set
             {
                 _testFailed = value;
@@ -291,10 +382,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool TestResultsAvailable
         {
-            get
-            {
-                return _testResultsAvailable;
-            }
+            get => _testResultsAvailable;
             set
             {
                 _testResultsAvailable = value;
@@ -303,10 +391,7 @@ namespace Dev2.Activities.Designers2.Core
         }
         public bool IsTestResultsEmptyRows
         {
-            get
-            {
-                return _isTestResultsEmptyRows;
-            }
+            get => _isTestResultsEmptyRows;
             set
             {
                 _isTestResultsEmptyRows = value;
@@ -316,10 +401,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool IsTesting
         {
-            get
-            {
-                return _isTesting;
-            }
+            get => _isTesting;
             set
             {
                 _isTesting = value;
@@ -329,10 +411,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool PasteResponseVisible
         {
-            get
-            {
-                return _pasteResponseVisible;
-            }
+            get => _pasteResponseVisible;
             set
             {
                 _pasteResponseVisible = value;
@@ -342,10 +421,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool PasteResponseAvailable
         {
-            get
-            {
-                return _pasteResponseAvailable;
-            }
+            get => _pasteResponseAvailable;
             set
             {
                 _pasteResponseAvailable = value;
@@ -355,10 +431,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool IsGenerateInputsEmptyRows
         {
-            get
-            {
-                return _isGenerateInputsEmptyRows;
-            }
+            get => _isGenerateInputsEmptyRows;
             set
             {
                 _isGenerateInputsEmptyRows = value;
@@ -373,37 +446,20 @@ namespace Dev2.Activities.Designers2.Core
         public Action CloseAction { get; set; }
         public IWebService Model
         {
-            get
-            {
-
-                return _model ?? new WebServiceDefinition();
-
-            }
-            set
-            {
-                _model = value;
-            }
+            get => _model ?? new WebServiceDefinition();
+            set => _model = value;
         }
         public string TestHeader { get; set; }
-
-
         public Action OkAction { get; set; }
         public ICommand PasteResponseCommand { get; private set; }
         public IGenerateOutputArea OutputArea => _generateOutputArea;
 
         public IOutputDescription Description { get; set; }
 
-
-
-        #region Implementation of IToolRegion
-
         public string ToolRegionName { get; set; }
         public bool IsEnabled
         {
-            get
-            {
-                return _isEnabled;
-            }
+            get => _isEnabled;
             set
             {
                 _isEnabled = value;
@@ -424,8 +480,6 @@ namespace Dev2.Activities.Designers2.Core
             get;
             set;
         }
-
-        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 

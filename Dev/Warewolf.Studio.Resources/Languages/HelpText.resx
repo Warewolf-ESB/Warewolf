@@ -2479,10 +2479,10 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>OptionConditionRightHelpText</value>
   </data>
   <data name="Tool_Flow_SuspendExecution" xml:space="preserve">
-      <value>Use the Suspend Execution tool when you need to suspend execution of a workflow and persist the data so that the workflow can be resumed with the persisted data at the time scheduled in the tool.</value>
+    <value>Use the Suspend Execution tool when you need to suspend execution of a workflow and persist the data so that the workflow can be resumed with the persisted data at the time scheduled in the tool.</value>
   </data>
   <data name="Tool_Flow_ManualResumption" xml:space="preserve">
-      <value>Use the Manual Resumption tool when you need to resume execution of a workflow before the time scheduled in the Suspend Execution tool.</value>
+    <value>Use the Manual Resumption tool when you need to resume execution of a workflow before the time scheduled in the Suspend Execution tool.</value>
   </data>
   <data name="PersistenceDashboardPortHelp" xml:space="preserve">
     <value>The default port on which Persistence listens is 5001.</value>
@@ -2494,7 +2494,7 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>The name the url will map to.</value>
   </data>
   <data name="PersistenceServerNameHelp" xml:space="preserve">
-      <value>The server name the scheduled job will be mapped to.</value>
+    <value>The server name the scheduled job will be mapped to.</value>
   </data>
   <data name="PersistenceViewSchedulerHelpText" xml:space="preserve">
     <value>The Scheduler that will handle the persistence of workflow executions</value>
@@ -2503,37 +2503,37 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>The Data source for the Persistence database. Sql Server is currently supported.</value>
   </data>
   <data name="PersistenceViewEnableHelpText" xml:space="preserve">
-     <value>This will start the Persistence Server. Only once this is enabled will persistence occur with the Suspend Execution Tool.</value>
+    <value>This will start the Persistence Server. Only once this is enabled will persistence occur with the Suspend Execution Tool.</value>
   </data>
   <data name="PersistenceViewEncryptHelpText" xml:space="preserve">
-     <value>Encrypt the Persistence Data Source in the Persistence Settings File</value>
+    <value>Encrypt the Persistence Data Source in the Persistence Settings File</value>
   </data>
   <data name="PersistenceViewPrepareSchemaIfNecessaryHelpText" xml:space="preserve">
-      <value>Create the tables and index in the database if they dont already exist</value>
+    <value>Create the tables and index in the database if they dont already exist</value>
   </data>
   <data name="SuspendExecutionSuspendOptionsHelpText" xml:space="preserve">
-      <value>Select an option for when the suspended workflow should be resumed.</value>
+    <value>Select an option for when the suspended workflow should be resumed.</value>
   </data>
   <data name="SuspendExecutionPersistValueHelpText" xml:space="preserve">
     <value>Enter the value for when the suspended workflow needs to be resumed.</value>
   </data>
   <data name="SuspendExecutionResultHelpText" xml:space="preserve">
-       <value>When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption</value>
+    <value>When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption</value>
   </data>
   <data name="SuspendExecutionEncryptDataHelpText" xml:space="preserve">
-      <value>If selected, the resumption data stored will be encrypted.</value>
+    <value>If selected, the resumption data stored will be encrypted.</value>
   </data>
   <data name="SuspendExecutionAllowManualResumptionHelpText" xml:space="preserve">
-      <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
+    <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
   </data>
   <data name="ManualResumptionSuspensionIdHelpText" xml:space="preserve">
-       <value>Enter the SuspensionID returned for the workflow that was suspended.</value>
+    <value>Enter the SuspensionID returned for the workflow that was suspended.</value>
   </data>
   <data name="ManualResumptionOverrideVariablesHelpText" xml:space="preserve">
-      <value>If selected, it allows for the input variables to be altered. Any changes will replace the current stored values.</value>
+    <value>If selected, it allows for the input variables to be altered. Any changes will replace the current stored values.</value>
   </data>
   <data name="ManualResumptionResultHelpText" xml:space="preserve">
-       <value>The result of the manual resumption.</value>
+    <value>The result of the manual resumption.</value>
   </data>
   <data name="WriteFileHelpContentsAsBase64" xml:space="preserve">
     <value>When selected, it reads the content of the file as base64 format.</value>
@@ -2543,5 +2543,8 @@ The conflicts on the left will show your current workflow changes and the confli
   </data>
   <data name="WebReadsBase64BodyHelp" xml:space="preserve">
     <value>Allows you to read the body as base64</value>
+  </data>
+  <data name="FormDataOptionConditionLeftHelpText" xml:space="preserve">
+    <value>Key-value to be used by the form-data payload. This Key is used to identify your form-data value on the server you are sending your form to.</value>
   </data>
 </root>

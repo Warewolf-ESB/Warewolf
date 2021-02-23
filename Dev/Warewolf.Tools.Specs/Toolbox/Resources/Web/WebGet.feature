@@ -4,7 +4,7 @@
 	I want to Create or Edit Warewolf Web Get Request.
 
 Scenario: Open new Get Web Tool
-	And I drag Web Get Request Connector Tool onto the design surface
+	Given I drag Web Get Request Connector Tool onto the design surface
 	And New Source is Enabled
 	And Edit Source is Disabled
 	When I Select "LocalhostSource" as a Get web Source

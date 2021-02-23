@@ -14,9 +14,10 @@
                                xmlns:webPost="clr-namespace:Dev2.Activities.Designers2.Web_Post"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
+                               xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="533"
+                               MinHeight="553"
                                Height="533"
                                MaxWidth="Infinity"
                                mc:Ignorable="d"
@@ -30,6 +31,7 @@
                 <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
                 <ResourceDictionary Source="../Core/CustomToolDesignerRegions.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector"/>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
 
@@ -56,7 +58,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*" MinHeight="247"/>
+                    <RowDefinition Height="*" MinHeight="287"/>
                     <RowDefinition>
                         <RowDefinition.Style>
                             <Style>
@@ -80,11 +82,12 @@
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Grid>
+                    <Grid Grid.Row="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
@@ -92,7 +95,7 @@
                         <TextBlock x:Name="HeadersLabel" Text="Headers" Grid.Column="0" Grid.Row="0" />
 
                         <controls:Dev2DataGrid x:Name="Headers"
-                                   Grid.Row="1"
+                                   Grid.Row="1" 
                                    ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMappingDataGridStyle}"
                                    Height="Auto"
@@ -175,15 +178,42 @@
                             </DataGrid.Columns>
                         </controls:Dev2DataGrid>
                     </Grid>
-                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" >
+
+                    <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" IsEnabled="{Binding InputArea.IsEnabled}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <RadioButton x:Name="none"
+                                     Grid.Row="1"
+                                     Grid.Column="0"
+                                     GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
+                                     HorizontalAlignment="Left"
+                                     IsChecked="{Binding InputArea.IsManualChecked, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestNoneTooltip}">Manual</RadioButton>
+                        <RadioButton x:Name="formdata"
+                                     Grid.Row="1"
+                                     GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Left"
+                                     IsChecked="{Binding InputArea.IsFormDataChecked, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestFormDataTooltip}">multipart/form-data</RadioButton>
+                    </Grid>
+
+                    <Grid Grid.Row="2" x:Name="body" Visibility="{Binding IsChecked, ElementName=none, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="{StaticResource ControlBorderTop}" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock x:Name="BodyLabel" Text="Body" Grid.Row="0" />
 
-                        <TextBox Grid.Row="1"
+                        <TextBox Grid.Row="2"
                                  x:Name="RequestBody"
                                  Text="{Binding InputArea.PostData}"
                                  HorizontalAlignment="Stretch"
@@ -203,7 +233,51 @@
                             </i:Interaction.Behaviors>
                         </TextBox>
                     </Grid>
-                    <Grid x:Name="UrlGrid" Grid.Row="2" IsEnabled="{Binding InputArea.IsEnabled}">
+                    <Grid Grid.Row="2" Visibility="{Binding InputArea.IsFormDataChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="BodyParamsLabel" Text="Parameters" Grid.Column="0" Grid.Row="0" />
+
+
+                        <Grid Grid.Row="1" IsEnabled="{Binding InputArea.IsEnabled}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="25" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="110" MinWidth="110" MaxWidth="110" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" BorderThickness="1,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="#" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="1" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="Key" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="File Type" HorizontalAlignment="Center" />
+                                </Border>
+                                <Border Grid.Column="3" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                                    <TextBlock Text="Value" HorizontalAlignment="Center" />
+                                </Border>
+                            </Grid>
+                            <ListBox x:Name="FormDataConditionsListBox"
+                                 Grid.Row="1"
+                                 ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}"
+                                 ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                                 ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                                 Padding="1,0,1,1">
+                            </ListBox>
+                        </Grid>
+                    </Grid>
+
+                    <Grid x:Name="UrlGrid" Grid.Row="3" IsEnabled="{Binding InputArea.IsEnabled}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -216,8 +290,8 @@
                         <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="URL" />
                         <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" TextTrimming="CharacterEllipsis" />
                         <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" />
-                        <ui:IntellisenseTextBox Grid.Column="1"
-                                                Grid.Row="1"
+                        <ui:IntellisenseTextBox Grid.Column="1" 
+                                                Grid.Row="1" 
                                                 AllowMultilinePaste="False"
                                                 AcceptsReturn="False"
                                                 AllowUserInsertLine="False"
@@ -248,7 +322,7 @@
                     </Grid>
                 </Grid>
 
-                <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGridWithBase64}"/>
+                <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGrid}"/>
 
                 <Grid x:Name="ErrorGrid"
                       Grid.Row="3"

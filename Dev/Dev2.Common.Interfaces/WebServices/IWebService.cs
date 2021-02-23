@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -27,9 +27,12 @@ namespace Dev2.Common.Interfaces.WebServices
         Guid Id { get; set; }
         List<INameValue> Headers { get; set; }
         string PostData { get; set; }
+        bool IsFormDataChecked { get; set; }
+        bool IsManualChecked { get; set; }
         bool IsPutDataBase64 { get; set; }
         string SourceUrl { get; set; }
         string Response { get; set; }
         WebRequestMethod Method { get;set; }
+        List<IFormDataParameters> FormDataParameters { get; set; }
     }
 }

@@ -12,11 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Runtime.Interfaces;
@@ -24,6 +26,7 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
+using Warewolf.Data.Options;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -174,13 +177,56 @@ namespace Dev2.Runtime.ServiceModel
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors, WebExecuteString webExecute)
         {
             var headers = new List<string>();
+            var evaluatedHeaders = new List<INameValue>();
             if (service.Headers !=null)
             {
-                headers.AddRange(service.Headers.Select(nameValue => nameValue.Name + ":" + SetParameters(service.Method.Parameters, nameValue.Value)).ToList());
+                evaluatedHeaders = service.Headers.Select(o => new NameValue(SetParameters(service.Method.Parameters, o.Name), SetParameters(service.Method.Parameters, o.Value)) as INameValue).ToList();
+                headers.AddRange(ToHeaderStringList(evaluatedHeaders));
             }
+
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
-            var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            var webResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray());
+            
+            var requestBody = string.Empty;
+            if (service.IsManualChecked)
+            {
+                requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
+            }
+
+            var formDataParameters = new List<IFormDataParameters>();
+            if (service.IsFormDataChecked && service.FormDataParameters != null)
+            {
+
+                var headersHelper = new WebRequestHeadersHelper(service.Headers, evaluatedHeaders);
+                var evaluated = headersHelper.CalculateFormDataContentType();
+                headers = ToHeaderStringList(evaluated.ToList());
+
+                formDataParameters.AddRange(service.FormDataParameters.Select(o =>
+                {
+                    if (o is TextParameter textParam)
+                    {
+                        textParam.Key = SetParameters(service.Method.Parameters, textParam.Key);
+                        textParam.Value = SetParameters(service.Method.Parameters, textParam.Value);
+                        return textParam;
+                    }
+                    else if (o is FileParameter fileParam)
+                    {
+                        fileParam.Key = SetParameters(service.Method.Parameters, fileParam.Key);
+                        fileParam.FileName = SetParameters(service.Method.Parameters, fileParam.FileName);
+                        fileParam.FileBase64 = SetParameters(service.Method.Parameters, fileParam.FileBase64);
+                        return fileParam;
+                    }
+                    return o;
+                }).ToList());
+
+            }
+            var webExecuteStringArgs = new WebExecuteStringArgs
+            {
+                IsManualChecked = service.IsManualChecked,
+                IsFormDataChecked = service.IsFormDataChecked,
+                FormDataParameters = service.FormDataParameters,
+                WebRequestFactory = null
+            };
+            var webResponse = webExecute?.Invoke(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray(), webExecuteStringArgs);
 
             service.RequestResponse = Scrubber.Scrub(webResponse);
 
@@ -189,6 +235,11 @@ namespace Dev2.Runtime.ServiceModel
                 service.ApplyPath();
             }
             errors = new ErrorResultTO();
+        }
+
+        private static List<string> ToHeaderStringList(List<INameValue> headers)
+        {
+            return headers.Select(o => o.Name + ":" + o.Value).ToList();
         }
 
         #endregion

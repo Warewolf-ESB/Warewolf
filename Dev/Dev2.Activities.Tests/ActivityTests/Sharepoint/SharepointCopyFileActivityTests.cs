@@ -1,4 +1,4 @@
-﻿/*
+/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -164,7 +164,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //------------Assert Result--------------------------
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
             
-            Assert.AreEqual("variable not found", error);
+            Assert.AreEqual("variable [[Files(*).Name]] not found", error);
         }
 
         [TestMethod]
@@ -368,7 +368,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //------------Assert Result--------------------------
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
 
-            Assert.AreEqual("variable not found", error);
+            Assert.AreEqual("variable [[Files(*).Name]] not found", error);
         }
 
         [TestMethod]
@@ -402,7 +402,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
 
             Assert.AreEqual( 0, result.Count);
-            Assert.AreEqual("variable not found", error);
+            Assert.AreEqual("variable [[Files(*).Name]] not found", error);
         }
 
         [TestMethod]
@@ -435,7 +435,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
 
             Assert.AreEqual(0, result.Count);
-            Assert.AreEqual("variable not found", error);
+            Assert.AreEqual("variable [[Files(*).Name]] not found", error);
         }
 
         [TestMethod]

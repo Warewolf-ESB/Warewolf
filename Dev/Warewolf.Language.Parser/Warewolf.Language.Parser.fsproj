@@ -6,8 +6,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     <OutputType>Library</OutputType>
-    <FsLexToolPath>..\packages\FsLexYacc.10.2.0\build\fslex\netcoreapp3.1</FsLexToolPath>
-    <FsYaccToolPath>..\packages\FsLexYacc.10.2.0\build\fsyacc\netcoreapp3.1</FsYaccToolPath>
+    <FsLexToolPath>%userprofile%\.nuget\packages\fslexyacc\10.2.0\build\fslex\netcoreapp3.1</FsLexToolPath>
+    <FsYaccToolPath>%userprofile%\.nuget\packages\fslexyacc\10.2.0\build\fsyacc\netcoreapp3.1</FsYaccToolPath>
     <FsLexToolExe>fslex.dll</FsLexToolExe>
     <FsYaccToolExe>fsyacc.dll</FsYaccToolExe>
     <FsLexYaccToolRunner>dotnet </FsLexYaccToolRunner>
@@ -70,7 +70,4 @@
       <Version>4.5.2</Version>
     </PackageReference>
   </ItemGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="Install.FsLexYacc.10.2.0.bat" />
-  </Target>
 </Project>

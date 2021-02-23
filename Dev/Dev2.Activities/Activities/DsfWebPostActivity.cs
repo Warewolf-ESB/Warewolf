@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,9 +31,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    //[Obsolete("DsfWebPostActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivity.")]
-    //Note: re-instating this version of the Post tool after merge error, WebPostActivity is still under development
-    [ToolDescriptorInfo("WebMethods", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Post")]
+    [Obsolete("DsfWebPostActivity is deprecated. It will be deleted in future releases.\r\n\r\nPlease use WebPostActivity.")]
     public class DsfWebPostActivity:DsfActivity,IEquatable<DsfWebPostActivity>
     {
         public IList<INameValue> Headers { get; set; }
@@ -125,7 +123,7 @@ namespace Dev2.Activities
             var postData = "";
             if (PostData != null)
             {
-                postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PostData, update));
+                postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PostData, update, true));
             }
 
             return (head, query, postData);

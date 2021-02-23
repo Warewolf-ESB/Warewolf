@@ -23,8 +23,7 @@ namespace Warewolf.UnitTestAttributes
         };
         private string SelectedHost = "";
         
-        static readonly string BackupServer = "opswolf.com";
-        public static readonly string TFSBLDIP = "TFSBLD.premier.local";
+        static readonly string BackupServer = "SVRDEV.premier.local";
         public static readonly string SharepointBackupServer = BackupServer;
 
         public enum ContainerType
@@ -40,7 +39,8 @@ namespace Warewolf.UnitTestAttributes
             AnonymousWarewolf = 8,
             Elasticsearch = 9,
             AnonymousElasticsearch = 10,
-            WebApi = 11
+            WebApi = 11,
+            HTTPVerbsApi = 12
         }
 
         ContainerType _containerType;
@@ -73,6 +73,8 @@ namespace Warewolf.UnitTestAttributes
                     return "AnonymousElasticsearch";
                 case ContainerType.WebApi:
                     return "WebApi";
+                case ContainerType.HTTPVerbsApi:
+                    return "HTTPVerbsApi";
             }
 
             throw new ArgumentOutOfRangeException();
@@ -175,6 +177,7 @@ namespace Warewolf.UnitTestAttributes
                     InjectElasticContainer();
                     break;
                 case ContainerType.WebApi:
+                case ContainerType.HTTPVerbsApi:
                     InjectWebApiContainer();
                     break;
             }
@@ -208,6 +211,8 @@ namespace Warewolf.UnitTestAttributes
                     return "9400";
                 case ContainerType.WebApi:
                     return "8080";
+                case ContainerType.HTTPVerbsApi:
+                    return "9810";
             }
             throw new ArgumentOutOfRangeException();
         }
@@ -310,31 +315,31 @@ namespace Warewolf.UnitTestAttributes
 
         void InjectWebApiContainer()
         {
-            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Delete;DefaultQuery=;AuthenticationType=Anonymous\" Type=\"WebSource",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebDeleteServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous\" Type=\"WebSource",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebGetServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous\" Type=\"WebSource",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPutServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Post;DefaultQuery=;AuthenticationType=Anonymous\" Type=\"WebSource",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.xml",
                     @"%programdata%\Warewolf\Resources\Sources\Web\WebPostServiceSource.bite"
                 });
-            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous",
+            UpdateSourcesConnectionStrings($"Address=http://{Container.IP}:{Container.Port}/api/products/Get;DefaultQuery=;AuthenticationType=Anonymous\" Type=\"WebSource",
                 new List<string>
                 {
                     @"%programdata%\Warewolf\Resources\localhostGetSource.xml",
