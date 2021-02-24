@@ -61,7 +61,7 @@ namespace Warewolf.Auditing
                 client = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
                 if (!client.IsOpen())
                 {
-                    client.Connect();
+                    client = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
                 }
                 client.SendMessage(jsonLogEntry);
             }
