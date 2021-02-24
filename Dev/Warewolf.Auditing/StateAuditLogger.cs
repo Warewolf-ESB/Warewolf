@@ -12,6 +12,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Net.WebSockets;
 using Warewolf.Interfaces.Auditing;
 using Dev2.Data.Interfaces.Enums;
 
@@ -63,11 +64,11 @@ namespace Warewolf.Auditing
             }
             finally
             {
-                if (_ws != null)
-                {
-                    _webSocketFactory.Release(_ws);
-                    _ws = null;
-                }
+                // if (_ws != null)
+                // {
+                //     _webSocketFactory.Release(_ws);
+                //     _ws = null;
+                // }
             }
         }
 

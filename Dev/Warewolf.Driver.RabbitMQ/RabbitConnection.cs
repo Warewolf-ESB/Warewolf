@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Threading;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Warewolf.Streams;
@@ -37,6 +38,8 @@ namespace Warewolf.Driver.RabbitMQ
         {
             var rabbitConfig = config as RabbitConfig; 
             var channel = CreateChannel(rabbitConfig);
+            
+            var throttler = new SemaphoreSlim(initialCount: 1);
 
             var eventConsumer = new EventingBasicConsumer(channel);
             eventConsumer.Received += (model, eventArgs) =>
@@ -44,15 +47,21 @@ namespace Warewolf.Driver.RabbitMQ
                 var body = eventArgs.Body;
                 var headers = new Warewolf.Data.Headers();
                 headers["Warewolf-Custom-Transaction-Id"] = new[] { eventArgs.BasicProperties.CorrelationId };
+                
+                throttler.Wait();
+                
                 var resultTask = consumer.Consume(body, headers);
                 resultTask.Wait();
+                
+                throttler.Release();
+
                 if (resultTask.Result == Data.ConsumerResult.Success)
                 {
                     channel.BasicAck(eventArgs.DeliveryTag, false);
                 }
 
             };
-
+            
             channel.BasicConsume(queue: rabbitConfig.QueueName,
                                         autoAck: false,
                                         consumer: eventConsumer);
