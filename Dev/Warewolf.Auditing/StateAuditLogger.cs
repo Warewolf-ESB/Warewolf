@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -61,20 +61,13 @@ namespace Warewolf.Auditing
                 client = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
                 if (!client.IsOpen())
                 {
-                    client = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
+                    client.Connect();
                 }
                 client.SendMessage(jsonLogEntry);
             }
             catch (Exception ex)
             {
-                if (ex.InnerException == null)
-                {
-                    Dev2Logger.Error("LogAuditState", ex.Message + ex);
-                }
-                else
-                {
-                    Dev2Logger.Error("LogAuditState", ex.InnerException.Message + ex);
-                }
+                Dev2Logger.Error("LogAuditState", ex.InnerException == null ? ex.Message : ex.InnerException.Message);
             }
             finally
             {
