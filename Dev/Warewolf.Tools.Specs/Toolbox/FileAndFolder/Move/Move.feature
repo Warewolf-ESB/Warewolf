@@ -30,7 +30,8 @@ Scenario Outline: Move file at local location
 	   | 3  | Local to FTPS    | [[sourcePath]] | c:\movefile2.txt | ""       | ""       | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORMOVEFILETESTING/moved0.txt                            | Administrator | Dev2@dmin123 | True     | [[result]] | Success | NO           |                      |                           |
 	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                      | dev2          | Q/ulw&]      | True     | [[result]] | Success | NO           |                      |                           |
 	   | 5  | Local to UNC     | [[sourcePath]] | c:\movefile4.txt | ""       | ""       | [[destPath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved0.txt | ""            | ""           | True     | [[result]] | Success | NO           |                      |                           |
-	
+
+@FileMoveFromUNC
 @FileMoveFromUNCWithOverwrite
 Scenario Outline: Move file at UNC location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
@@ -175,6 +176,7 @@ Scenario Outline: Move file at local location with overwrite disabled
 	   | 4  | Local to SFTP    | [[sourcePath]] | c:\movefile3.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/moved0.txt                                                      | dev2              | Q/ulw&]      | False    | [[result]] | Success | NO           |                      |                           |
 	   | 5  | Local to UNC     | [[sourcePath]] | c:\movefile4.txt | ""       | ""       | [[destPath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileMoveSharedTestingSite\moved0.txt | ""                | ""           | False    | [[result]] | Success | NO           |                      |                           |
 
+@FileMoveFromUNC
 @FileMoveFromUNCWithoutOverwrite
 Scenario Outline: Move file at UNC location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
