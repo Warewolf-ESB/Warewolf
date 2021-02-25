@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -64,7 +64,7 @@ namespace QueueWorker
             {
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
-
+            
                 if (requestForwarderResult.Result == ConsumerResult.Success)
                 {
                     _logger.Info($"[{executionId}] - {customTransactionID} success processing body {strBody}");
@@ -77,8 +77,10 @@ namespace QueueWorker
                     _logger.Error($"Failed to execute {_resourceId + " [" + executionId + "] " + strBody}");
                     CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration,customTransactionID);
                 }
-
+            
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
+            task.Wait();
 
             if (task.IsFaulted)
             {
