@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -51,13 +51,17 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
+            var identity = WindowsIdentity.GetCurrent();
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            var executingUser = WindowsIdentity.GetCurrent();
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+                {"currentuserprincipal", new StringBuilder(executingUser.Name)}
             };
             var resourceCatalog = new Mock<IResourceCatalog>();
             var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
@@ -265,13 +269,18 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
+            var identity = WindowsIdentity.GetCurrent();
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            var executingUser = WindowsIdentity.GetCurrent();
+
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+                {"currentuserprincipal", new StringBuilder(executingUser.Name)}
             };
             var resourceCatalog = new Mock<IResourceCatalog>();
             var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
@@ -297,13 +306,17 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
+            var identity = WindowsIdentity.GetCurrent();
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            var executingUser = WindowsIdentity.GetCurrent();
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+                {"currentuserprincipal", new StringBuilder(executingUser.Name)}
             };
             var newDs = new DynamicService {Name = HandlesType()};
             var nullresourceCatalog = new Mock<IResourceCatalog>();
@@ -330,13 +343,17 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
+            var identity = WindowsIdentity.GetCurrent();
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            var executingUser = WindowsIdentity.GetCurrent();
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+                {"currentuserprincipal", new StringBuilder(executingUser.Name)}
             };
             var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
             var sa = new ServiceAction {Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
@@ -375,6 +392,10 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
+            var identity = WindowsIdentity.GetCurrent();
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
