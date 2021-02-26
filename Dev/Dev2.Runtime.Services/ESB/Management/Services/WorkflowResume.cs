@@ -51,6 +51,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
             var executingUser = BuildClaimsPrincipal(currentUserPrincipal, out var unqualifiedUserName);
+            if (executingUser.Identity.Name != Common.Utilities.ServerUser.Identity.Name)
+            {
+                Dev2Logger.Error($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.", GlobalConstants.WarewolfError);
+                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.")};
+            }
+            executingUser = Common.Utilities.ServerUser;
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
             var executionEnv = new ExecutionEnvironment();
@@ -85,11 +91,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
             }
 
-            var container = CustomContainer.Get<IResumableExecutionContainerFactory>().New(startActivityId, sa, dataObject);
-            container.Execute(out ErrorResultTO errors, 0);
-            if (errors.HasErrors())
+            var errorResultTO = new ErrorResultTO();
+            Common.Utilities.PerformActionInsideImpersonatedContext(executingUser, () =>
             {
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errors.MakeDisplayReady())};
+                var container = CustomContainer.Get<IResumableExecutionContainerFactory>().New(startActivityId, sa, dataObject);
+                container.Execute(out ErrorResultTO errors, 0);
+                errorResultTO = errors;
+            });
+
+            if (errorResultTO.HasErrors())
+            {
+                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorResultTO.MakeDisplayReady())};
             }
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
@@ -117,9 +129,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return isAuthorized;
         }
 
-        private static ClaimsPrincipal BuildClaimsPrincipal(StringBuilder currentUserPrincipal, out string unqualifiedUserName)
+        private static IPrincipal BuildClaimsPrincipal(StringBuilder currentUserPrincipal, out string unqualifiedUserName)
         {
-            ClaimsPrincipal executingUser;
+            IPrincipal executingUser;
             unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal.ToString()).Trim();
 
             try
@@ -131,6 +143,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var genericIdentity = new GenericIdentity(unqualifiedUserName);
                 executingUser = new GenericPrincipal(genericIdentity, new string[0]);
             }
+
+
 
             return executingUser;
         }
