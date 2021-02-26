@@ -300,7 +300,7 @@ this.RenameFileAtLocalLocation("4", "Local to SFTP", "[[sourcePath]]", "C:\\rena
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\DEVOPSDEV.premier.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
             "renamed0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
@@ -313,7 +313,7 @@ this.RenameFileAtLocalLocation("4", "Local to SFTP", "[[sourcePath]]", "C:\\rena
         public virtual void RenameFileAtLocalLocation_5()
         {
 #line 8
-this.RenameFileAtLocalLocation("5", "Local to UNC", "[[sourcePath]]", "C:\\renamefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\DEVOPSDEV.premier.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
+this.RenameFileAtLocalLocation("5", "Local to UNC", "[[sourcePath]]", "C:\\renamefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\DEVOPSPDC.premier.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
                     "renamed0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
