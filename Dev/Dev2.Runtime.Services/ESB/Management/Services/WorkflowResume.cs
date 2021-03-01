@@ -1,8 +1,8 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -25,13 +25,14 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using Warewolf.Resource.Errors;
+using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class WorkflowResume : WorkflowManagementEndpointAbstract
     {
-
         private IAuthorizationService _authorizationService;
         private IResourceCatalog _resourceCatalog;
         public override string HandlesType() => nameof(WorkflowResume);
@@ -52,8 +53,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var executingUser = BuildClaimsPrincipal(currentUserPrincipal, out var unqualifiedUserName);
             if (executingUser.Identity.Name != Common.Utilities.ServerUser.Identity.Name)
             {
-                Dev2Logger.Error($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.", GlobalConstants.WarewolfError);
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.")};
+                var errorMessage = string.Format(ErrorResource.AuthenticationError, unqualifiedUserName);
+                Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
+                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorMessage)};
             }
             executingUser = Common.Utilities.ServerUser;
 
@@ -73,8 +75,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (!CanExecute(dataObject))
             {
-                Dev2Logger.Error($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.", GlobalConstants.WarewolfError);
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Authentication Error resuming. User " + unqualifiedUserName + " is not authorized to execute the workflow.")};
+                var errorMessage = string.Format(ErrorResource.AuthenticationError, unqualifiedUserName);
+                Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
+                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorMessage)};
             }
 
             var dynamicService = ResourceCatalogInstance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
@@ -107,14 +110,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
         public IResourceCatalog ResourceCatalogInstance
         {
-            get
-            {
-                return _resourceCatalog ?? ResourceCatalog.Instance;
-            }
-            set
-            {
-                _resourceCatalog = value;
-            }
+            get => _resourceCatalog ?? ResourceCatalog.Instance;
+            set => _resourceCatalog = value;
         }
         public IAuthorizationService AuthorizationService
         {
@@ -142,8 +139,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var genericIdentity = new GenericIdentity(unqualifiedUserName);
                 executingUser = new GenericPrincipal(genericIdentity, new string[0]);
             }
-
-
 
             return executingUser;
         }
