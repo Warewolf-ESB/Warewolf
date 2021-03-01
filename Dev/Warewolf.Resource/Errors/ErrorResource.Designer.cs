@@ -3837,5 +3837,10 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("SuspendOptionValueNotSet", resourceCulture);
             }
         }
+        public static string AuthenticationError {
+            get {
+                return ResourceManager.GetString("AuthenticationError", resourceCulture);
+            }
+        }
     }
 }
