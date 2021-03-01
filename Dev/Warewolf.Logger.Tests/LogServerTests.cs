@@ -171,7 +171,6 @@ namespace Warewolf.Logger.Tests
             //--------------------------------Assert--------------------------------
             Assert.AreEqual(1, clients.Count);
             Assert.AreSame(mockClient.Object, clients[0]);
-            Assert.AreEqual("Logging Server OnOpen...", consoleString);
         }
 
         [TestMethod]
@@ -225,7 +224,6 @@ namespace Warewolf.Logger.Tests
             mockClient.Object.OnClose();
             //--------------------------------Assert--------------------------------
             Assert.AreEqual(0, clients.Count);
-            Assert.AreEqual("Logging Server OnClose...", consoleString);
 
             mockPublisher.Verify(o => o.Publish(It.IsAny<byte[]>()), Times.Once);
         }
@@ -288,7 +286,6 @@ namespace Warewolf.Logger.Tests
             mockClient.Object.OnClose();
             //--------------------------------Assert--------------------------------
             Assert.AreEqual(0, clients.Count);
-            Assert.AreEqual("Logging Server OnClose...", consoleString);
 
             mockAuditCommandConsumerFactory.Verify(o => o.New(It.IsAny<SeriLogConsumer>(), It.IsAny<IWebSocketConnection>(), It.IsAny<IWriter>()));
         }

@@ -31,6 +31,7 @@ namespace Warewolf.Auditing
             var clientWebSocket = pool.AcquireObject();
             return clientWebSocket;
         }
+
         public void Release(IWebSocketWrapper webSocketWrapper)
         {
             var pool = WebSocketConnectionPool.GetOrAdd(webSocketWrapper.Uri, CreateObjectPool);
@@ -43,6 +44,7 @@ namespace Warewolf.Auditing
             {
                 return new WebSocketWrapper(new System.Net.WebSockets.Managed.ClientWebSocket(), endpoint).Connect();
             }
+
             bool ValidateObject(IWebSocketWrapper instance)
             {
                 return instance.State == WebSocketState.None || instance.State == WebSocketState.Open;
@@ -59,7 +61,7 @@ namespace Warewolf.Auditing
         private const int SendChunkSize = 1024;
 
         private readonly System.Net.WebSockets.Managed.ClientWebSocket _clientWebSocket;
-        public Uri Uri { get; private set;}
+        public Uri Uri { get; private set; }
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
 
@@ -79,14 +81,14 @@ namespace Warewolf.Auditing
                 _clientWebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(60);
             }
         }
+
         public WebSocketState State => _clientWebSocket.State;
 
         public IWebSocketWrapper Connect()
         {
             if (!IsOpen())
             {
-                var task = ConnectAsync();
-                task.Wait();
+                Task.Run(async () => { await ConnectAsync(); }).Wait();
                 return this;
             }
             else
@@ -145,7 +147,7 @@ namespace Warewolf.Auditing
 
         private async Task SendMessageAsync(byte[] messageBuffer)
         {
-            var messagesCount = (int)Math.Ceiling((double)messageBuffer.Length / SendChunkSize);
+            var messagesCount = (int) Math.Ceiling((double) messageBuffer.Length / SendChunkSize);
 
             try
             {
@@ -207,22 +209,17 @@ namespace Warewolf.Auditing
                             var str = Encoding.UTF8.GetString(buffer, 0, result.Count);
                             stringResult.Append(str);
                         }
-
                     } while (!result.EndOfMessage);
 
                     CallOnMessage(stringResult);
-
                 }
             }
             catch (Exception)
             {
                 CallOnDisconnected();
             }
-            finally
-            {
-                _clientWebSocket.Dispose();
-            }
         }
+
         private void CallOnMessage(StringBuilder stringResult)
         {
             if (_onMessage != null)
@@ -253,6 +250,7 @@ namespace Warewolf.Auditing
         }
 
         private bool _isDisposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_isDisposed)
@@ -263,16 +261,17 @@ namespace Warewolf.Auditing
                     {
                         Dev2Logger.Warn("websocket message receive worker still running is disposing WebSocketWrapper", Guid.Empty.ToString());
                     }
+
                     if (IsOpen())
                     {
                         _cancellationTokenSource.Cancel();
-                        _clientWebSocket.Dispose();
                     }
                 }
 
                 _isDisposed = true;
             }
         }
+
         public void Dispose()
         {
             Dispose(true);
