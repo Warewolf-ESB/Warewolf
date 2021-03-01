@@ -771,12 +771,15 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Client = mockWebClientWrapper.Object 
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new string[] { });
+            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new string[] { "Content-Type:application/json" });
 
             Assert.IsFalse(IsBase64(result));
             Assert.AreEqual(result, responseFromWeb);
 
-            mockWebClientWrapper.Verify(o => o.UploadString(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            var client = source.Client;
+
+            Assert.AreEqual(client.Headers[HttpRequestHeader.ContentType], "application/json");
+            mockWebClientWrapper.Verify(o => o.UploadString("http://www.msn.com/", "POST", string.Empty), Times.Once);
         }
 
         [TestMethod]
