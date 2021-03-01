@@ -39,7 +39,17 @@ namespace Warewolf.Common.NetStandard20
 
         private bool disposedValue = false;
 
-        public WebHeaderCollection Headers { get; set; } = new WebHeaderCollection { }; 
+        public WebHeaderCollection Headers 
+        {
+            get
+            {
+               return _webClient.Headers ?? new WebHeaderCollection { };
+            }
+            set
+            {
+                _webClient.Headers.Add(value);
+            }
+        } 
 
         public ICredentials Credentials { get; set; }
 

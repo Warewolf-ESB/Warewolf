@@ -18,7 +18,7 @@ namespace Warewolf.Common.Interfaces.NetStandard20
 {
     public interface IWebClientWrapper : IDisposable
     {
-        WebHeaderCollection Headers { get; }
+        WebHeaderCollection Headers { get; set; }
         ICredentials Credentials { get; set; }
 
         byte[] UploadValues(string wareWolfResumeUrl, string method, NameValueCollection nameValueCollection);
