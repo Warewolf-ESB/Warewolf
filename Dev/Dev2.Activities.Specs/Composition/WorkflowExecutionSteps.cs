@@ -4865,7 +4865,10 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(resourceModel);
             var env = new ExecutionEnvironment();
             var serEnv = env.ToJson();
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(assignActivity.UniqueID), versionNumber, WindowsIdentity.GetCurrent().Name);
+            var identity = new MockPrincipal();
+             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(assignActivity.UniqueID), versionNumber, identity.Name);
             Add("resumeMessage", msg);
         }
 
@@ -4887,7 +4890,10 @@ namespace Dev2.Activities.Specs.Composition
             env.Assign("[[RecSet().Field]]", "Jane", 0);
             env.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"B\"}"), 0);
             var serEnv = env.ToJson();
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), null,WindowsIdentity.GetCurrent().Name);
+            var identity = new MockPrincipal();
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), null,identity.Name);
             Add("resumeMessage", msg);
         }
         [Then(@"an error ""(.*)""")]
@@ -4987,7 +4993,10 @@ namespace Dev2.Activities.Specs.Composition
             _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[\"Service Execution Error:    at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\DatabaseServiceExecution.cs:line 104\\r\\n   at Dev2.Services.Execution.ServiceExecutionAbstract`2.ExecuteService(ErrorResultTO& errors, Int32 update, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\ServiceExecutionAbstract.cs:line 372\"]}";
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "",WindowsIdentity.GetCurrent().Name);
+            var identity = new MockPrincipal();
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "",identity.Name);
             Add("resumeMessage", msg);
         }
 
@@ -5274,5 +5283,91 @@ namespace Dev2.Activities.Specs.Composition
                 return result;
             }
         }
+         public enum MockPrincipalBehavior
+    {
+        AlwaysReturnTrue,
+        WhiteList,
+        BlackList
+    }
+
+    public class MockPrincipal : IPrincipal, IIdentity
+    {
+        private HashSet<String> Roles { get; set; }
+        public MockPrincipalBehavior Behavior { get; set; }
+
+        public MockPrincipal(String name = "TestUser", MockPrincipalBehavior behavior = MockPrincipalBehavior.AlwaysReturnTrue)
+        {
+            Roles = new HashSet<String>();
+            Name = name;
+            IsAuthenticated = true;
+            AuthenticationType = "FakeAuthentication";
+        }
+
+        public void AddRoles(params String[] roles)
+        {
+            Behavior = MockPrincipalBehavior.WhiteList;
+
+            if (roles == null || roles.Length == 0) return;
+
+            var rolesToAdd = roles.Where(r => !Roles.Contains(r));
+
+            foreach (var role in rolesToAdd)
+                Roles.Add(role);
+        }
+
+        public void IgnoreRoles(params String[] roles)
+        {
+            Behavior = MockPrincipalBehavior.BlackList;
+
+            AddRoles(roles);
+        }
+
+        public void RemoveRoles(params String[] roles)
+        {
+            if (roles == null || roles.Length == 0) return;
+
+            var rolesToAdd = roles.Where(r => Roles.Contains(r));
+
+            foreach (var role in rolesToAdd)
+                Roles.Remove(role);
+        }
+
+        public void RemoveAllRoles()
+        {
+            Roles.Clear();
+        }
+
+        #region IPrincipal Members
+
+        public IIdentity Identity
+        {
+            get { return this; }
+        }
+
+        public bool IsInRole(string role)
+        {
+            if (Behavior == MockPrincipalBehavior.AlwaysReturnTrue)
+                return true;
+
+            var isInlist = Roles.Contains(role);
+
+            if (Behavior == MockPrincipalBehavior.BlackList)
+                return !isInlist;
+
+            return isInlist;
+        }
+
+        #endregion
+
+        #region IIdentity Members
+
+        public string AuthenticationType { get; set; }
+
+        public bool IsAuthenticated { get; set; }
+
+        public string Name { get; set; }
+
+        #endregion
+    }
     }
 }
