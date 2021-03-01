@@ -397,11 +397,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Debug Dispatch Error", e, GlobalConstants.WarewolfError);
-                    AddErrorToDataList(e, dataObject);
-                    errorMessage = dataObject.Environment.FetchErrors();
-                    _debugState.ErrorMessage = errorMessage;
-                    _debugState.HasError = true;
+                    if (_debugState is null)
+                    {
+                        Dev2Logger.Info("Debug Dispatch Info", e, GlobalConstants.WarewolfInfo);
+                    }
+                    else
+                    {
+                        Dev2Logger.Error("Debug Dispatch Error", e, GlobalConstants.WarewolfError);
+                        AddErrorToDataList(e, dataObject);
+                        errorMessage = dataObject.Environment.FetchErrors();
+                        _debugState.ErrorMessage = errorMessage;
+                        _debugState.HasError = true;
+                    }
                 }
             }
 
@@ -443,6 +450,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 _debugState.StateType = stateType;
+                Dev2Logger.Info("Debug Already Started", GlobalConstants.WarewolfInfo);
             }
 
             if (_debugState != null)
