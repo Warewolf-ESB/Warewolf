@@ -22,10 +22,11 @@ Scenario Outline: Read File at location
 	Examples: 
 	| NO | Name       | source   | sourceLocation                                                                                      | username      | password     | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 	| 1  | Local      | [[path]] | c:\filetoread.txt                                                                                   | ""            | ""           | [[result]] | Guid   | NO           |                      |
-	| 2  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt                                | ""            | ""           | [[result]] | Guid   | NO           |                      |
-	| 3  | FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORTESTING/filetodele.txt                                        | Administrator | Dev2@dmin123 | [[result]] | Guid   | NO           |                      |
-	| 4  | SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetoread.txt                                                          | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 5  | SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetoread1.txt                                                         | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+	| 2  | UNC        | [[path]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt        | ""            | ""           | [[result]] | Guid   | NO           |                      |
+	| 3  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt                                | ""            | ""           | [[result]] | Guid   | NO           |                      |
+	| 4  | FTPS       | [[path]] | ftp://DEVOPSPDC.premier.local:1002/FORTESTING/filetodele.txt                                        | Administrator | Dev2@dmin123 | [[result]] | Guid   | NO           |                      |
+	| 5  | SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetoread.txt                                                          | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
+	| 6  | SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetoread1.txt                                                         | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Read File at locationNull
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -37,10 +38,11 @@ Scenario Outline: Read File at locationNull
 	Examples: 
 	| NO | Name       | source   | sourceLocation                                                                                      | username      | password     | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 	| 1  | Local      | [[path]] | NULL                                                                                                | ""            | ""           | [[result]] | Error  | AN           |                      |
-	| 4  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt                                   | ""            | ""           | [[result]] | Guid   | NO           |                      |
-	| 5  | FTPS       | [[path]] | ftps://DEVOPSPDC.premier.local:1002/FORREADFILETESTING/filetodele.txt                                  | Administrator | Dev2@dmin123 | [[result]] | Guid   | NO           |                      |
-	| 6  | SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetoread.txt                                                          | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 7  | SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetoread1.txt                                                         | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+	| 2  | UNC        | [[path]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt        | ""            | ""           | [[result]] | Guid   | NO           |                      |
+	| 3  | FTP        | [[path]] | ftp://DEVOPSPDC.premier.local:1001/FORREADFILETESTING/filetoread.txt                                   | ""            | ""           | [[result]] | Guid   | NO           |                      |
+	| 4  | FTPS       | [[path]] | ftps://DEVOPSPDC.premier.local:1002/FORREADFILETESTING/filetodele.txt                                  | Administrator | Dev2@dmin123 | [[result]] | Guid   | NO           |                      |
+	| 5  | SFTP       | [[path]] | sftp://SVRDEV.premier.local/filetoread.txt                                                          | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
+	| 6  | SFTP PK    | [[path]] | sftp://SVRDEV.premier.local/filetoread1.txt                                                         | dev2          | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
 	
 Scenario Outline: Read File validation
