@@ -41,7 +41,7 @@ namespace Warewolf.Driver.RabbitMQ
             var channel = CreateChannel(rabbitConfig);
 
 
-            var throttler = new SemaphoreSlim(initialCount: Environment.ProcessorCount * 10);
+            var throttler = new SemaphoreSlim(initialCount: Environment.ProcessorCount * 5);
             var eventConsumer = new EventingBasicConsumer(channel);
             eventConsumer.Received += (model, eventArgs) =>
             {
