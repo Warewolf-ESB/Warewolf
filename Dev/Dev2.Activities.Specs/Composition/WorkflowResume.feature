@@ -5,6 +5,7 @@
 @ResumeWorkflowExecution
 Scenario: Resuming a workflow that had failed to connect
 	Given I have a workflow "WorkflowWithMysqlToolUsingContainer"
+	Given I have reset local performance Counters
 	And "WorkflowWithMysqlToolUsingContainer" contains an Assign "AssignNumber" as
 		| variable   | value |
 		| [[number]] | 1     |
