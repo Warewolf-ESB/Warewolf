@@ -580,7 +580,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                     var contentType = content.Headers.ContentType;
                     var mediaType = contentType?.MediaType;
-                    if (mediaType == null || mediaType == "text/plain")
+                    if (mediaType == null)
                     {
                         valuePairs.Add(name, byteData.ReadToString());
                         continue;
