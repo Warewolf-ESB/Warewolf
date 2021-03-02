@@ -1,4 +1,3 @@
-powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -File "%~dp0..\..\..\..\Compile.ps1" -AcceptanceTesting -InDockerContainer
 mkdir "%~dp0..\..\..\..\bin\AcceptanceTesting"
 cd /d "%~dp0..\..\..\..\bin\AcceptanceTesting"
-powershell -NoProfile -ExecutionPolicy Bypass -NoExit -File "%~dp0..\TestRun.ps1" -RetryRebuild -Projects Dev2.*.Tests,Warewolf.*.Tests,Warewolf.UIBindingTests.* -ExcludeProjects Dev2.Infrastructure.Tests,Dev2.Integration.Tests,Warewolf.UI.Tests,Warewolf.Auditing.Tests,Warewolf.Studio.ViewModels.Tests,Warewolf.Web.UI.Tests,Warewolf.Storage.Tests,Warewolf.UIBindingTests.ComPluginSource -Coverage -InContainer
+powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File "%~dp0..\TestRun.ps1" -RetryRebuild -Projects Dev2.*.Tests,Warewolf.*.Tests,Warewolf.UIBindingTests.* -ExcludeProjects Dev2.Integration.Tests,Dev2.Studio.Core.Tests,Dev2.Infrastructure.Tests,Warewolf.UI.Tests,Warewolf.Studio.ViewModels.Tests,Warewolf.Web.UI.Tests,Warewolf.Storage.Tests,Warewolf.Auditing.Tests,Warewolf.Logger.Tests,Warewolf.UIBindingTests.ComPluginSource,Warewolf.UIBindingTests.Deploy -Coverage -InContainer
