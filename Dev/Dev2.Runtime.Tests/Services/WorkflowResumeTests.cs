@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.Services
             var resourceID = Guid.NewGuid();
             var identity = new MockPrincipal();
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
             var values = new Dictionary<string, StringBuilder>
             {
@@ -272,7 +272,7 @@ namespace Dev2.Tests.Runtime.Services
             var resourceID = Guid.NewGuid();
             var identity = new MockPrincipal();
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
 
             var values = new Dictionary<string, StringBuilder>
@@ -309,7 +309,7 @@ namespace Dev2.Tests.Runtime.Services
             var resourceID = Guid.NewGuid();
             var identity = new MockPrincipal();
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
             var values = new Dictionary<string, StringBuilder>
             {
@@ -346,7 +346,7 @@ namespace Dev2.Tests.Runtime.Services
             var resourceID = Guid.NewGuid();
             var identity = new MockPrincipal();
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
             var values = new Dictionary<string, StringBuilder>
             {
@@ -395,7 +395,7 @@ namespace Dev2.Tests.Runtime.Services
             var resourceID = Guid.NewGuid();
             var identity = new MockPrincipal();
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
 
             var values = new Dictionary<string, StringBuilder>
             {

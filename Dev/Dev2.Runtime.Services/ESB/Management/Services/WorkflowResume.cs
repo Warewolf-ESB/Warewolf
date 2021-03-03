@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IAuthorizationService _authorizationService;
         private IResourceCatalog _resourceCatalog;
-        private static IPrincipal _serverUser;
+        private static IPrincipal _orginalExecutingUser;
 
         public override string HandlesType() => nameof(WorkflowResume);
 
@@ -53,15 +53,14 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
             var executingUser = BuildClaimsPrincipal(currentUserPrincipal, out var unqualifiedUserName);
-            var isUserValid = GetUnqualifiedName(executingUser.Identity.Name.Trim()) == GetUnqualifiedName(ServerUser.Identity.Name);
+            var isUserValid = GetUnqualifiedName(executingUser.Identity.Name.Trim()) == GetUnqualifiedName(OrginalExecutingUser.Identity.Name);
             if (!isUserValid)
             {
-                var errorMessage = string.Format(ErrorResource.AuthenticationError, unqualifiedUserName);
+                var errorMessage = string.Format(ErrorResource.AuthenticationError,unqualifiedUserName);
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorMessage)};
             }
-
-            executingUser = ServerUser;
+            executingUser = OrginalExecutingUser;
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
             var executionEnv = new ExecutionEnvironment();
@@ -112,10 +111,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
         }
 
-        public IPrincipal ServerUser
+        public IPrincipal OrginalExecutingUser
         {
-            get => _serverUser ?? Common.Utilities.ServerUser;
-            set => _serverUser = value;
+            get => _orginalExecutingUser ?? Common.Utilities.OrginalExecutingUser;
+            set => _orginalExecutingUser = value;
         }
 
         public IResourceCatalog ResourceCatalogInstance
