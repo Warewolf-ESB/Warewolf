@@ -207,15 +207,12 @@ Remove-Item -force -recurse
 	Get-Content "$TestResultsPath\RunTests.ps1"
 	if (!($InContainer.IsPresent)) {
 		&"$TestResultsPath\RunTests.ps1"
-		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-			Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath" -Force -Recurse
-		}
 	} else {
 		docker run -i --rm -v ${PWD}:C:\BuildUnderTest --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
-		if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-			Move-Item .\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\TestResults .
-		}
 	}
+    if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+        Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath" -Force -Recurse
+    }
 	if (Test-Path "$TestResultsPath\*.trx") {
 		[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
 		if ($getXMLFiles.Count -gt 1) {
