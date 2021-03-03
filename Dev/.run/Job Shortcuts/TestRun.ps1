@@ -171,9 +171,6 @@ Remove-Item -force -recurse
 	if ($PostTestRunScript) {
 		"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
-	if ($Coverage.IsPresent) {
-		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
 	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 		"  <Output>.$TestResultsPath\DotCover.dcvr</Output>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		"  <Scope>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
@@ -200,6 +197,9 @@ Remove-Item -force -recurse
 		"</AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		Get-Content "$TestResultsPath\DotCover Runner.xml"
 		"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	}
+	if ($Coverage.IsPresent) {
+		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
