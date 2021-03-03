@@ -36,6 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         private IAuthorizationService _authorizationService;
         private IResourceCatalog _resourceCatalog;
         private static IPrincipal _serverUser;
+
         public override string HandlesType() => nameof(WorkflowResume);
 
         static string GetUnqualifiedName(string userName)
@@ -52,12 +53,14 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
             var executingUser = BuildClaimsPrincipal(currentUserPrincipal, out var unqualifiedUserName);
-            if (executingUser.Identity.Name != ServerUser.Identity.Name)
+            var isUserValid = GetUnqualifiedName(executingUser.Identity.Name.Trim()) == GetUnqualifiedName(ServerUser.Identity.Name);
+            if (!isUserValid)
             {
                 var errorMessage = string.Format(ErrorResource.AuthenticationError, unqualifiedUserName);
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorMessage)};
             }
+
             executingUser = ServerUser;
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
@@ -90,7 +93,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             var sa = dynamicService.Actions.FirstOrDefault();
             if (sa is null)
             {
-
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}")};
             }
 
@@ -121,11 +123,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             get => _resourceCatalog ?? ResourceCatalog.Instance;
             set => _resourceCatalog = value;
         }
+
         public IAuthorizationService AuthorizationService
         {
             get => _authorizationService ?? ServerAuthorizationService.Instance;
             set => _authorizationService = value;
         }
+
         private bool CanExecute(DsfDataObject dataObject)
         {
             var key = (dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.ResourceID.ToString());
