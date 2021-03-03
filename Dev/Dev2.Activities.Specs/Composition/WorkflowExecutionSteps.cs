@@ -4851,14 +4851,7 @@ namespace Dev2.Activities.Specs.Composition
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
-            Common.Utilities.ServerUser = currentPrincipal;
-
-
-            // var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            // var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            //Dev2.Common.Utilities.ServerUser = currentPrincipal;
-            //Dev2.Common.Utilities.ServerUser = BuildClaimsPrincipal(currentPrincipal.Identity.Name);
-
+            Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(assignActivity.UniqueID), versionNumber, identity.Name);
             Add("resumeMessage", msg);
         }
@@ -4898,13 +4891,8 @@ namespace Dev2.Activities.Specs.Composition
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
-            Common.Utilities.ServerUser = currentPrincipal;
+            Common.Utilities.OrginalExecutingUser = currentPrincipal;
 
-
-            // var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            // var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            //Dev2.Common.Utilities.ServerUser = currentPrincipal;
-            //Dev2.Common.Utilities.ServerUser = BuildClaimsPrincipal(currentPrincipal.Identity.Name);
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), "1", identity.Name);
             Add("resumeMessage", msg);
         }
@@ -5019,7 +5007,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             Thread.CurrentPrincipal = executingUser;
-            Common.Utilities.ServerUser = executingUser;
+            Dev2.Common.Utilities.OrginalExecutingUser = executingUser;
 
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", executingUser.Identity.Name);
             Add("resumeMessage", msg);
@@ -5042,8 +5030,7 @@ namespace Dev2.Activities.Specs.Composition
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
-            Common.Utilities.ServerUser = currentPrincipal;
-
+            Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var invalidIdentity = new MockPrincipal("InvalidUser");
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", invalidIdentity.Name);
             Add("resumeMessage", msg);

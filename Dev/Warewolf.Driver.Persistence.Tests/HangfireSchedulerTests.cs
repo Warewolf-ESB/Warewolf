@@ -106,7 +106,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var identity = new MockPrincipal();
             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
 
             var mockPrincipal = new Mock<ClaimsPrincipal>();
@@ -173,7 +173,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var identity = new MockPrincipal();
             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
 
             var mockPrincipal = new Mock<IPrincipal>();
@@ -236,7 +236,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var identity = new MockPrincipal();
             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
 
             var executingUser = identity;
             var mockPrincipal = new Mock<IPrincipal>();
@@ -611,7 +611,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             var identity = new MockPrincipal();
             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity.Name;
 
             var values = new Dictionary<string, StringBuilder>
