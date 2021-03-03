@@ -53,18 +53,15 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Thread.CurrentPrincipal = currentPrincipal;
-            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
-            var executingUser = identity;
+            var serializer = new Dev2JsonSerializer();
+            var currentuserprincipal = serializer.Serialize(WindowsIdentity.GetCurrent());
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(executingUser.Name)}
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
             var resourceCatalog = new Mock<IResourceCatalog>();
             var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
@@ -88,7 +85,6 @@ namespace Dev2.Tests.Runtime.Services
             var jsonResult = workflowResume.Execute(values, null);
 
             //------------Assert Results-------------------------
-            var serializer = new Dev2JsonSerializer();
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             Assert.IsFalse(result.HasError);
             Assert.AreEqual("Execution Completed.", result.Message.ToString());
@@ -272,11 +268,8 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Thread.CurrentPrincipal = currentPrincipal;
-            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
-            var executingUser = identity;
+            var serializer = new Dev2JsonSerializer();
+            var currentuserprincipal = serializer.Serialize(WindowsIdentity.GetCurrent());
 
             var values = new Dictionary<string, StringBuilder>
             {
@@ -284,7 +277,7 @@ namespace Dev2.Tests.Runtime.Services
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(executingUser.Name)}
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
             var resourceCatalog = new Mock<IResourceCatalog>();
             var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
@@ -296,7 +289,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var jsonResult = workflowResume.Execute(values, null);
             //------------Assert Results-------------------------
-            var serializer = new Dev2JsonSerializer();
+
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             Assert.IsTrue(result.HasError);
             Assert.IsTrue(result.Message.ToString().Contains("Error resuming. ServiceAction is null for Resource ID"));
@@ -310,18 +303,15 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Thread.CurrentPrincipal = currentPrincipal;
-            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
-            var executingUser = identity;
+            var serializer = new Dev2JsonSerializer();
+            var currentuserprincipal = serializer.Serialize(WindowsIdentity.GetCurrent());
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(executingUser.Name)}
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
             var newDs = new DynamicService {Name = HandlesType()};
             var nullresourceCatalog = new Mock<IResourceCatalog>();
@@ -334,7 +324,7 @@ namespace Dev2.Tests.Runtime.Services
             var jsonResult = workflowResume.Execute(values, null);
 
             //------------Assert Results-------------------------
-            var serializer = new Dev2JsonSerializer();
+
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             Assert.IsTrue(result.HasError);
             Assert.IsTrue(result.Message.ToString().Contains("Error resuming. ServiceAction is null for Resource ID"));
@@ -348,18 +338,15 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Thread.CurrentPrincipal = currentPrincipal;
-            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
-            var executingUser = identity;
+            var serializer = new Dev2JsonSerializer();
+            var currentuserprincipal = serializer.Serialize(WindowsIdentity.GetCurrent());
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(executingUser.Name)}
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
             var newDs = new DynamicService {Name = HandlesType(), ID = resourceID};
             var sa = new ServiceAction {Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
@@ -384,7 +371,6 @@ namespace Dev2.Tests.Runtime.Services
             var jsonResult = workflowResume.Execute(values, null);
 
             //------------Assert Results-------------------------
-            var serializer = new Dev2JsonSerializer();
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             Assert.IsTrue(result.HasError);
             Assert.AreEqual("ErrorMessage", result.Message.ToString());
@@ -398,18 +384,17 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Thread.CurrentPrincipal = currentPrincipal;
-            Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
-
+            var serializer = new Dev2JsonSerializer();
+            var identity = new GenericIdentity("InvalidUser");
+            var invalidUser = new GenericPrincipal(identity, new string[0]);
+            var currentuserprincipal = serializer.Serialize(invalidUser.Identity);
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder("\\abc")}
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
             };
             var authorizationService = new Mock<IAuthorizationService>();
             authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<Guid>())).Returns(false);
@@ -437,7 +422,7 @@ namespace Dev2.Tests.Runtime.Services
             var jsonResult = workflowResume.Execute(values, null);
 
             //------------Assert Results-------------------------
-            var serializer = new Dev2JsonSerializer();
+
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             Assert.IsTrue(result.HasError);
             Assert.IsTrue(result.Message.ToString().Contains("Authentication Error resuming"));
@@ -445,91 +430,4 @@ namespace Dev2.Tests.Runtime.Services
 
         private static string HandlesType() => "WorkflowResume";
     }
-
-   public enum MockPrincipalBehavior
-        {
-            AlwaysReturnTrue,
-            WhiteList,
-            BlackList
-        }
-
-        public class MockPrincipal : IPrincipal, IIdentity
-        {
-            private HashSet<String> Roles { get; set; }
-            public MockPrincipalBehavior Behavior { get; set; }
-
-            public MockPrincipal(String name)
-            {
-                Roles = new HashSet<String>();
-                Name = name;
-                IsAuthenticated = true;
-                AuthenticationType = "FakeAuthentication";
-            }
-
-            public void AddRoles(params String[] roles)
-            {
-                Behavior = MockPrincipalBehavior.WhiteList;
-
-                if (roles == null || roles.Length == 0) return;
-
-                var rolesToAdd = roles.Where(r => !Roles.Contains(r));
-
-                foreach (var role in rolesToAdd)
-                    Roles.Add(role);
-            }
-
-            public void IgnoreRoles(params String[] roles)
-            {
-                Behavior = MockPrincipalBehavior.BlackList;
-
-                AddRoles(roles);
-            }
-
-            public void RemoveRoles(params String[] roles)
-            {
-                if (roles == null || roles.Length == 0) return;
-
-                var rolesToAdd = roles.Where(r => Roles.Contains(r));
-
-                foreach (var role in rolesToAdd)
-                    Roles.Remove(role);
-            }
-
-            public void RemoveAllRoles()
-            {
-                Roles.Clear();
-            }
-
-            #region IPrincipal Members
-
-            public IIdentity Identity
-            {
-                get { return this; }
-            }
-
-            public bool IsInRole(string role)
-            {
-                if (Behavior == MockPrincipalBehavior.AlwaysReturnTrue)
-                    return true;
-
-                var isInlist = Roles.Contains(role);
-
-                if (Behavior == MockPrincipalBehavior.BlackList)
-                    return !isInlist;
-
-                return isInlist;
-            }
-
-            #endregion
-
-            #region IIdentity Members
-
-            public string AuthenticationType { get; set; }
-
-            public bool IsAuthenticated { get; set; }
-
-            public string Name { get; set; }
-
-            #endregion
-        }
 }
