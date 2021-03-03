@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
@@ -52,8 +53,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal();
+            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
+            Thread.CurrentPrincipal = currentPrincipal;
             Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
             var values = new Dictionary<string, StringBuilder>
@@ -270,8 +272,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal();
+            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
+            Thread.CurrentPrincipal = currentPrincipal;
             Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
 
@@ -307,8 +310,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal();
+            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
+            Thread.CurrentPrincipal = currentPrincipal;
             Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
             var values = new Dictionary<string, StringBuilder>
@@ -344,8 +348,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal();
+            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
+            Thread.CurrentPrincipal = currentPrincipal;
             Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
             var executingUser = identity;
             var values = new Dictionary<string, StringBuilder>
@@ -393,8 +398,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            var identity = new MockPrincipal();
+            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
+            Thread.CurrentPrincipal = currentPrincipal;
             Dev2.Common.Utilities.OrginalExecutingUser = currentPrincipal;
 
             var values = new Dictionary<string, StringBuilder>
@@ -440,90 +446,90 @@ namespace Dev2.Tests.Runtime.Services
         private static string HandlesType() => "WorkflowResume";
     }
 
-    public enum MockPrincipalBehavior
-    {
-        AlwaysReturnTrue,
-        WhiteList,
-        BlackList
-    }
-
-    public class MockPrincipal : IPrincipal, IIdentity
-    {
-        private HashSet<String> Roles { get; set; }
-        public MockPrincipalBehavior Behavior { get; set; }
-
-        public MockPrincipal(String name = "TestUser", MockPrincipalBehavior behavior = MockPrincipalBehavior.AlwaysReturnTrue)
+   public enum MockPrincipalBehavior
         {
-            Roles = new HashSet<String>();
-            Name = name;
-            IsAuthenticated = true;
-            AuthenticationType = "FakeAuthentication";
+            AlwaysReturnTrue,
+            WhiteList,
+            BlackList
         }
 
-        public void AddRoles(params String[] roles)
+        public class MockPrincipal : IPrincipal, IIdentity
         {
-            Behavior = MockPrincipalBehavior.WhiteList;
+            private HashSet<String> Roles { get; set; }
+            public MockPrincipalBehavior Behavior { get; set; }
 
-            if (roles == null || roles.Length == 0) return;
+            public MockPrincipal(String name)
+            {
+                Roles = new HashSet<String>();
+                Name = name;
+                IsAuthenticated = true;
+                AuthenticationType = "FakeAuthentication";
+            }
 
-            var rolesToAdd = roles.Where(r => !Roles.Contains(r));
+            public void AddRoles(params String[] roles)
+            {
+                Behavior = MockPrincipalBehavior.WhiteList;
 
-            foreach (var role in rolesToAdd)
-                Roles.Add(role);
+                if (roles == null || roles.Length == 0) return;
+
+                var rolesToAdd = roles.Where(r => !Roles.Contains(r));
+
+                foreach (var role in rolesToAdd)
+                    Roles.Add(role);
+            }
+
+            public void IgnoreRoles(params String[] roles)
+            {
+                Behavior = MockPrincipalBehavior.BlackList;
+
+                AddRoles(roles);
+            }
+
+            public void RemoveRoles(params String[] roles)
+            {
+                if (roles == null || roles.Length == 0) return;
+
+                var rolesToAdd = roles.Where(r => Roles.Contains(r));
+
+                foreach (var role in rolesToAdd)
+                    Roles.Remove(role);
+            }
+
+            public void RemoveAllRoles()
+            {
+                Roles.Clear();
+            }
+
+            #region IPrincipal Members
+
+            public IIdentity Identity
+            {
+                get { return this; }
+            }
+
+            public bool IsInRole(string role)
+            {
+                if (Behavior == MockPrincipalBehavior.AlwaysReturnTrue)
+                    return true;
+
+                var isInlist = Roles.Contains(role);
+
+                if (Behavior == MockPrincipalBehavior.BlackList)
+                    return !isInlist;
+
+                return isInlist;
+            }
+
+            #endregion
+
+            #region IIdentity Members
+
+            public string AuthenticationType { get; set; }
+
+            public bool IsAuthenticated { get; set; }
+
+            public string Name { get; set; }
+
+            #endregion
         }
-
-        public void IgnoreRoles(params String[] roles)
-        {
-            Behavior = MockPrincipalBehavior.BlackList;
-
-            AddRoles(roles);
-        }
-
-        public void RemoveRoles(params String[] roles)
-        {
-            if (roles == null || roles.Length == 0) return;
-
-            var rolesToAdd = roles.Where(r => Roles.Contains(r));
-
-            foreach (var role in rolesToAdd)
-                Roles.Remove(role);
-        }
-
-        public void RemoveAllRoles()
-        {
-            Roles.Clear();
-        }
-
-        #region IPrincipal Members
-
-        public IIdentity Identity
-        {
-            get { return this; }
-        }
-
-        public bool IsInRole(string role)
-        {
-            if (Behavior == MockPrincipalBehavior.AlwaysReturnTrue)
-                return true;
-
-            var isInlist = Roles.Contains(role);
-
-            if (Behavior == MockPrincipalBehavior.BlackList)
-                return !isInlist;
-
-            return isInlist;
-        }
-
-        #endregion
-
-        #region IIdentity Members
-
-        public string AuthenticationType { get; set; }
-
-        public bool IsAuthenticated { get; set; }
-
-        public string Name { get; set; }
-
-        #endregion
-    }
 }
