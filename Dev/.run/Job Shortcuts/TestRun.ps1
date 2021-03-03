@@ -171,9 +171,6 @@ Remove-Item -force -recurse
 	if ($PostTestRunScript) {
 		"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
-	if ($Coverage.IsPresent) {
-		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
 	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 		"  <Output>.$TestResultsPath\DotCover.dcvr</Output>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		"  <Scope>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
@@ -201,21 +198,21 @@ Remove-Item -force -recurse
 		Get-Content "$TestResultsPath\DotCover Runner.xml"
 		"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
+	if ($Coverage.IsPresent) {
+		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	}
 	if ($UNCPassword) {
 		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	Get-Content "$TestResultsPath\RunTests.ps1"
 	if (!($InContainer.IsPresent)) {
 		&"$TestResultsPath\RunTests.ps1"
-		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-			Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath" -Force -Recurse
-		}
 	} else {
 		docker run -i --rm -v ${PWD}:C:\BuildUnderTest --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
-		if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-			Move-Item .\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\TestResults .
-		}
 	}
+    if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+        Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath" -Force -Recurse
+    }
 	if (Test-Path "$TestResultsPath\*.trx") {
 		[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
 		if ($getXMLFiles.Count -gt 1) {
