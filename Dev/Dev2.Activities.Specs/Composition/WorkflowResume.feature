@@ -1,6 +1,6 @@
 ﻿Feature: WorkflowResume
-	When a workflow execution fails
-	I want to Resume
+When a workflow execution fails
+I want to Resume
 
 #@ResumeWorkflowExecution
 #Scenario: Resuming a workflow that had failed to connect
@@ -74,3 +74,18 @@
 #		| # |                     |
 #		| 1 | [[rec(1).a]] = New  |
 #		| 2 | [[rec(2).a]] = Test |
+  @ResumeWorkflowExecution
+  Scenario: Resuming a workflow Given Suspended by Different User Returns Authentication Error
+    Given I have a server at "localhost" with workflow "Hello World"
+    And Workflow "Hello World" has "Assign a value to Name if blank (1)" activity
+    Then I resume workflow "Hello World" at "Assign a value to Name if blank (1)" tool with invalid user
+    Then Resume has "AN" error
+    Then Resume message is "Authentication Error resuming. User InvalidUser is not authorized to execute the workflow."
+
+  @ResumeWorkflowExecution
+  Scenario: Resuming a workflow Given Valid Authentication
+    Given I have a server at "localhost" with workflow "Hello World"
+    And Workflow "Hello World" has "Assign a value to Name if blank (1)" activity
+    Then I resume workflow "Hello World" at "Assign a value to Name if blank (1)" tool
+    Then Resume has "NO" error
+    Then Resume message is "Execution Completed."
