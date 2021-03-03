@@ -4853,6 +4853,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(environmentModel);
             Assert.AreEqual(server, environmentModel.Name);
         }
+
         [When(@"I resume the workflow ""(.*)"" at ""(.*)"" from version ""(.*)""")]
         public void WhenIResumeTheWorkflowAtFromVersion(string workflow, string activity, string versionNumber)
         {
@@ -4866,11 +4867,50 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(resourceModel);
             var env = new ExecutionEnvironment();
             var serEnv = env.ToJson();
+
+            Thread.CurrentPrincipal = null;
+            //var identity = new GenericIdentity("User");
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Thread.CurrentPrincipal = currentPrincipal;
+            Common.Utilities.ServerUser = currentPrincipal;
+
+
+            // var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
+            // var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            //Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            //Dev2.Common.Utilities.ServerUser = BuildClaimsPrincipal(currentPrincipal.Identity.Name);
+
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(assignActivity.UniqueID), versionNumber, identity.Name);
             Add("resumeMessage", msg);
+        }
+
+        static string GetUnqualifiedName(string userName)
+        {
+            if (userName.Contains("\\"))
+            {
+                return userName.Split('\\').Last().Trim();
+            }
+
+            return userName;
+        }
+
+        private static IPrincipal BuildClaimsPrincipal(string currentUserPrincipal)
+        {
+            IPrincipal executingUser;
+            var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal).Trim();
+
+            try
+            {
+                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            }
+            catch
+            {
+                var genericIdentity = new GenericIdentity(unqualifiedUserName);
+                executingUser = new GenericPrincipal(genericIdentity, new string[0]);
+            }
+
+            return executingUser;
         }
 
         [Given(@"I resume workflow ""(.*)""")]
@@ -4891,9 +4931,19 @@ namespace Dev2.Activities.Specs.Composition
             env.Assign("[[RecSet().Field]]", "Jane", 0);
             env.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"B\"}"), 0);
             var serEnv = env.ToJson();
+
+            Thread.CurrentPrincipal = null;
+            //var identity = new GenericIdentity("User");
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Thread.CurrentPrincipal = currentPrincipal;
+            Common.Utilities.ServerUser = currentPrincipal;
+
+
+            // var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
+            // var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            //Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            //Dev2.Common.Utilities.ServerUser = BuildClaimsPrincipal(currentPrincipal.Identity.Name);
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"),"1",identity.Name);
             Add("resumeMessage", msg);
         }
@@ -4994,9 +5044,18 @@ namespace Dev2.Activities.Specs.Composition
             _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[\"Service Execution Error:    at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\DatabaseServiceExecution.cs:line 104\\r\\n   at Dev2.Services.Execution.ServiceExecutionAbstract`2.ExecuteService(ErrorResultTO& errors, Int32 update, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\ServiceExecutionAbstract.cs:line 372\"]}";
+
+            Thread.CurrentPrincipal = null;
+            //var identity = new GenericIdentity("User");
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            Thread.CurrentPrincipal = currentPrincipal;
+            Common.Utilities.ServerUser = currentPrincipal;
+
+            //var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
+            //var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            //Dev2.Common.Utilities.ServerUser = currentPrincipal;
+            //Dev2.Common.Utilities.ServerUser = BuildClaimsPrincipal(currentPrincipal.Identity.Name);
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0",identity.Name);
             Add("resumeMessage", msg);
         }
