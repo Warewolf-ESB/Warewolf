@@ -35,6 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IAuthorizationService _authorizationService;
         private IResourceCatalog _resourceCatalog;
+        private static IPrincipal _serverUser;
         public override string HandlesType() => nameof(WorkflowResume);
 
         static string GetUnqualifiedName(string userName)
@@ -51,13 +52,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
             var executingUser = BuildClaimsPrincipal(currentUserPrincipal, out var unqualifiedUserName);
-            if (executingUser.Identity.Name != Common.Utilities.ServerUser.Identity.Name)
+            if (executingUser.Identity.Name != ServerUser.Identity.Name)
             {
                 var errorMessage = string.Format(ErrorResource.AuthenticationError, unqualifiedUserName);
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorMessage)};
             }
-            executingUser = Common.Utilities.ServerUser;
+            executingUser = ServerUser;
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
             var executionEnv = new ExecutionEnvironment();
@@ -108,6 +109,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
         }
+
+        public IPrincipal ServerUser
+        {
+            get => _serverUser ?? Common.Utilities.ServerUser;
+            set => _serverUser = value;
+        }
+
         public IResourceCatalog ResourceCatalogInstance
         {
             get => _resourceCatalog ?? ResourceCatalog.Instance;

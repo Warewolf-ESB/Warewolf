@@ -53,7 +53,7 @@ Scenario: Resuming Workflow From a specific Version
 		| [[rec().a]] | Test  |
 	When workflow "ResumeWorkflowFromVersion" is saved "1" time
 	Then workflow "ResumeWorkflowFromVersion" has "0" Versions in explorer
-	When "WorkflowWithAssignAndCount" is executed
+	When "ResumeWorkflowFromVersion" is executed
 	Then the workflow execution has "NO" error
 	And the "VarsAssign" in Workflow "ResumeWorkflowFromVersion" debug outputs as
 		| # |                     |
