@@ -132,7 +132,7 @@ Remove-Item -force -recurse
 		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	}
 	if ($UNCPassword) {
-		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:.\Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	if ($TestsToRun) {
 		if ($PreTestRunScript) {
