@@ -26,7 +26,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
-using Warewolf.Resource.Messages;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -35,32 +35,14 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IAuthorizationService _authorizationService;
         private IResourceCatalog _resourceCatalog;
-        private static IPrincipal _orginalExecutingUser;
 
         public override string HandlesType() => nameof(WorkflowResume);
-
-        static string GetUnqualifiedName(string userName)
-        {
-            if (userName.Contains("\\"))
-            {
-                return userName.Split('\\').Last().Trim();
-            }
-
-            return userName;
-        }
 
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
-            var executingUser = BuildClaimsPrincipal(currentUserPrincipal, out var unqualifiedUserName);
-            var isUserValid = GetUnqualifiedName(executingUser.Identity.Name.Trim()) == GetUnqualifiedName(OrginalExecutingUser.Identity.Name);
-            if (!isUserValid)
-            {
-                var errorMessage = string.Format(ErrorResource.AuthenticationError,unqualifiedUserName);
-                Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
-                return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorMessage)};
-            }
-            executingUser = OrginalExecutingUser;
+            var user = serializer.Deserialize<object>(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal.ToString()));
+            var executingUser = BuildClaimsPrincipal(user);
 
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
             var executionEnv = new ExecutionEnvironment();
@@ -78,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (!CanExecute(dataObject))
             {
-                var errorMessage = string.Format(ErrorResource.AuthenticationError, unqualifiedUserName);
+                var errorMessage = string.Format(ErrorResource.AuthenticationError, executingUser.Identity.Name);
                 Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                 return new ExecuteMessage {HasError = true, Message = new StringBuilder(errorMessage)};
             }
@@ -111,12 +93,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return new ExecuteMessage {HasError = false, Message = new StringBuilder("Execution Completed.")};
         }
 
-        public IPrincipal OrginalExecutingUser
-        {
-            get => _orginalExecutingUser ?? Common.Utilities.OrginalExecutingUser;
-            set => _orginalExecutingUser = value;
-        }
-
         public IResourceCatalog ResourceCatalogInstance
         {
             get => _resourceCatalog ?? ResourceCatalog.Instance;
@@ -136,18 +112,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             return isAuthorized;
         }
 
-        private static IPrincipal BuildClaimsPrincipal(StringBuilder currentUserPrincipal, out string unqualifiedUserName)
+        private static IPrincipal BuildClaimsPrincipal(object currentUserPrincipal)
         {
             IPrincipal executingUser;
-            unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal.ToString()).Trim();
-
             try
             {
-                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+                executingUser = new WindowsPrincipal(currentUserPrincipal as WindowsIdentity);
             }
             catch
             {
-                var genericIdentity = new GenericIdentity(unqualifiedUserName);
+                var genericIdentity = currentUserPrincipal as GenericIdentity;
                 executingUser = new GenericPrincipal(genericIdentity, new string[0]);
             }
 
