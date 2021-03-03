@@ -4994,7 +4994,6 @@ namespace Dev2.Activities.Specs.Composition
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}";
 
-            Thread.CurrentPrincipal = null;
             IPrincipal executingUser;
             try
             {
@@ -5006,10 +5005,9 @@ namespace Dev2.Activities.Specs.Composition
                 executingUser = new GenericPrincipal(genericIdentity, new[] {"Role1", "Roll2"});
             }
 
-            Thread.CurrentPrincipal = executingUser;
-            Dev2.Common.Utilities.OrginalExecutingUser = executingUser;
-
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", executingUser.Identity.Name);
+            var serializer = new Dev2JsonSerializer();
+            var currentuserprincipal = serializer.Serialize(executingUser);
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", currentuserprincipal);
             Add("resumeMessage", msg);
         }
 
@@ -5026,13 +5024,12 @@ namespace Dev2.Activities.Specs.Composition
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}";
 
-            Thread.CurrentPrincipal = null;
-            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
-            Thread.CurrentPrincipal = currentPrincipal;
-            Common.Utilities.OrginalExecutingUser = currentPrincipal;
-            var invalidIdentity = new MockPrincipal("InvalidUser");
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", invalidIdentity.Name);
+            var genericIdentity = new GenericIdentity("InvalidUser");
+            var executingUser = new GenericPrincipal(genericIdentity, new[] {"Role1", "Roll2"});
+
+            var serializer = new Dev2JsonSerializer();
+            var currentuserprincipal = serializer.Serialize(executingUser);
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", currentuserprincipal);
             Add("resumeMessage", msg);
         }
 
@@ -5326,6 +5323,7 @@ namespace Dev2.Activities.Specs.Composition
                 return result;
             }
         }
+
         private static IPrincipal BuildClaimsPrincipal(string currentUserPrincipal)
         {
             IPrincipal executingUser;
@@ -5343,6 +5341,7 @@ namespace Dev2.Activities.Specs.Composition
 
             return executingUser;
         }
+
         public enum MockPrincipalBehavior
         {
             AlwaysReturnTrue,
