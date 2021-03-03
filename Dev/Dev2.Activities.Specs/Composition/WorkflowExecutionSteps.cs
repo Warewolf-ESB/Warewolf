@@ -164,6 +164,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             WorkflowIsDeletedAsCleanup();
         }
+
         public void CleanUp_DetailedLogFile()
         {
             WorkflowIsDeletedAsCleanup();
@@ -175,8 +176,10 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     File.Delete(item);
                 }
+
                 _dirHelper.Delete(EnvironmentVariables.DetailLogPath, true);
             }
+
             _scenarioContext?.Clear();
         }
 
@@ -237,6 +240,7 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     throw new Exception("connection to localhost timeout");
                 }
+
                 Thread.Sleep(500);
             }
         }
@@ -272,7 +276,7 @@ namespace Dev2.Activities.Specs.Composition
                         connection = new ServerProxy(remoteServer.WebAddress, remoteServer.UserName, remoteServer.Password);
                     }
 
-                    var newEnvironment = new Server(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName };
+                    var newEnvironment = new Server(remoteServer.ResourceID, connection) {Name = remoteServer.ResourceName};
                     EnsureEnvironmentConnected(newEnvironment, EnvironmentConnectionTimeout);
                     LoadResourcesAndSubscribeToDebugOutput(workflow, newEnvironment);
                 }
@@ -351,6 +355,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 _containerOps = new Depends(Depends.ContainerType.MySQL, true);
             }
+
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ID = resourceId,
@@ -390,13 +395,14 @@ namespace Dev2.Activities.Specs.Composition
                 var performanceCounterFactory = new PerformanceCounterFactory();
 
                 var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
-                                                            {   new WarewolfCurrentExecutionsPerformanceCounter(performanceCounterFactory),
-                                                                new WarewolfNumberOfErrors(performanceCounterFactory),
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(performanceCounterFactory),
-                                                                new WarewolfAverageExecutionTimePerformanceCounter(performanceCounterFactory),
-                                                                new WarewolfNumberOfAuthErrors(performanceCounterFactory),
-                                                                new WarewolfServicesNotFoundCounter(performanceCounterFactory)
-                                                            }, new List<IResourcePerformanceCounter>());
+                {
+                    new WarewolfCurrentExecutionsPerformanceCounter(performanceCounterFactory),
+                    new WarewolfNumberOfErrors(performanceCounterFactory),
+                    new WarewolfRequestsPerSecondPerformanceCounter(performanceCounterFactory),
+                    new WarewolfAverageExecutionTimePerformanceCounter(performanceCounterFactory),
+                    new WarewolfNumberOfAuthErrors(performanceCounterFactory),
+                    new WarewolfServicesNotFoundCounter(performanceCounterFactory)
+                }, new List<IResourcePerformanceCounter>());
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object, performanceCounterFactory));
             }
             catch (Exception ex)
@@ -451,6 +457,7 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     break;
                 }
+
                 Thread.Sleep(GlobalConstants.NetworkTimeOut);
             }
 
@@ -474,6 +481,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStatesDuration = new List<IDebugState>();
                 Add("debugStatesDuration", debugStatesDuration);
             }
+
             if (debugState.WorkspaceID == server.Connection.WorkspaceID || debugState.WorkspaceID == GlobalConstants.ServerWorkspaceID)
             {
                 if (debugState.StateType != StateType.Duration)
@@ -485,11 +493,11 @@ namespace Dev2.Activities.Specs.Composition
                     debugStatesDuration.Add(debugState);
                 }
             }
+
             if (debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
             {
                 _resetEvt.Set();
             }
-
         }
 
         [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" debug inputs as")]
@@ -513,7 +521,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
 
             _commonSteps.ThenTheDebugInputsAs(table, debugToUse.Inputs
-                                                    .SelectMany(item => item.ResultsList).ToList());
+                .SelectMany(item => item.ResultsList).ToList());
         }
 
         [Then(@"the ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug inputs as")]
@@ -541,9 +549,8 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
-                                                    .SelectMany(item => item.Inputs)
-                                                    .SelectMany(item => item.ResultsList).ToList());
-
+                .SelectMany(item => item.Inputs)
+                .SelectMany(item => item.ResultsList).ToList());
         }
 
         [Then(@"the dotnetdll ""(.*)"" in '(.*)' in step (.*) for ""(.*)"" debug inputs as")]
@@ -584,7 +591,7 @@ namespace Dev2.Activities.Specs.Composition
                     var debugItemResult = debugItem.ResultsList.FirstOrDefault();
                     if (debugItemResult != null)
                     {
-                        Assert.AreEqual((object)value, debugItemResult.Value);
+                        Assert.AreEqual((object) value, debugItemResult.Value);
                         Assert.AreEqual(variable, debugItemResult.Variable);
                         Assert.AreEqual(label, debugItemResult.Label);
                         Assert.AreEqual(operater, debugItemResult.Operator);
@@ -630,7 +637,7 @@ namespace Dev2.Activities.Specs.Composition
                     var debugItemResult = debugItem.ResultsList.FirstOrDefault();
                     if (debugItemResult != null)
                     {
-                        Assert.AreEqual((object)value, debugItemResult.Value);
+                        Assert.AreEqual((object) value, debugItemResult.Value);
                         Assert.AreEqual(variable, debugItemResult.Variable);
                         Assert.AreEqual(operater, debugItemResult.Operator);
                     }
@@ -664,8 +671,8 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
-                                                    .SelectMany(item => item.Outputs)
-                                                    .SelectMany(item => item.ResultsList).ToList());
+                .SelectMany(item => item.Outputs)
+                .SelectMany(item => item.ResultsList).ToList());
         }
 
 
@@ -674,8 +681,6 @@ namespace Dev2.Activities.Specs.Composition
             var debugToUse = toolSpecificDebug[stepNumber - 1];
             return debugToUse;
         }
-
-
 
 
         [Then(@"Workflow ""(.*)"" has errors")]
@@ -732,6 +737,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 throw new Exception("Local Warewolf service " + serviceName + " not found.");
             }
+
             var activity = GetServiceActivity(serviceType);
             if (activity != null)
             {
@@ -757,17 +763,18 @@ namespace Dev2.Activities.Specs.Composition
                     switch (serviceType)
                     {
                         case "mysql database":
-                            updatedActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity)activity, source, service);
+                            updatedActivity = ActivityUtils.GetDsfMySqlDatabaseActivity((DsfDatabaseActivity) activity, source, service);
                             break;
                         case "sqlserver database":
-                            updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity) activity, service, source);
                             break;
                         case "postgresql database":
-                            updatedActivity = ActivityUtils.GetDsfPostgreSqlActivity((DsfDatabaseActivity)activity, service, source);
+                            updatedActivity = ActivityUtils.GetDsfPostgreSqlActivity((DsfDatabaseActivity) activity, service, source);
                             break;
                         default:
                             break;
                     }
+
                     _commonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
                 else if (resource.ServerResourceType == "WebService")
@@ -787,6 +794,7 @@ namespace Dev2.Activities.Specs.Composition
                     {
                         updatedActivity.SourceId = source.ResourceID;
                     }
+
                     _commonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
                 else
@@ -830,12 +838,13 @@ namespace Dev2.Activities.Specs.Composition
                 var environments = ServerRepository.Instance.LookupEnvironments(localHostEnv);
                 remoteEnvironment = environments.FirstOrDefault(model => model.Name == server);
             }
+
             if (remoteEnvironment != null)
             {
                 if (server == "Remote Connection Integration")
                 {
                     remoteEnvironment.Connection = new ServerProxy(
-                        $"http://{_containerOps.Container.IP}:{_containerOps.Container.Port}", "\\","");
+                        $"http://{_containerOps.Container.IP}:{_containerOps.Container.Port}", "\\", "");
                 }
 
                 EnsureEnvironmentConnected(remoteEnvironment, EnvironmentConnectionTimeout);
@@ -843,17 +852,19 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     remoteEnvironment.ForceLoadResources();
                 }
+
                 var splitNameAndCat = remoteWf.Split('/');
                 var resName = splitNameAndCat[splitNameAndCat.Length - 1];
                 var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
-                                                                         || model.Category == remoteWf.Replace('/', '\\'), true);
+                                                                                                   || model.Category == remoteWf.Replace('/', '\\'), true);
 
                 if (remoteResourceModel == null)
                 {
                     remoteEnvironment.LoadResources();
                     remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
-                                                                         || model.Category == remoteWf.Replace('/', '\\'), true);
+                                                                                                   || model.Category == remoteWf.Replace('/', '\\'), true);
                 }
+
                 if (remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
@@ -896,7 +907,7 @@ namespace Dev2.Activities.Specs.Composition
 
         DataMappingViewModel GetDataMappingViewModel(IResourceModel remoteResourceModel, Table mappings)
         {
-            var webActivity = new WebActivity { ResourceModel = remoteResourceModel as ResourceModel };
+            var webActivity = new WebActivity {ResourceModel = remoteResourceModel as ResourceModel};
             var dataMappingViewModel = new DataMappingViewModel(webActivity);
             foreach (var inputOutputViewModel in dataMappingViewModel.Inputs)
             {
@@ -912,6 +923,7 @@ namespace Dev2.Activities.Specs.Composition
                 inputOutputViewModel.RecordSetName = "";
                 inputOutputViewModel.Name = "";
             }
+
             foreach (var tableRow in mappings.Rows)
             {
                 tableRow.TryGetValue("Output from Service", out string output);
@@ -931,6 +943,7 @@ namespace Dev2.Activities.Specs.Composition
                         {
                             inputOutputViewModel.Name = output;
                         }
+
                         inputOutputViewModel.RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(output);
                         _commonSteps.AddVariableToVariableList(toVariable);
                     }
@@ -955,12 +968,13 @@ namespace Dev2.Activities.Specs.Composition
                         {
                             inputOutputViewModel.Name = input;
                         }
+
                         inputOutputViewModel.Value = input;
                         _commonSteps.AddVariableToVariableList(fromVariable);
                     }
                 }
-
             }
+
             return dataMappingViewModel;
         }
 
@@ -993,6 +1007,7 @@ namespace Dev2.Activities.Specs.Composition
                 default:
                     break;
             }
+
             return activity;
         }
 
@@ -1010,7 +1025,6 @@ namespace Dev2.Activities.Specs.Composition
 
                 if (resource != null)
                 {
-
                     var outputs = XDocument.Parse(resource.Outputs);
 
                     string recordsetName;
@@ -1027,9 +1041,9 @@ namespace Dev2.Activities.Specs.Composition
                     }
 
                     var element = (from elements in outputs.Descendants("Output")
-                                   where string.Equals((string)elements.Attribute("RecordsetAlias"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
-                                         string.Equals((string)elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)
-                                   select elements).SingleOrDefault();
+                        where string.Equals((string) elements.Attribute("RecordsetAlias"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                              string.Equals((string) elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)
+                        select elements).SingleOrDefault();
 
                     element?.SetAttributeValue("Value", toVariable);
 
@@ -1044,7 +1058,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"'(.*)' in ""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenInContainsDataMergeIntoAs(string sequenceName, string forEachName, string activityName, string resultVariable, Table table)
         {
-            var activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
+            var activity = new DsfDataMergeActivity {Result = resultVariable, DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
@@ -1055,13 +1069,13 @@ namespace Dev2.Activities.Specs.Composition
 
                 activity.MergeCollection.Add(new DataMergeDTO(variable, type, at, 1, padding, alignment, true));
             }
+
             _commonSteps.AddVariableToVariableList(resultVariable);
             AddActivityToSequenceInsideForEach(sequenceName, forEachName, activity);
         }
 
         void AddActivityToSequenceInsideForEach(string sequenceName, string forEachName, Activity activity)
         {
-
             var activityList = _commonSteps.GetActivityList();
             if (activityList[forEachName] is DsfForEachActivity forEachActivity)
             {
@@ -1075,14 +1089,14 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"'(.*)' in ""(.*)"" contains Gather System Info ""(.*)"" as")]
         public void GivenInContainsGatherSystemInfoAs(string sequenceName, string forEachName, string activityName, Table table)
         {
-            var activity = new DsfGatherSystemInformationActivity { DisplayName = activityName };
+            var activity = new DsfGatherSystemInformationActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                var systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
+                var systemInfo = (enTypeOfSystemInformationToGather) Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
                 activity.SystemInformationCollection.Add(new GatherSystemInformationTO(systemInfo, variable, 1));
             }
 
@@ -1113,9 +1127,9 @@ namespace Dev2.Activities.Specs.Composition
                         var fieldName = DataListUtil.ExtractFieldNameFromValue(input);
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where string.Equals((string)elements.Attribute("Recordset"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
-                                         string.Equals((string)elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)
-                                   select elements).SingleOrDefault();
+                            where string.Equals((string) elements.Attribute("Recordset"), recordsetName, StringComparison.InvariantCultureIgnoreCase) &&
+                                  string.Equals((string) elements.Attribute("OriginalName"), fieldName, StringComparison.InvariantCultureIgnoreCase)
+                            select elements).SingleOrDefault();
 
                         element?.SetAttributeValue("Value", fromVariable);
 
@@ -1126,8 +1140,8 @@ namespace Dev2.Activities.Specs.Composition
                         recordsetName = input;
 
                         element = (from elements in inputs.Descendants("Input")
-                                   where string.Equals((string)elements.Attribute("Name"), recordsetName, StringComparison.InvariantCultureIgnoreCase)
-                                   select elements).SingleOrDefault();
+                            where string.Equals((string) elements.Attribute("Name"), recordsetName, StringComparison.InvariantCultureIgnoreCase)
+                            select elements).SingleOrDefault();
 
                         element?.SetAttributeValue("Source", fromVariable);
                     }
@@ -1180,21 +1194,23 @@ namespace Dev2.Activities.Specs.Composition
                         var decConfig = Get<(string TrueArm, string FalseArm)>(dec.DisplayName);
                         var trueArmToolName = decConfig.TrueArm;
                         var falseArmToolName = decConfig.FalseArm;
-                        dec.TrueArm = new List<IDev2Activity> { activityList.FirstOrDefault(act => act.Key == trueArmToolName).Value as IDev2Activity };
-                        dec.FalseArm = new List<IDev2Activity> { activityList.FirstOrDefault(act => act.Key == falseArmToolName).Value as IDev2Activity };
+                        dec.TrueArm = new List<IDev2Activity> {activityList.FirstOrDefault(act => act.Key == trueArmToolName).Value as IDev2Activity};
+                        dec.FalseArm = new List<IDev2Activity> {activityList.FirstOrDefault(act => act.Key == falseArmToolName).Value as IDev2Activity};
                     }
+
                     if (TestStartNode.Action == null)
                     {
                         TestStartNode.Action = activity.Value;
                     }
                     else
                     {
-                        var flowStep = new FlowStep { Action = activity.Value };
+                        var flowStep = new FlowStep {Action = activity.Value};
                         flowSteps.Last().Next = flowStep;
                         flowSteps.Add(flowStep);
                     }
                 }
             }
+
             TryGetValue(workflowName, out IContextualResourceModel resourceModel);
             TryGetValue("environment", out IServer server);
             TryGetValue("resourceRepo", out IResourceRepository repository);
@@ -1238,8 +1254,8 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
-                                                    .SelectMany(s => s.Inputs)
-                                                    .SelectMany(s => s.ResultsList).ToList());
+                .SelectMany(s => s.Inputs)
+                .SelectMany(s => s.ResultsList).ToList());
         }
 
         [Given(@"the tool ""(.*)"" with Guid of ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
@@ -1269,8 +1285,8 @@ namespace Dev2.Activities.Specs.Composition
                                                             ds.ID.Equals(Guid.Parse(toolGuid))).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
-                                                    .SelectMany(s => s.Inputs)
-                                                    .SelectMany(s => s.ResultsList).ToList());
+                .SelectMany(s => s.Inputs)
+                .SelectMany(s => s.ResultsList).ToList());
         }
 
         [Then(@"the ""(.*)"" has a start and end duration")]
@@ -1314,8 +1330,6 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-
-
         [Then(@"the nested ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         public void ThenTheNestedInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
         {
@@ -1327,8 +1341,8 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
-                                                    .SelectMany(s => s.Inputs)
-                                                    .SelectMany(s => s.ResultsList).ToList());
+                .SelectMany(s => s.Inputs)
+                .SelectMany(s => s.ResultsList).ToList());
         }
 
         [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" has  ""(.*)"" nested children")]
@@ -1433,6 +1447,7 @@ namespace Dev2.Activities.Specs.Composition
                         {
                             errorsMessage = " There were one or more errors found in other tools on the same workflow though: " + string.Join(", ", errors.Select(wf => wf.ErrorMessage).Distinct().ToArray());
                         }
+
                         Assert.Fail($"Debug output for {toolName} not found in {workflowName}.{errorsMessage}");
                     }
                 }
@@ -1447,8 +1462,9 @@ namespace Dev2.Activities.Specs.Composition
             if (!toolSpecificDebug.Any())
             {
                 toolSpecificDebug =
-                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+                    debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
+
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             IDebugState outputState;
@@ -1469,8 +1485,10 @@ namespace Dev2.Activities.Specs.Composition
                     _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug);
                     return;
                 }
+
                 Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
             }
+
             Assert.Fail("No debug output found for " + workflowName + ".");
         }
 
@@ -1503,6 +1521,7 @@ namespace Dev2.Activities.Specs.Composition
                         {
                             errorsMessage = " There were one or more errors found in other tools on the same workflow though: " + string.Join(", ", errors.Select(wf => wf.ErrorMessage).Distinct().ToArray());
                         }
+
                         Assert.Fail($"Debug output for {toolName} not found in {workflowName}.{errorsMessage}");
                     }
                 }
@@ -1517,8 +1536,9 @@ namespace Dev2.Activities.Specs.Composition
             if (!toolSpecificDebug.Any())
             {
                 toolSpecificDebug =
-                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+                    debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
+
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             IDebugState outputState;
@@ -1539,8 +1559,10 @@ namespace Dev2.Activities.Specs.Composition
                     _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug, true);
                     return;
                 }
+
                 Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
             }
+
             Assert.Fail("No debug output found for " + workflowName + ".");
         }
 
@@ -1571,6 +1593,7 @@ namespace Dev2.Activities.Specs.Composition
                         {
                             errorsMessage = " There were one or more errors found in other tools on the same workflow though: " + string.Join(", ", errors.Select(wf => wf.ErrorMessage).Distinct().ToArray());
                         }
+
                         Assert.Fail($"Debug output for {toolName} not found in {workflowName}.{errorsMessage}");
                     }
                 }
@@ -1587,6 +1610,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 toolSpecificDebug = debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
+
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             IDebugState outputState;
@@ -1607,8 +1631,10 @@ namespace Dev2.Activities.Specs.Composition
                     _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug);
                     return;
                 }
+
                 Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
             }
+
             Assert.Fail("No debug output found for " + workflowName + ".");
         }
 
@@ -1638,8 +1664,9 @@ namespace Dev2.Activities.Specs.Composition
             if (!toolSpecificDebug.Any())
             {
                 toolSpecificDebug =
-                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+                    debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
+
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             var outputState = toolSpecificDebug.FirstOrDefault();
@@ -1650,6 +1677,7 @@ namespace Dev2.Activities.Specs.Composition
                     outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
                 }
             }
+
             var debugItemResults = outputState?.Outputs.SelectMany(s => s.ResultsList).ToList();
             Assert.IsNotNull(debugItemResults);
             Assert.IsTrue(debugItemResults.Any(result => result.Value.Contains("{\r\n  \"Name\": \"Bob\"\r\n}")));
@@ -1663,6 +1691,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 _containerOps = new Depends(Depends.ContainerType.MSSQL, true);
             }
+
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
@@ -1677,12 +1706,9 @@ namespace Dev2.Activities.Specs.Composition
             // Configure activity ;)
             var dsfSqlBulkInsert = new DsfSqlBulkInsertActivity
             {
-                Result = result
-                ,
-                DisplayName = activityName
-                ,
-                TableName = tableName
-                ,
+                Result = result,
+                DisplayName = activityName,
+                TableName = tableName,
                 Database = new DbSource
                 {
                     ResourceID = dbSource.Id,
@@ -1690,8 +1716,6 @@ namespace Dev2.Activities.Specs.Composition
                     DatabaseName = dbSrcName,
                 },
                 KeepIdentity = keepIdentityBool,
-
-
             };
             // build input mapping
             var mappings = new List<DataColumnMapping>();
@@ -1712,7 +1736,7 @@ namespace Dev2.Activities.Specs.Composition
                 int.TryParse(maxLengthStr, out int maxLength);
                 Enum.TryParse(dataTypeName, true, out SqlDbType dataType);
 
-                var mapping = new DataColumnMapping { IndexNumber = pos, InputColumn = inputColumn, OutputColumn = new DbColumn { ColumnName = outputColumn, IsAutoIncrement = isAutoIncrement, IsNullable = isNullable, MaxLength = maxLength, SqlDataType = dataType } };
+                var mapping = new DataColumnMapping {IndexNumber = pos, InputColumn = inputColumn, OutputColumn = new DbColumn {ColumnName = outputColumn, IsAutoIncrement = isAutoIncrement, IsNullable = isNullable, MaxLength = maxLength, SqlDataType = dataType}};
                 mappings.Add(mapping);
                 pos++;
             }
@@ -1720,13 +1744,12 @@ namespace Dev2.Activities.Specs.Composition
             dsfSqlBulkInsert.InputMappings = mappings;
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(workflowName, activityName, dsfSqlBulkInsert);
-
         }
 
         [Given(@"""(.*)"" contains an Sort ""(.*)"" as")]
         public void GivenContainsAnSortAs(string parentName, string activityName, Table table)
         {
-            var dsfSort = new DsfSortRecordsActivity { DisplayName = activityName, SortField = table.Rows[0][0], SelectedSort = table.Rows[0][1] };
+            var dsfSort = new DsfSortRecordsActivity {DisplayName = activityName, SortField = table.Rows[0][0], SelectedSort = table.Rows[0][1]};
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfSort);
         }
 
@@ -1738,7 +1761,6 @@ namespace Dev2.Activities.Specs.Composition
                 DisplayName = activityName,
                 CommandFileName = scriptToRun,
                 CommandResult = Result
-
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, commandLineActivity);
         }
@@ -1760,12 +1782,9 @@ namespace Dev2.Activities.Specs.Composition
         {
             var dsfPythonActivity = new DsfPythonActivity
             {
-                DisplayName = activityName
-                ,
-                Result = Result
-                ,
-                Script = scriptToRun
-                ,
+                DisplayName = activityName,
+                Result = Result,
+                Script = scriptToRun,
                 EscapeScript = true
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPythonActivity);
@@ -1774,7 +1793,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Ruby ""(.*)"" ScriptToRun ""(.*)"" and result as ""(.*)""")]
         public void GivenContainsARubyScriptToRunAndResultAs(string parentName, string activityName, string scriptToRun, string Result)
         {
-            var rubyActivity = new DsfRubyActivity { DisplayName = activityName, Result = Result, Script = scriptToRun };
+            var rubyActivity = new DsfRubyActivity {DisplayName = activityName, Result = Result, Script = scriptToRun};
             _commonSteps.AddActivityToActivityList(parentName, activityName, rubyActivity);
         }
 
@@ -1789,16 +1808,11 @@ namespace Dev2.Activities.Specs.Composition
             var localPath = table.Rows[0]["LocalPathTo"];
             var downLoadActivity = new SharepointFileDownLoadActivity
             {
-                DisplayName = activityName
-                ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid()
-                ,
-                LocalInputPath = localPath
-                ,
-                ServerInputPath = serverPath
-                ,
+                DisplayName = activityName,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid(),
+                LocalInputPath = localPath,
+                ServerInputPath = serverPath,
                 Result = result
-
             };
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, downLoadActivity);
@@ -1828,8 +1842,6 @@ namespace Dev2.Activities.Specs.Composition
                 ServerInputPathFrom = serverPathFrom,
                 ServerInputPathTo = serverPathTo,
                 Overwrite = true
-
-
             };
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
@@ -1860,7 +1872,6 @@ namespace Dev2.Activities.Specs.Composition
                 ServerInputPathFrom = serverPathFrom,
                 ServerInputPathTo = serverPathTo,
                 Overwrite = bool.Parse(overwrite)
-
             };
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
@@ -1877,12 +1888,9 @@ namespace Dev2.Activities.Specs.Composition
             var sharepointList = table.Rows[0]["List"];
             var readListActivity = new SharepointReadListActivity
             {
-                DisplayName = activityName
-                ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
-                ,
+                DisplayName = activityName,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid(),
                 SharepointList = sharepointList
-
             };
             var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             var sharepointSource = sources.Single(source => source.ResourceID == readListActivity.SharepointServerResourceId);
@@ -1907,14 +1915,13 @@ namespace Dev2.Activities.Specs.Composition
                 if (columnList != null)
                 {
                     var fieldMappings = columnList
-                    .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
-                    .Select(mapping =>
-                    {
-
-                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
-                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
-                        return sharepointReadListTo;
-                    }).ToList();
+                        .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
+                        .Select(mapping =>
+                        {
+                            var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
+                            var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) {IsRequired = mapping.IsRequired};
+                            return sharepointReadListTo;
+                        }).ToList();
                     if (readListActivity.ReadListItems == null || readListActivity.ReadListItems.Count == 0)
                     {
                         readListActivity.ReadListItems = fieldMappings;
@@ -1931,7 +1938,6 @@ namespace Dev2.Activities.Specs.Composition
                             }
                         }
                     }
-
                 }
             });
 
@@ -1955,14 +1961,10 @@ namespace Dev2.Activities.Specs.Composition
             var result = table.Rows[0]["Result"];
             var readFolderItemActivity = new SharepointReadFolderItemActivity
             {
-                DisplayName = activityName
-                ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid()
-                ,
-                Result = result
-                ,
+                DisplayName = activityName,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[server].ToGuid(),
+                Result = result,
                 IsFoldersSelected = true
-
             };
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, readFolderItemActivity);
@@ -1983,22 +1985,21 @@ namespace Dev2.Activities.Specs.Composition
                 var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
                 serverPath = CommonSteps.AddGuidToPath(serverPath, serverPathUniqueNameGuid);
             }
+
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
 
             var deleteListItemActivity = new SharepointDeleteFileActivity
             {
-                SharepointServerResourceId = sharepointSource.ResourceID
-                ,
-                DisplayName = activityName
-                ,
+                SharepointServerResourceId = sharepointSource.ResourceID,
+                DisplayName = activityName,
                 ServerInputPath = serverPath,
                 Result = result
             };
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, deleteListItemActivity);
-
         }
+
         [Given(@"""(.*)"" contains UpdateListItems ""(.*)"" as")]
         public void GivenContainsUpdateListItemsAs(string parentName, string activityName, Table table)
         {
@@ -2011,14 +2012,10 @@ namespace Dev2.Activities.Specs.Composition
             var result = table.Rows[0]["Result"];
             var createListItemActivity = new SharepointUpdateListItemActivity
             {
-                DisplayName = activityName
-                ,
-                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid()
-                ,
-                Result = result
-                ,
+                DisplayName = activityName,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid(),
+                Result = result,
                 SharepointList = sharepointList,
-
             };
             var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             var sharepointSource = sources.Single(source => source.ResourceID == createListItemActivity.SharepointServerResourceId);
@@ -2043,13 +2040,13 @@ namespace Dev2.Activities.Specs.Composition
                 if (columnList != null)
                 {
                     var fieldMappings = columnList
-                    .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
-                    .Select(mapping =>
-                    {
-                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
-                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
-                        return sharepointReadListTo;
-                    }).ToList();
+                        .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
+                        .Select(mapping =>
+                        {
+                            var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
+                            var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) {IsRequired = mapping.IsRequired};
+                            return sharepointReadListTo;
+                        }).ToList();
                     if (createListItemActivity.ReadListItems == null || createListItemActivity.ReadListItems.Count == 0)
                     {
                         createListItemActivity.ReadListItems = fieldMappings;
@@ -2066,13 +2063,12 @@ namespace Dev2.Activities.Specs.Composition
                             }
                         }
                     }
-
                 }
             });
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
-
         }
+
         [Given(@"""(.*)"" contains CreateListItems ""(.*)"" as")]
         public void GivenContainsCreateListItemsAs(string parentName, string activityName, Table table)
         {
@@ -2084,12 +2080,10 @@ namespace Dev2.Activities.Specs.Composition
             var result = table.Rows[0]["Result"];
             var createListItemActivity = new SharepointCreateListItemActivity
             {
-                DisplayName = activityName
-            ,
+                DisplayName = activityName,
                 SharepointServerResourceId = ConfigurationManager.AppSettings[table.Rows[0]["Server"]].ToGuid(),
                 Result = result,
                 SharepointList = sharepointList,
-
             };
             var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             var sharepointSource = sources.Single(source => source.ResourceID == createListItemActivity.SharepointServerResourceId);
@@ -2114,14 +2108,13 @@ namespace Dev2.Activities.Specs.Composition
                 if (columnList != null)
                 {
                     var fieldMappings = columnList
-                    .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
-                    .Select(mapping =>
-                    {
-
-                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
-                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
-                        return sharepointReadListTo;
-                    }).ToList();
+                        .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
+                        .Select(mapping =>
+                        {
+                            var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(sharepointListTo.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
+                            var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) {IsRequired = mapping.IsRequired};
+                            return sharepointReadListTo;
+                        }).ToList();
                     if (createListItemActivity.ReadListItems == null || createListItemActivity.ReadListItems.Count == 0)
                     {
                         createListItemActivity.ReadListItems = fieldMappings;
@@ -2138,7 +2131,6 @@ namespace Dev2.Activities.Specs.Composition
                             }
                         }
                     }
-
                 }
             });
 
@@ -2153,7 +2145,6 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().Loc]] ");
             _commonSteps.AddVariableToVariableList("[[AcceptanceTesting_Create().RequiredField]]");
             _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
-
         }
 
         static string GetValidVariableName(ISharepointFieldTo mapping)
@@ -2166,10 +2157,12 @@ namespace Dev2.Activities.Specs.Composition
             {
                 fixedName = fixedName.Remove(startIndexOfEncoding - 1, endIndexOfEncoding - startIndexOfEncoding);
             }
+
             if (fixedName[0] == 'f' || fixedName[0] == '_' || char.IsNumber(fixedName[0]))
             {
                 fixedName = fixedName.Remove(0, 1);
             }
+
             return fixedName;
         }
 
@@ -2178,6 +2171,7 @@ namespace Dev2.Activities.Specs.Composition
             var columns = server.ResourceRepository.GetSharepointListFields(source, list, true);
             return columns ?? new List<ISharepointFieldTo>();
         }
+
         [Given(@"""(.*)"" contains SharepointDeleteFile ""(.*)"" as")]
         public void GivenContainsSharepointDeleteFileAs(string parentName, string activityName, Table table)
         {
@@ -2199,14 +2193,12 @@ namespace Dev2.Activities.Specs.Composition
                 DeleteCount = result,
                 FilterCriteria = new List<SharepointSearchTo>()
                 {
-                    new SharepointSearchTo("Title","=",Guid.NewGuid().ToString(),1)
+                    new SharepointSearchTo("Title", "=", Guid.NewGuid().ToString(), 1)
                     {
                         InternalName = "Title"
                     }
-                }
-                ,
+                },
                 RequireAllCriteriaToMatch = true
-
             };
 
             _commonSteps.AddVariableToVariableList(result);
@@ -2231,16 +2223,11 @@ namespace Dev2.Activities.Specs.Composition
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
             var fileUploadActivity = new SharepointFileUploadActivity
             {
-                DisplayName = activityName
-                ,
-                SharepointServerResourceId = sharepointSource.ResourceID
-                ,
-                Result = result
-                ,
-                LocalInputPath = localPathFrom
-                ,
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointSource.ResourceID,
+                Result = result,
+                LocalInputPath = localPathFrom,
                 ServerInputPath = serverPathTo,
-
             };
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, activityName, fileUploadActivity);
@@ -2255,10 +2242,8 @@ namespace Dev2.Activities.Specs.Composition
 
             var deleteListItemActivity = new SharepointDeleteListItemActivity
             {
-                SharepointServerResourceId = ConfigurationManager.AppSettings[sourceName].ToGuid()
-                ,
-                DisplayName = activityName
-                ,
+                SharepointServerResourceId = ConfigurationManager.AppSettings[sourceName].ToGuid(),
+                DisplayName = activityName,
                 SharepointList = list
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, deleteListItemActivity);
@@ -2274,10 +2259,10 @@ namespace Dev2.Activities.Specs.Composition
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
             var manageWebServiceModel = new ManageWebServiceModel(
-                                                                                    new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                    , _proxyLayer.QueryManagerProxy
-                                                                                    , mock.Object
-                                                                                    , environmentModel);
+                new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                , _proxyLayer.QueryManagerProxy
+                , mock.Object
+                , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "3032b7fd-f12a-4ab8-be7d-2f4705c31317".ToGuid());
             var webServiceDefinition = new WebServiceDefinition()
@@ -2298,8 +2283,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var dsfWebDeleteActivity = new DsfWebDeleteActivity
             {
-                DisplayName = activityName
-                ,
+                DisplayName = activityName,
                 SourceId = a.Id
             };
 
@@ -2312,12 +2296,13 @@ namespace Dev2.Activities.Specs.Composition
                     var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
                     throw new Exception(errorMessage);
                 }
+
                 dsfWebDeleteActivity.OutputDescription = responseService.GetOutputDescription();
             }
 
             var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
             {
-                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) {Path = recordsetField.Path};
                 return serviceOutputMapping;
             }).Cast<IServiceOutputMapping>().ToList();
 
@@ -2337,10 +2322,10 @@ namespace Dev2.Activities.Specs.Composition
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
             var manageWebServiceModel = new ManageWebServiceModel(
-                  new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                  , _proxyLayer.QueryManagerProxy
-                  , mock.Object
-                  , environmentModel);
+                new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                , _proxyLayer.QueryManagerProxy
+                , mock.Object
+                , environmentModel);
 
             var webSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = webSources.Single(source => source.Id == "ab4d5ab5-ad44-421d-8125-adfcc3aa655b".ToGuid());
@@ -2362,10 +2347,8 @@ namespace Dev2.Activities.Specs.Composition
 
             var dsfWebPostActivity = new DsfWebPostActivity
             {
-                DisplayName = activityName
-                ,
-                PostData = string.Empty
-                ,
+                DisplayName = activityName,
+                PostData = string.Empty,
                 SourceId = a.Id
             };
 
@@ -2378,12 +2361,13 @@ namespace Dev2.Activities.Specs.Composition
                     var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
                     throw new Exception(errorMessage);
                 }
+
                 dsfWebPostActivity.OutputDescription = responseService.GetOutputDescription();
             }
 
             var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
             {
-                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) {Path = recordsetField.Path};
                 return serviceOutputMapping;
             }).Cast<IServiceOutputMapping>().ToList();
 
@@ -2403,10 +2387,10 @@ namespace Dev2.Activities.Specs.Composition
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
             var manageWebServiceModel = new ManageWebServiceModel(
-                                                                                    new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                    , _proxyLayer.QueryManagerProxy
-                                                                                    , mock.Object
-                                                                                    , environmentModel);
+                new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                , _proxyLayer.QueryManagerProxy
+                , mock.Object
+                , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "e541d860-cd10-4aec-b2fe-79eca3c62c25".ToGuid());
             var webServiceDefinition = new WebServiceDefinition()
@@ -2427,8 +2411,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var dsfWebGetActivity = new WebGetActivity
             {
-                DisplayName = activityName
-                ,
+                DisplayName = activityName,
                 SourceId = a.Id
             };
 
@@ -2441,19 +2424,20 @@ namespace Dev2.Activities.Specs.Composition
                     var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
                     throw new Exception(errorMessage);
                 }
+
                 dsfWebGetActivity.OutputDescription = responseService.GetOutputDescription();
             }
 
             var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
             {
-                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) {Path = recordsetField.Path};
                 return serviceOutputMapping;
             }).Cast<IServiceOutputMapping>().ToList();
 
             dsfWebGetActivity.Outputs = outputMapping;
             dsfWebGetActivity.Headers = new List<INameValue>
             {
-                new NameValue("Content-Type","text/html")
+                new NameValue("Content-Type", "text/html")
             };
             dsfWebGetActivity.QueryString = string.Empty;
             _commonSteps.AddVariableToVariableList(result);
@@ -2470,10 +2454,10 @@ namespace Dev2.Activities.Specs.Composition
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
             var manageWebServiceModel = new ManageWebServiceModel(
-                                                                                    new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                    , _proxyLayer.QueryManagerProxy
-                                                                                    , mock.Object
-                                                                                    , environmentModel);
+                new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                , _proxyLayer.QueryManagerProxy
+                , mock.Object
+                , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "0fb49fec-e454-4357-a06f-08f329558b18".ToGuid());
             var webServiceDefinition = new WebServiceDefinition()
@@ -2494,10 +2478,8 @@ namespace Dev2.Activities.Specs.Composition
 
             var webPutActivity = new DsfWebPutActivity
             {
-                DisplayName = activityName
-                ,
-                SourceId = a.Id
-                ,
+                DisplayName = activityName,
+                SourceId = a.Id,
                 PutData = "{\"Id\":\"\"}"
             };
 
@@ -2510,19 +2492,20 @@ namespace Dev2.Activities.Specs.Composition
                     var errorMessage = string.Join(Environment.NewLine, recordsetList.Select(recordset => recordset.ErrorMessage));
                     throw new Exception(errorMessage);
                 }
+
                 webPutActivity.OutputDescription = responseService.GetOutputDescription();
             }
 
             var outputMapping = recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
             {
-                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) {Path = recordsetField.Path};
                 return serviceOutputMapping;
             }).Cast<IServiceOutputMapping>().ToList();
 
             webPutActivity.Outputs = outputMapping;
             webPutActivity.Headers = new List<INameValue>()
             {
-                new NameValue("Content-Type","text/html")
+                new NameValue("Content-Type", "text/html")
             };
             webPutActivity.QueryString = string.Empty;
             _commonSteps.AddVariableToVariableList(result);
@@ -2530,13 +2513,11 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
-
         public void GivenContainsAnDeleteAs(string parentName, string activityName, Table table)
 
         {
-            var del = new DsfPathDelete { InputPath = table.Rows[0][0], Result = table.Rows[0][1], DisplayName = activityName };
+            var del = new DsfPathDelete {InputPath = table.Rows[0][0], Result = table.Rows[0][1], DisplayName = activityName};
             _commonSteps.AddVariableToVariableList(table.Rows[0][1]);
             _commonSteps.AddActivityToActivityList(parentName, activityName, del);
         }
@@ -2545,7 +2526,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAForeachAsExecutions(string parentName, string activityName, string numberOfExecutions, string executionCount)
         {
             Enum.TryParse(numberOfExecutions, true, out enForEachType forEachType);
-            var forEach = new DsfForEachActivity { DisplayName = activityName, ForEachType = forEachType };
+            var forEach = new DsfForEachActivity {DisplayName = activityName, ForEachType = forEachType};
             switch (forEachType)
             {
                 case enForEachType.NumOfExecution:
@@ -2561,6 +2542,7 @@ namespace Dev2.Activities.Specs.Composition
                 default:
                     break;
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, forEach);
             _scenarioContext.Add(activityName, forEach);
         }
@@ -2568,18 +2550,17 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a SelectAndApply ""(.*)"" DataSource ""(.*)"" Alias ""(.*)""")]
         public void GivenContainsASelectAndApplyDataSourceAlias(string parentName, string activityName, string datasource, string alias)
         {
-            var selectAndApplyActivity = new DsfSelectAndApplyActivity { DisplayName = activityName, DataSource = datasource, Alias = alias };
+            var selectAndApplyActivity = new DsfSelectAndApplyActivity {DisplayName = activityName, DataSource = datasource, Alias = alias};
             _commonSteps.AddActivityToActivityList(parentName, activityName, selectAndApplyActivity);
             _scenarioContext.Add(activityName, selectAndApplyActivity);
         }
 
 
         [Given(@"""(.*)"" contains workflow ""(.*)"" with mapping as")]
-
         public void GivenContainsWorkflowWithMappingAs(string forEachName, string nestedWF, Table mappings)
 
         {
-            var forEachAct = (DsfForEachActivity)_scenarioContext[forEachName];
+            var forEachAct = (DsfForEachActivity) _scenarioContext[forEachName];
             var environmentModel = LocalEnvModel;
             if (!environmentModel.IsConnected)
             {
@@ -2592,30 +2573,27 @@ namespace Dev2.Activities.Specs.Composition
                 environmentModel.LoadResources();
                 resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\" + nestedWF).FirstOrDefault();
             }
+
             if (resource == null)
             {
-
                 throw new ArgumentNullException("resource");
-
             }
+
             var dataMappingViewModel = GetDataMappingViewModel(resource, mappings);
 
             var inputMapping = dataMappingViewModel.GetInputString(dataMappingViewModel.Inputs);
             var outputMapping = dataMappingViewModel.GetOutputString(dataMappingViewModel.Outputs);
             var activity = new DsfActivity
             {
-
                 ServiceName = resource.Category,
                 ResourceID = resource.ID,
                 EnvironmentID = environmentModel.EnvironmentID,
                 UniqueID = resource.ID.ToString(),
                 InputMapping = inputMapping,
                 OutputMapping = outputMapping
-
-
             };
 
-            var activityFunction = new ActivityFunc<string, bool> { Handler = activity, DisplayName = nestedWF };
+            var activityFunction = new ActivityFunc<string, bool> {Handler = activity, DisplayName = nestedWF};
             forEachAct.DataFunc = activityFunction;
         }
 
@@ -2623,7 +2601,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Find Record Index ""(.*)"" into result as ""(.*)""")]
         public void GivenContainsFindRecordIndexIntoResultAs(string parentName, string activityName, string result, Table table)
         {
-            var act = new DsfFindRecordsMultipleCriteriaActivity { DisplayName = activityName, Result = result };
+            var act = new DsfFindRecordsMultipleCriteriaActivity {DisplayName = activityName, Result = result};
             foreach (var rule in table.Rows)
             {
                 act.ResultsCollection.Add(new FindRecordsTO(rule[4], rule[3], 0));
@@ -2631,6 +2609,7 @@ namespace Dev2.Activities.Specs.Composition
                 act.RequireAllFieldsToMatch = rule[5].ToUpper().Trim() == "YES";
                 act.RequireAllTrue = rule[6].ToUpper().Trim() == "YES";
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, act);
         }
 
@@ -2638,7 +2617,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Length ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenContainsLengthOnInto(string parentName, string activityName, string recordSet, string result)
         {
-            var len = new DsfRecordsetNullhandlerLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
+            var len = new DsfRecordsetNullhandlerLengthActivity {DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet};
             _commonSteps.AddActivityToActivityList(parentName, activityName, len);
         }
 
@@ -2662,12 +2641,13 @@ namespace Dev2.Activities.Specs.Composition
                     }
                     else
                     {
-                        var flowStep = new FlowStep { Action = activity.Value };
+                        var flowStep = new FlowStep {Action = activity.Value};
                         flowSteps.Last().Next = flowStep;
                         flowSteps.Add(flowStep);
                     }
                 }
             }
+
             TryGetValue("environment", out IServer server);
             TryGetValue("resourceRepo", out IResourceRepository repository);
 
@@ -2698,7 +2678,7 @@ namespace Dev2.Activities.Specs.Composition
                     var resourceModel = wfs[numberToExecute - 1];
                     EnsureEnvironmentConnected(resourceModel.Environment, EnvironmentConnectionTimeout);
                     SaveToWorkspace(resourceModel);
-                    var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
+                    var debugTo = new DebugTO {XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true};
                     var clientContext = resourceModel.Environment.Connection;
                     if (clientContext != null)
                     {
@@ -2720,7 +2700,7 @@ namespace Dev2.Activities.Specs.Composition
                 return;
             }
 
-            var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
+            var debugTo = new DebugTO {XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true};
             EnsureEnvironmentConnected(resourceModel.Environment, EnvironmentConnectionTimeout);
             var clientContext = resourceModel.Environment.Connection;
             if (clientContext != null)
@@ -2745,6 +2725,7 @@ namespace Dev2.Activities.Specs.Composition
                 id = Guid.NewGuid();
                 _scenarioContext.Add("SavedId", id);
             }
+
             Save(workflowName, count, id);
         }
 
@@ -2776,12 +2757,13 @@ namespace Dev2.Activities.Specs.Composition
                     }
                     else
                     {
-                        var flowStep = new FlowStep { Action = activity.Value };
+                        var flowStep = new FlowStep {Action = activity.Value};
                         flowSteps.Last().Next = flowStep;
                         flowSteps.Add(flowStep);
                     }
                 }
             }
+
             TryGetValue(workflowName, out IContextualResourceModel resourceModel);
             TryGetValue("environment", out IServer server);
             TryGetValue("resourceRepo", out IResourceRepository repository);
@@ -2797,7 +2779,6 @@ namespace Dev2.Activities.Specs.Composition
             {
                 repository.SaveToServer(resourceModel);
             }
-
         }
 
         [Given(@"I save workflow ""(.*)""")]
@@ -2822,11 +2803,12 @@ namespace Dev2.Activities.Specs.Composition
                 }
                 else
                 {
-                    var flowStep = new FlowStep { Action = activity.Value };
+                    var flowStep = new FlowStep {Action = activity.Value};
                     flowSteps.Last().Next = flowStep;
                     flowSteps.Add(flowStep);
                 }
             }
+
             TryGetValue(workflowName, out IContextualResourceModel resourceModel);
             TryGetValue("environment", out IServer server);
             TryGetValue("resourceRepo", out IResourceRepository repository);
@@ -2837,7 +2819,6 @@ namespace Dev2.Activities.Specs.Composition
             var xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
             repository.SaveToServer(resourceModel);
-
         }
 
         [Then(@"workflow ""(.*)"" is deleted as cleanup")]
@@ -2885,16 +2866,14 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     var v1 = table.Rows[i + 1][0].Split(' ');
                     Assert.IsTrue(versions[i].DisplayName.Contains(v1[0]));
-
                 }
             }
-
         }
 
         [Given(@"""(.*)"" contains a Sequence ""(.*)"" as")]
         public void GivenContainsASequenceAs(string parentName, string activityName)
         {
-            var dsfSequence = new DsfSequenceActivity { DisplayName = activityName };
+            var dsfSequence = new DsfSequenceActivity {DisplayName = activityName};
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
         }
 
@@ -2909,7 +2888,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"I update ""(.*)"" by adding ""(.*)"" as")]
         public void ThenIUpdateByAddingAs(string parentName, string activityName, Table table)
         {
-            var assignActivity = new DsfMultiAssignActivity { DisplayName = activityName };
+            var assignActivity = new DsfMultiAssignActivity {DisplayName = activityName};
 
             foreach (var tableRow in table.Rows)
             {
@@ -2923,12 +2902,14 @@ namespace Dev2.Activities.Specs.Composition
                     value = value.Replace("=", "");
                     value = $"!~calculation~!{value}!~~calculation~!";
                 }
+
                 _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
                 assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, assignActivity);
         }
 
@@ -2955,7 +2936,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"""(.*)"" contains an Assign ""(.*)"" as")]
         public void ThenContainsAnAssignAs(string parentName, string assignName, Table table)
         {
-            var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
+            var assignActivity = new DsfMultiAssignActivity {DisplayName = assignName};
 
             foreach (var tableRow in table.Rows)
             {
@@ -2969,6 +2950,7 @@ namespace Dev2.Activities.Specs.Composition
                     value = value.Replace("=", "");
                     value = $"!~calculation~!{value}!~~calculation~!";
                 }
+
                 if (value.Equals("TestingDotnetDllCascading.Food.ToJson"))
                 {
                     var serializer = new Dev2JsonSerializer();
@@ -2982,6 +2964,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
+
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
@@ -2989,7 +2972,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"""(.*)"" contains a recordset name randomizing Assign ""(.*)"" as")]
         public void ThenContainsARecordsetNameRandomizingAssignAs(string parentName, string assignName, Table table)
         {
-            var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
+            var assignActivity = new DsfMultiAssignActivity {DisplayName = assignName};
             var recordsetNameRandomizer = new Random().Next(60) + 1;
             ScenarioContext.Current.Add("recordsetNameRandomizer", recordsetNameRandomizer);
 
@@ -3007,6 +2990,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
+
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
@@ -3014,7 +2998,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"""(.*)"" contains an Assign for Json ""(.*)"" as")]
         public void GivenContainsAnAssignForJsonAs(string parentName, string assignName, Table table)
         {
-            var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
+            var assignActivity = new DsfMultiAssignActivity {DisplayName = assignName};
             foreach (var tableRow in table.Rows)
             {
                 var value = "{\"Name\":\"Bob\"}";
@@ -3032,6 +3016,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
+
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
@@ -3043,10 +3028,8 @@ namespace Dev2.Activities.Specs.Composition
             var jsonMsg = new Human().SerializeToJsonStringBuilder().ToString();
             var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
             {
-                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
-              ,
-                Result = result
-              ,
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
+                Result = result,
                 DisplayName = rabbitMqname,
                 Message = jsonMsg
             };
@@ -3061,8 +3044,7 @@ namespace Dev2.Activities.Specs.Composition
             var jsonMsg = new Human().SerializeToJsonStringBuilder().ToString();
             var dsfPublishRabbitMqActivity = new PublishRabbitMQActivity
             {
-                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
-              ,
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
                 Result = result,
                 DisplayName = rabbitMqname,
                 Message = jsonMsg
@@ -3098,6 +3080,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 serviceInput.Value = recNumber;
             }
+
             dsfEnhancedDotNetDllActivity.Namespace = namespaceItem;
             dsfEnhancedDotNetDllActivity.SourceId = pluginSource.Id;
             ScenarioContext.Current.Add(dotNetServiceName, dsfEnhancedDotNetDllActivity);
@@ -3114,7 +3097,6 @@ namespace Dev2.Activities.Specs.Composition
             var uploadActivity = new DsfDropBoxUploadActivity()
             {
                 DisplayName = dotNetServiceName,
-
             };
 
             var dropBoxSource = GetDropBoxSource();
@@ -3168,6 +3150,7 @@ namespace Dev2.Activities.Specs.Composition
                 default:
                     break;
             }
+
             var b = bool.Parse(loadSubFolders);
             listActivity.IsRecursive = b;
             _commonSteps.AddVariableToVariableList(result);
@@ -3190,7 +3173,6 @@ namespace Dev2.Activities.Specs.Composition
             var downloadActivity = new DsfDropBoxDownloadActivity()
             {
                 DisplayName = dotNetServiceName,
-
             };
             var dropBoxSource = GetDropBoxSource();
             downloadActivity.SelectedSource = dropBoxSource;
@@ -3210,7 +3192,6 @@ namespace Dev2.Activities.Specs.Composition
             var deleteActivity = new DsfDropBoxDeleteActivity()
             {
                 DisplayName = dotNetServiceName,
-
             };
             var dropBoxSource = GetDropBoxSource();
             deleteActivity.SelectedSource = dropBoxSource;
@@ -3242,9 +3223,9 @@ namespace Dev2.Activities.Specs.Composition
             var fetchComPluginSources = proxy.QueryManagerProxy.FetchComPluginSources();
             var pluginSource = fetchComPluginSources.Single(source => source.Id == sourceId);
             var dbServiceModel = new ManageComPluginServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                   , proxy.QueryManagerProxy
-                                                                                   , mock.Object
-                                                                                   , new Server(Guid.NewGuid(), environmentConnection));
+                , proxy.QueryManagerProxy
+                , mock.Object
+                , new Server(Guid.NewGuid(), environmentConnection));
             var namespaceItems = dbServiceModel.GetNameSpaces(pluginSource);
             var namespaceItem = namespaceItems.Single(item => item?.FullName?.Equals(namespaceSelected, StringComparison.CurrentCultureIgnoreCase) ?? false);
             var pluginActions = dbServiceModel.GetActions(pluginSource, namespaceItem);
@@ -3265,17 +3246,19 @@ namespace Dev2.Activities.Specs.Composition
                     var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
                     throw new Exception(errorMessage);
                 }
+
                 var _recordsetList = responseService.RecordsetList;
                 if (_recordsetList.Any(recordset => recordset.HasErrors))
                 {
                     var errorMessage = string.Join(Environment.NewLine, _recordsetList.Select(recordset => recordset.ErrorMessage));
                     throw new Exception(errorMessage);
                 }
+
                 dsfEnhancedDotNetDllActivity.OutputDescription = responseService.Description;
 
                 var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                 {
-                    var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                    var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) {Path = recordsetField.Path};
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
 
@@ -3291,6 +3274,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         List<IPluginAction> allPluginActions { get; set; }
+
         [Given(@"""(.*)"" constructorinputs (.*) with inputs as")]
         public void GivenConstructorWithInputsAs(string serviceName, int p1, Table table)
         {
@@ -3324,6 +3308,7 @@ namespace Dev2.Activities.Specs.Composition
                 var serviceInput = pluginAction.Inputs.Single(input => input.Name == inputName);
                 serviceInput.Value = value;
             }
+
             dsfEnhancedDotNetDllActivity.MethodsToRun.Add(pluginAction);
         }
 
@@ -3331,8 +3316,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         public void GivenContainsAnAssignObjectAs(string parentName, string assignName, Table table)
         {
-
-            var assignActivity = new DsfMultiAssignObjectActivity { DisplayName = assignName };
+            var assignActivity = new DsfMultiAssignObjectActivity {DisplayName = assignName};
 
             foreach (var tableRow in table.Rows)
             {
@@ -3353,6 +3337,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 assignActivity.FieldsCollection.Add(new AssignObjectDTO(variable, value, 1, true));
             }
+
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
@@ -3383,7 +3368,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"I set logging to ""(.*)""")]
         public void ThenISetLoggingTo(string logLevel)
         {
-            var allowedLogLevels = new[] { "DEBUG", "NONE" };
+            var allowedLogLevels = new[] {"DEBUG", "NONE"};
             // TODO: refactor null empty checking into extension method
             if (logLevel == null ||
                 !allowedLogLevels.Contains(logLevel.ToUpper()))
@@ -3391,7 +3376,7 @@ namespace Dev2.Activities.Specs.Composition
                 return;
             }
 
-            var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogLevel = logLevel, EventLogLoggerLogLevel = logLevel, FileLoggerLogSize = 200 };
+            var loggingSettingsTo = new LoggingSettingsTo {FileLoggerLogLevel = logLevel, EventLogLoggerLogLevel = logLevel, FileLoggerLogSize = 200};
             var controller = new CommunicationControllerFactory().CreateController("LoggingSettingsWriteService");
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("LoggingSettings", serializer.SerializeToBuilder(loggingSettingsTo).ToString());
@@ -3420,7 +3405,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
         public void GivenContainsAnUniqueAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfUniqueActivity { DisplayName = activityName };
+            var activity = new DsfUniqueActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var inFields = tableRow["In Field(s)"];
@@ -3434,6 +3419,7 @@ namespace Dev2.Activities.Specs.Composition
                 activity.ResultFields = returnFields;
                 activity.InFields = inFields;
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
@@ -3443,17 +3429,16 @@ namespace Dev2.Activities.Specs.Composition
             var resultVariable = table.Rows[0]["Result"];
             var url = table.Rows[0]["Url"];
 
-            if (url == "http://TFSBLD.premier.local:9810/api/values") {
+            if (url == "http://TFSBLD.premier.local:9810/api/values")
+            {
                 url = url.Replace("TFSBLD.premier.local", _containerOps.Container.IP).Replace("9810", _containerOps.Container.Port);
             }
 
             _commonSteps.AddVariableToVariableList(resultVariable);
             var dsfWebGetRequestActivity = new DsfWebGetRequestActivity
             {
-                DisplayName = toolName
-                ,
-                Url = url
-                ,
+                DisplayName = toolName,
+                Url = url,
                 Result = resultVariable
             };
 
@@ -3480,6 +3465,7 @@ namespace Dev2.Activities.Specs.Composition
                 activity.Outputs.Add(new ServiceOutputMapping(output, toVariable, recSetName));
                 _commonSteps.AddVariableToVariableList(toVariable);
             }
+
             _commonSteps.AddActivityToActivityList(workflow, toolname, activity);
         }
 
@@ -3489,22 +3475,19 @@ namespace Dev2.Activities.Specs.Composition
         {
             _commonSteps.AddVariableToVariableList(resultVariable);
 
-            var calculateActivity = new DsfCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
+            var calculateActivity = new DsfCalculateActivity {Expression = formula, Result = resultVariable, DisplayName = activityName};
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
-
         }
+
         [Given(@"""(.*)"" contains XPath \\""(.*)"" with source ""(.*)""")]
         public void GivenContainsXPathWithResultAs(string parentName, string xpathName, string source)
         {
             const string a = "<XPATH-EXAMPLE>  <CUSTOMER id=\"1\" type=\"B\">Mr.  Jones</CUSTOMER><CUSTOMER id=\"2\" type=\"C\">Mr.  Johnson</CUSTOMER></XPATH-EXAMPLE> ";
             var dsfXPathActivity = new DsfXPathActivity
             {
-
-                SourceString = a
-                ,
-                DisplayName = xpathName
-                ,
+                SourceString = a,
+                DisplayName = xpathName,
                 ResultsCollection = new List<XPathDTO>
                 {
                     new XPathDTO("[[singleValue]]", source, 1, true)
@@ -3518,10 +3501,9 @@ namespace Dev2.Activities.Specs.Composition
         {
             _commonSteps.AddVariableToVariableList(resultVariable);
 
-            var calculateActivity = new DsfAggregateCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
+            var calculateActivity = new DsfAggregateCalculateActivity {Expression = formula, Result = resultVariable, DisplayName = activityName};
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
-
         }
 
         [Given(@"the workflow contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
@@ -3536,7 +3518,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             _commonSteps.AddVariableToVariableList(result);
 
-            var countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
+            var countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity {CountNumber = result, RecordsetName = recordSet, DisplayName = activityName};
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetNullHandlerActivity);
         }
@@ -3544,7 +3526,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
         public void GivenItContainsDeleteAs(string parentName, string activityName, Table table)
         {
-            var nullHandlerActivity = new DsfDeleteRecordActivity { DisplayName = activityName };
+            var nullHandlerActivity = new DsfDeleteRecordActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var result = tableRow["result"];
@@ -3561,7 +3543,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains NullHandlerDelete ""(.*)"" as")]
         public void GivenContainsNullHandlerDeleteAs(string parentName, string activityName, Table table)
         {
-            var nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity { DisplayName = activityName };
+            var nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var result = tableRow["result"];
@@ -3582,7 +3564,7 @@ namespace Dev2.Activities.Specs.Composition
             var result = resultVariable;
             var recset = recsetToSearch;
             _commonSteps.AddVariableToVariableList(result);
-            var activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset, DisplayName = activityName };
+            var activity = new DsfFindRecordsMultipleCriteriaActivity {RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset, DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var matchType = tableRow["Match Type"];
@@ -3597,7 +3579,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains find unique ""(.*)"" as")]
         public void GivenItContainFindUniqueAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfUniqueActivity { DisplayName = activityName };
+            var activity = new DsfUniqueActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var inFields = tableRow["In Fields"];
@@ -3610,13 +3592,14 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains case convert ""(.*)"" as")]
         public void GivenItContainsCaseConvertAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfCaseConvertActivity { DisplayName = activityName };
+            var activity = new DsfCaseConvertActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
@@ -3631,14 +3614,14 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Gather System Info ""(.*)"" as")]
         public void GivenItContainsGatherSystemInfoAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfGatherSystemInformationActivity { DisplayName = activityName };
+            var activity = new DsfGatherSystemInformationActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                var systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
+                var systemInfo = (enTypeOfSystemInformationToGather) Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
                 activity.SystemInformationCollection.Add(new GatherSystemInformationTO(systemInfo, variable, 1));
             }
 
@@ -3648,10 +3631,10 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Random ""(.*)"" as")]
         public void GivenItContainsRandomAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfRandomActivity { DisplayName = activityName };
+            var activity = new DsfRandomActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
-                var type = (enRandomType)Enum.Parse(typeof(enRandomType), tableRow["Type"]);
+                var type = (enRandomType) Enum.Parse(typeof(enRandomType), tableRow["Type"]);
                 var from = tableRow["From"];
                 var to = tableRow["To"];
                 var result = tableRow["Result"];
@@ -3662,7 +3645,6 @@ namespace Dev2.Activities.Specs.Composition
                 activity.To = to;
                 activity.From = from;
                 activity.Result = result;
-
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
@@ -3671,7 +3653,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Format Number ""(.*)"" as")]
         public void GivenItContainsFormatNumberAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfNumberFormatActivity { DisplayName = activityName };
+            var activity = new DsfNumberFormatActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var number = tableRow["Number"];
@@ -3687,7 +3669,6 @@ namespace Dev2.Activities.Specs.Composition
                 activity.RoundingDecimalPlaces = roundTo;
                 activity.DecimalPlacesToShow = decimalPlacesToShow;
                 activity.Result = result;
-
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
@@ -3697,7 +3678,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Date and Time ""(.*)"" as")]
         public void GivenItContainsDateAndTimeAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfDateTimeActivity { DisplayName = activityName };
+            var activity = new DsfDateTimeActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var input1 = tableRow["Input"];
@@ -3714,7 +3695,6 @@ namespace Dev2.Activities.Specs.Composition
                 activity.TimeModifierAmountDisplay = timeModifierAmount;
                 activity.TimeModifierType = "Years";
                 activity.Result = result;
-
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
@@ -3724,7 +3704,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Date and Time Difference ""(.*)"" as")]
         public void GivenItContainsDateAndTimeDifferenceAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfDateTimeDifferenceActivity { DisplayName = activityName };
+            var activity = new DsfDateTimeDifferenceActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var input1 = tableRow["Input1"];
@@ -3740,7 +3720,6 @@ namespace Dev2.Activities.Specs.Composition
                 activity.InputFormat = inputFormat;
                 activity.OutputType = output;
                 activity.Result = result;
-
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
@@ -3750,7 +3729,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Data Split ""(.*)"" as")]
         public void GivenItContainsDataSplitAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfDataSplitActivity { DisplayName = activityName };
+            var activity = new DsfDataSplitActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var valueToSplit = string.IsNullOrEmpty(tableRow["String"]) ? "" : tableRow["String"];
@@ -3763,6 +3742,7 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     activity.SourceString = valueToSplit;
                 }
+
                 _commonSteps.AddVariableToVariableList(variable);
                 activity.ResultsCollection.Add(new DataSplitDTO(variable, type, at, 1, include, true));
             }
@@ -3773,7 +3753,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Replace ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsReplaceIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            var activity = new DsfReplaceActivity { Result = resultVariable, DisplayName = activityName };
+            var activity = new DsfReplaceActivity {Result = resultVariable, DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
@@ -3784,6 +3764,7 @@ namespace Dev2.Activities.Specs.Composition
                 activity.Find = find;
                 activity.ReplaceWith = replaceValue;
             }
+
             _commonSteps.AddVariableToVariableList(resultVariable);
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
@@ -3792,7 +3773,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Find Index ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsFindIndexIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            var activity = new DsfIndexActivity { Result = resultVariable, DisplayName = activityName };
+            var activity = new DsfIndexActivity {Result = resultVariable, DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
@@ -3805,6 +3786,7 @@ namespace Dev2.Activities.Specs.Composition
                 activity.Characters = character;
                 activity.Direction = direction;
             }
+
             _commonSteps.AddVariableToVariableList(resultVariable);
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
@@ -3812,7 +3794,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Create ""(.*)"" as")]
         public void GivenContainsAnCreateAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfPathCreate { DisplayName = activityName };
+            var activity = new DsfPathCreate {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["File or Folder"];
@@ -3829,13 +3811,14 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains an Rename ""(.*)"" as")]
         public void GivenContainsAnWriteRenameAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfPathRename { DisplayName = activityName };
+            var activity = new DsfPathRename {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["File or Folder"];
@@ -3854,13 +3837,14 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains an Zip ""(.*)"" as")]
         public void GivenContainsAnZipAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfZip { DisplayName = activityName };
+            var activity = new DsfZip {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["File or Folder"];
@@ -3879,13 +3863,14 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains an UnZip ""(.*)"" as")]
         public void GivenContainsAnUnZipAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfUnZip { DisplayName = activityName };
+            var activity = new DsfUnZip {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["File or Folder"];
@@ -3904,16 +3889,15 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
-
-
 
 
         [Given(@"""(.*)"" contains an Move ""(.*)"" as")]
         public void GivenContainsAnMoveAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfPathMove { DisplayName = activityName };
+            var activity = new DsfPathMove {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var source = tableRow["File or Folder"];
@@ -3931,16 +3915,16 @@ namespace Dev2.Activities.Specs.Composition
                 activity.InputPath = source;
 
 
-
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains an Read Folder ""(.*)"" as")]
         public void GivenContainsAnReadFolderAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfFolderRead { DisplayName = activityName };
+            var activity = new DsfFolderRead {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var source = tableRow["File or Folder"];
@@ -3956,6 +3940,7 @@ namespace Dev2.Activities.Specs.Composition
                 activity.IsFoldersSelected = isFoldersSelected == "True";
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
@@ -3995,16 +3980,15 @@ namespace Dev2.Activities.Specs.Composition
         {
             var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
             {
-                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
-                ,
-                Result = variable
-                ,
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
+                Result = variable,
                 DisplayName = activityName,
                 QueueName = "Queue1",
                 Message = "msg"
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
         }
+
         [Given(@"""(.*)"" contains RabbitMQPublish and Queue1 - CorrelationID ""(.*)"" into ""(.*)""")]
         public void GivenContainsRabbitandQueue1MQPublishInto(string parentName, string activityName, string variable)
         {
@@ -4016,7 +4000,7 @@ namespace Dev2.Activities.Specs.Composition
                 QueueName = "Queue1",
                 Message = "msg"
             };
-           // dsfPublishRabbitMqActivity.BasicProperties.CorrelationID = "CorrelationID";
+            // dsfPublishRabbitMqActivity.BasicProperties.CorrelationID = "CorrelationID";
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
         }
 
@@ -4026,11 +4010,8 @@ namespace Dev2.Activities.Specs.Composition
             _containerOps = new Depends(Depends.ContainerType.RabbitMQ, true);
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
-                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
-
-                ,
-                Response = variable
-                ,
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
+                Response = variable,
                 DisplayName = activityName
             };
 
@@ -4067,10 +4048,8 @@ namespace Dev2.Activities.Specs.Composition
             _containerOps = new Depends(Depends.ContainerType.RabbitMQ, true);
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
-                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
-                ,
-                Response = variable
-                ,
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
+                Response = variable,
                 DisplayName = activityName,
                 TimeOut = timeout == -1 ? "" : timeout.ToString(),
                 QueueName = "Queue1",
@@ -4095,8 +4074,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Read File ""(.*)"" as")]
         public void GivenContainsAnReadFileAs(string parentName, string activityName, Table table)
         {
-
-            var activity = new DsfFileRead { DisplayName = activityName };
+            var activity = new DsfFileRead {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var source = tableRow["File or Folder"];
@@ -4110,13 +4088,14 @@ namespace Dev2.Activities.Specs.Composition
                 activity.InputPath = source;
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains an Write File ""(.*)"" as")]
         public void GivenContainsAnWriteFileAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfFileWrite { DisplayName = activityName };
+            var activity = new DsfFileWrite {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var source = tableRow["File or Folder"];
@@ -4132,16 +4111,15 @@ namespace Dev2.Activities.Specs.Composition
                 activity.Overwrite = overWrite == "True";
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
-
-
 
 
         [Given(@"""(.*)"" contains an Delete Folder ""(.*)"" as")]
         public void GivenContainsAnDeleteFolderAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfPathDelete { DisplayName = activityName };
+            var activity = new DsfPathDelete {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Recordset"];
@@ -4152,13 +4130,14 @@ namespace Dev2.Activities.Specs.Composition
 
                 _commonSteps.AddVariableToVariableList(result);
             }
+
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
         [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsDataMergeAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            var activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
+            var activity = new DsfDataMergeActivity {Result = resultVariable, DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
@@ -4169,6 +4148,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 activity.MergeCollection.Add(new DataMergeDTO(variable, type, at, 1, padding, alignment, true));
             }
+
             _commonSteps.AddVariableToVariableList(resultVariable);
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
@@ -4176,7 +4156,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
         public void GivenItContainsBaseConvertAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfBaseConvertActivity { DisplayName = activityName };
+            var activity = new DsfBaseConvertActivity {DisplayName = activityName};
             foreach (var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
@@ -4201,9 +4181,9 @@ namespace Dev2.Activities.Specs.Composition
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
             var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                    , _proxyLayer.QueryManagerProxy
-                                                                                    , mock.Object
-                                                                                    , environmentModel);
+                , _proxyLayer.QueryManagerProxy
+                , mock.Object
+                , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == "f8b1a579-2394-489e-835e-21b42e304e09".ToGuid());
 
@@ -4218,10 +4198,8 @@ namespace Dev2.Activities.Specs.Composition
                     Inputs = inputs,
                     ExecuteAction = serviceName
                 },
-                Name = "tab_val_func"
-                ,
+                Name = "tab_val_func",
                 Id = dbSource.Id
-
             };
             var testResults = dbServiceModel.TestService(databaseService);
 
@@ -4239,7 +4217,6 @@ namespace Dev2.Activities.Specs.Composition
             }
 
 
-
             var postGreActivity = new DsfPostgreSqlActivity
             {
                 ProcedureName = serviceName,
@@ -4251,7 +4228,7 @@ namespace Dev2.Activities.Specs.Composition
 
             postGreActivity.Inputs = new List<IServiceInput>()
             {
-                new ServiceInput("Prefix","K"),
+                new ServiceInput("Prefix", "K"),
             };
             postGreActivity.Outputs = mappings;
             _commonSteps.AddVariableToVariableList("[[V1]]");
@@ -4262,7 +4239,6 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a postgre tool using ""(.*)"" with mappings as")]
         public void GivenContainsAPostgreToolUsingWithMappingsAs(string parentName, string serviceName, Table table)
         {
-
             var resourceId = "62652f31-813a-4b97-b488-02e4c16150ff".ToGuid();
 
             var postGreActivity = new DsfPostgreSqlActivity
@@ -4289,6 +4265,7 @@ namespace Dev2.Activities.Specs.Composition
                     _commonSteps.AddVariableToVariableList(fromVariable);
                 }
             }
+
             _commonSteps.AddActivityToActivityList(parentName, serviceName, postGreActivity);
         }
 
@@ -4304,9 +4281,9 @@ namespace Dev2.Activities.Specs.Composition
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
             var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                    , _proxyLayer.QueryManagerProxy
-                                                                                    , mock.Object
-                                                                                    , environmentModel);
+                , _proxyLayer.QueryManagerProxy
+                , mock.Object
+                , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == "97d6272e-15a1-483f-afdb-a076f602604f".ToGuid());
 
@@ -4323,10 +4300,8 @@ namespace Dev2.Activities.Specs.Composition
                 },
                 Name = serviceName,
                 Id = dbSource.Id,
-
             };
             var testResults = dbServiceModel.TestService(databaseService);
-
 
 
             var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity()
@@ -4350,6 +4325,7 @@ namespace Dev2.Activities.Specs.Composition
                     mappings.Add(dbOutputMapping);
                 }
             }
+
             mySqlDatabaseActivity.Outputs = mappings;
             mySqlDatabaseActivity.ProcedureName = serviceName;
 
@@ -4375,7 +4351,6 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a mysql database service ""(.*)"" with mappings as")]
         public void GivenContainsAMysqlDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-
             var mySqlResourceId = "97d6272e-15a1-483f-afdb-a076f602604f".ToGuid();
             var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity
             {
@@ -4401,6 +4376,7 @@ namespace Dev2.Activities.Specs.Composition
                     _commonSteps.AddVariableToVariableList(fromVariable);
                 }
             }
+
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
@@ -4416,9 +4392,9 @@ namespace Dev2.Activities.Specs.Composition
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
             var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                    , _proxyLayer.QueryManagerProxy
-                                                                                    , mock.Object
-                                                                                    , environmentModel);
+                , _proxyLayer.QueryManagerProxy
+                , mock.Object
+                , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == "b1c12282-1712-419c-9929-5dfe42c90210".ToGuid());
 
@@ -4435,10 +4411,8 @@ namespace Dev2.Activities.Specs.Composition
                 },
                 Name = serviceName,
                 Id = dbSource.Id,
-
             };
             var testResults = dbServiceModel.TestService(databaseService);
-
 
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
@@ -4462,6 +4436,7 @@ namespace Dev2.Activities.Specs.Composition
                     mappings.Add(dbOutputMapping);
                 }
             }
+
             mySqlDatabaseActivity.Outputs = mappings;
             mySqlDatabaseActivity.ProcedureName = serviceName;
 
@@ -4496,9 +4471,9 @@ namespace Dev2.Activities.Specs.Composition
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
             var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                    , _proxyLayer.QueryManagerProxy
-                                                                                    , mock.Object
-                                                                                    , environmentModel);
+                , _proxyLayer.QueryManagerProxy
+                , mock.Object
+                , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == resourceId);
             dbSource.ServerName += "," + _containerOps.Container.Port;
@@ -4539,6 +4514,7 @@ namespace Dev2.Activities.Specs.Composition
                     mappings.Add(dbOutputMapping);
                 }
             }
+
             mySqlDatabaseActivity.Outputs = mappings;
             mySqlDatabaseActivity.ProcedureName = serviceName;
 
@@ -4584,6 +4560,7 @@ namespace Dev2.Activities.Specs.Composition
                     _commonSteps.AddVariableToVariableList(fromVariable);
                 }
             }
+
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
@@ -4612,7 +4589,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             else
             {
-                Add("unsavedWFS", new List<IContextualResourceModel> { tempResource });
+                Add("unsavedWFS", new List<IContextualResourceModel> {tempResource});
             }
 
             environmentModel.ResourceRepository.Add(tempResource);
@@ -4626,7 +4603,6 @@ namespace Dev2.Activities.Specs.Composition
                 _scenarioContext["environment"] = environmentModel;
                 _scenarioContext["resourceRepo"] = environmentModel.ResourceRepository;
                 _scenarioContext["debugStates"] = new List<IDebugState>();
-
             }
             else
             {
@@ -4726,8 +4702,9 @@ namespace Dev2.Activities.Specs.Composition
             if (!toolSpecificDebug.Any())
             {
                 toolSpecificDebug =
-                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+                    debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
+
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             IDebugState inputState;
@@ -4748,8 +4725,10 @@ namespace Dev2.Activities.Specs.Composition
                     _commonSteps.ThenTheDebugInputsAs(table, SelectResults.ToList());
                     return;
                 }
+
                 Assert.Fail(inputState.Inputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
             }
+
             Assert.Fail("No debug input found for " + workflowName + ".");
         }
 
@@ -4787,7 +4766,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
 
             _commonSteps.ThenTheDebugInputsAs(table, debugToUse.Inputs
-                                                    .SelectMany(item => item.ResultsList).ToList());
+                .SelectMany(item => item.ResultsList).ToList());
         }
 
         [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" number '(.*)' debug outputs as")]
@@ -4814,7 +4793,6 @@ namespace Dev2.Activities.Specs.Composition
                 .SelectMany(s => s.ResultsList).ToList();
             _commonSteps.ThenTheDebugOutputAs(table, outputDebugItems);
         }
-
 
 
         private static void AddPermissionsForResource(string resourceName, IServer environmentModel, IResourceRepository resourceRepository, Data.Settings.Settings settings)
@@ -4871,7 +4849,7 @@ namespace Dev2.Activities.Specs.Composition
             Thread.CurrentPrincipal = null;
             //var identity = new GenericIdentity("User");
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
             Common.Utilities.ServerUser = currentPrincipal;
 
@@ -4895,23 +4873,6 @@ namespace Dev2.Activities.Specs.Composition
             return userName;
         }
 
-        private static IPrincipal BuildClaimsPrincipal(string currentUserPrincipal)
-        {
-            IPrincipal executingUser;
-            var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal).Trim();
-
-            try
-            {
-                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
-            }
-            catch
-            {
-                var genericIdentity = new GenericIdentity(unqualifiedUserName);
-                executingUser = new GenericPrincipal(genericIdentity, new string[0]);
-            }
-
-            return executingUser;
-        }
 
         [Given(@"I resume workflow ""(.*)""")]
         [When(@"I resume workflow ""(.*)""")]
@@ -4935,7 +4896,7 @@ namespace Dev2.Activities.Specs.Composition
             Thread.CurrentPrincipal = null;
             //var identity = new GenericIdentity("User");
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
             Common.Utilities.ServerUser = currentPrincipal;
 
@@ -4944,9 +4905,10 @@ namespace Dev2.Activities.Specs.Composition
             // var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
             //Dev2.Common.Utilities.ServerUser = currentPrincipal;
             //Dev2.Common.Utilities.ServerUser = BuildClaimsPrincipal(currentPrincipal.Identity.Name);
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"),"1",identity.Name);
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), "1", identity.Name);
             Add("resumeMessage", msg);
         }
+
         [Then(@"an error ""(.*)""")]
         public void ThenAnError(string message)
         {
@@ -5040,23 +5002,50 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(resourceModel);
 
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
-
             _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
 
-            var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[\"Service Execution Error:    at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\DatabaseServiceExecution.cs:line 104\\r\\n   at Dev2.Services.Execution.ServiceExecutionAbstract`2.ExecuteService(ErrorResultTO& errors, Int32 update, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\ServiceExecutionAbstract.cs:line 372\"]}";
+            var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}";
 
             Thread.CurrentPrincipal = null;
-            //var identity = new GenericIdentity("User");
+            IPrincipal executingUser;
+            try
+            {
+                executingUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+            }
+            catch
+            {
+                var genericIdentity = new GenericIdentity("WarewolfAdmin");
+                executingUser = new GenericPrincipal(genericIdentity, new[] {"Role1", "Roll2"});
+            }
+
+            Thread.CurrentPrincipal = executingUser;
+            Common.Utilities.ServerUser = executingUser;
+
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", executingUser.Identity.Name);
+            Add("resumeMessage", msg);
+        }
+
+        [Then(@"I resume workflow ""(.*)"" at ""(.*)"" tool with invalid user")]
+        public void ThenIResumeWorkflowAtToolWithInvalidUser(string workflow, string toolToResumeFrom)
+        {
+            var uniqueId = GetActivityUniqueId(toolToResumeFrom);
+            TryGetValue("environment", out IServer environmentModel);
+            var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ResourceName == workflow);
+            Assert.IsNotNull(resourceModel);
+
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+            _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
+
+            var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}";
+
+            Thread.CurrentPrincipal = null;
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
             Common.Utilities.ServerUser = currentPrincipal;
 
-            //var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
-            //var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            //Dev2.Common.Utilities.ServerUser = currentPrincipal;
-            //Dev2.Common.Utilities.ServerUser = BuildClaimsPrincipal(currentPrincipal.Identity.Name);
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0",identity.Name);
+            var invalidIdentity = new MockPrincipal("InvalidUser");
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", invalidIdentity.Name);
             Add("resumeMessage", msg);
         }
 
@@ -5068,6 +5057,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 return Guid.Parse(abstartActivity.UniqueID);
             }
+
             var activity = activities[toolToResumeFrom] as DsfActivity;
             return Guid.Parse(activity.UniqueID);
         }
@@ -5080,6 +5070,7 @@ namespace Dev2.Activities.Specs.Composition
             activity.ProcedureName = action;
             activity.Inputs.Add(new ServiceInput("name", "S"));
         }
+
 
         [When(@"I select ""(.*)"" for ""(.*)"" as Source")]
         public void WhenISelectForAsSource(string source, string toolName)
@@ -5153,7 +5144,7 @@ namespace Dev2.Activities.Specs.Composition
             var previousLogFileSize = detailLogInfo.PreviousLength;
             var logContent = detailLogInfo.ReadAllText();
             Assert.IsTrue(logContent.Length > previousLogFileSize);
-            var sizeDifference = logContent.Length / (double)previousLogFileSize;
+            var sizeDifference = logContent.Length / (double) previousLogFileSize;
             Assert.IsTrue(sizeDifference > 1.9);
             Assert.IsTrue(sizeDifference < 2.1);
         }
@@ -5187,6 +5178,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("LogFileContent", out string logFileContent);
             Assert.IsTrue(logFileContent.Contains(searchString), $"detailed log file does not contain {searchString}");
         }
+
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Given(@"the audit database is empty")]
         public void GivenTheAuditDatabaseIsEmpty()
@@ -5268,6 +5260,7 @@ namespace Dev2.Activities.Specs.Composition
             //    }
             //}
         }
+
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with log type ""(.*)"" for ""(.*)""")]
         public void ThenTheLogFileSearchResultsContainFor(int expectedCount, string activityName, string logType, string workflowName)
@@ -5312,16 +5305,19 @@ namespace Dev2.Activities.Specs.Composition
             readonly string _logFilePath;
             readonly FileWrapper _fileWrapper;
             public int PreviousLength { get; private set; }
+
             private DetailLogInfo()
             {
                 _fileWrapper = new FileWrapper();
             }
+
             public DetailLogInfo(string workflowName, WorkflowExecutionSteps workflowExecutionSteps)
                 : this()
             {
                 workflowExecutionSteps.TryGetValue(workflowName, out _resourceModel);
                 _logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(_resourceModel.ID, _resourceModel.ResourceName), "Detail.log");
             }
+
             public DetailLogInfo(string workflowName, string resourceModelId)
                 : this()
             {
@@ -5343,91 +5339,108 @@ namespace Dev2.Activities.Specs.Composition
                 return result;
             }
         }
-         public enum MockPrincipalBehavior
-    {
-        AlwaysReturnTrue,
-        WhiteList,
-        BlackList
-    }
-
-    public class MockPrincipal : IPrincipal, IIdentity
-    {
-        private HashSet<String> Roles { get; set; }
-        public MockPrincipalBehavior Behavior { get; set; }
-
-        public MockPrincipal(String name)
+        private static IPrincipal BuildClaimsPrincipal(string currentUserPrincipal)
         {
-            Roles = new HashSet<String>();
-            Name = name;
-            IsAuthenticated = true;
-            AuthenticationType = "FakeAuthentication";
+            IPrincipal executingUser;
+            var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal).Trim();
+
+            try
+            {
+                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
+            }
+            catch
+            {
+                var genericIdentity = new GenericIdentity(unqualifiedUserName);
+                executingUser = new GenericPrincipal(genericIdentity, new[] {"Role1", "Roll2"});
+            }
+
+            return executingUser;
+        }
+        public enum MockPrincipalBehavior
+        {
+            AlwaysReturnTrue,
+            WhiteList,
+            BlackList
         }
 
-        public void AddRoles(params String[] roles)
+        public class MockPrincipal : IPrincipal, IIdentity
         {
-            Behavior = MockPrincipalBehavior.WhiteList;
+            private HashSet<String> Roles { get; set; }
+            public MockPrincipalBehavior Behavior { get; set; }
 
-            if (roles == null || roles.Length == 0) return;
+            public MockPrincipal(String name)
+            {
+                Roles = new HashSet<String>();
+                Name = name;
+                IsAuthenticated = true;
+                AuthenticationType = "FakeAuthentication";
+            }
 
-            var rolesToAdd = roles.Where(r => !Roles.Contains(r));
+            public void AddRoles(params String[] roles)
+            {
+                Behavior = MockPrincipalBehavior.WhiteList;
 
-            foreach (var role in rolesToAdd)
-                Roles.Add(role);
+                if (roles == null || roles.Length == 0) return;
+
+                var rolesToAdd = roles.Where(r => !Roles.Contains(r));
+
+                foreach (var role in rolesToAdd)
+                    Roles.Add(role);
+            }
+
+            public void IgnoreRoles(params String[] roles)
+            {
+                Behavior = MockPrincipalBehavior.BlackList;
+
+                AddRoles(roles);
+            }
+
+            public void RemoveRoles(params String[] roles)
+            {
+                if (roles == null || roles.Length == 0) return;
+
+                var rolesToAdd = roles.Where(r => Roles.Contains(r));
+
+                foreach (var role in rolesToAdd)
+                    Roles.Remove(role);
+            }
+
+            public void RemoveAllRoles()
+            {
+                Roles.Clear();
+            }
+
+            #region IPrincipal Members
+
+            public IIdentity Identity
+            {
+                get { return this; }
+            }
+
+            public bool IsInRole(string role)
+            {
+                if (Behavior == MockPrincipalBehavior.AlwaysReturnTrue)
+                    return true;
+
+                var isInlist = Roles.Contains(role);
+
+                if (Behavior == MockPrincipalBehavior.BlackList)
+                    return !isInlist;
+
+                return isInlist;
+            }
+
+            #endregion
+
+            #region IIdentity Members
+
+            public string AuthenticationType { get; set; }
+
+            public bool IsAuthenticated { get; set; }
+
+            public string Name { get; set; }
+
+            #endregion
         }
-
-        public void IgnoreRoles(params String[] roles)
-        {
-            Behavior = MockPrincipalBehavior.BlackList;
-
-            AddRoles(roles);
-        }
-
-        public void RemoveRoles(params String[] roles)
-        {
-            if (roles == null || roles.Length == 0) return;
-
-            var rolesToAdd = roles.Where(r => Roles.Contains(r));
-
-            foreach (var role in rolesToAdd)
-                Roles.Remove(role);
-        }
-
-        public void RemoveAllRoles()
-        {
-            Roles.Clear();
-        }
-
-        #region IPrincipal Members
-
-        public IIdentity Identity
-        {
-            get { return this; }
-        }
-
-        public bool IsInRole(string role)
-        {
-            if (Behavior == MockPrincipalBehavior.AlwaysReturnTrue)
-                return true;
-
-            var isInlist = Roles.Contains(role);
-
-            if (Behavior == MockPrincipalBehavior.BlackList)
-                return !isInlist;
-
-            return isInlist;
-        }
-
-        #endregion
-
-        #region IIdentity Members
-
-        public string AuthenticationType { get; set; }
-
-        public bool IsAuthenticated { get; set; }
-
-        public string Name { get; set; }
-
-        #endregion
-    }
     }
 }
