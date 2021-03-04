@@ -105,12 +105,10 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
-            var serializer = new Dev2JsonSerializer();
-            var executingUser = WindowsIdentity.GetCurrent();
-            var currentuserprincipal = serializer.Serialize(executingUser);
+            var executingUser = GlobalConstants.GenericPrincipal;
 
             var mockPrincipal = new Mock<ClaimsPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(executingUser);
+            mockPrincipal.Setup(o => o.Identity).Returns(executingUser.Identity);
 
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
@@ -121,7 +119,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
+                {"currentuserprincipal", new StringBuilder(executingUser.Identity.Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
@@ -171,12 +169,10 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
-            var serializer = new Dev2JsonSerializer();
-            var executingUser = WindowsIdentity.GetCurrent();
-            var currentuserprincipal = serializer.Serialize(executingUser);
+            var executingUser = GlobalConstants.GenericPrincipal;
 
             var mockPrincipal = new Mock<IPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(executingUser);
+            mockPrincipal.Setup(o => o.Identity).Returns(executingUser.Identity);
 
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
@@ -187,7 +183,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"environment", new StringBuilder(env)},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
+                {"currentuserprincipal", new StringBuilder(executingUser.Identity.Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
@@ -233,11 +229,9 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
-            var serializer = new Dev2JsonSerializer();
-            var executingUser = WindowsIdentity.GetCurrent();
-            var currentuserprincipal = serializer.Serialize(executingUser);
+            var executingUser = GlobalConstants.GenericPrincipal;
             var mockPrincipal = new Mock<IPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(executingUser);
+            mockPrincipal.Setup(o => o.Identity).Returns(executingUser.Identity);
 
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
@@ -249,7 +243,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"environment", new StringBuilder("NewEnvironment")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
+                {"currentuserprincipal", new StringBuilder(executingUser.Identity.Name)}
             };
 
             var suspendOption = enSuspendOption.SuspendUntil;
@@ -606,8 +600,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
 
-            var serializer = new Dev2JsonSerializer();
-            var currentuserprincipal = serializer.Serialize(WindowsIdentity.GetCurrent());
+            var currentuserprincipal = GlobalConstants.GenericPrincipal.Identity.Name;
 
             var values = new Dictionary<string, StringBuilder>
             {

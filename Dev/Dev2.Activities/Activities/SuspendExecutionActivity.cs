@@ -137,8 +137,9 @@ namespace Dev2.Activities
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
                                             throw new Exception(GlobalConstants.NextNodeIDNotFound));
                 var currentEnvironment = _dataObject.Environment.ToJson();
+                Common.Utilities.OrginalExecutingUser = _dataObject.ExecutingUser;
                 var serializer = new Dev2JsonSerializer();
-                var currentuserprincipal = serializer.Serialize(_dataObject.ExecutingUser.Identity);
+                var currentuserprincipal = Common.Utilities.OrginalExecutingUser.Identity.Name;//serializer.Serialize(_dataObject.ExecutingUser.Identity);
 
                 var versionNumber = _dataObject.VersionNumber.ToString();
                 if (EncryptData)
