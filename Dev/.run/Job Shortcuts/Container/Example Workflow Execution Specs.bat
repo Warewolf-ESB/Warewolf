@@ -1,4 +1,3 @@
-powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -File "%~dp0..\..\..\..\Compile.ps1" -AcceptanceTesting -InDockerContainer
 mkdir "%~dp0..\..\..\..\bin\AcceptanceTesting"
 cd /d "%~dp0..\..\..\..\bin\AcceptanceTesting"
-powershell -NoProfile -ExecutionPolicy Bypass -NoExit -File "%~dp0..\TestRun.ps1" -RetryRebuild -Projects Dev2.Activities.Specs -Category ExampleWorkflowExecution -PreTestRunScript "StartAs.ps1 -Cleanup -Anonymous -ResourcesPath Release" -InContainer
+powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File "%~dp0..\TestRun.ps1" -RetryRebuild -Projects Dev2.Activities.Specs -Category ExampleWorkflowExecution -PreTestRunScript 'StartAs.ps1 -Cleanup -Anonymous -ResourcesPath Release' -PostTestRunScript 'ReverseDeployLog.ps1' -InContainer
