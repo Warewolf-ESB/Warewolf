@@ -648,7 +648,10 @@ namespace Warewolf.Storage
             {
                 if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.NameExpression nameExpression)
                 {
-                    return _env.JsonObjects[nameExpression.Item.Name];
+                    if (_env.JsonObjects.Count > 0)
+                    {
+                        return _env.JsonObjects[nameExpression.Item.Name];
+                    }
                 }
                 if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression arrayExpression)
                 {
