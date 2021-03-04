@@ -13,7 +13,8 @@ param(
   [String] $PostTestRunScript,
   [switch] $InContainer,
   [switch] $Coverage,
-  [switch] $RetryRebuild
+  [switch] $RetryRebuild,
+  [String] $UNCPassword
 )
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
@@ -33,7 +34,7 @@ if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Ex
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
 } else {
 	if ($InContainer.IsPresent) {
-		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the RunInDocker parameter."
+		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer parameter."
 		$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\Common7\IDE"
 	}
 }
@@ -69,17 +70,6 @@ if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\
 		exit 1
 	}
 }
-if ($InContainer.IsPresent) {
-	$ContainerName = ""
-	$ContainerName = ($Projects -join "-")
-	if ($Category -ne $null -and $Category -ne "") {
-		$ContainerName = "$ContainerName-$Category";
-	}
-	if ("${bamboo.repository.git.branch}" -ne $null -and "${bamboo.repository.git.branch}" -ne "") {
-		$ContainerName = "$ContainerName-${bamboo.repository.git.branch}"
-	}
-	$ContainerName = $ContainerName.ToLower().replace(" ", "-").replace("/","-")
-}
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
 	if ($RetryRebuild.IsPresent) {
 		Get-ChildItem -Path  '$PWD' -Recurse |
@@ -88,9 +78,6 @@ Where {$_ -notlike '$PWD\TestResults*'} |
 sort length -Descending |
 Remove-Item -force -recurse
 		&..\..\Compile.ps1 -AcceptanceTesting -NuGet "$NuGet" -MSBuildPath "$MSBuildPath"
-	}
-	if ($InContainer.IsPresent) {
-		docker rm -f $ContainerName
 	}
 	$AllAssemblies = @()
 	foreach ($project in $Projects) {
@@ -134,16 +121,16 @@ Remove-Item -force -recurse
 	} else {
 		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	}
+	if ($UNCPassword) {
+		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	}
 	if ($TestsToRun) {
-		if ($InContainer.IsPresent) {
-			"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:.\Administrator Dev2@dmin123" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
-		}
 		if ($PreTestRunScript) {
 			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
+				"  <TargetArguments>/logger:trx $AssembliesArg /Tests:`"$TestsToRun`"</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 			} else {
 				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg /Tests:`"$TestsToRun`"" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
@@ -160,22 +147,19 @@ Remove-Item -force -recurse
 			}
 		}
 		if ($PreTestRunScript) {
-			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
+			"&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 		} else {
 			if ($Coverage.IsPresent) {
 				$XmlSafeCategory = $CategoryArg -replace "`&","`&amp;"
 				"  <TargetArguments>/Parallel /logger:trx $AssembliesArg $XmlSafeCategory</TargetArguments>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 			} else {
-				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
+				"&`"$VSTestPath\Extensions\TestPlatform\vstest.console.exe`" /Parallel /logger:trx $AssembliesArg $CategoryArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 			}
 		}
 	}
 	if ($PostTestRunScript) {
 		"&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-	}
-	if ($Coverage.IsPresent) {
-		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	if ($Coverage.IsPresent -and !($PreTestRunScript)) {
 		"  <Output>.$TestResultsPath\DotCover.dcvr</Output>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
@@ -202,23 +186,23 @@ Remove-Item -force -recurse
 		"  </Filters>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		"</AnalyseParams>" | Out-File "$TestResultsPath\DotCover Runner.xml" -Append
 		Get-Content "$TestResultsPath\DotCover Runner.xml"
-		"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii
+		"&`".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe`" cover `"$TestResultsPath\DotCover Runner.xml`" /LogFile=`"$TestResultsPath\DotCover.log`" --DisableNGen" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	}
+	if ($Coverage.IsPresent) {
+		"Wait-Process -Name `"DotCover`" -ErrorAction SilentlyContinue" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+	}
+	if ($UNCPassword) {
+		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	Get-Content "$TestResultsPath\RunTests.ps1"
 	if (!($InContainer.IsPresent)) {
 		&"$TestResultsPath\RunTests.ps1"
-		if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-			Move-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath"
-		}
 	} else {
-		docker create --name=$ContainerName --entrypoint="cmd /c cd BuildUnderTest && powershell -File .\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
-		docker cp . ${ContainerName}:.\BuildUnderTest
-		docker start -a $ContainerName
-		if ($Coverage.IsPresent -and !($PreTestRunScript)) {
-			docker cp ${ContainerName}:\BuildUnderTest\Microsoft.TestPlatform\tools\net451\common7\ide\Extensions\TestPlatform\TestResults .
-		}
-		docker cp ${ContainerName}:\BuildUnderTest\TestResults .
+		docker run -i --rm -v ${PWD}:C:\BuildUnderTest --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
 	}
+    if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+        Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath" -Force -Recurse
+    }
 	if (Test-Path "$TestResultsPath\*.trx") {
 		[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
 		if ($getXMLFiles.Count -gt 1) {

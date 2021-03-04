@@ -873,8 +873,8 @@ namespace Dev2.Tests.Runtime.WebServer
             var requestBoundVariables = contextObject.Request.BoundVariables;
             //---------------Test Result -----------------------
             Assert.AreEqual(string.Empty, postDataMock);
-            Assert.AreEqual(data, requestBoundVariables.Get("testStringData"), "Text string should not be converted to base64 before being sent into the env variable.");
-            Assert.AreEqual(textFileContent, requestBoundVariables.Get("textFileData"), "Text file should return it content into the env variable.");
+            Assert.AreEqual(Convert.ToBase64String(data.ToBytesArray()), requestBoundVariables.Get("testStringData"), "Text string should be converted to base64 before being sent into the env variable.");
+            Assert.AreEqual(Convert.ToBase64String(textFileContent.ToBytesArray()), requestBoundVariables.Get("textFileData"), "Text file should return it content into the env variable as base64.");
             Assert.AreEqual("dGhpcyB3b3VsZCBiZSB0aGUgcGRmIGZpbGUgY29udGVudCB0byBiZSBjb252ZXJ0ZWQgaW4gV2FyZXdvbGYgaW50byBiYXNlNjQ=", requestBoundVariables.Get("pdfFileData"), "PDF file should return it content into the env variable as base64.");
 
         }
