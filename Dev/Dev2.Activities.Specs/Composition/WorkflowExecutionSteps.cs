@@ -4994,20 +4994,10 @@ namespace Dev2.Activities.Specs.Composition
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}";
 
-            IPrincipal executingUser;
-            try
-            {
-                executingUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-            }
-            catch
-            {
-                var genericIdentity = new GenericIdentity("WarewolfAdmin");
-                executingUser = new GenericPrincipal(genericIdentity, new[] {"Role1", "Roll2"});
-            }
+            var executingUser = GlobalConstants.GenericPrincipal;
+            Common.Utilities.OrginalExecutingUser = executingUser;
 
-            var serializer = new Dev2JsonSerializer();
-            var currentuserprincipal = serializer.Serialize(executingUser);
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", currentuserprincipal);
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", executingUser.Identity.Name);
             Add("resumeMessage", msg);
         }
 
@@ -5027,9 +5017,8 @@ namespace Dev2.Activities.Specs.Composition
             var genericIdentity = new GenericIdentity("InvalidUser");
             var executingUser = new GenericPrincipal(genericIdentity, new[] {"Role1", "Roll2"});
 
-            var serializer = new Dev2JsonSerializer();
-            var currentuserprincipal = serializer.Serialize(executingUser);
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", currentuserprincipal);
+            Common.Utilities.OrginalExecutingUser = executingUser;
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", executingUser.Identity.Name);
             Add("resumeMessage", msg);
         }
 
@@ -5322,24 +5311,6 @@ namespace Dev2.Activities.Specs.Composition
                 PreviousLength = result.Length;
                 return result;
             }
-        }
-
-        private static IPrincipal BuildClaimsPrincipal(string currentUserPrincipal)
-        {
-            IPrincipal executingUser;
-            var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal).Trim();
-
-            try
-            {
-                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
-            }
-            catch
-            {
-                var genericIdentity = new GenericIdentity(unqualifiedUserName);
-                executingUser = new GenericPrincipal(genericIdentity, new[] {"Role1", "Roll2"});
-            }
-
-            return executingUser;
         }
 
         public enum MockPrincipalBehavior

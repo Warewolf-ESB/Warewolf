@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
-            var currentuserprincipal = serializer.Serialize(WindowsIdentity.GetCurrent());
+            var currentuserprincipal = GlobalConstants.GenericPrincipal.Identity.Name;
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
@@ -269,8 +269,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
-            var currentuserprincipal = serializer.Serialize(WindowsIdentity.GetCurrent());
-
+            var currentuserprincipal = GlobalConstants.GenericPrincipal.Identity.Name;
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
@@ -304,7 +303,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
-            var currentuserprincipal = serializer.Serialize(WindowsIdentity.GetCurrent());
+            var currentuserprincipal = GlobalConstants.GenericPrincipal.Identity.Name;
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
@@ -339,7 +338,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
-            var currentuserprincipal = serializer.Serialize(WindowsIdentity.GetCurrent());
+            var currentuserprincipal = GlobalConstants.GenericPrincipal.Identity.Name;
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
@@ -385,9 +384,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
-            var identity = new GenericIdentity("InvalidUser");
-            var invalidUser = new GenericPrincipal(identity, new string[0]);
-            var currentuserprincipal = serializer.Serialize(invalidUser.Identity);
+            var currentuserprincipal = GlobalConstants.GenericPrincipal.Identity.Name;
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceID.ToString())},
