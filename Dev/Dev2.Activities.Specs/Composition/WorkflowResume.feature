@@ -81,7 +81,7 @@ I want to Resume
 #    Then I resume workflow "Hello World" at "Assign a value to Name if blank (1)" tool with invalid user
 #    Then Resume has "AN" error
 #    Then Resume message is "Authentication Error resuming. User InvalidUser is not authorized to execute the workflow."
-#
+
 #  @ResumeWorkflowExecution
 #  Scenario: Resuming a workflow Given Valid Authentication
 #    Given I have a server at "localhost" with workflow "Hello World"
