@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -40,34 +40,38 @@ namespace Warewolf.Auditing
 
         public void LogAuditState(Object logEntry)
         {
+            Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
+            if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
+            {
+                var auditCommand = new AuditCommand
+                {
+                    Audit = auditLog,
+                    Type = "LogEntry"
+                };
+                var jsonLogEntry = JsonConvert.SerializeObject(auditCommand);
+                SendMessage(jsonLogEntry);
+            }
+        }
+
+        private void SendMessage(string jsonLogEntry)
+        {
+            IWebSocketWrapper client = null;
             try
             {
-                Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
-                if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
+                client = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
+                if (!client.IsOpen())
                 {
-                    _ws = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
-                    _ws.Connect();
-
-                    var auditCommand = new AuditCommand
-                    {
-                        Audit = auditLog,
-                        Type = "LogEntry"
-                    };
-                    string json = JsonConvert.SerializeObject(auditCommand);
-                    _ws.SendMessage(json);
+                    client = _webSocketFactory.Acquire(Config.Auditing.Endpoint);
                 }
+                client.SendMessage(jsonLogEntry);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Dev2Logger.Error("LogAuditState", e.Message);
+                Dev2Logger.Error("LogAuditState", ex.InnerException == null ? ex.Message : ex.InnerException.Message);
             }
             finally
             {
-                if (_ws != null)
-                {
-                    _webSocketFactory.Release(_ws);
-                    _ws = null;
-                }
+                _webSocketFactory.Release(client);
             }
         }
 
@@ -133,15 +137,6 @@ namespace Warewolf.Auditing
         {
             if (!_isDisposed)
             {
-                if (disposing)
-                {
-                    if (_ws != null)
-                    {
-                        _webSocketFactory.Release(_ws);
-                        _ws = null;
-                    }
-                }
-
                 _isDisposed = true;
             }
         }
