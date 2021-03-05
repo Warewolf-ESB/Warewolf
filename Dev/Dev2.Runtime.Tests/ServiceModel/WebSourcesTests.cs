@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
@@ -19,6 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -753,13 +755,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebSources))]
-        public void WebSources_Execute_WebRequestMethod_Post_ExpectExpectBase64String()
+        public void WebSources_Execute_WebRequestMethod_Post_Classic_ExpectNonBase64String()
         {
-            var responseFromWeb = Encoding.ASCII.GetBytes("response from web request");
+            var responseFromWeb = "response from web request";
             var mockWebClientWrapper = new Mock<IWebClientWrapper>();
 
             mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { });
-            mockWebClientWrapper.Setup(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()))//(address+query, method.ToString().ToUpperInvariant(), putData.ToBytesArray()))
+            mockWebClientWrapper.Setup(o => o.UploadString(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(responseFromWeb);
 
             var source = new WebSource 
@@ -769,12 +771,42 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 Client = mockWebClientWrapper.Object 
             };
 
-            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new string[] { });
+            var result = WebSources.Execute(source, WebRequestMethod.Post, "http://www.msn.com/", "", false, out var errors, new string[] { "Content-Type:application/json" });
 
-            Assert.IsTrue(IsBase64(result));
-            Assert.AreEqual(result, Convert.ToBase64String(responseFromWeb));
+            Assert.IsFalse(IsBase64(result));
+            Assert.AreEqual(result, responseFromWeb);
 
-            mockWebClientWrapper.Verify(o => o.UploadData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<byte[]>()), Times.Once);
+            var client = source.Client;
+
+            Assert.AreEqual(client.Headers[HttpRequestHeader.ContentType], "application/json");
+            mockWebClientWrapper.Verify(o => o.UploadString("http://www.msn.com/", "POST", string.Empty), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_Execute_WebRequestMethod_Delete_Classic_ExpectNonBase64String()
+        {
+            var responseFromWeb = "response from web request";
+            var mockWebClientWrapper = new Mock<IWebClientWrapper>();
+
+            mockWebClientWrapper.Setup(o => o.Headers).Returns(new WebHeaderCollection { });
+            mockWebClientWrapper.Setup(o => o.UploadString(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(responseFromWeb);
+
+            var source = new WebSource
+            {
+                Address = "http://www.msn.com/",
+                AuthenticationType = AuthenticationType.Anonymous,
+                Client = mockWebClientWrapper.Object
+            };
+
+            var result = WebSources.Execute(source, WebRequestMethod.Delete, "http://www.msn.com/", "", false, out var errors, new string[] { });
+
+            Assert.IsFalse(IsBase64(result));
+            Assert.AreEqual(result, responseFromWeb);
+
+            mockWebClientWrapper.Verify(o => o.UploadString(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [TestMethod]

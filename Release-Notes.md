@@ -1,3 +1,22 @@
+5 March 2021
+================
+Enhancements
+-------------
+Triggers
+	- Throttle number of concurrent threads, increase thread count, improve queue efficiency.
+
+
+4 March 2021
+================
+Enhancements
+-------------
+- Posting an empty body to a Warewolf server workflow that uses the body to calculate the response, will now return an empty response instead of an exception.
+
+Bug Fixes
+---------
+- File with .txt extension can now be streamed currently into Warewolf server using the form-data stream.
+
+
 22 February 2021
 ================
 Enhancements

@@ -34,7 +34,7 @@ if ($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path "$VSTestPath\Ex
 	$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\common7\ide"
 } else {
 	if ($InContainer.IsPresent) {
-		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the RunInDocker parameter."
+		Write-Warning -Message "Ignoring VSTestPath parameter because it cannot be used with the -InContainer parameter."
 		$VSTestPath = ".\Microsoft.TestPlatform\tools\net451\Common7\IDE"
 	}
 }
@@ -68,16 +68,6 @@ if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\
 	if (!(Test-Path ".\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
 		Write-Error "Cannot install coverage runner using nuget."
 		exit 1
-	}
-}
-if ($InContainer.IsPresent) {
-	$ContainerName = ""
-	$ContainerName = ($Projects -join "-")
-	if ($Category -ne $null -and $Category -ne "") {
-		$ContainerName = "$ContainerName-$Category";
-	}
-	if ("${bamboo.repository.git.branch}" -ne $null -and "${bamboo.repository.git.branch}" -ne "") {
-		$ContainerName = "$ContainerName-${bamboo.repository.git.branch}"
 	}
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
@@ -132,7 +122,7 @@ Remove-Item -force -recurse
 		$AssembliesArg = ".\" + ($AssembliesList -join " .\")
 	}
 	if ($UNCPassword) {
-		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:.\Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
+		"net use \\DEVOPSPDC.premier.local\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
 	}
 	if ($TestsToRun) {
 		if ($PreTestRunScript) {

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,7 +27,8 @@ namespace QueueWorker
         private readonly string _userName;
         private readonly Guid _resourceId;
 
-        public LoggingConsumerWrapper(IExecutionLogPublisher logger, IConsumer consumer, Guid resourceId, string userName)
+        public LoggingConsumerWrapper(IExecutionLogPublisher logger, IConsumer consumer, Guid resourceId,
+            string userName)
         {
             _logger = logger;
             _consumer = consumer;
@@ -40,8 +41,9 @@ namespace QueueWorker
             var headers = parameters as Headers;
             if (!headers.KeyExists("Warewolf-Execution-Id"))
             {
-                headers["Warewolf-Execution-Id"] = new[] { Guid.NewGuid().ToString() };
+                headers["Warewolf-Execution-Id"] = new[] {Guid.NewGuid().ToString()};
             }
+
             var empty = new string[] { };
             var executionId = Guid.Parse(headers["Warewolf-Execution-Id"].FirstOrDefault());
             var customTransactionID = headers["Warewolf-Custom-Transaction-Id", empty].FirstOrDefault();
@@ -50,49 +52,49 @@ namespace QueueWorker
             _logger.StartExecution($"[{executionId}] - {customTransactionID} processing body {strBody} ");
             var startDate = DateTime.UtcNow;
 
-            var task = _consumer.Consume(body, parameters);
-
-            task.ContinueWith((requestForwarderResult) =>
+            Task<ConsumerResult> task = null;
+            try
             {
-                var endDate = DateTime.UtcNow;
-                var duration = endDate - startDate;
-                _logger.Warn($"[{executionId}] - {customTransactionID} failure processing body {strBody}");
-                CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration, customTransactionID);
-            }, TaskContinuationOptions.OnlyOnFaulted);
-
-            task.ContinueWith((requestForwarderResult) =>
-            {
+                task = _consumer.Consume(body, parameters);
+                task.Wait();
+                
                 var endDate = DateTime.UtcNow;
                 var duration = endDate - startDate;
 
-                if (requestForwarderResult.Result == ConsumerResult.Success)
+                if (task.Result == ConsumerResult.Success)
                 {
                     _logger.Info($"[{executionId}] - {customTransactionID} success processing body {strBody}");
-                    var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Success, executionId,customTransactionID);
+                    var executionInfo = new ExecutionInfo(startDate, duration, endDate,
+                        Warewolf.Triggers.QueueRunStatus.Success, executionId, customTransactionID);
                     var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
                     _logger.ExecutionSucceeded(executionEntry);
                 }
                 else
                 {
                     _logger.Error($"Failed to execute {_resourceId + " [" + executionId + "] " + strBody}");
-                    CreateExecutionError(requestForwarderResult, executionId, startDate, endDate, duration,customTransactionID);
+                    CreateExecutionError(task, executionId, startDate, endDate, duration,
+                        customTransactionID);
                 }
-
-            }, TaskContinuationOptions.OnlyOnRanToCompletion);
-
-            if (task.IsFaulted)
-            {
-                return Task.Run(() => ConsumerResult.Failed);
-            }
-            else
-            {
+                
                 return Task.Run(() => ConsumerResult.Success);
+            }
+            catch (Exception ex)
+            {
+                var endDate = DateTime.UtcNow;
+                var duration = endDate - startDate;
+                _logger.Warn($"[{executionId}] - {customTransactionID} failure processing body {strBody}");
+                CreateExecutionError(task, executionId, startDate, endDate, duration,
+                    customTransactionID);
+                
+                return Task.Run(() => ConsumerResult.Failed);
             }
         }
 
-        private void CreateExecutionError(Task<ConsumerResult> requestForwarderResult, Guid executionId, DateTime startDate, DateTime endDate, TimeSpan duration,string customTransactionID)
+        private void CreateExecutionError(Task<ConsumerResult> requestForwarderResult, Guid executionId,
+            DateTime startDate, DateTime endDate, TimeSpan duration, string customTransactionID)
         {
-            var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error, executionId,customTransactionID);
+            var executionInfo = new ExecutionInfo(startDate, duration, endDate, Warewolf.Triggers.QueueRunStatus.Error,
+                executionId, customTransactionID);
             var executionEntry = new ExecutionHistory(_resourceId, "", executionInfo, _userName);
             executionEntry.Exception = requestForwarderResult.Exception;
             executionEntry.AuditType = "ExecutionLog";
