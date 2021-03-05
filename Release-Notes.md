@@ -1,3 +1,11 @@
+5 March 2021
+================
+Enhancements
+-------------
+Triggers
+	- Throttle number of concurrent threads, increase thread count, improve queue efficiency.
+
+
 4 March 2021
 ================
 Enhancements
