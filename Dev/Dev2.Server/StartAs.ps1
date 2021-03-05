@@ -133,7 +133,7 @@ if ($WarewolfServerProcess) {
 		Write-Host Starting Warewolf server as $Username
 		Write-Host 1. Create Warewolf Administrators group.
 		NET localgroup "Warewolf Administrators" /ADD
-		if ($Password -eq 'W@rEw0lf@dm1n' -or $Password -eq '') {
+		if ($Password -eq '') {
 			$Password = [String]'wW'[(ForEach-Object { Get-Random -Maximum 2 })]
 			$Password += [String]'aA@'[(ForEach-Object { Get-Random -Maximum 3 })]
 			$Password += [String]'rR'[(ForEach-Object { Get-Random -Maximum 2 })]
@@ -145,7 +145,7 @@ if ($WarewolfServerProcess) {
 			$Password += '@dm1n'
 			[System.Environment]::SetEnvironmentVariable('SERVER_PASSWORD', $Password, [System.EnvironmentVariableTarget]::Machine)
 		}
-		Write-Host 2. Create Warewolf Administrator.
+		Write-Host 2. Create new Warewolf Administrator.
 		NET user "$Username" "$Password" /ADD /Y
 		if ($Error[1].Exception.Message -eq "The password does not meet the password policy requirements. Check the minimum password length, password complexity and password history requirements."){
 			exit 1
@@ -154,30 +154,19 @@ if ($WarewolfServerProcess) {
 		if ($Error[1].Exception.Message -eq "The password does not meet the password policy requirements. Check the minimum password length, password complexity and password history requirements."){
 			exit 1
 		}
-		Write-Host 3. Add Warewolf Administrator to Administrators group.
+		Write-Host 3. Add new Warewolf Administrator to Administrators group.
 		NET localgroup "Administrators" "$Username" /ADD
-		Write-Host 4. Add Warewolf Administrator to Warewolf Administrators group.
+		Write-Host 4. Add new Warewolf Administrator to Warewolf Administrators group.
 		NET localgroup "Warewolf Administrators" "$Username" /ADD
-		Write-Host 5. Grant Warewolf Administrator logon as a batch job rights.
-		Import-Module $PSScriptRoot\UserRights.psm1;Grant-UserRight -Account "$Username" -Right SeServiceLogonRight
-		if ($WarewolfServerService) {
-			Write-Host Configuring service to $BinPath
-			sc.exe config "Warewolf Server" start= auto binPath= "$BinPath" obj= ".\$Username" password= $Password
-		} else {
-			Write-Host Creating service for $BinPath
-			sc.exe create "Warewolf Server" start= auto binPath= "$BinPath" obj= ".\$Username" password= $Password
-		}
-		sc.exe start "Warewolf Server"
-	} else {
-		if ($WarewolfServerService) {
-			Write-Host Configuring service to $BinPath
-			sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
-		} else {
-			Write-Host Creating service for $BinPath
-			sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
-		}
-		sc.exe start "Warewolf Server"
 	}
+	if ($WarewolfServerService) {
+		Write-Host Configuring service to $BinPath
+		sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
+	} else {
+		Write-Host Creating service for $BinPath
+		sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
+	}
+	sc.exe start "Warewolf Server"
 }
 if ($NoExit.IsPresent) {
 	if (Test-Path "C:\Windows\System32\pauseloop.exe") {
