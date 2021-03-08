@@ -81,58 +81,6 @@ namespace Dev2.Activities.Specs.Composition
         {
             testRunner.CollectScenarioErrors();
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a workflow Given Suspended by Different User Returns Authentication Erro" +
-            "r")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowResume")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResumeWorkflowExecution")]
-        public virtual void ResumingAWorkflowGivenSuspendedByDifferentUserReturnsAuthenticationError()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow Given Suspended by Different User Returns Authentication Erro" +
-                    "r", new string[] {
-                        "ResumeWorkflowExecution"});
-#line 78
-  this.ScenarioSetup(scenarioInfo);
-#line 79
-    testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 80
-    testRunner.And("Workflow \"Hello World\" has \"Assign a value to Name if blank (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
-    testRunner.Then("I resume workflow \"Hello World\" at \"Assign a value to Name if blank (1)\" tool wit" +
-                    "h invalid user", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 82
-    testRunner.Then("Resume has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 83
-    testRunner.Then("Resume message is \"Authentication Error resuming. User InvalidUser is not authori" +
-                    "zed to execute the workflow.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a workflow Given Valid Authentication")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowResume")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResumeWorkflowExecution")]
-        public virtual void ResumingAWorkflowGivenValidAuthentication()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow Given Valid Authentication", new string[] {
-                        "ResumeWorkflowExecution"});
-#line 86
-  this.ScenarioSetup(scenarioInfo);
-#line 87
-    testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 88
-    testRunner.And("Workflow \"Hello World\" has \"Assign a value to Name if blank (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
-    testRunner.Then("I resume workflow \"Hello World\" at \"Assign a value to Name if blank (1)\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 90
-    testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 91
-    testRunner.Then("Resume message is \"Execution Completed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore
