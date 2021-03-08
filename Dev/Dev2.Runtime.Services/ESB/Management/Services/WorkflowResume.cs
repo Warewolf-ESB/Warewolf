@@ -26,7 +26,6 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
-using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -42,7 +41,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
             var executingUser = BuildClaimsPrincipal(currentUserPrincipal);
-            Common.Utilities.OrginalExecutingUser = executingUser;
             var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
             var executionEnv = new ExecutionEnvironment();
             executionEnv.FromJson(decodedEnv);
@@ -77,12 +75,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             var errorResultTO = new ErrorResultTO();
-            Common.Utilities.PerformActionInsideImpersonatedContext(executingUser, () =>
-            {
-                var container = CustomContainer.Get<IResumableExecutionContainerFactory>().New(startActivityId, sa, dataObject);
-                container.Execute(out ErrorResultTO errors, 0);
-                errorResultTO = errors;
-            });
+            var container = CustomContainer.Get<IResumableExecutionContainerFactory>().New(startActivityId, sa, dataObject);
+            container.Execute(out ErrorResultTO errors, 0);
+            errorResultTO = errors;
 
             if (errorResultTO.HasErrors())
             {
@@ -110,6 +105,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var isAuthorized = dataObject.AuthCache.GetOrAdd(key, (requestedKey) => AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.Resource));
             return isAuthorized;
         }
+
         static string GetUnqualifiedName(string userName)
         {
             if (userName.Contains("\\"))
@@ -119,25 +115,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return userName;
         }
+
         private static IPrincipal BuildClaimsPrincipal(StringBuilder currentUserPrincipal)
         {
-            IPrincipal executingUser;
             var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal.ToString()).Trim();
-
-            try
-            {
-                executingUser = new WindowsPrincipal(new WindowsIdentity(unqualifiedUserName));
-            }
-            catch
-            {
-                var genericIdentity = new GenericIdentity(unqualifiedUserName);
-                executingUser = new GenericPrincipal(genericIdentity, new string[0]);
-            }
-
-
-
-            return executingUser;
+            var genericIdentity = new GenericIdentity(unqualifiedUserName);
+            return new GenericPrincipal(genericIdentity, new string [0]);
         }
+
 
         private static StringBuilder IsValid(Dictionary<string, StringBuilder> values, out StringBuilder environmentString, out Guid startActivityId, out StringBuilder currentuserprincipal)
         {

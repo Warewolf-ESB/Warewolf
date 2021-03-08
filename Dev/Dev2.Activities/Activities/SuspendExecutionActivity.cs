@@ -19,7 +19,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Common.Serializers;
 using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.Interfaces.Enums;
@@ -137,10 +136,8 @@ namespace Dev2.Activities
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
                                             throw new Exception(GlobalConstants.NextNodeIDNotFound));
                 var currentEnvironment = _dataObject.Environment.ToJson();
-                Common.Utilities.OrginalExecutingUser = _dataObject.ExecutingUser;
-                var serializer = new Dev2JsonSerializer();
-                var currentuserprincipal = Common.Utilities.OrginalExecutingUser.Identity.Name;//serializer.Serialize(_dataObject.ExecutingUser.Identity);
 
+                var currentuserprincipal = _dataObject.ExecutingUser.Identity.Name;
                 var versionNumber = _dataObject.VersionNumber.ToString();
                 if (EncryptData)
                 {
