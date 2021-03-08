@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,6 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Threading;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Warewolf.Streams;
@@ -35,27 +37,38 @@ namespace Warewolf.Driver.RabbitMQ
 
         public void StartConsuming(IStreamConfig config, IConsumer consumer)
         {
-            var rabbitConfig = config as RabbitConfig; 
+            var rabbitConfig = config as RabbitConfig;
             var channel = CreateChannel(rabbitConfig);
 
+
+            var throttler = new SemaphoreSlim(initialCount: Environment.ProcessorCount * 5);
             var eventConsumer = new EventingBasicConsumer(channel);
             eventConsumer.Received += (model, eventArgs) =>
             {
                 var body = eventArgs.Body;
                 var headers = new Warewolf.Data.Headers();
-                headers["Warewolf-Custom-Transaction-Id"] = new[] { eventArgs.BasicProperties.CorrelationId };
-                var resultTask = consumer.Consume(body, headers);
-                resultTask.Wait();
-                if (resultTask.Result == Data.ConsumerResult.Success)
+                headers["Warewolf-Custom-Transaction-Id"] = new[] {eventArgs.BasicProperties.CorrelationId};
+                
+                try
                 {
-                    channel.BasicAck(eventArgs.DeliveryTag, false);
+                    throttler.Wait();
+                    var resultTask = consumer.Consume(body, headers);
+                    resultTask.Wait();
+                    
+                    if (resultTask.Result == Data.ConsumerResult.Success)
+                    {
+                        channel.BasicAck(eventArgs.DeliveryTag, false);
+                    }
                 }
-
+                finally
+                {
+                    throttler.Release();
+                }
             };
 
             channel.BasicConsume(queue: rabbitConfig.QueueName,
-                                        autoAck: false,
-                                        consumer: eventConsumer);
+                autoAck: false,
+                consumer: eventConsumer);
         }
 
         private IModel CreateChannel(RabbitConfig rConfig)

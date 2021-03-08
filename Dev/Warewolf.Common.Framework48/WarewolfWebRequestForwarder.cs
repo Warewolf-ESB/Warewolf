@@ -34,7 +34,8 @@ namespace Warewolf.Common
         {
         }
 
-        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, IPublisher publisher, string url,string username,string password, ICollection<IServiceInputBase> valueKeys, bool mapEntireMessage)
+        public WarewolfWebRequestForwarder(IHttpClientFactory httpClientFactory, IPublisher publisher, string url,
+            string username, string password, ICollection<IServiceInputBase> valueKeys, bool mapEntireMessage)
         {
             _httpClientFactory = httpClientFactory;
             _publisher = publisher;
@@ -48,15 +49,12 @@ namespace Warewolf.Common
 
         public async Task<ConsumerResult> Consume(byte[] body, object parameters)
         {
-            var postBody = BuildPostBody(body); 
-
-            using (var execution = await SendEventToWarewolf(_url, postBody, parameters as Headers))
+            var postBody = BuildPostBody(body);
+            var execution = await SendEventToWarewolf(_url, postBody, parameters as Headers);
+            if (!execution.IsSuccessStatusCode)
             {
-                if (!execution.IsSuccessStatusCode)
-                {
-                    _publisher.Publish(Encoding.UTF8.GetBytes(postBody));
-                    return ConsumerResult.Failed;
-                }
+                _publisher.Publish(Encoding.UTF8.GetBytes(postBody));
+                return ConsumerResult.Failed;
             }
             return ConsumerResult.Success;
         }
@@ -65,16 +63,15 @@ namespace Warewolf.Common
         {
             var returnedQueueMessage = Encoding.UTF8.GetString(body);
             var inputs = _valueKeys.Select(v => (v.Name, v.Value)).ToList();
-            var mappedData = _messageToInputsMapper.Map(returnedQueueMessage, inputs, returnedQueueMessage.IsJSON(), DataListUtilBase.IsXml(returnedQueueMessage), _mapEntireMessage);
+            var mappedData = _messageToInputsMapper.Map(returnedQueueMessage, inputs, returnedQueueMessage.IsJSON(),
+                DataListUtilBase.IsXml(returnedQueueMessage), _mapEntireMessage);
             return mappedData;
         }
 
-        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri,string postData, Headers headers)
+        private async Task<HttpResponseMessage> SendEventToWarewolf(string uri, string postData, Headers headers)
         {
-            using (var client = _httpClientFactory.New(uri, _username, _password, headers))
-            {
-                return await client.PostAsync(uri,postData);
-            }
+            var client = _httpClientFactory.New(uri, _username, _password, headers);
+            return await client.PostAsync(uri, postData);
         }
-    }    
+    }
 }
