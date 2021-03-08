@@ -8,6 +8,10 @@ Param(
   [switch]$Cleanup,
   [switch]$Anonymous
 )
+if ($Username -eq $null -or $Username -eq "" -or $Anonymous.IsPresent) {
+    $IsAnonymous = $true
+}
+$IsAnonymous
 $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
 if ($Cleanup.IsPresent) {
@@ -49,11 +53,11 @@ if ($ResourcesPath -and (Test-Path "$ResourcesPath\Resources")) {
 	    }
     }
 }
-if ($Anonymous.IsPresent -and (Test-Path "C:\ProgramData\Warewolf\Server Settings - Copy")) {
+if ($IsAnonymous -and (Test-Path "C:\ProgramData\Warewolf\Server Settings - Copy")) {
 	Copy-Item -Path "C:\ProgramData\Warewolf\Server Settings - Copy\*" -Destination "C:\ProgramData\Warewolf\Server Settings" -Force -Recurse
 }
 if ($WarewolfServerProcess) {
-	if ($Anonymous.IsPresent) {
+	if ($IsAnonymous) {
 		Invoke-WebRequest -Uri http://localhost:3142/Public/FetchExplorerItemsService.json?ReloadResourceCatalogue=true -UseBasicParsing
 	} else {
 		Sleep 30
@@ -129,7 +133,7 @@ if ($WarewolfServerProcess) {
 "@ | Out-File -FilePath $CoverageConfigPath
 		$BinPath = "\`"$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe\`" cover \`"$CoverageConfigPath\`" /LogFile=\`"$ServerBinFolderPath\TestResults\DotCover.log\`" --DisableNGen";
 	}
-	if ($Username) {
+	if (!($IsAnonymous)) {
 		Write-Host Starting Warewolf server as $Username
 		Write-Host 1. Create Warewolf Administrators group.
 		NET localgroup "Warewolf Administrators" /ADD
@@ -159,15 +163,15 @@ if ($WarewolfServerProcess) {
 		Write-Host 4. Add new Warewolf Administrator to Warewolf Administrators group.
 		NET localgroup "Warewolf Administrators" "$Username" /ADD
 	}
-	if ($WarewolfServerService) {
-		Write-Host Configuring service to $BinPath
-		sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
-	} else {
-		Write-Host Creating service for $BinPath
-		sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
-	}
-	sc.exe start "Warewolf Server"
 }
+if ($WarewolfServerService) {
+	Write-Host Configuring service to $BinPath
+	sc.exe config "Warewolf Server" start= auto binPath= "$BinPath"
+} else {
+	Write-Host Creating service for $BinPath
+	sc.exe create "Warewolf Server" start= auto binPath= "$BinPath"
+}
+sc.exe start "Warewolf Server"
 if ($NoExit.IsPresent) {
 	if (Test-Path "C:\Windows\System32\pauseloop.exe") {
 		Write-Host Warewolf Server started successfully.
