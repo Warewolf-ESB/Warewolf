@@ -86,9 +86,11 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
 using System.Security.Principal;
+using Dev2.Activities.Specs.Scheduler;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Warewolf.UnitTestAttributes;
 using Activity = System.Activities.Activity;
 
@@ -4978,7 +4980,34 @@ namespace Dev2.Activities.Specs.Composition
             var selectedActivity = allNodes.FirstOrDefault(p => p.GetDisplayName() == activityName);
             return selectedActivity;
         }
+        [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
+        public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
+        {
+            SetupUser();
 
+            TryGetValue("environment", out IServer environmentModel);
+            var resourceRepository = environmentModel.ResourceRepository;
+            var settings = resourceRepository.ReadSettings(environmentModel);
+            environmentModel.ForceLoadResources();
+
+            var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ResourceName == resourceName);
+            Assert.IsNotNull(resourceModel, "Did not find: " + resourceName);
+
+            var resourcePermissions = SecPermissions.None;
+            var permissionsStrings = resourceRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var permissionsString in permissionsStrings)
+            {
+                if (Enum.TryParse(permissionsString.Replace(" ", ""), true, out SecPermissions permission))
+                {
+                    resourcePermissions |= permission;
+                }
+            }
+            settings.Security.WindowsGroupPermissions.RemoveAll(permission => permission.ResourceID == resourceModel.ID);
+            var windowsGroupPermission = new WindowsGroupPermission { WindowsGroup = groupName, ResourceID = resourceModel.ID, ResourceName = resourceName, IsServer = false, Permissions = resourcePermissions };
+            settings.Security.WindowsGroupPermissions.Add(windowsGroupPermission);
+            var SettingsWriteResult = resourceRepository.WriteSettings(environmentModel, settings);
+            Assert.IsFalse(SettingsWriteResult.HasError, "Cannot setup for security spec.\n Error writing initial resource permissions settings to localhost server.\n" + SettingsWriteResult.Message);
+        }
         [Given(@"I resume workflow ""(.*)"" at ""(.*)"" tool")]
         [When(@"I resume workflow ""(.*)"" at ""(.*)"" tool")]
         [Then(@"I resume workflow ""(.*)"" at ""(.*)"" tool")]
@@ -4993,12 +5022,33 @@ namespace Dev2.Activities.Specs.Composition
             _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}";
-
-            var executingUser = GlobalConstants.GenericPrincipal;
-            Common.Utilities.OrginalExecutingUser = executingUser;
+            var securitySpecsUser = GetSecuritySpecsUser();
+            var genericIdentity = new GenericIdentity(securitySpecsUser);
+            var executingUser = new GenericPrincipal(genericIdentity, new string[0]);
 
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", executingUser.Identity.Name);
             Add("resumeMessage", msg);
+        }
+        static string GetUserGroup() => ConfigurationManager.AppSettings["userGroup"];
+
+        static string GetSecuritySpecsPassword() => ConfigurationManager.AppSettings["SecuritySpecsPassword"];
+
+        static string GetSecuritySpecsUser() => ConfigurationManager.AppSettings["SecuritySpecsUser"];
+        static void SetupUser()
+        {
+            var securitySpecsUser = GetSecuritySpecsUser();
+            var accountExists = SchedulerSteps.AccountExists(securitySpecsUser);
+            if (!accountExists)
+            {
+                try
+                {
+                    SchedulerSteps.CreateLocalWindowsAccount(GetSecuritySpecsUser(), GetSecuritySpecsPassword(), GetUserGroup());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(@"error creating user" + ex.Message);
+                }
+            }
         }
 
         [Then(@"I resume workflow ""(.*)"" at ""(.*)"" tool with invalid user")]
@@ -5017,7 +5067,6 @@ namespace Dev2.Activities.Specs.Composition
             var genericIdentity = new GenericIdentity("InvalidUser");
             var executingUser = new GenericPrincipal(genericIdentity, new[] {"Role1", "Roll2"});
 
-            Common.Utilities.OrginalExecutingUser = executingUser;
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", executingUser.Identity.Name);
             Add("resumeMessage", msg);
         }
