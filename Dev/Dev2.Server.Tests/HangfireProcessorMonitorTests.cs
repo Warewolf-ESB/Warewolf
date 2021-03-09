@@ -44,11 +44,11 @@ namespace Dev2.Server.Tests
             var processMonitor = new HangfireServerMonitorWithRestart(
                 mockChildProcessTracker.Object,
                 mockProcessFactory.Object);
-
+            
             new Thread(() => processMonitor.Start()).Start();
             Thread.Sleep(5000);
             //----------------------------Assert------------------------------
-            mockProcessFactory.Verify(o => o.Start(It.IsAny<ProcessStartInfo>()), Times.Exactly(1));
+            mockProcessFactory.Verify(o => o.Start(It.IsAny<ProcessStartInfo>()), Times.AtLeast(1));
         }
 
         [TestMethod]
