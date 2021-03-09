@@ -44,6 +44,8 @@ namespace Warewolf.OS
         }
 
         public bool WaitForExit(int milliseconds) => _process.WaitForExit(milliseconds);
+        
+        public void WaitForExit() => _process.WaitForExit();
 
         public void Dispose()
         {
@@ -60,6 +62,7 @@ namespace Warewolf.OS
             return _process;
         }
     }
+    
     public class ProcessWrapperFactory : IProcessFactory
     {
         public IProcess Start(string fileName)
