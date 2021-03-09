@@ -1740,6 +1740,18 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Sphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_EvalJContainer_NameExpression_GetNonExistentObject()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            const string something = "[[@Obj]]";
+            var evalJContainer = _environment.EvalJContainer(something);
+            Assert.IsNull(evalJContainer, "should be null, if [[@obj]] is not exist in execution environment");
+        }
+
+        [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_EvalJContainer_NonJson_DoesNotThrow()

@@ -427,13 +427,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                if (_debugState.StateType != StateType.Duration)
+                if (_debugState?.StateType != StateType.Duration)
                 {
                     UpdateDebugWithAssertions(dataObject);
                 }
 
                 var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
-                Copy(debugOutputs, _debugState.Outputs);
+                Copy(debugOutputs, _debugState?.Outputs);
             }
         }
 
