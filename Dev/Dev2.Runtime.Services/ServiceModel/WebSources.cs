@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,10 +27,20 @@ using System.Xml.Linq;
 using Dev2.Runtime.DynamicProxy;
 using Warewolf.Common.Interfaces.NetStandard20;
 using Warewolf.Common.NetStandard20;
+using Warewolf.Data.Options;
+using System.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
-    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null);
+    public class WebExecuteStringArgs
+    {
+        public IEnumerable<IFormDataParameters> FormDataParameters { get; set; }
+        public IWebRequestFactory WebRequestFactory { get; set; }
+        public bool IsManualChecked { get; set; }
+        public bool IsFormDataChecked { get; set; }
+    }
+
+    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null, WebExecuteStringArgs webExecuteStringArgs = null);
     public delegate string WebExecuteBinary(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null);
 
     public class WebSources : ExceptionManager
@@ -126,14 +136,29 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
-        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
+        public static string Execute(IWebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs = null)
         {
-            return Execute(source, method, headers, relativeUri, data, throwError, out errors);
+            if (webExecuteStringArgs == null)
+            {
+                webExecuteStringArgs = new WebExecuteStringArgs
+                {
+                    IsManualChecked = true,
+                    IsFormDataChecked = false,
+                    FormDataParameters = new List<IFormDataParameters>(),
+                    WebRequestFactory = new WebRequestFactory()
+                };
+            }
+            return Execute(source, method, headers, relativeUri, webExecuteStringArgs.IsManualChecked, webExecuteStringArgs.IsFormDataChecked, data, throwError, out errors, webExecuteStringArgs?.FormDataParameters, webExecuteStringArgs.WebRequestFactory);
         }
-
-        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, string data, bool throwError, out ErrorResultTO errors)
+        
+        public static string Execute(IWebSource source, WebRequestMethod method, IEnumerable<string> headers, string relativeUrl, bool isNoneChecked, bool isFormDataChecked, string data, bool throwError, out ErrorResultTO errors, IEnumerable<IFormDataParameters> formDataParameters = null, IWebRequestFactory webRequestFactory = null)
         {
             IWebClientWrapper client = null;
+
+            if (webRequestFactory == null)
+            {
+                webRequestFactory = new WebRequestFactory();
+            }
 
             errors = new ErrorResultTO();
             try
@@ -142,12 +167,29 @@ namespace Dev2.Runtime.ServiceModel
                 client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
-                if (contentType != null && contentType.ToLowerInvariant().Contains("multipart"))
+
+                if (isFormDataChecked)
                 {
-                    return PerformMultipartWebRequest(new WebRequestFactory(), client, address, data);
+                    VerifyArgument.IsNotNullOrWhitespace("Content-Type", contentType);
+                    var formDataBoundary = contentType.Split('=').Last();
+                    var bytesData = GetMultipartFormData(formDataParameters, formDataBoundary);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
+                }
+                if (isNoneChecked && (contentType != null && contentType.ToLowerInvariant().Contains("multipart")))
+                {
+                    var bytesData = ConvertToHttpNewLine(ref data);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
 
-                return method == WebRequestMethod.Get ? client.DownloadData(address).ToBase64String() : client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String();
+                switch (method)
+                {
+                    case WebRequestMethod.Get:
+                        return client.DownloadData(address).ToBase64String();
+                    case WebRequestMethod.Put:
+                        return client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String();
+                    default: //classic calls are handled here like: delete and post
+                        return client.UploadString(address, method.ToString().ToUpperInvariant(), data);
+                }
             }
             catch (WebException webex) when (webex.Response is HttpWebResponse httpResponse)
             {
@@ -173,6 +215,62 @@ namespace Dev2.Runtime.ServiceModel
 
             return string.Empty;
         }
+
+        private static byte[] GetMultipartFormData(IEnumerable<IFormDataParameters> postParameters, string boundary)
+        {
+            var encoding = Encoding.UTF8;
+            Stream formDataStream = new MemoryStream();
+            bool needsCLRF = false;
+
+            var dds = postParameters.GetEnumerator();
+            while (dds.MoveNext())
+            {
+                var conditionExpression = dds.Current;
+                var formValueType = conditionExpression;
+
+                if (needsCLRF)
+                    formDataStream.Write(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+
+                needsCLRF = true;
+
+                if (formValueType is FileParameter fileToUpload)
+                {
+
+                    var fileKey = fileToUpload.Key;
+                    var header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
+                        boundary,
+                        fileKey,
+                        fileToUpload.FileName ?? fileKey,
+                        fileToUpload.ContentType ?? "application/octet-stream");
+
+                    var fileBytes = fileToUpload.FileBytes;
+
+                    formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
+                    
+                    formDataStream.Write(fileBytes, 0, fileBytes.Length);
+                }
+                else if (formValueType is TextParameter textToUpload)
+                {
+
+                    var postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
+                        boundary,
+                        textToUpload.Key,
+                        textToUpload.Value);
+                    formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                }
+            }
+
+            var footer = "\r\n--" + boundary + "--\r\n";
+            formDataStream.Write(encoding.GetBytes(footer), 0, encoding.GetByteCount(footer));
+
+            formDataStream.Position = 0;
+            var formData = new byte[formDataStream.Length];
+            formDataStream.Read(formData, 0, formData.Length);
+            formDataStream.Close();
+
+            return formData;
+        }
+
 
         private static void ValidateSource(IWebSource source)
         {
@@ -213,18 +311,17 @@ namespace Dev2.Runtime.ServiceModel
             return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
         }
 
-        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, string data)
+        public static string PerformMultipartWebRequest(IWebRequestFactory webRequestFactory, IWebClientWrapper client, string address, byte[] bytesData)
         {
             var wr = webRequestFactory.New(address);
             wr.Headers[HttpRequestHeader.Authorization] = client.Headers[HttpRequestHeader.Authorization];
             wr.ContentType = client.Headers[HttpRequestHeader.ContentType];
             wr.Method = "POST";
-            var byteData = ConvertToHttpNewLine(ref data);
-            wr.ContentLength = byteData.Length;
+            wr.ContentLength = bytesData.Length;
 
             using (var requestStream = wr.GetRequestStream())
             {
-                requestStream.Write(byteData, 0, byteData.Length);
+                requestStream.Write(bytesData, 0, bytesData.Length);
                 requestStream.Close();
             }
 
@@ -249,8 +346,7 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        //TODO: ConvertToHttpNewLine should now be made private and tested using IWebRequest  
-        internal static byte[] ConvertToHttpNewLine(ref string data)
+        private static byte[] ConvertToHttpNewLine(ref string data)
         {
             data = data.Replace("\r\n", "\n");
             data = data.Replace("\n", GlobalConstants.HTTPNewLine);

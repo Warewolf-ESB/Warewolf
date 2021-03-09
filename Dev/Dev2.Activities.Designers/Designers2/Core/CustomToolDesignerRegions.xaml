@@ -18,12 +18,18 @@
                     xmlns:netDllEnhanced="clr-namespace:Dev2.Activities.Designers2.Net_Dll_Enhanced"
                     xmlns:actionRegion="clr-namespace:Dev2.Activities.Designers2.Core.ActionRegion"
                     xmlns:inputRegion="clr-namespace:Dev2.Activities.Designers2.Core.InputRegion"
+                    xmlns:ui1="clr-namespace:Warewolf.UI;assembly=Warewolf.UI"
                     mc:Ignorable="d"
                     x:Class="CustomToolDesignerRegions"
                     d:DataContext="{d:DesignInstance core1:CustomToolWithRegionBase}">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <ui1:OptionViewDataTemplateSelector x:Key="OptionViewDataTemplateSelector"/>
+        </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="NewSelectionGrid">
@@ -1388,22 +1394,23 @@
                         <Style>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding InputCountExpandAllowed}" Value="True">
-                                    <Setter Property="RowDefinition.Height" Value="*"/>
-                                    <Setter Property="RowDefinition.MaxHeight" Value="210"/>
+                                    <Setter Property="RowDefinition.Height" Value="60*"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding InputCountExpandAllowed}" Value="False">
                                     <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                    <Setter Property="RowDefinition.MaxHeight" Value="300"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="40*"/>
             </Grid.RowDefinitions>
 
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -1485,7 +1492,44 @@
                            HorizontalAlignment="Center"
                            Style="{StaticResource MenuTextBlockStyle}"
                            Visibility="{Binding IsGenerateInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
+
+
+                <Grid Grid.Row="2" HorizontalAlignment="Stretch" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding IsFormDataChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="110" MinWidth="110" MaxWidth="110" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" BorderThickness="1,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                            <TextBlock Text="#" HorizontalAlignment="Center" />
+                        </Border>
+                        <Border Grid.Column="1" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                            <TextBlock Text="Key" HorizontalAlignment="Center" />
+                        </Border>
+                        <Border Grid.Column="2" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                            <TextBlock Text="File Type" HorizontalAlignment="Center" />
+                        </Border>
+                        <Border Grid.Column="3" BorderThickness="0,1,1,0" BorderBrush="{StaticResource ListBoxBorderBrush}">
+                            <TextBlock Text="Value" HorizontalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <ListBox x:Name="FormDataConditionsListBox"
+                         Grid.Row="1"
+                         ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}"
+                         ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
+                         ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                         Padding="1,0,1,1">
+                    </ListBox>
+                </Grid>
+
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlBorderTop}">
                     <fa:ImageAwesome Width="14" 
                              Height="14" 
                              Margin="{StaticResource ControlBorderRight}" 

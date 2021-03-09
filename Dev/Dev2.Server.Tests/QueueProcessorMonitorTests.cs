@@ -52,17 +52,11 @@ namespace Dev2.Server.Tests
                 mockTriggerCatalog.Object,
                 mockChildProcessTracker.Object);
 
-            mockProcess.SetupSequence(o => o.WaitForExit(1000))
-                        .Returns(() => { Thread.Sleep(1000); return false; })
-                        .Returns(false).Returns(true)
-                        .Returns(() => { Thread.Sleep(1000); return false; })
-                        .Returns(false).Returns(() => { processMonitor.Shutdown(); return true; });
-
             new Thread(() => processMonitor.Start()).Start();
             Thread.Sleep(5000);
             //----------------------------Assert------------------------------
-            mockProcess.Verify(o => o.WaitForExit(1000), Times.Exactly(6));
-            mockProcessFactory.Verify(o => o.Start(It.IsAny<ProcessStartInfo>()), Times.Exactly(2));
+            mockProcess.Verify(o => o.WaitForExit(), Times.Exactly(5));
+            mockProcessFactory.Verify(o => o.Start(It.IsAny<ProcessStartInfo>()), Times.AtLeast(2));
 
             Assert.IsTrue(pass, "Queue worker exe incorrect");
         }

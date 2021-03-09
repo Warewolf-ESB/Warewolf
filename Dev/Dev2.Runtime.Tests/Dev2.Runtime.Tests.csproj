@@ -235,6 +235,7 @@
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
+    <Compile Include="Services\TestWebServiceTests.cs" />
     <None Include="..\Dev2.Server\app.config">
       <Link>app.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -255,6 +256,7 @@
     <Compile Include="Services\SaveServerSettingsTest.cs" />
     <Compile Include="Services\SaveTestsTest.cs" />
     <Compile Include="Services\SaveTriggersTests.cs" />
+    <Compile Include="Services\SaveWebServiceTests.cs" />
     <Compile Include="Services\SchedulerTestBase.cs" />
     <Compile Include="Services\SecurityReadTests.cs" />
     <Compile Include="Services\SecurityWriteTests.cs" />

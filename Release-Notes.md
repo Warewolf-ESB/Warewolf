@@ -1,3 +1,52 @@
+5 March 2021
+================
+Enhancements
+-------------
+Triggers
+	- Throttle number of concurrent threads, increase thread count, improve queue efficiency.
+
+
+4 March 2021
+================
+Enhancements
+-------------
+- Posting an empty body to a Warewolf server workflow that uses the body to calculate the response, will now return an empty response instead of an exception.
+
+Bug Fixes
+---------
+- File with .txt extension can now be streamed currently into Warewolf server using the form-data stream.
+
+
+22 February 2021
+================
+Enhancements
+-------------
+OpenApi 
+   - Generate OpenApi from folder level
+
+Manual Resumption
+   - Override individual input variables
+
+Web Post
+   - Web Post Tool can now post multi-part form data
+
+Bug Fixes
+---------
+File Read
+File Write
+   - Read and Write from UNC path no longer gives safe handle error
+
+
+9 February 2021
+===============
+Bug Fixes
+---------
+Hangfire
+   - Fixed error where logs where getting stuck in a processing state
+ 
+Triggers
+   -Trigger will now execute within Kubernetes Cluster
+
 19 January 2021
 ======================
 Bug Fixes

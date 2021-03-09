@@ -79,6 +79,30 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WebPostInputRegion))]
+        public void WebPostInputRegion_TestClone_UsingWebPostInputRegion()
+        {
+            var id = Guid.NewGuid();
+            var act = new WebPostActivity { SourceId = id };
+
+            var mod = new Mock<IWebServiceModel>();
+            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
+            var webSourceRegion = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new WebPostActivity()));
+            var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), webSourceRegion) { PostData = "bob", IsFormDataChecked = true };
+            Assert.IsFalse(region.IsEnabled);
+            Assert.AreEqual(region.Errors.Count, 0);
+            if (region.CloneRegion() is WebPostInputRegion clone)
+            {
+                Assert.AreEqual(clone.IsEnabled, false);
+                Assert.AreEqual(clone.Errors.Count, 0);
+                Assert.AreEqual(clone.PostData, "bob");
+                Assert.IsTrue(clone.IsFormDataChecked);
+                Assert.IsFalse(clone.IsManualChecked);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WebPostInputRegion))]
         public void WebPostInputRegion_RestoreFromPrevious_Restore_ExpectValuesChanged()
         {
             //------------Setup for test--------------------------

@@ -32,35 +32,36 @@ Scenario Outline: Copy file at local location
 		 | 5  | [[sourcePath]] | c:\copyfile4.txt | ""       | ""       | [[destPath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copied0.txt | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 		 | 6  | [[sourcePath]] | c:\copyfile5.txt | ""       | ""       | [[destPath]] | sftp://SVRDEV.premier.local/copied61.txt                                                     | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |                           |
 
-	@CopyFileFromUNCWithOverwrite
-	Scenario Outline: Copy file at UNC location
-		Given I have a source path "<source>" with value "<sourceLocation>"
-		And source credentials as "<username>" and "<password>"
-		And I have a destination path "<destination>" with value "<destinationLocation>"
-		And destination credentials as "<destUsername>" and "<destPassword>"
-		And overwrite is "<selected>"
-		And use private public key for source is "<sourcePrivateKeyFile>"
-		And use private public key for destination is "<destinationPrivateKeyFile>"
-		And result as "<resultVar>"
-		When the copy file tool is executed
-		Then the execution has "<errorOccured>" error
-		And the result variable "<resultVar>" will be "<result>"
-		And the debug inputs as
-			| Source Path                 | Username   | Password | Source Private Key File | Destination Path                      | Destination Username | Destination Password | Destination Private Key File | Overwrite  |
-			| <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               | <destinationPrivateKeyFile>  | <selected> |
-		And the debug output as
-			|                        |
-			| <resultVar> = <result> |
-		Examples:
-			| No | source         | sourceLocation                                                                              | username          | password     | destination  | destinationLocation                                                                       | destUsername      | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-			| 1  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile0.txt | ""                | ""           | [[destPath]] | C:\copied10.txt                                                                           | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-			| 2  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile1.txt | ""                | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied1.txt                         | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-			| 3  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile2.txt | ""                | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied1.txt                         | Administrator     | Dev2@dmin123 | True     | [[result]] | "Success" | NO           | "C:\\Temp\\key.opk"  |                           |
-			| 4  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile3.txt | ""                | ""           | [[destPath]] | sftp://SVRDEV.premier.local/copied1.txt                                                   | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
-			| 5  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile5.txt | ""                | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copied1.txt | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+@CopyFileFromUNC
+@CopyFileFromUNCWithOverwrite
+Scenario Outline: Copy file at UNC location
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+	When the copy file tool is executed
+	Then the execution has "<errorOccured>" error
+	And the result variable "<resultVar>" will be "<result>"
+	And the debug inputs as
+		| Source Path                 | Username   | Password | Source Private Key File | Destination Path                      | Destination Username | Destination Password | Destination Private Key File | Overwrite  |
+		| <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  | <destination> = <destinationLocation> | <destUsername>       | String               | <destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples:
+		| No | source         | sourceLocation                                                                              | username          | password     | destination  | destinationLocation                                                                       | destUsername      | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+		| 1  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile0.txt | ""                | ""           | [[destPath]] | C:\copied10.txt                                                                           | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+		| 2  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile1.txt | ""                | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1001/FORCOPYFILETESTING/copied1.txt                         | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+		| 3  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile2.txt | ""                | ""           | [[destPath]] | ftp://DEVOPSPDC.premier.local:1002/FORCOPYFILETESTING/copied1.txt                         | Administrator     | Dev2@dmin123 | True     | [[result]] | "Success" | NO           | "C:\\Temp\\key.opk"  |                           |
+		| 4  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile3.txt | ""                | ""           | [[destPath]] | sftp://SVRDEV.premier.local/copied1.txt                                                   | dev2              | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
+		| 5  | [[sourcePath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copyfile5.txt | ""                | ""           | [[destPath]] | \\\\SVRDEV.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copied1.txt | ""                | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 
 
-	@CopyFileFromFTP
+@CopyFileFromFTP
 @CopyFileFromFTPWithOverwrite
 Scenario Outline: Copy file at FTP location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
@@ -175,6 +176,7 @@ Scenario Outline: Copy file at local location with overwrite disabled
 		 | 5  | [[sourcePath]] | c:\copyfile4.txt | ""                | ""           | [[destPath]] | \\\\DEVOPSPDC.premier.local\FileSystemShareTestingSite\FileCopySharedTestingSite\copied0.txt | ""                | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 		 | 6  | [[sourcePath]] | c:\copyfile5.txt | ""                | ""           | [[destPath]] | sftp://SVRDEV.premier.local/copied61.txt                                                     | dev2              | Q/ulw&]      | False    | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |                           |
 
+@CopyFileFromUNC
 @CopyFileFromUNCWithoutOverwrite
 Scenario Outline: Copy file at UNC location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"

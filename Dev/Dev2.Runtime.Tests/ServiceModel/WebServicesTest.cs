@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
@@ -22,7 +24,7 @@ using Dev2.Tests.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
+using Warewolf.Data.Options;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -31,10 +33,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestCategory("Runtime Hosting")]
     public class WebServicesTest
     {
-        string _requestResponse;
-        string _requestUrlEvaluated;
-        string _requestBodyEvaluated;
-        string[] _requestHeadersEvaluated;
+        private string _requestResponse;
+        private string _requestUrlEvaluated;
+        private string _requestBodyEvaluated;
+        private string[] _requestHeadersEvaluated;
+        private IEnumerable<IFormDataParameters> _requestFormDataParametersEvaluated;
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -56,7 +59,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -91,7 +94,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -172,7 +175,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -278,7 +281,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var webExecuteHitCount = 0;
             var resourceCatalog = new Mock<IResourceCatalog>();
             var services = new WebServicesMock(resourceCatalog.Object,
-                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs) =>
                 {
                     webExecuteHitCount++;
                     errors = new ErrorResultTO();
@@ -305,7 +308,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 Source = new WebSource
                 {
-                    Address = "someAddress",
+                    Address = "someAddress"
                 }
             };
 
@@ -419,8 +422,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("Services_Execute")]
-        public void Services_Execute_WhenHasJsonPath_ShouldReturnValid()
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_Execute_WhenHasJsonPath_ShouldReturnValid()
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
@@ -441,18 +444,88 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("Services_Execute")]
-        public void Services_Execute_WithVariablesInAllField_ShouldUseEvaluatedValues()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_Execute_IsFormDataChecked_WithVariablesInAllField_ShouldUseEvaluatedValues()
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
-            service.Headers = new List<INameValue> {new NameValue {Name="Accept",Value = "[[test1]]" } };
+            service.IsFormDataChecked = true;
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.FormDataParameters = new List<IFormDataParameters>
+            {
+               new TextParameter
+               {
+                   Key = "to",
+                   Value = "[[test4]]"
+               },
+               new FileParameter
+               {
+                   Key = "attachment",
+                   FileName = "[[test5]]",
+                   FileBase64 = "[[test6]]"
+               }
+            };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
             service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
             service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
             service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test4", Value = "val4" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test5", Value = "val5" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test6", Value = "val6" });
+
+            //------------Execute Test---------------------------
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
+            Assert.AreEqual(string.Empty, _requestBodyEvaluated, "the body must only be evaluated when the IsManualChecked");
+            Assert.AreEqual("val3", _requestUrlEvaluated);
+
+            Assert.IsTrue(_requestFormDataParametersEvaluated.Count() == 2);
+
+            var item1 = _requestFormDataParametersEvaluated.First() as TextParameter;
+            var item2 = _requestFormDataParametersEvaluated.ToArray()[1] as FileParameter;
+
+            Assert.AreEqual("to", item1.Key);
+            Assert.AreEqual("val4", item1.Value);
+
+            Assert.AreEqual("attachment", item2.Key);
+            Assert.AreEqual("val5", item2.FileName);
+            Assert.AreEqual("val6", item2.FileBase64);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_Execute_IsManualChecked_WithVariablesInAllField_ShouldUseEvaluatedValues()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.IsManualChecked = true;
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.FormDataParameters = new List<IFormDataParameters>
+            {
+               new TextParameter
+               {
+                   Key = "to",
+                   Value = "[[test4]]"
+               },
+               new FileParameter
+               {
+                   Key = "attachment",
+                   FileName = "[[test5]]",
+                   FileBase64 = "[[test6]]"
+               }
+            };
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test4", Value = "val4" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test5", Value = "val5" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test6", Value = "val6" });
 
             //------------Execute Test---------------------------
             WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
@@ -460,6 +533,19 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
             Assert.AreEqual("val2", _requestBodyEvaluated);
             Assert.AreEqual("val3", _requestUrlEvaluated);
+
+            Assert.IsTrue(_requestFormDataParametersEvaluated.Count() == 2);
+            
+            var item1 = _requestFormDataParametersEvaluated.First() as TextParameter;
+            var item2 = _requestFormDataParametersEvaluated.ToArray()[1] as FileParameter;
+
+            const string errorMessage = "the form data parameters must only be evaluated when the IsFormDataChecked";
+            Assert.AreEqual("to", item1.Key);
+            Assert.AreEqual("[[test4]]", item1.Value, errorMessage);
+
+            Assert.AreEqual("attachment", item2.Key, errorMessage);
+            Assert.AreEqual("[[test5]]", item2.FileName, errorMessage);
+            Assert.AreEqual("[[test6]]", item2.FileBase64, errorMessage);
         }
 
         [TestMethod]
@@ -469,6 +555,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
+            service.IsManualChecked = true;
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
@@ -498,8 +585,25 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebServices_ExecuteRequest_NonBase64_WebExecuteString_WebResponse_ShouldBeScrubbed()
         {
             //------------Setup for test--------------------------
+            var testKey = "testKey";
+            var testFileContent = "testFile";
+            var testFileName = "testFileName";
+
             var service = CreateDummyWebService();
+            service.IsManualChecked = true;
             service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.FormDataParameters = new List<IFormDataParameters>
+            {
+                new FormDataConditionExpression
+                {
+                    Key = testKey,
+                    Cond = new FormDataConditionFile
+                    {
+                        FileBase64 = testFileContent,
+                        FileName = testFileName
+                    }
+                }.ToFormDataParameter()
+            };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
             service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
@@ -521,12 +625,61 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(dummyResponce, service.RequestResponse, "The web response base64 should not be return as base64");
         }
 
-        string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
+        public void WebServices_ExecuteRequest_NonBase64_WebExecuteString_With_FormDataParamaters_WebResponse_ShouldBeScrubbed()
+        {
+            //------------Setup for test--------------------------
+            var testKey = "testKey";
+            var testFileContent = "testFile";
+            var testFileName = "testFileName";
+
+            var service = CreateDummyWebService();
+            service.IsManualChecked = true;
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.FormDataParameters = new List<IFormDataParameters>
+            {
+                new FormDataConditionExpression
+                {
+                    Key = testKey,
+                    Cond = new FormDataConditionFile
+                    {
+                        FileBase64 = testFileContent,
+                        FileName = testFileName
+                    }
+                }.ToFormDataParameter()
+            };
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+
+            var dummyResponce = "dummy responce from the web request";
+            _requestResponse = dummyResponce;
+            //------------Execute Test---------------------------
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
+            Assert.AreEqual("val2", _requestBodyEvaluated);
+            Assert.AreEqual("val3", _requestUrlEvaluated);
+
+            var isBase64String = service.RequestResponse.IsBase64String(out byte[] _);
+            var firstFormDataParameters = service.FormDataParameters.First() as FileParameter;
+
+            Assert.IsFalse(isBase64String, "The service request responce should not be a base64");
+            Assert.AreEqual(dummyResponce, service.RequestResponse, "The web response base64 should not be return as base64");
+            Assert.AreEqual(Encoding.ASCII.GetBytes(testFileContent).ToString(), firstFormDataParameters.FileBytes.ToString());
+            Assert.AreEqual(testFileName, firstFormDataParameters.FileName);
+        }
+
+        string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers, WebExecuteStringArgs webExecuteStringArgs)
         {
             _requestUrlEvaluated = relativeUri;
             _requestBodyEvaluated = data;
             _requestHeadersEvaluated = headers;
-
+            _requestFormDataParametersEvaluated = webExecuteStringArgs.FormDataParameters;
             errors = new ErrorResultTO();
             return _requestResponse;
         }

@@ -929,7 +929,6 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="RabbitMQToolTipAutoCustomTransactionIDCorrelationID" xml:space="preserve">
     <value>Use CustomTransactionID from Header as CorrelationID of the Queue you want to consume from.</value>
   </data>
-  
   <data name="RabbitMQToolTipPrefetch" xml:space="preserve">
     <value>Provide number of processes that can run concurrently.</value>
   </data>
@@ -1190,7 +1189,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
     <value>Redis Timeout for stored data</value>
   </data>
   <data name="ElasticsearchSourceHostNameTooltip" xml:space="preserve">
-     <value>The address of the Elasticsearch server name to connect to. </value>
+    <value>The address of the Elasticsearch server name to connect to. </value>
   </data>
   <data name="ElasticsearchSourcePortTooltip" xml:space="preserve">
     <value>The default port on which elasticsearch listens is 9200.</value>
@@ -1203,7 +1202,7 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ElasticsearchPasswordTooltip" xml:space="preserve">
     <value>The Elasticsearch server password</value>
-  </data>  
+  </data>
   <data name="ElasticsearchTestTooltip" xml:space="preserve">
     <value>Test the elasticsearch source connection</value>
   </data>
@@ -1574,10 +1573,10 @@ No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will e
     <value>Enter the value for when the suspended workflow needs to be resumed.</value>
   </data>
   <data name="SuspendExecutionEncryptDataToolTip" xml:space="preserve">
-   <value>If selected, the resumption data stored will be encrypted.</value>
+    <value>If selected, the resumption data stored will be encrypted.</value>
   </data>
   <data name="SuspendExecutionAllowManualResumptionToolTip" xml:space="preserve">
-   <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
+    <value>If selected, it allows for manual resumption of the workflow suspended execution.</value>
   </data>
   <data name="SuspendExecutionResultToolTip" xml:space="preserve">
     <value>When the workflow is suspended, a SuspensionID is generated which can be used for manual resumption</value>
@@ -1586,7 +1585,7 @@ No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will e
     <value>Enter the SuspensionID returned for the workflow that was suspended.</value>
   </data>
   <data name="ManualResumptionOverrideVariablesToolTip" xml:space="preserve">
-   <value>If selected, it allows for the input variables to be altered.</value>
+    <value>If selected, it allows for the input variables to be altered.</value>
   </data>
   <data name="ManualResumptionResultToolTip" xml:space="preserve">
     <value>The result of the manual resumption.</value>
@@ -2514,7 +2513,6 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="LoggingViewEncryptToolTip" xml:space="preserve">
     <value>Encrypt the Logging Data Source in the Auditing Settings File</value>
   </data>
-
   <data name="RedisTTLToolTip" xml:space="preserve">
     <value>Time in seconds before the key expires. Default is 5 Seconds.</value>
   </data>
@@ -2587,7 +2585,6 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="WriteFileToolTipContentsAsBase64" xml:space="preserve">
     <value>When selected, it reads the content of the file as base64 format.</value>
   </data>
-
   <data name="PersistenceDashboardPortTooltip" xml:space="preserve">
     <value>The default port on which Persistence listens is 5001</value>
   </data>
@@ -2620,5 +2617,11 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="WebReadsBase64BodyTooltip" xml:space="preserve">
     <value>Check this to read a base64 formatted body data.</value>
+  </data>
+  <data name="ManageWebServiceRequestFormDataTooltip" xml:space="preserve">
+    <value>Check this to use form-data as your payload.</value>
+  </data>
+  <data name="ManageWebServiceRequestNoneTooltip" xml:space="preserve">
+    <value>Check this to add your own Post body.</value>
   </data>
 </root>
