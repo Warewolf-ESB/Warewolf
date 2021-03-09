@@ -181,7 +181,15 @@ namespace Dev2.Runtime.ServiceModel
                     return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData);
                 }
 
-                return method == WebRequestMethod.Get ? client.DownloadData(address).ToBase64String() : client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String();
+                switch (method)
+                {
+                    case WebRequestMethod.Get:
+                        return client.DownloadData(address).ToBase64String();
+                    case WebRequestMethod.Put:
+                        return client.UploadData(address, method.ToString().ToUpperInvariant(), data.ToBytesArray()).ToBase64String();
+                    default: //classic calls are handled here like: delete and post
+                        return client.UploadString(address, method.ToString().ToUpperInvariant(), data);
+                }
             }
             catch (WebException webex) when (webex.Response is HttpWebResponse httpResponse)
             {

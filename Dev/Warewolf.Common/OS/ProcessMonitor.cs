@@ -26,14 +26,17 @@ namespace Warewolf.OS
         public int Pid => Process?.Id ?? 0;
 
         private IProcess _process;
+
         private IProcess Process
         {
-            get {
+            get
+            {
                 _processLock.EnterReadLock();
                 try
                 {
                     return _process;
-                } finally
+                }
+                finally
                 {
                     _processLock.ExitReadLock();
                 }
@@ -44,30 +47,35 @@ namespace Warewolf.OS
                 try
                 {
                     _process = value;
-                } finally
+                }
+                finally
                 {
                     _processLock.ExitWriteLock();
                 }
             }
         }
+
         private readonly ReaderWriterLockSlim _processLock = new ReaderWriterLockSlim();
 
         private readonly IChildProcessTracker _childProcessTracker;
 
         public bool IsAlive => _thread?.IsAlive ?? false;
 
-        protected ProcessMonitor(IChildProcessTracker childProcessTracker, IProcessFactory processFactory, IJobConfig config)
+        protected ProcessMonitor(IChildProcessTracker childProcessTracker, IProcessFactory processFactory,
+            IJobConfig config)
         {
             _childProcessTracker = childProcessTracker;
             _processFactory = processFactory;
             Config = config;
         }
+
         public void Start()
         {
             if (IsAlive)
             {
                 return;
             }
+
             _thread = new Thread(() =>
             {
                 try
@@ -102,23 +110,22 @@ namespace Warewolf.OS
                                 WarewolfLogger.Error(result, startInfo.FileName);
                             }
                         });
-
-                        while (!process.WaitForExit(1000))
-                        {
-                            //
-                        }
-                        Task.WaitAll(successTask, errorTask);
-
+                        
+                        process.WaitForExit();
+                        
                         OnProcessDied?.Invoke(Config);
                     }
                 }
-                catch { }
+                catch
+                {
+                }
             })
             {
                 IsBackground = true
             };
             _thread.Start();
         }
+
         protected abstract ProcessStartInfo GetProcessStartInfo();
 
         public void Kill()
@@ -127,6 +134,7 @@ namespace Warewolf.OS
             {
                 return;
             }
+
             try
             {
                 var p = System.Diagnostics.Process.GetProcessById(Pid);

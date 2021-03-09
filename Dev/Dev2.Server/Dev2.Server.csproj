@@ -382,7 +382,7 @@
     <None Include="Dockerfile.deploy.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="StartAs.ps1">
+    <None Include="StartAsService.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="ReverseDeployLog.ps1">
