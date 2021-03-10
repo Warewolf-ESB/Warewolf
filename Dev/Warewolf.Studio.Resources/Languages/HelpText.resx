@@ -2577,4 +2577,7 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="WebPostFormDataValueHelpText" xml:space="preserve">
     <value>The Value or object you are sending with your request.&lt;br /&gt;	Allowed:&lt;br /&gt;Data   	&lt;ol&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;&lt;/ol&gt;</value>
   </data>
+  <data name="MappingsResponseToBase64Help" xml:space="preserve">
+    <value>Allows you to output the full response into an object (Base64 representation).&lt;br/&gt;&lt;br/&gt;Use case:&lt;br/&gt;Downloading a file returns content that can be written in to a given path using the File Write tool.</value>
+  </data>
 </root>
