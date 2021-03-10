@@ -272,6 +272,7 @@
                                  ItemsSource="{Binding ConditionExpressionOptions, Converter={StaticResource OptionViewConverter}}"
                                  ItemTemplateSelector="{StaticResource OptionViewDataTemplateSelector}"
                                  ItemContainerStyle="{StaticResource ListBoxItemNoBorderStyle}"
+                                 ToolTip="{x:Static languages:Tooltips.WebPostFromDataParametersToolTip}"
                                  Padding="1,0,1,1">
                             </ListBox>
                         </Grid>
@@ -296,6 +297,7 @@
                                                 AcceptsReturn="False"
                                                 AllowUserInsertLine="False"
                                                 WrapInBrackets="False"
+                                                ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestQueryStringTooltip}"
                                                 Text="{Binding InputArea.QueryString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                             <i:Interaction.Behaviors>
