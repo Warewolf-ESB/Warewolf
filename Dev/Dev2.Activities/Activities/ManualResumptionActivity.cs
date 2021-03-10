@@ -120,6 +120,7 @@ namespace Dev2.Activities
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var allErrors = new ErrorResultTO();
+            Response = string.Empty;
             try
             {
                 var suspensionId = EvalSuspensionId();
@@ -165,25 +166,24 @@ namespace Dev2.Activities
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
             }
+            catch (System.Data.SqlClient.SqlException)
+            {
+                allErrors.AddError(ErrorResource.BackgroundJobClientResumeFailed);
+            }
             catch (Exception ex)
             {
-                Response = ex.Message;
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
-                allErrors.AddError(Response);
-
+                allErrors.AddError(ex.Message);
             }
             finally
             {
                 HandleErrors(_dataObject, allErrors);
-                if (_dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(_dataObject, StateType.Before, _update);
-                    DispatchDebugState(_dataObject, StateType.After, _update);
-                }
             }
+
             return new List<string> {Response};
         }
+
         private static void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
         {
             var hasErrors = allErrors.HasErrors();
@@ -191,6 +191,7 @@ namespace Dev2.Activities
             {
                 return;
             }
+
             DisplayAndWriteError(nameof(GateActivity), allErrors);
             foreach (var errorString in allErrors.FetchErrors())
             {

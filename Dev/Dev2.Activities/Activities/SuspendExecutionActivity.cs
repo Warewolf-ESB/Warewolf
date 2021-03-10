@@ -179,7 +179,13 @@ namespace Dev2.Activities
                 {
                     _originalUniqueID = Guid.Parse(UniqueID);
                 }
+
                 _dataObject.StopExecution = true;
+            }
+            catch (Hangfire.BackgroundJobClientException)
+            {
+                _dataObject.StopExecution = true;
+                allErrors.AddError(ErrorResource.BackgroundJobClientCreateFailed);
             }
             catch (Exception ex)
             {
