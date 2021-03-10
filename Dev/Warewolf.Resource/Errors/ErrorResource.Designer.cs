@@ -1643,7 +1643,14 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("InvalidEnumerator", resourceCulture);
             }
         }
-        
+        /// <summary>
+        ///   Hangfire SqlServerStorage could not connect. Please check connection and try again.
+        /// </summary>
+        public static string HangfireSqlServerStorageConnectionError {
+            get {
+                return ResourceManager.GetString("HangfireSqlServerStorageConnectionError", resourceCulture);
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to is not a valid expression.
         /// </summary>
@@ -3836,6 +3843,15 @@ namespace Warewolf.Resource.Errors {
             get {
                 return ResourceManager.GetString("SuspendOptionValueNotSet", resourceCulture);
             }
+        }
+
+        public static string BackgroundJobClientCreateFailed
+        {
+            get { return ResourceManager.GetString("BackgroundJobClientCreateFailed", resourceCulture); }
+        }
+        public static string BackgroundJobClientResumeFailed
+        {
+            get { return ResourceManager.GetString("BackgroundJobClientResumeFailed", resourceCulture); }
         }
     }
 }

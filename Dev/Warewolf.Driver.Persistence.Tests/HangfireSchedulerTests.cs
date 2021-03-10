@@ -217,6 +217,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
         [Timeout(120000)]
+        [ExpectedException(typeof(Exception))]
         public void HangfireScheduler_ResumeJob_WorkflowResumeReturnsErrors_Failed()
         {
             var mockStateNotifier = new Mock<IStateNotifier>();
@@ -403,6 +404,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
+        [ExpectedException(typeof(Exception))]
         public void HangfireScheduler_ResumeJob_InManuallyResumedState_Failed()
         {
             var dataObjectMock = new Mock<IDSFDataObject>();
@@ -430,6 +432,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
+        [ExpectedException(typeof(Exception))]
         public void HangfireScheduler_ResumeJob_InEnqueuedState_Failed()
         {
             var dataObjectMock = new Mock<IDSFDataObject>();
@@ -457,6 +460,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
+        [ExpectedException(typeof(Exception))]
         public void HangfireScheduler_ResumeJob_InSucceededState_Failed()
         {
             var dataObjectMock = new Mock<IDSFDataObject>();

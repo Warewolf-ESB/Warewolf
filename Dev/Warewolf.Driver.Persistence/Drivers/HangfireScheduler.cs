@@ -39,8 +39,20 @@ namespace Warewolf.Driver.Persistence.Drivers
 
         public HangfireScheduler()
         {
-            _jobStorage = new SqlServerStorage(ConnectionString);
+            _jobStorage = SqlServerStorage();
             _client = new BackgroundJobClient(_jobStorage);
+        }
+
+        private SqlServerStorage SqlServerStorage()
+        {
+            try
+            {
+                return new SqlServerStorage(ConnectionString);
+            }
+            catch
+            {
+                throw new Exception(ErrorResource.HangfireSqlServerStorageConnectionError);
+            }
         }
 
         public HangfireScheduler(IBackgroundJobClient client, JobStorage jobStorage)
@@ -59,13 +71,15 @@ namespace Warewolf.Driver.Persistence.Drivers
             {
                 return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
             }
+
             if (currentState?.StateName == "Enqueued")
             {
-                return  errMsg + ErrorResource.ManualResumptionEnqueued;
+                return errMsg + ErrorResource.ManualResumptionEnqueued;
             }
+
             if (currentState?.StateName == "Processing")
             {
-                return  errMsg + ErrorResource.ManualResumptionProcessing;
+                return errMsg + ErrorResource.ManualResumptionProcessing;
             }
 
             if (jobDetails.Job.Args[0] is Dictionary<string, StringBuilder> values)
@@ -93,15 +107,17 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var errMsg = "Failed: ";
                 if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
                 {
-                    return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionAlreadyResumed);
                 }
+
                 if (currentState?.StateName == "Enqueued")
                 {
-                    return  errMsg + ErrorResource.ManualResumptionEnqueued;
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionEnqueued);
                 }
+
                 if (currentState?.StateName == "Processing")
                 {
-                    return  errMsg + ErrorResource.ManualResumptionProcessing;
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionProcessing);
                 }
 
                 var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
@@ -118,12 +134,14 @@ namespace Warewolf.Driver.Persistence.Drivers
                 {
                     values["environment"] = new StringBuilder(decryptEnvironment);
                 }
+
                 values.TryGetValue("currentuserprincipal", out StringBuilder currentUserPrincipal);
                 var decryptCurrentUserPrincipal = currentUserPrincipal.ToString().CanBeDecrypted() ? DpapiWrapper.Decrypt(currentUserPrincipal.ToString()) : currentUserPrincipal.ToString();
                 if (values.ContainsKey("currentuserprincipal"))
                 {
                     values["currentuserprincipal"] = new StringBuilder(decryptCurrentUserPrincipal);
                 }
+
                 var workflowResume = new WorkflowResume();
                 var result = workflowResume.Execute(values, null);
                 var serializer = new Dev2JsonSerializer();
@@ -132,7 +150,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 {
                     var failedState = new FailedState(new Exception(executeMessage.Message?.ToString()));
                     _client.ChangeState(jobId, failedState, ScheduledState.StateName);
-                    return executeMessage.Message?.ToString();
+                    throw new Exception(executeMessage.Message?.ToString());
                 }
 
                 values.TryGetValue("resourceID", out StringBuilder workflowId);
@@ -156,25 +174,34 @@ namespace Warewolf.Driver.Persistence.Drivers
 
                 _stateNotifier?.LogAdditionalDetail(audit, nameof(ResumeJob));
                 var manuallyResumedState = new ManuallyResumedState(environments?.ToString());
-
                 _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
-                return GlobalConstants.Success;
             }
             catch (Exception ex)
             {
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(ResumeJob), ex, GlobalConstants.WarewolfError);
-                throw new Exception(ex.Message);
+                throw ex;
             }
+            return GlobalConstants.Success;
         }
 
         public string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)
         {
-            var suspensionDate = DateTime.Now;
-            var resumptionDate = CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
-            var state = new ScheduledState(resumptionDate.ToUniversalTime());
+            string jobId;
+            try
+            {
+                var suspensionDate = DateTime.Now;
+                var resumptionDate = CalculateResumptionDate(suspensionDate, suspendOption, suspendOptionValue);
+                var state = new ScheduledState(resumptionDate.ToUniversalTime());
 
-            var jobId = _client.Create(() => ResumeWorkflow(values, null), state);
+                jobId = _client.Create(() => ResumeWorkflow(values, null), state);
+            }
+            catch (Exception ex)
+            {
+                _stateNotifier?.LogExecuteException(ex, this);
+                Dev2Logger.Error(nameof(ScheduleJob), ex, GlobalConstants.WarewolfError);
+                throw ex;
+            }
             return jobId;
         }
 
