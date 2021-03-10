@@ -109,7 +109,6 @@ namespace Dev2.Activities
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            _errorsTo = new ErrorResultTO();
             _suspensionId = "";
             var allErrors = new ErrorResultTO();
             var dataObject = _dataObject;
@@ -180,16 +179,14 @@ namespace Dev2.Activities
                 {
                     _originalUniqueID = Guid.Parse(UniqueID);
                 }
-
                 _dataObject.StopExecution = true;
-                return new List<string> {_suspensionId};
             }
             catch (Exception ex)
             {
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
                 _dataObject.StopExecution = true;
-                throw;
+                allErrors.AddError(ex.Message);
             }
             finally
             {
@@ -200,6 +197,7 @@ namespace Dev2.Activities
                 HandleDebug(dataObject, serviceTestStep);
                 HandleErrors(dataObject, allErrors);
             }
+            return new List<string> {_suspensionId};
         }
 
         public static string GetSuspendValidationMessageType(enSuspendOption suspendOption)

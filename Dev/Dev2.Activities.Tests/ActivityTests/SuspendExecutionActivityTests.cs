@@ -221,7 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = GlobalConstants.GenericPrincipal;
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -291,7 +291,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = GlobalConstants.GenericPrincipal;
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -361,7 +361,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = GlobalConstants.GenericPrincipal;
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -431,7 +431,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = GlobalConstants.GenericPrincipal;
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -500,7 +500,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
 
             var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
+            User = GlobalConstants.GenericPrincipal;
             var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
             {
                 ServiceName = workflowName,
@@ -784,7 +784,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, env.AllErrors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual("<InnerError>" + ErrorResource.NextNodeRequiredForSuspendExecution + "</InnerError>",errors[0]);
+            Assert.AreEqual(ErrorResource.NextNodeRequiredForSuspendExecution, errors[0]);
         }
 
         [TestMethod]
@@ -856,7 +856,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, env.AllErrors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual("<InnerError>" + ErrorResource.PersistenceSettingsNoConfigured + "</InnerError>",errors[0]);
+            Assert.AreEqual(ErrorResource.PersistenceSettingsNoConfigured, errors[0]);
         }
 
         [TestMethod]
@@ -937,6 +937,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(dataObject.IsDebugNested);
             Assert.AreEqual(0, dataObject.ForEachNestingLevel);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManualResumptionActivity))]
@@ -958,7 +959,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var enFindMissingType = suspendExecutionActivity.GetFindMissingType();
             //---------------Test Result -----------------------
             Assert.AreEqual(enFindMissingType.SuspendExecution, enFindMissingType);
-
         }
 
         [TestMethod]
@@ -1029,7 +1029,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(null, suspendExecutionActivity.Response);
             Assert.AreEqual(1, env.AllErrors.Count);
             var errors = env.AllErrors.ToList();
-            Assert.AreEqual( "<InnerError>Suspend option Date value must not be null or empty.</InnerError>",errors[0]);
+            Assert.AreEqual("Suspend option Date value must not be null or empty.", errors[0]);
         }
 
         [TestMethod]
@@ -1037,12 +1037,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(SuspendExecutionActivity))]
         public void SuspendExecutionActivity_GetSuspendVaidationMessageType_Validate()
         {
-            Assert.AreEqual("Date",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendUntil));
-            Assert.AreEqual("Seconds",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForSeconds));
-            Assert.AreEqual("Minutes",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForMinutes));
-            Assert.AreEqual("Hours",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForHours));
-            Assert.AreEqual("Days",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForDays));
-            Assert.AreEqual("Months",SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForMonths));
+            Assert.AreEqual("Date", SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendUntil));
+            Assert.AreEqual("Seconds", SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForSeconds));
+            Assert.AreEqual("Minutes", SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForMinutes));
+            Assert.AreEqual("Hours", SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForHours));
+            Assert.AreEqual("Days", SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForDays));
+            Assert.AreEqual("Months", SuspendExecutionActivity.GetSuspendValidationMessageType(enSuspendOption.SuspendForMonths));
         }
 
         static IExecutionEnvironment CreateExecutionEnvironment()
