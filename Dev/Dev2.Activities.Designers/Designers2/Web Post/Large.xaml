@@ -297,7 +297,7 @@
                                                 AcceptsReturn="False"
                                                 AllowUserInsertLine="False"
                                                 WrapInBrackets="False"
-                                                ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestQueryStringTooltip}"
+                                                ToolTip="{Binding InputArea.QueryString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Text="{Binding InputArea.QueryString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                             <i:Interaction.Behaviors>

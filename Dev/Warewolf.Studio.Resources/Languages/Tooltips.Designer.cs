@@ -2779,15 +2779,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Web Service Request URL to execute..
-        /// </summary>
-        public static string ManageWebServiceRequestQueryStringTooltip {
-            get {
-                return ResourceManager.GetString("ManageWebServiceRequestQueryStringTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select the webservice host you want to use.
         /// </summary>
         public static string ManageWebServiceSourcesTooltip {
