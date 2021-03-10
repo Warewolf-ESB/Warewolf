@@ -14,8 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Comparer;
@@ -119,19 +119,17 @@ namespace Dev2.Activities
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            _errorsTo = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             try
             {
                 var suspensionId = EvalSuspensionId();
                 if (string.IsNullOrWhiteSpace(suspensionId))
                 {
-                    Response = ErrorResource.ManualResumptionSuspensionIdBlank;
                     throw new Exception(ErrorResource.ManualResumptionSuspensionIdBlank);
                 }
 
                 if (!_persistenceEnabled)
                 {
-                    Response = ErrorResource.PersistenceSettingsNoConfigured;
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
@@ -166,15 +164,37 @@ namespace Dev2.Activities
                     debugItemStaticDataParams = new DebugItemStaticDataParams("Result: " + Response, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
-
-                return new List<string> {Response};
             }
             catch (Exception ex)
             {
                 Response = ex.Message;
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
-                throw new Exception(ex.GetAllMessages());
+                allErrors.AddError(Response);
+
+            }
+            finally
+            {
+                HandleErrors(_dataObject, allErrors);
+                if (_dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(_dataObject, StateType.Before, _update);
+                    DispatchDebugState(_dataObject, StateType.After, _update);
+                }
+            }
+            return new List<string> {Response};
+        }
+        private static void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
+        {
+            var hasErrors = allErrors.HasErrors();
+            if (!hasErrors)
+            {
+                return;
+            }
+            DisplayAndWriteError(nameof(GateActivity), allErrors);
+            foreach (var errorString in allErrors.FetchErrors())
+            {
+                data.Environment.AddError(errorString);
             }
         }
 
