@@ -26,6 +26,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
+using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -40,10 +41,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
-            var executingUser = BuildClaimsPrincipal(currentUserPrincipal);
-            var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
+            var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal.ToString()));
+            var environment = DpapiWrapper.DecryptIfEncrypted(environmentString.ToString());
+
+            var decodedEnv = HttpUtility.UrlDecode(environment);
             var executionEnv = new ExecutionEnvironment();
             executionEnv.FromJson(decodedEnv);
+
             Int32.TryParse(versionNumber.ToString(), out int parsedVersionNumber);
 
             var dataObject = new DsfDataObject("", Guid.NewGuid())
@@ -116,9 +120,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return userName;
         }
 
-        private static IPrincipal BuildClaimsPrincipal(StringBuilder currentUserPrincipal)
+        private static IPrincipal BuildClaimsPrincipal(string currentUserPrincipal)
         {
-            var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal.ToString()).Trim();
+            var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal).Trim();
             var genericIdentity = new GenericIdentity(unqualifiedUserName);
             return new GenericPrincipal(genericIdentity, new string [0]);
         }
