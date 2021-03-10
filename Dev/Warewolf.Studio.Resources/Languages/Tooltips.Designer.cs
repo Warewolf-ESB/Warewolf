@@ -2914,6 +2914,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check this to put the web response into a Base64 [[object]].
+        /// </summary>
+        public static string MappingsResponseToBase64Tooltip {
+            get {
+                return ResourceManager.GetString("MappingsResponseToBase64Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new database source.
         /// </summary>
         public static string MenuDatabaseToolTip {

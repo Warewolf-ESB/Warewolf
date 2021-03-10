@@ -2156,6 +2156,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allows you to output the full response into an object (Base64 representation).&lt;br/&gt;&lt;br/&gt;Use case:&lt;br/&gt;Downloading a file returns content that can be written in to a given path using the File Write tool..
+        /// </summary>
+        public static string MappingsResponseToBase64Help {
+            get {
+                return ResourceManager.GetString("MappingsResponseToBase64Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug your Service in either the Studio or the Browser.&lt;br/&gt;	&lt;br/&gt;	&lt;a href=&quot;http://warewolf.io/knowledge-base/debugging/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
         /// </summary>
         public static string MenuDebugHelp {
