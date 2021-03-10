@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Tooltips {
@@ -2761,7 +2761,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to used a form-data as your payload..
+        ///   Looks up a localized string similar to Check this to use multipart/form-data as your request payload..
         /// </summary>
         public static string ManageWebServiceRequestFormDataTooltip {
             get {
@@ -2770,11 +2770,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to add your own Post body..
+        ///   Looks up a localized string similar to Check this to manually add your own request body..
         /// </summary>
         public static string ManageWebServiceRequestNoneTooltip {
             get {
                 return ResourceManager.GetString("ManageWebServiceRequestNoneTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web Service Request URL to execute..
+        /// </summary>
+        public static string ManageWebServiceRequestQueryStringTooltip {
+            get {
+                return ResourceManager.GetString("ManageWebServiceRequestQueryStringTooltip", resourceCulture);
             }
         }
         
@@ -6836,6 +6845,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebInsertToolTipColumn {
             get {
                 return ResourceManager.GetString("WebInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To supply multipart/form-data parameters with your request, use these fields.Fields can be scalars, variables and recordset..
+        /// </summary>
+        public static string WebPostFromDataParametersToolTip {
+            get {
+                return ResourceManager.GetString("WebPostFromDataParametersToolTip", resourceCulture);
             }
         }
         

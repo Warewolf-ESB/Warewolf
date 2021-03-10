@@ -5863,6 +5863,66 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The File Base64 string representing the file being sent with your request, a File Read tool can be utilized to get this within the studio.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
+        /// </summary>
+        public static string WebPostFormDataBase64HelpText {
+            get {
+                return ResourceManager.GetString("WebPostFormDataBase64HelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The File Name you want sent with your request. This should include the file extention &lt;br/&gt;eg: My File Name.txt	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
+        /// </summary>
+        public static string WebPostFormDataFileNameHelpText {
+            get {
+                return ResourceManager.GetString("WebPostFormDataFileNameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Key identifying the object you are sending with you request	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;.
+        /// </summary>
+        public static string WebPostFormDataKey {
+            get {
+                return ResourceManager.GetString("WebPostFormDataKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the type of form-data object you want to add to your multipart/form-data request.&lt;br/&gt;&lt;br/&gt;Options:&lt;br/&gt;
+        ///
+        ///&lt;table style=&quot;width:100%&quot;&gt;
+        ///  &lt;tr&gt;
+        ///    &lt;th&gt;Name&lt;/th&gt;
+        ///    &lt;th&gt;Example&lt;/th&gt;
+        ///  &lt;/tr&gt;
+        ///  &lt;tr&gt;
+        ///    &lt;td&gt;Text&lt;/td&gt;
+        ///    &lt;td&gt;When your object key is a just text like eg: &quot;to&quot;&lt;/td&gt;
+        ///  &lt;/tr&gt;
+        /// &lt;tr&gt;
+        ///    &lt;td&gt;File&lt;/td&gt;
+        ///    &lt;td&gt;When you are sending a file with your request like eg: email &quot;attachment&quot;&lt;/td&gt;
+        ///  &lt;/tr&gt;
+        ///&lt;/table&gt;.
+        /// </summary>
+        public static string WebPostFormDataObjectType {
+            get {
+                return ResourceManager.GetString("WebPostFormDataObjectType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value or object you are sending with your request.&lt;br /&gt;	Allowed:&lt;br /&gt;Data   	&lt;ol&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;&lt;/ol&gt;.
+        /// </summary>
+        public static string WebPostFormDataValueHelpText {
+            get {
+                return ResourceManager.GetString("WebPostFormDataValueHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allows you to read the body as base64.
         /// </summary>
         public static string WebReadsBase64BodyHelp {
@@ -5908,7 +5968,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can manually add the response body here..
+        ///   Looks up a localized string similar to You can manually add the expected response body to map the runtime web response here..
         /// </summary>
         public static string WebServicePasteHelp {
             get {
