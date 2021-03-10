@@ -2914,7 +2914,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check this to put the web response into a Base64 [[object]].
+        ///   Looks up a localized string similar to Check this to put the web response into a Base64 [[variable]].
         /// </summary>
         public static string MappingsResponseToBase64Tooltip {
             get {

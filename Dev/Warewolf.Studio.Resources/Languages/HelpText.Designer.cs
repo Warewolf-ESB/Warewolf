@@ -1750,7 +1750,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows you to send the body as base64.
+        ///   Looks up a localized string similar to Allows you to send the request body as base64.&lt;br/&gt;&lt;br/&gt;Use case:&lt;br/&gt;When you have a file to upload to another server using the Put request.&lt;br/&gt;&lt;br/&gt;The [[base64_string_variable]] can be generated using a File Read tool and/or pasted within the body of the Put tool. .
         /// </summary>
         public static string IsPutDataBase64HelpText {
             get {
