@@ -2631,6 +2631,6 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>To supply multipart/form-data parameters with your request, use these fields.Fields can be scalars, variables and recordset.</value>
   </data>
   <data name="MappingsResponseToBase64Tooltip" xml:space="preserve">
-    <value>Check this to put the web response into a Base64 [[object]]</value>
+    <value>Check this to put the web response into a Base64 [[variable]]</value>
   </data>
 </root>
