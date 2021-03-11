@@ -480,7 +480,29 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var result = scheduler.ResumeJob(dataObjectMock.Object, jobId, false, "NewEnvironment");
             Assert.AreEqual("Failed: " + ErrorResource.ManualResumptionAlreadyResumed, result);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        [ExpectedException(typeof(Exception))]
+        public void HangfireScheduler_ResumeJob_InvalidSuspendId_Failed()
+        {
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            var identity = new MockPrincipal();
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("NewEnvironment")},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(identity.Name)}
+            };
 
+            var jobstorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
+            var result = scheduler.ResumeJob(dataObjectMock.Object, "321654", false, "NewEnvironment");
+            Assert.AreEqual("Failed: " + ErrorResource.ManualResumptionSuspensionEnvBlank, result);
+        }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
