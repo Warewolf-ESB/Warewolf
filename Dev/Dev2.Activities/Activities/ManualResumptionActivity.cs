@@ -213,7 +213,7 @@ namespace Dev2.Activities
                 suspensionId = debugItemResults[0].Value;
             }
 
-            return suspensionId;
+            return suspensionId.Trim();
         }
 
         private ForEachInnerActivityTO InnerActivity()
