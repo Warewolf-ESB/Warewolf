@@ -315,6 +315,42 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
         [Timeout(120000)]
+        public void HangfireScheduler_GetSuspendedEnvironment_InvalidSuspendID_Fails()
+        {
+            var executionEnvironment = CreateExecutionEnvironment();
+            executionEnvironment.Assign("[[UUID]]", "public", 0);
+            executionEnvironment.Assign("[[JourneyName]]", "whatever", 0);
+            var env = executionEnvironment.ToJson();
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
+
+            var mockPrincipal = new Mock<IPrincipal>();
+            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
+            dataObjectMock.Setup(o => o.ExecutingUser).Returns(mockPrincipal.Object);
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder(env)},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+            };
+            var jobstorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobstorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobstorage);
+            var result = scheduler.GetSuspendedEnvironment("100050");
+            Assert.AreEqual("Failed: " + ErrorResource.ManualResumptionSuspensionEnvBlank, result);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(HangfireScheduler))]
+        [Timeout(120000)]
         public void HangfireScheduler_GetSuspendedEnvironment_EnqueuedState_Fails()
         {
             var executionEnvironment = CreateExecutionEnvironment();
@@ -353,10 +389,10 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             client.ChangeState(jobId, state, ScheduledState.StateName);
 
             var result = scheduler.GetSuspendedEnvironment(jobId);
-            Assert.AreEqual("Failed: The suspended workflow is in a Enqueued state.", result);
+            Assert.AreEqual("Failed: " + ErrorResource.ManualResumptionEnqueued, result);
         }
 
-    [TestMethod]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(HangfireScheduler))]
         [Timeout(120000)]
