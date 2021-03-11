@@ -155,7 +155,6 @@ namespace Dev2.Activities
 
                 Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
                 _stateNotifier?.LogActivityExecuteState(this);
-
                 if (_dataObject.IsDebugMode())
                 {
                     var debugItemStaticDataParams = new DebugItemStaticDataParams("SuspensionID: " + suspensionId, "", true);
@@ -168,13 +167,11 @@ namespace Dev2.Activities
             }
             catch (System.Data.SqlClient.SqlException)
             {
-                allErrors.AddError(ErrorResource.BackgroundJobClientResumeFailed);
+                LogException(new Exception(ErrorResource.BackgroundJobClientResumeFailed), allErrors);
             }
             catch (Exception ex)
             {
-                _stateNotifier?.LogExecuteException(ex, this);
-                Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
-                allErrors.AddError(ex.Message);
+                LogException(ex, allErrors);
             }
             finally
             {
@@ -182,6 +179,14 @@ namespace Dev2.Activities
             }
 
             return new List<string> {Response};
+        }
+
+        private void LogException(Exception ex, ErrorResultTO allErrors)
+        {
+            _stateNotifier?.LogExecuteException(ex, this);
+            Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
+            _dataObject.ExecutionException = ex;
+            allErrors.AddError(ex.Message);
         }
 
         private static void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)

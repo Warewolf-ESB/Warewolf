@@ -185,15 +185,12 @@ namespace Dev2.Activities
             }
             catch (Hangfire.BackgroundJobClientException)
             {
-                _dataObject.StopExecution = true;
-                allErrors.AddError(ErrorResource.BackgroundJobClientCreateFailed);
+                LogException(new Exception(ErrorResource.BackgroundJobClientCreateFailed), allErrors);
             }
             catch (Exception ex)
             {
                 _stateNotifier?.LogExecuteException(ex, this);
-                Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
-                _dataObject.StopExecution = true;
-                allErrors.AddError(ex.Message);
+                LogException(ex, allErrors);
             }
             finally
             {
@@ -205,6 +202,14 @@ namespace Dev2.Activities
                 HandleErrors(dataObject, allErrors);
             }
             return new List<string> {_suspensionId};
+        }
+
+        private void LogException(Exception ex, ErrorResultTO allErrors)
+        {
+            Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
+            _dataObject.ExecutionException = ex;
+            _dataObject.StopExecution = true;
+            allErrors.AddError(ex.Message);
         }
 
         public static string GetSuspendValidationMessageType(enSuspendOption suspendOption)
