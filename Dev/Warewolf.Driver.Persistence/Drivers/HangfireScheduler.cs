@@ -65,8 +65,14 @@ namespace Warewolf.Driver.Persistence.Drivers
         {
             var monitoringApi = _jobStorage.GetMonitoringApi();
             var jobDetails = monitoringApi.JobDetails(jobId);
-            var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
             var errMsg = "Failed: ";
+            if (jobDetails == null)
+            {
+                return errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank;
+            }
+
+            var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+
             if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
             {
                 return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
@@ -182,6 +188,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 Dev2Logger.Error(nameof(ResumeJob), ex, GlobalConstants.WarewolfError);
                 throw ex;
             }
+
             return GlobalConstants.Success;
         }
 
@@ -202,6 +209,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 Dev2Logger.Error(nameof(ScheduleJob), ex, GlobalConstants.WarewolfError);
                 throw ex;
             }
+
             return jobId;
         }
 
