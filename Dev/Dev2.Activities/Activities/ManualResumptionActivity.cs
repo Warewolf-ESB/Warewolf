@@ -192,7 +192,7 @@ namespace Dev2.Activities
                 return;
             }
 
-            DisplayAndWriteError(nameof(GateActivity), allErrors);
+            DisplayAndWriteError(nameof(ManualResumptionActivity), allErrors);
             foreach (var errorString in allErrors.FetchErrors())
             {
                 data.Environment.AddError(errorString);
