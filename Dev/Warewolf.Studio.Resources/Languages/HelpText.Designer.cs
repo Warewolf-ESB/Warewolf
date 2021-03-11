@@ -2092,6 +2092,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add source server relevant multipart/form-data fields to be sent with your request payload.&lt;br/&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;Data   &lt;ol&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;&lt;/ol&gt;.
+        /// </summary>
+        public static string ManageWebServiceRequestFormDataHelpText {
+            get {
+                return ResourceManager.GetString("ManageWebServiceRequestFormDataHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manually add your own request body.&lt;br/&gt;&lt;br/&gt;Allowed:&lt;br/&gt;	Data &lt;ol&gt;&lt;li&gt;Plain Text&lt;/li&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;&lt;/ol&gt;.
+        /// </summary>
+        public static string ManageWebServiceRequestManualHelpText {
+            get {
+                return ResourceManager.GetString("ManageWebServiceRequestManualHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If selected, it allows for the input variables to be altered. Any changes will replace the current stored values..
         /// </summary>
         public static string ManualResumptionOverrideVariablesHelpText {
