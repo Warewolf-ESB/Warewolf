@@ -2621,7 +2621,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="ManageWebServiceRequestFormDataTooltip" xml:space="preserve">
     <value>Check this to use multipart/form-data as your request payload.</value>
   </data>
-  <data name="ManageWebServiceRequestNoneTooltip" xml:space="preserve">
+  <data name="ManageWebServiceRequestManualTooltip" xml:space="preserve">
     <value>Check this to manually add your own request body.</value>
   </data>
   <data name="WebPostFromDataParametersToolTip" xml:space="preserve">

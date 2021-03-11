@@ -2772,9 +2772,9 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Check this to manually add your own request body..
         /// </summary>
-        public static string ManageWebServiceRequestNoneTooltip {
+        public static string ManageWebServiceRequestManualTooltip {
             get {
-                return ResourceManager.GetString("ManageWebServiceRequestNoneTooltip", resourceCulture);
+                return ResourceManager.GetString("ManageWebServiceRequestManualTooltip", resourceCulture);
             }
         }
         

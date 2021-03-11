@@ -194,14 +194,22 @@
                                      GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
                                      HorizontalAlignment="Left"
                                      IsChecked="{Binding InputArea.IsManualChecked, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestNoneTooltip}">Manual</RadioButton>
+                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestManualTooltip}">Manual
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.ManageWebServiceRequestManualHelpText}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </RadioButton>
                         <RadioButton x:Name="formdata"
                                      Grid.Row="1"
                                      GroupName="{Binding InputArea.ParameterGroup, Mode=OneTime}"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      IsChecked="{Binding InputArea.IsFormDataChecked, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestFormDataTooltip}">multipart/form-data</RadioButton>
+                                     ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestFormDataTooltip}">multipart/form-data
+                            <i:Interaction.Behaviors>
+                                <core1:HelpSetter Text="{x:Static languages:HelpText.ManageWebServiceRequestFormDataHelpText}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </RadioButton>
                     </Grid>
 
                     <Grid Grid.Row="2" x:Name="body" Visibility="{Binding IsChecked, ElementName=none, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="{StaticResource ControlBorderTop}" >
