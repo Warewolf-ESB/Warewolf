@@ -1,7 +1,7 @@
 ﻿
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,11 +18,12 @@ namespace Warewolf.Common.Interfaces.NetStandard20
 {
     public interface IWebClientWrapper : IDisposable
     {
-        WebHeaderCollection Headers { get; }
+        WebHeaderCollection Headers { get; set; }
         ICredentials Credentials { get; set; }
 
         byte[] UploadValues(string wareWolfResumeUrl, string method, NameValueCollection nameValueCollection);
         byte[] DownloadData(string address);
         byte[] UploadData(string address, string method, byte[] data);
+        string UploadString(string address, string method, string data);
     }
 }
