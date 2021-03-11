@@ -108,9 +108,13 @@ namespace Warewolf.Driver.Persistence.Drivers
             {
                 var monitoringApi = _jobStorage.GetMonitoringApi();
                 var jobDetails = monitoringApi.JobDetails(jobId);
+                var errMsg = "Failed: ";
+                if (jobDetails == null)
+                {
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank);
+                }
                 var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
 
-                var errMsg = "Failed: ";
                 if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
                 {
                     throw new Exception(errMsg + ErrorResource.ManualResumptionAlreadyResumed);
