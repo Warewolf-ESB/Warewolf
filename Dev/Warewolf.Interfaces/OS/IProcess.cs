@@ -19,6 +19,7 @@ namespace Warewolf.OS
         void Kill();
         Process Unwrap();
         bool WaitForExit(int milliseconds);
+        void WaitForExit();
         int Id { get; }
         bool HasExited { get; }
         StreamReader StandardOutput { get; }

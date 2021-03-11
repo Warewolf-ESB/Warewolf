@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,7 +39,17 @@ namespace Warewolf.Common.NetStandard20
 
         private bool disposedValue = false;
 
-        public WebHeaderCollection Headers { get; set; } = new WebHeaderCollection { }; 
+        public WebHeaderCollection Headers 
+        {
+            get
+            {
+               return _webClient.Headers ?? new WebHeaderCollection { };
+            }
+            set
+            {
+                _webClient.Headers.Add(value);
+            }
+        } 
 
         public ICredentials Credentials { get; set; }
 
@@ -65,6 +75,11 @@ namespace Warewolf.Common.NetStandard20
         public byte[] UploadData(string address, string method, byte[] data)
         {
            return _webClient.UploadData(address, method, data);
+        }
+
+        public string UploadString(string address, string method, string data)
+        {
+           return _webClient.UploadString(address, method, data);
         }
     }
 }
