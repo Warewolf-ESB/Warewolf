@@ -3853,5 +3853,10 @@ namespace Warewolf.Resource.Errors {
         {
             get { return ResourceManager.GetString("BackgroundJobClientResumeFailed", resourceCulture); }
         }
+        public static string AuthenticationError {
+            get {
+                return ResourceManager.GetString("AuthenticationError", resourceCulture);
+            }
+        }
     }
 }
