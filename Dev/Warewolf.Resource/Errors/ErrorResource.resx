@@ -1394,4 +1394,7 @@ Please contact your Windows System Administrator.</value>
   <data name="SuspendOptionValueNotSet" xml:space="preserve">
     <value>Suspend option {0} value must not be null or empty.</value>
   </data>
+  <data name="AuthenticationError" xml:space="preserve">
+    <value>Authentication Error resuming. User {0} is not authorized to execute the workflow.</value>
+  </data>
 </root>
