@@ -115,7 +115,7 @@ namespace Warewolf.Storage.Tests
             _environment.Assign("[[v]]", "[[rec()]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("assigning an entire recordset to a variable is not defined", _environment.Errors.First());
+            Assert.AreEqual("assigning an entire recordset to a variable is not defined:[[v]]", _environment.Errors.First());
         }
 
         [TestMethod]
@@ -128,7 +128,7 @@ namespace Warewolf.Storage.Tests
             _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("parse error", _environment.Errors.First());
+            Assert.AreEqual("parse error:[[v]]", _environment.Errors.First());
         }
 
         [TestMethod]
@@ -179,7 +179,7 @@ namespace Warewolf.Storage.Tests
             _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("parse error", _environment.Errors.First());
+            Assert.AreEqual("parse error:[[v]]", _environment.Errors.First());
         }
 
         [TestMethod]
@@ -1428,12 +1428,12 @@ namespace Warewolf.Storage.Tests
             {
                 _environment.AssignWithFrame(new AssignValue("[[rec(0).a]", "Value"), 0);
                 Assert.IsTrue(_environment.HasErrors());
-                Assert.AreEqual("parse error", _environment.FetchErrors());
+                Assert.AreEqual("parse error:[[rec(0).a]", _environment.FetchErrors());
 
             }
             catch (Exception e)
             {
-                Assert.AreEqual("parse error", e.Message);
+                Assert.AreEqual("parse error:[[rec(0).a]", e.Message);
             }
         }
 

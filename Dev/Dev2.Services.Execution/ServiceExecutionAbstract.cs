@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,6 +33,7 @@ using Warewolf.Storage;
 using WarewolfParserInterop;
 using Dev2.Runtime.Interfaces;
 using Warewolf.Data;
+using Warewolf.Exceptions;
 
 namespace Dev2.Services.Execution
 {
@@ -101,9 +102,9 @@ namespace Dev2.Services.Execution
         }
 
         readonly IResourceCatalog _catalog;
+
         public void GetSource(Guid sourceId)
         {
-
             if (Source == null)
             {
                 var dbSources = _catalog.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID);
@@ -125,6 +126,7 @@ namespace Dev2.Services.Execution
                 _errorResult.AddError(string.Format(ErrorResource.ErrorLoadingResource, DataObj.ResourceID));
                 return false;
             }
+
             return true;
         }
 
@@ -151,6 +153,7 @@ namespace Dev2.Services.Execution
                 errors.AddError(string.Format(ErrorResource.InvalidOutputFormat, Service.ResourceName));
                 return;
             }
+
             try
             {
                 var itrs = new List<IWarewolfIterator>(5);
@@ -160,6 +163,7 @@ namespace Dev2.Services.Execution
                     MergeErrors(errors, update, outputFormatter, itrs, itrCollection);
                     return;
                 }
+
                 ExecuteImpl(errors, update, outputFormatter, itrs, itrCollection);
             }
             finally
@@ -207,6 +211,7 @@ namespace Dev2.Services.Execution
             {
                 return false;
             }
+
             return true;
         }
 
@@ -241,8 +246,10 @@ namespace Dev2.Services.Execution
                         AddInput(update, itrCollection, itrs, sai);
                     }
                 }
+
                 return;
             }
+
             var inputDefs = DataListFactory.CreateInputParser().Parse(InstanceInputDefinitions);
             foreach (MethodParameter sai in inputs)
             {
@@ -266,6 +273,7 @@ namespace Dev2.Services.Execution
                         toInject = sai.DefaultValue;
                     }
                 }
+
                 var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
                 itrCollection.AddVariableToIterateOn(paramIterator);
                 itrs.Add(paramIterator);
@@ -297,22 +305,32 @@ namespace Dev2.Services.Execution
             IEnumerable<IWarewolfIterator> itrs, out ErrorResultTO errors, int update, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
+
             if (Inputs.Any())
             {
-                // Loop iterators 
+                // Loop iterators
                 var pos = 0;
                 foreach (var itr in itrs)
                 {
-                    var injectVal = itrCollection.FetchNextValue(itr);
-                    var param = Inputs.ToList()[pos];
-                    param.Value = param.EmptyIsNull &&
-                                  (injectVal == null ||
-                                   string.Compare(injectVal, string.Empty,
-                                       StringComparison.InvariantCultureIgnoreCase) == 0)
-                        ? null
-                        : injectVal;
-
-                    pos++;
+                    try
+                    {
+                        var param = Inputs.ToList()[pos];
+                        var injectVal = itrCollection.FetchNextValue(itr);
+                        param.Value = param.EmptyIsNull &&
+                                      (injectVal == null ||
+                                       string.Compare(injectVal, string.Empty,
+                                           StringComparison.InvariantCultureIgnoreCase) == 0)
+                            ? null
+                            : injectVal;
+                    }
+                    catch (NullValueInVariableException ex)
+                    {
+                        throw new NullValueInVariableException(ErrorResource.VariableInputError + " [[" + Inputs.ToList()[pos].FullName + "]]", Inputs.ToList()[pos].FullName);
+                    }
+                    finally
+                    {
+                        pos++;
+                    }
                 }
             }
 
@@ -345,6 +363,7 @@ namespace Dev2.Services.Execution
                         };
                         parameters.Add(methodParameter);
                     }
+
                     if (!string.IsNullOrEmpty(webService.RequestHeaders))
                     {
                         var methodParameter = new MethodParameter
@@ -355,6 +374,7 @@ namespace Dev2.Services.Execution
                         parameters.Add(methodParameter);
                     }
                 }
+
                 string result;
                 if (parameters.Any())
                 {
@@ -365,6 +385,7 @@ namespace Dev2.Services.Execution
                     result = ExecuteService(update, out var invokeErrors, formater).ToString();
                     errors.MergeErrors(invokeErrors);
                 }
+
                 if (!HandlesOutputFormatting)
                 {
                     var formattedPayload = formater?.Format(result).ToString() ?? result;
@@ -383,7 +404,6 @@ namespace Dev2.Services.Execution
 
         void PushXmlIntoEnvironment(string input, int update)
         {
-
             if (input != string.Empty)
             {
                 try
@@ -458,8 +478,8 @@ namespace Dev2.Services.Execution
                     {
                         AssignWithFrame(update, subc, definition);
                     }
-
                 }
+
                 // update this recordset index
                 DataObj.Environment.CommitAssign();
                 indexCache[c.Name] = ++idx;
@@ -512,6 +532,7 @@ namespace Dev2.Services.Execution
                         startindex = command.Length - 1;
                     }
                 }
+
                 for (int i = 0; i < itrs.Count; i++)
                 {
                     var vari = itrCollection.FetchNextValue(itrs[i]);
@@ -528,10 +549,10 @@ namespace Dev2.Services.Execution
             {
                 return new StringBuilder(innerXml).Unescape().ToString();
             }
+
             return innerXml;
         }
 
         IOutputFormatter GetOutputFormatter(TService service) => OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
-
     }
 }
