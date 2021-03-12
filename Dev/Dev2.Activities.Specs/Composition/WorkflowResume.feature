@@ -33,7 +33,7 @@ Scenario: Resuming a workflow Given No Name And Resume From SetTheOutputVariable
 	And Workflow "Hello World" has "Set the output variable (1)" activity
 	And I resume workflow "Hello World" at "Set the output variable (1)" tool
 	Then Resume has "AN" error
-	Then Resume message is "Scalar value { Name } is NULL"
+	Then Resume message is "{Scalar value { Name } is NULL:[[Message]]}"
 
 @ResumeWorkflowExecution
 Scenario: Resuming a workflow Given Resume From AssignValueToNameIfBlank Tool

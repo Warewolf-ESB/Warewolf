@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -151,11 +151,12 @@ namespace Dev2.Activities.SelectAndApply
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
 #pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        protected override void ExecuteTool(IDSFDataObject dsfdataObject, int update)
 #pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var allErrors = new ErrorResultTO();
+            var dataObject = dsfdataObject;
             InitializeDebug(dataObject);
 
             if (string.IsNullOrEmpty(DataSource))
@@ -168,7 +169,7 @@ namespace Dev2.Activities.SelectAndApply
             }
             if (allErrors.HasErrors())
             {
-                DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
+                DisplayAndWriteError(dataObject,nameof(DsfSelectAndApplyActivity), allErrors);
                 foreach (var fetchError in allErrors.FetchErrors())
                 {
                     dataObject.Environment.AddError(fetchError);
@@ -221,12 +222,12 @@ namespace Dev2.Activities.SelectAndApply
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
 
+                var applyActivityFunc = ApplyActivityFunc.Handler;
                 foreach (var exp in expressions)
                 {
                     //Assign the warewolfAtom to Alias using new environment
                     scopedEnvironment.SetDataSource(exp);
-
-                    if (ApplyActivityFunc.Handler is IDev2Activity exeAct)
+                    if (applyActivityFunc is IDev2Activity exeAct)
                     {
                         _childUniqueID = exeAct.UniqueID;
                         exeAct.Execute(dataObject, 0);
@@ -235,11 +236,11 @@ namespace Dev2.Activities.SelectAndApply
             }
             catch (NullDataSource e)
             {
-                Dev2Logger.Error("DSFSelectAndApply", e, GlobalConstants.WarewolfError);
+              //Already added to allErrors: DO nothing
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFSelectAndApply", e, GlobalConstants.WarewolfError);
+                //Dev2Logger.Error(nameof(DsfSelectAndApplyActivity), e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -260,7 +261,7 @@ namespace Dev2.Activities.SelectAndApply
                 dataObject.ForEachNestingLevel--;
                 if (allErrors.HasErrors())
                 {
-                    DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
+                    DisplayAndWriteError(dataObject,nameof(DsfSelectAndApplyActivity), allErrors);
                     foreach (var fetchError in allErrors.FetchErrors())
                     {
                         dataObject.Environment.AddError(fetchError);
