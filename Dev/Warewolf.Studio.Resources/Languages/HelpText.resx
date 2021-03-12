@@ -2566,11 +2566,11 @@ The conflicts on the left will show your current workflow changes and the confli
   &lt;/tr&gt;
   &lt;tr&gt;
     &lt;td&gt;Text&lt;/td&gt;
-    &lt;td&gt;When your object key is a just text like eg: "to"&lt;/td&gt;
+    &lt;td&gt;When your object key is text e.g. "to"&lt;/td&gt;
   &lt;/tr&gt;
  &lt;tr&gt;
     &lt;td&gt;File&lt;/td&gt;
-    &lt;td&gt;When you are sending a file with your request like eg: email "attachment"&lt;/td&gt;
+    &lt;td&gt;When you are sending a file with your request e.g. email "attachment"&lt;/td&gt;
   &lt;/tr&gt;
 &lt;/table&gt;</value>
   </data>

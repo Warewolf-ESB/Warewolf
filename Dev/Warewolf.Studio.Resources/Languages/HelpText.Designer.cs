@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Resources.Languages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class HelpText {
@@ -5926,11 +5926,11 @@ namespace Warewolf.Studio.Resources.Languages {
         ///  &lt;/tr&gt;
         ///  &lt;tr&gt;
         ///    &lt;td&gt;Text&lt;/td&gt;
-        ///    &lt;td&gt;When your object key is a just text like eg: &quot;to&quot;&lt;/td&gt;
+        ///    &lt;td&gt;When your object key is text e.g. &quot;to&quot;&lt;/td&gt;
         ///  &lt;/tr&gt;
         /// &lt;tr&gt;
         ///    &lt;td&gt;File&lt;/td&gt;
-        ///    &lt;td&gt;When you are sending a file with your request like eg: email &quot;attachment&quot;&lt;/td&gt;
+        ///    &lt;td&gt;When you are sending a file with your request e.g. email &quot;attachment&quot;&lt;/td&gt;
         ///  &lt;/tr&gt;
         ///&lt;/table&gt;.
         /// </summary>
