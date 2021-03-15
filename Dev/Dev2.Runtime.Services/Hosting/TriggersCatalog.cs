@@ -44,6 +44,7 @@ namespace Dev2.Runtime.Hosting
         readonly ISerializer _serializer;
         readonly IFile _fileWrapper;
         private readonly string _queueTriggersPath;
+
         static readonly Lazy<TriggersCatalog> _lazyCat = new Lazy<TriggersCatalog>(() =>
         {
             var c = new TriggersCatalog();
@@ -53,15 +54,20 @@ namespace Dev2.Runtime.Hosting
         public event TriggerChangeEvent OnChanged;
         public event TriggerChangeEvent OnDeleted;
         public event TriggerChangeEvent OnCreated;
-        private static readonly ConcurrentDictionary<string, bool> FileChangedConnectionPool = new ConcurrentDictionary<string, bool>();
 
-        public string PathFromResourceId(string triggerId) => Path.Combine(EnvironmentVariables.QueueTriggersPath, triggerId +".bite"); //TODO: refactor, us FilePathWapper
+        private static readonly ConcurrentDictionary<string, bool> FileChangedConnectionPool =
+            new ConcurrentDictionary<string, bool>();
+
+        public string PathFromResourceId(string triggerId) =>
+            Path.Combine(EnvironmentVariables.QueueTriggersPath,
+                triggerId + ".bite"); //TODO: refactor, us FilePathWapper
 
         public static ITriggersCatalog Instance => _lazyCat.Value;
 
         readonly IFileSystemWatcher _watcherWrapper;
 
-        public TriggersCatalog(IDirectory directoryWrapper, IFile fileWrapper, string queueTriggersPath, ISerializer serializer, IFileSystemWatcher watcherWrapper)
+        public TriggersCatalog(IDirectory directoryWrapper, IFile fileWrapper, string queueTriggersPath,
+            ISerializer serializer, IFileSystemWatcher watcherWrapper)
         {
             _directoryWrapper = directoryWrapper;
             _fileWrapper = fileWrapper;
@@ -81,7 +87,8 @@ namespace Dev2.Runtime.Hosting
             _watcherWrapper.Filter = "*.bite";
             _watcherWrapper.EnableRaisingEvents = true;
             _watcherWrapper.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite |
-                               NotifyFilters.FileName | NotifyFilters.DirectoryName;
+                                           NotifyFilters.FileName | NotifyFilters.DirectoryName;
+
 
             _watcherWrapper.Created += FileSystemWatcher_Created;
             _watcherWrapper.Changed += FileSystemWatcher_Changed;
@@ -90,12 +97,14 @@ namespace Dev2.Runtime.Hosting
             _watcherWrapper.Error += FileSystemWatcher_Error;
         }
 
-        private TriggersCatalog() : this(new DirectoryWrapper(), new FileWrapper(), EnvironmentVariables.QueueTriggersPath, new Dev2JsonSerializer(), new FileSystemWatcherWrapper())
+        private TriggersCatalog() : this(new DirectoryWrapper(), new FileWrapper(),
+            EnvironmentVariables.QueueTriggersPath, new Dev2JsonSerializer(), new FileSystemWatcherWrapper())
         {
         }
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
+            EnsureFileClosed(e.FullPath);
             Load();
             //start
             var guid = Path.GetFileNameWithoutExtension(e.Name);
@@ -108,6 +117,8 @@ namespace Dev2.Runtime.Hosting
 
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            EnsureFileClosed(e.FullPath);
+
             var isChangedEventFired = FileChangedConnectionPool.GetOrAdd(e.FullPath, false);
 
             if (isChangedEventFired == false)
@@ -131,6 +142,7 @@ namespace Dev2.Runtime.Hosting
 
         private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
+            EnsureFileClosed(e.FullPath);
             Load();
             //kill
             var guid = Path.GetFileNameWithoutExtension(e.Name);
@@ -143,6 +155,7 @@ namespace Dev2.Runtime.Hosting
 
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
         {
+            EnsureFileClosed(e.FullPath);
             Load();
             var message = $"Trigger '{e.OldName}' renamed to '{e.Name}'";
             Dev2Logger.Warn(message, GlobalConstants.ServerWorkspaceID.ToString());
@@ -156,6 +169,7 @@ namespace Dev2.Runtime.Hosting
 
         private IList<ITriggerQueue> _queues;
         private readonly ReaderWriterLock _queuesLock = new ReaderWriterLock();
+
         public IList<ITriggerQueue> Queues
         {
             get
@@ -192,6 +206,7 @@ namespace Dev2.Runtime.Hosting
             {
                 _fileWrapper.Delete(queueFilePath);
             }
+
             Queues.Remove(triggerQueue);
         }
 
@@ -210,10 +225,12 @@ namespace Dev2.Runtime.Hosting
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error($"TriggersCatalog - Load - {triggerQueueFileName}", ex, GlobalConstants.WarewolfError);
+                        Dev2Logger.Error($"TriggersCatalog - Load - {triggerQueueFileName}", ex,
+                            GlobalConstants.WarewolfError);
                     }
                 }
-            } finally
+            }
+            finally
             {
                 Queues = newQueues;
             }
@@ -246,7 +263,7 @@ namespace Dev2.Runtime.Hosting
 
         public void SaveTriggerQueue(ITriggerQueue triggerQueue)
         {
-            if(triggerQueue.TriggerId == Guid.Empty)
+            if (triggerQueue.TriggerId == Guid.Empty)
             {
                 triggerQueue.TriggerId = Guid.NewGuid();
             }
@@ -262,6 +279,35 @@ namespace Dev2.Runtime.Hosting
         {
             var queueFilePath = Path.Combine(_queueTriggersPath, $"{triggerQueue.TriggerId}.bite");
             return queueFilePath;
+        }
+
+        private static void EnsureFileClosed(string filepath)
+        {
+            bool fileClosed = false;
+            int retries = 20;
+            const int delay = 500; // Max time spent here = retries*delay milliseconds
+
+            if (!File.Exists(filepath))
+                return;
+
+            do
+            {
+                try
+                {
+                    // Attempts to open then close the file in RW mode, denying other users to place any locks.
+                    var fs = File.Open(filepath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                    fs.Close();
+                    fileClosed = true; // success
+                }
+                catch (IOException)
+                {
+                }
+                
+                retries--;
+
+                if (!fileClosed)
+                    Thread.Sleep(delay);
+            } while (!fileClosed && retries > 0);
         }
     }
 }
