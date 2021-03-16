@@ -14,8 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Comparer;
@@ -119,19 +119,18 @@ namespace Dev2.Activities
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            _errorsTo = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            Response = string.Empty;
             try
             {
                 var suspensionId = EvalSuspensionId();
                 if (string.IsNullOrWhiteSpace(suspensionId))
                 {
-                    Response = ErrorResource.ManualResumptionSuspensionIdBlank;
                     throw new Exception(ErrorResource.ManualResumptionSuspensionIdBlank);
                 }
 
                 if (!_persistenceEnabled)
                 {
-                    Response = ErrorResource.PersistenceSettingsNoConfigured;
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
@@ -156,7 +155,6 @@ namespace Dev2.Activities
 
                 Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
                 _stateNotifier?.LogActivityExecuteState(this);
-
                 if (_dataObject.IsDebugMode())
                 {
                     var debugItemStaticDataParams = new DebugItemStaticDataParams("SuspensionID: " + suspensionId, "", true);
@@ -166,15 +164,43 @@ namespace Dev2.Activities
                     debugItemStaticDataParams = new DebugItemStaticDataParams("Result: " + Response, "", true);
                     AddDebugOutputItem(debugItemStaticDataParams);
                 }
-
-                return new List<string> {Response};
+            }
+            catch (System.Data.SqlClient.SqlException)
+            {
+                LogException(new Exception(ErrorResource.BackgroundJobClientResumeFailed), allErrors);
             }
             catch (Exception ex)
             {
-                Response = ex.Message;
-                _stateNotifier?.LogExecuteException(ex, this);
-                Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
-                throw new Exception(ex.GetAllMessages());
+                LogException(ex, allErrors);
+            }
+            finally
+            {
+                HandleErrors(_dataObject, allErrors);
+            }
+
+            return new List<string> {Response};
+        }
+
+        private void LogException(Exception ex, ErrorResultTO allErrors)
+        {
+            _stateNotifier?.LogExecuteException(ex, this);
+            Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
+            _dataObject.ExecutionException = ex;
+            allErrors.AddError(ex.Message);
+        }
+
+        private static void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
+        {
+            var hasErrors = allErrors.HasErrors();
+            if (!hasErrors)
+            {
+                return;
+            }
+
+            DisplayAndWriteError(nameof(ManualResumptionActivity), allErrors);
+            foreach (var errorString in allErrors.FetchErrors())
+            {
+                data.Environment.AddError(errorString);
             }
         }
 
@@ -192,7 +218,7 @@ namespace Dev2.Activities
                 suspensionId = debugItemResults[0].Value;
             }
 
-            return suspensionId;
+            return suspensionId.Trim();
         }
 
         private ForEachInnerActivityTO InnerActivity()
