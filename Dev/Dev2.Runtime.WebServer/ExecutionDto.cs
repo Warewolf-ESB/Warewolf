@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,6 +27,7 @@ using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Web;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Data;
 
 namespace Dev2.Runtime.WebServer
@@ -88,9 +89,16 @@ namespace Dev2.Runtime.WebServer
             {
                 Exception = exception;
             }
+
+            private ResponseData(ErrorResultTO errorResultTO, string content)
+                : this(content)
+            {
+                ErrorResultTO = errorResultTO;
+            }
             public string Content { get; }
             public string ContentType { get; }
             public HttpException Exception { get; }
+            public ErrorResultTO ErrorResultTO { get; }
 
             public static ResponseData FromExecutionDto(IExecutionDto executionDto, string contentType)
             {
@@ -102,11 +110,20 @@ namespace Dev2.Runtime.WebServer
                 return new ResponseData(exception, content);
             }
 
+            public static ResponseData FromExecutionErrors(ErrorResultTO errorResultTO, string content)
+            {
+                return new ResponseData(errorResultTO, content);
+            }
+
             public IResponseWriter ToResponseWriter(IStringResponseWriterFactory stringResponseWriterFactory)
             {
                 if (Exception != null)
                 {
                     return new ExceptionResponseWriter(HttpStatusCode.InternalServerError, Content);
+                }
+                if (ErrorResultTO != null)
+                {
+                    return new ExceptionResponseWriter(HttpStatusCode.BadRequest, Content);
                 }
 
                 return stringResponseWriterFactory.New(Content, ContentType);
@@ -137,13 +154,23 @@ namespace Dev2.Runtime.WebServer
                 dataObject.DataListID = executionDlid;
                 dataObject.WorkspaceID = workspaceGuid;
                 dataObject.ServiceName = serviceName;
-                if (dataObject.ExecutionException is null)
+                var withExecutionExceptionsNullAndHasErrors = dataObject.ExecutionException == null && !allErrors.HasErrors();
+                if (withExecutionExceptionsNullAndHasErrors)
                 {
                     _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
                 }
+                else if (!withExecutionExceptionsNullAndHasErrors)
+                {
+                    //Note: it is at this point expected that all the environment errors are caused by the user's request payload
+                    //and should be used to warn the user of anything to be rectified on there end.
+
+                    //TODO: PBI We are selecting the first error here as there seems to be a duplicate add of the same error
+                    var content = GetExecuteExceptionPayload(dataObject, allErrors.FetchErrors().First());
+                    return ResponseData.FromExecutionErrors(_executionDto.ErrorResultTO, content);
+                }
                 else
                 {
-                    var content = GetExecuteExceptionPayload(dataObject);
+                    var content = GetExecuteExceptionPayload(dataObject, dataObject.ExecutionException.Message);
                     return ResponseData.FromException(new HttpException((int)HttpStatusCode.InternalServerError, "internal server error"), content);
                 }
             }
@@ -200,7 +227,6 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-
         string GetExecutePayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
@@ -229,10 +255,12 @@ namespace Dev2.Runtime.WebServer
             return string.Empty;
         }
 
-
-
-        string GetExecuteExceptionPayload(IDSFDataObject dataObject)
+        string GetExecuteExceptionPayload(IDSFDataObject dataObject, string message)
         {
+            //TODO: We can still expend on the json object returned to the user's request simalarily to:
+            //{"requestError":{"serviceException":{"messageId":"BAD_REQUEST","text":"[subject : may not be null]"}}}
+            //this will be posible with a revisit of the Possible Bug mentioned above regarding: allErrors.FetchErrors().First()
+
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug)
             {
@@ -240,13 +268,13 @@ namespace Dev2.Runtime.WebServer
                 {
                     case EmitionTypes.XML:
                     {
-                        return $"<Error>{dataObject.ExecutionException.Message}</Error>";
+                        return $"<Error>{message}</Error>";
                     }
-                    default:
+                    default: //TODO: we should also cater for the all other EmitionTypes  
                     case EmitionTypes.OPENAPI:
                     case EmitionTypes.JSON:
                     {
-                        return JsonConvert.SerializeObject(new {Message = dataObject.ExecutionException.Message});
+                        return JsonConvert.SerializeObject(new {Message = message});
                     }
                 }
             }

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web;
 using Warewolf.Data;
 using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
@@ -194,7 +195,7 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message);
+                Errors.Add(err.Message +" "+values.Value);
                 throw;
             }
         }
