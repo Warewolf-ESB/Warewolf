@@ -328,8 +328,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dataObject.Environment.AllErrors.Count);
             var errors = dataObject.Environment.AllErrors.ToList();
-            Assert.AreEqual(ErrorResource.InnerActivityWithNoContentError, manualResumptionActivity.Response);
-            Assert.AreEqual(errors[0], "<InnerError>" + ErrorResource.InnerActivityWithNoContentError + "</InnerError>");
+            Assert.AreEqual("", manualResumptionActivity.Response);
+            Assert.AreEqual(errors[0], ErrorResource.InnerActivityWithNoContentError);
         }
 
         [TestMethod]
@@ -529,8 +529,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dataObject.Environment.AllErrors.Count);
             var errors = dataObject.Environment.AllErrors.ToList();
-            Assert.AreEqual(ErrorResource.ManualResumptionSuspensionIdBlank, manualResumptionActivity.Response);
-            Assert.AreEqual(errors[0], "<InnerError>" + ErrorResource.ManualResumptionSuspensionIdBlank + "</InnerError>");
+            Assert.AreEqual("", manualResumptionActivity.Response);
+            Assert.AreEqual(errors[0], ErrorResource.ManualResumptionSuspensionIdBlank);
         }
 
         [TestMethod]
@@ -582,8 +582,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dataObject.Environment.AllErrors.Count);
             var errors = dataObject.Environment.AllErrors.ToList();
-            Assert.AreEqual(ErrorResource.PersistenceSettingsNoConfigured, manualResumptionActivity.Response);
-            Assert.AreEqual(errors[0], "<InnerError>" + ErrorResource.PersistenceSettingsNoConfigured + "</InnerError>");
+            Assert.AreEqual("", manualResumptionActivity.Response);
+            Assert.AreEqual(errors[0], ErrorResource.PersistenceSettingsNoConfigured);
         }
 
         [TestMethod]
@@ -748,8 +748,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, env.AllErrors.Count);
-            Assert.AreEqual("<InnerError>" + ErrorResource.ManualResumptionSuspensionEnvBlank + "</InnerError>", env.AllErrors.First());
-            Assert.AreEqual(ErrorResource.ManualResumptionSuspensionEnvBlank, manualResumptionActivity.Response);
+            Assert.AreEqual(ErrorResource.ManualResumptionSuspensionEnvBlank, env.AllErrors.First());
+            Assert.AreEqual("", manualResumptionActivity.Response);
             mockResumeJob.Verify(o => o.GetSuspendedEnvironment(suspensionId), Times.Once);
         }
 
@@ -812,8 +812,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, env.AllErrors.Count);
-            Assert.AreEqual("<InnerError>" + errMsg + "</InnerError>", env.AllErrors.First());
-            Assert.AreEqual(errMsg, manualResumptionActivity.Response);
+            Assert.AreEqual(errMsg, env.AllErrors.First());
+            Assert.AreEqual("", manualResumptionActivity.Response);
             mockResumeJob.Verify(o => o.GetSuspendedEnvironment(suspensionId), Times.Once);
         }
 
@@ -876,8 +876,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, env.AllErrors.Count);
-            Assert.AreEqual("<InnerError>" + errMsg + "</InnerError>", env.AllErrors.First());
-            Assert.AreEqual(errMsg, manualResumptionActivity.Response);
+            Assert.AreEqual(errMsg, env.AllErrors.First());
+            Assert.AreEqual("", manualResumptionActivity.Response);
             mockResumeJob.Verify(o => o.GetSuspendedEnvironment(suspensionId), Times.Once);
         }
 
@@ -940,8 +940,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, env.AllErrors.Count);
-            Assert.AreEqual("<InnerError>" + errMsg + "</InnerError>", env.AllErrors.First());
-            Assert.AreEqual(errMsg, manualResumptionActivity.Response);
+            Assert.AreEqual(errMsg, env.AllErrors.First());
+            Assert.AreEqual("", manualResumptionActivity.Response);
             mockResumeJob.Verify(o => o.GetSuspendedEnvironment(suspensionId), Times.Once);
         }
 
