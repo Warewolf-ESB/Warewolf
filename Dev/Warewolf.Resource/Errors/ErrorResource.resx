@@ -1367,6 +1367,15 @@ Please contact your Windows System Administrator.</value>
   <data name="NextNodeRequiredForSuspendExecution" xml:space="preserve">
     <value>At least 1 activity is required after Suspend Execution.</value>
   </data>
+  <data name="HangfireSqlServerStorageConnectionError" xml:space="preserve">
+    <value>Hangfire SqlServerStorage could not connect. Please check connection and try again.</value>
+  </data>
+  <data name="BackgroundJobClientCreateFailed" xml:space="preserve">
+    <value>BackgroundJobClient creation failed: A network-related or instance-specific error occurred while establishing a connection to SQL Server.</value>
+  </data>
+  <data name="BackgroundJobClientResumeFailed" xml:space="preserve">
+    <value>BackgroundJobClient resume failed: A network-related or instance-specific error occurred while establishing a connection to SQL Server.</value>
+  </data>
   <data name="ManualResumptionSuspensionEnvBlank" xml:space="preserve">
     <value>The suspended environment could not be loaded from the provided id.</value>
   </data>
@@ -1384,5 +1393,8 @@ Please contact your Windows System Administrator.</value>
   </data>
   <data name="SuspendOptionValueNotSet" xml:space="preserve">
     <value>Suspend option {0} value must not be null or empty.</value>
+  </data>
+  <data name="AuthenticationError" xml:space="preserve">
+    <value>Authentication Error resuming. User {0} is not authorized to execute the workflow.</value>
   </data>
 </root>
