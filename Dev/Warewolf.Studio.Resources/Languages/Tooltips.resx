@@ -9,7 +9,7 @@
     that is mostly human readable. The generation and parsing of the 
     various data types are done through the TypeConverter classes 
     associated with the data types.
-    
+
     Example:
     
     ... ado.net/XML headers & schema ...
@@ -2619,9 +2619,15 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Check this to read a base64 formatted body data.</value>
   </data>
   <data name="ManageWebServiceRequestFormDataTooltip" xml:space="preserve">
-    <value>Check this to use form-data as your payload.</value>
+    <value>Check this to use multipart/form-data as your request payload.</value>
   </data>
-  <data name="ManageWebServiceRequestNoneTooltip" xml:space="preserve">
-    <value>Check this to add your own Post body.</value>
+  <data name="ManageWebServiceRequestManualTooltip" xml:space="preserve">
+    <value>Check this to manually add your own request body.</value>
+  </data>
+  <data name="WebPostFromDataParametersToolTip" xml:space="preserve">
+    <value>To supply multipart/form-data parameters with your request, use these fields. Fields can be scalars and/or different recordsets.</value>
+  </data>
+  <data name="MappingsResponseToBase64Tooltip" xml:space="preserve">
+    <value>Check this to put the web response into a Base64 [[variable]]</value>
   </data>
 </root>

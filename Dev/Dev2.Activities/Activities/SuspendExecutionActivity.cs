@@ -109,7 +109,6 @@ namespace Dev2.Activities
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            _errorsTo = new ErrorResultTO();
             _suspensionId = "";
             var allErrors = new ErrorResultTO();
             var dataObject = _dataObject;
@@ -136,6 +135,7 @@ namespace Dev2.Activities
                 var activityId = Guid.Parse(NextNodes.First()?.UniqueID ??
                                             throw new Exception(GlobalConstants.NextNodeIDNotFound));
                 var currentEnvironment = _dataObject.Environment.ToJson();
+
                 var currentuserprincipal = _dataObject.ExecutingUser.Identity.Name;
                 var versionNumber = _dataObject.VersionNumber.ToString();
                 if (EncryptData)
@@ -182,14 +182,15 @@ namespace Dev2.Activities
                 }
 
                 _dataObject.StopExecution = true;
-                return new List<string> {_suspensionId};
+            }
+            catch (Hangfire.BackgroundJobClientException)
+            {
+                LogException(new Exception(ErrorResource.BackgroundJobClientCreateFailed), allErrors);
             }
             catch (Exception ex)
             {
                 _stateNotifier?.LogExecuteException(ex, this);
-                Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
-                _dataObject.StopExecution = true;
-                throw;
+                LogException(ex, allErrors);
             }
             finally
             {
@@ -200,6 +201,15 @@ namespace Dev2.Activities
                 HandleDebug(dataObject, serviceTestStep);
                 HandleErrors(dataObject, allErrors);
             }
+            return new List<string> {_suspensionId};
+        }
+
+        private void LogException(Exception ex, ErrorResultTO allErrors)
+        {
+            Dev2Logger.Error(nameof(SuspendExecutionActivity), ex, GlobalConstants.WarewolfError);
+            _dataObject.ExecutionException = ex;
+            _dataObject.StopExecution = true;
+            allErrors.AddError(ex.Message);
         }
 
         public static string GetSuspendValidationMessageType(enSuspendOption suspendOption)

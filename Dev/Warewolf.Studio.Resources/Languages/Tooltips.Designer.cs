@@ -2761,7 +2761,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to used a form-data as your payload..
+        ///   Looks up a localized string similar to Check this to use multipart/form-data as your request payload..
         /// </summary>
         public static string ManageWebServiceRequestFormDataTooltip {
             get {
@@ -2770,11 +2770,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to add your own Post body..
+        ///   Looks up a localized string similar to Check this to manually add your own request body..
         /// </summary>
-        public static string ManageWebServiceRequestNoneTooltip {
+        public static string ManageWebServiceRequestManualTooltip {
             get {
-                return ResourceManager.GetString("ManageWebServiceRequestNoneTooltip", resourceCulture);
+                return ResourceManager.GetString("ManageWebServiceRequestManualTooltip", resourceCulture);
             }
         }
         
@@ -2901,6 +2901,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MappingsRecordsetNameTooltip {
             get {
                 return ResourceManager.GetString("MappingsRecordsetNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check this to put the web response into a Base64 [[variable]].
+        /// </summary>
+        public static string MappingsResponseToBase64Tooltip {
+            get {
+                return ResourceManager.GetString("MappingsResponseToBase64Tooltip", resourceCulture);
             }
         }
         
@@ -6836,6 +6845,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebInsertToolTipColumn {
             get {
                 return ResourceManager.GetString("WebInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To supply multipart/form-data parameters with your request, use these fields. Fields can be scalars and/or different recordsets..
+        /// </summary>
+        public static string WebPostFromDataParametersToolTip {
+            get {
+                return ResourceManager.GetString("WebPostFromDataParametersToolTip", resourceCulture);
             }
         }
         
