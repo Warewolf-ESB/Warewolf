@@ -241,6 +241,7 @@
                                                 AcceptsReturn="False"
                                                 AllowUserInsertLine="False"
                                                 WrapInBrackets="False"
+                                                ToolTip="{Binding InputArea.QueryString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Text="{Binding InputArea.QueryString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                             <i:Interaction.Behaviors>
