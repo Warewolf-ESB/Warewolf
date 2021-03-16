@@ -11,7 +11,6 @@ Param(
 if ($Username -eq $null -or $Username -eq "" -or $Anonymous.IsPresent) {
     $IsAnonymous = $true
 }
-$IsAnonymous
 $WarewolfServerProcess = Get-Process "Warewolf Server" -ErrorAction SilentlyContinue
 $WarewolfServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
 if ($Cleanup.IsPresent) {

@@ -71,14 +71,18 @@ if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\
 	}
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
-	if ($RetryRebuild.IsPresent) {
-		Get-ChildItem -Path  '$PWD' -Recurse |
+	if ($RetryRebuild.IsPresent -and $LoopCounter -gt 0) {
+		Get-ChildItem -Path  "$PWD" -Recurse |
 Select -ExpandProperty FullName |
-Where {$_ -notlike '$PWD\TestResults*'} |
+Where {$_ -notlike "$PWD\TestResults*" -and $_ -notlike "$PWD\Microsoft.TestPlatform*" -and $_ -notlike "$PWD\JetBrains.dotCover.CommandLineTools*"} |
 sort length -Descending |
 Remove-Item -force -recurse
-		&..\..\Compile.ps1 -AcceptanceTesting -NuGet "$NuGet" -MSBuildPath "$MSBuildPath"
+		&..\..\Compile.ps1 "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
 	}
+    if (!(Test-Path "$PWD\*tests.dll")) {
+	    Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
+	    exit 1
+    }
 	$AllAssemblies = @()
 	foreach ($project in $Projects) {
 		$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
@@ -225,7 +229,7 @@ Remove-Item -force -recurse
 				$getXMl.TestRun.Results.UnitTestResult | % {
 					$RetryUnitTestResult = $_
 					$getBaseXMl.TestRun.Results.UnitTestResult | % {
-						if ($RetryUnitTestResult.testName -eq $_.testName -and $RetryUnitTestResult.outcome -eq 'Passed' -and $_.outcome -eq 'Failed') {
+						if ($RetryUnitTestResult.testName -eq $_.testName -and $RetryUnitTestResult.outcome -eq "Passed" -and $_.outcome -eq "Failed") {
 							[void]$_.ParentNode.AppendChild($getBaseXMl.ImportNode($RetryUnitTestResult, $true))
 							$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("passed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.passed) + 1)
 							$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("failed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.failed) - 1)
