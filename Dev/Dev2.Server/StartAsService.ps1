@@ -98,7 +98,7 @@ if ($WarewolfServerProcess) {
 	if ($Coverage) {
 		$ServerBinFolderPath = Split-Path -Path "$BinPath" -Parent
 		if (!(Test-Path "$ServerBinFolderPath\JetBrains.dotCover.CommandLineTools\tools\dotCover.exe")) {
-			.\NuGet.exe install JetBrains.dotCover.CommandLineTools -ExcludeVersion -NonInteractive -OutputDirectory "$ServerBinFolderPath."
+			&"nuget.exe" install JetBrains.dotCover.CommandLineTools -ExcludeVersion -NonInteractive -OutputDirectory "$ServerBinFolderPath."
 		}
 		if (!(Test-Path "$PSScriptRoot\TestResults")) {
 			New-Item -ItemType Directory "$PSScriptRoot\TestResults"
