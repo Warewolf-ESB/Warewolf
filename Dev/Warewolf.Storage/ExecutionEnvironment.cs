@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web;
 using Warewolf.Data;
 using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
@@ -187,15 +188,12 @@ namespace Warewolf.Storage
         {
             try
             {
-
                 var envTemp = PublicFunctions.EvalAssignWithFrame(values, update, _env);
                 _env = envTemp;
-
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message);
-                throw;
+                throw new Exception(err.Message + " " + values.Value);
             }
         }
         public void AssignWithFrame(IEnumerable<IAssignValue> values, int update)
