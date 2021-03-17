@@ -314,7 +314,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 Write-Host `nNuGet Restore:
                 &"$NuGet" "restore" "$PSScriptRoot\$SolutionFile"
             } else {
-                Write-Host `nNuGet Restore to $PSScriptRoot\Bin\${OutputFolderName}`:
+                Write-Host `nNuGet Restore to $PSScriptRoot\Bin\$OutputFolderName:
                 &"$NuGet" "restore" "$PSScriptRoot\$SolutionFile" -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
             }
             Write-Host `nDotNet Restore:
