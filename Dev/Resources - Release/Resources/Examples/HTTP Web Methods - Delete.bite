@@ -1,7 +1,7 @@
 
 <Service ID="f5561297-4915-4fff-9491-1e7c719b2c5d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="HTTP Web Methods - Delete" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.0.0">
   <DisplayName>HTTP Web Methods - Delete</DisplayName>
-  <Category>Examples\HTTP Web Methods - Delete</Category>
+  <Category>Examplesdddd\HTTP Web Methods - Delete</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
