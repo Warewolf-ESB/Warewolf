@@ -1414,7 +1414,23 @@ namespace Warewolf.Storage.Tests
             }
             catch (Exception e)
             {
-                Assert.AreEqual("invalid variable assigned to ", e.Message);
+                Assert.AreEqual("invalid variable assigned to  Value", e.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AssignWithFrame_GivenNonExistingObject_ThrowsWithMessage()
+        {
+            var _environment = new ExecutionEnvironment();
+            try
+            {
+                _environment.AssignWithFrame(new AssignValue("[[Person]]", "[[@non.existing.object]]"), 0);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("non existent object [[@non.existing.object]]", e.Message);
             }
         }
 
@@ -1433,7 +1449,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (Exception e)
             {
-                Assert.AreEqual("parse error", e.Message);
+                Assert.AreEqual("parse error Value", e.Message);
             }
         }
 
