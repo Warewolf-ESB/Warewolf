@@ -71,18 +71,21 @@ if ($Coverage.IsPresent -and !(Test-Path ".\JetBrains.dotCover.CommandLineTools\
 	}
 }
 for ($LoopCounter=0; $LoopCounter -le $RetryCount; $LoopCounter++) {
-	if ($RetryRebuild.IsPresent -and $LoopCounter -gt 0) {
-		Get-ChildItem -Path  "$PWD" -Recurse |
+    if ($RetryRebuild.IsPresent) {
+		if (!(Test-Path "$PWD\*tests.dll") -or $LoopCounter -gt 0) {
+			Get-ChildItem -Path  "$PWD" -Recurse |
 Select -ExpandProperty FullName |
 Where {$_ -notlike "$PWD\TestResults*" -and $_ -notlike "$PWD\Microsoft.TestPlatform*" -and $_ -notlike "$PWD\JetBrains.dotCover.CommandLineTools*"} |
 sort length -Descending |
 Remove-Item -force -recurse
-		&..\..\Compile.ps1 "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+			&..\..\Compile.ps1 "-AcceptanceTesting -NuGet `"$NuGet`" -MSBuildPath `"$MSBuildPath`""
+		}
+	} else {
+		if (!(Test-Path "$PWD\*tests.dll")) {
+			Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
+			exit 1
+		}
 	}
-    if (!(Test-Path "$PWD\*tests.dll")) {
-	    Write-Error "This script expects to be run from a directory containing test assemblies. (Files with names that end in tests.dll)"
-	    exit 1
-    }
 	$AllAssemblies = @()
 	foreach ($project in $Projects) {
 		$AllAssemblies += @(Get-ChildItem ".\$project.dll" -Recurse)
@@ -98,6 +101,9 @@ Remove-Item -force -recurse
 			$AssembliesList += @($AllAssemblies[$i].Name)
 		}
 	}
+    if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
+        Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
+    }
 	New-Item -ItemType Directory "$TestResultsPath" -ErrorAction SilentlyContinue
 	if (Test-Path "$TestResultsPath\RunTests.ps1") {
 		Move-Item "$TestResultsPath\RunTests.ps1" "$TestResultsPath\RunTests($LoopCounter).ps1"
@@ -205,7 +211,7 @@ Remove-Item -force -recurse
 		docker run -i --rm -v ${PWD}:C:\BuildUnderTest --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
 	}
     if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
-        Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*" "$TestResultsPath" -Force -Recurse
+        Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
     }
 	if (Test-Path "$TestResultsPath\*.trx") {
 		[System.Collections.ArrayList]$getXMLFiles = @(Get-ChildItem "$TestResultsPath\*.trx")
@@ -229,7 +235,7 @@ Remove-Item -force -recurse
 				$getXMl.TestRun.Results.UnitTestResult | % {
 					$RetryUnitTestResult = $_
 					$getBaseXMl.TestRun.Results.UnitTestResult | % {
-						if ($RetryUnitTestResult.testName -eq $_.testName -and $RetryUnitTestResult.outcome -eq "Passed" -and $_.outcome -eq "Failed") {
+						if ($RetryUnitTestResult.testName -eq $_.testName -and $RetryUnitTestResult.outcome -eq 'Passed' -and $_.outcome -eq 'Failed') {
 							[void]$_.ParentNode.AppendChild($getBaseXMl.ImportNode($RetryUnitTestResult, $true))
 							$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("passed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.passed) + 1)
 							$_.ParentNode.ParentNode.ResultSummary.Counters.SetAttribute("failed", [int]($_.ParentNode.ParentNode.ResultSummary.Counters.failed) - 1)
