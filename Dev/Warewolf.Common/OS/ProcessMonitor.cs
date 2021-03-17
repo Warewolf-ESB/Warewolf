@@ -147,9 +147,11 @@ namespace Warewolf.OS
                     tries++;
                     p.Kill();
                 }
-                
-                if(!p.HasExited)
+
+                if (!p.HasExited)
+                {
                     WarewolfLogger.Error("Failed to kill process", "ProcessId - " + p.Id);
+                }
             }
             catch (Exception ex)
             {
