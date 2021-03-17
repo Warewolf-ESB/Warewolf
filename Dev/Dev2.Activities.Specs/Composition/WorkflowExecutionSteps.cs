@@ -4910,11 +4910,11 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("resumeMessage", out ExecuteMessage executeMessage);
             if (error == "AN")
             {
-                Assert.IsTrue(executeMessage.HasError);
+                Assert.IsTrue(executeMessage.HasError, executeMessage.Message.ToString());
             }
             else
             {
-                Assert.IsFalse(executeMessage.HasError);
+                Assert.IsFalse(executeMessage.HasError, executeMessage.Message?.ToString());
             }
         }
 
