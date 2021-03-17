@@ -298,9 +298,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
             if ($OutputFolderName -eq "AcceptanceTesting" -and !($ProjectSpecificOutputs.IsPresent)) {
-                nuget install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
-            }
-            if ($OutputFolderName -eq "AcceptanceTesting" -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
             }
             if ($ProjectSpecificOutputs.IsPresent) {
@@ -313,7 +310,13 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             } else {
                 $NugetPackVersion = ""
             }
-            &"$NuGet" "restore" "$PSScriptRoot\$SolutionFile"
+            if ($ProjectSpecificOutputs.IsPresent) {
+                Write-Host `nNuGet Restore:
+                &"$NuGet" "restore" "$PSScriptRoot\$SolutionFile"
+            } else {
+                Write-Host `nNuGet Restore to $PSScriptRoot\Bin\$OutputFolderName:
+                &"$NuGet" "restore" "$PSScriptRoot\$SolutionFile" -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
+            }
             Write-Host `nDotNet Restore:
             dotnet restore "$PSScriptRoot\$SolutionFile"
             if (!($InContainer.IsPresent)) {
