@@ -1006,6 +1006,9 @@
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.112</Version>
     </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.4</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

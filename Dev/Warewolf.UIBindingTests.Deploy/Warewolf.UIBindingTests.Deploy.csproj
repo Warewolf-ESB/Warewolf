@@ -189,6 +189,9 @@
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
       <Version>2.3.2</Version>
     </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.4</Version>
+    </PackageReference>
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>powershell -ExecutionPolicy Bypass -Command "&amp;'$(SolutionDir)Warewolf.UIBindingTests.Deploy\GenerateStudioDeploymentItemAttributes.ps1'"</PreBuildEvent>
