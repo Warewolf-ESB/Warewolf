@@ -619,10 +619,9 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("FileSystemQuery_ShareCollection")]
-        [Ignore]//Ignoring until SVRDEV.premier.local is back online
         public void FileSystemQuery_ShareCollection()
         {
-            var shareCollection = new ShareCollection(@"\\SVRDEV.premier.local\");
+            var shareCollection = new ShareCollection(@"\\DEVOPSPDC.premier.local\");
             //------------Assert Results-------------------------
             Assert.IsTrue(shareCollection.Count > 0, "Cannot get shared directory information.");
         }
