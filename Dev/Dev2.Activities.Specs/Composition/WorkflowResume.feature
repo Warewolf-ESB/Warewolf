@@ -1,58 +1,18 @@
 ﻿Feature: WorkflowResume
-	When a workflow execution fails
+	When a workflow execution is suspended
 	I want to Resume
 
 @ResumeWorkflowExecution
-Scenario: Resuming a workflow that had failed to connect
-	Given I have a workflow "WorkflowWithMysqlToolUsingContainer"
-	And "WorkflowWithMysqlToolUsingContainer" contains an Assign "AssignNumber" as
-		| variable   | value |
-		| [[number]] | 1     |
-	And "WorkflowWithMysqlToolUsingContainer" contains a mysql database service "ToolUsingContainerAsTheSource"
-	And "WorkflowWithMysqlToolUsingContainer" contains an Assign "IncrementNumber" as
-		| variable      | value         |
-		| [[outnumber]] | =[[number]]+1 |
-	When "WorkflowWithMysqlToolUsingContainer" is executed
-	Then the workflow execution has "AN" error
-	And execution stopped on error and did not execute "IncrementNumber"
-	And the "ToolUsingContainerAsTheSource" in Workflow "WorkflowWithMysqlToolUsingContainer" has an error
-	When I startup the mysql container
-	And I select "NewMySqlSource" for "ToolUsingContainerAsTheSource" as Source
-	And I select "Pr_CitiesGetCountries" Action for "ToolUsingContainerAsTheSource" tool
-	And "WorkflowWithMysqlToolUsingContainer" is Saved
-	And I resume workflow "WorkflowWithMysqlToolUsingContainer" at "ToolUsingContainerAsTheSource" tool
-	Then Resume has "NO" error
-	And Resume message is "Execution Completed."
-	And the "IncrementNumber" in Workflow "WorkflowWithMysqlToolUsingContainer" debug outputs as
-		| # |                   |
-		| 1 | [[outnumber]] = 2 |
-
-@ResumeWorkflowExecution
-Scenario: Resuming a workflow Given No Name And Resume From SetTheOutputVariable tool
-	Given I have a server at "localhost" with workflow "Hello World"
-	And Workflow "Hello World" has "Set the output variable (1)" activity
-	And I resume workflow "Hello World" at "Set the output variable (1)" tool
-	Then Resume has "AN" error
-	Then Resume message is "{Scalar value { Name } is NULL:[[Message]]}"
-
-@ResumeWorkflowExecution
-Scenario: Resuming a workflow Given Resume From AssignValueToNameIfBlank Tool
-	Given I have a server at "localhost" with workflow "Hello World"
-	And Workflow "Hello World" has "Assign a value to Name if blank (1)" activity
-	Then I resume workflow "Hello World" at "Assign a value to Name if blank (1)" tool
-	Then Resume has "NO" error
-	Then Resume message is "Execution Completed."
-
-@ResumeWorkflowExecution
-Scenario: Resuming Workflow From a specific Version
+Scenario: When Resuming a Workflow it will always resume from the latest Version
 	Given I have a workflow "ResumeWorkflowFromVersion"
 	And "ResumeWorkflowFromVersion" contains an Assign "VarsAssign" as
 		| variable    | value |
 		| [[rec().a]] | New   |
 		| [[rec().a]] | Test  |
 	When workflow "ResumeWorkflowFromVersion" is saved "1" time
+	And Resource "ResumeWorkflowFromVersion" has rights "Execute" for "SecuritySpecsUser" with password "ASfas123@!fda" in "Users" group
 	Then workflow "ResumeWorkflowFromVersion" has "0" Versions in explorer
-	When "WorkflowWithAssignAndCount" is executed
+	When "ResumeWorkflowFromVersion" is executed
 	Then the workflow execution has "NO" error
 	And the "VarsAssign" in Workflow "ResumeWorkflowFromVersion" debug outputs as
 		| # |                     |
@@ -67,9 +27,36 @@ Scenario: Resuming Workflow From a specific Version
 		| [[ThirdAssignVariable]] | ThirdAssignVariable |
 	When workflow "ResumeWorkflowFromVersion" is saved "1" time
 	And I reload Server resources
-	And I resume the workflow "ResumeWorkflowFromVersion" at "VarsAssign" from version "2"
+	And I resume the workflow "ResumeWorkflowFromVersion" at "VarsAssign" from version "2"  with user "SecuritySpecsUser"
 	Then the workflow execution has "NO" error
 	And the "VarsAssign" in Workflow "ResumeWorkflowFromVersion" debug outputs as
 		| # |                     |
 		| 1 | [[rec(1).a]] = New  |
 		| 2 | [[rec(2).a]] = Test |
+
+@ResumeWorkflowExecution
+Scenario: Resuming a workflow with an Invalid User Returns Authentication Error
+	Given I have a server at "localhost" with workflow "Hello World"
+	And Resource "Hello World" has rights "Execute" for "SecuritySpecsUser" with password "ASfas123@!fda" in "Users" group
+	And Workflow "Hello World" has "Assign a value to Name if blank (1)" activity
+	Then Resume workflow "Hello World" at "Assign a value to Name if blank (1)" tool with user "InvalidUsername"
+	Then Resume has "AN" error
+	Then Resume message is "Authentication Error resuming. User InvalidUsername is not authorized to execute the workflow."
+
+@ResumeWorkflowExecution
+Scenario: Resuming a workflow with a Valid User returns Execution Completed
+	Given I have a server at "localhost" with workflow "Hello World"
+	And Resource "Hello World" has rights "Execute" for "SecuritySpecsUser" with password "ASfas123@!fda" in "Users" group
+	And Workflow "Hello World" has "Assign a value to Name if blank (1)" activity
+	Then Resume workflow "Hello World" at "Assign a value to Name if blank (1)" tool with user "SecuritySpecsUser"
+	Then Resume has "NO" error
+	Then Resume message is "Execution Completed."
+
+@ResumeWorkflowExecution
+Scenario: Resuming a workflow with a Valid User without setting correct inputs And Resume From SetTheOutputVariable tool returns error from workflow execution
+	Given I have a server at "localhost" with workflow "Hello World"
+	And Resource "Hello World" has rights "Execute" for "SecuritySpecsUser" with password "ASfas123@!fda" in "Users" group
+	And Workflow "Hello World" has "Set the output variable (1)" activity
+	Then Resume workflow "Hello World" at "Set the output variable (1)" tool with user "SecuritySpecsUser"
+	Then Resume has "AN" error
+	Then Resume message is "Scalar value { Name } is NULL"

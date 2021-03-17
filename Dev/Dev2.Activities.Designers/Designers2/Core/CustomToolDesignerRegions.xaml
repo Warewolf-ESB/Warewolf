@@ -922,12 +922,12 @@
                               Grid.Column="3"
                               IsChecked="{Binding IsResponseBase64}" 
                               IsEnabled="{Binding IsEnabled}"
-                              ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
+                              ToolTip="{x:Static languages:Tooltips.MappingsResponseToBase64Tooltip}"
                               Visibility="{Binding IsObjectOutputUsed, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                               Content="Response as Base64"
                               HorizontalAlignment="Left">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                            <core:HelpSetter Text="{x:Static languages:HelpText.MappingsResponseToBase64Help}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </CheckBox>
                 </Grid>

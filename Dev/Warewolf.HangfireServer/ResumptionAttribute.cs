@@ -65,15 +65,15 @@ namespace HangfireServer
 
         public void OnPerformResume(PerformingContext context)
         {
+            var jobArg = context.BackgroundJob.Job.Args[0];
+            var backgroundJobId = context.BackgroundJob.Id;
             try
             {
-                var jobArg = context.BackgroundJob.Job.Args[0];
-                var backgroundJobId = context.BackgroundJob.Id;
                 var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
                 var resumption = resumptionFactory.New();
                 if (resumption.Connect(_logger))
                 {
-                    _logger.Info("Performing Resume of job {0}, connection established.", backgroundJobId);
+                    _logger.Info("Performing Resume of job {" + backgroundJobId + "}, connection established.", backgroundJobId);
                     var values = jobArg as Dictionary<string, StringBuilder>;
                     LogResumption(values);
                     var result = resumption.Resume(values);
@@ -84,13 +84,13 @@ namespace HangfireServer
                 }
                 else
                 {
-                    _logger.Error("Failed to perform job {0}, could not establish a connection.", backgroundJobId);
+                    _logger.Error("Failed to perform job {" + backgroundJobId + "}, could not establish a connection.", backgroundJobId);
                     throw new InvalidOperationException("Failed to perform job " + backgroundJobId + " could not establish a connection.");
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Failed to perform job {0}" + ex.InnerException);
+                _logger.Error("Failed to perform job {" + backgroundJobId + "}" + ex.InnerException);
                 throw;
             }
         }
