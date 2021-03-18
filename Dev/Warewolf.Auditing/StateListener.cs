@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Logging;
 using Dev2.Common.Serializers;
 using Newtonsoft.Json;
 using System;
+using Warewolf.Logging;
 
 namespace Warewolf.Auditing
 {
@@ -35,6 +36,7 @@ namespace Warewolf.Auditing
         public void LogExecuteCompleteState(object activity)
         {
             var auditLog = new Audit(_dsfDataObject, "LogExecuteCompleteState", null, activity, null);
+            auditLog.LogLevel = LogLevel.Info;
             LogAuditState(auditLog);
         }
 
@@ -47,12 +49,14 @@ namespace Warewolf.Auditing
         public void LogStopExecutionState(object activity)
         {
             var auditLog = new Audit(_dsfDataObject, "LogStopExecutionState", null, activity, null);
+            auditLog.LogLevel = LogLevel.Info;
             LogAuditState(auditLog);
         }
 
         public void LogActivityExecuteState(object nextActivityObject)
         {
             var auditLog = new Audit(_dsfDataObject, "LogActivityExecuteState", null, null, nextActivityObject);
+            auditLog.LogLevel = LogLevel.Info;
             LogAuditState(auditLog);
         }
 

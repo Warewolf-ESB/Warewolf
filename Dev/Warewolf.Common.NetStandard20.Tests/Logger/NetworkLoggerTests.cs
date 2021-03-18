@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Auditing;
@@ -31,6 +32,9 @@ namespace Warewolf.Common.NetStandard20.Tests
             var mockSerializer = new Mock<ISerializer>();
             mockSerializer.Setup(o => o.Serialize(It.IsAny<AuditCommand>())).Verifiable();
 
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.DEBUG.ToString);
+
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
             mockWebSocketWrapper.Setup(o => o.SendMessage(It.IsAny<byte[]>())).Verifiable();
@@ -38,7 +42,7 @@ namespace Warewolf.Common.NetStandard20.Tests
             mockWebSocketPool.Setup(o => o.Acquire(Config.Auditing.Endpoint)).Returns(mockWebSocketWrapper.Object).Verifiable();
             mockWebSocketPool.Setup(o => o.Release(It.IsAny<IWebSocketWrapper>())).Verifiable();
 
-            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object);
+            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object,dev2WorkflowSettings.Object);
             networkLogger.Debug(logTemplate, mockAuditEntry.Object);
 
             mockSerializer.Verify(o => o.Serialize(It.IsAny<AuditCommand>()), Times.Once);
@@ -54,6 +58,9 @@ namespace Warewolf.Common.NetStandard20.Tests
         [TestCategory(nameof(NetworkLogger))]
         public void NetworkLogger_Debug()
         {
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.DEBUG.ToString);
+
             var mockAuditEntry = new Mock<IAuditEntry>();
             var logTemplate = GlobalConstants.WarewolfLogsTemplate;
 
@@ -66,7 +73,7 @@ namespace Warewolf.Common.NetStandard20.Tests
             mockWebSocketPool.Setup(o => o.Acquire(Config.Auditing.Endpoint)).Returns(mockWebSocketWrapper.Object).Verifiable();
             mockWebSocketPool.Setup(o => o.Release(It.IsAny<IWebSocketWrapper>())).Verifiable();
 
-            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object);
+            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object,dev2WorkflowSettings.Object);
             networkLogger.Debug(logTemplate, mockAuditEntry.Object);
 
             mockSerializer.Verify(o => o.Serialize(It.IsAny<AuditCommand>()), Times.Once);
@@ -88,13 +95,16 @@ namespace Warewolf.Common.NetStandard20.Tests
             var mockSerializer = new Mock<ISerializer>();
             mockSerializer.Setup(o => o.Serialize(It.IsAny<AuditCommand>())).Verifiable();
 
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.ERROR.ToString);
+
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
             mockWebSocketWrapper.Setup(o => o.SendMessage(It.IsAny<byte[]>())).Verifiable();
             mockWebSocketPool.Setup(o => o.Acquire(Config.Auditing.Endpoint)).Returns(mockWebSocketWrapper.Object).Verifiable();
             mockWebSocketPool.Setup(o => o.Release(It.IsAny<IWebSocketWrapper>())).Verifiable();
 
-            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object);
+            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object,dev2WorkflowSettings.Object);
             networkLogger.Error(logTemplate, mockAuditEntry.Object);
 
             mockSerializer.Verify(o => o.Serialize(It.IsAny<AuditCommand>()), Times.Once);
@@ -116,13 +126,16 @@ namespace Warewolf.Common.NetStandard20.Tests
             var mockSerializer = new Mock<ISerializer>();
             mockSerializer.Setup(o => o.Serialize(It.IsAny<AuditCommand>())).Verifiable();
 
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.FATAL.ToString);
+
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
             mockWebSocketWrapper.Setup(o => o.SendMessage(It.IsAny<byte[]>())).Verifiable();
             mockWebSocketPool.Setup(o => o.Acquire(Config.Auditing.Endpoint)).Returns(mockWebSocketWrapper.Object).Verifiable();
             mockWebSocketPool.Setup(o => o.Release(It.IsAny<IWebSocketWrapper>())).Verifiable();
 
-            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object);
+            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object,dev2WorkflowSettings.Object);
             networkLogger.Fatal(logTemplate, mockAuditEntry.Object);
 
             mockSerializer.Verify(o => o.Serialize(It.IsAny<AuditCommand>()), Times.Once);
@@ -144,13 +157,16 @@ namespace Warewolf.Common.NetStandard20.Tests
             var mockSerializer = new Mock<ISerializer>();
             mockSerializer.Setup(o => o.Serialize(It.IsAny<AuditCommand>())).Verifiable();
 
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.INFO.ToString);
+
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
             mockWebSocketWrapper.Setup(o => o.SendMessage(It.IsAny<byte[]>())).Verifiable();
             mockWebSocketPool.Setup(o => o.Acquire(Config.Auditing.Endpoint)).Returns(mockWebSocketWrapper.Object).Verifiable();
             mockWebSocketPool.Setup(o => o.Release(It.IsAny<IWebSocketWrapper>())).Verifiable();
 
-            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object);
+            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object,dev2WorkflowSettings.Object);
             networkLogger.Info(logTemplate, mockAuditEntry.Object);
 
             mockSerializer.Verify(o => o.Serialize(It.IsAny<AuditCommand>()), Times.Once);
@@ -172,13 +188,16 @@ namespace Warewolf.Common.NetStandard20.Tests
             var mockSerializer = new Mock<ISerializer>();
             mockSerializer.Setup(o => o.Serialize(It.IsAny<AuditCommand>())).Verifiable();
 
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.WARN.ToString);
+
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
             mockWebSocketWrapper.Setup(o => o.SendMessage(It.IsAny<byte[]>())).Verifiable();
             mockWebSocketPool.Setup(o => o.Acquire(Config.Auditing.Endpoint)).Returns(mockWebSocketWrapper.Object).Verifiable();
             mockWebSocketPool.Setup(o => o.Release(It.IsAny<IWebSocketWrapper>())).Verifiable();
 
-            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object);
+            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object,dev2WorkflowSettings.Object);
             networkLogger.Warn(logTemplate, mockAuditEntry.Object);
 
             mockSerializer.Verify(o => o.Serialize(It.IsAny<AuditCommand>()), Times.Once);
@@ -202,7 +221,10 @@ namespace Warewolf.Common.NetStandard20.Tests
             mockWebSocketPool.Setup(o => o.Acquire(Config.Auditing.Endpoint)).Returns(mockWebSocketWrapper.Object).Verifiable();
             mockWebSocketPool.Setup(o => o.Release(It.IsAny<IWebSocketWrapper>())).Verifiable();
 
-            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object);
+            var dev2WorkflowSettings = new Mock<Dev2.Common.Interfaces.IDev2WorkflowSettings>();
+            dev2WorkflowSettings.Setup(o => o.ExecutionLogLevel).Returns(LogLevel.TRACE.ToString);
+
+            var networkLogger = new NetworkLogger(mockSerializer.Object, mockWebSocketPool.Object,dev2WorkflowSettings.Object);
             networkLogger.Publish(new byte[]{});
 
             mockWebSocketWrapper.Verify(o => o.SendMessage(It.IsAny<byte[]>()), Times.Once);
