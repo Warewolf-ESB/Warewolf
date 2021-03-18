@@ -169,11 +169,11 @@ namespace Dev2.Activities.SelectAndApply
             }
             if (allErrors.HasErrors())
             {
-                DisplayAndWriteError(dataObject,nameof(DsfSelectAndApplyActivity), allErrors);
                 foreach (var fetchError in allErrors.FetchErrors())
                 {
                     dataObject.Environment.AddError(fetchError);
                 }
+                DisplayAndWriteError(dataObject,DisplayName, allErrors);
             }
             var startTime = DateTime.Now;
             _previousParentId = dataObject.ParentInstanceID;
@@ -261,11 +261,11 @@ namespace Dev2.Activities.SelectAndApply
                 dataObject.ForEachNestingLevel--;
                 if (allErrors.HasErrors())
                 {
-                    DisplayAndWriteError(dataObject,nameof(DsfSelectAndApplyActivity), allErrors);
                     foreach (var fetchError in allErrors.FetchErrors())
                     {
                         dataObject.Environment.AddError(fetchError);
                     }
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
                 if (dataObject.IsDebugMode())
                 {

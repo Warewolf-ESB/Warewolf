@@ -262,16 +262,14 @@ namespace Dev2.Activities
                 dataObject.ParentInstanceID = _previousParentId;
                 dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
-                // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    DisplayAndWriteError(nameof(SuspendExecutionActivity), allErrors);
                     foreach (var fetchError in allErrors.FetchErrors())
                     {
                         dataObject.Environment.AddError(fetchError);
                     }
-
                     dataObject.ParentInstanceID = _previousParentId;
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
             }
         }

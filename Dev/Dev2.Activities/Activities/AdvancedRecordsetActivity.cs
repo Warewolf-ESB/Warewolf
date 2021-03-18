@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,7 +28,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TSQL;
-using TSQL.Clauses;
 using TSQL.Statements;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
@@ -98,9 +97,9 @@ namespace Dev2.Activities
 
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("AdvancedRecordset", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
                 if (dataObject.IsDebugMode())
                 {

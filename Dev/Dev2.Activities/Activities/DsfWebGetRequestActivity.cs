@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -125,16 +125,15 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFWebGetRequest", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
             {
                 if(allErrors.HasErrors())
                 {
-                    DisplayAndWriteError("DsfWebGetRequestActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                     var expression = GetExpression(1);
                     PushResultsToDataList(expression, null, dataObject, update);
                 }

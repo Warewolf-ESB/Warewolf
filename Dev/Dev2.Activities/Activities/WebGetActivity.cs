@@ -34,13 +34,12 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("WebMethods", "GET", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Get")]
     public class WebGetActivity : DsfActivity, IEquatable<WebGetActivity>
     {
-
         public IList<INameValue> Headers { get; set; }
 
         public string QueryString { get; set; }
 
         public IOutputDescription OutputDescription { get; set; }
-        
+
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             base.GetDebugInputs(env, update);
@@ -72,43 +71,56 @@ namespace Dev2.Activities
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
-            if (Headers == null)
+            var webRequestResult = string.Empty;
+            try
             {
-                tmpErrors.AddError(ErrorResource.HeadersAreNull);
-                return;
+                if (Headers == null)
+                {
+                    tmpErrors.AddError(ErrorResource.HeadersAreNull);
+                    return;
+                }
+
+                if (QueryString == null)
+                {
+                    tmpErrors.AddError(ErrorResource.QueryIsNull);
+                    return;
+                }
+
+                var (head, query, _) = ConfigureHttp(dataObject, update);
+
+                var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+
+                if (dataObject.IsDebugMode())
+                {
+                    AddDebugInputItem(new DebugEvalResult(query, "URL", dataObject.Environment, update));
+                    AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", dataObject.Environment, update));
+                }
+
+                webRequestResult = PerformWebRequest(head, query, url);
             }
-            if (QueryString == null)
+            catch (Exception ex)
             {
-                tmpErrors.AddError(ErrorResource.QueryIsNull);
-                return;
+                tmpErrors.AddError(ex.Message);
             }
-
-            var (head, query, _) = ConfigureHttp(dataObject, update);
-
-            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-
-            if (dataObject.IsDebugMode())
+            finally
             {
-                AddDebugInputItem(new DebugEvalResult(query, "URL", dataObject.Environment, update));
-                AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", dataObject.Environment, update));
+                tmpErrors.MergeErrors(_errorsTo);
+
+                ResponseManager = new ResponseManager
+                {
+                    OutputDescription = OutputDescription,
+                    Outputs = Outputs,
+                    IsObject = IsObject,
+                    ObjectName = ObjectName
+                };
             }
-            var webRequestResult = PerformWebRequest(head, query, url);
-
-            tmpErrors.MergeErrors(_errorsTo);
-
-            ResponseManager = new ResponseManager
-            {
-                OutputDescription = OutputDescription,
-                Outputs = Outputs,
-                IsObject = IsObject,
-                ObjectName = ObjectName
-            };
 
             if (IsResponseBase64)
             {
                 ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
                 return;
             }
+
             webRequestResult = Scrubber.Scrub(webRequestResult);
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
@@ -125,7 +137,7 @@ namespace Dev2.Activities
         {
             return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
-        
+
         public WebGetActivity()
         {
             Type = "GET Web Method";
@@ -148,9 +160,9 @@ namespace Dev2.Activities
 
             var headersAreEqual = CommonEqualityOps.CollectionEquals(Headers, other.Headers, new NameValueComparer());
             return base.Equals(other)
-                && headersAreEqual
-                && string.Equals(QueryString, other.QueryString)
-                && Equals(OutputDescription, other.OutputDescription);
+                   && headersAreEqual
+                   && string.Equals(QueryString, other.QueryString)
+                   && Equals(OutputDescription, other.OutputDescription);
         }
 
         public override bool Equals(object obj)
@@ -170,7 +182,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((WebGetActivity)obj);
+            return Equals((WebGetActivity) obj);
         }
 
         public override int GetHashCode()

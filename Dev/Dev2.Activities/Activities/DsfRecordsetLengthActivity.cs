@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,6 @@ using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -122,9 +121,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
-                    DisplayAndWriteError("DsfRecordsetLengthActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
                 if(dataObject.IsDebugMode())
                 {

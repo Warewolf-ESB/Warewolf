@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,7 +18,6 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
@@ -30,7 +29,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -40,7 +38,7 @@ using Dev2.Common.State;
 namespace Dev2.Activities.Exchange
 {
 #pragma warning disable S3776,S1541,S134,CC0075,S1066,S1067
-    public class DsfExchangeEmailActivity : DsfActivityAbstract<string>,IEquatable<DsfExchangeEmailActivity>
+    public class DsfExchangeEmailActivity : DsfActivityAbstract<string>, IEquatable<DsfExchangeEmailActivity>
     {
         readonly IDev2EmailSender _emailSender;
 
@@ -65,18 +63,12 @@ namespace Dev2.Activities.Exchange
 
         public IExchangeSource SavedSource { get; set; }
 
-        [FindMissing]
-        public string To { get; set; }
-        [FindMissing]
-        public string Cc { get; set; }
-        [FindMissing]
-        public string Bcc { get; set; }
-        [FindMissing]
-        public string Subject { get; set; }
-        [FindMissing]
-        public string Attachments { get; set; }
-        [FindMissing]
-        public string Body { get; set; }
+        [FindMissing] public string To { get; set; }
+        [FindMissing] public string Cc { get; set; }
+        [FindMissing] public string Bcc { get; set; }
+        [FindMissing] public string Subject { get; set; }
+        [FindMissing] public string Attachments { get; set; }
+        [FindMissing] public string Body { get; set; }
 
         /// <summary>
         /// The property that holds the result string the user enters into the "Result" box
@@ -84,7 +76,7 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public new string Result { get; set; }
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override List<string> GetOutputs() => new List<string> {Result};
 
         public override IEnumerable<StateVariable> GetState()
         {
@@ -92,51 +84,51 @@ namespace Dev2.Activities.Exchange
             {
                 new StateVariable
                 {
-                    Name="SavedSource.ResourceID",
-                    Type=StateVariable.StateType.Input,
-                    Value= SavedSource.ResourceID.ToString()
+                    Name = "SavedSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = SavedSource.ResourceID.ToString()
                 },
                 new StateVariable
                 {
-                    Name="To",
-                    Type=StateVariable.StateType.Input,
-                    Value= To
+                    Name = "To",
+                    Type = StateVariable.StateType.Input,
+                    Value = To
                 },
                 new StateVariable
                 {
-                    Name="Cc",
-                    Type=StateVariable.StateType.Input,
-                    Value= Cc
+                    Name = "Cc",
+                    Type = StateVariable.StateType.Input,
+                    Value = Cc
                 },
                 new StateVariable
                 {
-                    Name="Bcc",
-                    Type=StateVariable.StateType.Input,
-                    Value= Bcc
+                    Name = "Bcc",
+                    Type = StateVariable.StateType.Input,
+                    Value = Bcc
                 },
                 new StateVariable
                 {
-                    Name="Subject",
-                    Type=StateVariable.StateType.Input,
-                    Value= Subject
+                    Name = "Subject",
+                    Type = StateVariable.StateType.Input,
+                    Value = Subject
                 },
                 new StateVariable
                 {
-                    Name="Attachments",
-                    Type=StateVariable.StateType.Input,
-                    Value= Attachments
+                    Name = "Attachments",
+                    Type = StateVariable.StateType.Input,
+                    Value = Attachments
                 },
                 new StateVariable
                 {
-                    Name="Body",
-                    Type=StateVariable.StateType.Input,
-                    Value= Body
+                    Name = "Body",
+                    Type = StateVariable.StateType.Input,
+                    Value = Body
                 },
                 new StateVariable
                 {
-                    Name="Result",
-                    Type=StateVariable.StateType.Output,
-                    Value= Result
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
                 }
             };
         }
@@ -151,14 +143,15 @@ namespace Dev2.Activities.Exchange
                 {
                     return false;
                 }
+
                 return _dataObject.IsDebugMode();
             }
         }
+
         /// <summary>
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
-
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -182,6 +175,7 @@ namespace Dev2.Activities.Exchange
                     dataObject.Environment.Errors.Add(ErrorResource.InvalidEmailSource);
                     return;
                 }
+
                 indexToUpsertTo = TryExecute(dataObject, update, allErrors, indexToUpsertTo, runtimeSource);
             }
             catch (Exception e)
@@ -199,13 +193,16 @@ namespace Dev2.Activities.Exchange
                     {
                         dataObject.Environment.Errors.Add(err);
                     }
+
                     UpsertResult(indexToUpsertTo, dataObject.Environment, null, update);
                     if (dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
-                    DisplayAndWriteError("DsfSendEmailActivity", allErrors);
+
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
                 }
+
                 if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
@@ -222,6 +219,7 @@ namespace Dev2.Activities.Exchange
                 AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment, update));
                 AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment, update));
             }
+
             var colItr = new WarewolfListIterator();
 
             var toItr = new WarewolfIterator(dataObject.Environment.Eval(To, update));
@@ -253,11 +251,11 @@ namespace Dev2.Activities.Exchange
                         indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
                     }
                 }
+
                 if (IsDebug && !allErrors.HasErrors() && !string.IsNullOrEmpty(Result))
                 {
                     AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                 }
-
             }
             else
             {
@@ -278,6 +276,7 @@ namespace Dev2.Activities.Exchange
             {
                 return;
             }
+
             AddDebugInputItem(DataListUtil.IsEvaluated(value) ? new DebugItemStaticDataParams("", value, label) : new DebugItemStaticDataParams(value, label));
         }
 
@@ -290,6 +289,7 @@ namespace Dev2.Activities.Exchange
                 environment.Assign(region, result, update);
                 indexToUpsertTo++;
             }
+
             return indexToUpsertTo;
         }
 
@@ -305,22 +305,27 @@ namespace Dev2.Activities.Exchange
                     {
                         To = t.Item2;
                     }
+
                     if (t.Item1 == Cc)
                     {
                         Cc = t.Item2;
                     }
+
                     if (t.Item1 == Bcc)
                     {
                         Bcc = t.Item2;
                     }
+
                     if (t.Item1 == Subject)
                     {
                         Subject = t.Item2;
                     }
+
                     if (t.Item1 == Attachments)
                     {
                         Attachments = t.Item2;
                     }
+
                     if (t.Item1 == Body)
                     {
                         Body = t.Item2;
@@ -346,6 +351,7 @@ namespace Dev2.Activities.Exchange
             {
                 debugInput.FlushStringBuilder();
             }
+
             return _debugInputs;
         }
 
@@ -355,6 +361,7 @@ namespace Dev2.Activities.Exchange
             {
                 debugOutput.FlushStringBuilder();
             }
+
             return _debugOutputs;
         }
 
@@ -384,15 +391,15 @@ namespace Dev2.Activities.Exchange
 
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual(SavedSource, other.SavedSource);
             return base.Equals(other)
-                && isSourceEqual
-                && string.Equals(To, other.To)
-                && string.Equals(Cc, other.Cc)
-                && string.Equals(Bcc, other.Bcc)
-                && string.Equals(Subject, other.Subject)
-                && string.Equals(Attachments, other.Attachments)
-                && string.Equals(Body, other.Body)
-                && string.Equals(DisplayName, other.DisplayName)
-                && string.Equals(Result, other.Result);
+                   && isSourceEqual
+                   && string.Equals(To, other.To)
+                   && string.Equals(Cc, other.Cc)
+                   && string.Equals(Bcc, other.Bcc)
+                   && string.Equals(Subject, other.Subject)
+                   && string.Equals(Attachments, other.Attachments)
+                   && string.Equals(Body, other.Body)
+                   && string.Equals(DisplayName, other.DisplayName)
+                   && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)

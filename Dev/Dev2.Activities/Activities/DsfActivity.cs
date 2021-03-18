@@ -376,7 +376,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    DisplayAndWriteError(dataObject,serviceName, allErrors);
                     foreach (var allError in allErrors.FetchErrors())
                     {
                         dataObject.Environment.Errors.Add(allError);
@@ -388,7 +387,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
                         dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
                     }
-
+                    DisplayAndWriteError(dataObject,serviceName, allErrors);
                 }
             }
 
