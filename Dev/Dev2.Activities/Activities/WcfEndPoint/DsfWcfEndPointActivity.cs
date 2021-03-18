@@ -45,8 +45,7 @@ namespace Dev2.Activities.WcfEndPoint
             {
                 if (Method == null)
                 {
-                    tmpErrors.AddError(ErrorResource.NoMethodSelected);
-                    return;
+                    throw new Exception(ErrorResource.NoMethodSelected);
                 }
 
                 ExecuteService(update, out tmpErrors, Method, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
@@ -63,9 +62,6 @@ namespace Dev2.Activities.WcfEndPoint
                     {
                         dataObject.Environment.AddError(error);
                     }
-
-                    DisplayAndWriteError(dataObject, DisplayName, tmpErrors);
-                    tmpErrors.ClearErrors();
                 }
             }
         }
