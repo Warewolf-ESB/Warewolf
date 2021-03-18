@@ -109,8 +109,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.When("workflow \"ResumeWorkflowFromVersion\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
- testRunner.And("Resource \"ResumeWorkflowFromVersion\" has rights \"Execute\" for \"SecuritySpecsUser\"" +
-                    " with password \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Resource \"ResumeWorkflowFromVersion\" has rights \"Execute\" for \"ResumeSpecsUser\" w" +
+                    "ith password \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
  testRunner.Then("workflow \"ResumeWorkflowFromVersion\" has \"0\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
@@ -155,7 +155,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I reload Server resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
  testRunner.And("I resume the workflow \"ResumeWorkflowFromVersion\" at \"VarsAssign\" from version \"2" +
-                    "\"  with user \"SecuritySpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\"  with user \"ResumeSpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -170,6 +170,8 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec(2).a]] = Test"});
 #line 32
  testRunner.And("the \"VarsAssign\" in Workflow \"ResumeWorkflowFromVersion\" debug outputs as", ((string)(null)), table601, "And ");
+#line 36
+ testRunner.Then("CleanupUserGroups workflow \"ResumeWorkflowFromVersion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -182,23 +184,37 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow with an Invalid User Returns Authentication Error", new string[] {
                         "ResumeWorkflowExecution"});
-#line 38
-this.ScenarioSetup(scenarioInfo);
 #line 39
- testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 40
- testRunner.And("Resource \"Hello World\" has rights \"Execute\" for \"SecuritySpecsUser\" with password" +
-                    " \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a workflow \"ResumeWorkflowWithInvalidUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table602 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table602.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "New"});
+            table602.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "Test"});
 #line 41
- testRunner.And("Workflow \"Hello World\" has \"Assign a value to Name if blank (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
- testRunner.Then("Resume workflow \"Hello World\" at \"Assign a value to Name if blank (1)\" tool with " +
-                    "user \"InvalidUsername\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 43
+ testRunner.And("\"ResumeWorkflowWithInvalidUser\" contains an Assign \"VarsAssign\" as", ((string)(null)), table602, "And ");
+#line 45
+ testRunner.When("workflow \"ResumeWorkflowWithInvalidUser\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 46
+ testRunner.And("Resource \"ResumeWorkflowWithInvalidUser\" has rights \"Execute\" for \"ResumeSpecsUse" +
+                    "r\" with password \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+ testRunner.Then("Resume workflow \"ResumeWorkflowWithInvalidUser\" at \"VarsAssign\" tool with user \"I" +
+                    "nvalidUsername\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 48
  testRunner.Then("Resume has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 44
+#line 49
  testRunner.Then("Resume message is \"Authentication Error resuming. User InvalidUsername is not aut" +
                     "horized to execute the workflow.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 50
+ testRunner.Then("CleanupUserGroups workflow \"ResumeWorkflowWithInvalidUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -211,52 +227,36 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow with a Valid User returns Execution Completed", new string[] {
                         "ResumeWorkflowExecution"});
-#line 47
-this.ScenarioSetup(scenarioInfo);
-#line 48
- testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 49
- testRunner.And("Resource \"Hello World\" has rights \"Execute\" for \"ResumeSpecsUser\" with password \"" +
-                    "ASfas123@!fda\" in \"Warewolf Administrators\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
- testRunner.And("Workflow \"Hello World\" has \"Assign a value to Name if blank (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
- testRunner.Then("Resume workflow \"Hello World\" at \"Assign a value to Name if blank (1)\" tool with " +
-                    "user \"ResumeSpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 52
- testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 53
- testRunner.Then("Resume message is \"Execution Completed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a workflow with a Valid User without setting correct inputs And Resume F" +
-            "rom SetTheOutputVariable tool returns error from workflow execution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowResume")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResumeWorkflowExecution")]
-        public virtual void ResumingAWorkflowWithAValidUserWithoutSettingCorrectInputsAndResumeFromSetTheOutputVariableToolReturnsErrorFromWorkflowExecution()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow with a Valid User without setting correct inputs And Resume F" +
-                    "rom SetTheOutputVariable tool returns error from workflow execution", new string[] {
-                        "ResumeWorkflowExecution"});
-#line 56
 this.ScenarioSetup(scenarioInfo);
-#line 57
- testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
- testRunner.And("Resource \"Hello World\" has rights \"Execute\" for \"ResumeSpecsUser\" with password \"" +
-                    "ASfas123@!fda\" in \"Warewolf Administrators\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
+ testRunner.Given("I have a workflow \"ResumeWorkflowWithValidUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table603 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table603.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "New"});
+            table603.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "Test"});
+#line 55
+ testRunner.And("\"ResumeWorkflowWithValidUser\" contains an Assign \"VarsAssign\" as", ((string)(null)), table603, "And ");
 #line 59
- testRunner.And("Workflow \"Hello World\" has \"Set the output variable (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("workflow \"ResumeWorkflowWithValidUser\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 60
- testRunner.Then("Resume workflow \"Hello World\" at \"Set the output variable (1)\" tool with user \"Re" +
-                    "sumeSpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Resource \"ResumeWorkflowWithValidUser\" has rights \"Execute\" for \"ResumeSpecsUser\"" +
+                    " with password \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
- testRunner.Then("Resume has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Resume workflow \"ResumeWorkflowWithValidUser\" at \"VarsAssign\" tool with user \"Res" +
+                    "umeSpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 62
- testRunner.Then("Resume message is \"Scalar value { Name } is NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 63
+ testRunner.Then("Resume message is \"Execution Completed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 64
+ testRunner.Then("CleanupUserGroups workflow \"ResumeWorkflowWithValidUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

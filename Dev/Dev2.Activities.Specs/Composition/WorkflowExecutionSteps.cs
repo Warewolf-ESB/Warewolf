@@ -4835,7 +4835,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [When(@"I resume the workflow ""(.*)"" at ""(.*)"" from version ""(.*)""  with user ""(.*)""")]
-        public void WhenIResumeTheWorkflowAtFromVersionWithUser(string workflow, string activity, string versionNumber, string securitySpecsUser)
+        public void WhenIResumeTheWorkflowAtFromVersionWithUser(string workflow, string activity, string versionNumber, string resumeSpecsUser)
         {
             var assignActivity = _commonSteps.GetActivityList()
                .FirstOrDefault(p => p.Key == activity)
@@ -4848,7 +4848,7 @@ namespace Dev2.Activities.Specs.Composition
             var env = new ExecutionEnvironment();
             var serEnv = env.ToJson();
 
-            var genericIdentity = new GenericIdentity(securitySpecsUser);
+            var genericIdentity = new GenericIdentity(resumeSpecsUser);
             var executingUser = new GenericPrincipal(genericIdentity, new string[0]);
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(assignActivity.UniqueID), versionNumber, executingUser.Identity.Name);
             Add("resumeMessage", msg);
@@ -4979,9 +4979,9 @@ namespace Dev2.Activities.Specs.Composition
 
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)"" with password ""(.*)"" in ""(.*)"" group")]
         [When(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)"" with password ""(.*)"" in ""(.*)"" group")]
-        public void GivenResourceHasRightsForWithPasswordInGroup(string resourceName, string resourceRights, string securitySpecsUser, string securitySpecsPassword, string userGroupName)
+        public void GivenResourceHasRightsForWithPasswordInGroup(string resourceName, string resourceRights, string resumeSpecsUser, string securitySpecsPassword, string userGroupName)
         {
-            SetupUser(securitySpecsUser, securitySpecsPassword, userGroupName);
+            SetupUser(resumeSpecsUser, securitySpecsPassword, userGroupName);
 
             TryGetValue("environment", out IServer environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
@@ -5011,7 +5011,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"Resume workflow ""(.*)"" at ""(.*)"" tool with user ""(.*)""")]
         [When(@"Resume workflow ""(.*)"" at ""(.*)"" tool with user ""(.*)""")]
         [Then(@"Resume workflow ""(.*)"" at ""(.*)"" tool with user ""(.*)""")]
-        public void ThenResumeWorkflowAtToolWithUser(string workflow, string toolToResumeFrom, string securitySpecsUser)
+        public void ThenResumeWorkflowAtToolWithUser(string workflow, string toolToResumeFrom, string resumeSpecsUser)
         {
             var uniqueId = GetActivityUniqueId(toolToResumeFrom);
             TryGetValue("environment", out IServer environmentModel);
@@ -5023,22 +5023,32 @@ namespace Dev2.Activities.Specs.Composition
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}";
 
-            var genericIdentity = new GenericIdentity(securitySpecsUser);
+            var genericIdentity = new GenericIdentity(resumeSpecsUser);
             var executingUser = new GenericPrincipal(genericIdentity, new string[0]);
 
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "0", executingUser.Identity.Name);
             Add("resumeMessage", msg);
         }
-
-
-        static void SetupUser(string securitySpecsUser, string securitySpecsPassword, string userGroupName)
+        
+        [Then(@"CleanupUserGroups workflow ""(.*)""")]
+        public void ThenCleanupUserGroupsWorkflow(string workflowName)
         {
-            var accountExists = SchedulerSteps.AccountExists(securitySpecsUser);
+            TryGetValue("environment", out IServer environmentModel);
+            var resourceRepository = environmentModel.ResourceRepository;
+            var settings = resourceRepository.ReadSettings(environmentModel);
+            var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ResourceName == workflowName);
+            settings.Security.WindowsGroupPermissions.RemoveAll(permission => permission.ResourceID == resourceModel.ID);
+            var settingsWriteResult = resourceRepository.WriteSettings(environmentModel, settings);
+        }
+
+        static void SetupUser(string user, string password, string grouName)
+        {
+            var accountExists = SchedulerSteps.AccountExists(user);
             if (!accountExists)
             {
                 try
                 {
-                    SchedulerSteps.CreateLocalWindowsAccount(securitySpecsUser, securitySpecsPassword, userGroupName);
+                    SchedulerSteps.CreateLocalWindowsAccount(user, password, grouName);
                 }
                 catch (Exception ex)
                 {
