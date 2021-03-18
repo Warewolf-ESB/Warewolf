@@ -142,7 +142,7 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message + ":" + exp);
+                Errors.Add(err.Message + ": " + exp);
             }
         }
 
@@ -162,7 +162,7 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message + ":" + exp);
+                Errors.Add(err.Message + " : " + exp + " " + value);
             }
         }
 
@@ -182,7 +182,7 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message + ":" + exp);
+                Errors.Add(err.Message + ": " + exp + " " + value);
             }
         }
 
@@ -196,7 +196,7 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message + ":" + values.Name);
+                Errors.Add(err.Message + ": " + values.Name + " " + values.Value);
             }
         }
 
@@ -660,8 +660,9 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message + ":" + value.Name);
-                throw;
+                var res = err.Message + ": " + value.Name;
+                Errors.Add(res);
+                throw new Exception(res);
             }
         }
 

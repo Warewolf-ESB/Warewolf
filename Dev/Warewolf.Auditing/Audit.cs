@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -208,8 +208,8 @@ namespace Warewolf.Auditing
             WorkflowName = dsfDataObject.ServiceName;
             ServerID = dsfDataObject.ServerID.ToString();
             ParentID = dsfDataObject.ParentID.ToString();
-            ExecutingUser = dsfDataObject.ExecutingUser?.ToString();
-            User = dsfDataObject.ExecutingUser?.ToString();
+            ExecutingUser = dsfDataObject.ExecutingUser?.Identity?.Name;
+            User = dsfDataObject.ExecutingUser?.Identity?.Name;
             ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
             ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
             Environment = dsfDataObject.Environment.ToJson();
