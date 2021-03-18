@@ -57,7 +57,7 @@ Scenario: Resuming a workflow with a Valid User returns Execution Completed
 		| [[rec().a]] | New   |
 		| [[rec().a]] | Test  |
 	When workflow "ResumeWorkflowWithValidUser" is saved "1" time
-	And Resource "ResumeWorkflowWithValidUser" has rights "Execute" for "ResumeSpecsUser" with password "ASfas123@!fda" in "Users" group
+	And Resource "ResumeWorkflowWithValidUser" has rights "Execute" for "ResumeSpecsUser" with password "ASfas123@!fda" in "Warewolf Administrators" group
 	Then Resume workflow "ResumeWorkflowWithValidUser" at "VarsAssign" tool with user "ResumeSpecsUser"
 	Then Resume has "NO" error
 	Then Resume message is "Execution Completed."
