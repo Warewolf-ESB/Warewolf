@@ -240,6 +240,7 @@ namespace Dev2.Runtime.ESB.Execution
                 if (!dsfDataObject.StopExecution)
                 {
                     dsfDataObject.StateNotifier?.LogExecuteCompleteState(lastActivity);
+                    dsfDataObject.ExecutionException = null;
                 }
             }
             finally
