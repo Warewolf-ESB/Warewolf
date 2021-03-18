@@ -445,12 +445,8 @@ namespace Dev2.Common.Common
             {
                 try
                 {
-                    if (trimmedInput != "{}")
-                    {
-                        JToken.Parse(trimmedInput);
-                        return true;
-                    }
-                    return false;
+                    JToken.Parse(trimmedInput);
+                    return true;
                 }
                 catch (JsonReaderException jex)
                 {

@@ -80,7 +80,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServiceHeaderBuilder))]
-        public void WebServiceHeaderBuilder_GivenEmptyJson_PassAddHeaders()
+        public void WebServiceHeaderBuilder_GivenEmptyJson_ExpectNull()
         {
             //------------Setup for test--------------------------
             var mod = new WebServiceHeaderBuilder();
