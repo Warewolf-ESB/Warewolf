@@ -302,13 +302,14 @@ namespace Dev2.Activities.Specs.Composition
             Assert.AreEqual(nodeTable[0].Value, _falseException.Message);
         }
 
-        [Then(@"a detailed execution completed log entry will have no logs")]
-        public void ThenADetailedExecutionCompletedLogEntryWillHaveNoLogs()
+        [Then(@"a detailed execution completed log entry will have 1 log")]
+        public void ThenADetailedExecutionCompletedLogEntryWillHave1Log()
         {
             var mockStateNotifier = _scenarioContext.Get<Mock<IStateNotifier>>("mockStateNotifier");
 
-            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Never);
+            mockStateNotifier.Verify(o => o.LogExecuteCompleteState(It.IsAny<IDev2Activity>()), Times.Once);
         }
+
     }
 
     internal class NodeLogTable

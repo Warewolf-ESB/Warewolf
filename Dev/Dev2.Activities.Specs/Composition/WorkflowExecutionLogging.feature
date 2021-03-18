@@ -43,6 +43,6 @@ Scenario: Workflow execution failure detailed logs
     Then a detailed execution exception log entry is created
     | key       | value                                               |
     | Exception | False exception from WorkflowExecutionLoggingSteps  |
-    And a detailed execution completed log entry will have no logs
+    And a detailed execution completed log entry will have 1 log
     And execution is complete
 
