@@ -46,6 +46,11 @@ namespace Warewolf.OS
                 {
                     continue;
                 }
+
+                if (config.Concurrency == 0)
+                {
+                    continue;
+                }
                 var list = NewThreadList(config);
                 list.OnProcessDied += (processDiedConfig) => OnProcessDied?.Invoke(processDiedConfig);
                 _processLists.Add(list);
