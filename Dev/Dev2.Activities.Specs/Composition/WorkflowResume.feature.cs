@@ -216,13 +216,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 48
  testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 49
- testRunner.And("Resource \"Hello World\" has rights \"Execute\" for \"SecuritySpecsUser\" with password" +
-                    " \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Resource \"Hello World\" has rights \"Execute\" for \"ResumeSpecsUser\" with password \"" +
+                    "ASfas123@!fda\" in \"Warewolf Administrators\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
  testRunner.And("Workflow \"Hello World\" has \"Assign a value to Name if blank (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
  testRunner.Then("Resume workflow \"Hello World\" at \"Assign a value to Name if blank (1)\" tool with " +
-                    "user \"SecuritySpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                    "user \"ResumeSpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 52
  testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 53
@@ -246,13 +246,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 57
  testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 58
- testRunner.And("Resource \"Hello World\" has rights \"Execute\" for \"SecuritySpecsUser\" with password" +
-                    " \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Resource \"Hello World\" has rights \"Execute\" for \"ResumeSpecsUser\" with password \"" +
+                    "ASfas123@!fda\" in \"Warewolf Administrators\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
  testRunner.And("Workflow \"Hello World\" has \"Set the output variable (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
- testRunner.Then("Resume workflow \"Hello World\" at \"Set the output variable (1)\" tool with user \"Se" +
-                    "curitySpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Resume workflow \"Hello World\" at \"Set the output variable (1)\" tool with user \"Re" +
+                    "sumeSpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 61
  testRunner.Then("Resume has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 62

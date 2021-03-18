@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="16.8.0" />
-    <PackageReference Include="Moq" Version="4.14.5" />
+    <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="MSTest.TestAdapter">
       <Version>2.1.2</Version>
     </PackageReference>
@@ -77,6 +77,7 @@
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation">
       <Version>2.3.2</Version>
     </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
