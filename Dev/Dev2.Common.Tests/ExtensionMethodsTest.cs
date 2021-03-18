@@ -1181,7 +1181,7 @@ namespace Dev2.Common.Tests
             //------------Execute Test---------------------------
             var isValidJson = Dev2.Common.Common.ExtensionMethods.IsValidJson(str);
             //------------Assert Results-------------------------
-            Assert.IsFalse(isValidJson, "empty JSON causes header misuse bug: 6713, should in this system be deemed invalid JSON");
+            Assert.IsTrue(isValidJson, "empty JSON is a Valid JSON");
         }
 
         [TestMethod]
