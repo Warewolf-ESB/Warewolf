@@ -46,17 +46,17 @@ Scenario: Resuming a workflow with an Invalid User Returns Authentication Error
 @ResumeWorkflowExecution
 Scenario: Resuming a workflow with a Valid User returns Execution Completed
 	Given I have a server at "localhost" with workflow "Hello World"
-	And Resource "Hello World" has rights "Execute" for "SecuritySpecsUser" with password "ASfas123@!fda" in "Users" group
+	And Resource "Hello World" has rights "Execute" for "ResumeSpecsUser" with password "ASfas123@!fda" in "Warewolf Administrators" group
 	And Workflow "Hello World" has "Assign a value to Name if blank (1)" activity
-	Then Resume workflow "Hello World" at "Assign a value to Name if blank (1)" tool with user "SecuritySpecsUser"
+	Then Resume workflow "Hello World" at "Assign a value to Name if blank (1)" tool with user "ResumeSpecsUser"
 	Then Resume has "NO" error
 	Then Resume message is "Execution Completed."
 
 @ResumeWorkflowExecution
 Scenario: Resuming a workflow with a Valid User without setting correct inputs And Resume From SetTheOutputVariable tool returns error from workflow execution
 	Given I have a server at "localhost" with workflow "Hello World"
-	And Resource "Hello World" has rights "Execute" for "SecuritySpecsUser" with password "ASfas123@!fda" in "Users" group
+	And Resource "Hello World" has rights "Execute" for "ResumeSpecsUser" with password "ASfas123@!fda" in "Warewolf Administrators" group
 	And Workflow "Hello World" has "Set the output variable (1)" activity
-	Then Resume workflow "Hello World" at "Set the output variable (1)" tool with user "SecuritySpecsUser"
+	Then Resume workflow "Hello World" at "Set the output variable (1)" tool with user "ResumeSpecsUser"
 	Then Resume has "AN" error
 	Then Resume message is "Scalar value { Name } is NULL"
