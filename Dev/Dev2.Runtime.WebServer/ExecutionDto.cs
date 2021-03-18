@@ -135,6 +135,7 @@ namespace Dev2.Runtime.WebServer
             var responseData = CreateResponse();
             return responseData.ToResponseWriter(stringResponseWriterFactory);
         }
+
         public ResponseData CreateResponse()
         {
             var dataObject = _executionDto.DataObject;
@@ -154,17 +155,17 @@ namespace Dev2.Runtime.WebServer
                 dataObject.DataListID = executionDlid;
                 dataObject.WorkspaceID = workspaceGuid;
                 dataObject.ServiceName = serviceName;
-                var withExecutionExceptionsNullAndHasErrors = dataObject.ExecutionException == null && !allErrors.HasErrors();
-                if (withExecutionExceptionsNullAndHasErrors)
+
+                if (dataObject.ExecutionException == null && !allErrors.HasErrors())
                 {
                     _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
                 }
-                else if (!withExecutionExceptionsNullAndHasErrors)
+                else if (dataObject.ExecutionException == null && allErrors.HasErrors())
                 {
                     //Note: it is at this point expected that all the environment errors are caused by the user's request payload
                     //and should be used to warn the user of anything to be rectified on there end.
 
-                    var content = GetExecuteExceptionPayload(dataObject, allErrors.FetchErrors().First());
+                    var content = GetExecuteExceptionPayload(dataObject, allErrors.FetchErrors()?.First());
                     return ResponseData.FromExecutionErrors(_executionDto.ErrorResultTO, content);
                 }
                 else
