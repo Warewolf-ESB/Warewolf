@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -110,9 +110,9 @@ namespace Warewolf.OS
                                 WarewolfLogger.Error(result, startInfo.FileName);
                             }
                         });
-                        
+
                         process.WaitForExit();
-                        
+
                         OnProcessDied?.Invoke(Config);
                     }
                 }
@@ -138,11 +138,25 @@ namespace Warewolf.OS
             try
             {
                 var p = System.Diagnostics.Process.GetProcessById(Pid);
-                p.Kill();
+                p.Refresh();
+
+                //try to kill the process and retry not more than 10 times if process has not exited
+                var tries = 0;
+                while (!p.HasExited || tries <= 10)
+                {
+                    tries++;
+                    p.Kill();
+                }
+
+                if (!p.HasExited)
+                {
+                    WarewolfLogger.Error("Failed to kill process", "ProcessId - " + p.Id);
+                }
             }
-            catch
+            catch (Exception ex)
             {
                 // ignore exception (most likely caused by process already killed)
+                WarewolfLogger.Error(ex.Message, ex.StackTrace);
             }
         }
     }
