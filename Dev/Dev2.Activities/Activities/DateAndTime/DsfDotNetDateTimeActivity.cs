@@ -126,9 +126,9 @@ namespace Dev2.Activities.DateAndTime
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError(dataObject,nameof(DsfDotNetDateTimeActivity), allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
                 if (dataObject.IsDebugMode())
                 {

@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -164,13 +164,13 @@ namespace Dev2.Activities
         {
             if (hasErrors)
             {
-                DisplayAndWriteError("DsfXPathActivity", allErrors);
                 var errorString = allErrors.MakeDataListReady();
                 dataObject.Environment.AddError(errorString);
                 if (actualIndex > -1)
                 {
                     dataObject.Environment.Assign(ResultsCollection[actualIndex].OutputVariable, null, update);
                 }
+                DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 if (_isDebugMode)
                 {
                     var itemToAdd = new DebugItem();

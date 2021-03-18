@@ -139,7 +139,7 @@ namespace Dev2.Activities
                 if (allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(serviceName, allErrors);
+                    DisplayAndWriteError(_dataObject,serviceName, allErrors);
                 }
             }
         }
@@ -149,34 +149,42 @@ namespace Dev2.Activities
         {
             _dataObject = dataObject;
             tmpErrors = new ErrorResultTO();
-
-            var (head, query, postData, conditions) = GetEnvironmentInputVariables(_dataObject.Environment, update);
-
-            var source = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = string.Empty;
-            if (IsFormDataChecked)
+            try
             {
-                webRequestResult = PerformFormDataWebPostRequest(source, WebRequestMethod.Post, query, head, conditions);
+                var (head, query, postData, conditions) = GetEnvironmentInputVariables(_dataObject.Environment, update);
+
+                var source = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+
+                if (IsFormDataChecked)
+                {
+                    webRequestResult = PerformFormDataWebPostRequest(source, WebRequestMethod.Post, query, head, conditions);
+                }
+                else if (IsManualChecked)
+                {
+                    webRequestResult = PerformManualWebPostRequest(head, query, source, postData);
+                }
             }
-            else if (IsManualChecked)
+            catch (Exception ex)
             {
-                webRequestResult = PerformManualWebPostRequest(head, query, source, postData);
+                tmpErrors.AddError(ex.Message);
             }
-
-            tmpErrors.MergeErrors(_errorsTo);
-
-            var bytes = webRequestResult.Base64StringToByteArray();
-            var response = bytes.ReadToString();
-
-            ResponseManager = new ResponseManager
+            finally
             {
-                OutputDescription = OutputDescription,
-                Outputs = Outputs,
-                IsObject = IsObject,
-                ObjectName = ObjectName
-            };
-            ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
+                tmpErrors.MergeErrors(_errorsTo);
 
+                var bytes = webRequestResult.Base64StringToByteArray();
+                var response = bytes.ReadToString();
+
+                ResponseManager = new ResponseManager
+                {
+                    OutputDescription = OutputDescription,
+                    Outputs = Outputs,
+                    IsObject = IsObject,
+                    ObjectName = ObjectName
+                };
+                ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
+            }
         }
 
         private (IEnumerable<INameValue> head, string query, string data, IEnumerable<IFormDataParameters> conditions) GetEnvironmentInputVariables(IExecutionEnvironment environment, int update)

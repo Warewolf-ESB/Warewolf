@@ -33,7 +33,6 @@ using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
-using Dev2.Instrumentation;
 using Dev2.Interfaces;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Interfaces;
@@ -45,7 +44,6 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Activities.Statements;
-using Dev2.Common.Interfaces.Search;
 using Dev2.Common.State;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -67,8 +65,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDataListCompiler Compiler { get; set; }
 
-        [JsonIgnore]
-        public InOutArgument<List<string>> AmbientDataList { get; set; }
+        [JsonIgnore] public InOutArgument<List<string>> AmbientDataList { get; set; }
         public string InputMapping { get; set; }
         public string OutputMapping { get; set; }
         public bool IsWorkflow { get; set; }
@@ -399,11 +396,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (_debugState is null)
                     {
-                        Dev2Logger.Info("Debug Dispatch Info", e, GlobalConstants.WarewolfInfo);
+                        Dev2Logger.Info("Debug Dispatch Info", e, dataObject.ExecutionID.ToString());
                     }
                     else
                     {
-                        Dev2Logger.Error("Debug Dispatch Error", e, GlobalConstants.WarewolfError);
+                        Dev2Logger.Error("Debug Dispatch Error", e, dataObject.ExecutionID.ToString());
                         AddErrorToDataList(e, dataObject);
                         errorMessage = dataObject.Environment.FetchErrors();
                         _debugState.ErrorMessage = errorMessage;
@@ -450,7 +447,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 _debugState.StateType = stateType;
-                Dev2Logger.Info("Debug Already Started", GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info("Debug Already Started", dataObject.ExecutionID.ToString());
             }
 
             if (_debugState != null)
@@ -1009,33 +1006,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dest.AddRange(src);
         }
 
-        protected static void DisplayAndWriteError(string serviceName, IErrorResultTO errors)
-        {
-            var errorBuilder = new StringBuilder();
-            foreach (var e in errors.FetchErrors())
-            {
-                errorBuilder.AppendLine($"--[ Execution Exception ]--\r\nService Name = {serviceName}\r\nError Message = {e} \r\n--[ End Execution Exception ]--");
-            }
-
-            Dev2Logger.Error("DsfNativeActivity", new Exception(errorBuilder.ToString()), GlobalConstants.WarewolfError);
-        }
-
         protected void DisplayAndWriteError(IDSFDataObject dataObject, string serviceName, IErrorResultTO errors)
         {
-            var errorBuilder = new StringBuilder();
             var loggedErrorBuilder = new StringBuilder();
+            if (!errors.HasErrors())
+            {
+                loggedErrorBuilder.Append(string.Join(Environment.NewLine, dataObject.Environment.Errors.Distinct()));
+            }
+
             foreach (var e in errors.FetchErrors())
             {
                 var isErrorDuplicate = loggedErrorBuilder.Contains(e);
                 if (!isErrorDuplicate)
                 {
                     loggedErrorBuilder.Append($"{serviceName} - {e}\r\n");
-                    errorBuilder.AppendLine($"--[ Execution Exception ]--\r\nService Name = {serviceName}\r\nError Message = {e} \r\n--[ End Execution Exception ]--");
                 }
             }
 
-            dataObject.StateNotifier?.LogExecuteException(new Exception(loggedErrorBuilder.ToString()), this);
-            Dev2Logger.Error("DsfNativeActivity" + "-" + serviceName, new Exception(errorBuilder.ToString()), GlobalConstants.WarewolfError);
+            var ex = new Exception(loggedErrorBuilder.ToString());
+            if (dataObject.ExecutionException == null)
+            {
+                dataObject.ExecutionException = ex;
+            }
+
+            dataObject.StateNotifier?.LogExecuteException(ex, this);
+            Dev2Logger.Error("DsfNativeActivity {serviceName} " + serviceName, ex, dataObject.ExecutionID?.ToString());
         }
 
         public abstract IList<DsfForEachItem> GetForEachInputs();
@@ -1159,7 +1154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                Dev2Logger.Error(e, DataObject?.ExecutionID.ToString());
             }
         }
 

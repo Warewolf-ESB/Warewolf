@@ -81,10 +81,10 @@ namespace Dev2.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                     var errorList = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorList);
                     dataObject.Environment.Assign(Result, DisplayName.ToUpper().Contains("Dropbox".ToUpper()) ? GlobalConstants.DropBoxFailure : null, update);
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
                 if (dataObject.IsDebugMode())
                 {
