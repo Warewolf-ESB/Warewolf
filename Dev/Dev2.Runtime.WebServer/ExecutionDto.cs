@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Runtime;
 using System.Web;
@@ -85,9 +86,16 @@ namespace Dev2.Runtime.WebServer
             {
                 Exception = exception;
             }
+
+            private ResponseData(ErrorResultTO errorResultTO, string content)
+                : this(content)
+            {
+                ErrorResultTO = errorResultTO;
+            }
             public string Content { get; }
             public string ContentType { get; }
             public HttpException Exception { get; }
+            public ErrorResultTO ErrorResultTO { get; }
 
             public static ResponseData FromExecutionDto(IExecutionDto executionDto, string contentType)
             {
@@ -99,11 +107,20 @@ namespace Dev2.Runtime.WebServer
                 return new ResponseData(exception, content);
             }
 
+            public static ResponseData FromExecutionErrors(ErrorResultTO errorResultTO, string content)
+            {
+                return new ResponseData(errorResultTO, content);
+            }
+
             public IResponseWriter ToResponseWriter(IStringResponseWriterFactory stringResponseWriterFactory)
             {
                 if (Exception != null)
                 {
                     return new ExceptionResponseWriter(HttpStatusCode.InternalServerError, Content);
+                }
+                if (ErrorResultTO != null)
+                {
+                    return new ExceptionResponseWriter(HttpStatusCode.BadRequest, Content);
                 }
 
                 return stringResponseWriterFactory.New(Content, ContentType);
@@ -115,6 +132,7 @@ namespace Dev2.Runtime.WebServer
             var responseData = CreateResponse();
             return responseData.ToResponseWriter(stringResponseWriterFactory);
         }
+
         public ResponseData CreateResponse()
         {
             var dataObject = _executionDto.DataObject;
@@ -134,13 +152,22 @@ namespace Dev2.Runtime.WebServer
                 dataObject.DataListID = executionDlid;
                 dataObject.WorkspaceID = workspaceGuid;
                 dataObject.ServiceName = serviceName;
-                if (dataObject.ExecutionException is null)
+
+                if (dataObject.ExecutionException == null && !allErrors.HasErrors())
                 {
                     _executionDto.PayLoad = GetExecutePayload(dataObject, resource, webRequest, ref formatter);
                 }
+                else if (dataObject.ExecutionException == null && allErrors.HasErrors())
+                {
+                    //Note: it is at this point expected that all the environment errors are caused by the user's request payload
+                    //and should be used to warn the user of anything to be rectified on there end.
+
+                    var content = GetExecuteExceptionPayload(dataObject, allErrors.FetchErrors()?.First());
+                    return ResponseData.FromExecutionErrors(_executionDto.ErrorResultTO, content);
+                }
                 else
                 {
-                    var content = GetExecuteExceptionPayload(dataObject);
+                    var content = GetExecuteExceptionPayload(dataObject, dataObject.ExecutionException.Message);
                     return ResponseData.FromException(new HttpException((int)HttpStatusCode.InternalServerError, "internal server error"), content);
                 }
             }
@@ -197,7 +224,6 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-
         string GetExecutePayload(IDSFDataObject dataObject, IWarewolfResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
@@ -226,10 +252,11 @@ namespace Dev2.Runtime.WebServer
             return string.Empty;
         }
 
-
-
-        string GetExecuteExceptionPayload(IDSFDataObject dataObject)
+        string GetExecuteExceptionPayload(IDSFDataObject dataObject, string message)
         {
+            //TODO: We can still expend on the JSON object returned to the user's request similarly to:
+            //{"requestError":{"serviceException":{"messageId":"BAD_REQUEST","text":"[subject : may not be null]"}}}
+
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug)
             {
@@ -237,13 +264,13 @@ namespace Dev2.Runtime.WebServer
                 {
                     case EmitionTypes.XML:
                     {
-                        return $"<Error>{dataObject.ExecutionException.Message}</Error>";
+                        return $"<Error>{message}</Error>";
                     }
-                    default:
+                    default: //TODO: we should also cater for the all other EmitionTypes  
                     case EmitionTypes.OPENAPI:
                     case EmitionTypes.JSON:
                     {
-                        return JsonConvert.SerializeObject(new {Message = dataObject.ExecutionException.Message});
+                        return JsonConvert.SerializeObject(new {Message = message});
                     }
                 }
             }
