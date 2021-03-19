@@ -150,15 +150,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         public void WarewolfSecurityOperations_AddUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
             //------------Setup for test--------------------------
-	        var inDomain = true;
-	        try
-	        {
-	            Domain.GetComputerDomain();
-	        }
-	        catch (ActiveDirectoryObjectNotFoundException)
-	        {
-	            inDomain = false;
-	        }
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             warewolfGroupOps.DeleteWarewolfGroup();
             warewolfGroupOps.AddWarewolfGroup();
@@ -168,7 +159,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
             //------------Execute Test---------------------------
             warewolfGroupOps.AddUserToWarewolf(userStr);
-            var result = warewolfGroupOps.IsUserInGroup(user);
+            var result = warewolfGroupOps.IsUserInGroup("Administrator");
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
