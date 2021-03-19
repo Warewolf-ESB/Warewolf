@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,7 +34,6 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 using Dev2.Comparer;
-using System.IO;
 using System.Text;
 using Dev2.Common.Common;
 using Dev2.Common.State;
@@ -209,7 +208,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFDataSplit", e, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("DSFDataSplit", e, dataObject.ExecutionID?.ToString());
                 allErrors.AddError(e.Message);
             }
             finally
@@ -324,9 +323,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var hasErrors = allErrors.HasErrors();
             if (hasErrors)
             {
-                DisplayAndWriteError("DsfDataSplitActivity", allErrors);
                 var errorString = allErrors.MakeDisplayReady();
                 dataObject.Environment.AddError(errorString);
+                DisplayAndWriteError(dataObject,DisplayName, allErrors);
             }
 
             if (dataObject.IsDebugMode())

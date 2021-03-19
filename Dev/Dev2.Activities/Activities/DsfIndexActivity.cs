@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -136,22 +136,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFFindActivity", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                #region Handle Errors
-
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfIndexActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
-
-                #endregion
 
                 if (dataObject.IsDebugMode())
                 {
@@ -171,8 +166,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var innerIteratorCollection = new WarewolfListIterator();
 
             allErrors.MergeErrors(errors);
-
-            #region Iterate and Find Index
 
             if (dataObject.IsDebugMode())
             {
@@ -214,10 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                 }
-
             }
-
-            #endregion
         }
 
         private void CheckForErrors(IDSFDataObject dataObject, int update, IDev2IndexFinder indexFinder, ErrorResultTO allErrors, ErrorResultTO errors, WarewolfListIterator innerIteratorCollection, List<string> completeResultList, WarewolfIterator itrInField, string chars)
@@ -244,14 +234,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #region Private Methods
-
-
-
-        #endregion Private Methods
-
-        #region Get Debug Inputs/Outputs
-
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (DebugItem debugInput in _debugInputs)
@@ -269,10 +251,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return _debugOutputs;
         }
-
-        #endregion Get Inputs/Outputs
-
-        #region Update ForEach Inputs/Outputs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -302,9 +280,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Result = itemUpdate.Item2;
             }
         }
-
-        #endregion
-
 
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(InField, Characters);
 

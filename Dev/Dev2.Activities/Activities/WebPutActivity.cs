@@ -67,26 +67,35 @@ namespace Dev2.Activities
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
+            var webRequestResult = string.Empty;
+            try
+            {
+                var (head, query, putData) = ConfigureHttp(dataObject, update);
 
-            var (head, query, putData) = ConfigureHttp(dataObject, update);
+                var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+                webRequestResult = PerformWebRequest(head, query, url, putData, IsPutDataBase64);
+            }
+            catch (Exception ex)
+            {
+                tmpErrors.AddError(ex.Message);
+            }
+            finally
+            {
+                tmpErrors.MergeErrors(_errorsTo);
 
-            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebRequest(head, query, url, putData, IsPutDataBase64);
+                var bytes = webRequestResult.Base64StringToByteArray();
+                var response = bytes.ReadToString();
 
-            tmpErrors.MergeErrors(_errorsTo);
+                ResponseManager = new ResponseManager
+                {
+                    OutputDescription = OutputDescription,
+                    Outputs = Outputs,
+                    IsObject = IsObject,
+                    ObjectName = ObjectName
+                };
 
-            var bytes = webRequestResult.Base64StringToByteArray();
-            var response = bytes.ReadToString();
-
-            ResponseManager = new ResponseManager 
-            { 
-                OutputDescription = OutputDescription, 
-                Outputs = Outputs, 
-                IsObject = IsObject, 
-                ObjectName = ObjectName
-            };
-
-            ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
+                ResponseManager.PushResponseIntoEnvironment(response, update, dataObject);
+            }
         }
 
         private (IEnumerable<NameValue> head, string query, string data) ConfigureHttp(IDSFDataObject dataObject, int update)

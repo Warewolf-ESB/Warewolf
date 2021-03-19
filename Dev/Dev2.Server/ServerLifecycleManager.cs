@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -36,12 +36,15 @@ using Dev2.Studio.Utils;
 using System.Security.Claims;
 using System.Reflection;
 using System.Threading.Tasks;
+using Dev2.Activities;
 using Warewolf.Trigger.Queue;
 using Warewolf.OS;
 using Warewolf;
 using Warewolf.Auditing;
+using Warewolf.Common.NetStandard20;
 using Warewolf.Interfaces.Auditing;
 using Dev2.Services.Security.MoqInstallerActions;
+using Warewolf.Streams;
 
 namespace Dev2
 {
@@ -244,6 +247,12 @@ namespace Dev2
                         }
                         Stop(false, 0, true);
                     }
+
+                    var executionLoggerFactory = new ExecutionLogger.ExecutionLoggerFactory();
+                    var logger = executionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
+                    var systemInformationHelper = new GetSystemInformationHelper();
+                    logger.Info("Warewolf Server Started Version: " + systemInformationHelper.GetWareWolfVersion());
+                    Dev2Logger.Info(systemInformationHelper.GetWareWolfVersion(), "Warewolf Server Version");
 #if DEBUG
                     if (EnvironmentVariables.IsServerOnline)
                     {
@@ -429,6 +438,7 @@ namespace Dev2
                 }
 
                 File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+
             }
             catch (Exception err)
             {

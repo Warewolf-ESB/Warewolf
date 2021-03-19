@@ -41,6 +41,8 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
         {
             var mockEsbChannel = new Mock<IEsbChannel>();
             var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var environment = new ExecutionEnvironment();
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment).Verifiable();
             //-----------------------Arrange---------------------
             var dsfWcfEndPointActivity = new TestDsfWcfEndPointActivity();
             //-----------------------Act-------------------------

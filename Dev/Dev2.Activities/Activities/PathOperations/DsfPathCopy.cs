@@ -32,7 +32,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override bool AssignEmptyOutputsToRecordSet => true;
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
-
             var opTO = new Dev2CRUDOperationTO(Overwrite);
             return broker.Copy(scrEndPoint, dstEndPoint, opTO);
         }
