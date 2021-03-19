@@ -247,7 +247,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("workflow \"ResumeWorkflowWithValidUser\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 60
  testRunner.And("Resource \"ResumeWorkflowWithValidUser\" has rights \"Execute\" for \"ResumeSpecsUser\"" +
-                    " with password \"ASfas123@!fda\" in \"Warewolf Administrators\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    " with password \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
  testRunner.Then("Resume workflow \"ResumeWorkflowWithValidUser\" at \"VarsAssign\" tool with user \"Res" +
                     "umeSpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
