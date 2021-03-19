@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2015 by Warewolf Ltd <alpha@warewolf.io>
@@ -148,7 +147,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
-        public void WarewolfSecurityOperations_AddDomainUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
+        public void WarewolfSecurityOperations_AddUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
         {
             //------------Setup for test--------------------------
 	        var inDomain = true;
@@ -164,9 +163,8 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             warewolfGroupOps.DeleteWarewolfGroup();
             warewolfGroupOps.AddWarewolfGroup();
             var myPc = Environment.MachineName;
-            var user = (inDomain?"Dev2\\":string.Empty)+"IntegrationTester";
 
-            var userStr = warewolfGroupOps.FormatUserForInsert(user, myPc);
+            var userStr = warewolfGroupOps.FormatUserForInsert("Administrator", myPc);
 
             //------------Execute Test---------------------------
             warewolfGroupOps.AddUserToWarewolf(userStr);
