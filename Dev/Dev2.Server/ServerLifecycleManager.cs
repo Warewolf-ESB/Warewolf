@@ -41,6 +41,7 @@ using Warewolf.OS;
 using Warewolf;
 using Warewolf.Auditing;
 using Warewolf.Interfaces.Auditing;
+using Dev2.Services.Security.MoqInstallerActions;
 
 namespace Dev2
 {
@@ -185,19 +186,19 @@ namespace Dev2
             return Task.Run(LoadPerformanceCounters)
                 .ContinueWith((t) =>
             {
-//
-//                 // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
-// #if DEBUG
-//                 try
-//                 {
-//                     var miq = MoqInstallerActionFactory.CreateInstallerActions();
-//                     miq.ExecuteMoqInstallerActions();
-//                 }
-//                 catch (Exception e)
-//                 {
-//                     Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
-//                 }
-// #endif
+
+                // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
+#if DEBUG
+                try
+                {
+                    var miq = MoqInstallerActionFactory.CreateInstallerActions();
+                    miq.ExecuteMoqInstallerActions();
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
+                }
+#endif
 
                 try
                 {
