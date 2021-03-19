@@ -417,6 +417,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(activity.NextNodes);
             Assert.AreEqual(0, activity.NextNodes.Count());
             Assert.AreEqual(1, executionEnvironment.AllErrors.Count);
+            Assert.AreEqual("Failed: Switch must have a Default arm connected.",executionEnvironment.AllErrors.First());
         }
 
         [TestMethod]

@@ -26,11 +26,12 @@ using Warewolf.Storage;
 namespace Dev2.Activities.WcfEndPoint
 {
     [ToolDescriptorInfo("WcfEndPoint", "WCF", ToolType.Native, "6AEB1028-6332-46F9-8BED-641DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_WCF")]
-    public class DsfWcfEndPointActivity : DsfMethodBasedActivity,IEquatable<DsfWcfEndPointActivity>
+    public class DsfWcfEndPointActivity : DsfMethodBasedActivity, IEquatable<DsfWcfEndPointActivity>
     {
         public IWcfAction Method { get; set; }
         public IOutputDescription OutputDescription { get; set; }
         public WcfSource Source { get; set; }
+
         public DsfWcfEndPointActivity()
         {
             Type = "WCF Connector";
@@ -40,22 +41,39 @@ namespace Dev2.Activities.WcfEndPoint
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
-            if (Method == null)
+            try
             {
-                tmpErrors.AddError(ErrorResource.NoMethodSelected);
-                return;
+                if (Method == null)
+                {
+                    throw new Exception(ErrorResource.NoMethodSelected);
+                }
+
+                ExecuteService(update, out tmpErrors, Method, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
             }
-            ExecuteService(update, out tmpErrors, Method, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
+            catch (Exception err)
+            {
+                tmpErrors.AddError(err.Message);
+            }
+            finally
+            {
+                if (tmpErrors.HasErrors())
+                {
+                    foreach (var error in tmpErrors.FetchErrors())
+                    {
+                        dataObject.Environment.AddError(error);
+                    }
+                }
+            }
         }
-        
+
         protected void ExecuteService(int update, out ErrorResultTO errors, IWcfAction method, IDSFDataObject dataObject, IOutputFormatter formater)
         {
             errors = new ErrorResultTO();
             Source = ResourceCatalog.GetResource<WcfSource>(dataObject.WorkspaceID, SourceId);
             var itrs = new List<IWarewolfIterator>(5);
             IWarewolfListIterator itrCollection = new WarewolfListIterator();
-            var methodParameters = Inputs.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList();
-            BuildParameterIterators(update, methodParameters.ToList(),itrCollection,itrs,dataObject);
+            var methodParameters = Inputs.Select(a => new MethodParameter {EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName}).ToList();
+            BuildParameterIterators(update, methodParameters.ToList(), itrCollection, itrs, dataObject);
             try
             {
                 while (itrCollection.HasMoreData())
@@ -76,11 +94,12 @@ namespace Dev2.Activities.WcfEndPoint
 
                         pos++;
                     }
+
                     var result = Source.ExecuteMethod(method);
 
                     if (result != null)
                     {
-                        ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+                        ResponseManager = new ResponseManager {OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName};
                         ResponseManager.PushResponseIntoEnvironment(result.ToString(), update, dataObject);
                     }
                 }
@@ -90,6 +109,7 @@ namespace Dev2.Activities.WcfEndPoint
                 errors.AddError(e.Message);
             }
         }
+
         public IResponseManager ResponseManager { get; set; }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
@@ -114,8 +134,8 @@ namespace Dev2.Activities.WcfEndPoint
             if (obj is DsfWcfEndPointActivity dsfWcfEndPointActivity)
             {
                 return this.Equals(dsfWcfEndPointActivity);
-               
             }
+
             return false;
         }
 

@@ -137,6 +137,15 @@ namespace Warewolf.Auditing
         {
             if (!_isDisposed)
             {
+                if (disposing)
+                {
+                    if (_ws != null)
+                    {
+                        _webSocketFactory.Release(_ws);
+                        _ws = null;
+                    }
+                }
+
                 _isDisposed = true;
             }
         }

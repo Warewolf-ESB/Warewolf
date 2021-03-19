@@ -184,24 +184,23 @@ namespace Dev2.Activities
         private void LogException(Exception ex, ErrorResultTO allErrors)
         {
             _stateNotifier?.LogExecuteException(ex, this);
-            Dev2Logger.Error(nameof(ManualResumptionActivity), ex, GlobalConstants.WarewolfError);
+            Dev2Logger.Error(DisplayName, ex, GlobalConstants.WarewolfError);
             _dataObject.ExecutionException = ex;
             allErrors.AddError(ex.Message);
         }
 
-        private static void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
+        void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
         {
             var hasErrors = allErrors.HasErrors();
             if (!hasErrors)
             {
                 return;
             }
-
-            DisplayAndWriteError(nameof(ManualResumptionActivity), allErrors);
             foreach (var errorString in allErrors.FetchErrors())
             {
                 data.Environment.AddError(errorString);
             }
+            DisplayAndWriteError(data, DisplayName, allErrors);
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.ManualResumption;

@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -171,7 +171,7 @@ namespace Dev2.Activities
 
             if (dataObject.IsDebugMode())
             {
-                _debugInputs = CreateDebugInputs(dataObject.Environment);
+                _debugInputs = CreateDebugInputs(dataObject);
                 DispatchDebugState(dataObject, StateType.Before, 0);
             }
 
@@ -280,9 +280,9 @@ namespace Dev2.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfDecision", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
                 if (dataObject.IsDebugMode())
                 {
@@ -294,12 +294,12 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
+        List<DebugItem> CreateDebugInputs(IDSFDataObject dataObject)
         {
             var result = new List<IDebugItem>();
 
             var allErrors = new ErrorResultTO();
-
+            var env = dataObject.Environment;
             try
             {
                 var dds = Conditions;
@@ -344,7 +344,7 @@ namespace Dev2.Activities
                 if (allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(serviceName, allErrors);
+                    DisplayAndWriteError(dataObject, serviceName, allErrors);
                 }
             }
 
