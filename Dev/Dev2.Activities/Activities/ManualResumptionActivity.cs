@@ -15,13 +15,11 @@ using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -31,6 +29,7 @@ using Warewolf.Core;
 using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
 namespace Dev2.Activities
@@ -149,8 +148,10 @@ namespace Dev2.Activities
                         throw new Exception(suspendedEnv);
                     }
 
-                    var innerActivity = InnerActivity();
-                    overrideVariables = ExecuteOverrideDataFunc(innerActivity, suspendedEnv, _dataObject);
+                    var environment = new ExecutionEnvironment();
+                    environment.FromJson(suspendedEnv);
+                    InnerActivity(environment);
+                    overrideVariables = environment.ToJson();
                 }
 
                 Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
@@ -220,80 +221,56 @@ namespace Dev2.Activities
             return suspensionId.Trim();
         }
 
-        private ForEachInnerActivityTO InnerActivity()
+        private ForEachInnerActivityTO InnerActivity(IExecutionEnvironment executionEnvironment)
         {
-            if (!(OverrideDataFunc.Handler is IDev2ActivityIOMapping ioMapping))
+            if (OverrideDataFunc.Handler is DsfSequenceActivity sequenceActivity)
             {
-                throw new Exception(ErrorResource.InnerActivityWithNoContentError);
-            }
-
-            //TODO: Refactor/Rename ForEachInnerActivityTO to not be specific to "ForEach"
-            var innerActivity = new ForEachInnerActivityTO(ioMapping);
-            return innerActivity;
-        }
-
-        public string ExecuteOverrideDataFunc(ForEachInnerActivityTO innerActivity, string suspendedEnv, IDSFDataObject dataObject)
-        {
-            IDSFDataObject newDataObject = new DsfDataObject(string.Empty, Guid.Empty);
-
-            var serviceInputs = new List<IServiceInput>();
-            InputsFromJson.FromJson(suspendedEnv, serviceInputs);
-
-            var origInnerInputMapping = innerActivity.OrigInnerInputMapping;
-            var inputs = TranslateInputMappingToInputs(origInnerInputMapping);
-
-            foreach (var serviceInput in inputs)
-            {
-                string inputName;
-                string inputValue;
-                IServiceInput storedInput = null;
-
-                var isVariable = ExecutionEnvironment.IsValidVariableExpression(serviceInput.Value, out string errorMessage, 0);
-                if (isVariable)
+                foreach (var activity in sequenceActivity.Activities)
                 {
-                    inputName = dataObject.Environment.EvalToExpression(serviceInput.Value, _update);
-                    inputValue = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(inputName, _update, false, true));
-                }
-                else
-                {
-                    inputName = "[[" + serviceInput.Name + "]]";
-                    inputValue = serviceInput.Value;
-                }
-
-                if (ExecutionEnvironment.IsScalar(serviceInput.Value))
-                {
-                    storedInput = serviceInputs.FirstOrDefault(o => o.Name == serviceInput.Name);
-                }
-                else if (ExecutionEnvironment.IsRecordsetIdentifier(serviceInput.Value))
-                {
-                    storedInput = serviceInputs.FirstOrDefault(o =>
+                    switch (activity)
                     {
-                        var recName = o.Name;
-                        if (o.Name.Contains("."))
+                        case DsfActivity dsfActivity:
                         {
-                            recName = o.Name.Remove(0, o.Name.IndexOf(".", StringComparison.Ordinal) + 1);
+                            return new ForEachInnerActivityTO(dsfActivity);
                         }
+                        case DsfDotNetMultiAssignActivity multiAssignActivity:
+                            {
+                                var fieldsCollection = multiAssignActivity.FieldsCollection.Where(o => o.FieldName != "" && o.FieldValue != "");
+                                foreach (var field in fieldsCollection)
+                                {
+                                    executionEnvironment.AssignWithFrame(new AssignValue(field.FieldName, field.FieldValue), _update);
+                                }
 
-                        return recName == serviceInput.Name;
-                    });
-                }
-                else
-                {
-                    if (serviceInput.Name.StartsWith("@"))
-                    {
-                        storedInput = serviceInputs.FirstOrDefault(o => o.Name == serviceInput.Name);
+                                break;
+                            }
+                        case DsfDotNetMultiAssignObjectActivity multiAssignObjectActivity:
+                            {
+                                var fieldsCollection = multiAssignObjectActivity.FieldsCollection.Where(o => o.FieldName != "" && o.FieldValue != "");
+                                foreach (var field in fieldsCollection)
+                                {
+                                    executionEnvironment.AssignWithFrame(new AssignValue(field.FieldName, field.FieldValue), _update);
+                                }
+
+                                break;
+                            }
+
+                        default:
+                        {
+                            throw new Exception("Unexpected Warewolf Type.");
+                        }
                     }
                 }
-
-                if (storedInput != null && inputValue is null)
+            }
+            else
+            {
+                if (!(OverrideDataFunc.Handler is IDev2ActivityIOMapping ioMapping))
                 {
-                    inputValue = storedInput.Value;
+                    throw new Exception(ErrorResource.InnerActivityWithNoContentError);
                 }
-
-                newDataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
+                return new ForEachInnerActivityTO(ioMapping);
             }
 
-            return newDataObject.Environment.ToJson();
+            throw new Exception(ErrorResource.InnerActivityWithNoContentError);
         }
 
         private static IEnumerable<IServiceInput> TranslateInputMappingToInputs(string inputMapping)
