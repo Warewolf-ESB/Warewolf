@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Authentication;
 using System.Text;
@@ -20,7 +19,6 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -36,8 +34,6 @@ using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
-using Dev2.Common.Interfaces.Search;
-using Dev2.Common.Utils;
 using Dev2.Common.State;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -380,17 +376,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    DisplayAndWriteError("DsfActivity", allErrors);
                     foreach (var allError in allErrors.FetchErrors())
                     {
                         dataObject.Environment.Errors.Add(allError);
                     }
+
                     // add to datalist in variable specified
                     if (!String.IsNullOrEmpty(OnErrorVariable))
                     {
                         var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
                         dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
                     }
+                    DisplayAndWriteError(dataObject,serviceName, allErrors);
                 }
             }
 

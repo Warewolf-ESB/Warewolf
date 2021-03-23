@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,8 +9,6 @@
 */
 
 using System;
-using System.Security.AccessControl;
-using System.Threading;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Communication;
@@ -77,10 +75,10 @@ namespace Warewolf.HangfireServer.Tests
             item.Run();
 
             mockWriter.Verify(o => o.WriteLine("Starting Hangfire server..."), Times.Once);
-            mockExecutionLogPublisher.Verify(o => o.Info("Starting Hangfire server..."), Times.Once);
+            mockExecutionLogPublisher.Verify(o => o.Debug("Starting Hangfire server..."), Times.Once);
             mockSerializer.Verify(o => o.Deserialize<DbSource>(persistenceSettings.PersistenceDataSource.Payload), Times.Once);
             mockWriter.Verify(o => o.WriteLine("Hangfire dashboard started..."), Times.Once);
-            mockExecutionLogPublisher.Verify(o => o.Info("Hangfire dashboard started..."), Times.Once);
+            mockExecutionLogPublisher.Verify(o => o.Debug("Hangfire dashboard started..."), Times.Once);
             mockWriter.Verify(o => o.WriteLine("Hangfire server started..."), Times.Once);
             mockExecutionLogPublisher.Verify(o => o.Info("Hangfire server started..."), Times.Once);
             mockPauseHelper.Verify(o => o.Pause(), Times.Never);
@@ -115,13 +113,13 @@ namespace Warewolf.HangfireServer.Tests
             item.Run();
             item.WaitForExit();
 
-            mockExecutionLogPublisher.Verify(o => o.Info("Starting Hangfire server..."), Times.Once);
+            mockExecutionLogPublisher.Verify(o => o.Debug("Starting Hangfire server..."), Times.Once);
             mockWriter.Verify(o => o.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start."), Times.Once);
             mockExecutionLogPublisher.Verify(o => o.Error("Fatal Error: Could not find persistence config file. Hangfire server is unable to start."), Times.Once);
             mockWriter.Verify(o => o.Write("Press any key to exit..."), Times.Once);
             mockPauseHelper.Verify(o => o.Pause(), Times.Once);
             mockWriter.Verify(o => o.WriteLine("Hangfire dashboard started..."), Times.Never);
-            mockExecutionLogPublisher.Verify(o => o.Info("Hangfire dashboard started..."), Times.Never);
+            mockExecutionLogPublisher.Verify(o => o.Debug("Hangfire dashboard started..."), Times.Never);
             mockWriter.Verify(o => o.WriteLine("Hangfire server started..."), Times.Never);
             mockExecutionLogPublisher.Verify(o => o.Info("Hangfire server started..."), Times.Never);
 
@@ -156,13 +154,13 @@ namespace Warewolf.HangfireServer.Tests
             item.WaitForExit();
 
             mockWriter.Verify(o => o.WriteLine("Starting Hangfire server..."), Times.Once);
-            mockExecutionLogPublisher.Verify(o => o.Info("Starting Hangfire server..."), Times.Once);
+            mockExecutionLogPublisher.Verify(o => o.Debug("Starting Hangfire server..."), Times.Once);
             mockWriter.Verify(o => o.WriteLine("Fatal Error: Could not find persistence config file. Hangfire server is unable to start."), Times.Once);
             mockExecutionLogPublisher.Verify(o => o.Error("Fatal Error: Could not find persistence config file. Hangfire server is unable to start."), Times.Once);
             mockWriter.Verify(o => o.Write("Press any key to exit..."), Times.Once);
             mockPauseHelper.Verify(o => o.Pause(), Times.Never);
             mockWriter.Verify(o => o.WriteLine("Hangfire dashboard started..."), Times.Never);
-            mockExecutionLogPublisher.Verify(o => o.Info("Hangfire dashboard started..."), Times.Never);
+            mockExecutionLogPublisher.Verify(o => o.Debug("Hangfire dashboard started..."), Times.Never);
             mockWriter.Verify(o => o.WriteLine("Hangfire server started..."), Times.Never);
             mockExecutionLogPublisher.Verify(o => o.Info("Hangfire server started..."), Times.Never);
 
@@ -181,8 +179,8 @@ namespace Warewolf.HangfireServer.Tests
             mockWriter.Setup(o => o.Write("Press any key to exit...")).Verifiable();
 
             mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
-            mockExecutionLogPublisher.Setup(o => o.Info("Starting Hangfire server...")).Verifiable();
-            mockExecutionLogPublisher.Setup(o => o.Info("Hangfire dashboard started...")).Verifiable();
+            mockExecutionLogPublisher.Setup(o => o.Debug("Starting Hangfire server...")).Verifiable();
+            mockExecutionLogPublisher.Setup(o => o.Debug("Hangfire dashboard started...")).Verifiable();
             mockExecutionLogPublisher.Setup(o => o.Info("Hangfire server started...")).Verifiable();
             mockExecutionLogPublisher.Setup(o => o.Error("Fatal Error: Could not find persistence config file. Hangfire server is unable to start.")).Verifiable();
 
