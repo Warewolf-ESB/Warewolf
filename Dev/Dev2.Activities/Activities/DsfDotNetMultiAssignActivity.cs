@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -105,12 +105,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                // Handle Errors
                 HandleErrors(dataObject, update, allErrors);
             }
         }
@@ -127,8 +125,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                allErrors.AddError(e.Message);
+                allErrors.AddError(e.Message  + " " + t.FieldName + ":" + t.FieldValue);
             }
 
             return innerCount;
@@ -160,7 +157,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             } catch (Exception e)
             {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
 
@@ -182,12 +178,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
             var hasErrors = allErrors.HasErrors();
+            if (!hasErrors && dataObject.Environment.Errors.Any())
+            {
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
+            }
             if (hasErrors)
             {
-                DisplayAndWriteError("DsfAssignActivity", allErrors);
                 var errorString = allErrors.MakeDisplayReady();
                 dataObject.Environment.AddError(errorString);
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
             }
+
             if (dataObject.IsDebugMode())
             {
                 DispatchDebugState(dataObject, StateType.Before, update);

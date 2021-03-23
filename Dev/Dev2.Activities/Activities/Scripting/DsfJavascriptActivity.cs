@@ -1,5 +1,14 @@
 #pragma warning disable
-﻿using System;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,42 +51,36 @@ namespace Dev2.Activities.Scripting
             IncludeFile = "";
         }
 
-        [FindMissing]
-        [Inputs("Script")]
-        public string Script { get; set; }
+        [FindMissing] [Inputs("Script")] public string Script { get; set; }
 
         public enScriptType ScriptType { get; set; }
 
-        [Inputs("EscapeScript")]
-        public bool EscapeScript { get; set; }
+        [Inputs("EscapeScript")] public bool EscapeScript { get; set; }
 
-        [FindMissing]
-        [Outputs("Result")]
-        public new string Result { get; set; }
+        [FindMissing] [Outputs("Result")] public new string Result { get; set; }
 
-        [FindMissing]
-        [Inputs("IncludeFile")]
-        public string IncludeFile { get; set; }
+        [FindMissing] [Inputs("IncludeFile")] public string IncludeFile { get; set; }
 
         readonly IStringScriptSources _sources;
 
 
         public override IEnumerable<StateVariable> GetState()
         {
-            return new[] {
+            return new[]
+            {
                 new StateVariable
                 {
                     Name = "Script",
                     Value = Script,
                     Type = StateVariable.StateType.Input
                 },
-                 new StateVariable
+                new StateVariable
                 {
                     Name = "IncludeFile",
                     Value = IncludeFile,
                     Type = StateVariable.StateType.Input
                 },
-                 new StateVariable
+                new StateVariable
                 {
                     Name = "EscapeScript",
                     Value = EscapeScript.ToString(),
@@ -85,7 +88,7 @@ namespace Dev2.Activities.Scripting
                 },
                 new StateVariable
                 {
-                    Name="Result",
+                    Name = "Result",
                     Value = Result,
                     Type = StateVariable.StateType.Output
                 }
@@ -113,28 +116,34 @@ namespace Dev2.Activities.Scripting
             InitializeDebug(dataObject);
             try
             {
-
                 if (dataObject.IsDebugMode())
                 {
                     var language = ScriptType.GetDescription();
                     AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
                     AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
                 }
-                
+
                 TryExecute(dataObject, update, allErrors, env);
             }
-            catch (Exception e) when (e is NullReferenceException || e is RuntimeBinderException)
+            catch (NullReferenceException e)
             {
-                allErrors.AddError(e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException) ? ErrorResource.ScriptingErrorReturningValue : e.Message.Replace(" for main:Object", string.Empty));
+                allErrors.AddError(ErrorResource.ScriptingErrorReturningValue);
+            }
+            catch (RuntimeBinderException e)
+            {
+                allErrors.AddError(e.Message.Replace(" for main:Object", string.Empty));
+            }
+            catch (Exception ex)
+            {
+                allErrors.AddError(ex.Message);
             }
             finally
             {
-                // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
+                    DisplayAndWriteError(dataObject, DisplayName, allErrors);
                 }
 
                 if (dataObject.IsDebugMode())
@@ -143,6 +152,7 @@ namespace Dev2.Activities.Scripting
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
+
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
@@ -159,13 +169,11 @@ namespace Dev2.Activities.Scripting
 
                 foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                 {
-
                     env.Assign(region, value, update);
                     if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(region))
                     {
                         AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
                     }
-
                 }
             }
         }
@@ -177,6 +185,7 @@ namespace Dev2.Activities.Scripting
                 _sources.AddPaths(IncludeFile);
             }
         }
+
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach (Tuple<string, string> t in updates)
@@ -200,7 +209,7 @@ namespace Dev2.Activities.Scripting
         #endregion
 
 
-        public override List<string> GetOutputs() => new List<string> { Result };
+        public override List<string> GetOutputs() => new List<string> {Result};
 
         #region Get Debug Inputs/Outputs
 
@@ -210,6 +219,7 @@ namespace Dev2.Activities.Scripting
             {
                 debugInput.FlushStringBuilder();
             }
+
             return _debugInputs;
         }
 
@@ -219,6 +229,7 @@ namespace Dev2.Activities.Scripting
             {
                 debugOutput.FlushStringBuilder();
             }
+
             return _debugOutputs;
         }
 
@@ -245,11 +256,11 @@ namespace Dev2.Activities.Scripting
             }
 
             return base.Equals(other)
-                && string.Equals(Script, other.Script)
-                && ScriptType == other.ScriptType
-                && EscapeScript == other.EscapeScript
-                && string.Equals(Result, other.Result)
-                && string.Equals(IncludeFile, other.IncludeFile);
+                   && string.Equals(Script, other.Script)
+                   && ScriptType == other.ScriptType
+                   && EscapeScript == other.EscapeScript
+                   && string.Equals(Result, other.Result)
+                   && string.Equals(IncludeFile, other.IncludeFile);
         }
 
         public override bool Equals(object obj)
@@ -269,7 +280,7 @@ namespace Dev2.Activities.Scripting
                 return false;
             }
 
-            return Equals((DsfJavascriptActivity)obj);
+            return Equals((DsfJavascriptActivity) obj);
         }
 
         public override int GetHashCode()
@@ -279,7 +290,7 @@ namespace Dev2.Activities.Scripting
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_sources != null ? _sources.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Script != null ? Script.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (int)ScriptType;
+                hashCode = (hashCode * 397) ^ (int) ScriptType;
                 hashCode = (hashCode * 397) ^ EscapeScript.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);

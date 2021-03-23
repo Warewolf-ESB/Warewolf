@@ -25,19 +25,19 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
 
-
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("MicrosoftSQL", "SQL Server", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_SQL_Server")]
-    public class DsfSqlServerDatabaseActivity : DsfActivity,IEquatable<DsfSqlServerDatabaseActivity>
+    public class DsfSqlServerDatabaseActivity : DsfActivity, IEquatable<DsfSqlServerDatabaseActivity>
     {
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
+
         public string ProcedureName { get; set; }
         public int? CommandTimeout { get; set; }
 
         public string ExecuteActionString { get; set; }
+
         public DsfSqlServerDatabaseActivity()
         {
             Type = "SQL Server Database";
@@ -47,30 +47,48 @@ namespace Dev2.Activities
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             var execErrors = new ErrorResultTO();
-
             tmpErrors = new ErrorResultTO();
             tmpErrors.MergeErrors(execErrors);
-            if (string.IsNullOrEmpty(ProcedureName))
+            try
             {
-                tmpErrors.AddError(ErrorResource.NoActionsInSelectedDB);
-                return;
-            }
-            if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
-            {
-                if (databaseServiceExecution.SourceIsNull())
+                if (string.IsNullOrEmpty(ProcedureName))
                 {
-                    databaseServiceExecution.GetSource(SourceId);
+                    tmpErrors.AddError(ErrorResource.NoActionsInSelectedDB);
+                    DisplayAndWriteError(dataObject, DisplayName, tmpErrors);
+                    return;
                 }
-                databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
-                databaseServiceExecution.Outputs = Outputs;
+
+                if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
+                {
+                    if (databaseServiceExecution.SourceIsNull())
+                    {
+                        databaseServiceExecution.GetSource(SourceId);
+                    }
+
+                    databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput {EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName} as IServiceInput).ToList();
+                    databaseServiceExecution.Outputs = Outputs;
+                }
+
+                ServiceExecution.Execute(out execErrors, update);
             }
-            ServiceExecution.Execute(out execErrors, update);
-            var fetchErrors = execErrors.FetchErrors();
-            foreach (var error in fetchErrors)
+            catch (Exception ex)
             {
-                dataObject.Environment.Errors.Add(error);
+                execErrors.AddError(ex.Message);
             }
-            tmpErrors.MergeErrors(execErrors);
+            finally
+            {
+                if (execErrors.HasErrors())
+                {
+                    var fetchErrors = execErrors.FetchErrors();
+                    foreach (var error in fetchErrors)
+                    {
+                        dataObject.Environment.Errors.Add(error);
+                    }
+                }
+
+                tmpErrors.MergeErrors(execErrors);
+                execErrors.ClearErrors();
+            }
         }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
@@ -79,6 +97,7 @@ namespace Dev2.Activities
             {
                 return new List<DebugItem>();
             }
+
             base.GetDebugInputs(env, update);
 
             if (Inputs != null)
@@ -90,6 +109,7 @@ namespace Dev2.Activities
                     _debugInputs.Add(debugItem);
                 }
             }
+
             return _debugInputs;
         }
 
@@ -104,10 +124,12 @@ namespace Dev2.Activities
             {
                 databaseServiceExecution.CommandTimeout = CommandTimeout.Value;
             }
+
             if (!string.IsNullOrEmpty(ExecuteActionString))
             {
                 databaseServiceExecution.ProcedureName = ExecuteActionString;
             }
+
             ServiceExecution = databaseServiceExecution;
             ServiceExecution.GetSource(SourceId);
             ServiceExecution.BeforeExecution(tmpErrors);
@@ -130,7 +152,7 @@ namespace Dev2.Activities
 
             var eq = base.Equals(other);
             eq &= string.Equals(SourceId.ToString(), other.SourceId.ToString());
-            eq &= string.Equals(ProcedureName, other.ProcedureName);            
+            eq &= string.Equals(ProcedureName, other.ProcedureName);
             eq &= CommandTimeout == other.CommandTimeout;
             eq &= string.Equals(ExecuteActionString, other.ExecuteActionString);
             return eq;
@@ -142,6 +164,7 @@ namespace Dev2.Activities
             {
                 return Equals(instance);
             }
+
             return false;
         }
 
@@ -155,14 +178,17 @@ namespace Dev2.Activities
                 {
                     hashCode = (hashCode * 397) ^ (ProcedureName.GetHashCode());
                 }
+
                 if (CommandTimeout != null)
                 {
                     hashCode = (hashCode * 397) ^ CommandTimeout.Value;
-                }                
+                }
+
                 if (ExecuteActionString != null)
                 {
                     hashCode = (hashCode * 397) ^ (ExecuteActionString.GetHashCode());
                 }
+
                 return hashCode;
             }
         }
