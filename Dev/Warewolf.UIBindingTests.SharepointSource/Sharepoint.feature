@@ -132,11 +132,11 @@ Scenario: Testing Auth type as Anonymous and swaping it resets the test connecti
 
 @SharepointSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 @MSTest:DeploymentItem:Warewolf_Studio.exe
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@Ignore
 Scenario: Editing saved Sharepoint Source 
    Given I open "Test" Sharepoint source
    Then "Test" tab is opened
@@ -149,7 +149,7 @@ Scenario: Editing saved Sharepoint Source
    And Password field is "Collapsed"
    And "Save" is "Disabled"
    When I type Address as "http://SVRDEV.premier.local"
-   Then "Test *" tab is opened
+   Then "Test" tab is opened
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    And "Save" is "Disabled"
@@ -163,7 +163,6 @@ Scenario: Editing saved Sharepoint Source
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@Ignore
  Scenario: Editing saved Sharepoint Source auth type
    Given I open "Test" Sharepoint source
    Then "Test" tab is opened
