@@ -21,6 +21,7 @@ using Hangfire.Storage;
 using Warewolf.Auditing;
 using Warewolf.Driver.Resume;
 using Warewolf.Execution;
+using Warewolf.Security.Encryption;
 using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace HangfireServer
@@ -105,7 +106,7 @@ namespace HangfireServer
             var audit = new Audit
             {
                 WorkflowID = workflowId?.ToString(),
-                Environment = environment?.ToString(),
+                Environment =  DpapiWrapper.Encrypt(environment?.ToString()),
                 VersionNumber = versionNumber?.ToString(),
                 NextActivityId = startActivityId?.ToString(),
                 AuditDate = DateTime.Now,

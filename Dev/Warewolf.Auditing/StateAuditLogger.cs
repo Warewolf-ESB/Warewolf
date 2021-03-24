@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using Warewolf.Interfaces.Auditing;
 using Dev2.Data.Interfaces.Enums;
+using Warewolf.Security.Encryption;
 
 namespace Warewolf.Auditing
 {
@@ -26,6 +27,7 @@ namespace Warewolf.Auditing
     {
         private IWebSocketWrapper _ws;
         private readonly IWebSocketPool _webSocketFactory;
+        private bool _isDisposed = false;
 
         public IStateListener NewStateListener(IExecutionContext dataObject) => new StateListener(this, dataObject);
 
@@ -41,8 +43,10 @@ namespace Warewolf.Auditing
         public void LogAuditState(Object logEntry)
         {
             Enum.TryParse(Config.Server.ExecutionLogLevel, out LogLevel executionLogLevel);
+
             if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
             {
+                auditLog.Environment = DpapiWrapper.Encrypt(auditLog.Environment);
                 var auditCommand = new AuditCommand
                 {
                     Audit = auditLog,
@@ -130,8 +134,6 @@ namespace Warewolf.Auditing
                     return false;
             }
         }
-
-        private bool _isDisposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
