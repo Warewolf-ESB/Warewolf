@@ -93,7 +93,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 values.TryGetValue("environment", out StringBuilder persistedEnvironment);
 
                 var decryptEnvironment = persistedEnvironment.ToString().CanBeDecrypted()
-                    ? DpapiWrapper.Decrypt(persistedEnvironment.ToString())
+                    ? SecurityEncryption.Decrypt(persistedEnvironment.ToString())
                     : persistedEnvironment.ToString();
 
                 return decryptEnvironment;
@@ -132,7 +132,7 @@ namespace Warewolf.Driver.Persistence.Drivers
 
                 var values = jobDetails.Job.Args[0] as Dictionary<string, StringBuilder>;
                 values.TryGetValue("environment", out StringBuilder persistedEnvironment);
-                var decryptEnvironment = persistedEnvironment.ToString().CanBeDecrypted() ? DpapiWrapper.Decrypt(persistedEnvironment.ToString()) : persistedEnvironment.ToString();
+                var decryptEnvironment = persistedEnvironment.ToString().CanBeDecrypted() ? SecurityEncryption.Decrypt(persistedEnvironment.ToString()) : persistedEnvironment.ToString();
                 if (overrideVariables)
                 {
                     if (values.ContainsKey("environment"))
@@ -146,7 +146,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 }
 
                 values.TryGetValue("currentuserprincipal", out StringBuilder currentUserPrincipal);
-                var decryptCurrentUserPrincipal = currentUserPrincipal.ToString().CanBeDecrypted() ? DpapiWrapper.Decrypt(currentUserPrincipal.ToString()) : currentUserPrincipal.ToString();
+                var decryptCurrentUserPrincipal = currentUserPrincipal.ToString().CanBeDecrypted() ? SecurityEncryption.Decrypt(currentUserPrincipal.ToString()) : currentUserPrincipal.ToString();
                 if (values.ContainsKey("currentuserprincipal"))
                 {
                     values["currentuserprincipal"] = new StringBuilder(decryptCurrentUserPrincipal);
@@ -241,7 +241,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var payload = Config.Persistence.PersistenceDataSource.Payload;
                 if (Config.Persistence.EncryptDataSource)
                 {
-                    payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
+                    payload = payload.CanBeDecrypted() ? SecurityEncryption.Decrypt(payload) : payload;
                 }
 
                 var source = new Dev2JsonSerializer().Deserialize<DbSource>(payload);

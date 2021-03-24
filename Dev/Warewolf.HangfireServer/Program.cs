@@ -165,7 +165,7 @@ namespace HangfireServer
 
                 if (_persistence.EncryptDataSource)
                 {
-                    payload = payload.CanBeDecrypted() ? DpapiWrapper.Decrypt(payload) : payload;
+                    payload = payload.CanBeDecrypted() ? SecurityEncryption.Decrypt(payload) : payload;
                 }
 
                 var source = _deserializer.Deserialize<DbSource>(payload);
