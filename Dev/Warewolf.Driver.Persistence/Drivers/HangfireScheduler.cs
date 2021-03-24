@@ -173,7 +173,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var audit = new Audit
                 {
                     WorkflowID = workflowId?.ToString(),
-                    Environment = environments?.ToString(),
+                    Environment =  DpapiWrapper.Encrypt(environments?.ToString()),
                     VersionNumber = versionNumber?.ToString(),
                     NextActivityId = startActivityId?.ToString(),
                     AuditDate = DateTime.Now,
