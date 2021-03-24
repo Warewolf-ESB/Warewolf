@@ -162,12 +162,12 @@ namespace Dev2.Runtime.WebServer
                     //Note: it is at this point expected that all the environment errors are caused by the user's request payload
                     //and should be used to warn the user of anything to be rectified on there end.
 
-                    var content = GetExecuteExceptionPayload(dataObject, allErrors.FetchErrors()?.First());
+                    var content = ExecuteExceptionPayload.Calculate(dataObject);
                     return ResponseData.FromExecutionErrors(_executionDto.ErrorResultTO, content);
                 }
                 else
                 {
-                    var content = GetExecuteExceptionPayload(dataObject, dataObject.ExecutionException.Message);
+                    var content = ExecuteExceptionPayload.Calculate(dataObject);
                     return ResponseData.FromException(new HttpException((int)HttpStatusCode.InternalServerError, "internal server error"), content);
                 }
             }
@@ -245,32 +245,6 @@ namespace Dev2.Runtime.WebServer
                     {
                         formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                         return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-                    }
-                }
-            }
-
-            return string.Empty;
-        }
-
-        string GetExecuteExceptionPayload(IDSFDataObject dataObject, string message)
-        {
-            //TODO: We can still expend on the JSON object returned to the user's request similarly to:
-            //{"requestError":{"serviceException":{"messageId":"BAD_REQUEST","text":"[subject : may not be null]"}}}
-
-            var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
-            if (notDebug)
-            {
-                switch (dataObject.ReturnType)
-                {
-                    case EmitionTypes.XML:
-                    {
-                        return $"<Error>{message}</Error>";
-                    }
-                    default: //TODO: we should also cater for the all other EmitionTypes  
-                    case EmitionTypes.OPENAPI:
-                    case EmitionTypes.JSON:
-                    {
-                        return JsonConvert.SerializeObject(new {Message = message});
                     }
                 }
             }
