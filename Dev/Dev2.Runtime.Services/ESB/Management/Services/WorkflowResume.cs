@@ -41,8 +41,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
             var versionNumber = IsValid(values, out var environmentString, out var startActivityId, out var currentUserPrincipal);
-            var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal.ToString()));
-            var environment = DpapiWrapper.DecryptIfEncrypted(environmentString.ToString());
+            var executingUser = BuildClaimsPrincipal(SecurityEncryption.DecryptIfEncrypted(currentUserPrincipal.ToString()));
+            var environment = SecurityEncryption.DecryptIfEncrypted(environmentString.ToString());
 
             var decodedEnv = HttpUtility.UrlDecode(environment);
             var executionEnv = new ExecutionEnvironment();
