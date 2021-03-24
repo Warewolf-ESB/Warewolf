@@ -1408,9 +1408,14 @@ namespace Warewolf.Storage.Tests
             var environment = new ExecutionEnvironment();
             environment.AssignWithFrame(new AssignValue("[[@Person().Name]]", "Value"), 0);
 
-            environment.AssignWithFrame(new AssignValue(string.Empty, "Value"), 0);
-            Assert.IsTrue(environment.HasErrors());
-            Assert.AreEqual("invalid variable assigned to :  Value", environment.FetchErrors());
+            try
+            {
+                environment.AssignWithFrame(new AssignValue(string.Empty, "Value"), 0);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("invalid variable assigned to :  Value", e.Message);
+            }
         }
 
         [TestMethod]

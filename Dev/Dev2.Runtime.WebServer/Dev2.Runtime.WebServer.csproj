@@ -95,6 +95,7 @@
     <Compile Include="CommunicationContextExtensions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="DataObjectExtensions.cs" />
+    <Compile Include="ExecuteExceptionPayload.cs" />
     <Compile Include="ExecutionDto.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />

@@ -196,7 +196,8 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message + ": " + values.Name + " " + values.Value);
+                //TODO: exceptions to be event specific
+                throw new Exception(err.Message + ": " + values.Name + " " + values.Value);
             }
         }
 
