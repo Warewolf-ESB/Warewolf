@@ -478,12 +478,6 @@
     </Compile>
     <Compile Include="Toolbox\Utility\Redis\SpecExecutionEnvironmentErrors.cs" />
     <Compile Include="Toolbox\Utility\Redis\Cache\CacheRedisSteps.cs" />
-    <Compile Include="Toolbox\Utility\Redis\Source\RedisSource.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RedisSource.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Utility\Redis\Source\RedisSourceSteps.cs" />
     <Compile Include="Toolbox\Utility\Redis\SpecRedisActivity.cs" />
     <Compile Include="Toolbox\Utility\Redis\SpecAssignValue.cs" />
     <Compile Include="Toolbox\Utility\WebRequest\WebRequest.feature.cs">
@@ -786,10 +780,6 @@
     <None Include="Toolbox\Utility\Redis\Cache\CacheRedis.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CacheRedis.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Utility\Redis\Source\RedisSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>RedisSource.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\WebRequest\WebRequest.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -53,7 +53,6 @@ Scenario: Example Executing Utility - Random example workflow
 	  |                      |
 	  | [[License]] = String |
 
-@Ignore
 Scenario: Example Executing Utility - Date and Time example workflow
 	  Given I have a workflow "Utility - Date and Time Test"
 	  And "Utility - Date and Time Test" contains "Utility - Date and Time" from server "localhost" with mapping as
