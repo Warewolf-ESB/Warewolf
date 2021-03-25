@@ -8,13 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.ManualResumption
 {
@@ -57,6 +61,44 @@ namespace Dev2.Activities.Designers2.ManualResumption
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+        }
+
+        public static bool MultipleItemsToSequence(IDataObject dataObject)
+        {
+            if(dataObject != null)
+            {
+                var formats = dataObject.GetFormats();
+                if(!formats.Any())
+                {
+                    return false;
+                }
+                var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
+                if(!string.IsNullOrEmpty(modelItemString))
+                {
+                    var objectData = dataObject.GetData(modelItemString);
+
+                    if (objectData is List<ModelItem> data && data.Count > 1)
+                    {
+                        return true;
+                    }
+                }
+                var explorerItemViewModelString = formats.FirstOrDefault(s => s.IndexOf("Warewolf.Studio.ViewModels.ExplorerItemViewModel", StringComparison.Ordinal) >= 0);
+                if(!string.IsNullOrEmpty(explorerItemViewModelString))
+                {
+                    var objectData = dataObject.GetData(explorerItemViewModelString);
+
+                    if (objectData is List<ModelItem> data && data.Count > 1)
+                    {
+                        return true;
+                    }
+
+                    if (objectData is DsfActivity dsfActivity)
+                    {
+                        
+                    }
+                }
+            }
+            return false;
         }
     }
 }
