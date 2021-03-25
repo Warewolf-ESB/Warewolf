@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
@@ -119,6 +120,18 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_Assign_RecordSetToScalar_Throws()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[rec().name]]", "n1", 0);
+            _environment.Assign("[[rec().name]]", "n2", 0);
+
+            Assert.ThrowsException<WarewolfExecutionEnvironmentException>(()=> _environment.Assign("[[v]]", "[[rec()]]", true, 0), "assigning an entire recordset to a variable is not defined: [[v]]");
+        }
+
+        [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_Assign_ParseError_NoThrow()
@@ -128,7 +141,24 @@ namespace Warewolf.Storage.Tests
             _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("parse error: [[v]] [[asdf.asdf]]", _environment.Errors.First());
+            Assert.AreEqual("parse error: [[v]]", _environment.Errors.First());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_Assign_ParseError_Throw()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            try
+            {
+                _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", true, 0);
+            }
+            catch (WarewolfExecutionEnvironmentException e)
+            {
+                Assert.AreEqual("parse error: [[v]]", e.Message);
+            }
         }
 
         [TestMethod]
@@ -179,7 +209,84 @@ namespace Warewolf.Storage.Tests
             _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("parse error: [[v]] [[asdf.asdf]]", _environment.Errors.First());
+            Assert.AreEqual("parse error: [[v]]", _environment.Errors.First());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AssignStrict_ParseError_Throw()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            try
+            {
+                _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", true, 0);
+            }
+            catch (WarewolfExecutionEnvironmentException e)
+            {
+                Assert.AreEqual("parse error: [[v]]", e.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AssignString_RecordSetToScalar_HasError()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.AssignString("[[rec().name]]", "n1", 0);
+            _environment.AssignString("[[rec().name]]", "n2", 0);
+
+            _environment.AssignString("[[v]]", "[[rec()]]", 0);
+
+            // BUG: this should pass?
+            //Assert.IsTrue(_environment.HasErrors());
+            //Assert.AreEqual("assigning an entire recordset to a variable is not defined", _environment.Errors.First());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AssignString_RecordSetToScalar_Throw()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.AssignString("[[rec().name]]", "n1", 0);
+            _environment.AssignString("[[rec().name]]", "n2", 0);
+
+            //TODO: when the exceptions are done on the F# code base this should also be resolved
+            //BUG: this should pass?
+            //Assert.ThrowsException<WarewolfExecutionEnvironmentException>(()=> _environment.AssignString("[[v]]", "[[rec()]]", true, 0), "assigning an entire recordset to a variable is not defined");
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AssignString_ParseError_NoThrow()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            _environment.AssignString("[[v]]", "[[asdf.asdf]]", 0);
+
+            Assert.IsTrue(_environment.HasErrors());
+            Assert.AreEqual("parse error: [[v]]", _environment.Errors.First());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AssignString_ParseError_Throw()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            try
+            {
+                _environment.AssignString("[[v]]", "[[asdf.asdf]]", true, 0);
+            }
+            catch (WarewolfExecutionEnvironmentException e)
+            {
+                Assert.AreEqual("parse error: [[v]]", e.Message);
+            }
         }
 
         [TestMethod]
@@ -309,7 +416,7 @@ namespace Warewolf.Storage.Tests
                 _environment.GetObjectLength("@obj.people");
                 Assert.Fail("expected exception, not a json array");
             }
-            catch (Exception e)
+            catch (WarewolfExecutionEnvironmentException e)
             {
                 Assert.AreEqual("not a json array", e.Message);
             }
@@ -322,7 +429,7 @@ namespace Warewolf.Storage.Tests
         {
             var _environment = new ExecutionEnvironment();
 
-            Assert.ThrowsException<Exception>(() => _environment.Eval("[[NotSetVariable]]", 0, true), "variable [[NotSetVariable]] not found");
+            Assert.ThrowsException<WarewolfExecutionEnvironmentException>(() => _environment.Eval("[[NotSetVariable]]", 0, true), "variable [[NotSetVariable]] not found");
         }
 
         [TestMethod]
@@ -1414,7 +1521,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (Exception e)
             {
-                Assert.AreEqual("invalid variable assigned to :  Value", e.Message);
+                Assert.AreEqual("invalid variable assigned to : ", e.Message, "Should not return the value entered by the user as it might contain sensitive information");
             }
         }
 
@@ -1428,11 +1535,11 @@ namespace Warewolf.Storage.Tests
             {
                 _environment.AssignWithFrame(new AssignValue("[[rec(0).a]", "Value"), 0);
                 Assert.IsTrue(_environment.HasErrors());
-                Assert.AreEqual("parse error: [[rec(0).a] Value", _environment.FetchErrors());
+                Assert.AreEqual("parse error: [[rec(0).a]", _environment.FetchErrors());
             }
             catch (Exception e)
             {
-                Assert.AreEqual("parse error: [[rec(0).a] Value", e.Message);
+                Assert.AreEqual("parse error: [[rec(0).a]", e.Message, "Should not return the value entered by the user as it might contain sensitive information");
             }
         }
 

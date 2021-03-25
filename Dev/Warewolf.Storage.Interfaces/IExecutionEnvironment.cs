@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,9 +29,12 @@ namespace Warewolf.Storage.Interfaces
         CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update);
 
         void Assign(string exp, string value, int update);
+        void Assign(string exp, string value, bool throwsifnotexists, int update);
         void AssignString(string exp, string value, int update);
+        void AssignString(string exp, string value, bool throwsifnotexists, int update);
 
         void AssignStrict(string exp, string value, int update);
+        void AssignStrict(string exp, string value, bool throwsifnotexists, int update);
 		void AssignWithFrame(IEnumerable<IAssignValue> values, int update);
 
 		void AssignWithFrame(IAssignValue values, int update);
