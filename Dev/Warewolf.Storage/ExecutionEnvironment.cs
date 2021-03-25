@@ -10,6 +10,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -60,7 +61,7 @@ namespace Warewolf.Storage
             {
                 if (throwsifnotexists && e is NullValueInVariableException && e.Message.Contains("variable not found"))
                 {
-                    throw new Exception(string.Format("variable {0} not found", (e as NullValueInVariableException).VariableName));
+                    throw new WarewolfExecutionEnvironmentException(string.Format("variable {0} not found", (e as NullValueInVariableException).VariableName));
                 }
 
                 if (throwsifnotexists || e is IndexOutOfRangeException || e.Message.Contains(@"index was not an int"))
@@ -126,7 +127,8 @@ namespace Warewolf.Storage
             return res;
         }
 
-        public void Assign(string exp, string value, int update)
+        public void Assign(string exp, string value, int update) => Assign(exp, value, false, update);
+        public void Assign(string exp, string value, bool throwsifnotexists, int update)
         {
             if (string.IsNullOrEmpty(exp))
             {
@@ -142,11 +144,18 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message + ": " + exp);
+                var msg = err.Message;
+                if (throwsifnotexists)
+                {
+                    throw new WarewolfExecutionEnvironmentException(msg + ": " + exp);
+                }
+
+                Errors.Add(msg + ": " + exp);
             }
         }
 
-        public void AssignString(string exp, string value, int update)
+        public void AssignString(string exp, string value, int update) => AssignString(exp, value, false, update);
+        public void AssignString(string exp, string value, bool throwsifnotexists, int update)
         {
             if (string.IsNullOrEmpty(exp))
             {
@@ -162,11 +171,18 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message + " : " + exp + " " + value);
+                var msg = err.Message;
+                if (throwsifnotexists)
+                {
+                    throw new WarewolfExecutionEnvironmentException(msg + ": " + exp);
+                }
+
+                Errors.Add(msg + ": " + exp);
             }
         }
 
-        public void AssignStrict(string exp, string value, int update)
+        public void AssignStrict(string exp, string value, int update) => AssignStrict(exp, value, false, update);
+        public void AssignStrict(string exp, string value, bool throwsifnotexists, int update)
         {
             if (string.IsNullOrEmpty(exp))
             {
@@ -182,7 +198,17 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message + ": " + exp + " " + value);
+                var msg = err.Message;
+                if (throwsifnotexists && err.Message.Contains("parse error"))
+                {
+                    throw new WarewolfExecutionEnvironmentException(msg + ": " + exp);
+                }
+                if (throwsifnotexists && err.Message.Contains("invalid variable assigned to"))
+                {
+                    throw new WarewolfExecutionEnvironmentException(msg);
+                }
+                //NOTE:This have a possibility to duplicate error add if caller is also catching exceptions and adding error, use with caution
+                Errors.Add(msg +": "+ exp); 
             }
         }
 
@@ -196,8 +222,7 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                //TODO: exceptions to be event specific
-                throw new Exception(err.Message + ": " + values.Name + " " + values.Value);
+                throw new WarewolfExecutionEnvironmentException(err.Message + ": " + values.Name);
             }
         }
 
@@ -213,7 +238,7 @@ namespace Warewolf.Storage
         {
             if (recordSetName.Length > 1 && recordSetName[0] == '@')
             {
-                throw new Exception("not a recordset");
+                throw new WarewolfExecutionEnvironmentException("not a recordset");
             }
 
             return _env.RecordSets[recordSetName.Trim()].LastIndex;
@@ -249,7 +274,7 @@ namespace Warewolf.Storage
             }
             catch (KeyNotFoundException e)
             {
-                throw new Exception("not a json array", e);
+                throw new WarewolfExecutionEnvironmentException("not a json array", e);
             }
         }
 
@@ -291,7 +316,7 @@ namespace Warewolf.Storage
                 return item.Select(WarewolfAtomToString).ToList();
             }
 
-            throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
+            throw new WarewolfExecutionEnvironmentException(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
         }
 
         private static IList<string> EvalListOfStringsHelper(DataStorage.WarewolfRecordset recSetData)

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -207,7 +207,43 @@ namespace Warewolf.Storage.Tests
 
             scopedEnvironment.AssignStrict("[[a]]", "bob", 0);
 
-            _mockEnv.Verify(a => a.AssignStrict("[[Person(*)]]", "bob", 0), Times.Once);
+            _mockEnv.Verify(a => a.AssignStrict("[[Person(*)]]", "bob", false, 0), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ScopedEnvironment))]
+        public void ScopedEnvironment_AssignStrict_ThrowIfNotExist_ShouldThrowInvalidVarialbe()
+        {
+            var env = new ExecutionEnvironment();
+            var scopedEnvironment = new ScopedEnvironment(env, "[[Person(*)]]", "[[a]]");
+
+            try
+            {
+                scopedEnvironment.AssignStrict("[[a]", "bob", true, 0);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("invalid variable assigned to [[a]", e.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ScopedEnvironment))]
+        public void ScopedEnvironment_AssignStrict_ThrowIfNotExist_ShouldThrowParseError()
+        {
+            var env = new ExecutionEnvironment();
+            var scopedEnvironment = new ScopedEnvironment(env, "[[Person(*)]]", "[[a]]");
+
+            try
+            {
+                scopedEnvironment.AssignStrict("[[a]]", "[[bob.martin", true, 0);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("parse error: [[Person(*)]]", e.Message, "Value can be sensitive and hence the value names are returned instead.");
+            }
         }
 
         [TestMethod]

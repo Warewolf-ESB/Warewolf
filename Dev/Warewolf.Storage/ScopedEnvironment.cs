@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -42,14 +42,15 @@ namespace Warewolf.Storage
 
         public CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update) => _inner.EvalStrict(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update);
 
-        public void Assign(string exp, string value, int update)
+        public void Assign(string exp, string value, int update) => Assign(exp, value, false, update);
+        public void Assign(string exp, string value, bool throwsifnotexists, int update)
         {
-
-            _inner.Assign(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), 0);
+            _inner.Assign(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), throwsifnotexists, 0);
         }
-        public void AssignString(string exp, string value, int update)
+        public void AssignString(string exp, string value, int update) => AssignString(exp, value, false, update);
+        public void AssignString(string exp, string value, bool throwsifnotexists, int update)
         {
-            _inner.AssignString(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), 0);
+            _inner.AssignString(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), throwsifnotexists, 0);
         }
 
         string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp) => exp.Replace(_alias, datasource);
@@ -74,11 +75,13 @@ namespace Warewolf.Storage
             _inner.AssignWithFrame(new AssignValue(name, valuerep), update);
         }
 
-        public void AssignStrict(string exp, string value, int update)
+
+        public void AssignStrict(string exp, string value, int update) => AssignStrict(exp, value, false, update);
+        public void AssignStrict(string exp, string value, bool throwsifnotexists, int update)
         {
             var name = UpdateDataSourceWithIterativeValue(_datasource, update, exp);
             var valuerep = UpdateDataSourceWithIterativeValue(_datasource, update, value);
-            _inner.AssignStrict(name, valuerep, update);
+            _inner.AssignStrict(name, valuerep, throwsifnotexists, update);
         }
 
         public int GetLength(string recordSetName) => _inner.GetLength(recordSetName);
