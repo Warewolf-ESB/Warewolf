@@ -337,7 +337,6 @@ Scenario: Example Executing File and Folder - Unzip
 	  |                        |
 	  | [[Complete]] = Success |
 
-@Ignore
 Scenario: Example Executing File and Folder - Write File
 	  Given I have a workflow "File and Folder - Write File Test"
 	  And "File and Folder - Write File Test" contains "File and Folder - Write File" from server "localhost" with mapping as
