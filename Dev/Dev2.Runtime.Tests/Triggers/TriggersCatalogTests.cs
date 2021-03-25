@@ -364,16 +364,16 @@ namespace Dev2.Tests.Runtime.Triggers
             var mockSerializer = new Mock<ISerializer>();
 
             var mockFileSystemWatcher = new Mock<IFileSystemWatcher>();
+
             var triggerId = Guid.NewGuid();
-            //var decryptedTrigger = "serialized queue data";
+            var decryptedTrigger = "serialized queue data";
+            var expected = SecurityEncryption.Encrypt(decryptedTrigger);
+            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
             var expectedTrigger = new TriggerQueue
             {
                 TriggerId = triggerId
             };
-            var expected = SecurityEncryption.Encrypt(expectedTrigger.SerializeToJsonStringBuilder().ToString());
-            mockFileWrapper.Setup(o => o.ReadAllText(fileName)).Returns(expected);
-
-            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(expected)).Returns(expectedTrigger);
+            mockSerializer.Setup(o => o.Deserialize<ITriggerQueue>(decryptedTrigger)).Returns(expectedTrigger);
 
             var catalog = GetTriggersCatalog(mockDirectoryWrapper.Object, mockFileWrapper.Object, directory, mockSerializer.Object, mockFileSystemWatcher.Object);
 

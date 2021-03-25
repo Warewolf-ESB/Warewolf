@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
         <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj" />
     </ItemGroup>
 
