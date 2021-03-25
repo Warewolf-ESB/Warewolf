@@ -380,6 +380,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Run Configurations", "Run C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Driver.Resume.Tests", "Warewolf.Driver.Resume.Tests\Warewolf.Driver.Resume.Tests.csproj", "{19726818-57DE-4160-9866-9ECD6E31E65D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security.Tests", "Warewolf.Security.Tests\Warewolf.Security.Tests.csproj", "{4CB7A377-A0B5-4EA2-9050-959E115C142B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1448,6 +1450,14 @@ Global
 		{19726818-57DE-4160-9866-9ECD6E31E65D}.Debug|x86.Build.0 = Debug|Any CPU
 		{19726818-57DE-4160-9866-9ECD6E31E65D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{19726818-57DE-4160-9866-9ECD6E31E65D}.Release|x86.ActiveCfg = Debug|Any CPU
+		{4CB7A377-A0B5-4EA2-9050-959E115C142B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CB7A377-A0B5-4EA2-9050-959E115C142B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CB7A377-A0B5-4EA2-9050-959E115C142B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4CB7A377-A0B5-4EA2-9050-959E115C142B}.Debug|x86.Build.0 = Debug|Any CPU
+		{4CB7A377-A0B5-4EA2-9050-959E115C142B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CB7A377-A0B5-4EA2-9050-959E115C142B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CB7A377-A0B5-4EA2-9050-959E115C142B}.Release|x86.ActiveCfg = Release|Any CPU
+		{4CB7A377-A0B5-4EA2-9050-959E115C142B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

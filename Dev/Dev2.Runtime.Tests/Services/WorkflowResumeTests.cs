@@ -116,8 +116,8 @@ namespace Dev2.Tests.Runtime.Services
             var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
-            var user = DpapiWrapper.Encrypt(currentPrincipal.Identity.Name);
-            var env = DpapiWrapper.Encrypt(newexecutionEnvironment.ToJson());
+            var user = SecurityEncryption.Encrypt(currentPrincipal.Identity.Name);
+            var env = SecurityEncryption.Encrypt(newexecutionEnvironment.ToJson());
             var values = new Dictionary<string, StringBuilder>
             {
                 {"resourceID", new StringBuilder(resourceId.ToString())},

@@ -1,4 +1,3 @@
-#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,27 +20,16 @@ namespace Warewolf.Security.Encryption
         const string InitVector = "@1B2c3D4e5F6g7H8";
         const string PassPhrase = "Pas5pr@se";
         const string SaltValue = "s@1tValue";
-        const string HashAlgorithm = "SHA1";
-        const int PasswordIterations = 2;
-        const int KeySize = 256;
 
         public static string Encrypt(string plainText)
         {
             var initVectorBytes = Encoding.ASCII.GetBytes(InitVector);
-            var saltValueBytes = Encoding.ASCII.GetBytes(SaltValue);
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText.Trim());
-            var password = new PasswordDeriveBytes(
-                PassPhrase,
-                saltValueBytes,
-                HashAlgorithm,
-                PasswordIterations);
-#pragma warning disable 612,618
-            var keyBytes = password.GetBytes(KeySize / 8);
-#pragma warning restore 612,618
-            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC, Padding = PaddingMode.Zeros};
-            var encryptor = symmetricKey.CreateEncryptor(
-                keyBytes,
-                initVectorBytes);
+
+            var keyBytes = GenerateByteKey();
+
+            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
+            var encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
             byte[] cipherTextBytes;
             using (var memoryStream = new MemoryStream())
             {
@@ -61,33 +49,34 @@ namespace Warewolf.Security.Encryption
         public static string Decrypt(string cipherText)
         {
             var initVectorBytes = Encoding.ASCII.GetBytes(InitVector);
-            var saltValueBytes = Encoding.ASCII.GetBytes(SaltValue);
             var cipherTextBytes = Convert.FromBase64String(cipherText);
-            var password = new PasswordDeriveBytes(
-                PassPhrase,
-                saltValueBytes,
-                HashAlgorithm,
-                PasswordIterations);
-#pragma warning disable 612,618
-            var keyBytes = password.GetBytes(KeySize / 8);
-#pragma warning restore 612,618
-            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC, Padding = PaddingMode.Zeros};
-            var decryptor = symmetricKey.CreateDecryptor(
-                keyBytes,
-                initVectorBytes);
+
+            var keyBytes = GenerateByteKey();
+
+            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
+            var decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
             byte[] plainTextBytes;
+            int decryptedByteCount;
             using (var memoryStream = new MemoryStream(cipherTextBytes))
             {
-                using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
+                using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                 {
-                    cryptoStream.Write(cipherTextBytes, 0, cipherTextBytes.Length);
+                    plainTextBytes = new byte[cipherTextBytes.Length];
+                    decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
                 }
-
-                plainTextBytes = memoryStream.ToArray();
             }
 
-            var decrypted = Encoding.UTF8.GetString(plainTextBytes);
-            return decrypted.Trim();
+            var decrypted = Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+            return decrypted;
+        }
+
+        private static byte[] GenerateByteKey()
+        {
+            var key = PassPhrase + "|" + SaltValue;
+            var passwordBytes = Encoding.ASCII.GetBytes(key);
+            var hmac = new HMACSHA256(passwordBytes);
+            var keyBytes = new byte[hmac.HashSize / 8];
+            return keyBytes;
         }
 
         public static bool CanBeDecrypted(this string cipher)
@@ -123,9 +112,10 @@ namespace Warewolf.Security.Encryption
 
             return Decrypt(input);
         }
+
         public static string EncryptIfDecrypted(string input)
         {
-            if(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
             {
                 return input;
             }
@@ -137,6 +127,7 @@ namespace Warewolf.Security.Encryption
 
             return Encrypt(input);
         }
+
         public static bool IsBase64(this string base64String)
         {
             if (base64String.Contains(" ") || base64String.Contains("\t") || base64String.Contains("\r") || base64String.Contains("\n"))
