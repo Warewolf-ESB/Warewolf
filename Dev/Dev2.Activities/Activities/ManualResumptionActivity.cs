@@ -42,6 +42,7 @@ namespace Dev2.Activities
         private IStateNotifier _stateNotifier = null;
         private readonly bool _persistenceEnabled;
         private readonly IPersistenceExecution _scheduler;
+        private ActivityFunc<string, bool> _overrideDataFunc;
 
         public ManualResumptionActivity()
             : this(Config.Persistence, new PersistenceExecution())
@@ -55,6 +56,7 @@ namespace Dev2.Activities
             {
                 DisplayName = "Data Action",
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
+                Handler = new DsfSequenceActivity(),
             };
             _persistenceEnabled = config.Enable;
             _scheduler = resumeExecution;
@@ -221,7 +223,7 @@ namespace Dev2.Activities
             return suspensionId.Trim();
         }
 
-        private ForEachInnerActivityTO InnerActivity(IExecutionEnvironment executionEnvironment)
+        private void InnerActivity(IExecutionEnvironment executionEnvironment)
         {
             if (OverrideDataFunc.Handler is DsfSequenceActivity sequenceActivity)
             {
@@ -231,7 +233,7 @@ namespace Dev2.Activities
                     {
                         case DsfActivity dsfActivity:
                         {
-                            return new ForEachInnerActivityTO(dsfActivity);
+                            return;
                         }
                         case DsfDotNetMultiAssignActivity multiAssignActivity:
                             {
@@ -253,21 +255,12 @@ namespace Dev2.Activities
 
                                 break;
                             }
-
                         default:
                         {
                             throw new Exception("Unexpected Warewolf Type.");
                         }
                     }
                 }
-            }
-            else
-            {
-                if (!(OverrideDataFunc.Handler is IDev2ActivityIOMapping ioMapping))
-                {
-                    throw new Exception(ErrorResource.InnerActivityWithNoContentError);
-                }
-                return new ForEachInnerActivityTO(ioMapping);
             }
 
             throw new Exception(ErrorResource.InnerActivityWithNoContentError);
