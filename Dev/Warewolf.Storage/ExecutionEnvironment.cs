@@ -80,6 +80,7 @@ namespace Warewolf.Storage
             {
                 return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             }
+
             try
             {
                 return PublicFunctions.EvalEnvExpression(exp, 0, shouldEscape, _env);
@@ -131,6 +132,7 @@ namespace Warewolf.Storage
             {
                 return;
             }
+
             try
             {
                 var envTemp = PublicFunctions.EvalAssignWithFrame(new AssignValue(exp, value), update, _env);
@@ -140,15 +142,17 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message);
+                Errors.Add(err.Message + ": " + exp);
             }
         }
+
         public void AssignString(string exp, string value, int update)
         {
             if (string.IsNullOrEmpty(exp))
             {
                 return;
             }
+
             try
             {
                 var envTemp = PublicFunctions.EvalAssignWithFrameTypeCast(new AssignValue(exp, value), update, _env, ShouldTypeCast.No);
@@ -158,7 +162,7 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message);
+                Errors.Add(err.Message + " : " + exp + " " + value);
             }
         }
 
@@ -178,7 +182,7 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message);
+                Errors.Add(err.Message + ": " + exp + " " + value);
             }
         }
 
@@ -187,17 +191,15 @@ namespace Warewolf.Storage
         {
             try
             {
-
                 var envTemp = PublicFunctions.EvalAssignWithFrame(values, update, _env);
                 _env = envTemp;
-
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message);
-                throw;
+                Errors.Add(err.Message + ": " + values.Name + " " + values.Value);
             }
         }
+
         public void AssignWithFrame(IEnumerable<IAssignValue> values, int update)
         {
             foreach (var value in values)
@@ -205,14 +207,17 @@ namespace Warewolf.Storage
                 AssignWithFrame(value, update);
             }
         }
+
         public int GetLength(string recordSetName)
         {
             if (recordSetName.Length > 1 && recordSetName[0] == '@')
             {
                 throw new Exception("not a recordset");
             }
+
             return _env.RecordSets[recordSetName.Trim()].LastIndex;
         }
+
         internal JContainer GetObject(string objectName) => _env.JsonObjects[objectName];
 
         public int GetObjectLength(string recordSetName)
@@ -223,6 +228,7 @@ namespace Warewolf.Storage
                 {
                     return ob[names[0]];
                 }
+
                 return findArray(ob[names[0]] as JObject, names.Skip(1).ToArray());
             }
 
@@ -236,7 +242,6 @@ namespace Warewolf.Storage
                 }
 
                 var arr = findArray(_env.JsonObjects[parts[0]] as JObject, parts.Skip(1).ToArray());
-
 
 
                 return arr.Count();
@@ -258,6 +263,7 @@ namespace Warewolf.Storage
             {
                 return _env.RecordSets.ContainsKey(recsetName.Item.Name);
             }
+
             return false;
         }
 
@@ -266,8 +272,9 @@ namespace Warewolf.Storage
             var result = Eval(expression, update);
             if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x)
             {
-                return new List<string> { WarewolfAtomToString(x.Item) };
+                return new List<string> {WarewolfAtomToString(x.Item)};
             }
+
             if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
             {
                 var recSetData = recSetResult.Item;
@@ -276,11 +283,13 @@ namespace Warewolf.Storage
                     return EvalListOfStringsHelper(recSetData);
                 }
             }
+
             if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
             {
                 var item = warewolfAtomListresult.Item;
                 return item.Select(WarewolfAtomToString).ToList();
             }
+
             throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
         }
 
@@ -294,8 +303,10 @@ namespace Warewolf.Storage
                 {
                     continue;
                 }
+
                 listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
             }
+
             return listOfData;
         }
 
@@ -314,6 +325,7 @@ namespace Warewolf.Storage
             {
                 throw new NullValueInVariableException(ErrorResource.VariableIsNull, string.Empty);
             }
+
             return a.ToString();
         }
 
@@ -347,6 +359,7 @@ namespace Warewolf.Storage
                 errorMessage = e.Message;
                 return false;
             }
+
             return false;
         }
 
@@ -362,6 +375,7 @@ namespace Warewolf.Storage
 
                 return WarewolfAtomToStringErrorIfNull(x);
             }
+
             if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
             {
                 var recSetData = recSetResult.Item;
@@ -370,6 +384,7 @@ namespace Warewolf.Storage
                     return WarewolfEvalResultToStringHelper(recSetData);
                 }
             }
+
             if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
             {
                 var x = warewolfAtomListresult.Item;
@@ -386,8 +401,10 @@ namespace Warewolf.Storage
                         res.Append(warewolfAtom).Append(@",");
                     }
                 }
+
                 return res.ToString();
             }
+
             throw new Exception(@"Null when value should have been returned.");
         }
 
@@ -401,8 +418,10 @@ namespace Warewolf.Storage
                 {
                     continue;
                 }
+
                 listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
             }
+
             return string.Join(",", listOfData);
         }
 
@@ -464,9 +483,12 @@ namespace Warewolf.Storage
                 var replace = expression.Replace(@"()", @"(*)");
                 return replace;
             }
+
             return expression;
         }
+
         public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update) => EvalAsTable(recordsetExpression, update, false);
+
         public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update, bool throwsifnotexists)
 
         {
@@ -475,14 +497,16 @@ namespace Warewolf.Storage
         }
 
         public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update) => EvalAsList(expression, update, false);
+
         public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists)
         {
             var result = Eval(expression, update, throwsifnotexists);
             if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
             {
                 var item = warewolfAtomResult.Item;
-                return new List<DataStorage.WarewolfAtom> { item };
+                return new List<DataStorage.WarewolfAtom> {item};
             }
+
             if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
             {
                 var recSetData = recSetResult.Item;
@@ -507,8 +531,10 @@ namespace Warewolf.Storage
                 {
                     continue;
                 }
+
                 listOfData.AddRange(keyValuePair.Value.ToList());
             }
+
             return listOfData;
         }
 
@@ -516,7 +542,6 @@ namespace Warewolf.Storage
 
         public void ApplyUpdate(string expression, Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> clause, int update)
         {
-
             var temp = PublicFunctions.EvalUpdate(expression, _env, update, clause);
             _env = temp;
         }
@@ -555,6 +580,7 @@ namespace Warewolf.Storage
                     return $"[[{outputidentifier?.Name}({i}).{outputidentifier?.Column}]]";
                 }
             }
+
             return outputVar;
         }
 
@@ -599,11 +625,13 @@ namespace Warewolf.Storage
                 var index = recordSetExpression.Item?.Name;
                 return $"[[{index}(*).{EvaluationFunctions.PositionColumn}]]";
             }
+
             if (rec is LanguageAST.LanguageExpression.RecordSetNameExpression recordSetNameExpression)
             {
                 var index = recordSetNameExpression.Item?.Name;
                 return $"[[{index}(*).{EvaluationFunctions.PositionColumn}]]";
             }
+
             // This is a fail safe
             throw new Exception("Unhandled Recordset LanguageExpression");
         }
@@ -626,13 +654,15 @@ namespace Warewolf.Storage
                 {
                     return;
                 }
+
                 var envTemp = AssignEvaluation.evalJsonAssign(value, update, _env, ShouldTypeCast.Yes);
                 _env = envTemp;
             }
             catch (Exception err)
             {
-                Errors.Add(err.Message);
-                throw;
+                var res = err.Message + ": " + value.Name;
+                Errors.Add(res);
+                throw new Exception(res);
             }
         }
 
@@ -653,11 +683,13 @@ namespace Warewolf.Storage
                         return _env.JsonObjects[nameExpression.Item.Name];
                     }
                 }
+
                 if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression arrayExpression)
                 {
                     return _env.JsonObjects[arrayExpression.Item.ObjectName];
                 }
             }
+
             // BUG: if any other types are added to JsonIdentifierExpression this method will no longer be correct.
             return null;
         }
@@ -683,7 +715,6 @@ namespace Warewolf.Storage
                     {
                         indexMap = GetIndexAddRecordSetIndexes(exp, recSetExpression);
                     }
-
                 }
             }
 
@@ -703,6 +734,7 @@ namespace Warewolf.Storage
             {
                 indexMap.Add(exp.Replace(@"(*).", $"({index})."));
             }
+
             return indexMap;
         }
 
@@ -748,11 +780,13 @@ namespace Warewolf.Storage
             {
                 _jsonWriter.WriteStartObject();
             }
+
             public void WriteVariables(DataStorage.WarewolfEnvironment _env)
             {
                 _jsonWriter.WritePropertyName("Environment");
                 _jsonWriter.WriteRawValue(VariablesToJson(_env));
             }
+
             static protected string VariablesToJson(DataStorage.WarewolfEnvironment _env)
             {
                 var stringList = PublicFunctions.EvalEnv(_env);
@@ -761,6 +795,7 @@ namespace Warewolf.Storage
                 {
                     sb.Append(@string);
                 }
+
                 return sb.ToString();
             }
 
@@ -779,6 +814,7 @@ namespace Warewolf.Storage
                 _jsonWriter.WriteEndObject();
                 _jsonWriter.Flush();
             }
+
             public string GetJson()
             {
                 CloseJson();
@@ -789,7 +825,7 @@ namespace Warewolf.Storage
 
             public void Dispose()
             {
-                ((IDisposable)_jsonWriter).Dispose();
+                ((IDisposable) _jsonWriter).Dispose();
                 _stream.Dispose();
             }
 
@@ -805,7 +841,8 @@ namespace Warewolf.Storage
                 {
                     return;
                 }
-                var env = (JObject)jsonEnv.Property("Environment")?.Value;
+
+                var env = (JObject) jsonEnv.Property("Environment")?.Value;
                 var jsonScalars = env?.Property("scalars")?.Value as JObject;
                 var jsonRecSets = env?.Property("record_sets")?.Value as JObject;
                 var jsonJObjects = env?.Property("json_objects")?.Value as JObject;
@@ -813,7 +850,6 @@ namespace Warewolf.Storage
                 AssignScalarData(environment, jsonScalars);
                 AssignRecSetData(environment, jsonRecSets);
                 AssignJsonData(environment, jsonJObjects);
-
             }
 
             private static JObject GetEnvironmentJObject(string serializedEnv)
@@ -855,7 +891,6 @@ namespace Warewolf.Storage
                 foreach (var recSetObj in jsonRecSets.Properties())
                 {
                     AssignRecSetData(environment, recSetObj);
-
                 }
             }
 
@@ -868,7 +903,7 @@ namespace Warewolf.Storage
 
                 foreach (var scalarObj in jsonScalars.Properties())
                 {
-                    environment.Assign($"[[{scalarObj.Name}]]", (string)scalarObj.Value, 0);
+                    environment.Assign($"[[{scalarObj.Name}]]", (string) scalarObj.Value, 0);
                 }
             }
 

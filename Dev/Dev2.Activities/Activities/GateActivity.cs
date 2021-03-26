@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -210,18 +210,19 @@ namespace Dev2.Activities
             }
         }
 
-        private static void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
+        private void HandleErrors(IDSFDataObject data, ErrorResultTO allErrors)
         {
             var hasErrors = allErrors.HasErrors();
             if (!hasErrors)
             {
                 return;
             }
-            DisplayAndWriteError(nameof(GateActivity), allErrors);
+
             foreach (var errorString in allErrors.FetchErrors())
             {
                 data.Environment.AddError(errorString);
             }
+            DisplayAndWriteError(data,DisplayName, allErrors);
         }
 
         private void BeforeExecuteRetryWorkflow()
@@ -615,7 +616,7 @@ namespace Dev2.Activities
                 if (allErrors.HasErrors())
                 {
                     var serviceName = GetType().Name;
-                    DisplayAndWriteError(serviceName, allErrors);
+                    DisplayAndWriteError(_dataObject,serviceName, allErrors);
                 }
             }
 

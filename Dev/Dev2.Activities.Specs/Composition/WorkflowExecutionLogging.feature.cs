@@ -212,7 +212,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 43
     testRunner.Then("a detailed execution exception log entry is created", ((string)(null)), table596, "Then ");
 #line 46
-    testRunner.And("a detailed execution completed log entry will have no logs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("a detailed execution completed log entry will have 1 log", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
     testRunner.And("execution is complete", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

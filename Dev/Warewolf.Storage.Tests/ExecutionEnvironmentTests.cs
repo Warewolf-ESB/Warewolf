@@ -41,7 +41,7 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_Constructor_ShouldSet_Id()
         {
             var _environment = new ExecutionEnvironment();
-            
+
             Assert.IsNotNull(_environment.Id);
             Assert.AreNotEqual(Guid.Empty, _environment.Id);
         }
@@ -115,7 +115,7 @@ namespace Warewolf.Storage.Tests
             _environment.Assign("[[v]]", "[[rec()]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("assigning an entire recordset to a variable is not defined", _environment.Errors.First());
+            Assert.AreEqual("assigning an entire recordset to a variable is not defined: [[v]]", _environment.Errors.First());
         }
 
         [TestMethod]
@@ -128,7 +128,7 @@ namespace Warewolf.Storage.Tests
             _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("parse error", _environment.Errors.First());
+            Assert.AreEqual("parse error: [[v]] [[asdf.asdf]]", _environment.Errors.First());
         }
 
         [TestMethod]
@@ -179,7 +179,7 @@ namespace Warewolf.Storage.Tests
             _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("parse error", _environment.Errors.First());
+            Assert.AreEqual("parse error: [[v]] [[asdf.asdf]]", _environment.Errors.First());
         }
 
         [TestMethod]
@@ -322,7 +322,7 @@ namespace Warewolf.Storage.Tests
         {
             var _environment = new ExecutionEnvironment();
 
-            Assert.ThrowsException<Exception>(()=> _environment.Eval("[[NotSetVariable]]", 0, true), "variable [[NotSetVariable]] not found");
+            Assert.ThrowsException<Exception>(() => _environment.Eval("[[NotSetVariable]]", 0, true), "variable [[NotSetVariable]] not found");
         }
 
         [TestMethod]
@@ -681,7 +681,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_ToStar_GivenJson_ShouldReturnAddStar()
         {
-
             var _environment = new ExecutionEnvironment();
             var star = _environment.ToStar("[[@Person().Name]]");
 
@@ -946,7 +945,6 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        [Ignore]
         public void ExecutionEnvironment_GetObjectLength_ChildArray2()
         {
             var _environment = new ExecutionEnvironment();
@@ -1406,16 +1404,12 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_AssignWithFrame_GivenEmptyString_ThrowsWithMessage()
         {
-            var _environment = new ExecutionEnvironment();
-            _environment.AssignWithFrame(new AssignValue("[[@Person().Name]]", "Value"), 0);
-            try
-            {
-                _environment.AssignWithFrame(new AssignValue(string.Empty, "Value"), 0);
-            }
-            catch (Exception e)
-            {
-                Assert.AreEqual("invalid variable assigned to ", e.Message);
-            }
+            var environment = new ExecutionEnvironment();
+            environment.AssignWithFrame(new AssignValue("[[@Person().Name]]", "Value"), 0);
+
+            environment.AssignWithFrame(new AssignValue(string.Empty, "Value"), 0);
+            Assert.IsTrue(environment.HasErrors());
+            Assert.AreEqual("invalid variable assigned to :  Value", environment.FetchErrors());
         }
 
         [TestMethod]
@@ -1428,12 +1422,11 @@ namespace Warewolf.Storage.Tests
             {
                 _environment.AssignWithFrame(new AssignValue("[[rec(0).a]", "Value"), 0);
                 Assert.IsTrue(_environment.HasErrors());
-                Assert.AreEqual("parse error", _environment.FetchErrors());
-
+                Assert.AreEqual("parse error: [[rec(0).a] Value", _environment.FetchErrors());
             }
             catch (Exception e)
             {
-                Assert.AreEqual("parse error", e.Message);
+                Assert.AreEqual("parse error: [[rec(0).a] Value", e.Message);
             }
         }
 
@@ -1443,7 +1436,8 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_AssignWithFrame()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AssignWithFrame(new List<IAssignValue> {
+            _environment.AssignWithFrame(new List<IAssignValue>
+            {
                 new AssignValue("[[rec().name]]", "n1"),
                 new AssignValue("[[rec().name]]", "n2"),
             }, 0);
@@ -1619,7 +1613,7 @@ namespace Warewolf.Storage.Tests
             {
                 "[[rec().Name]]"
             };
-            var distinctCols = new List<string> { "[[rec().Name]]" };
+            var distinctCols = new List<string> {"[[rec().Name]]"};
 
             var _environment = new ExecutionEnvironment();
             _environment.Assign("[[rec().Name]]", "bob", 0);
@@ -1627,7 +1621,7 @@ namespace Warewolf.Storage.Tests
             _environment.Assign("[[rec().Name]]", "bob1", 0);
             _environment.Assign("[[rec().Name]]", "bob", 0);
 
-            var resultVariable = new List<string> { "[[rec1(*).Name]]" };
+            var resultVariable = new List<string> {"[[rec1(*).Name]]"};
             _environment.AssignUnique(cols, distinctCols, resultVariable, 0);
 
             var result = _environment.EvalAsListOfStrings("[[rec1(*)]]", 0).ToArray();
@@ -1646,7 +1640,7 @@ namespace Warewolf.Storage.Tests
             {
                 "[[rec().Name]]"
             };
-            var distinctCols = new List<string> { "[[rec().Name]]" };
+            var distinctCols = new List<string> {"[[rec().Name]]"};
 
             var _environment = new ExecutionEnvironment();
             _environment.Assign("[[rec().Name]]", "bob", 0);
@@ -1658,7 +1652,7 @@ namespace Warewolf.Storage.Tests
             _environment.Assign("[[rec().Name]]", "bob", 0);
             _environment.Assign("[[rec().Surname]]", "sbob", 0);
 
-            var resultVariable = new List<string> { "[[rec1(*).Name]]" };
+            var resultVariable = new List<string> {"[[rec1(*).Name]]"};
             _environment.AssignUnique(cols, distinctCols, resultVariable, 0);
 
             var result = _environment.EvalAsListOfStrings("[[rec1(*)]]", 0).ToArray();
@@ -1699,7 +1693,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_EvalJContainer_GivenEmptyString_ShouldReturn()
         {
-
             var _environment = new ExecutionEnvironment();
             var evalJContainer = _environment.EvalJContainer(string.Empty);
 
@@ -1730,7 +1723,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_EvalJContainer_NameExpression_GetObject()
         {
-
             var _environment = new ExecutionEnvironment();
             _environment.AssignJson(new AssignValue("[[@Obj().name]]", "Bob"), 0);
 
@@ -1820,7 +1812,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_EvalForJson_GivenInvalidScalar_ShouldNotThrow()
         {
-
             var _environment = new ExecutionEnvironment();
             var warewolfEvalResult = _environment.EvalForJson("[[rec(0).a]");
 
@@ -1838,7 +1829,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_AssignJson_GivenEmptyString_ShouldNotThrow()
         {
-
             var _environment = new ExecutionEnvironment();
             var beforeJson = _environment.ToJson();
 
@@ -1854,9 +1844,8 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_AssignJson_GivenObjectExecutionEnvironment_ShouldAddObject()
         {
-
             var _environment = new ExecutionEnvironment();
-            var values = new List<IAssignValue> { new AssignValue("[[@Person.Name]]", "John") };
+            var values = new List<IAssignValue> {new AssignValue("[[@Person.Name]]", "John")};
             _environment.AssignJson(values, 0);
 
             var result = _environment.EvalAsListOfStrings("[[@Person]]", 0);
@@ -1870,7 +1859,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_AssignJson_GivenInvalidObject_ShouldThrowParseError()
         {
-
             var _environment = new ExecutionEnvironment();
             var values = new AssignValue("[[@Person.Name]", "John");
 
@@ -1881,7 +1869,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (Exception e)
             {
-                Assert.AreEqual("parse error", e.Message);
+                Assert.AreEqual("parse error: [[@Person.Name]", e.Message);
             }
         }
 

@@ -1,7 +1,7 @@
 #pragma warning disable
-﻿/*
+ /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -155,19 +155,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                // Handle Errors
-                var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
-                {
-                    DisplayAndWriteError("DsfCreateJsonActivity", allErrors);
-                    var errorString = allErrors.MakeDataListReady();
-                    dataObject.Environment.AddError(errorString);
-                }
-                if (dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
-                }
+                HandleErrors(dataObject, update, allErrors);
+            }
+        }
+
+        void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            var hasErrors = allErrors.HasErrors();
+            if (!hasErrors && dataObject.Environment.Errors.Any())
+            {
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
+            }
+
+            if (hasErrors)
+            {
+                var errorString = allErrors.MakeDataListReady();
+                dataObject.Environment.AddError(errorString);
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
+            }
+
+            if (dataObject.IsDebugMode())
+            {
+                DispatchDebugState(dataObject, StateType.Before, update);
+                DispatchDebugState(dataObject, StateType.After, update);
             }
         }
 

@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -51,20 +51,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public enForEachType ForEachType { get; set; }
 
-        [FindMissing]
-        public string From { get; set; }
+        [FindMissing] public string From { get; set; }
 
-        [FindMissing]
-        public string To { get; set; }
+        [FindMissing] public string To { get; set; }
 
-        [FindMissing]
-        public string Recordset { get; set; }
+        [FindMissing] public string Recordset { get; set; }
 
-        [FindMissing]
-        public string CsvIndexes { get; set; }
+        [FindMissing] public string CsvIndexes { get; set; }
 
-        [FindMissing]
-        public string NumOfExections { get; set; }
+        [FindMissing] public string NumOfExections { get; set; }
 
         [Inputs("FromDisplayName")]
         [FindMissing]
@@ -166,7 +161,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 DisplayName = "Data Action",
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
-
             };
             DisplayName = "For Each";
         }
@@ -186,6 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _originalUniqueID = Guid.Parse(UniqueID);
             }
+
             WorkSurfaceMappingId = _originalUniqueID;
             UniqueID = Guid.NewGuid().ToString();
         }
@@ -201,7 +196,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, environment, out errors, update);
 
             return result;
-
         }
 
         private void AddDebug(IDSFDataObject dataObject, IExecutionEnvironment environment, int update)
@@ -232,6 +226,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 AddDebugItem(new DebugEvalResult(From, "From", environment, update), debugItem);
             }
+
             if (ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
             {
                 AddDebugItem(new DebugEvalResult(To, "To", environment, update), debugItem);
@@ -288,6 +283,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 error = e.Message;
             }
+
             return result;
         }
 
@@ -297,6 +293,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 debugInput.FlushStringBuilder();
             }
+
             return _debugInputs;
         }
 
@@ -335,6 +332,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     dataObject.Environment.AddError(err);
                 }
+
                 itr = exePayload.IndexIterator;
 
                 var innerA = GetInnerActivity(out string error);
@@ -357,11 +355,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     _operationalData.IncIterationCount();
                 }
+
                 allErrors.MergeErrors(errors);
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFForEach", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -423,6 +421,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
                     debugStates?.AssertResultList?.Add(itemToAdd);
                 }
+
                 DispatchDebugState(dataObject, StateType.Duration, 0);
             }
         }
@@ -452,17 +451,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentInstanceID = _previousParentId;
                 dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
-                // Handle Errors
-                if (allErrors.HasErrors())
+                foreach (var fetchError in allErrors.FetchErrors())
                 {
-                    DisplayAndWriteError("DsfForEachActivity", allErrors);
-                    foreach (var fetchError in allErrors.FetchErrors())
-                    {
-                        dataObject.Environment.AddError(fetchError);
-                    }
-
-                    dataObject.ParentInstanceID = _previousParentId;
+                    dataObject.Environment.AddError(fetchError);
                 }
+                dataObject.ParentInstanceID = _previousParentId;
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
             }
         }
 
@@ -472,7 +466,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 return new List<IDev2Activity>();
             }
-            var nextNodes = new List<IDev2Activity> { act };
+
+            var nextNodes = new List<IDev2Activity> {act};
             return nextNodes;
         }
 
@@ -491,6 +486,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
                     testRunResult.Message = failMessage;
                 }
+
                 testRunResult.RunTestResult = RunResult.TestFailed;
             }
         }
@@ -550,7 +546,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfForEachActivity)obj);
+            return Equals((DsfForEachActivity) obj);
         }
 
         public override int GetHashCode()
@@ -561,7 +557,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _previousInputsIndex;
                 hashCode = (hashCode * 397) ^ _previousOutputsIndex;
-                hashCode = (hashCode * 397) ^ (int)ForEachType;
+                hashCode = (hashCode * 397) ^ (int) ForEachType;
                 hashCode = (hashCode * 397) ^ (From != null ? From.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Recordset != null ? Recordset.GetHashCode() : 0);
