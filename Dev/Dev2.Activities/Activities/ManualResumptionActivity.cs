@@ -11,26 +11,18 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.TO;
-using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Util;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
-using Warewolf.Storage;
-using Warewolf.Storage.Interfaces;
-using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
@@ -135,7 +127,7 @@ namespace Dev2.Activities
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
-                var overrideVariables = "";
+                const string overrideVariables = "";
                 if (OverrideInputVariables)
                 {
                     var suspendedEnv = _scheduler.GetSuspendedEnvironment(suspensionId);
@@ -149,14 +141,19 @@ namespace Dev2.Activities
                     {
                         throw new Exception(suspendedEnv);
                     }
-
-                    var environment = new ExecutionEnvironment();
-                    environment.FromJson(suspendedEnv);
-                    InnerActivity(environment);
-                    overrideVariables = environment.ToJson();
+                    var startActivityId = _scheduler.GetStartActivityId(suspensionId);
+                    var resumeObject = _dataObject;
+                    resumeObject.StartActivityId = Guid.Parse(startActivityId);
+                    resumeObject.Environment = _dataObject.Environment;
+                    resumeObject.Environment.FromJson(suspendedEnv);
+                    InnerActivity(resumeObject, _update);
+                    Response = _scheduler.ManualResumeWithOverrideJob(resumeObject, suspensionId);
+                }
+                else
+                {
+                    Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
                 }
 
-                Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
                 _stateNotifier?.LogActivityExecuteState(this);
                 if (_dataObject.IsDebugMode())
                 {
@@ -223,57 +220,23 @@ namespace Dev2.Activities
             return suspensionId.Trim();
         }
 
-        private void InnerActivity(IExecutionEnvironment executionEnvironment)
+        private void InnerActivity(IDSFDataObject dataObject, int update)
         {
             if (OverrideDataFunc.Handler is DsfSequenceActivity sequenceActivity)
             {
-                foreach (var activity in sequenceActivity.Activities)
+                foreach (var dsfActivity in sequenceActivity.Activities)
                 {
-                    switch (activity)
+                    if (dsfActivity is IDev2Activity act)
                     {
-                        case DsfActivity dsfActivity:
-                        {
-                            return;
-                        }
-                        case DsfDotNetMultiAssignActivity multiAssignActivity:
-                            {
-                                var fieldsCollection = multiAssignActivity.FieldsCollection.Where(o => o.FieldName != "" && o.FieldValue != "");
-                                foreach (var field in fieldsCollection)
-                                {
-                                    executionEnvironment.AssignWithFrame(new AssignValue(field.FieldName, field.FieldValue), _update);
-                                }
-
-                                break;
-                            }
-                        case DsfDotNetMultiAssignObjectActivity multiAssignObjectActivity:
-                            {
-                                var fieldsCollection = multiAssignObjectActivity.FieldsCollection.Where(o => o.FieldName != "" && o.FieldValue != "");
-                                foreach (var field in fieldsCollection)
-                                {
-                                    executionEnvironment.AssignWithFrame(new AssignValue(field.FieldName, field.FieldValue), _update);
-                                }
-
-                                break;
-                            }
-                        default:
-                        {
-                            throw new Exception("Unexpected Warewolf Type.");
-                        }
+                        ExecuteActivity(dataObject, update, dsfActivity, act);
                     }
                 }
             }
-
-            throw new Exception(ErrorResource.InnerActivityWithNoContentError);
         }
 
-        private static IEnumerable<IServiceInput> TranslateInputMappingToInputs(string inputMapping)
+        private static void ExecuteActivity(IDSFDataObject dataObject, int update, Activity dsfActivity, IDev2Activity act)
         {
-            var inputDefs = DataListFactory.CreateInputParser().Parse(inputMapping);
-            return inputDefs.Select(inputDef => new ServiceInput(inputDef.Name, inputDef.RawValue)
-            {
-                EmptyIsNull = inputDef.EmptyToNull,
-                RequiredField = inputDef.IsRequired
-            }).Cast<IServiceInput>().ToList();
+            act.Execute(dataObject, update);
         }
 
         public void SetStateNotifier(IStateNotifier stateNotifier)
