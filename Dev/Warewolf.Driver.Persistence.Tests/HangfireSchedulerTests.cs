@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -713,6 +714,140 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 
             mockResumableExecutionContainer.Verify(o => o.Execute(out errors, 0), Times.Once);
             mockStateNotifier.Verify(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob"), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_GetStartActivityId_Expected_Success()
+        {
+            var jobStorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobStorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobStorage);
+
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+            var identity = new MockPrincipal();
+            var expectedStartActivityId = "4032a11e-4fb3-4208-af48-b92a0602ab4b";
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder(expectedStartActivityId)},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(identity.Name)}
+            };
+
+            var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+            var startActivityId = scheduler.GetStartActivityId(jobId);
+            Assert.AreEqual(expectedStartActivityId, startActivityId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_GetStartActivityId_Expected_EmptyString()
+        {
+            var jobStorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobStorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobStorage);
+
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+            var identity = new MockPrincipal();
+            var expectedStartActivityId = "";
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder(expectedStartActivityId)},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(identity.Name)}
+            };
+
+            var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+            var startActivityId = scheduler.GetStartActivityId(jobId);
+            Assert.AreEqual(expectedStartActivityId, startActivityId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_GetStartActivityId_StateName_Error()
+        {
+            var jobStorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobStorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobStorage);
+
+            var error = scheduler.GetStartActivityId("");
+            Assert.AreEqual("Failed: " + ErrorResource.ManualResumptionSuspensionEnvBlank, error);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(HangfireScheduler))]
+        [ExpectedException(typeof(Exception))]
+        public void HangfireScheduler_ManualResumeWithOverrideJob_HasErrors_True()
+        {
+            var jobStorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobStorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobStorage);
+
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+            var identity = new MockPrincipal();
+            var expectedStartActivityId = "";
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder(expectedStartActivityId)},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(identity.Name)}
+            };
+
+            var mockEnvironment = new Mock<IExecutionEnvironment>();
+            mockEnvironment.Setup(o => o.HasErrors()).Returns(true);
+            mockEnvironment.Setup(o => o.FetchErrors()).Returns("error message");
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(mockEnvironment.Object);
+
+            var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+            scheduler.ManualResumeWithOverrideJob(mockDataObject.Object, jobId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(HangfireScheduler))]
+        public void HangfireScheduler_ManualResumeWithOverrideJob_HasErrors_False()
+        {
+            var jobStorage = new MemoryStorage();
+            var client = new BackgroundJobClient(jobStorage);
+            var scheduler = new Persistence.Drivers.HangfireScheduler(client, jobStorage);
+
+            var suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString();
+            var identity = new MockPrincipal();
+            var expectedStartActivityId = "";
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder(expectedStartActivityId)},
+                {"versionNumber", new StringBuilder("1")},
+                {"currentuserprincipal", new StringBuilder(identity.Name)}
+            };
+
+            var mockEnvironment = new Mock<IExecutionEnvironment>();
+            mockEnvironment.Setup(o => o.HasErrors()).Returns(false);
+
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockDataObject.Setup(o => o.Environment).Returns(mockEnvironment.Object);
+
+            var jobId = scheduler.ScheduleJob(suspendOption, suspendOptionValue, values);
+            var withOverrideJob = scheduler.ManualResumeWithOverrideJob(mockDataObject.Object, jobId);
+            Assert.AreEqual(GlobalConstants.Success, withOverrideJob);
         }
 
         private static DynamicService CreateServiceEntry()

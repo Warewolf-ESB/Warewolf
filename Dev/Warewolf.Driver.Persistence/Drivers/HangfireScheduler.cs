@@ -38,12 +38,14 @@ namespace Warewolf.Driver.Persistence.Drivers
         private JobStorage _jobStorage;
         private IBackgroundJobClient _client;
 
+        [ExcludeFromCodeCoverage]
         public HangfireScheduler()
         {
             _jobStorage = SqlServerStorage();
             _client = new BackgroundJobClient(_jobStorage);
         }
 
+        [ExcludeFromCodeCoverage]
         private SqlServerStorage SqlServerStorage()
         {
             try
@@ -326,6 +328,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
         }
 
+        [ExcludeFromCodeCoverage]
         private string ConnectionString
         {
             get
