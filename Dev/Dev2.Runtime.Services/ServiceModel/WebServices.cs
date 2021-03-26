@@ -187,7 +187,8 @@ namespace Dev2.Runtime.ServiceModel
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             
             var requestBody = string.Empty;
-            if (service.IsManualChecked)
+            var IsClassicRequestBody = !service.IsManualChecked && !service.IsFormDataChecked;
+            if (service.IsManualChecked || IsClassicRequestBody)
             {
                 requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
             }
