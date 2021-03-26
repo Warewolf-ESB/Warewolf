@@ -196,5 +196,86 @@ namespace Warewolf.Driver.Persistence.Tests
             var scheduler = new PersistenceExecution(null);
             scheduler.ResumeJob(mockDataObject.Object, expectedJobId, true, environment);
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceExecution))]
+        [ExpectedException(typeof(Exception))]
+        public void PersistenceExecution_GetStartActivityId_PersistenceSettingsNoConfigured()
+        {
+            const string expectedJobId = "1234";
+            Config.Persistence.PersistenceScheduler = "";
+            var scheduler = new PersistenceExecution(null);
+            scheduler.GetStartActivityId(expectedJobId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_GetStartActivityId_Success()
+        {
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")}
+            };
+
+            const enSuspendOption suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString(CultureInfo.InvariantCulture);
+            const string expectedJobId = "1234";
+            Config.Persistence.PersistenceScheduler = nameof(Hangfire);
+            var mockPersistenceScheduler = new Mock<IPersistenceScheduler>();
+            mockPersistenceScheduler.Setup(o => o.ScheduleJob(suspendOption, suspendOptionValue, values))
+                .Returns(expectedJobId).Verifiable();
+            mockPersistenceScheduler.Setup(o => o.GetStartActivityId(expectedJobId))
+                .Returns(GlobalConstants.Success).Verifiable();
+
+            var scheduler = new PersistenceExecution(mockPersistenceScheduler.Object);
+            var result = scheduler.GetStartActivityId(expectedJobId);
+            Assert.AreEqual(GlobalConstants.Success, result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceExecution))]
+        [ExpectedException(typeof(Exception))]
+        public void PersistenceExecution_ManualResumeWithOverrideJob_PersistenceSettingsNoConfigured()
+        {
+            const string expectedJobId = "1234";
+            Config.Persistence.PersistenceScheduler = "";
+            var scheduler = new PersistenceExecution(null);
+            scheduler.ManualResumeWithOverrideJob(new Mock<IDSFDataObject>().Object, expectedJobId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_ManualResumeWithOverrideJob_Success()
+        {
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")}
+            };
+
+            const enSuspendOption suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString(CultureInfo.InvariantCulture);
+            const string expectedJobId = "1234";
+            Config.Persistence.PersistenceScheduler = nameof(Hangfire);
+            var mockPersistenceScheduler = new Mock<IPersistenceScheduler>();
+            mockPersistenceScheduler.Setup(o => o.ScheduleJob(suspendOption, suspendOptionValue, values))
+                .Returns(expectedJobId).Verifiable();
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockPersistenceScheduler.Setup(o => o.ManualResumeWithOverrideJob(mockDataObject.Object, expectedJobId))
+                .Returns(GlobalConstants.Success).Verifiable();
+
+            var scheduler = new PersistenceExecution(mockPersistenceScheduler.Object);
+            var result = scheduler.ManualResumeWithOverrideJob(mockDataObject.Object, expectedJobId);
+            Assert.AreEqual(GlobalConstants.Success, result);
+        }
     }
 }
