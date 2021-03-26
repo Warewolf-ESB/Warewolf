@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Dev2.Activities.Designers2.Web_Put;
 using Dev2.Activities.Designers2.Web_Service_Put;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -23,11 +24,11 @@ using TechTalk.SpecFlow;
 namespace Dev2.Activities.Specs.Toolbox.Resources.Web
 {
     [Binding]
-    public sealed class PutWebConnectoToolSteps
+    public sealed class PutWebConnectorToolSteps
     {
         readonly ScenarioContext scenarioContext;
 
-        public PutWebConnectoToolSteps(ScenarioContext scenarioContext)
+        public PutWebConnectorToolSteps(ScenarioContext scenarioContext)
         {
             if (scenarioContext == null)
             {
@@ -84,9 +85,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             scenarioContext.Add("mockServiceModel", mockServiceModel);
         }
 
-        WebServicePutViewModel GetViewModel()
+        WebPutActivityViewModel GetViewModel()
         {
-            return scenarioContext.Get<WebServicePutViewModel>("viewModel");
+            return scenarioContext.Get<WebPutActivityViewModel>("viewModel");
         }
 
         Mock<IWebServiceModel> GetServiceModel()
