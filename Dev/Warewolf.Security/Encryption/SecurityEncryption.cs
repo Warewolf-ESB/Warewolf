@@ -42,6 +42,7 @@ namespace Warewolf.Security.Encryption
                 cipherTextBytes = memoryStream.ToArray();
             }
 
+            symmetricKey.Dispose();
             var cipherText = Convert.ToBase64String(cipherTextBytes);
             return cipherText;
         }
@@ -66,6 +67,7 @@ namespace Warewolf.Security.Encryption
                 }
             }
 
+            symmetricKey.Dispose();
             var decrypted = Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
             return decrypted;
         }
@@ -74,8 +76,11 @@ namespace Warewolf.Security.Encryption
         {
             var key = PassPhrase + "|" + SaltValue;
             var passwordBytes = Encoding.ASCII.GetBytes(key);
-            var hmac = new HMACSHA256(passwordBytes);
-            var keyBytes = new byte[hmac.HashSize / 8];
+            byte[] keyBytes;
+            using (var hmac = new HMACSHA256(passwordBytes))
+            {
+                keyBytes = new byte[hmac.HashSize / 8];
+            }
             return keyBytes;
         }
 
