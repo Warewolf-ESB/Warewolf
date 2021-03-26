@@ -50,7 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var dsfWebPostActivity = new DsfWebPostActivity();
+            var dsfWebPostActivity = new WebPostActivity();
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(dsfWebPostActivity, typeof(DsfActivity));
         }
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var dsfWebPostActivity = new DsfWebPostActivity();
+            var dsfWebPostActivity = new WebPostActivity();
             //------------Assert Results-------------------------
             Assert.AreEqual("POST Web Method", dsfWebPostActivity.DisplayName);
         }
@@ -76,7 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var attributes = typeof(DsfWebPostActivity).GetCustomAttributes(false);
+            var attributes = typeof(WebPostActivity).GetCustomAttributes(false);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, attributes.Length);
             var firstAttr = attributes.First();

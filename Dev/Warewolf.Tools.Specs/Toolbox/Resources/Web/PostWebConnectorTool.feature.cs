@@ -94,37 +94,27 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
 #line 9
 this.ScenarioSetup(scenarioInfo);
 #line 10
- testRunner.And("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
-    testRunner.And("Post New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
  testRunner.And("Post Edit is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
- testRunner.When("I Select \"WebHeloo\" as a Post web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 14
+#line 12
  testRunner.Then("Post Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2437 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2449 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
+#line 13
+ testRunner.And("Post Header appears as", ((string)(null)), table2449, "And ");
 #line 15
- testRunner.And("Post Header appears as", ((string)(null)), table2437, "And ");
-#line 17
- testRunner.And("Post Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
- testRunner.And("Post Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
- testRunner.And("Post Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 20
  testRunner.And("Post Query is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 16
  testRunner.And("Post Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2438 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2450 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-#line 22
- testRunner.And("Post mapped outputs are", ((string)(null)), table2438, "And ");
+#line 17
+ testRunner.And("Post mapped outputs are", ((string)(null)), table2450, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -136,60 +126,42 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateWebServiceWithDifferentMethods()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Web Service with different methods", ((string[])(null)));
-#line 25
+#line 20
 this.ScenarioSetup(scenarioInfo);
-#line 26
- testRunner.And("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
-    testRunner.And("Post New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 21
+ testRunner.Given("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 22
  testRunner.And("Post Edit is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
- testRunner.When("I Select \"Dev2CountriesWebService\" as a Post web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 30
+#line 23
  testRunner.Then("Post Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2439 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2451 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
-#line 31
- testRunner.And("Post Header appears as", ((string)(null)), table2439, "And ");
-#line 33
- testRunner.And("Post Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
- testRunner.And("Post Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
- testRunner.And("Post Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 24
+ testRunner.And("Post Header appears as", ((string)(null)), table2451, "And ");
+#line 26
  testRunner.And("Post Query is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 27
  testRunner.And("Post Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
- testRunner.When("I click Post Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 39
- testRunner.Then("Post the Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 40
- testRunner.And("Post Variables are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
- testRunner.When("Post Test Inputs is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 42
- testRunner.Then("Post the response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 43
- testRunner.When("I click Post Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
- testRunner.Then("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
+ testRunner.And("Post the Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 29
+ testRunner.And("Post the response is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
+ testRunner.And("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2440 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2452 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table2440.AddRow(new string[] {
+            table2452.AddRow(new string[] {
                         "CountryID",
                         "[[CountryID]]"});
-            table2440.AddRow(new string[] {
+            table2452.AddRow(new string[] {
                         "Description",
                         "[[Description]]"});
-#line 45
- testRunner.And("Post mapped outputs are", ((string)(null)), table2440, "And ");
+#line 31
+ testRunner.And("Post mapped outputs are", ((string)(null)), table2452, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -203,101 +175,54 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding parameters in Post Post Web Connector Tool request headers is updating var" +
                     "iables", ((string[])(null)));
-#line 52
+#line 36
 this.ScenarioSetup(scenarioInfo);
-#line 53
- testRunner.And("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
-    testRunner.And("Post New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
- testRunner.When("I Select \"Dev2CountriesWebService\" as a Post web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 56
+#line 37
+ testRunner.Given("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 38
  testRunner.Then("Post Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 57
- testRunner.And("Post Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.And("Post Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 39
  testRunner.And("Post Query is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 40
  testRunner.And("Post Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 41
  testRunner.And("I enter \"?extension=[[extension]]&prefix=[[prefix]]\" as Post Query String", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
- testRunner.And("Post Url as \"http://TFSBLD.premier.local/integrationTestSite/GetCountries.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2441 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2453 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table2441.AddRow(new string[] {
+            table2453.AddRow(new string[] {
                         "[[a]]",
                         "T"});
-#line 63
- testRunner.And("I add Post Header as", ((string)(null)), table2441, "And ");
-#line 66
- testRunner.When("I click Post Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 67
- testRunner.Then("Post the Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 42
+ testRunner.And("I add Post Header as", ((string)(null)), table2453, "And ");
+#line 45
+ testRunner.And("Post the Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2442 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2454 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
-            table2442.AddRow(new string[] {
+            table2454.AddRow(new string[] {
                         "[[a]]"});
-            table2442.AddRow(new string[] {
+            table2454.AddRow(new string[] {
                         "[[extension]]"});
-            table2442.AddRow(new string[] {
+            table2454.AddRow(new string[] {
                         "[[prefix]]"});
-#line 68
- testRunner.And("Post Input variables are", ((string)(null)), table2442, "And ");
-#line 73
- testRunner.And("Post Test is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
- testRunner.And("Post Paste is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
- testRunner.When("Post Test Inputs is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 76
- testRunner.And("I click Post Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
- testRunner.Then("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 46
+ testRunner.And("Post Input variables are", ((string)(null)), table2454, "And ");
+#line 51
+ testRunner.And("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2443 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2455 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table2443.AddRow(new string[] {
+            table2455.AddRow(new string[] {
                         "CountryID",
                         "[[CountryID]]"});
-            table2443.AddRow(new string[] {
+            table2455.AddRow(new string[] {
                         "Description",
                         "[[Description]]"});
-#line 78
-    testRunner.And("Post mapped outputs are", ((string)(null)), table2443, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Post Web Service")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Post Web Connector Tool")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Resources")]
-        public virtual void EditingPostWebService()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Post Web Service", ((string[])(null)));
-#line 83
- this.ScenarioSetup(scenarioInfo);
-#line 84
- testRunner.And("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
-    testRunner.And("Post New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
- testRunner.When("I Select \"Dev2CountriesWebService\" as a Post web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 87
- testRunner.And("Post New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
- testRunner.And("Post Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
- testRunner.When("I click Post Edit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
- testRunner.Then("the \"Dev2CountriesWebService\" Post Source tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 52
+    testRunner.And("Post mapped outputs are", ((string)(null)), table2455, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -309,61 +234,39 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ChangingPostPostWebConnectorToolSources()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Post Post Web Connector Tool Sources", ((string[])(null)));
-#line 92
+#line 57
 this.ScenarioSetup(scenarioInfo);
-#line 93
- testRunner.And("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
-    testRunner.And("Post New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
- testRunner.When("I Select \"WebHeloo\" as a Post web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 96
+#line 58
+ testRunner.Given("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 59
  testRunner.Then("Post Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 97
- testRunner.And("Post Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
- testRunner.And("Post Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 60
  testRunner.And("Post Query is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 61
  testRunner.And("Post Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
- testRunner.And("I click Post Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
- testRunner.Then("Post the Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 103
- testRunner.When("Post Test Inputs is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 104
+#line 62
  testRunner.Then("Post Response appears as \"{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 105
- testRunner.When("I click Post Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 106
- testRunner.Then("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 63
+ testRunner.And("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2444 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2456 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table2444.AddRow(new string[] {
+            table2456.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-            table2444.AddRow(new string[] {
+            table2456.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
-#line 107
- testRunner.And("Post mapped outputs are", ((string)(null)), table2444, "And ");
-#line 111
- testRunner.When("I Select \"Google Address Lookup\" as a Post web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 112
+#line 64
+ testRunner.And("Post mapped outputs are", ((string)(null)), table2456, "And ");
+#line 68
  testRunner.Then("Post Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 113
- testRunner.And("Post Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
- testRunner.And("Post Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 69
  testRunner.And("Post Query is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 70
  testRunner.And("Post Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 71
  testRunner.And("Post Mappings is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -376,39 +279,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void PostWebConnectorToolReturnsText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post Web Connector Tool returns text", ((string[])(null)));
-#line 121
+#line 73
 this.ScenarioSetup(scenarioInfo);
-#line 122
- testRunner.And("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
-    testRunner.And("Post New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
- testRunner.When("I Select \"TestingReturnText\" as a Post web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 125
+#line 74
+ testRunner.Given("I drag Web Post Request Connector Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 75
  testRunner.Then("Post Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 126
- testRunner.And("Post Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 76
  testRunner.And("Post Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
- testRunner.And("I click Post Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
- testRunner.Then("Post the Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 130
- testRunner.When("Post Test Inputs is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 131
- testRunner.And("I click Post Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
- testRunner.Then("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 77
+ testRunner.And("Post Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2445 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2457 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table2445.AddRow(new string[] {
+            table2457.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-#line 133
- testRunner.And("Post mapped outputs are", ((string)(null)), table2445, "And ");
+#line 78
+ testRunner.And("Post mapped outputs are", ((string)(null)), table2457, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
