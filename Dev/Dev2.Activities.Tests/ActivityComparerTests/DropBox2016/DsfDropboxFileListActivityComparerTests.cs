@@ -987,7 +987,6 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
-        [Ignore("Incompatible with the latest version of Moq.")]
         public void DsfDropboxFileListActivity_TestExecuteTool_ExpertSuccess()
         {
             //--------------------------Arrange----------------------------
@@ -1005,7 +1004,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 dsfDropboxFileListActivity.ToPath = "TestToPath";
                 dsfDropboxFileListActivity.TestExecuteTool(mockDSFDataObject.Object, 0);
                 //--------------------------Assert-----------------------------
-                mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Never);
+                Assert.AreEqual(0, dsfDropboxFileListActivity.Files.Count);
             }
         }
         

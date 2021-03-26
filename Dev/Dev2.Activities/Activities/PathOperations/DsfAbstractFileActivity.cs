@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,6 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -82,6 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 					{
 						dataObject.Environment.Errors.Add(err);
 					}
+					DisplayAndWriteError(dataObject,DisplayName, allErrors);
 					foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
 					{
 						dataObject.Environment.Assign(region, "", update);

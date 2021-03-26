@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -232,15 +231,16 @@ namespace Dev2.Runtime.ESB.Execution
 
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
 
-                Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
+                Dev2Logger.Debug("Starting Execute", dsfDataObject.ExecutionID?.ToString());
 
                 var lastActivity = resource;
 
                 ExecuteNode(dsfDataObject, update, ref resource, ref lastActivity);
 
-                if (!dsfDataObject.StopExecution & dsfDataObject.ExecutionException is null)
+                if (!dsfDataObject.StopExecution)
                 {
                     dsfDataObject.StateNotifier?.LogExecuteCompleteState(lastActivity);
+                    dsfDataObject.ExecutionException = null;
                 }
             }
             finally
@@ -262,20 +262,20 @@ namespace Dev2.Runtime.ESB.Execution
 
         void AddExecutionToExecutionManager(IDSFDataObject dsfDataObject, IDev2Activity resource)
         {
-            Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
+            Dev2Logger.Debug("Got Execution Manager", dsfDataObject.ExecutionID?.ToString());
             if (_executionManager != null)
             {
                 if (!_executionManager.IsRefreshing || dsfDataObject.IsSubExecution)
                 {
-                    Dev2Logger.Debug("Adding Execution to Execution Manager", GlobalConstants.WarewolfDebug);
+                    Dev2Logger.Debug("Adding Execution to Execution Manager", dsfDataObject.ExecutionID?.ToString());
                     _executionManager.AddExecution();
-                    Dev2Logger.Debug("Added Execution to Execution Manager", GlobalConstants.WarewolfDebug);
+                    Dev2Logger.Debug("Added Execution to Execution Manager", dsfDataObject.ExecutionID?.ToString());
                 }
                 else
                 {
-                    Dev2Logger.Debug("Waiting", GlobalConstants.WarewolfDebug);
+                    Dev2Logger.Debug("Waiting", dsfDataObject.ExecutionID?.ToString());
                     _executionManager.Wait();
-                    Dev2Logger.Debug("Continued Execution", GlobalConstants.WarewolfDebug);
+                    Dev2Logger.Debug("Continued Execution", dsfDataObject.ExecutionID?.ToString());
                 }
             }
 
@@ -290,7 +290,7 @@ namespace Dev2.Runtime.ESB.Execution
             var environment = dsfDataObject.Environment;
             try
             {
-                Dev2Logger.Debug("Executing first node", GlobalConstants.WarewolfDebug);
+                Dev2Logger.Debug("Executing first node", dsfDataObject.ExecutionID?.ToString());
                 while (next != null)
                 {
                     var current = next;
@@ -300,20 +300,18 @@ namespace Dev2.Runtime.ESB.Execution
 
                     if (dsfDataObject.StopExecution)
                     {
-                        dsfDataObject.StateNotifier?.LogStopExecutionState(lastActivity);
                         if (dsfDataObject.Environment.FetchErrors().Length > 1)
                         {
                             dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
                         }
-
+                        dsfDataObject.StateNotifier?.LogStopExecutionState(lastActivity);
                         break;
                     }
                 }
             }
             catch (Exception exception)
             {
-                Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
-
+                Dev2Logger.Error(exception.Message, dsfDataObject.ExecutionID?.ToString());
                 dsfDataObject.ExecutionException = new Exception(dsfDataObject.Environment.FetchErrors());
                 dsfDataObject.StateNotifier?.LogExecuteException(exception, lastActivity);
             }

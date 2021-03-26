@@ -1,3 +1,26 @@
+19 March 2021
+================
+Enhancements
+---------
+Web
+- Posting an empty body to a Warewolf server workflow that uses the body to calculate the response, will now return a failing object message instead of an empty response.
+- Update help text and tooltips.
+
+Logging
+- Logging all errors to log server.
+- Enriched error messages for user experience.
+
+Bug Fixes
+---------
+Triggers
+- Resolved QueueWorker concurrency not reflecting changes.
+
+Suspend Execution and Manual Resumption
+- Resolved Windows authentication connection errors.
+
+Logging
+- All error messages are logged per Warewolf Log Level in Warewolf Settings.
+
 5 March 2021
 ================
 Enhancements

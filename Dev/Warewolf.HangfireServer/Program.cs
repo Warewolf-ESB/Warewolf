@@ -102,7 +102,7 @@ namespace HangfireServer
                     }
 
                     _writer.WriteLine("Starting Hangfire server...");
-                    _logger.Info("Starting Hangfire server...");
+                    _logger.Debug("Starting Hangfire server...");
 
                     var connectionString = ConnectionString();
                     if (string.IsNullOrEmpty(connectionString))
@@ -119,7 +119,7 @@ namespace HangfireServer
                     options.Urls.Add(dashboardEndpoint);
                     WebApp.Start<Dashboard>(options);
                     _writer.WriteLine("Hangfire dashboard started...");
-                    _logger.Info("Hangfire dashboard started...");
+                    _logger.Debug("Hangfire dashboard started...");
                     var backgroundJobServerOptions = new BackgroundJobServerOptions
                     {
                         WorkerCount = Environment.ProcessorCount * 5

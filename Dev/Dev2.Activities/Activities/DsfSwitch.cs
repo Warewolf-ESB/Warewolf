@@ -25,6 +25,7 @@ using Dev2.Common;
 using System.Activities.Statements;
 using Dev2.Common.State;
 using Dev2.Communication;
+using Dev2.Data.TO;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Activities
@@ -155,6 +156,7 @@ namespace Dev2.Activities
         {
             _debugOutputs.Clear();
             _debugInputs.Clear();
+            var allErrors = new ErrorResultTO();
             NextNodes = new List<IDev2Activity>();
             try
             {
@@ -173,18 +175,33 @@ namespace Dev2.Activities
             }
             catch (Exception err)
             {
-                dataObject.Environment.Errors.Add(err.Message);
+                allErrors.AddError(err.Message);
             }
             finally
             {
-                if (dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(dataObject, StateType.After, update);
-                    _debugOutputs = new List<DebugItem>();
-                }
+                HandleErrors(dataObject, update, allErrors);
             }
         }
+        void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            var hasErrors = allErrors.HasErrors();
+            if (!hasErrors && dataObject.Environment.Errors.Any())
+            {
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
+            }
+            if (hasErrors)
+            {
+                var errorString = allErrors.MakeDisplayReady();
+                dataObject.Environment.AddError(errorString);
+                DisplayAndWriteError(dataObject, DisplayName, allErrors);
+            }
 
+            if (dataObject.IsDebugMode())
+            {
+                DispatchDebugState(dataObject, StateType.After, update);
+                _debugOutputs = new List<DebugItem>();
+            }
+        }
         private void NewNextNodes(IDSFDataObject dataObject, string firstOrDefault)
         {
             var a = firstOrDefault;

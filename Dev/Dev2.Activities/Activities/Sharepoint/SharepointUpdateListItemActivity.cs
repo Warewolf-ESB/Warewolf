@@ -1,4 +1,13 @@
 #pragma warning disable
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -12,7 +21,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
-using Dev2.Communication;
 using Dev2.Comparer;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
@@ -143,9 +151,9 @@ namespace Dev2.Activities.Sharepoint
                 if (hasErrors)
                 {
                     dataObject.Environment.Assign(Result, "Failed", update);
-                    DisplayAndWriteError("SharepointUpdateListItemActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
+                    DisplayAndWriteError(dataObject,DisplayName, allErrors);
                 }
                 if (dataObject.IsDebugMode())
                 {

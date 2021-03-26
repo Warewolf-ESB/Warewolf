@@ -202,64 +202,6 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a workflow with a Valid User returns Execution Completed")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowResume")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResumeWorkflowExecution")]
-        public virtual void ResumingAWorkflowWithAValidUserReturnsExecutionCompleted()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow with a Valid User returns Execution Completed", new string[] {
-                        "ResumeWorkflowExecution"});
-#line 47
-this.ScenarioSetup(scenarioInfo);
-#line 48
- testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 49
- testRunner.And("Resource \"Hello World\" has rights \"Execute\" for \"SecuritySpecsUser\" with password" +
-                    " \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
- testRunner.And("Workflow \"Hello World\" has \"Assign a value to Name if blank (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
- testRunner.Then("Resume workflow \"Hello World\" at \"Assign a value to Name if blank (1)\" tool with " +
-                    "user \"SecuritySpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 52
- testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 53
- testRunner.Then("Resume message is \"Execution Completed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a workflow with a Valid User without setting correct inputs And Resume F" +
-            "rom SetTheOutputVariable tool returns error from workflow execution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowResume")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ResumeWorkflowExecution")]
-        public virtual void ResumingAWorkflowWithAValidUserWithoutSettingCorrectInputsAndResumeFromSetTheOutputVariableToolReturnsErrorFromWorkflowExecution()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow with a Valid User without setting correct inputs And Resume F" +
-                    "rom SetTheOutputVariable tool returns error from workflow execution", new string[] {
-                        "ResumeWorkflowExecution"});
-#line 56
-this.ScenarioSetup(scenarioInfo);
-#line 57
- testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
- testRunner.And("Resource \"Hello World\" has rights \"Execute\" for \"SecuritySpecsUser\" with password" +
-                    " \"ASfas123@!fda\" in \"Users\" group", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
- testRunner.And("Workflow \"Hello World\" has \"Set the output variable (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
- testRunner.Then("Resume workflow \"Hello World\" at \"Set the output variable (1)\" tool with user \"Se" +
-                    "curitySpecsUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 61
- testRunner.Then("Resume has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 62
- testRunner.Then("Resume message is \"Scalar value { Name } is NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore
