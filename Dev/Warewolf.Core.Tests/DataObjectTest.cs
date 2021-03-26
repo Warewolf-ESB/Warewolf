@@ -263,7 +263,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(76, properties.Length);
+            Assert.AreEqual(77, properties.Length);
 
             // now check each value to ensure it was cloned
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -337,6 +337,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.Environment, clonedObject.Environment);
             Assert.AreEqual(dataObject.CustomTransactionID, clonedObject.CustomTransactionID);
             Assert.AreEqual(dataObject.OriginalServiceName, clonedObject.OriginalServiceName);
+            Assert.AreEqual(dataObject.StartActivityId, clonedObject.StartActivityId);
         }
 
         #region Debug Mode Test

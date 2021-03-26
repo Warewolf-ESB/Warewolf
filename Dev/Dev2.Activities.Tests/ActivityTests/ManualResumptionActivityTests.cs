@@ -11,6 +11,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -269,72 +270,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(ManualResumptionActivity))]
-        public void ManualResumptionActivity_Execute_OverrideInputVariables_True_Failed_InnerActivityHasNoContent()
-        {
-            //------------Setup for test--------------------------
-            var workflowName = "workflowName";
-            var url = "http://localhost:3142/secure/WorkflowResume";
-            var resourceId = Guid.NewGuid();
-            var nextNodeId = Guid.NewGuid();
-            var workflowInstanceId = Guid.NewGuid();
-            var env = CreateExecutionEnvironment();
-            env.Assign("[[UUID]]", "public", 0);
-            env.Assign("[[JourneyName]]", "whatever", 0);
-
-            var mockStateNotifier = new Mock<IStateNotifier>();
-            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
-
-            var environmentId = Guid.Empty;
-            User = new Mock<IPrincipal>().Object;
-            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
-            {
-                ServiceName = workflowName,
-                ResourceID = resourceId,
-                WorkflowInstanceId = workflowInstanceId,
-                WebUrl = url,
-                ServerID = Guid.NewGuid(),
-                ExecutingUser = User,
-                IsDebug = true,
-                EnvironmentID = environmentId,
-                Environment = env,
-                IsRemoteInvokeOverridden = false,
-                DataList = new StringBuilder(CurrentDl),
-                IsServiceTestExecution = true
-            };
-
-            var mockActivity = new Mock<IDev2Activity>();
-            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
-            var config = new PersistenceSettings
-            {
-                Enable = true
-            };
-            var suspensionId = "321";
-            var overrideInputVariables = true;
-            var environment = env.ToJson();
-            var mockResumeJob = new Mock<IPersistenceExecution>();
-            mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment)).Verifiable();
-            mockResumeJob.Setup(o => o.GetSuspendedEnvironment(suspensionId)).Returns("Anything").Verifiable();
-            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
-            {
-                Response = "[[result]]",
-                OverrideInputVariables = overrideInputVariables,
-                SuspensionId = suspensionId
-            };
-
-            manualResumptionActivity.SetStateNotifier(mockStateNotifier.Object);
-            //------------Execute Test---------------------------
-            manualResumptionActivity.Execute(dataObject, 0);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, dataObject.Environment.AllErrors.Count);
-            var errors = dataObject.Environment.AllErrors.ToList();
-            Assert.AreEqual("", manualResumptionActivity.Response);
-            Assert.AreEqual(errors[0], ErrorResource.InnerActivityWithNoContentError);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(ManualResumptionActivity))]
         public void ManualResumptionActivity_Execute_OverrideInputVariables_VariableInput_True_Success()
         {
             //------------Setup for test--------------------------
@@ -383,9 +318,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var suspensionId = "321";
             var overrideInputVariables = true;
             var environment = env.ToJson();
+            var startActivityId = Guid.NewGuid();
+
             var mockResumeJob = new Mock<IPersistenceExecution>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment)).Verifiable();
             mockResumeJob.Setup(o => o.GetSuspendedEnvironment(suspensionId)).Returns("Anything").Verifiable();
+            mockResumeJob.Setup(o => o.GetStartActivityId(suspensionId)).Returns(startActivityId.ToString()).Verifiable();
+            mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(It.IsAny<IDSFDataObject>(), suspensionId)).Returns(startActivityId.ToString()).Verifiable();
             var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
@@ -400,7 +339,88 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dataObject.Environment.AllErrors.Count);
-            mockResumeJob.Verify(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment), Times.Once);
+            mockResumeJob.Verify(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment), Times.Never);
+            mockResumeJob.Verify(o => o.GetSuspendedEnvironment(suspensionId), Times.Once);
+            mockResumeJob.Verify(o => o.GetStartActivityId(suspensionId), Times.Once);
+            mockResumeJob.Verify(o => o.ManualResumeWithOverrideJob(It.IsAny<IDSFDataObject>(), suspensionId), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ManualResumptionActivity))]
+        public void ManualResumptionActivity_Execute_OverrideInputVariables_InnerActivity_True_Success()
+        {
+            //------------Setup for test--------------------------
+            var activity = CreateSequenceActivity();
+            var activityFunction = new ActivityFunc<string, bool>
+            {
+                DisplayName = activity.DisplayName,
+                Handler = activity,
+            };
+            var workflowName = "workflowName";
+            var url = "http://localhost:3142/secure/WorkflowResume";
+            var resourceId = Guid.NewGuid();
+            var nextNodeId = Guid.NewGuid();
+            var workflowInstanceId = Guid.NewGuid();
+            var env = CreateExecutionEnvironment();
+            env.Assign("[[UUID]]", "public", 0);
+            env.Assign("[[JourneyName]]", "whatever", 0);
+
+            var mockStateNotifier = new Mock<IStateNotifier>();
+            mockStateNotifier.Setup(stateNotifier => stateNotifier.LogActivityExecuteState(It.IsAny<IDev2Activity>()));
+
+            var environmentId = Guid.Empty;
+            User = new Mock<IPrincipal>().Object;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+                ServiceName = workflowName,
+                ResourceID = resourceId,
+                WorkflowInstanceId = workflowInstanceId,
+                WebUrl = url,
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentId,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+
+            var mockActivity = new Mock<IDev2Activity>();
+            mockActivity.Setup(o => o.UniqueID).Returns(nextNodeId.ToString());
+            var config = new PersistenceSettings
+            {
+                Enable = true
+            };
+            var suspensionId = "321";
+            var overrideInputVariables = true;
+            var environment = env.ToJson();
+            var startActivityId = Guid.NewGuid();
+
+            var mockResumeJob = new Mock<IPersistenceExecution>();
+            mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment)).Verifiable();
+            mockResumeJob.Setup(o => o.GetSuspendedEnvironment(suspensionId)).Returns("Anything").Verifiable();
+            mockResumeJob.Setup(o => o.GetStartActivityId(suspensionId)).Returns(startActivityId.ToString()).Verifiable();
+            mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(It.IsAny<IDSFDataObject>(), suspensionId)).Returns(GlobalConstants.Success).Verifiable();
+            var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
+            {
+                Response = "[[result]]",
+                OverrideInputVariables = overrideInputVariables,
+                SuspensionId = suspensionId,
+                OverrideDataFunc = activityFunction,
+            };
+
+            manualResumptionActivity.SetStateNotifier(mockStateNotifier.Object);
+            //------------Execute Test---------------------------
+            manualResumptionActivity.Execute(dataObject, 0);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(GlobalConstants.Success, manualResumptionActivity.Response);
+            mockResumeJob.Verify(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, environment), Times.Never);
+            mockResumeJob.Verify(o => o.GetSuspendedEnvironment(suspensionId), Times.Once);
+            mockResumeJob.Verify(o => o.GetStartActivityId(suspensionId), Times.Once);
+            mockResumeJob.Verify(o => o.ManualResumeWithOverrideJob(It.IsAny<IDSFDataObject>(), suspensionId), Times.Once);
         }
 
         [TestMethod]
@@ -454,9 +474,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var suspensionId = "321";
             var overrideInputVariables = true;
             var overrideEnvironment = env.ToJson();
+            var startActivityId = Guid.NewGuid();
+
             var mockResumeJob = new Mock<IPersistenceExecution>();
             mockResumeJob.Setup(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, overrideEnvironment)).Verifiable();
             mockResumeJob.Setup(o => o.GetSuspendedEnvironment(suspensionId)).Returns("Anything").Verifiable();
+            mockResumeJob.Setup(o => o.GetStartActivityId(suspensionId)).Returns(startActivityId.ToString()).Verifiable();
+            mockResumeJob.Setup(o => o.ManualResumeWithOverrideJob(It.IsAny<IDSFDataObject>(), suspensionId)).Returns(startActivityId.ToString()).Verifiable();
             var manualResumptionActivity = new ManualResumptionActivity(config, mockResumeJob.Object)
             {
                 Response = "[[result]]",
@@ -471,7 +495,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dataObject.Environment.AllErrors.Count);
-            mockResumeJob.Verify(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, overrideEnvironment), Times.Once);
+            mockResumeJob.Verify(o => o.ResumeJob(dataObject, suspensionId, overrideInputVariables, overrideEnvironment), Times.Never);
+            mockResumeJob.Verify(o => o.GetSuspendedEnvironment(suspensionId), Times.Once);
+            mockResumeJob.Verify(o => o.GetStartActivityId(suspensionId), Times.Once);
+            mockResumeJob.Verify(o => o.ManualResumeWithOverrideJob(It.IsAny<IDSFDataObject>(), suspensionId), Times.Once);
         }
 
         [TestMethod]
@@ -886,6 +913,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             return activity;
+        }
+
+        DsfSequenceActivity CreateSequenceActivity()
+        {
+            var activities = new Collection<Activity>
+            {
+                new DsfDotNetMultiAssignActivity(),
+                new DsfActivity(),
+            };
+            var dsfSequenceActivity = new DsfSequenceActivity
+            {
+                Activities = activities
+            };
+            return dsfSequenceActivity;
         }
 
         DsfActivity CreateWorkflowNoVariable()
