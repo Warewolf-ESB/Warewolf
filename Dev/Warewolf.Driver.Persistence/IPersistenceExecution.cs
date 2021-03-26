@@ -18,7 +18,9 @@ namespace Warewolf.Driver.Persistence
     public interface IPersistenceExecution
     {
         string GetSuspendedEnvironment(string jobId);
+        string GetStartActivityId(string jobId);
         string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment);
         string CreateAndScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values);
+        string ManualResumeWithOverrideJob(IDSFDataObject dsfDataObject, string jobId);
     }
 }

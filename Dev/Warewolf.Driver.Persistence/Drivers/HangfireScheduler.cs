@@ -31,6 +31,7 @@ using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Driver.Persistence.Drivers
 {
+    //TODO: This class needs to be refactored to the same standard. We either throw an exception or return an Error string, not both
     public class HangfireScheduler : IPersistenceScheduler
     {
         private IStateNotifier _stateNotifier = null;
@@ -97,6 +98,47 @@ namespace Warewolf.Driver.Persistence.Drivers
                     : persistedEnvironment.ToString();
 
                 return decryptEnvironment;
+            }
+
+            return string.Empty;
+        }
+
+        public string GetStartActivityId(string jobId)
+        {
+            var monitoringApi = _jobStorage.GetMonitoringApi();
+            var jobDetails = monitoringApi.JobDetails(jobId);
+            var errMsg = "Failed: ";
+            if (jobDetails is null)
+            {
+                return errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank;
+            }
+
+            var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+
+            if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
+            {
+                return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
+            }
+
+            if (currentState?.StateName == "Enqueued")
+            {
+                return errMsg + ErrorResource.ManualResumptionEnqueued;
+            }
+
+            if (currentState?.StateName == "Processing")
+            {
+                return errMsg + ErrorResource.ManualResumptionProcessing;
+            }
+
+            if (jobDetails.Job.Args[0] is Dictionary<string, StringBuilder> values)
+            {
+                values.TryGetValue("startActivityId", out StringBuilder startActivityId);
+
+                var startActivity = startActivityId.ToString().CanBeDecrypted()
+                    ? DpapiWrapper.Decrypt(startActivityId.ToString())
+                    : startActivityId.ToString();
+
+                return startActivity;
             }
 
             return string.Empty;
@@ -190,6 +232,56 @@ namespace Warewolf.Driver.Persistence.Drivers
             {
                 _stateNotifier?.LogExecuteException(ex, this);
                 Dev2Logger.Error(nameof(ResumeJob), ex, GlobalConstants.WarewolfError);
+                throw ex;
+            }
+
+            return GlobalConstants.Success;
+        }
+
+        public string ManualResumeWithOverrideJob(IDSFDataObject dsfDataObject, string jobId)
+        {
+            try
+            {
+                var monitoringApi = _jobStorage.GetMonitoringApi();
+                var jobDetails = monitoringApi.JobDetails(jobId);
+                var errMsg = "Failed: ";
+                if (jobDetails == null)
+                {
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank);
+                }
+
+                var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+
+                if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
+                {
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionAlreadyResumed);
+                }
+
+                if (currentState?.StateName == "Enqueued")
+                {
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionEnqueued);
+                }
+
+                if (currentState?.StateName == "Processing")
+                {
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionProcessing);
+                }
+
+                if (dsfDataObject.Environment.HasErrors())
+                {
+                    var message = dsfDataObject.Environment.FetchErrors();
+                    var failedState = new FailedState(new Exception(message));
+                    _client.ChangeState(jobId, failedState, ScheduledState.StateName);
+                    throw new Exception(message);
+                }
+
+                var manuallyResumedState = new ManuallyResumedState(dsfDataObject.Environment.ToJson());
+                _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
+            }
+            catch (Exception ex)
+            {
+                _stateNotifier?.LogExecuteException(ex, this);
+                Dev2Logger.Error(nameof(ManualResumeWithOverrideJob), ex, GlobalConstants.WarewolfError);
                 throw ex;
             }
 
