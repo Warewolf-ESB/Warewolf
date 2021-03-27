@@ -13,7 +13,6 @@ Scenario: Open new Post Web Tool
 	And  Post Header appears as
 	| Header | Value |
 	And Post Query is Enabled
-	And Post Generate Outputs is Enabled
 	And Post mapped outputs are
 	| Output | Output Alias |
 
@@ -24,8 +23,6 @@ Scenario: Create Web Service with different methods
 	And  Post Header appears as
 	| Header | Value |
 	And Post Query is Enabled
-	And Post Generate Outputs is Enabled
-	And Post the Generate Outputs window is shown
 	And Post the response is loaded
 	And Post Mapping is Enabled
 	And Post mapped outputs are
@@ -37,12 +34,10 @@ Scenario: Adding parameters in Post Post Web Connector Tool request headers is u
 	Given I drag Web Post Request Connector Tool onto the design surface
 	Then Post Header is Enabled
 	And Post Query is Enabled
-	And Post Generate Outputs is Enabled
 	And I enter "?extension=[[extension]]&prefix=[[prefix]]" as Post Query String
 	And I add Post Header as
          | Name  | Value |
          | [[a]] | T     |
-	And Post the Generate Outputs window is shown
 	And Post Input variables are
 	| Name          |
 	| [[a]]         |
@@ -58,7 +53,6 @@ Scenario: Changing Post Post Web Connector Tool Sources
 	Given I drag Web Post Request Connector Tool onto the design surface
 	Then Post Header is Enabled
 	And Post Query is Enabled
-	And Post Generate Outputs is Enabled
 	Then Post Response appears as "{"rec" : [{"a":"1","b":"a"}]}"
 	And Post Mapping is Enabled
 	And Post mapped outputs are
@@ -67,13 +61,11 @@ Scenario: Changing Post Post Web Connector Tool Sources
 	| b           | [[rec().b]] |
 	Then Post Header is Enabled
 	And Post Query is Enabled
-	And Post Generate Outputs is Enabled
 	And Post Mappings is Disabled
 
 Scenario: Post Web Connector Tool returns text
 	Given I drag Web Post Request Connector Tool onto the design surface
 	Then Post Header is Enabled
-	And Post Generate Outputs is Enabled
 	And Post Mapping is Enabled
 	And Post mapped outputs are
 	| Output   | Output Alias |
