@@ -77,7 +77,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             mockServiceModel.Setup(model => model.RetrieveSources()).Returns(sources);
             mockServiceModel.Setup(model => model.EditSource(It.IsAny<IWebServiceSource>())).Verifiable();
             mockServiceInputViewModel.SetupAllProperties();
-            var viewModel = new WebServicePutViewModel(modelItem, mockServiceModel.Object);
+            var viewModel = new WebPutActivityViewModel(modelItem, mockServiceModel.Object);
 
 
             scenarioContext.Add("viewModel", viewModel);
