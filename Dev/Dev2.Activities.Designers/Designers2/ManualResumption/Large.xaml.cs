@@ -9,32 +9,14 @@
 */
 
 using System.Windows;
-using Dev2.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.ManualResumption
 {
     public partial class Large
     {
-        private readonly DropEnabledActivityDesignerUtils _dropEnabledActivityDesignerUtils;
-
         public Large()
         {
             InitializeComponent();
-            _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
-            DropPoint.PreviewDrop += DoDrop;
-        }
-
-        private void DoDrop(object sender, DragEventArgs e)
-        {
-            var dataObject = e.Data;
-
-            var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(dataObject);
-            var multipleItemsToSequence = ManualResumptionViewModel.MultipleItemsToSequence(dataObject);
-            if (!dropEnabled || multipleItemsToSequence)
-            {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-            }
         }
 
         protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
