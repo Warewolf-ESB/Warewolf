@@ -45,7 +45,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         [Given(@"I drag Web Put Request Connector Tool onto the design surface")]
         public void GivenIDragWebPutRequestConnectorToolOntoTheDesignSurface()
         {
-            var activity = new DsfWebPutActivity();
+            var activity = new WebPutActivity();
             var modelItem = ModelItemUtils.CreateModelItem(activity);
             var mockServiceInputViewModel = new Mock<IManageWebServiceInputViewModel>();
             var mockServiceModel = new Mock<IWebServiceModel>();
