@@ -10,6 +10,7 @@
 
 using System;
 using System.Activities.Statements;
+using Dev2.Activities.Designers2.PathOperations.WriteFile;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -135,7 +136,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 
             _scenarioContext.Add("activity", fileWrite);
 
-            var viewModel = new WriteFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileWrite));
+            var viewModel = new WriteFileActivityDesignerViewModel(ModelItemUtils.CreateModelItem(fileWrite));
             if (!_scenarioContext.ContainsKey("viewModel"))
             {
                 _scenarioContext.Add("viewModel", viewModel);

@@ -28,8 +28,6 @@ Scenario: Create Bad User Server Source
 	When I Test the connection
 	Then The result is "Connection Error :Unauthorized"
 
-@Ignore
-#TODO: re-introduce this test when there is enough RAM in the build rig to host the container it depends on
 Scenario: Create Public Server Source
 	Given I create a server source as
 	| Address                             | AuthenticationType |
