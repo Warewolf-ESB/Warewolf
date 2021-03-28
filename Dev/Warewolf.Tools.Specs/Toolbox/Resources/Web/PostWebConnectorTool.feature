@@ -8,7 +8,6 @@ Feature: Post Web Connector Tool
 
 Scenario: Open new Post Web Tool
 	Given I drag Web Post Request Connector Tool onto the design surface
-	And Post Edit is Disabled
 	Then Post Header is Enabled
 	And  Post Header appears as
 	| Header | Value |
@@ -18,7 +17,6 @@ Scenario: Open new Post Web Tool
 
 Scenario: Create Web Service with different methods
 	Given I drag Web Post Request Connector Tool onto the design surface
-	And Post Edit is Disabled
 	Then Post Header is Enabled
 	And  Post Header appears as
 	| Header | Value |
