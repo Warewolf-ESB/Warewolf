@@ -49,7 +49,6 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [Ignore("Ignoring until the move to premier.local domain is complete")]
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithDbAccess_GetsMethods()
         {
             RunAs("IntegrationTester", "dev2", () =>
@@ -135,7 +134,6 @@ namespace Dev2.Integration.Tests.Services.Sql
         
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [Ignore("Ignoring until the move to premier.local domain is complete")]
         public void SqlDatabaseBroker_TestService_WindowsUserWithoutDbAccess_ReturnsInvalidResult()
         {
             Exception exception = null;

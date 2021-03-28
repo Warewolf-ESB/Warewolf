@@ -366,18 +366,12 @@
       <DependentUpon>DeleteWebConnectorTool.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorToolSteps.cs" />
-    <Compile Include="Toolbox\Resources\Web\PostWebConnectorTool.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PostWebConnectorTool.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Web\PostWebConnectorToolSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\PutWebConnectorTool.feature.cs">
       <DependentUpon>PutWebConnectorTool.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Toolbox\Resources\Web\PutWebConnectoToolSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\PutWebConnectorToolSteps.cs" />
     <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
       <DependentUpon>Command.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -478,12 +472,6 @@
     </Compile>
     <Compile Include="Toolbox\Utility\Redis\SpecExecutionEnvironmentErrors.cs" />
     <Compile Include="Toolbox\Utility\Redis\Cache\CacheRedisSteps.cs" />
-    <Compile Include="Toolbox\Utility\Redis\Source\RedisSource.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RedisSource.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Utility\Redis\Source\RedisSourceSteps.cs" />
     <Compile Include="Toolbox\Utility\Redis\SpecRedisActivity.cs" />
     <Compile Include="Toolbox\Utility\Redis\SpecAssignValue.cs" />
     <Compile Include="Toolbox\Utility\WebRequest\WebRequest.feature.cs">
@@ -711,10 +699,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeleteWebConnectorTool.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\Web\PostWebConnectorTool.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PostWebConnectorTool.feature.cs</LastGenOutput>
-    </None>
     <None Include="Toolbox\Resources\Web\PutWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PutWebConnectorTool.feature.cs</LastGenOutput>
@@ -786,10 +770,6 @@
     <None Include="Toolbox\Utility\Redis\Cache\CacheRedis.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CacheRedis.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Utility\Redis\Source\RedisSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>RedisSource.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\WebRequest\WebRequest.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
