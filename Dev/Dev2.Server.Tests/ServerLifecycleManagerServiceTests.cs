@@ -189,7 +189,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"));
+            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 
@@ -330,7 +330,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"));
+            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
 
             mockQueueProcessMonitor.Verify(o => o.Start(), Times.Once);
             mockServerLifeCycleWorker.Verify();
@@ -517,7 +517,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"));
+            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("hangfire server exited"), Times.Once); //we might need to use the write like the above, inverstigate.
             mockServerLifeCycleWorker.Verify();
         }
@@ -589,7 +589,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"));
+            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("hangfire server exited"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
             mockServerLifeCycleWorker.Verify();
         }
@@ -662,7 +662,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"));
+            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("logging service exited"), Times.Once); //we might need to use the write like the above, inverstigate.
             mockServerLifeCycleWorker.Verify();
         }
@@ -734,7 +734,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"));
+            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("logging service exited"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
             mockServerLifeCycleWorker.Verify();
         }
@@ -813,7 +813,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading resource activity cache...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
-            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"));
+            mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine($"queue process died: {expectedResourceName}({expectedId})"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
             mockServerLifeCycleWorker.Verify();
         }
