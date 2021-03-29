@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,8 +18,11 @@ using Unlimited.Framework.Converters.Graph.String;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
-namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
+namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests
+{
+
     [TestClass]
+    [TestCategory(nameof(StringInterrogator))]
     public class StringInterrogatorTests {
 
         internal string XmlGiven() {
@@ -58,12 +61,76 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         }
 
 
+        private object JsonGiven()
+        {
+                return @"{
+    ""Name"": ""Dev2"",
+    ""Motto"": ""Eat lots of cake"",
+    ""Departments"": [      
+        {
+          ""Name"": ""Dev"",
+          ""Employees"": [
+              {
+                ""Name"": ""Brendon"",
+                ""Surename"": ""Page""
+              },
+              {
+                ""Name"": ""Jayd"",
+                ""Surename"": ""Page""
+              }
+            ]
+        },
+        {
+          ""Name"": ""Accounts"",
+          ""Employees"": [
+              {
+                ""Name"": ""Bob"",
+                ""Surename"": ""Soap""
+              },
+              {
+                ""Name"": ""Joe"",
+                ""Surename"": ""Pants""
+              }
+            ]
+        }
+      ],
+    ""Contractors"": [      
+        {
+          ""Name"": ""Roofs Inc."",
+          ""PhoneNumber"": ""123"",
+        },
+        {
+          ""Name"": ""Glass Inc."",
+          ""PhoneNumber"": ""1234"",
+        },
+        {
+          ""Name"": ""Doors Inc."",
+          ""PhoneNumber"": ""1235"",
+        },
+        {
+          ""Name"": ""Cakes Inc."",
+          ""PhoneNumber"": ""1236"",
+        }
+      ],
+    ""PrimitiveRecordset"": [
+      ""
+        RandomData
+    "",
+      ""
+        RandomData1
+    ""
+    ],
+  }";
+
+        }
+
+
 
         /// <summary>
         /// Create mapper given XML expected XML mapper created.
         /// </summary>
         [TestMethod]
-        public void CreateMapper_Expected_XmlMapper() {         
+        public void StringInterrogator_CreateMapper_Expected_XmlMapper() {         
             var stringInterrogator = new StringInterrogator();
 
             var mapper = stringInterrogator.CreateMapper(XmlGiven());
@@ -74,11 +141,26 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void StringInterrogator_CreateMapper_Expected_JsonMapper()
+        {
+            var stringInterrogator = new StringInterrogator();
+
+            var mapper = stringInterrogator.CreateMapper(JsonGiven());
+
+            var expected = typeof(JsonMapper);
+            var actual = mapper.GetType();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+
         /// <summary>
         /// Create navigator given xml expected XML navigator returned.
         /// </summary>
         [TestMethod]
-        public void CreateNavigator_Expected_XmlNavigator() {            
+        public void StringInterrogator_CreateNavigator_Expected_XmlNavigator() {            
             var stringInterrogator = new StringInterrogator();
 
             var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(XmlPath));
@@ -91,14 +173,14 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
 
         [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void CreateNavigator_Given_TypeofIPath_Expected_Exception()
+        public void StringInterrogator_CreateNavigator_Given_TypeofIPath_Expected_Exception()
         {
             var stringInterrogator = new StringInterrogator();
             stringInterrogator.CreateNavigator(XmlGiven(), typeof(IPath));
         }
 
         [TestMethod]        
-        public void CreateNavigator_Given_TypeofPocoPath_Expected_PocoNavigator()
+        public void StringInterrogator_CreateNavigator_Given_TypeofPocoPath_Expected_PocoNavigator()
         {
             var stringInterrogator = new StringInterrogator();
             var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(PocoPath));
@@ -107,7 +189,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         }
 
         [TestMethod]        
-        public void CreateNavigator_Given_TypeofUnExistingType_Expected_PocoPath()
+        public void StringInterrogator_CreateNavigator_Given_TypeofUnExistingType_Expected_PocoPath()
         {
             var stringInterrogator = new StringInterrogator();
             var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(UnExistingType));
