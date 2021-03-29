@@ -54,6 +54,16 @@ namespace Warewolf.Driver.Persistence
             return scheduler.GetStartActivityId(jobId);
         }
 
+        public string GetExecutingUser(string jobId)
+        {
+            var scheduler = _persistenceScheduler ?? GetScheduler();
+            if (scheduler is null)
+            {
+                throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
+            }
+            return scheduler.GetExecutingUser(jobId);
+        }
+
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables,string environment)
         {
             var scheduler = _persistenceScheduler ?? GetScheduler();
