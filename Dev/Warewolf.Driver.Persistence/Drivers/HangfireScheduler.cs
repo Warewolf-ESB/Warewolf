@@ -146,6 +146,47 @@ namespace Warewolf.Driver.Persistence.Drivers
             return string.Empty;
         }
 
+        public string GetExecutingUser(string jobId)
+        {
+            var monitoringApi = _jobStorage.GetMonitoringApi();
+            var jobDetails = monitoringApi.JobDetails(jobId);
+            var errMsg = "Failed: ";
+            if (jobDetails is null)
+            {
+                return errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank;
+            }
+
+            var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+
+            if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
+            {
+                return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
+            }
+
+            if (currentState?.StateName == "Enqueued")
+            {
+                return errMsg + ErrorResource.ManualResumptionEnqueued;
+            }
+
+            if (currentState?.StateName == "Processing")
+            {
+                return errMsg + ErrorResource.ManualResumptionProcessing;
+            }
+
+            if (jobDetails.Job.Args[0] is Dictionary<string, StringBuilder> values)
+            {
+                values.TryGetValue("currentuserprincipal", out StringBuilder currentUserPrincipal);
+
+                var executingUser = currentUserPrincipal.ToString().CanBeDecrypted()
+                    ? DpapiWrapper.Decrypt(currentUserPrincipal.ToString())
+                    : currentUserPrincipal.ToString();
+
+                return executingUser;
+            }
+
+            return string.Empty;
+        }
+
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment)
         {
             try

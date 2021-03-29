@@ -11,6 +11,8 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
@@ -23,6 +25,7 @@ using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Activities
 {
@@ -142,10 +145,13 @@ namespace Dev2.Activities
                         throw new Exception(suspendedEnv);
                     }
                     var startActivityId = _scheduler.GetStartActivityId(suspensionId);
+                    var currentUserPrincipal = _scheduler.GetExecutingUser(suspensionId);
+                    var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal));
                     var resumeObject = _dataObject;
                     resumeObject.StartActivityId = Guid.Parse(startActivityId);
                     resumeObject.Environment = _dataObject.Environment;
                     resumeObject.Environment.FromJson(suspendedEnv);
+                    resumeObject.ExecutingUser = executingUser;
                     InnerActivity(resumeObject, _update);
                     Response = _scheduler.ManualResumeWithOverrideJob(resumeObject, suspensionId);
                 }
@@ -179,6 +185,23 @@ namespace Dev2.Activities
             }
 
             return new List<string> {Response};
+        }
+
+        static string GetUnqualifiedName(string userName)
+        {
+            if (userName.Contains("\\"))
+            {
+                return userName.Split('\\').Last().Trim();
+            }
+
+            return userName;
+        }
+
+        private static IPrincipal BuildClaimsPrincipal(string currentUserPrincipal)
+        {
+            var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal).Trim();
+            var genericIdentity = new GenericIdentity(unqualifiedUserName);
+            return new GenericPrincipal(genericIdentity, new string [0]);
         }
 
         private void LogException(Exception ex, ErrorResultTO allErrors)
