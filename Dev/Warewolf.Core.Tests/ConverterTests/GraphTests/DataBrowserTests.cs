@@ -293,14 +293,14 @@ namespace Dev2.Tests.ConverterTests.GraphTests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        public void DataBrowserFactory_Map_GivenJson_PathsOfReferenceType_Expected_PocoPaths()
+        public void DataBrowserFactory_Map_GivenJson_PathsOfReferenceType_Expected_JsonPaths()
         {
             var testData = GivenPoco();
 
             var dataBrowser = DataBrowserFactory.CreateDataBrowser();
             var paths = dataBrowser.Map(GivenJson());
 
-            Assert.IsTrue(paths.All(p => p.GetType() == typeof(PocoPath)));
+            Assert.IsTrue(paths.All(p => p.GetType() == typeof(JsonPath)));
         }
 
         /// <summary>
