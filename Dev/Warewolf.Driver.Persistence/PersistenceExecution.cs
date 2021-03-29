@@ -34,34 +34,14 @@ namespace Warewolf.Driver.Persistence
             _persistenceScheduler = persistenceScheduler;
         }
 
-        public string GetSuspendedEnvironment(string jobId)
+        public IPersistedValues GetPersistedValues(string jobId)
         {
             var scheduler = _persistenceScheduler ?? GetScheduler();
             if (scheduler is null)
             {
                 throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
             }
-            return scheduler.GetSuspendedEnvironment(jobId);
-        }
-
-        public string GetStartActivityId(string jobId)
-        {
-            var scheduler = _persistenceScheduler ?? GetScheduler();
-            if (scheduler is null)
-            {
-                throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
-            }
-            return scheduler.GetStartActivityId(jobId);
-        }
-
-        public string GetExecutingUser(string jobId)
-        {
-            var scheduler = _persistenceScheduler ?? GetScheduler();
-            if (scheduler is null)
-            {
-                throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
-            }
-            return scheduler.GetExecutingUser(jobId);
+            return scheduler.GetPersistedValues(jobId);
         }
 
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables,string environment)

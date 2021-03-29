@@ -133,25 +133,22 @@ namespace Dev2.Activities
                 const string overrideVariables = "";
                 if (OverrideInputVariables)
                 {
-                    var suspendedEnv = _scheduler.GetSuspendedEnvironment(suspensionId);
+                    var persistedValues = _scheduler.GetPersistedValues(suspensionId);
 
-                    if (string.IsNullOrEmpty(suspendedEnv))
+                    if (string.IsNullOrEmpty(persistedValues.SuspendedEnvironment))
                     {
                         throw new Exception(ErrorResource.ManualResumptionSuspensionEnvBlank);
                     }
 
-                    if (suspendedEnv.StartsWith("Failed:"))
+                    if (persistedValues.SuspendedEnvironment.StartsWith("Failed:"))
                     {
-                        throw new Exception(suspendedEnv);
+                        throw new Exception(persistedValues.SuspendedEnvironment);
                     }
-                    var startActivityId = _scheduler.GetStartActivityId(suspensionId);
-                    var currentUserPrincipal = _scheduler.GetExecutingUser(suspensionId);
-                    var executingUser = BuildClaimsPrincipal(DpapiWrapper.DecryptIfEncrypted(currentUserPrincipal));
                     var resumeObject = _dataObject;
-                    resumeObject.StartActivityId = Guid.Parse(startActivityId);
+                    resumeObject.StartActivityId = persistedValues.StartActivityId;
                     resumeObject.Environment = _dataObject.Environment;
-                    resumeObject.Environment.FromJson(suspendedEnv);
-                    resumeObject.ExecutingUser = executingUser;
+                    resumeObject.Environment.FromJson(persistedValues.SuspendedEnvironment);
+                    resumeObject.ExecutingUser = persistedValues.ExecutingUser;
                     InnerActivity(resumeObject, _update);
                     Response = _scheduler.ManualResumeWithOverrideJob(resumeObject, suspensionId);
                 }
@@ -185,23 +182,6 @@ namespace Dev2.Activities
             }
 
             return new List<string> {Response};
-        }
-
-        static string GetUnqualifiedName(string userName)
-        {
-            if (userName.Contains("\\"))
-            {
-                return userName.Split('\\').Last().Trim();
-            }
-
-            return userName;
-        }
-
-        private static IPrincipal BuildClaimsPrincipal(string currentUserPrincipal)
-        {
-            var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal).Trim();
-            var genericIdentity = new GenericIdentity(unqualifiedUserName);
-            return new GenericPrincipal(genericIdentity, new string [0]);
         }
 
         private void LogException(Exception ex, ErrorResultTO allErrors)
