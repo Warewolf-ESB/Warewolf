@@ -8,8 +8,9 @@
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.ExchangeNewEmail"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                       xmlns:exchangeEmail="clr-namespace:Dev2.Activities.Designers2.ExchangeEmail"
                        mc:Ignorable="d"
-                       d:DataContext="{d:DesignInstance local:ExchangeEmailDesignerViewModel}"
+                       d:DataContext="{d:DesignInstance exchangeEmail:ExchangeEmailDesignerViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
     <sap:ActivityDesigner.Icon>
         <Binding Source="{StaticResource Utility-SendMail-Icon}"/>
