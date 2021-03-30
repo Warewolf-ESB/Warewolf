@@ -12,17 +12,13 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
-
-
 namespace Unlimited.Framework.Converters.Graph.String
-
 {
     [Serializable]
     public class StringInterrogator : IInterrogator
@@ -114,6 +110,5 @@ namespace Unlimited.Framework.Converters.Graph.String
 
             return result;
         }
-
     }
 }
