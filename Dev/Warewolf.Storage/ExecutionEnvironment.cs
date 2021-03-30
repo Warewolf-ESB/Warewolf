@@ -59,14 +59,17 @@ namespace Warewolf.Storage
             }
             catch (Exception e)
             {
-                if (throwsifnotexists && e is NullValueInVariableException && e.Message.Contains("variable not found"))
+                if (throwsifnotexists)
                 {
-                    throw new WarewolfExecutionEnvironmentException(string.Format("variable {0} not found", (e as NullValueInVariableException).VariableName));
-                }
+                    if (e is NullValueInVariableException variableException && e.Message.Contains("variable not found"))
+                    {
+                        throw new WarewolfExecutionEnvironmentException($"variable {variableException.VariableName} not found");
+                    }
 
-                if (throwsifnotexists || e is IndexOutOfRangeException || e.Message.Contains(@"index was not an int"))
-                {
-                    throw;
+                    if (e is IndexOutOfRangeException || e.Message.Contains(@"index was not an int"))
+                    {
+                        throw;
+                    }
                 }
 
                 return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
