@@ -30,12 +30,15 @@ namespace Dev2.Activities.Designers.Tests.ManualResumption
         [TestCategory(nameof(ManualResumptionViewModel))]
         public void ManualResumptionViewModel_Constructor_Default_ModelItemIsValid_Initialized()
         {
-            var modelItem = CreateEmptyModelItem();
+            var modelItem = CreateModelItem();
+            var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
+            mockApplicationAdapter.Setup(p => p.TryFindResource(It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(mockApplicationAdapter.Object);
             var viewModel = new ManualResumptionViewModel(modelItem);
             viewModel.Validate();
             Assert.IsTrue(viewModel.HasLargeView);
             Assert.AreEqual("Use the Manual Resumption tool when you need to resume execution of a workflow before the time scheduled in the Suspend Execution tool.", viewModel.HelpText);
-            Assert.AreEqual("", viewModel.DataFuncDisplayName);
+            Assert.AreEqual("Sequence", viewModel.DataFuncDisplayName);
             Assert.IsNull(viewModel.DataFuncIcon);
         }
 
@@ -50,7 +53,11 @@ namespace Dev2.Activities.Designers.Tests.ManualResumption
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = new ManualResumptionViewModel(CreateEmptyModelItem());
+            var modelItem = CreateModelItem();
+            var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
+            mockApplicationAdapter.Setup(p => p.TryFindResource(It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(mockApplicationAdapter.Object);
+            var viewModel = new ManualResumptionViewModel(modelItem);
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
@@ -64,27 +71,41 @@ namespace Dev2.Activities.Designers.Tests.ManualResumption
         {
             var modelItem = CreateModelItem();
             var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
-            mockApplicationAdapter.Setup(p => p.TryFindResource(It.IsAny<string>())).Verifiable();
+            mockApplicationAdapter.Setup(p => p.TryFindResource("ControlFlow-Sequence")).Verifiable();
             CustomContainer.Register(mockApplicationAdapter.Object);
 
             var viewModel = new ManualResumptionViewModel(modelItem);
             viewModel.Validate();
             Assert.IsTrue(viewModel.HasLargeView);
             Assert.AreEqual("Use the Manual Resumption tool when you need to resume execution of a workflow before the time scheduled in the Suspend Execution tool.", viewModel.HelpText);
-            Assert.AreEqual("Assign", viewModel.DataFuncDisplayName);
-            mockApplicationAdapter.Verify(model => model.TryFindResource("Explorer-WorkflowService"), Times.Once());
+            Assert.AreEqual("Sequence", viewModel.DataFuncDisplayName);
+            mockApplicationAdapter.Verify(model => model.TryFindResource("ControlFlow-Sequence"), Times.Once());
             Assert.IsNull(viewModel.DataFuncIcon);
         }
 
-        private static ModelItem CreateEmptyModelItem()
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ManualResumptionViewModel))]
+        public void ManualResumptionViewModel_MultipleItemsToSequence()
         {
-           return ModelItemUtils.CreateModelItem(new ManualResumptionActivity());
+            var modelItem = CreateModelItem();
+            var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
+            mockApplicationAdapter.Setup(p => p.TryFindResource("ControlFlow-Sequence")).Verifiable();
+            CustomContainer.Register(mockApplicationAdapter.Object);
+
+            var viewModel = new ManualResumptionViewModel(modelItem);
+            viewModel.Validate();
+            Assert.IsTrue(viewModel.HasLargeView);
+            Assert.AreEqual("Use the Manual Resumption tool when you need to resume execution of a workflow before the time scheduled in the Suspend Execution tool.", viewModel.HelpText);
+            Assert.AreEqual("Sequence", viewModel.DataFuncDisplayName);
+            mockApplicationAdapter.Verify(model => model.TryFindResource("ControlFlow-Sequence"), Times.Once());
+            Assert.IsNull(viewModel.DataFuncIcon);
         }
 
         private static ModelItem CreateModelItem()
         {
             var uniqueId = Guid.NewGuid().ToString();
-            var commonAssign = CommonAssign();
+            var commonAssign = CommonSequence();
 
             var resumptionActivity = new ManualResumptionActivity
             {
@@ -99,9 +120,9 @@ namespace Dev2.Activities.Designers.Tests.ManualResumption
             return ModelItemUtils.CreateModelItem(resumptionActivity);
         }
 
-        private static DsfMultiAssignActivity CommonAssign(Guid? uniqueId = null)
+        private static DsfSequenceActivity CommonSequence(Guid? uniqueId = null)
         {
-            return uniqueId.HasValue ? new DsfMultiAssignActivity { UniqueID = uniqueId.Value.ToString() } : new DsfMultiAssignActivity();
+            return uniqueId.HasValue ? new DsfSequenceActivity { UniqueID = uniqueId.Value.ToString() } : new DsfSequenceActivity();
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -117,12 +117,12 @@ namespace Warewolf.Driver.Persistence.Tests
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PersistenceExecution))]
         [ExpectedException(typeof(Exception))]
-        public void PersistenceExecution_GetSuspendedEnvironment_PersistenceSettingsNoConfigured()
+        public void PersistenceExecution_GetPersistedValues_PersistenceSettingsNoConfigured()
         {
             const string expectedJobId = "1234";
             Config.Persistence.PersistenceScheduler = "";
             var scheduler = new PersistenceExecution(null);
-            scheduler.GetSuspendedEnvironment(expectedJobId);
+            scheduler.GetPersistedValues(expectedJobId);
         }
 
         [TestMethod]
@@ -130,9 +130,10 @@ namespace Warewolf.Driver.Persistence.Tests
         [TestCategory(nameof(PersistenceExecution))]
         public void PersistenceExecution_GetSuspendedEnvironment_Success()
         {
+            var resourceId = Guid.Parse("ab04663e-1e09-4338-8f61-a06a7ae5ebab");
             var values = new Dictionary<string, StringBuilder>
             {
-                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"resourceID", new StringBuilder(resourceId.ToString())},
                 {"environment", new StringBuilder("")},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")}
@@ -145,12 +146,14 @@ namespace Warewolf.Driver.Persistence.Tests
             var mockPersistenceScheduler = new Mock<IPersistenceScheduler>();
             mockPersistenceScheduler.Setup(o => o.ScheduleJob(suspendOption, suspendOptionValue, values))
                 .Returns(expectedJobId).Verifiable();
-            mockPersistenceScheduler.Setup(o => o.GetSuspendedEnvironment(expectedJobId))
-                .Returns(GlobalConstants.Success).Verifiable();
+            var mockPersistedValues = new Mock<IPersistedValues>();
+            mockPersistedValues.Setup(o => o.ResourceId).Returns(resourceId);
+            mockPersistenceScheduler.Setup(o => o.GetPersistedValues(expectedJobId))
+                 .Returns(mockPersistedValues.Object).Verifiable();
 
             var scheduler = new PersistenceExecution(mockPersistenceScheduler.Object);
-            var result = scheduler.GetSuspendedEnvironment(expectedJobId);
-            Assert.AreEqual(GlobalConstants.Success, result);
+            var result = scheduler.GetPersistedValues(expectedJobId);
+            Assert.AreEqual(resourceId, result.ResourceId);
         }
 
         [TestMethod]
@@ -195,6 +198,47 @@ namespace Warewolf.Driver.Persistence.Tests
             Config.Persistence.PersistenceScheduler = "";
             var scheduler = new PersistenceExecution(null);
             scheduler.ResumeJob(mockDataObject.Object, expectedJobId, true, environment);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceExecution))]
+        [ExpectedException(typeof(Exception))]
+        public void PersistenceExecution_ManualResumeWithOverrideJob_PersistenceSettingsNoConfigured()
+        {
+            const string expectedJobId = "1234";
+            Config.Persistence.PersistenceScheduler = "";
+            var scheduler = new PersistenceExecution(null);
+            scheduler.ManualResumeWithOverrideJob(new Mock<IDSFDataObject>().Object, expectedJobId);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PersistenceExecution))]
+        public void PersistenceExecution_ManualResumeWithOverrideJob_Success()
+        {
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder("ab04663e-1e09-4338-8f61-a06a7ae5ebab")},
+                {"environment", new StringBuilder("")},
+                {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
+                {"versionNumber", new StringBuilder("1")}
+            };
+
+            const enSuspendOption suspendOption = enSuspendOption.SuspendUntil;
+            var suspendOptionValue = DateTime.Now.AddDays(1).ToString(CultureInfo.InvariantCulture);
+            const string expectedJobId = "1234";
+            Config.Persistence.PersistenceScheduler = nameof(Hangfire);
+            var mockPersistenceScheduler = new Mock<IPersistenceScheduler>();
+            mockPersistenceScheduler.Setup(o => o.ScheduleJob(suspendOption, suspendOptionValue, values))
+                .Returns(expectedJobId).Verifiable();
+            var mockDataObject = new Mock<IDSFDataObject>();
+            mockPersistenceScheduler.Setup(o => o.ManualResumeWithOverrideJob(mockDataObject.Object, expectedJobId))
+                .Returns(GlobalConstants.Success).Verifiable();
+
+            var scheduler = new PersistenceExecution(mockPersistenceScheduler.Object);
+            var result = scheduler.ManualResumeWithOverrideJob(mockDataObject.Object, expectedJobId);
+            Assert.AreEqual(GlobalConstants.Success, result);
         }
     }
 }

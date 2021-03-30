@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
@@ -31,18 +32,31 @@ using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Driver.Persistence.Drivers
 {
+    public class PersistedValues : IPersistedValues
+    {
+        public Guid ResourceId { get; set; }
+        public int VersionNumber { get; set; }
+        public string SuspendedEnvironment { get; set; }
+        public Guid StartActivityId { get; set; }
+        public IPrincipal ExecutingUser { get; set; }
+    }
+    //TODO: This class needs to be refactored to the same standard. We either throw an exception or return an Error string, not both
     public class HangfireScheduler : IPersistenceScheduler
     {
         private IStateNotifier _stateNotifier = null;
-        private JobStorage _jobStorage;
-        private IBackgroundJobClient _client;
+        private readonly JobStorage _jobStorage;
+        private readonly IBackgroundJobClient _client;
+        private readonly IPersistedValues _persistedValues;
 
+        [ExcludeFromCodeCoverage]
         public HangfireScheduler()
         {
             _jobStorage = SqlServerStorage();
             _client = new BackgroundJobClient(_jobStorage);
+            _persistedValues = new PersistedValues();
         }
 
+        [ExcludeFromCodeCoverage]
         private SqlServerStorage SqlServerStorage()
         {
             try
@@ -55,51 +69,87 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
         }
 
-        public HangfireScheduler(IBackgroundJobClient client, JobStorage jobStorage)
+        public HangfireScheduler(IBackgroundJobClient client, JobStorage jobStorage, IPersistedValues persistedValues)
         {
             _jobStorage = jobStorage;
             _client = client;
+            _persistedValues = persistedValues;
         }
 
-        public string GetSuspendedEnvironment(string jobId)
+        public IPersistedValues GetPersistedValues(string jobId)
         {
             var monitoringApi = _jobStorage.GetMonitoringApi();
             var jobDetails = monitoringApi.JobDetails(jobId);
-            var errMsg = "Failed: ";
-            if (jobDetails == null)
+            const string errMsg = "Failed: ";
+            if (jobDetails is null)
             {
-                return errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank;
+                throw new Exception(errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank);
             }
 
             var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
 
             if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
             {
-                return errMsg + ErrorResource.ManualResumptionAlreadyResumed;
+                throw new Exception(errMsg + ErrorResource.ManualResumptionAlreadyResumed);
             }
-
             if (currentState?.StateName == "Enqueued")
             {
-                return errMsg + ErrorResource.ManualResumptionEnqueued;
+                throw new Exception(errMsg + ErrorResource.ManualResumptionEnqueued);
             }
-
             if (currentState?.StateName == "Processing")
             {
-                return errMsg + ErrorResource.ManualResumptionProcessing;
+                throw new Exception(errMsg + ErrorResource.ManualResumptionProcessing);
             }
 
             if (jobDetails.Job.Args[0] is Dictionary<string, StringBuilder> values)
             {
-                values.TryGetValue("environment", out StringBuilder persistedEnvironment);
+                values.TryGetValue("resourceID", out var resourceId);
+                values.TryGetValue("versionNumber", out var versionNumber);
+                values.TryGetValue("environment", out var persistedEnvironment);
+                values.TryGetValue("startActivityId", out var startActivity);
+                values.TryGetValue("currentuserprincipal", out var currentUserPrincipal);
 
-                var decryptEnvironment = persistedEnvironment.ToString().CanBeDecrypted()
+                var suspendedEnvironment = persistedEnvironment.ToString().CanBeDecrypted()
                     ? SecurityEncryption.Decrypt(persistedEnvironment.ToString())
                     : persistedEnvironment.ToString();
 
-                return decryptEnvironment;
+                var startActivityId = startActivity.ToString().CanBeDecrypted()
+                    ? SecurityEncryption.Decrypt(startActivity.ToString())
+                    : startActivity.ToString();
+
+                var userPrinciple = currentUserPrincipal.ToString().CanBeDecrypted()
+                    ? SecurityEncryption.Decrypt(currentUserPrincipal.ToString())
+                    : currentUserPrincipal.ToString();
+
+                var executingUser = BuildClaimsPrincipal(userPrinciple);
+
+                _persistedValues.ResourceId = Guid.Parse(resourceId?.ToString() ?? string.Empty);
+                _persistedValues.VersionNumber = int.Parse(versionNumber?.ToString() ?? string.Empty);
+                _persistedValues.SuspendedEnvironment = suspendedEnvironment;
+                _persistedValues.StartActivityId = Guid.Parse(startActivityId);
+                _persistedValues.ExecutingUser = executingUser;
+
+                return _persistedValues;
             }
 
-            return string.Empty;
+            return null;
+        }
+
+        private static string GetUnqualifiedName(string userName)
+        {
+            if (userName.Contains("\\"))
+            {
+                return userName.Split('\\').Last().Trim();
+            }
+
+            return userName;
+        }
+
+        private static IPrincipal BuildClaimsPrincipal(string currentUserPrincipal)
+        {
+            var unqualifiedUserName = GetUnqualifiedName(currentUserPrincipal).Trim();
+            var genericIdentity = new GenericIdentity(unqualifiedUserName);
+            return new GenericPrincipal(genericIdentity, new string [0]);
         }
 
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables, string environment)
@@ -196,6 +246,56 @@ namespace Warewolf.Driver.Persistence.Drivers
             return GlobalConstants.Success;
         }
 
+        public string ManualResumeWithOverrideJob(IDSFDataObject dsfDataObject, string jobId)
+        {
+            try
+            {
+                var monitoringApi = _jobStorage.GetMonitoringApi();
+                var jobDetails = monitoringApi.JobDetails(jobId);
+                var errMsg = "Failed: ";
+                if (jobDetails == null)
+                {
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank);
+                }
+
+                var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
+
+                if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
+                {
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionAlreadyResumed);
+                }
+
+                if (currentState?.StateName == "Enqueued")
+                {
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionEnqueued);
+                }
+
+                if (currentState?.StateName == "Processing")
+                {
+                    throw new Exception(errMsg + ErrorResource.ManualResumptionProcessing);
+                }
+
+                if (dsfDataObject.Environment.HasErrors())
+                {
+                    var message = dsfDataObject.Environment.FetchErrors();
+                    var failedState = new FailedState(new Exception(message));
+                    _client.ChangeState(jobId, failedState, ScheduledState.StateName);
+                    throw new Exception(message);
+                }
+
+                var manuallyResumedState = new ManuallyResumedState(dsfDataObject.Environment.ToJson());
+                _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
+            }
+            catch (Exception ex)
+            {
+                _stateNotifier?.LogExecuteException(ex, this);
+                Dev2Logger.Error(nameof(ManualResumeWithOverrideJob), ex, GlobalConstants.WarewolfError);
+                throw ex;
+            }
+
+            return GlobalConstants.Success;
+        }
+
         public string ScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)
         {
             string jobId;
@@ -234,6 +334,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             }
         }
 
+        [ExcludeFromCodeCoverage]
         private string ConnectionString
         {
             get

@@ -71,6 +71,8 @@ namespace Dev2
         public IProcessMonitor LoggingServiceMonitor { get; set; } = new NullProcessMonitor();
         public IProcessMonitor HangfireServerMonitor { get; set; } = new NullProcessMonitor();
         public IWebSocketPool WebSocketPool { get; set; }
+        public IGetSystemInformation SystemInformationHelper { get; set; }
+        public ExecutionLogger.IExecutionLoggerFactory LoggerFactory { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -93,6 +95,8 @@ namespace Dev2
                 LoggingServiceMonitor = new LoggingServiceMonitorWithRestart(childProcessTracker, processFactory),
                 HangfireServerMonitor = new HangfireServerMonitorWithRestart(childProcessTracker, processFactory),
                 WebSocketPool = new WebSocketPool(),
+                LoggerFactory = new ExecutionLogger.ExecutionLoggerFactory(),
+                SystemInformationHelper = new GetSystemInformationHelper()
             };
         }
     }
@@ -120,6 +124,8 @@ namespace Dev2
         private readonly IProcessMonitor _loggingProcessMonitor;
         private readonly IWebSocketPool _webSocketPool;
         private readonly IProcessMonitor _hangfireServerMonitor;
+        private readonly ExecutionLogger.IExecutionLoggerFactory _loggerFactory;
+        private readonly IGetSystemInformation _systemInformationHelper;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
             : this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
@@ -151,6 +157,8 @@ namespace Dev2
             _queueProcessMonitor.OnProcessDied += (config) => _writer.WriteLine($"queue process died: {config.Name}({config.Id})");
 
             _webSocketPool = startupConfiguration.WebSocketPool;
+            _loggerFactory = startupConfiguration.LoggerFactory;
+            _systemInformationHelper = startupConfiguration.SystemInformationHelper;
 
             SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }
@@ -248,11 +256,7 @@ namespace Dev2
                         Stop(false, 0, true);
                     }
 
-                    var executionLoggerFactory = new ExecutionLogger.ExecutionLoggerFactory();
-                    var logger = executionLoggerFactory.New(new JsonSerializer(), new WebSocketPool());
-                    var systemInformationHelper = new GetSystemInformationHelper();
-                    logger.Info("Warewolf Server Started Version: " + systemInformationHelper.GetWareWolfVersion());
-                    Dev2Logger.Info(systemInformationHelper.GetWareWolfVersion(), "Warewolf Server Version");
+                    LogWarewolfVersion();
 #if DEBUG
                     if (EnvironmentVariables.IsServerOnline)
                     {
@@ -269,6 +273,14 @@ namespace Dev2
                     Stop(true, 0, false);
                 }
             });
+        }
+
+        private void LogWarewolfVersion()
+        {
+            var logger = _loggerFactory.New(new JsonSerializer(), _webSocketPool);
+            var wareWolfVersion = _systemInformationHelper.GetWareWolfVersion();
+            logger.Info("Warewolf Server Started Version: " + wareWolfVersion);
+            Dev2Logger.Info(wareWolfVersion, "Warewolf Server Version");
         }
 
         private Task<bool> CheckLogServerConnection()
