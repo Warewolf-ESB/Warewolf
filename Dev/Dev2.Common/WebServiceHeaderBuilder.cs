@@ -18,7 +18,7 @@ namespace Dev2.Common
             }
 
             var isValidJson = content?.IsValidJson() ?? false;
-            if (isValidJson)
+            if (isValidJson && !(content == "{}"))
             {
                 var jsonHeader = new NameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
 

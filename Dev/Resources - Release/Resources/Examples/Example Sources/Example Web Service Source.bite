@@ -1,9 +1,10 @@
 
-<Source ID="9317a98e-0c1c-4468-80cd-824eb9a1fcd3" Name="Example Web Service Source" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAN3X/14H2iU2D4kp0XyVX0AQAAAACAAAAAAADZgAAwAAAABAAAACF0ckQsWzuZWWiNIUp5N6fAAAAAASAAACgAAAAEAAAAAa9cUMan8CeeaWXBM2Rh4+wAAAAqL3dx1K2Q7q63DhVOsEGE7SYGmg/NCb0FQhxokj/rJZMu5zkWynpOLDkfIbngCgCJOQLjB1DctWOYrlp1tTDeBvpU5nkeYkEv5TjMN6JeL+W/8rZuzhNpKmEKQ5xPxgHsM2TVm9Fc2gMhDueJhJd8HrjA2j1Dd/BJjVyIz4apTMzfiY8gO74YqMMX9UR8LJdGZRRuTcsgA7azppeGU29WG2qZI/2tMF1t2B0jeXYHnYUAAAAsGYHpMaz4VVFR4M3D2I44OP2dhI=" Type="WebSource" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="5e919331-c7d5-440a-9bbd-b53d0e4de905" Name="Example Web Service Source" ResourceType="WebSource" IsValid="false" ConnectionString="Address=https://jsonplaceholder.typicode.com/;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="1.5.1.2" ServerID="5e919331-c7d5-440a-9bbd-b53d0e4de905">
+
   <DisplayName>Example Web Service Source</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
   <TypeOf>WebSource</TypeOf>
-  <VersionInfo DateTimeStamp="2021-03-11T07:44:05.7631831+02:00" Reason="" User="PREMIER\Siphamandla.Dube" VersionNumber="2" ResourceId="9317a98e-0c1c-4468-80cd-824eb9a1fcd3" VersionId="838ba8e7-d720-4de7-bd54-72b02e5c2a0e" />
+  <VersionInfo DateTimeStamp="2021-03-26T12:32:26.4950161+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="5e919331-c7d5-440a-9bbd-b53d0e4de905" VersionId="eadde33c-1a44-4d14-bf38-06c5e8d793d4" />
 </Source>
