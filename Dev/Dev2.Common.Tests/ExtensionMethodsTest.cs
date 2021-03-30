@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -1169,6 +1169,19 @@ namespace Dev2.Common.Tests
             var isValidXml = Dev2.Common.Common.ExtensionMethods.IsValidXml(str);
             //------------Assert Results-------------------------
             Assert.IsTrue(isValidXml);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_IsValidJson_InputIsEmptyJson_ExpectSuccess()
+        {
+            //------------Setup for test--------------------------
+            var str = @"{}";
+            //------------Execute Test---------------------------
+            var isValidJson = Dev2.Common.Common.ExtensionMethods.IsValidJson(str);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isValidJson, "empty JSON is a Valid JSON");
         }
 
         [TestMethod]
