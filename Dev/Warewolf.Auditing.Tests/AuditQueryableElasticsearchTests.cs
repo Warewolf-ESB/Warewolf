@@ -29,6 +29,7 @@ using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.Logging;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
 
 namespace Warewolf.Auditing.Tests
@@ -95,6 +96,8 @@ namespace Warewolf.Auditing.Tests
                 }
 
                 var auditLog = new Audit(mockDataObject.Object, auditType, detail, null, null);
+                Assert.AreEqual("",auditLog.Environment);
+                mockDataObject.Verify(o => o.Environment.ToJson(), Times.Never);
                 //-------------------------Act----------------------------------
                 switch (eventLevel)
                 {
@@ -165,6 +168,9 @@ namespace Warewolf.Auditing.Tests
         Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId, Guid resourceId)
         {
             var mockedDataObject = new Mock<IDSFDataObject>();
+            var mock = new Mock<IExecutionEnvironment>();
+            mock.Setup(o => o.ToJson()).Returns("Not an empty string");
+            mockedDataObject.Setup(o => o.Environment).Returns(mock.Object);
             mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Test-Workflow");
             mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);

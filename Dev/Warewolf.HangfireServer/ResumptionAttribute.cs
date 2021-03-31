@@ -99,14 +99,13 @@ namespace HangfireServer
         private void LogResumption(Dictionary<string, StringBuilder> values)
         {
             values.TryGetValue("resourceID", out StringBuilder workflowId);
-            values.TryGetValue("environment", out StringBuilder environment);
             values.TryGetValue("startActivityId", out StringBuilder startActivityId);
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
             values.TryGetValue("currentuserprincipal", out StringBuilder currentuserprincipal);
             var audit = new Audit
             {
                 WorkflowID = workflowId?.ToString(),
-                Environment =  DpapiWrapper.Encrypt(environment?.ToString()),
+                Environment =  string.Empty,
                 VersionNumber = versionNumber?.ToString(),
                 NextActivityId = startActivityId?.ToString(),
                 AuditDate = DateTime.Now,
