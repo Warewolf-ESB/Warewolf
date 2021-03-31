@@ -1,3 +1,26 @@
+30 March 2021
+================
+Enhancements
+----------------
+General
+- Performance enhancements to the workflows
+
+Manual Resumption
+- Objects can be manipulated using the Sequence Tool and passed as inputs to override objects in the suspended workflow
+
+ 
+Bug Fixes
+-----------
+Web
+- Classic Web Post tool manual body can now Generate Outputs object.
+- Web tools with no request payload like the Delete and Get will now not add the auto generated Content-Type : application/json. This fixes  the header misuse errors.
+
+Studio
+- Data Sources are now loading on start up
+
+Manual Resumption
+- Input variable from the workflow can be passed as inputs into suspended workflow
+
 19 March 2021
 ================
 Enhancements

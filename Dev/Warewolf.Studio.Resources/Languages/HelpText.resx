@@ -2530,7 +2530,7 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>Enter the SuspensionID returned for the workflow that was suspended.</value>
   </data>
   <data name="ManualResumptionOverrideVariablesHelpText" xml:space="preserve">
-    <value>If selected, it allows for the input variables to be altered. Any changes will replace the current stored values.</value>
+    <value>If selected, it allows for the input variables to be altered. Any changes will replace the current stored values.&lt;br/&gt;&lt;br/&gt;By default the Sequence Tool will be displayed.&lt;br/&gt;&lt;br/&gt;Using the Sequence Tool, a set of Activities can be executed in sequence so that input values can be assigned and overidden before being assigned to the Suspended Workflow to be resumed.</value>
   </data>
   <data name="ManualResumptionResultHelpText" xml:space="preserve">
     <value>The result of the manual resumption.</value>
