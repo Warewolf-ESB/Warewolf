@@ -233,7 +233,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 };
 
                 _stateNotifier?.LogAdditionalDetail(audit, nameof(ResumeJob));
-                var manuallyResumedState = new ManuallyResumedState(environments?.ToString());
+                var manuallyResumedState = new ManuallyResumedState(DpapiWrapper.Encrypt(environments?.ToString()));
                 _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
             }
             catch (Exception ex)
@@ -283,7 +283,12 @@ namespace Warewolf.Driver.Persistence.Drivers
                     throw new Exception(message);
                 }
 
-                var manuallyResumedState = new ManuallyResumedState(dsfDataObject.Environment.ToJson());
+                var environment = dsfDataObject.Environment.ToJson();
+                if (environment != null)
+                {
+                    environment = DpapiWrapper.Encrypt(environment);
+                }
+                var manuallyResumedState = new ManuallyResumedState(environment);
                 _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
             }
             catch (Exception ex)
