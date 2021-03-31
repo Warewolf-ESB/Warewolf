@@ -40,6 +40,7 @@ namespace Warewolf.Driver.Persistence.Drivers
         public Guid StartActivityId { get; set; }
         public IPrincipal ExecutingUser { get; set; }
     }
+
     //TODO: This class needs to be refactored to the same standard. We either throw an exception or return an Error string, not both
     public class HangfireScheduler : IPersistenceScheduler
     {
@@ -92,10 +93,12 @@ namespace Warewolf.Driver.Persistence.Drivers
             {
                 throw new Exception(errMsg + ErrorResource.ManualResumptionAlreadyResumed);
             }
+
             if (currentState?.StateName == "Enqueued")
             {
                 throw new Exception(errMsg + ErrorResource.ManualResumptionEnqueued);
             }
+
             if (currentState?.StateName == "Processing")
             {
                 throw new Exception(errMsg + ErrorResource.ManualResumptionProcessing);
@@ -163,6 +166,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 {
                     throw new Exception(errMsg + ErrorResource.ManualResumptionSuspensionEnvBlank);
                 }
+
                 var currentState = jobDetails.History.OrderBy(s => s.CreatedAt).LastOrDefault();
 
                 if (currentState?.StateName == "Succeeded" || currentState?.StateName == "ManuallyResumed")
@@ -223,7 +227,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 var audit = new Audit
                 {
                     WorkflowID = workflowId?.ToString(),
-                    Environment =  DpapiWrapper.Encrypt(environments?.ToString()),
+                    Environment = string.Empty,
                     VersionNumber = versionNumber?.ToString(),
                     NextActivityId = startActivityId?.ToString(),
                     AuditDate = DateTime.Now,
@@ -233,7 +237,7 @@ namespace Warewolf.Driver.Persistence.Drivers
                 };
 
                 _stateNotifier?.LogAdditionalDetail(audit, nameof(ResumeJob));
-                var manuallyResumedState = new ManuallyResumedState(environments?.ToString());
+                var manuallyResumedState = new ManuallyResumedState(DpapiWrapper.Encrypt(environments?.ToString()));
                 _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
             }
             catch (Exception ex)
@@ -252,6 +256,7 @@ namespace Warewolf.Driver.Persistence.Drivers
             {
                 var monitoringApi = _jobStorage.GetMonitoringApi();
                 var jobDetails = monitoringApi.JobDetails(jobId);
+
                 var errMsg = "Failed: ";
                 if (jobDetails == null)
                 {
@@ -283,7 +288,12 @@ namespace Warewolf.Driver.Persistence.Drivers
                     throw new Exception(message);
                 }
 
-                var manuallyResumedState = new ManuallyResumedState(dsfDataObject.Environment.ToJson());
+                var environment = dsfDataObject.Environment.ToJson();
+                if (environment != null)
+                {
+                    environment = DpapiWrapper.Encrypt(environment);
+                }
+                var manuallyResumedState = new ManuallyResumedState(environment);
                 _client.ChangeState(jobId, manuallyResumedState, currentState?.StateName);
             }
             catch (Exception ex)
