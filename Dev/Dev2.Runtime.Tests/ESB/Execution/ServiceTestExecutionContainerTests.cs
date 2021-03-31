@@ -973,7 +973,7 @@ Test Failed because of some reasons
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServiceTestExecutionContainer))]
-		[DoNotParallelize]
+        [DoNotParallelize]
         public void ServiceTestExecutionContainer_Execute_IsDebugTrue_EnvironmentHasErrors_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
