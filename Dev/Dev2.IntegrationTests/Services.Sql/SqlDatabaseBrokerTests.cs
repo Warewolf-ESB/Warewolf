@@ -49,10 +49,9 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [Ignore("Ignoring until the move to premier.local domain is complete")]
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithDbAccess_GetsMethods()
         {
-            RunAs("IntegrationTester", "dev2", () =>
+            RunAs("IntegrationTester", "dev2", "I73573r0", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port), AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
@@ -111,7 +110,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker")]
         public void SqlDatabaseBroker_TestService_WindowsUserWithDbAccess_ReturnsValidResult()
         {
-            RunAs("IntegrationTester", "dev2", () =>
+            RunAs("IntegrationTester", "dev2", "I73573r0", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port), AuthenticationType.Windows);
                 var serviceConn = new DbService
@@ -135,11 +134,10 @@ namespace Dev2.Integration.Tests.Services.Sql
         
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [Ignore("Ignoring until the move to premier.local domain is complete")]
         public void SqlDatabaseBroker_TestService_WindowsUserWithoutDbAccess_ReturnsInvalidResult()
         {
             Exception exception = null;
-            RunAs("NoDBAccessTest", "DEV2", () =>
+            RunAs("NoDBAccessTest", "DEV2", "noaccess", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(_containerOps.Container.IP, int.Parse(_containerOps.Container.Port), AuthenticationType.Windows);
 
@@ -255,21 +253,6 @@ namespace Dev2.Integration.Tests.Services.Sql
             StringAssert.Contains(dataSourceShape.Paths[2].DisplayPath, "TestTextNull"); //This is the field that contains a null value. Previously this column would not have been returned.
         }
 
-        public static bool RunAs(string userName, string domain, Action action)
-        {
-            var result = false;
-            using (var impersonator = new Impersonator())
-            {
-                if (impersonator.Impersonate(userName, domain))
-                {
-                    action?.Invoke();
-                    result = true;
-                }
-            }
-
-            return result;
-        }
-
         public static bool RunAs(string userName, string domain, string password, Action action)
         {
             var result = false;
@@ -287,10 +270,8 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         public interface IImpersonator
         {
-            bool Impersonate(string userName, string domain);
             bool Impersonate(string userName, string domain, string password);
             void Undo();
-            bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted);
         }
 
         public class Impersonator : IDisposable, IImpersonator
@@ -320,8 +301,6 @@ namespace Dev2.Integration.Tests.Services.Sql
             WindowsImpersonationContext _impersonationContext;
 
             #region Impersonate
-
-            public bool Impersonate(string username, string domain) => Impersonate(username, domain, TestEnvironmentVariables.GetVar(domain + "\\" + username));
 
             public bool Impersonate(string username, string domain, string password)
             {
@@ -362,11 +341,6 @@ namespace Dev2.Integration.Tests.Services.Sql
                     _impersonationContext.Undo();
                     _impersonationContext.Dispose();
                 }
-            }
-
-            public bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted)
-            {
-                return Impersonate(userName, domain);
             }
 
             #endregion

@@ -45,7 +45,7 @@ namespace Dev2.Data.Tests.PathOperations
             var provider = new LogonProvider(mockLoginImpl.Object);
 
             var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
+            var password = "I73573r0";
 
             var v = It.IsAny<SafeTokenHandle>();
             mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "dev2", password, 2, 0, out v))
@@ -70,7 +70,7 @@ namespace Dev2.Data.Tests.PathOperations
             var provider = new LogonProvider(mockLoginImpl.Object);
 
             var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
+            var password = "I73573r0";
 
             var v = It.IsAny<SafeTokenHandle>();
             mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "dev2", password, 3, 3, out v))
@@ -91,9 +91,7 @@ namespace Dev2.Data.Tests.PathOperations
             var mockLoginImpl = new Mock<ILoginApi>();
 
             var provider = new LogonProvider(mockLoginImpl.Object);
-
-            var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
+            var password = "I73573r0";
 
             var v = It.IsAny<SafeTokenHandle>();
             mockLoginImpl.Setup(o => o.LogonUser("IntegrationTester", "DEV2", password, 3, 3, out v))

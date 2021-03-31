@@ -34,7 +34,6 @@ using Warewolf.Storage;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [Obsolete("DsfFileWrite is deprecated. It will be deleted in future releases.\r\n\r\nPlease use DsfFileWriteWithBase64.")]
     public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite, IEquatable<DsfFileWrite>
     {
 

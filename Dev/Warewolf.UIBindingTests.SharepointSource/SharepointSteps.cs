@@ -295,15 +295,13 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IServer>();
 
-            var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
             var sharePointServiceSourceDefinition = new SharePointServiceSourceDefinition
             {
                 Name = "Test",
                 Server = $"http://{Depends.SharepointBackupServer}",
                 AuthenticationType = AuthenticationType.Windows,
                 UserName = "IntegrationTester",
-                Password = password
+                Password = "I73573r0"
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(sharePointServiceSourceDefinition);

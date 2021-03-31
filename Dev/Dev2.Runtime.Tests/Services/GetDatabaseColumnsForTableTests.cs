@@ -224,6 +224,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MSSql with Invalid Schema")]
+        [DoNotParallelize]
         public void GetDatabaseColumnsForTable_Execute_NullSchema_ValidDatabaseSource_ReturnsFromAllSchemas()
         {
             var parser = new Mock<IActivityParser>();
@@ -276,6 +277,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MSSql with Invalid Schema")]
+        [DoNotParallelize]
         public void GetDatabaseColumnsForTable_Execute_EmptySchema_ValidDatabaseSource_ReturnsFromAllSchemas()
         {
             var parser = new Mock<IActivityParser>();
