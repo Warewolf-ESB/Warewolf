@@ -21,7 +21,7 @@ using Hangfire.Storage;
 using Warewolf.Auditing;
 using Warewolf.Driver.Resume;
 using Warewolf.Execution;
-using Warewolf.Security.Encryption;
+using Warewolf.Interfaces.Auditing;
 using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace HangfireServer
@@ -32,6 +32,8 @@ namespace HangfireServer
         private static readonly ILog _hangfireLogger = LogProvider.GetCurrentClassLogger();
         private readonly IExecutionLogPublisher _logger;
         private readonly IResumptionFactory _resumptionFactory;
+
+        private IAudit _audit;
 
         public ResumptionAttribute(IExecutionLogPublisher logger, IResumptionFactory resumptionFactory)
         {
@@ -61,13 +63,18 @@ namespace HangfireServer
                 return;
             }
 
-            OnPerformResume(context);
+            var audit = new Audit
+            {
+                AuditDate = DateTime.Now
+            };
+            OnPerformResume(context, audit);
         }
 
-        public void OnPerformResume(PerformingContext context)
+        public void OnPerformResume(PerformingContext context, IAudit audit)
         {
             var jobArg = context.BackgroundJob.Job.Args[0];
             var backgroundJobId = context.BackgroundJob.Id;
+            _audit = audit;
             try
             {
                 var resumptionFactory = _resumptionFactory ?? new ResumptionFactory();
@@ -102,18 +109,22 @@ namespace HangfireServer
             values.TryGetValue("startActivityId", out StringBuilder startActivityId);
             values.TryGetValue("versionNumber", out StringBuilder versionNumber);
             values.TryGetValue("currentuserprincipal", out StringBuilder currentuserprincipal);
-            var audit = new Audit
+            if (_audit is null)
             {
-                WorkflowID = workflowId?.ToString(),
-                Environment =  string.Empty,
-                VersionNumber = versionNumber?.ToString(),
-                NextActivityId = startActivityId?.ToString(),
-                AuditDate = DateTime.Now,
-                AuditType = "LogResumeExecutionState",
-                LogLevel = LogLevel.Info,
-                ExecutingUser = currentuserprincipal.ToString()
-            };
-            _logger.LogResumedExecution(audit);
+                _audit = new Audit
+                {
+                    AuditDate = DateTime.Now
+                };
+            }
+
+            _audit.WorkflowID = workflowId?.ToString();
+            _audit.Environment = string.Empty;
+            _audit.VersionNumber = versionNumber?.ToString();
+            _audit.NextActivityId = startActivityId?.ToString();
+            _audit.AuditType = "LogResumeExecutionState";
+            _audit.LogLevel = LogLevel.Info;
+            _audit.ExecutingUser = currentuserprincipal?.ToString();
+            _logger.LogResumedExecution(_audit);
         }
 
         public void OnPerformed(PerformedContext context)
