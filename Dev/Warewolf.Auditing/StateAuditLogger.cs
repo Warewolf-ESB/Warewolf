@@ -14,7 +14,6 @@ using Newtonsoft.Json;
 using System;
 using Warewolf.Interfaces.Auditing;
 using Dev2.Data.Interfaces.Enums;
-using Warewolf.Security.Encryption;
 
 namespace Warewolf.Auditing
 {
@@ -46,7 +45,6 @@ namespace Warewolf.Auditing
 
             if (logEntry is Audit auditLog && IsValidLogLevel(executionLogLevel, auditLog.LogLevel.ToString()))
             {
-                auditLog.Environment = DpapiWrapper.Encrypt(auditLog.Environment);
                 var auditCommand = new AuditCommand
                 {
                     Audit = auditLog,
