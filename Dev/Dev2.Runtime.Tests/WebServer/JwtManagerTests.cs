@@ -31,6 +31,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(JwtManager))]
+        [DoNotParallelize]
         public void JwtManager_GenerateToken_ValidateToken()
         {
             //------------Setup for test-------------------------
@@ -95,6 +96,7 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(JwtManager))]
+        [DoNotParallelize]
         public void JwtManager_GenerateToken_ValidateToken_Fails()
         {
             //------------Setup for test-------------------------

@@ -55,6 +55,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(EsbServicesEndpoint))]
+        [DoNotParallelize]
         public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing()
         {
             var esbServicesEndpoint = new EsbServicesEndpoint();
@@ -82,6 +83,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(EsbServicesEndpoint))]
+        [DoNotParallelize]
         public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing_And_DataObject_StateNotifier_IsSet()
         {
             var mockLogManager = new Mock<IStateNotifierFactory>();
@@ -115,6 +117,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(EsbServicesEndpoint))]
+        [DoNotParallelize]
         public void EsbServicesEndpoint_CreateNewEnvironmentFromInputMappings_GivenInputsDefs_ShouldCreateNewEnvWithMappings()
         {
             //---------------Set up test pack-------------------
@@ -135,6 +138,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(EsbServicesEndpoint))]
+        [DoNotParallelize]
         public void EsbServicesEndpoint_ExecuteSubRequest_GivenValidArgs_ShouldCheckIsRemoteWorkflow()
         {
             //---------------Set up test pack-------------------
@@ -162,6 +166,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(EsbServicesEndpoint))]
+        [DoNotParallelize]
         public void EsbServicesEndpoint_ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow()
         {
             //---------------Set up test pack-------------------
@@ -196,6 +201,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(EsbServicesEndpoint))]
+        [DoNotParallelize]
         public void EsbServicesEndpoint_ExecuteLogErrorRequest_GivenCorrectUri_ShouldNoThrowException()
         {
             //---------------Set up test pack-------------------

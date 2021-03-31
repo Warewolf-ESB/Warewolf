@@ -12,7 +12,6 @@
 using System;
 using Dev2.Common.Interfaces.Wrappers;
 using System.IO;
-using Microsoft.VisualBasic.FileIO;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Warewolf.Resource.Errors;
