@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Reflection;
 using Dev2.Activities.Specs.Composition;
 using Dev2.Common;
@@ -48,16 +49,18 @@ namespace Dev2.Activities.Specs.Sources
             return ipAddress.ToString();
         }
 
-        private static void IsServerOnline(string server)
+        private static void IsServerOnline(string server, string port)
         {
-            PingReply pingReply;
-            using (var ping = new Ping())
+            using (var ping = new TcpClient())
             {
-                pingReply = ping.Send(server);
-            }
-            if (pingReply.Status != IPStatus.Success)
-            {
-                Assert.Fail(server + " is unavailable");
+                try
+                {
+                    ping.Connect(server, int.Parse(port));
+                }
+                catch
+                {
+                    Assert.Fail(server + " is unavailable");
+                }
             }
         }
 
@@ -90,7 +93,7 @@ namespace Dev2.Activities.Specs.Sources
             if (!address.Contains("localhost"))
             {
                 var ipAddress = GetIPAddress(address);
-                IsServerOnline(ipAddress);
+                IsServerOnline(ipAddress, declaredDependency.Container.Port);
             }
             var authenticationType = table.Rows[0]["AuthenticationType"];
             Enum.TryParse(authenticationType, true, out AuthenticationType result);

@@ -13,6 +13,7 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+                               xmlns:sequence="clr-namespace:Dev2.Activities.Designers2.Sequence"
                                mc:Ignorable="d"
                                MinWidth="350"
                                Width="350"
@@ -123,7 +124,9 @@
                                                    HintText="Drop Resumption Workflow Here"
                                                    BorderBrush="Black"
                                                    BorderThickness="2"
-                                                   Item="{Binding Path=ModelItem.OverrideDataFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
+                                                   Item="{Binding Path=ModelItem.OverrideDataFunc.Handler,
+                                                            Mode=TwoWay,
+                                                            Converter={StaticResource ModelItemToActivityConverter}, ConverterParameter=Resume}"
                                                    MinHeight="50"
                                                    attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                             <AutomationProperties.AutomationId>

@@ -551,6 +551,31 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServices))]
+        public void WebServices_Execute_IsManualChecked_Classic_WebServicePostActivity_ShouldSuccess()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.Headers = new List<INameValue> { new NameValue { Name = "Accept", Value = "[[test1]]" } };
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test4", Value = "val4" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test5", Value = "val5" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test6", Value = "val6" });
+
+            //------------Execute Test---------------------------
+            WebServices.ExecuteRequest(service, false, out ErrorResultTO errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Accept:val1", _requestHeadersEvaluated[0]);
+            Assert.AreEqual("val2", _requestBodyEvaluated);
+            Assert.AreEqual("val3", _requestUrlEvaluated);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServices))]
         public void WebServices_ExecuteRequest_Base64_WebExecuteString_WebResponse_ShouldBeScrubbed()
         {
             //------------Setup for test--------------------------

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,6 +23,7 @@ using Unlimited.UnitTest.Framework.ConverterTests.GraphTests;
 namespace Dev2.Tests.ConverterTests.GraphTests
 {
     [TestClass]
+    [TestCategory(nameof(DataBrowserFactory))]
     public class DataBrowserTests
     {
         internal PocoTestData GivenPoco()
@@ -266,7 +267,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// Map paths of unexpected type expected poco paths returned.
         /// </summary>
         [TestMethod]
-        public void MapPathsOfUnexpectedType_Expected_PocoPaths()
+        public void DataBrowserFactory_Map_PathsOfUnexpectedType_Expected_PocoPaths()
         {
             var uri = new Uri("/cake", UriKind.Relative);
 
@@ -280,7 +281,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// Map paths of reference type expected poco paths returned.
         /// </summary>
         [TestMethod]
-        public void MapPathsOfReferenceType_Expected_PocoPaths()
+        public void DataBrowserFactory_Map_GivenPoco_MapPathsOfReferenceType_Expected_PocoPaths()
         {
             var testData = GivenPoco();
 
@@ -290,11 +291,21 @@ namespace Dev2.Tests.ConverterTests.GraphTests
             Assert.IsTrue(paths.All(p => p.GetType() == typeof(PocoPath)));
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void DataBrowserFactory_Map_GivenJson_PathsOfReferenceType_Expected_JsonPaths()
+        {
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var paths = dataBrowser.Map(GivenJson());
+
+            Assert.IsTrue(paths.All(p => p.GetType() == typeof(JsonPath)));
+        }
+
         /// <summary>
         /// Select scalar value using poco scalar path from reference type expected scalar value returned.
         /// </summary>
         [TestMethod]
-        public void SelectScalarValueUsingPocoScalarPathFromReferenceType_Expected_ScalarValue()
+        public void DataBrowserFactory_SelectScalar_ValueUsingPocoScalarPathFromReferenceType_Expected_ScalarValue()
         {
             var testData = GivenPoco();
 
@@ -311,7 +322,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// in enumeration.
         /// </summary>
         [TestMethod]
-        public void SelectEnumerableValueUsingPocoEnumerablePathFromReferenceType_Expected_ValuesFromEachItemInEnumeration()
+        public void DataBrowserFactory_SelectEnumerable_ValueUsingPocoEnumerablePathFromReferenceType_Expected_ValuesFromEachItemInEnumeration()
         {
             var testData = GivenPoco();
 
@@ -331,7 +342,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// expected flattened data with values from outer enumerable path repeating for every value from nested enumerable path.
         /// </summary>
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingPocoEnumerablePathsFromReferenceType_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
+        public void DataBrowserFactory_SelectEnumerable_ValuesAsRelatedUsingPocoEnumerablePathsFromReferenceType_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
             var testData = GivenPocoWithParallelAndNestedEnumerables();
 
@@ -395,7 +406,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// Map paths of XML expected XML paths returned.
         /// </summary>
         [TestMethod]
-        public void MapPathsOfXml_Expected_XmlPaths()
+        public void DataBrowserFactory_Map_PathsOfXml_Expected_XmlPaths()
         {
             var testData = GivenXml();
 
@@ -409,7 +420,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// Select scalar value using poco scalar path from XML expected scalar value returned.
         /// </summary>
         [TestMethod]
-        public void SelectScalarValueUsingPocoScalarPathFromXml_Expected_ScalarValue()
+        public void DataBrowserFactory_SelectScalar_ValueUsingPocoScalarPathFromXml_Expected_ScalarValue()
         {
             var testData = GivenXml();
 
@@ -427,7 +438,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// enumerable path repeating for every value from nested enumerable path.
         /// </summary>
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingPocoEnumerablePathsFromXml_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
+        public void DataBrowserFactory_SelectEnumerable_ValuesAsRelatedUsingPocoEnumerablePathsFromXml_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
             var testData = GivenXml();
 
@@ -449,7 +460,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// Map paths of JSON expected JSON paths.
         /// </summary>
         [TestMethod]
-        public void MapPathsOfJson_Expected_JsonPaths()
+        public void DataBrowserFactory_Map_PathsOfJson_Expected_JsonPaths()
         {
             var testData = GivenJson();
 
@@ -463,7 +474,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// Select scalar value using JSON scalar path from JSON expected scalar value returned.
         /// </summary>
         [TestMethod]
-        public void SelectScalarValueUsingJsonScalarPathFromJson_Expected_ScalarValue()
+        public void DataBrowserFactory_SelectScalar_ValueUsingJsonScalarPathFromJson_Expected_ScalarValue()
         {
             var testData = GivenJson();
 
@@ -481,7 +492,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         /// for every value from nested enumerable path.
         /// </summary>
         [TestMethod]
-        public void SelectEnumerableValuesAsRelatedUsingJsonEnumerablePathsFromJson_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
+        public void DataBrowserFactory_SelectEnumerable_ValuesAsRelatedUsingJsonEnumerablePathsFromJson_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
             var testData = GivenJson();
 
