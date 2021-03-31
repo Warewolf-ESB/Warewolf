@@ -250,8 +250,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [Given(@"I type Password")]
         public void GivenITypePassword()
         {
-            var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
+            var password = "I73573r0";
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.EnterPassword(password);
             var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
