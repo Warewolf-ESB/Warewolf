@@ -126,6 +126,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
+        [DoNotParallelize]
         public void WfExecutionContainer_OnConstruction_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------

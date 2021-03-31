@@ -29,6 +29,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceActionRepo_AddToCache")]
+        [DoNotParallelize]
         public void ServiceActionRepo_AddToCache_WhenIdExists_ShouldReplace()
         {
             //------------Setup for test--------------------------
@@ -48,6 +49,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceActionRepo_AddToCache")]
+        [DoNotParallelize]
         public void ServiceActionRepo_ReadFromCache_WhenNotExisting_ShouldReturnNull()
         {
             //------------Setup for test--------------------------
