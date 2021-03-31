@@ -17,6 +17,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data.TO;
 using Warewolf.Resource.Errors;
 using System.Linq;
+using Warewolf.Data;
 
 namespace Dev2.Data.TO
 {
@@ -146,21 +147,21 @@ namespace Dev2.Data.TO
         public static ErrorResultTO MakeErrorResultFromDataListString(string errorsString)
         {
             var result = new ErrorResultTO();
-            try
+           
+            if (!string.IsNullOrEmpty(errorsString))
             {
-                if (!string.IsNullOrEmpty(errorsString))
+                errorsString = string.Concat("<Error>", errorsString, "</Error>");
+                if (errorsString.IsXElement(out XElement output))
                 {
-                    errorsString = string.Concat("<Error>", errorsString, "</Error>");
-                    var errorNode = XElement.Parse(errorsString);
-                    foreach (XElement element in errorNode.Elements("InnerError"))
+                    foreach (XElement element in output.Elements("InnerError"))
                     {
                         result.AddError(element.Value);
                     }
                 }
-            }
-            catch (Exception)
-            {
-                result.AddError(errorsString);
+                else
+                {
+                    result.AddError(errorsString);
+                }
             }
             return result;
         }

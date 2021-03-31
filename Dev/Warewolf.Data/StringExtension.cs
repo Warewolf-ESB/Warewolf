@@ -223,6 +223,28 @@ namespace Warewolf.Data
             }
         }
 
+        public static bool IsXElement(this string input, out XElement output)
+        {
+            if (!string.IsNullOrEmpty(input) && input.TrimStart().StartsWith("<"))
+            {
+                try
+                {
+                    output = XElement.Parse(input);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    output = null;
+                    return false;
+                }
+            }
+            else
+            {
+                output = null;
+                return false;
+            }
+        }
+
         public static string CleanXmlSOAP(this string input)
         {
             if (input.Contains("<?xml"))

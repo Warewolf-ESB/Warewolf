@@ -92,6 +92,59 @@ namespace Warewolf.Data.Tests
 
                 Assert.AreEqual(expected, result.ToString());
             }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsXElement_Given_IsEmpty_ShouldReturnFalse()
+            {
+                var stringData = string.Empty;
+
+                var result = stringData.IsXElement(out XElement output);
+
+                Assert.IsNull(output);
+                Assert.IsFalse(result);
+            }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsXElement_Given_IsNotEmpty_And_StartsWithAngleBracket_ShouldReturnFalse()
+            {
+                var stringData = "<tag like string that should not work.";
+
+                var result = stringData.IsXElement(out XElement output);
+
+                Assert.IsNull(output);
+                Assert.IsFalse(result);
+            }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsXElement_Given_InCorrectXML_ShouldReturnFalse()
+            {
+                var stringData = "<tag1>test data<tag1>";
+
+                var result = stringData.IsXElement(out XElement output);
+
+                Assert.IsNull(output);
+                Assert.IsFalse(result);
+            }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsXElement_Given_CorrectXML_ShouldReturnTrue()
+            {
+                var stringData = "<tag1>test data</tag1>";
+
+                var result = stringData.IsXElement(out XElement output);
+
+                Assert.IsTrue(result);
+                Assert.IsNotNull(output);
+                Assert.AreEqual(XElement.Parse(stringData).ToString(), output.ToString());
+            }
         }
     }
 }
