@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,7 @@ using Nest;
 using Newtonsoft.Json.Linq;
 using Serilog.Sinks.Elasticsearch;
 using Warewolf.Auditing;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using Warewolf.UnitTestAttributes;
 using Audit = Warewolf.Auditing.Audit;
 using File = System.IO.File;
@@ -235,6 +235,8 @@ namespace Warewolf.Driver.Serilog.Tests
                 var loggerPublisher = loggerConnection.NewPublisher();
                 var mockDataObject = SetupDataObjectWithAssignedInputs(executionID);
                 var auditLog = new Audit(mockDataObject.Object, "LogAdditionalDetail", "Test", null, null);
+                Assert.AreEqual("",auditLog.Environment);
+                mockDataObject.Verify(o => o.Environment.ToJson(), Times.Never);
                 var logEntryCommand = new AuditCommand
                 {
                     Audit = auditLog,
@@ -267,7 +269,9 @@ namespace Warewolf.Driver.Serilog.Tests
         Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId)
         {
             var mockedDataObject = new Mock<IDSFDataObject>();
-            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
+            var mock = new Mock<IExecutionEnvironment>();
+            mock.Setup(o => o.ToJson()).Returns("Not an empty string");
+            mockedDataObject.Setup(o => o.Environment).Returns(mock.Object);
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Test-Workflow");
             mockedDataObject.Setup(o => o.ResourceID).Returns(() => Guid.NewGuid());
             mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId );
