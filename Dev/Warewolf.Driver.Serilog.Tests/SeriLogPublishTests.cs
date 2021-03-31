@@ -203,6 +203,7 @@ namespace Warewolf.Driver.Serilog.Tests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SeriLogPublisher))]
+        [DoNotParallelize]
         public void SeriLogPublisher_NewPublisher_Reading_LogData_From_Elasticsearch_Success()
         {
             //-------------------------Arrange------------------------------

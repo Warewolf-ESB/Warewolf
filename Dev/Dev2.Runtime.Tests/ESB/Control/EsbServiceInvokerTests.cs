@@ -44,6 +44,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void OnConstruction_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
@@ -61,6 +62,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void DispatchDebugErrors_GivenObjects_ShouldWritesCorrectly()
         {
             //---------------Set up test pack-------------------
@@ -103,6 +105,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeFalse_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
@@ -122,6 +125,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNullService_ShouldReturnNull()
         {
             //---------------Set up test pack-------------------
@@ -148,6 +152,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNewService_ShouldAddToCache()
         {
             //---------------Set up test pack-------------------
@@ -193,6 +198,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNewService_IsTestExecution_ShouldAddToCache()
         {
             //---------------Set up test pack-------------------
@@ -239,6 +245,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsInternalServiceService_ShouldCorrectServiceInContainer()
         {
             //---------------Set up test pack-------------------
@@ -284,6 +291,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsPerfmonExecutionService_ShouldCorrectServiceInContainer()
         {
             //---------------Set up test pack-------------------
@@ -337,6 +345,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsLocalInvokeTrueCacheContainsRemoteService_ShouldCorrectServiceInContainer()
         {
             //---------------Set up test pack-------------------
@@ -398,6 +407,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsNotLocalInvoke_ShouldReturnRemoteExecutionContainer()
         {
             //---------------Set up test pack-------------------
@@ -432,6 +442,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DoNotParallelize]
         public void Invoke_GivenNullServiceNameAndEmptyId_ShouldAddErrors()
         {
             //---------------Set up test pack-------------------
@@ -466,6 +477,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void Invoke_GivenServiceNameAndEmptyId_ShouldFindByName()
         {
             //---------------Set up test pack-------------------
@@ -501,6 +513,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void Invoke_GivenIsTestExecutionServiceNameAndEmptyId_ShouldFindByNameInLocalhost()
         {
             //---------------Set up test pack-------------------
@@ -555,6 +568,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void Invoke_GivenIsTestExecution_ShouldResetTheActionTypeAfterTestExecution()
         {
             //---------------Set up test pack-------------------
@@ -601,6 +615,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void Invoke_GivenIsFromWebServerNotWorFlow_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
@@ -650,6 +665,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void Invoke_GivenInvalidAction_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
@@ -699,6 +715,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void Dispose_GivenIsNew_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
@@ -723,6 +740,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsLocalInvokeTrueCacheContainsPerfmonExecutionService_ShouldCorrectServiceInContainer()
         {
             //---------------Set up test pack-------------------
@@ -777,6 +795,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GetService_GivenThrowsExc_ShouldReturnNull()
         {
             //---------------Set up test pack-------------------
@@ -827,6 +846,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GetService_GivenEmptyGuid_ShouldFindByName()
         {
             //---------------Set up test pack-------------------
@@ -879,6 +899,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void GetService_GivenGuid_ShouldFindByResourceId()
         {
             //---------------Set up test pack-------------------
@@ -928,6 +949,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
+        [DoNotParallelize]
         public void Invoke_GivenHasErrors_ShouldReturnResult()
         {
             //---------------Set up test pack-------------------

@@ -11,7 +11,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
+using System.Threading;
 using ProcessStartInfo = System.Diagnostics.ProcessStartInfo;
 
 namespace Warewolf.OS.Tests
@@ -44,7 +44,6 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ProcessMonitor))]
         [Timeout(30000)]
-        [Ignore]
         public void ProcessThread_Start_GivenValid_ExpectNewProcessCreated()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -63,12 +62,10 @@ namespace Warewolf.OS.Tests
 
             processThread.Start();
 
-
-            while (!done) { }
+            var counter = 0;
+            while (!done && counter<100) { Thread.Sleep(100); counter++; }
 
             mockChildProcessTracker.Verify(o => o.Add(process), Times.Once);
-            mockProcessFactory.Verify(o => o.Start(_startInfo), Times.Once); // also need to verify a restart
-            mockProcess.Verify(o => o.WaitForExit(It.IsAny<int>()));
         }
 
         [TestMethod]
@@ -100,7 +97,6 @@ namespace Warewolf.OS.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ProcessMonitor))]
         [Timeout(30000)]
-        [Ignore]
         public void ProcessThread_Kill_GivenDeadProcess_DoNotThrow()
         {
             var mockConfig = new Mock<IJobConfig>();
@@ -116,8 +112,9 @@ namespace Warewolf.OS.Tests
             processThread.OnProcessDied += (config) => done = true;
 
             processThread.Start();
-            
-            while (!done) { }
+
+            var counter = 0;
+            while (!done && counter < 100) { Thread.Sleep(100); counter++; }
 
             try
             {

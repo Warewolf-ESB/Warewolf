@@ -355,24 +355,6 @@ namespace Dev2.Infrastructure.Tests
             Assert.AreEqual(appPath, path);
         }
 
-        public static string GetVar(string name)
-        {
-            string passwordsPath = $@"\\SVRDEV.premier.local\Git-Repositories\Warewolf\.testData";
-            if (File.Exists(passwordsPath))
-            {
-                var usernamesAndPasswords = File.ReadAllLines(passwordsPath);
-                foreach (var usernameAndPassword in usernamesAndPasswords)
-                {
-                    var usernamePasswordSplit = Decrypt(usernameAndPassword).Split('=');
-                    if (usernamePasswordSplit.Length > 1 && usernamePasswordSplit[0].ToLower() == name.ToLower())
-                    {
-                        return usernamePasswordSplit[1];
-                    }
-                }
-            }
-            return string.Empty;
-        }
-
         static byte[] key = new byte[8] { 1, 2, 3, 4, 5, 6, 7, 8 };
         static byte[] iv = new byte[8] { 1, 1, 2, 3, 5, 8, 13, 21 };
 

@@ -149,7 +149,7 @@ namespace Dev2.Activities
                     {"resourceID", new StringBuilder(_dataObject.ResourceID.ToString())},
                     {"environment", new StringBuilder(currentEnvironment)},
                     {"startActivityId", new StringBuilder(activityId.ToString())},
-                    {nameof(versionNumber), new StringBuilder(_dataObject.VersionNumber.ToString())},
+                    {nameof(versionNumber), new StringBuilder(versionNumber)},
                     {nameof(currentuserprincipal), new StringBuilder(currentuserprincipal)}
                 };
 
@@ -445,8 +445,8 @@ namespace Dev2.Activities
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int) SuspendOption;
                 hashCode = (hashCode * 397) ^ (PersistValue != null ? PersistValue.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (AllowManualResumption != null ? AllowManualResumption.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (EncryptData != null ? EncryptData.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ AllowManualResumption.GetHashCode();
+                hashCode = (hashCode * 397) ^ EncryptData.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Response != null ? Response.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SaveDataFunc != null ? SaveDataFunc.GetHashCode() : 0);
                 return hashCode;
