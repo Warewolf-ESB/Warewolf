@@ -945,7 +945,6 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        [Ignore]
         public void ExecutionEnvironment_GetObjectLength_ChildArray2()
         {
             var _environment = new ExecutionEnvironment();

@@ -38,7 +38,6 @@ namespace Dev2.Common.Tests
                 SslCertificateName = "SslCertificateName",
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
-                AuditFilePath = "some path",
                 Sink = nameof(LegacySettingsData),
                 ExecutionLogLevel = LogLevel.ERROR.ToString()
             };
@@ -50,7 +49,6 @@ namespace Dev2.Common.Tests
                 SslCertificateName = "SslCertificateName",
                 CollectUsageStats = true,
                 DaysToKeepTempFiles = 2,
-                AuditFilePath = "some path",
                 Sink = nameof(LegacySettingsData),
                 ExecutionLogLevel = LogLevel.ERROR.ToString()
             };

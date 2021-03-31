@@ -12,26 +12,20 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.TO;
-using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Util;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Warewolf.Auditing;
 using Warewolf.Core;
 using Warewolf.Driver.Persistence;
 using Warewolf.Resource.Errors;
-using Warewolf.Storage;
-using WarewolfParserInterop;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Activities
 {
@@ -43,6 +37,7 @@ namespace Dev2.Activities
         private IStateNotifier _stateNotifier = null;
         private readonly bool _persistenceEnabled;
         private readonly IPersistenceExecution _scheduler;
+        private ActivityFunc<string, bool> _overrideDataFunc;
 
         public ManualResumptionActivity()
             : this(Config.Persistence, new PersistenceExecution())
@@ -56,6 +51,7 @@ namespace Dev2.Activities
             {
                 DisplayName = "Data Action",
                 Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}"),
+                Handler = new DsfSequenceActivity(),
             };
             _persistenceEnabled = config.Enable;
             _scheduler = resumeExecution;
@@ -134,26 +130,33 @@ namespace Dev2.Activities
                     throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
                 }
 
-                var overrideVariables = "";
+                const string overrideVariables = "";
                 if (OverrideInputVariables)
                 {
-                    var suspendedEnv = _scheduler.GetSuspendedEnvironment(suspensionId);
+                    var persistedValues = _scheduler.GetPersistedValues(suspensionId);
 
-                    if (string.IsNullOrEmpty(suspendedEnv))
+                    if (string.IsNullOrEmpty(persistedValues.SuspendedEnvironment))
                     {
                         throw new Exception(ErrorResource.ManualResumptionSuspensionEnvBlank);
                     }
 
-                    if (suspendedEnv.StartsWith("Failed:"))
+                    if (persistedValues.SuspendedEnvironment.StartsWith("Failed:"))
                     {
-                        throw new Exception(suspendedEnv);
+                        throw new Exception(persistedValues.SuspendedEnvironment);
                     }
-
-                    var innerActivity = InnerActivity();
-                    overrideVariables = ExecuteOverrideDataFunc(innerActivity, suspendedEnv, _dataObject);
+                    var resumeObject = _dataObject;
+                    resumeObject.StartActivityId = persistedValues.StartActivityId;
+                    resumeObject.Environment = _dataObject.Environment;
+                    resumeObject.Environment.FromJson(persistedValues.SuspendedEnvironment);
+                    resumeObject.ExecutingUser = persistedValues.ExecutingUser;
+                    InnerActivity(resumeObject, _update);
+                    Response = _scheduler.ManualResumeWithOverrideJob(resumeObject, suspensionId);
+                }
+                else
+                {
+                    Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
                 }
 
-                Response = _scheduler.ResumeJob(_dataObject, suspensionId, OverrideInputVariables, overrideVariables);
                 _stateNotifier?.LogActivityExecuteState(this);
                 if (_dataObject.IsDebugMode())
                 {
@@ -220,90 +223,23 @@ namespace Dev2.Activities
             return suspensionId.Trim();
         }
 
-        private ForEachInnerActivityTO InnerActivity()
+        private void InnerActivity(IDSFDataObject dataObject, int update)
         {
-            if (!(OverrideDataFunc.Handler is IDev2ActivityIOMapping ioMapping))
+            if (OverrideDataFunc.Handler is DsfSequenceActivity sequenceActivity)
             {
-                throw new Exception(ErrorResource.InnerActivityWithNoContentError);
-            }
-
-            //TODO: Refactor/Rename ForEachInnerActivityTO to not be specific to "ForEach"
-            var innerActivity = new ForEachInnerActivityTO(ioMapping);
-            return innerActivity;
-        }
-
-        public string ExecuteOverrideDataFunc(ForEachInnerActivityTO innerActivity, string suspendedEnv, IDSFDataObject dataObject)
-        {
-            IDSFDataObject newDataObject = new DsfDataObject(string.Empty, Guid.Empty);
-
-            var serviceInputs = new List<IServiceInput>();
-            InputsFromJson.FromJson(suspendedEnv, serviceInputs);
-
-            var origInnerInputMapping = innerActivity.OrigInnerInputMapping;
-            var inputs = TranslateInputMappingToInputs(origInnerInputMapping);
-
-            foreach (var serviceInput in inputs)
-            {
-                string inputName;
-                string inputValue;
-                IServiceInput storedInput = null;
-
-                var isVariable = ExecutionEnvironment.IsValidVariableExpression(serviceInput.Value, out string errorMessage, 0);
-                if (isVariable)
+                foreach (var dsfActivity in sequenceActivity.Activities)
                 {
-                    inputName = dataObject.Environment.EvalToExpression(serviceInput.Value, _update);
-                    inputValue = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(inputName, _update, false, true));
-                }
-                else
-                {
-                    inputName = "[[" + serviceInput.Name + "]]";
-                    inputValue = serviceInput.Value;
-                }
-
-                if (ExecutionEnvironment.IsScalar(serviceInput.Value))
-                {
-                    storedInput = serviceInputs.FirstOrDefault(o => o.Name == serviceInput.Name);
-                }
-                else if (ExecutionEnvironment.IsRecordsetIdentifier(serviceInput.Value))
-                {
-                    storedInput = serviceInputs.FirstOrDefault(o =>
+                    if (dsfActivity is IDev2Activity act)
                     {
-                        var recName = o.Name;
-                        if (o.Name.Contains("."))
-                        {
-                            recName = o.Name.Remove(0, o.Name.IndexOf(".", StringComparison.Ordinal) + 1);
-                        }
-
-                        return recName == serviceInput.Name;
-                    });
-                }
-                else
-                {
-                    if (serviceInput.Name.StartsWith("@"))
-                    {
-                        storedInput = serviceInputs.FirstOrDefault(o => o.Name == serviceInput.Name);
+                        ExecuteActivity(dataObject, update, dsfActivity, act);
                     }
                 }
-
-                if (storedInput != null && inputValue is null)
-                {
-                    inputValue = storedInput.Value;
-                }
-
-                newDataObject.Environment.AssignWithFrame(new AssignValue(inputName, inputValue), _update);
             }
-
-            return newDataObject.Environment.ToJson();
         }
 
-        private static IEnumerable<IServiceInput> TranslateInputMappingToInputs(string inputMapping)
+        private static void ExecuteActivity(IDSFDataObject dataObject, int update, Activity dsfActivity, IDev2Activity act)
         {
-            var inputDefs = DataListFactory.CreateInputParser().Parse(inputMapping);
-            return inputDefs.Select(inputDef => new ServiceInput(inputDef.Name, inputDef.RawValue)
-            {
-                EmptyIsNull = inputDef.EmptyToNull,
-                RequiredField = inputDef.IsRequired
-            }).Cast<IServiceInput>().ToList();
+            act.Execute(dataObject, update);
         }
 
         public void SetStateNotifier(IStateNotifier stateNotifier)

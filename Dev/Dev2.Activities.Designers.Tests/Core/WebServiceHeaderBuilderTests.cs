@@ -1,9 +1,19 @@
-﻿using Dev2.Common;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -14,7 +24,7 @@ namespace Dev2.Activities.Designers.Tests.Core
     {
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("WebServiceHeaderBuilder")]
+        [TestCategory(nameof(WebServiceHeaderBuilder))]
         public void WebServiceHeaderBuilder_GivenNoHeadersNoContent_PassThrouh()
         {
             //------------Setup for test--------------------------
@@ -28,7 +38,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("WebServiceHeaderBuilder")]
+        [TestCategory(nameof(WebServiceHeaderBuilder))]
         public void WebServiceHeaderBuilder_GivenNormalText_PassAddNoHeaders()
         {
             //------------Setup for test--------------------------
@@ -46,7 +56,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("WebServiceHeaderBuilder")]
+        [TestCategory(nameof(WebServiceHeaderBuilder))]
         public void WebServiceHeaderBuilder_GivenNormalTextJson_PassAddHeaders()
         {
             //------------Setup for test--------------------------
@@ -67,10 +77,27 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.AreEqual(1, countContentTypes);
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WebServiceHeaderBuilder))]
+        public void WebServiceHeaderBuilder_GivenEmptyJson_ExpectNull()
+        {
+            //------------Setup for test--------------------------
+            var mod = new WebServiceHeaderBuilder();
+            var newMock = new Mock<IHeaderRegion>();
+            newMock.SetupProperty(region => region.Headers);
+            var content = "{}"; //this causes header: "Content-Type: application/json" misuse BUG: 6713
+            //---------------Assert Precondition----------------
+            Assert.IsNull(newMock.Object.Headers);
+            //------------Execute Test---------------------------
+            mod.BuildHeader(newMock.Object, content);
+            //------------Assert Results-------------------------
+            Assert.IsNull(newMock.Object.Headers, "Empty JSON causes header: Content-Type: application/json misuse BUG: 6713");
+        }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("WebServiceHeaderBuilder")]
+        [TestCategory(nameof(WebServiceHeaderBuilder))]
         public void WebServiceHeaderBuilder_GivenNormalTextXml_PassAddHeaders()
         {
             //------------Setup for test--------------------------
@@ -93,7 +120,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("WebServiceHeaderBuilder")]
+        [TestCategory(nameof(WebServiceHeaderBuilder))]
         public void WebServiceHeaderBuilder_GivenHasExistingXmlHeaderAndCOntentIsXml_PassAddNoHeaders()
         {
             //------------Setup for test--------------------------
@@ -120,7 +147,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("WebServiceHeaderBuilder")]
+        [TestCategory(nameof(WebServiceHeaderBuilder))]
         public void WebServiceHeaderBuilder_GivenHasExistingJsonHeaderAndContentIsJson_PassAddNoHeaders()
         {
             //------------Setup for test--------------------------
@@ -147,7 +174,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("WebServiceHeaderBuilder")]
+        [TestCategory(nameof(WebServiceHeaderBuilder))]
         public void WebServiceHeaderBuilder_GivenEmptyHeaders_SetHeaders()
         {
             //------------Setup for test--------------------------

@@ -34,14 +34,14 @@ namespace Warewolf.Driver.Persistence
             _persistenceScheduler = persistenceScheduler;
         }
 
-        public string GetSuspendedEnvironment(string jobId)
+        public IPersistedValues GetPersistedValues(string jobId)
         {
             var scheduler = _persistenceScheduler ?? GetScheduler();
             if (scheduler is null)
             {
                 throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
             }
-            return scheduler.GetSuspendedEnvironment(jobId);
+            return scheduler.GetPersistedValues(jobId);
         }
 
         public string ResumeJob(IDSFDataObject dsfDataObject, string jobId, bool overrideVariables,string environment)
@@ -52,6 +52,16 @@ namespace Warewolf.Driver.Persistence
                 throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
             }
             return scheduler.ResumeJob(dsfDataObject,jobId, overrideVariables, environment);
+        }
+
+        public string ManualResumeWithOverrideJob(IDSFDataObject dsfDataObject, string jobId)
+        {
+            var scheduler = _persistenceScheduler ?? GetScheduler();
+            if (scheduler is null)
+            {
+                throw new Exception(ErrorResource.PersistenceSettingsNoConfigured);
+            }
+            return scheduler.ManualResumeWithOverrideJob(dsfDataObject, jobId);
         }
 
         public string CreateAndScheduleJob(enSuspendOption suspendOption, string suspendOptionValue, Dictionary<string, StringBuilder> values)

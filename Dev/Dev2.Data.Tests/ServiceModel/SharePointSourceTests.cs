@@ -39,7 +39,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SharepointSource))]
-        [Ignore("Incompatible with the latest version of Moq.")]
         public void SharePointSource_Validate_LoadLists()
         {
             var expectedSharepointList = new System.Collections.Generic.List<ISharepointListTo>
@@ -48,13 +47,12 @@ namespace Dev2.Data.Tests.ServiceModel
                 new SharepointListTo { FullName = "SharepointFullNameDup" }
             };
 
-            const string server = "localhost";
-            const string userName = "testuser";
-            const string password = "test123";
             const bool isSharepointOnline = false;
 
+            var expectedSharepointHelper = new Mock<ISharepointHelper>();
+            expectedSharepointHelper.Setup(sharepointHelper => sharepointHelper.LoadLists()).Returns(expectedSharepointList);
             var mockSharepointHelperFactory = new Mock<ISharepointHelperFactory>();
-            mockSharepointHelperFactory.Setup(sharepointHelperFactory => sharepointHelperFactory.New(server, userName, password, isSharepointOnline).LoadLists()).Returns(expectedSharepointList);
+            mockSharepointHelperFactory.Setup(sharepointHelperFactory => sharepointHelperFactory.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), isSharepointOnline)).Returns(expectedSharepointHelper.Object);
 
             var sharepointSource = new SharepointSource(mockSharepointHelperFactory.Object);
 
@@ -67,7 +65,6 @@ namespace Dev2.Data.Tests.ServiceModel
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(SharepointSource))]
-        [Ignore("Incompatible with the latest version of Moq.")]
         public void SharePointSource_Validate_LoadFieldsForList()
         {
             const string listName = "sharepointList";
@@ -79,13 +76,12 @@ namespace Dev2.Data.Tests.ServiceModel
                 new SharepointFieldTo { Name = "SharepointNameDup" }
             };
 
-            const string server = "localhost";
-            const string userName = "testuser";
-            const string password = "test123";
             const bool isSharepointOnline = false;
 
+            var expectedSharepointHelper = new Mock<ISharepointHelper>();
+            expectedSharepointHelper.Setup(sharepointHelper => sharepointHelper.LoadFieldsForList(listName, editableFieldsOnly)).Returns(expectedSharepointList);
             var mockSharepointHelperFactory = new Mock<ISharepointHelperFactory>();
-            mockSharepointHelperFactory.Setup(sharepointHelperFactory => sharepointHelperFactory.New(server, userName, password, isSharepointOnline).LoadFieldsForList(listName, editableFieldsOnly)).Returns(expectedSharepointList);
+            mockSharepointHelperFactory.Setup(sharepointHelperFactory => sharepointHelperFactory.New(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), isSharepointOnline)).Returns(expectedSharepointHelper.Object);
 
             var sharepointSource = new SharepointSource(mockSharepointHelperFactory.Object);
 
