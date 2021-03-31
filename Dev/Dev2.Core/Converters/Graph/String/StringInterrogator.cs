@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,23 +12,17 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
-
-
 namespace Unlimited.Framework.Converters.Graph.String
-
 {
     [Serializable]
     public class StringInterrogator : IInterrogator
     {
-        #region Methods
-
         public IMapper CreateMapper(object data)
         {
             IMapper mapper;
@@ -84,9 +78,6 @@ namespace Unlimited.Framework.Converters.Graph.String
             return navigator;
         }
 
-        #endregion Methods
-
-        #region Private Methods
 
         bool IsXml(string data)
         {
@@ -94,13 +85,10 @@ namespace Unlimited.Framework.Converters.Graph.String
 
             try
             {
-
                 XDocument.Parse(data);
-
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 result = false;
             }
 
@@ -117,13 +105,10 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 result = false;
             }
 
             return result;
         }
-
-        #endregion Private Methods
     }
 }

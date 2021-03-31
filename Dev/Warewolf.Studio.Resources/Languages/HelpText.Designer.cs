@@ -2110,7 +2110,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If selected, it allows for the input variables to be altered. Any changes will replace the current stored values..
+        ///   Looks up a localized string similar to If selected, it allows for the input variables to be altered. Any changes will replace the current stored values.&lt;br/&gt;&lt;br/&gt;By default the Sequence Tool will be displayed.&lt;br/&gt;&lt;br/&gt;Using the Sequence Tool, a set of Activities can be executed in sequence so that input values can be assigned and overidden before being assigned to the Suspended Workflow to be resumed..
         /// </summary>
         public static string ManualResumptionOverrideVariablesHelpText {
             get {
