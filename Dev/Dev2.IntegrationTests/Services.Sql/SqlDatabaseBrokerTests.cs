@@ -270,10 +270,8 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         public interface IImpersonator
         {
-            bool Impersonate(string userName, string domain);
             bool Impersonate(string userName, string domain, string password);
             void Undo();
-            bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted);
         }
 
         public class Impersonator : IDisposable, IImpersonator
