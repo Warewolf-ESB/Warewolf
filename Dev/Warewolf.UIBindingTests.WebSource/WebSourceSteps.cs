@@ -307,8 +307,7 @@ namespace Warewolf.UIBindingTests.WebSource
         {
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
-            var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
+            var password = "I73573r0";
             Assert.AreEqual(password, viewModel.Password);
             Assert.AreEqual(password, manageWebserviceSourceControl.GetPassword());
         }
@@ -320,8 +319,7 @@ namespace Warewolf.UIBindingTests.WebSource
         public void WhenITypePassword()
         {
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
-            var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
+            var password = "I73573r0";
             manageWebserviceSourceControl.EnterPassword(password);
             var viewModel = scenarioContext.Get<ManageWebserviceSourceViewModel>("viewModel");
             Assert.AreEqual(password, viewModel.Password);
