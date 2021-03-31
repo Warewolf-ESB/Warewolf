@@ -193,9 +193,6 @@ namespace Dev2.Activities.Specs.Sources
             Assert.AreEqual(p0, result);
         }
 
-        [Given(@"User as ""(.*)""")]
-        public void GivenUserAs(string username) => AddUserToServerSource(username, TestEnvironmentVariables.GetVar(username));
-
         [Given(@"User as ""(.*)"" and with ""(.*)"" as password")]
         public void GivenUserAsWithPassword(string username, string password) => AddUserToServerSource(username, password);
 

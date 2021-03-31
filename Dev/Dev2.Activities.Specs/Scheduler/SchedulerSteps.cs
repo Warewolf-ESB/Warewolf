@@ -74,13 +74,6 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
         }
-
-        [Given(@"""(.*)"" has a username of ""(.*)"" and a saved password")]
-        public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName)
-        {
-            _scenarioContext.Add("UserName", userName);
-            _scenarioContext.Add("Password", TestEnvironmentVariables.GetVar(userName));
-        }
         
         [Given(@"""(.*)"" has a Schedule of")]
         public void GivenHasAScheduleOf(string scheduleName, Table table)
