@@ -38,7 +38,7 @@ namespace Dev2.Tests.DataList
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2StudioSessionBroker))]
-        [DoNotParalellize]
+        [DoNotParallelize]
         public void Dev2StudioSessionBroker_InitSessionWithNoDataBaseDirectoryIsNull()
         {
             var to = new DebugTO();
