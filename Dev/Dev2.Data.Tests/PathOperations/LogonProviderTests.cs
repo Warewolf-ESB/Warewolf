@@ -91,8 +91,6 @@ namespace Dev2.Data.Tests.PathOperations
             var mockLoginImpl = new Mock<ILoginApi>();
 
             var provider = new LogonProvider(mockLoginImpl.Object);
-
-            var username = @"dev2\IntegrationTester";
             var password = "I73573r0";
 
             var v = It.IsAny<SafeTokenHandle>();
