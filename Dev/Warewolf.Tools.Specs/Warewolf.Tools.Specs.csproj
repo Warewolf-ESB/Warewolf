@@ -188,7 +188,6 @@
     <Compile Include="Toolbox\FileAndFolder\Delete\DeleteSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\DomainResolution.cs" />
     <Compile Include="Toolbox\FileAndFolder\FileAndFolderSpecsCleanup.cs" />
-    <Compile Include="Toolbox\FileAndFolder\FileSharingSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Move\Move.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
