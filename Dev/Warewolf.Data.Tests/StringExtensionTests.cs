@@ -12,6 +12,8 @@
 namespace Warewolf.Data.Tests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Newtonsoft.Json.Linq;
+    using System.Collections.Generic;
     using System.Xml.Linq;
 
     namespace Warewolf.Data.Tests
@@ -144,6 +146,103 @@ namespace Warewolf.Data.Tests
                 Assert.IsTrue(result);
                 Assert.IsNotNull(output);
                 Assert.AreEqual(XElement.Parse(stringData).ToString(), output.ToString());
+            }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsXElement_Given_MultipleXElements_ShouldReturnFalse()
+            {
+                var stringData = "<tag1>test data one</tag1><tag2>test data two</tag2>";
+
+                var result = stringData.IsXElement(out XElement _);
+
+                Assert.IsFalse(result);
+            }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsMultipleXElement_Given_MultipleXElements_ShouldReturnTrue()
+            {
+                var stringData = "<tag1>test data one</tag1><tag2>test data two</tag2>";
+                var expectedStringData = string.Concat("<Error>", stringData, "</Error>");
+
+                var result = stringData.IsMultipleXElement(out XElement output);
+
+                Assert.IsTrue(result);
+                Assert.IsNotNull(output);
+                Assert.AreEqual(XElement.Parse(expectedStringData).ToString(), output.ToString());
+            }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsJSON_Given_IsEmpty_ShouldReturnFalse()
+            {
+                var stringData = string.Empty;
+
+                var result = stringData.IsJToken(out JToken output);
+
+                Assert.IsNull(output);
+                Assert.IsFalse(result);
+            }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsJSON_Given_IsInCorrectJSONObject_ShouldReturnFalse()
+            {
+                var stringData = "{this is not a correct json object}";
+
+                var result = stringData.IsJToken(out JToken output);
+
+                Assert.IsNull(output);
+                Assert.IsFalse(result);
+            }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsJSON_Given_IsInCorrectJSONArray_ShouldReturnFalse()
+            {
+                var stringData = "[this is not a correct json array]";
+
+                var result = stringData.IsJToken(out JToken output);
+
+                Assert.IsNull(output);
+                Assert.IsFalse(result);
+            }
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsJSON_Given_IsCorrectJSONObject_ShouldReturnTrue()
+            {
+                var stringData = "{errorTag:'test error'}";
+
+                var result = stringData.IsJToken(out JToken output);
+
+                Assert.IsNotNull(output);
+                Assert.IsTrue(result);
+            }
+
+
+            [TestMethod]
+            [Owner("Siphamandla Dube")]
+            [TestCategory(nameof(StringExtension))]
+            public void StringExtension_IsJSON_Given_IsCorrectJSONArray_ShouldReturnTrue()
+            {
+                var stringData = "['test error one', 'test error two']";
+
+                var result = stringData.IsJToken(out JToken output);
+
+
+                Assert.IsNotNull(output);
+                Assert.IsTrue(result);
+
+                List<string> list = output.ToObject(typeof(List<string>)) as List<string>;
+                Assert.IsNotNull(list);
             }
         }
     }
