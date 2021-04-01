@@ -128,6 +128,26 @@ namespace Dev2.Data.Tests.TO
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ErrorResultTO))]
+        public void ErrorResultTO_AddErrors_GivenCheckForDuplcity_ShouldNotAddTheErrorInTheCollection()
+        {
+            var errorResultTo = new ErrorResultTO();
+
+            Assert.AreEqual(0, errorResultTo.FetchErrors().Count);
+            errorResultTo.AddError("SomeError", true);
+            Assert.AreEqual(1, errorResultTo.FetchErrors().Count);
+            errorResultTo.AddError("SomeError", true);
+            Assert.AreEqual(1, errorResultTo.FetchErrors().Count);
+
+            var merge = new ErrorResultTO();
+            merge.AddError("Error to merge");
+            errorResultTo.MergeErrors(merge);
+
+            Assert.AreEqual(2, errorResultTo.FetchErrors().Count);
+        }
+
+        [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ErrorResultTO))]
         public void ErrorResultTO_MergeErrors_EmptyOther()
@@ -231,7 +251,7 @@ namespace Dev2.Data.Tests.TO
         }
 
         [TestMethod]
-        [Owner("Rory McGuire")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ErrorResultTO))]
         public void ErrorResultTO_MakeDataListReady_ExpectJson_ShouldEscapeQuotesInErrorMessages()
         {
@@ -243,16 +263,16 @@ namespace Dev2.Data.Tests.TO
             errorResultTo.AddError("\"Error\" message");
 
             var makeDisplayReady = errorResultTo.MakeDataListReady(false);
-            var result = "\"errors\": [ \"this is some exception's \\\"message\\\" string\",\"Another \\\"Error\\\"\",\"\\\"Error\\\" message\"]";
-            Assert.AreEqual(result, makeDisplayReady);
+            var result = "[ \"this is some exception's \\\"message\\\" string\",\"Another \\\"Error\\\"\",\"\\\"Error\\\" message\"]";
+            Assert.AreEqual(result, makeDisplayReady, "\"errors\": prefix have been removed to keep with the xml add error of this method as it seems to be the most used");
         }
 
         [TestMethod]
-        [Owner("Rory McGuire")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ErrorResultTO))]
         public void ErrorResultTO_MakeDataListReady_AsXmlFalseShouldReturnAllErrorsAsOne()
         {
-            var result = "\"errors\": [ \"SomeError\",\"AnotherError\"]";
+            var result = "[ \"SomeError\",\"AnotherError\"]";
             var errorResultTo = new ErrorResultTO();
 
             Assert.AreEqual(0, errorResultTo.FetchErrors().Count);
@@ -262,7 +282,7 @@ namespace Dev2.Data.Tests.TO
             Assert.AreEqual(2, errorResultTo.FetchErrors().Count);
 
             var makeDisplayReady = errorResultTo.MakeDataListReady(false);
-            Assert.AreEqual(result, makeDisplayReady);
+            Assert.AreEqual(result, makeDisplayReady, "\"errors\": prefix have been removed to keep with the xml add error of this method as it seems to be the most used");
         }
 
         [TestMethod]
@@ -270,7 +290,7 @@ namespace Dev2.Data.Tests.TO
         [TestCategory(nameof(ErrorResultTO))]
         public void ErrorResultTO_MakeDataListReady_CannotSetUnknownMember_RemapsErrorMessage()
         {
-            var result = "\"errors\": [ \"SomeError\",\"Resource has unrecognized formatting, this Warewolf Server may be to outdated to read this resource.\",\"Another Error\"]";
+            var result = "[ \"SomeError\",\"Resource has unrecognized formatting, this Warewolf Server may be to outdated to read this resource.\",\"Another Error\"]";
             var errorResultTo = new ErrorResultTO();
 
             Assert.AreEqual(0, errorResultTo.FetchErrors().Count);
@@ -281,7 +301,7 @@ namespace Dev2.Data.Tests.TO
             Assert.AreEqual(3, errorResultTo.FetchErrors().Count);
 
             var makeDisplayReady = errorResultTo.MakeDataListReady(false);
-            Assert.AreEqual(result, makeDisplayReady);
+            Assert.AreEqual(result, makeDisplayReady, "\"errors\": prefix have been removed to keep with the xml add error of this method as it seems to be the most used");
         }
     }
 }
