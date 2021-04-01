@@ -10,6 +10,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Newtonsoft.Json;
@@ -19,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Warewolf.Data;
 using Warewolf.Exceptions;
 using Warewolf.Resource.Errors;
@@ -581,9 +583,37 @@ namespace Warewolf.Storage
         public Guid Id { get; protected set; }
         public Guid ParentId { get; protected set; }
 
-        public void AddError(string error)
+        public void AddError(string errorString) => AddError(errorString, false);
+        public void AddError(string errorsString, bool checkForInnerErrorDuplicates)
         {
-            Errors.Add(error);
+            if (string.IsNullOrEmpty(errorsString))
+            {
+                return;
+            }
+            if (checkForInnerErrorDuplicates && errorsString.IsMultipleXElement(out XElement output))
+            {
+                var xmlInnerErrors = output.Elements("InnerError");
+                if (xmlInnerErrors.Count() > 0)
+                {
+                    foreach (XElement element in xmlInnerErrors)
+                    {
+                        Errors.AddItem(element.Value, true);
+                    }
+                }
+                else if (errorsString.IsJSON(out JToken outputJObject))
+                {
+                    var jsonInnerErrors = outputJObject.ToObject(typeof(List<string>)) as List<string>;
+                    foreach (var error in jsonInnerErrors)
+                    {
+                        Errors.AddItem(error);
+                    }
+                }
+            }
+            else
+            {
+                Errors.Add(errorsString);
+            }
+
         }
 
         public void AssignDataShape(string p)

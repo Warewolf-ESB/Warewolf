@@ -2123,6 +2123,82 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AddError_GivenCheckForInnerErrorDuplicates_ShouldNotRepeatErrorAdd()
+        {
+            var _environment = new ExecutionEnvironment();
+            var countBefore = _environment.Errors.Count;
+            Assert.AreEqual(0, _environment.Errors.Count);
+
+            _environment.AddError("error message #1");
+            _environment.AddError("error message #1", true);
+            _environment.AddError("<InnerError>error message #1</InnerError>", true);
+
+            Assert.AreEqual(countBefore + 1, _environment.Errors.Count);
+            Assert.AreEqual("error message #1", _environment.Errors.ToArray()[0]);
+        }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AddError_GivenCheckForInnerErrorDuplicates_ShouldRepeatInnerErrorAdd()
+        {
+            var _environment = new ExecutionEnvironment();
+            var countBefore = _environment.Errors.Count;
+            Assert.AreEqual(0, _environment.Errors.Count);
+
+            _environment.AddError("error message #1");
+            _environment.AddError("error message #1");
+            _environment.AddError("<InnerError>error message #1</InnerError>");
+            _environment.AddError("<InnerError>error message #1</InnerError>");
+
+            Assert.AreEqual(countBefore + 2, _environment.Errors.Count);
+            Assert.AreEqual("error message #1", _environment.Errors.ToArray()[0]);
+            Assert.AreEqual("<InnerError>error message #1</InnerError>", _environment.Errors.ToArray()[1]);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AddError_GivenCheckForInnerErrorDuplicates_ShouldRepeatXMLInnerErrorAdd()
+        {
+            var _environment = new ExecutionEnvironment();
+            var countBefore = _environment.Errors.Count;
+            Assert.AreEqual(0, _environment.Errors.Count);
+
+            _environment.AddError("error message #1");
+            _environment.AddError("['error message #1', 'error message #2']", true);
+            _environment.AddError("<InnerError>error message #1</InnerError>");
+            _environment.AddError("<InnerError>error message #1</InnerError>");
+
+            Assert.AreEqual(countBefore + 3, _environment.Errors.Count);
+            Assert.AreEqual("error message #1", _environment.Errors.ToArray()[0]);
+            Assert.AreEqual("error message #2", _environment.Errors.ToArray()[1]);
+            Assert.AreEqual("<InnerError>error message #1</InnerError>", _environment.Errors.ToArray()[2]);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AddError_GivenCheckForInnerErrorDuplicates_ShouldNotXMLRepeatInnerErrorAdd()
+        {
+            var _environment = new ExecutionEnvironment();
+            var countBefore = _environment.Errors.Count;
+            Assert.AreEqual(0, _environment.Errors.Count);
+
+            _environment.AddError("error message #1");
+            _environment.AddError("['error message #1', 'error message #2']", true);
+            _environment.AddError("<InnerError>error message #1</InnerError>", true);
+            _environment.AddError("<InnerError>error message #1</InnerError>", true);
+
+            Assert.AreEqual(countBefore + 2, _environment.Errors.Count);
+            Assert.AreEqual("error message #1", _environment.Errors.ToArray()[0]);
+            Assert.AreEqual("error message #2", _environment.Errors.ToArray()[1]);
+        }
+
+        [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_HasErrors_ShouldBeTrue()
@@ -2168,6 +2244,29 @@ namespace Warewolf.Storage.Tests
             Assert.AreEqual(2, _environment.Errors.Count);
             Assert.AreEqual(2, _environment.AllErrors.Count);
             Assert.IsFalse(_environment.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_FetchErrors_IgnoresEmptyAndNull()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            _environment.Errors.Add("");
+            _environment.Errors.Add(null);
+            _environment.Errors.Add("");
+
+            _environment.AllErrors.Add("");
+            _environment.AllErrors.Add("");
+            _environment.AllErrors.Add(null);
+
+            Assert.AreEqual(2, _environment.Errors.Count);
+            Assert.AreEqual(2, _environment.AllErrors.Count);
+            Assert.IsFalse(_environment.HasErrors());
+            //BUG: 
+            //PBI: Should this pass, if HasErrors ignores empty or null?
+            //Assert.AreEqual(0, _environment.FetchErrors().Count());
         }
 
         [TestMethod]
