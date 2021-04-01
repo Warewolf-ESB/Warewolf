@@ -13,6 +13,8 @@ namespace Dev2.Tests.Runtime
         [Owner("Candice Daniel")]
         [TestCategory("RevulyticsCollectUsageStats")]
         [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
+        [TestCategory("CannotParallelize")]
         public void RevulyticsCollectUsageStatsForServerIsFalseTest()
         {
             Assert.AreEqual(false, AppUsageStats.CollectUsageStats);

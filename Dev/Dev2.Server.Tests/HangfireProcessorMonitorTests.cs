@@ -20,6 +20,7 @@ namespace Dev2.Server.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class HangfireProcessorMonitorTests
     {
         [TestMethod]

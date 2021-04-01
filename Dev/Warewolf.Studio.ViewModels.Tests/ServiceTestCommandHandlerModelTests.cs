@@ -457,6 +457,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Hagashen Naidu")]
         [TestCategory(nameof(ServiceTestCommandHandlerModel))]
         [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
+        [TestCategory("CannotParallelize")]
         public void ServiceTestCommandHandlerModel_ResourceModelTest_ShouldUpdateTestWithResourceDeletedResult()
         {
             //------------Setup for test--------------------------

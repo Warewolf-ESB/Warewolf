@@ -293,6 +293,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
         [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
+        [TestCategory("CannotParallelize")]
         public void PluginServices_Test_WhenTestingPluginReturningPlainString_ExpectValidPaths()
         {
             //------------Setup for test--------------------------
@@ -320,6 +322,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
         [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
+        [TestCategory("CannotParallelize")]
         public void PluginServices_Test_WhenTestingPluginReturningXmlString_ExpectValidPaths()
         {
             //------------Setup for test--------------------------
@@ -347,6 +351,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
         [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
+        [TestCategory("CannotParallelize")]
         public void PluginServices_Test_WhenTestingPluginReturningJsonString_ExpectValidPaths()
         {
             //------------Setup for test--------------------------

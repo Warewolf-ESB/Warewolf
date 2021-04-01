@@ -100,6 +100,8 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadResources))]
         [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
+        [TestCategory("CannotParallelize")]
         public void LoadResources_MigrateBinResources_DirectoryExits_False()
         {
             //------------------Arrange---------------

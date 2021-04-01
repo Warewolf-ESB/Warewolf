@@ -17,6 +17,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class ExplorerViewModelTests
     {
         ExplorerViewModel _target;

@@ -30,6 +30,7 @@ namespace Dev2.Integration.Tests.TestCoverage
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class TestCoverageCatalogIntegrationTests
     {
         private static readonly Guid _workflowId = Guid.Parse("99c23a82-aaf8-46a5-8746-4ff2d251daf2");

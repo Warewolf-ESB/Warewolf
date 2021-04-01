@@ -20,6 +20,7 @@ namespace Dev2.Common.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class UtilitiesTests
     {
         class Example

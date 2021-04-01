@@ -32,6 +32,7 @@ namespace Dev2.Integration.Tests.Redis
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class RedisCacheIntegrationTests
     {
         [TestMethod]
