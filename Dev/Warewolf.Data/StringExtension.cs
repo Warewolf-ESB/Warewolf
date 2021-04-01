@@ -9,6 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -223,6 +225,15 @@ namespace Warewolf.Data
             }
         }
 
+        public static bool IsMultipleXElement(this string input, out XElement output)
+        {
+            input = string.Concat("<Error>"+input+ "</Error>");
+            var isXElement = input.IsXElement(out XElement isXElementoutput);
+
+            output = isXElementoutput;
+            return isXElement;
+        }
+
         public static bool IsXElement(this string input, out XElement output)
         {
             if (!string.IsNullOrEmpty(input) && input.TrimStart().StartsWith("<"))
@@ -243,6 +254,30 @@ namespace Warewolf.Data
                 output = null;
                 return false;
             }
+        }
+
+        public static bool IsJToken(this string input, out JToken output)
+        {
+            var value = input.TrimStart();
+            value = value.TrimEnd();
+            if ((value.StartsWith("{") && value.EndsWith("}")) || //For object
+                (value.StartsWith("[") && value.EndsWith("]"))) //For array
+            {
+                try
+                {
+                    output = JToken.Parse(value);
+                    return true;
+                }
+
+
+                catch (Exception ff)
+                {
+                    output = null;
+                    return false;
+                }
+            }
+            output = null;
+            return false;
         }
 
         public static string CleanXmlSOAP(this string input)
