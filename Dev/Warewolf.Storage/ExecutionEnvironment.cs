@@ -600,7 +600,7 @@ namespace Warewolf.Storage
                         Errors.AddItem(element.Value, true);
                     }
                 }
-                else if (errorsString.IsJSON(out JToken outputJObject))
+                else if (errorsString.IsJToken(out JToken outputJObject))
                 {
                     var jsonInnerErrors = outputJObject.ToObject(typeof(List<string>)) as List<string>;
                     foreach (var error in jsonInnerErrors)

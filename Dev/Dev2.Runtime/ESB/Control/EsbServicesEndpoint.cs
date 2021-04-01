@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             catch (Exception ex)
             {
-                errors.AddError(ex.Message);
+                errors.AddError(ex.Message, true);
             }
             return resultID;
         }

@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ESB
         }
 
         #endregion Constructors
-                
+
         public Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             var result = GlobalConstants.NullDataListID;
@@ -83,7 +83,11 @@ namespace Dev2.Runtime.ESB
             errors = new ErrorResultTO();
             if (dataObject.Environment.HasErrors())
             {
-                errors.AddError(dataObject.Environment.FetchErrors());
+                var errorsFromDataList = ErrorResultTO.MakeErrorResultFromDataListString(dataObject.Environment.FetchErrors(), true);
+                foreach (var error in errorsFromDataList.FetchErrors())
+                {
+                    errors.AddError(error, true);
+                }
                 DispatchDebugErrors(errors, dataObject, StateType.Before);
             }
             errors.ClearErrors();
@@ -118,7 +122,7 @@ namespace Dev2.Runtime.ESB
                 }
                 catch (Exception e)
                 {
-                    errors.AddError(e.Message);
+                    errors.AddError(e.Message, true);
                 }
                 finally
                 {
@@ -126,11 +130,18 @@ namespace Dev2.Runtime.ESB
                     if (environment.HasErrors())
                     {
                         var errorString = environment.FetchErrors();
-                        var executionErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                        var executionErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
                         errors.MergeErrors(executionErrors);
                     }
 
-                    environment.AddError(errors.MakeDataListReady());
+                    if (dataObject.ReturnType == Web.EmitionTypes.XML || dataObject.ReturnType == Web.EmitionTypes.TRX)
+                    {
+                        environment.AddError(errors.MakeDataListReady(), true);
+                    }
+                    else
+                    {
+                        environment.AddError(errors.MakeDataListReady(false), true);
+                    }
 
                     if (errors.HasErrors())
                     {
@@ -381,7 +392,7 @@ namespace Dev2.Runtime.ESB
                     ErrorMessage = errors.MakeDisplayReady()
                 };
 
-                DebugDispatcher.Instance.Write( new WriteArgs { debugState = debugState, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName, isRemoteInvoke = dataObject.RemoteInvoke, remoteInvokerId = dataObject.RemoteInvokerID });
+                DebugDispatcher.Instance.Write(new WriteArgs { debugState = debugState, isTestExecution = dataObject.IsServiceTestExecution, isDebugFromWeb = dataObject.IsDebugFromWeb, testName = dataObject.TestName, isRemoteInvoke = dataObject.RemoteInvoke, remoteInvokerId = dataObject.RemoteInvokerID });
             }
         }
 
