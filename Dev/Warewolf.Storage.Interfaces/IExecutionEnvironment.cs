@@ -76,6 +76,7 @@ namespace Warewolf.Storage.Interfaces
         HashSet<string> AllErrors { get; }
 
         void AddError(string error);
+        void AddError(string errorsString, bool checkForInnerErrorDuplicates);
 
         void AssignDataShape(string p);
 

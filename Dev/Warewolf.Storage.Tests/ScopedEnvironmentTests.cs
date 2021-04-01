@@ -656,7 +656,7 @@ namespace Warewolf.Storage.Tests
             var _mockEnv = new Mock<IExecutionEnvironment>();
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
             scopedEnvironment.AddError("bob");
-            _mockEnv.Verify(a => a.AddError("bob"));
+            _mockEnv.Verify(a => a.AddError("bob", false));
         }
 
 

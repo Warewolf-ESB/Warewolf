@@ -162,9 +162,10 @@ namespace Warewolf.Storage
         public Guid Id => _inner.Id;
         public Guid ParentId => _inner.ParentId;
 
-        public void AddError(string error)
+        public void AddError(string error) => AddError(error, false);
+        public void AddError(string error, bool checkForInnerErrorDuplicates)
         {
-            _inner.AddError(error);
+            _inner.AddError(error, checkForInnerErrorDuplicates);
         }
 
         public void AssignDataShape(string p)
