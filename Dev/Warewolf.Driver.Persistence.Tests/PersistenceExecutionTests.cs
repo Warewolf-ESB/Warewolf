@@ -25,6 +25,7 @@ namespace Warewolf.Driver.Persistence.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class PersistenceExecutionTests
     {
         private string _settingsFilePath;

@@ -28,6 +28,7 @@ namespace Warewolf.HangfireServer.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class ResumptionAttributeTests
     {
         string currentuserprincipal = WindowsIdentity.GetCurrent().Name;

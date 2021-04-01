@@ -14,6 +14,7 @@ namespace Warewolf.Driver.ManuallyResumedState.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class ManuallyResumedStateTests
     {
         [TestMethod]

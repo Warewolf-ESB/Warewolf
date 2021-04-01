@@ -80,6 +80,8 @@ namespace Dev2.Diagnostics.Test
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerfmonContainer_Ctor")]
         [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
+        [TestCategory("CannotParallelize")]
         public void PerfmonContainer_Ctor_WrappedMethods()
         {
             var cont = new Cont();

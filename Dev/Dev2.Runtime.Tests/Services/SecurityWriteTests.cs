@@ -23,7 +23,8 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    [DoNotParallelize]//DevOps: Shared security settings file
+    [DoNotParallelize]
+    [TestCategory("CannotParallelize")]//DevOps: Shared security settings file
     public class SecurityWriteTests
     {
         #region Execute
