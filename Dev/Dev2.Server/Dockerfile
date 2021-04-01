@@ -1,6 +1,6 @@
 FROM golang:1.12.6-windowsservercore-1809 as pauseloopbuilder
-ENV pausesrcdir="src\\github.com\\kubernetes-sigs\\windows-testing"
-RUN mkdir $ENV:pausesrcdir ; cd $ENV:pausesrcdir ; git clone https://github.com/kubernetes-sigs/windows-testing.git . ; cd images\pause ; go build -o pauseloop.exe .
+ADD pauseloop pauseloop
+RUN cd pauseloop ; go build -o pauseloop.exe .
 
 FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
 
