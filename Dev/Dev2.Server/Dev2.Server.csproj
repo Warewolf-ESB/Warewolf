@@ -252,7 +252,7 @@
     <None Include="pauseloop\Dockerfile" OutputPath="pauseloop\Dockerfile" >
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="pauseloop\pauseloop.go">
+    <None Include="pauseloop\pauseloop.go" OutputPath="pauseloop\pauseloop.go">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ServerLifecycleManager.cs" />
