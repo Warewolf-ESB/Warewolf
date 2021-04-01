@@ -39,7 +39,6 @@ namespace Dev2.Tests.DataList
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2StudioSessionBroker))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void Dev2StudioSessionBroker_InitSessionWithNoDataBaseDirectoryIsNull()
         {

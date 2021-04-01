@@ -32,7 +32,6 @@ namespace Dev2.Tests.Runtime.WebServer
         [Owner("Candice Daniel")]
         [TestCategory(nameof(JwtManager))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void JwtManager_GenerateToken_ValidateToken()
         {
@@ -99,7 +98,6 @@ namespace Dev2.Tests.Runtime.WebServer
         [Owner("Candice Daniel")]
         [TestCategory(nameof(JwtManager))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void JwtManager_GenerateToken_ValidateToken_Fails()
         {

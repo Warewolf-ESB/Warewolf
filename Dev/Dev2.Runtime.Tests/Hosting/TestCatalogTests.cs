@@ -773,7 +773,6 @@ namespace Dev2.Tests.Runtime.Hosting
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCatalog_FetchTest")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void TestCatalog_FetchTest_WhenInvalidResourceIdTestName_ShouldReturnNull()
         {

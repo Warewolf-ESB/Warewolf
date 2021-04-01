@@ -139,7 +139,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void FindService_GivenServiceName_InCache_ShouldReturnFromCache()
         {

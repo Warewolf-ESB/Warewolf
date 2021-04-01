@@ -127,7 +127,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WfExecutionContainer_OnConstruction_ShouldNotThrowException()
         {
@@ -161,7 +160,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WfExecutionContainer_ExecuteNode_CheckWhenDataObjectStopExecutionIsTrue_ShouldNotEmptyExecutionExceptionInDataObject()
         {
@@ -217,7 +215,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WfExecutionContainer))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]//CustomContainer.Register is not threadsafe
         public void WfExecutionContainer_LogStopExecutionState()
         {
@@ -270,7 +267,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogActivityExecuteStateAndLogExecuteCompleteState()
         {
@@ -320,7 +316,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogExecuteException()
         {

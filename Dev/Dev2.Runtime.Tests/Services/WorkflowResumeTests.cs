@@ -52,7 +52,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Execute_Returns_Execution_Completed()
         {
@@ -106,7 +105,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Execute_WithEncryptedValues_Returns_Execution_Completed()
         {
@@ -160,7 +158,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Values_versionNumber_Missing_Fails()
         {
@@ -186,7 +183,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Values_environment_Missing_Fails()
         {
@@ -212,7 +208,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Values_currentuserprincipal_Missing_Fails()
         {
@@ -238,7 +233,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Values_resourceID_Missing_Fails()
         {
@@ -264,7 +258,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Values_resourceID_NotValidGUID_Fails()
         {
@@ -291,7 +284,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Values_startActivityId_Missing_Fails()
         {
@@ -317,7 +309,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Values_startActivityId_NotValidGUID_Fails()
         {
@@ -344,7 +335,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_DynamicServiceIsNull_Fails()
         {
@@ -382,7 +372,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_ServiceActionNullForResource_Fails()
         {
@@ -421,7 +410,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Execute_HasErrors_Returns_ErrorMessage()
         {
@@ -471,7 +459,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WorkflowResume))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WorkflowResume_Execute_InvalidUserContext_Return_Authentication_Error_Fails()
         {
