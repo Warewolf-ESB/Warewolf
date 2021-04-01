@@ -27,14 +27,23 @@ namespace Dev2.Data.TO
         readonly IList<string> _errorList = new List<string>();
 
         public void AddError(string msg) => AddError(msg, false);
-        public void AddError(string msg, bool checkForDuplicates)
+        public void AddError(string msg, bool checkForDuplicates) => AddError(msg, checkForDuplicates, false);
+        public void AddError(string msg, bool checkForDuplicates, bool checkForInnerErrorDuplicates)
         {
-            var IsErrorDuplicate = checkForDuplicates && !_errorList.Any(o => o.Contains(msg));
-
-            if (!string.IsNullOrEmpty(msg) && (IsErrorDuplicate || !checkForDuplicates))
+            if (!string.IsNullOrEmpty(msg))
             {
-                _errorList.Add(msg);
+                var isErrorDuplicate = checkForDuplicates && !IsErrorDuplicate(msg);
+
+                if (!string.IsNullOrEmpty(msg) && (isErrorDuplicate || !checkForDuplicates))
+                {
+                    _errorList.Add(msg);
+                }
             }
+        }
+
+        bool IsErrorDuplicate(string msg)
+        {
+            return _errorList.Any(o => o.Contains(msg));
         }
 
         public void RemoveError(string msg)
@@ -95,7 +104,7 @@ namespace Dev2.Data.TO
 
             if (!asXml)
             {
-                result.Append("\"errors\": [ ");
+                result.Append("[ ");
             }
 
             var errCnt = 0;
@@ -144,7 +153,8 @@ namespace Dev2.Data.TO
         /// </summary>
         /// <param name="errorsString">Error string to convert</param>
         /// <returns>ErrorResultsTO</returns>
-        public static ErrorResultTO MakeErrorResultFromDataListString(string errorsString)
+        public static ErrorResultTO MakeErrorResultFromDataListString(string errorsString) => MakeErrorResultFromDataListString(errorsString, false);
+        public static ErrorResultTO MakeErrorResultFromDataListString(string errorsString, bool checkForDuplicates)
         {
             var result = new ErrorResultTO();
            
@@ -155,12 +165,12 @@ namespace Dev2.Data.TO
                 {
                     foreach (XElement element in output.Elements("InnerError"))
                     {
-                        result.AddError(element.Value);
+                        result.AddError(element.Value, checkForDuplicates);
                     }
                 }
                 else
                 {
-                    result.AddError(errorsString);
+                    result.AddError(errorsString, checkForDuplicates);
                 }
             }
             return result;
