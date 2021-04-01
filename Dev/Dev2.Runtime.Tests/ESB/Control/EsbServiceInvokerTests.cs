@@ -1,8 +1,20 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -22,6 +34,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Resource.Errors;
+using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
 
@@ -29,6 +42,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Runtime.ESB.Control
 {
     [TestClass]
+    [TestCategory(nameof(EsbServiceInvoker))]
     public class EsbServiceInvokerTests
     {
         [ClassInitialize]
@@ -132,7 +146,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var locater = new Mock<IServiceLocator>();
             EsbExecuteRequest executeRequest = null;
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(default(DynamicService));
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -175,7 +189,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.SetupGet(o => o.ResourceID).Returns(serviceId);
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dynamicService);
             locater.Setup(l => l.FindSourceByName(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new Source());
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -221,7 +235,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.SetupGet(o => o.IsServiceTestExecution).Returns(true);
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dynamicService);
             locater.Setup(l => l.FindSourceByName(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new Source());
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -264,7 +278,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -309,7 +323,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -368,7 +382,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 }
             });
             locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -398,7 +412,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
-        public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsNotLocalInvoke_ShouldReturnRemoteExecutionContainer()
+        public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsNotLocalEsbExecuteRequest_Invoke_ShouldReturnRemoteExecutionContainer()
         {
             //---------------Set up test pack-------------------
             var serviceId = Guid.NewGuid();
@@ -413,7 +427,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
 
             locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -432,7 +446,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Invoke_GivenNullServiceNameAndEmptyId_ShouldAddErrors()
+        public void EsbExecuteRequest_Invoke_GivenNullServiceNameAndEmptyId_ShouldAddErrors()
         {
             //---------------Set up test pack-------------------
             var channel = new Mock<IEsbChannel>();
@@ -447,7 +461,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
 
             locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -464,9 +478,98 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void EsbExecuteRequest_Invoke_GivenNonNullServiceNameAndEmptyId_ShouldAddErrors()
+        {
+            //---------------Set up test pack-------------------
+            var channel = new Mock<IEsbChannel>();
+            var workSpace = new Mock<IWorkspace>();
+            var env = new ExecutionEnvironment();
+            env.AddError("false error");
+            env.AddError("false error"); //duplicate error 
+            env.AddError("deferent false error");
+            env.AddError(GlobalConstants.InnerErrorTag + "false error" + GlobalConstants.InnerErrorTagEnd);
+            env.AddError(GlobalConstants.InnerErrorTag + "inner false error" + GlobalConstants.InnerErrorTagEnd);
+
+            Assert.AreEqual(4, env.Errors.Count());
+
+            var obj = new Mock<IDSFDataObject>();
+            obj.Setup(o => o.Environment).Returns(env);
+            obj.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            obj.Setup(o => o.ServiceName).Returns("SourceName");
+            var locater = new Mock<IServiceLocator>();
+            var executeRequest = new EsbExecuteRequest
+            {
+                Args = new Dictionary<string, StringBuilder>(),
+                ServiceName = "SomeService"
+            };
+
+            locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
+
+
+            var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
+            var privateObject = new PrivateObject(invoker);
+            privateObject.SetField("_serviceLocator", locater.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(invoker);
+            //---------------Execute Test ----------------------
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
+            //---------------Test Result -----------------------
+            var errors = errorResultTO.FetchErrors();
+            Assert.IsNotNull(errorResultTO);
+            Assert.AreEqual(3, errors.Count);
+            Assert.AreEqual("Service not found", errors[0]);
+            Assert.AreEqual("false error", errors[1]);
+            Assert.AreEqual("inner false error", errors[2]);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void EsbExecuteRequest_Invoke_GivenNonNullServiceNameAndEmptyId_And_InvokeService_Throws_ShouldAddErrors()
+        {
+            //---------------Set up test pack-------------------
+            var channel = new Mock<IEsbChannel>();
+            var workSpace = new Mock<IWorkspace>();
+            var env = new ExecutionEnvironment();
+            env.AddError("false error");
+            env.AddError("false error"); //duplicate error 
+            env.AddError("deferent false error");
+            env.AddError(GlobalConstants.InnerErrorTag + "inner false error" + GlobalConstants.InnerErrorTagEnd);
+
+            var obj = new Mock<IDSFDataObject>();
+            obj.Setup(o => o.Environment).Returns(env);
+            obj.Setup(o => o.ResourceID).Returns(Guid.NewGuid());
+            obj.Setup(o => o.ServiceName).Returns("SourceName");
+            obj.Setup(o => o.IsServiceTestExecution).Throws(new Exception("false InvokeService method throw"));
+            var locater = new Mock<IServiceLocator>();
+            var executeRequest = new EsbExecuteRequest
+            {
+                Args = new Dictionary<string, StringBuilder>(),
+                ServiceName = "SomeService"
+            };
+
+            locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
+
+
+            var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
+            var privateObject = new PrivateObject(invoker);
+            privateObject.SetField("_serviceLocator", locater.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(invoker);
+            //---------------Execute Test ----------------------
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
+            //---------------Test Result -----------------------
+            var errors = errorResultTO.FetchErrors();
+            Assert.IsNotNull(errorResultTO);
+            Assert.AreEqual(2, errors.Count);
+            Assert.AreEqual("false InvokeService method throw", errors[0]);
+            Assert.AreEqual("inner false error", errors[1]);
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
-        public void Invoke_GivenServiceNameAndEmptyId_ShouldFindByName()
+        public void EsbExecuteRequest_Invoke_GivenServiceNameAndEmptyId_ShouldFindByName()
         {
             //---------------Set up test pack-------------------
             var channel = new Mock<IEsbChannel>();
@@ -482,7 +585,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
 
             locater.Setup(lo => lo.FindService("Hello World", It.IsAny<Guid>())).Returns(new DynamicService());
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -501,7 +604,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
-        public void Invoke_GivenIsTestExecutionServiceNameAndEmptyId_ShouldFindByNameInLocalhost()
+        public void EsbExecuteRequest_Invoke_GivenIsTestExecutionServiceNameAndEmptyId_ShouldFindByNameInLocalhost()
         {
             //---------------Set up test pack-------------------
             var channel = new Mock<IEsbChannel>();
@@ -520,7 +623,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
 
             locater.Setup(lo => lo.FindService("Hello World", valueFunction)).Returns((DynamicService)null);
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -534,7 +637,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
             StringAssert.Contains(errorResultTO.FetchErrors().Single(), ErrorResource.ServiceNotFound);
             locater.VerifyAll();
-            
+
             var toTypes = typeof(Dev2.Data.ServiceTestModelTO);
             var common = typeof(Dev2.Common.Interfaces.TestRunResult);
             var enumerable = toTypes.Assembly.ExportedTypes.Where(type => !type.IsInterface);
@@ -555,7 +658,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
-        public void Invoke_GivenIsTestExecution_ShouldResetTheActionTypeAfterTestExecution()
+        public void EsbExecuteRequest_Invoke_GivenIsTestExecution_ShouldResetTheActionTypeAfterTestExecution()
         {
             //---------------Set up test pack-------------------
             var channel = new Mock<IEsbChannel>();
@@ -585,7 +688,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                     serviceAction
                 }
             });
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -601,7 +704,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
-        public void Invoke_GivenIsFromWebServerNotWorFlow_ShouldThrowException()
+        public void EsbExecuteRequest_Invoke_GivenIsFromWebServerNotWorFlow_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
             var channel = new Mock<IEsbChannel>();
@@ -631,7 +734,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                     serviceAction
                 }
             });
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -650,7 +753,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
-        public void Invoke_GivenInvalidAction_ShouldThrowException()
+        public void EsbExecuteRequest_Invoke_GivenInvalidAction_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
             var channel = new Mock<IEsbChannel>();
@@ -680,7 +783,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                     serviceAction, new ServiceAction()
                 }
             });
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -749,7 +852,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = serviceId, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -803,7 +906,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception("error"));
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -853,7 +956,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new DynamicService());
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -903,7 +1006,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService());
-            
+
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
             var privateObject = new PrivateObject(invoker);
@@ -928,7 +1031,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
-        public void Invoke_GivenHasErrors_ShouldReturnResult()
+        public void EsbExecuteRequest_Invoke_GivenHasErrors_ShouldReturnResult()
         {
             //---------------Set up test pack-------------------
             var serviceId = Guid.NewGuid();
