@@ -45,7 +45,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void OnConstruction_ShouldNotThrowException()
         {
@@ -65,7 +64,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void DispatchDebugErrors_GivenObjects_ShouldWritesCorrectly()
         {
@@ -110,7 +108,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeFalse_ShouldNotThrowException()
         {
@@ -132,7 +129,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNullService_ShouldReturnNull()
         {
@@ -161,7 +157,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNewService_ShouldAddToCache()
         {
@@ -209,7 +204,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNewService_IsTestExecution_ShouldAddToCache()
         {
@@ -258,7 +252,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsInternalServiceService_ShouldCorrectServiceInContainer()
         {
@@ -306,7 +299,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsPerfmonExecutionService_ShouldCorrectServiceInContainer()
         {
@@ -362,7 +354,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsLocalInvokeTrueCacheContainsRemoteService_ShouldCorrectServiceInContainer()
         {
@@ -426,7 +417,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsNotLocalInvoke_ShouldReturnRemoteExecutionContainer()
         {
@@ -463,7 +453,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void Invoke_GivenNullServiceNameAndEmptyId_ShouldAddErrors()
         {
@@ -500,7 +489,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void Invoke_GivenServiceNameAndEmptyId_ShouldFindByName()
         {
@@ -538,7 +526,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void Invoke_GivenIsTestExecutionServiceNameAndEmptyId_ShouldFindByNameInLocalhost()
         {
@@ -595,7 +582,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void Invoke_GivenIsTestExecution_ShouldResetTheActionTypeAfterTestExecution()
         {
@@ -644,7 +630,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void Invoke_GivenIsFromWebServerNotWorFlow_ShouldThrowException()
         {
@@ -696,7 +681,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void Invoke_GivenInvalidAction_ShouldThrowException()
         {
@@ -748,7 +732,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void Dispose_GivenIsNew_ShouldPassThrough()
         {
@@ -775,7 +758,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsLocalInvokeTrueCacheContainsPerfmonExecutionService_ShouldCorrectServiceInContainer()
         {
@@ -832,7 +814,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GetService_GivenThrowsExc_ShouldReturnNull()
         {
@@ -885,7 +866,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GetService_GivenEmptyGuid_ShouldFindByName()
         {
@@ -940,7 +920,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void GetService_GivenGuid_ShouldFindByResourceId()
         {
@@ -992,7 +971,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Runtime ESB")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void Invoke_GivenHasErrors_ShouldReturnResult()
         {

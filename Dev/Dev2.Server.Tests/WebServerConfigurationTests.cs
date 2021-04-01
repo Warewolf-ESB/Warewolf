@@ -32,7 +32,6 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServerConfiguration))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WebServerConfigurationTests_Execute_IsWebServerEnabled_False()
         {
@@ -62,7 +61,6 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServerConfiguration))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WebServerConfigurationTests_Execute__IsWebServerEnabled_True()
         {
@@ -105,7 +103,6 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServerConfiguration))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WebServerConfigurationTests_Execute_WebServerPort_Invalid_ExpectException()
         {
@@ -130,7 +127,6 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServerConfiguration))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WebServerConfigurationTests_Execute_WebServerSslPort_Invalid_ExpectException()
         {
@@ -154,7 +150,6 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServerConfiguration))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void WebServerConfigurationTests_Execute_WebServerPort_IsEmptyOrNull_ExpectExeption()
         {

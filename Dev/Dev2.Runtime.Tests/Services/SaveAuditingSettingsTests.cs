@@ -110,7 +110,6 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SaveAuditingSettings))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void SaveAuditingSettings_Execute_AuditingSettingsData()
         {

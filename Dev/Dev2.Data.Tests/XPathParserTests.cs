@@ -39,7 +39,6 @@ namespace Dev2.Data.Tests
 
         [TestMethod]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void ExecutePathSaxonWhereGivenXMLDocumentExpectXMLReturned()
         {

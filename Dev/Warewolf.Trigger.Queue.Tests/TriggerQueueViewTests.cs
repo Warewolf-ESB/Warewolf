@@ -526,7 +526,6 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void TriggerQueueView_QueueEvents_Get_Xml_Datalist_InputsFromWorkflow_VerifyCommand_Success()
         {
@@ -586,7 +585,6 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void TriggerQueueView_QueueEvents_Get_Xml_DataList_InputsFromWorkflow_VerifyCommand_InvalidData_ShowInvalidDataPopupMessage()
         {

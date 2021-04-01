@@ -13,7 +13,6 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadRuntimeConfigurations))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void LoadRuntimeConfigurations_WebServerUri_Null_ExpectFail()
         {
@@ -46,7 +45,6 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(LoadRuntimeConfigurations))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void LoadRuntimeConfigurations_WebServerUri_Null_ExpectFail1()
         {

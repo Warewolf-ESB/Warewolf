@@ -69,7 +69,6 @@ namespace Dev2.Tests.Runtime.WebServer
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TokenRequestHandler))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]//CustomContainer.Get<Warewolf.Auditing.IStateNotifierFactory>()
         public void TokenRequestHandler_Return_EncryptedUserGroups_Token()
         {

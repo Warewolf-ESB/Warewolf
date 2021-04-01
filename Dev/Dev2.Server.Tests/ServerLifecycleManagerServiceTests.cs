@@ -221,7 +221,6 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServerLifecycleManager))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void ServerLifecycleManager_WebSocketPool_IsOpen_False()
         {

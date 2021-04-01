@@ -56,7 +56,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Rory McGuire")]
         [TestCategory(nameof(EsbServicesEndpoint))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing()
         {
@@ -86,7 +85,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(EsbServicesEndpoint))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void EsbServicesEndpoint_ExecuteWorkflow_ResourceIsNull_ExpectNothing_And_DataObject_StateNotifier_IsSet()
         {
@@ -122,7 +120,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(EsbServicesEndpoint))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void EsbServicesEndpoint_CreateNewEnvironmentFromInputMappings_GivenInputsDefs_ShouldCreateNewEnvWithMappings()
         {
@@ -145,7 +142,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(EsbServicesEndpoint))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void EsbServicesEndpoint_ExecuteSubRequest_GivenValidArgs_ShouldCheckIsRemoteWorkflow()
         {
@@ -175,7 +171,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(EsbServicesEndpoint))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void EsbServicesEndpoint_ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow()
         {
@@ -212,7 +207,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(EsbServicesEndpoint))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void EsbServicesEndpoint_ExecuteLogErrorRequest_GivenCorrectUri_ShouldNoThrowException()
         {

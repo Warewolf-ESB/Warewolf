@@ -216,7 +216,6 @@ namespace Dev2.Tests.Diagnostics
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DebugItem))]
         [DoNotParallelize]
-    [TestCategory("CannotParallelize")]
         [TestCategory("CannotParallelize")]
         public void DebugItem_SaveFile_With_Contents_Expected_SavesFileToDisk()
         {
