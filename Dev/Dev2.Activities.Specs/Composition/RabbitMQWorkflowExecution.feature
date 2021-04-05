@@ -1,4 +1,4 @@
-﻿Feature: RabbitMQWorkflowExecution
+Feature: RabbitMQWorkflowExecution
 	In order to execute a workflow
 	As a Warewolf user
 	I want to be able to build workflows and execute them against the server
@@ -47,7 +47,7 @@ Scenario: COM DLL service execute
 	|                                |
 	| [[PrimitiveReturnValue]] = 0   |
 
-@RabbitMQWorkflowExecution
+@NestedForEachExecution
 Scenario: Workflow with ForEach and Manual Loop
       Given I have a workflow "WFWithForEachWithManualLoop"
 	  And "WFWithForEachWithManualLoop" contains an Assign "Setup Counter" as
