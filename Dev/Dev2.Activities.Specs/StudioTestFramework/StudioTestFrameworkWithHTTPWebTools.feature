@@ -1,4 +1,3 @@
-@StudioTestFrameworkWithHTTPWebTools
 Feature: StudioTestFrameworkWithHTTPWebTools
 	In order to test workflows that contain tools from the HTTP web category of tools in warewolf studio
 	As a user
@@ -41,7 +40,7 @@ Background: Setup for workflows for tests
 			| Test3    | Windows            | false | false       | false       | true        | false      |
 			| Test4    | Windows            | false | false       | true        | false       | false      |
 
-			
+@StudioTestFrameworkWithHTTPWebTools
 Scenario: Run Selected Test in Web
 	Given the test builder is open with "Hello World"
 	And Tab Header is "Hello World - Tests"
@@ -64,8 +63,9 @@ Scenario: Run Selected Test in Web
 	| Test 1    | Failed | Failed Output For Variable: Message Message: Failed: Assert Equal. Expected Equal To '' for 'Message' but got 'Hello World.' |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	
-	Scenario: Run Selected Test in Web with wrong credentials
+
+@StudioTestFrameworkWithHTTPWebTools
+Scenario: Run Selected Test in Web with wrong credentials
 	Given the test builder is open with "Hello World"
 	And Tab Header is "Hello World - Tests"
 	And there are no tests
@@ -91,6 +91,7 @@ Scenario: Run Selected Test in Web
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
+@StudioTestFrameworkWithHTTPWebTools
 Scenario: Run Selected Test in Web with input variable value
 	Given the test builder is open with "Hello World"
 	And Tab Header is "Hello World - Tests"
@@ -114,6 +115,7 @@ Scenario: Run Selected Test in Web with input variable value
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
+@StudioTestFrameworkWithHTTPWebTools
 Scenario: Run All Tests in Web 
 	Given the test builder is open with "Hello World"
 	And Tab Header is "Hello World - Tests"
@@ -136,6 +138,7 @@ Scenario: Run All Tests in Web
 	| Test Name | Result | Message |
 	| Test 1    | Passed |         |
 
+@StudioTestFrameworkWithHTTPWebTools
 Scenario: Run All Tests in Web with failing test
 	Given the test builder is open with "Hello World"
 	And Tab Header is "Hello World - Tests"
@@ -171,6 +174,7 @@ Scenario: Run All Tests in Web with failing test
 	| Test 1    | Passed |                                                                                                                             |
 	| Test 2    | Failed | Failed Output For Variable: Message Message: Failed: Assert Equal. Expected Equal To '' for 'Message' but got 'Hello World.' |
 
+@StudioTestFrameworkWithHTTPWebTools
 Scenario: Run Selected Test passed with all teststeps fails
 	Given the test builder is open with "Hello World"
 	And Tab Header is "Hello World - Tests"
@@ -190,7 +194,8 @@ Scenario: Run Selected Test passed with all teststeps fails
 	When I save
 	And I run the test
 	Then test result is Failed
-	
+
+@StudioTestFrameworkWithHTTPWebTools
 Scenario: Run Selected Test passed with assign teststep Passes
 	Given the test builder is open with "Hello World"
 	And Tab Header is "Hello World - Tests"
@@ -211,6 +216,7 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	And I run the test
 	Then test result is Failed
 
+@StudioTestFrameworkWithHTTPWebDeleteTools
 Scenario: Test WF with Web Delete
 	Given I depend on a valid HTTP verbs server
 	And I have a workflow "WebDeleteTestWF"
@@ -231,6 +237,7 @@ Scenario: Test WF with Web Delete
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "WebDeleteTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithHTTPWebPostTools
 Scenario: Test WF with Web Post
 	Given I depend on a valid HTTP verbs server
 	And I have a workflow "WebPostTestWF"		
@@ -251,6 +258,7 @@ Scenario: Test WF with Web Post
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "WebPostTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithHTTPWebGetTools
 Scenario: Test WF with Web Get
 	Given I depend on a valid HTTP verbs server
 	And I have a workflow "WebGetTestWF"		 
@@ -274,6 +282,7 @@ Scenario: Test WF with Web Get
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "WebGetTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithHTTPWebPutTools
 Scenario: Test WF with Web Put
 	Given I depend on a valid HTTP verbs server
 	And I have a workflow "WebPutTestWF"		
