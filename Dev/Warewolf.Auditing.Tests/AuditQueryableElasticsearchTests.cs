@@ -36,6 +36,7 @@ namespace Warewolf.Auditing.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class AuditQueryableElasticTests
     {
         private IAuditQueryable GetAuditQueryable(string sink)

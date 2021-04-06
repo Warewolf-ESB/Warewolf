@@ -129,6 +129,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDatabaseTables_Execute_ValidDatabaseSource()
         {
             var parser = new Mock<IActivityParser>();
@@ -162,6 +163,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void GetDatabaseTables_Execute_InValidDatabaseName()
         {
             var parser = new Mock<IActivityParser>();

@@ -29,6 +29,7 @@ namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class SecurityReadTests
     {
         static string _testDir;

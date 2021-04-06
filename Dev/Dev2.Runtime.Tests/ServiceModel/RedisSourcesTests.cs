@@ -118,6 +118,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
             CustomContainer.Register(new Mock<IWarewolfPerformanceCounterLocater>().Object);

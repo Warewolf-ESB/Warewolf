@@ -30,6 +30,7 @@ namespace Dev2.Tests.Runtime.Hosting
     [TestClass]
     [TestCategory("Runtime Hosting")]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class TestCatalogTests
     {
         public static IDirectory DirectoryWrapperInstance()
@@ -772,6 +773,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCatalog_FetchTest")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void TestCatalog_FetchTest_WhenInvalidResourceIdTestName_ShouldReturnNull()
         {
             //------------Setup for test--------------------------

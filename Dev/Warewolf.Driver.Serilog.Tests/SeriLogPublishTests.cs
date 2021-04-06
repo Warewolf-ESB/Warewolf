@@ -204,6 +204,7 @@ namespace Warewolf.Driver.Serilog.Tests
         [Owner("Candice Daniel")]
         [TestCategory(nameof(SeriLogPublisher))]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void SeriLogPublisher_NewPublisher_Reading_LogData_From_Elasticsearch_Success()
         {
             //-------------------------Arrange------------------------------

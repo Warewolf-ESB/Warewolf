@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -26,7 +26,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-
+        [TestCategory("Load Tests")]
         public void Run_a_workflow_to_test_server_refresh()
         {
             Assert.IsTrue(File.Exists(PassResult));
