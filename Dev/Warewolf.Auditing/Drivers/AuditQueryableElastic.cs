@@ -290,7 +290,7 @@ namespace Warewolf.Auditing.Drivers
                                                 auditHistory.Url = items.Value.ToString();
                                                 break;
                                             case "Environment":
-                                                auditHistory.Environment = items.Value.ToString();
+                                                auditHistory.Environment = string.Empty;
                                                 break;
                                             case "AuditDate":
                                                 auditHistory.AuditDate = DateTime.Parse(items.Value.ToString());
