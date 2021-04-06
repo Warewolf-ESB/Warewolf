@@ -7,7 +7,7 @@ Background: Setup for subworkflow execution
 			Given Debug events are reset
 			And Debug states are cleared
 
-@SubworkflowExecution
+@DatabaseSubworkflowExecution
 Scenario: Executing mySql For Xml testing workflow base
 	  Given I have a workflow "Testing - mySql For Xml"
 	  And "Testing - mySql For Xml" contains "TestmySqlReturningXml" from server "localhost" with mapping as
@@ -139,7 +139,7 @@ Examples:
 | RecToBlank                 | [[rec().in]]   | hello       | [[rec().in]]   | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 | ScalToBlank                | [[var]]        | hello       | [[var]]        | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 
-@SubworkflowExecution
+@DatabaseSubworkflowExecution
 Scenario: Executing Postgres For Xml testing workflow base
 	 Given I depend on a valid PostgreSQL server
 	 And I have a workflow "Testing - Sql For Xml"
@@ -151,7 +151,7 @@ Scenario: Executing Postgres For Xml testing workflow base
 	 |                     |
 	 | [[Result]] = Passed |
 
-@SubworkflowOracleExecution
+@DatabaseSubworkflowExecution
 Scenario: Executing Oracle For Xml testing workflow base
 	  Given I have a workflow "Testing - Sql For Xml"
 	  And "Testing - Sql For Xml" contains "TestOracleReturningXml" from server "localhost" with mapping as
@@ -162,7 +162,7 @@ Scenario: Executing Oracle For Xml testing workflow base
 	  |                     |
 	  | [[Result]] = Passed |
 
-@SubworkflowExecution
+@DatabaseSubworkflowExecution
 Scenario: Executing Sql For Xml testing workflow base
 	  Given I have a workflow "Testing - Sql For Xml"
 	  And "Testing - Sql For Xml" contains "TestSqlReturningXml" from server "localhost" with mapping as
@@ -196,8 +196,8 @@ Scenario: Executing Advanced Recordset testing workflow
 	  |                      |
 	  | [[Result]] = Passed |
 
-@SubworkflowExecution
-Scenario: Executing Sql Store Procedure Executese once
+@DatabaseSubworkflowExecution
+Scenario: Executing Sql Store Procedure Executes once
 	Given I depend on a valid MSSQL server
 	And I have a workflow "Testing - Sql For Xml"
 	And "Testing - Sql For Xml" contains "TestSqlExecutesOnce" from server "localhost" with mapping as
@@ -209,7 +209,7 @@ Scenario: Executing Sql Store Procedure Executese once
 	| [[Result]] = Passed |
 
 @SubworkflowExecution
-Scenario: Executing Asynchrounous testing workflow base
+Scenario: Executing Asynchronous testing workflow base
 	  Given I have a workflow "Testing - Async Test Master Testc"
 	  And "Testing - Async Test Master Testc" contains "Async Test Master" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
@@ -219,7 +219,7 @@ Scenario: Executing Asynchrounous testing workflow base
 	  |                      |
 	  | [[Result]] = Pass |
 
-@SubworkflowExecution
+@DatabaseSubworkflowExecution
 Scenario: MYSQL backward Compatiblity
 	Given I have a workflow "MySQLMigration"
 	And "MySQLMigration" contains "MySQLDATA" from server "localhost" with mapping as
@@ -229,7 +229,7 @@ Scenario: MYSQL backward Compatiblity
 	When "MySQLMigration" is executed
 	Then the workflow execution has "NO" error
 
-@SubworkflowExecution
+@DatabaseSubworkflowExecution
 Scenario: Data connector backward Compatiblity
 	Given I have a workflow "DataMigration"
 	And "DataMigration" contains "DataCon" from server "localhost" with mapping as
