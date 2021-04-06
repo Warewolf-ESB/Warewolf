@@ -68,7 +68,8 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TokenRequestHandler))]
-        [DoNotParallelize]//CustomContainer.Get<Warewolf.Auditing.IStateNotifierFactory>()
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]//CustomContainer.Get<Warewolf.Auditing.IStateNotifierFactory>()
         public void TokenRequestHandler_Return_EncryptedUserGroups_Token()
         {
             Dev2.Common.Utilities.ServerUser = new Mock<IPrincipal>().Object;

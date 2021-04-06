@@ -42,7 +42,8 @@ using Warewolf.Auditing;
 namespace Warewolf.Trigger.Queue.Tests
 {
     [TestClass]
-    [DoNotParallelize]//Ashley: Use of DI containers to decouple the UI
+    [DoNotParallelize]
+    [TestCategory("CannotParallelize")]//Ashley: Use of DI containers to decouple the UI
     public class TriggerQueueViewTests
     {
         Mock<IResource> _mockQueueSource;
@@ -525,6 +526,7 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void TriggerQueueView_QueueEvents_Get_Xml_Datalist_InputsFromWorkflow_VerifyCommand_Success()
         {
             var popupController = new Mock<IPopupController>();
@@ -583,6 +585,7 @@ namespace Warewolf.Trigger.Queue.Tests
         [TestCategory(nameof(TriggerQueueView))]
         [Owner("Candice Daniel")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void TriggerQueueView_QueueEvents_Get_Xml_DataList_InputsFromWorkflow_VerifyCommand_InvalidData_ShowInvalidDataPopupMessage()
         {
             var popupController = new Mock<IPopupController>();

@@ -30,6 +30,7 @@ namespace Warewolf.HangfireServer.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class HangfireServerTests
     {
         [TestMethod]

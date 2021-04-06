@@ -41,6 +41,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class HangfireSchedulerTests
     {
         private string _settingsFilePath;

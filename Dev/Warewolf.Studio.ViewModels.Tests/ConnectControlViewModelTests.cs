@@ -30,6 +30,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class ConnectControlViewModelTests
     {
         Mock<IServer> _serverMock;

@@ -108,6 +108,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
+    <Compile Include="Composition\DatabaseWorkflowExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DatabaseWorkflowExecution.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Composition\RabbitMQWorkflowExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RabbitMQWorkflowExecution.feature</DependentUpon>
+    </Compile>
     <Compile Include="Deploy\Deploy Feature.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -317,6 +327,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BrowserDebug.feature.cs</LastGenOutput>
     </None>
+    <None Include="Composition\DatabaseWorkflowExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DatabaseWorkflowExecution.feature.cs</LastGenOutput>
+    </None>
     <None Include="Composition\ExampleWorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExampleWorkflowExecution.feature.cs</LastGenOutput>
@@ -328,6 +342,10 @@
     <None Include="Composition\CompositionLoadTests.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CompositionLoadTests.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Composition\RabbitMQWorkflowExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RabbitMQWorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Composition\WorkflowExecutionLogging.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

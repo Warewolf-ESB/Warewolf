@@ -18,6 +18,7 @@ namespace Dev2.Services.Execution.Tests
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void OnConstruction_GivenDataObject_ShouldConstruct()
         {
             //---------------Set up test pack-------------------

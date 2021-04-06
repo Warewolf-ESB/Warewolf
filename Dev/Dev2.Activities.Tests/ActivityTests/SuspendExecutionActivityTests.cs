@@ -965,6 +965,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Owner("Njabulo Nxele")]
         [TestCategory(nameof(SuspendExecutionActivity))]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void SuspendExecutionActivity_Execute_Empty_SuspendOptionValue()
         {
             //------------Setup for test--------------------------

@@ -8,6 +8,7 @@ namespace Dev2.Runtime.Configuration.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class AutoCompleteBoxTests
     {
         [TestMethod]
