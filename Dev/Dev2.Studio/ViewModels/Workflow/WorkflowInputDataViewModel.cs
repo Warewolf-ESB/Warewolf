@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
@@ -39,6 +40,7 @@ using Dev2.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Studio.Resources.Languages;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -395,6 +397,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             Broker = Dev2StudioSessionFactory.CreateBroker();
             DebugTo?.CleanUp();
             DebugTo = Broker.InitDebugSession(DebugTo);
+            SetInputData();
             XmlData = DebugTo.XmlData;
             RememberInputs = DebugTo.RememberInputs;
             DataList = DebugTo.BinaryDataList;
@@ -402,6 +405,25 @@ namespace Dev2.Studio.ViewModels.Workflow
             var myList = _dataListConversionUtils.CreateListToBindTo(DebugTo.BinaryDataList);
 
             WorkflowInputs.AddRange(myList);
+        }
+
+        void SetInputData()
+        {
+            var doc = new XmlDocument();
+            doc.PreserveWhitespace = true;
+            doc.LoadXml(DebugTo.DataList);
+            RemoveAttributes(doc);
+            DebugTo.XmlData = doc.InnerXml;
+            DebugTo.BinaryDataList = new DataListModel();
+            DebugTo.BinaryDataList.Create(DebugTo.XmlData, DebugTo.DataList);
+        }
+
+        void RemoveAttributes(XmlDocument doc)
+        {
+            doc.Attributes?.RemoveAll();
+            foreach (XmlElement el in doc.SelectNodes(".//*")) {
+                el.Attributes?.RemoveAll();
+            }
         }
 
         public bool RemoveRow(IDataListItem itemToRemove, out int indexToSelect)
