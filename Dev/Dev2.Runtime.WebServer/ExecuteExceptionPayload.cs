@@ -9,10 +9,12 @@
 */
 
 
+using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Web;
 using Newtonsoft.Json;
 using System.Net;
+using Warewolf.Data.Serializers;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer
@@ -26,26 +28,31 @@ namespace Dev2.Runtime.WebServer
 
         public static string Calculate(IDSFDataObject dataObject)
         {
-            var (statusCode, message) = GetResponseMessage(dataObject);
+            var (statusCode, title, message) = GetResponseMessage(dataObject);
+            var status = (int)statusCode;
+            var warewolfErrors = new Error
+            {
+                Status = status,
+                Title = title,
+                Message = message
+            };
             var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
             if (notDebug)
             {
+
                 switch (dataObject.ReturnType)
                 {
                     case EmitionTypes.TRX:
                     case EmitionTypes.XML:
                         {
-                            return $"<ExecutionError>" +
-                                "<MessageId>" +statusCode+ "</MessageId>" +
-                                "<Message>" + message + "</Message>"+
-                                "</ExecutionError>";   
+                            return Scrubber.Scrub(warewolfErrors.SerializeToXml(), ScrubType.Xml);
                         }
                     default: 
                     case EmitionTypes.OPENAPI:
                     case EmitionTypes.CoverJson:
                     case EmitionTypes.JSON:
                         {
-                            return JsonConvert.SerializeObject(new { ExecutionError = new { MessageId = statusCode.ToString(), Message = message } });
+                            return JsonConvert.SerializeObject(new { Error = warewolfErrors }, Formatting.Indented);
                         }
                 }
             }
@@ -53,21 +60,30 @@ namespace Dev2.Runtime.WebServer
             return string.Empty;
         }
 
-        private static (HttpStatusCode statusCode, string message) GetResponseMessage(IDSFDataObject dataObject)
+        public class Error
+        {
+            public int Status { get; set; }
+            public string Title { get; set; }
+            public string Message { get; set; }
+
+        }
+
+
+        private static (HttpStatusCode statusCode, string tittle, string message) GetResponseMessage(IDSFDataObject dataObject)
         {
             var env = dataObject.Environment;
             var exception = dataObject.ExecutionException;
             var hasException = exception != null;
             if (hasException)
             {
-                return (HttpStatusCode.InternalServerError, message: exception.Message);
+                return (HttpStatusCode.InternalServerError, "internal_server_error", message: exception.Message);
             }
             else if (!hasException && env.HasErrors())
             {
-                return (HttpStatusCode.BadRequest, message: env.FetchErrors());
+                return (HttpStatusCode.BadRequest, "bad_request", message: env.FetchErrors());
             }
 
-            return (HttpStatusCode.NotImplemented, message: ErrorResource.MethodNotImplemented);
+            return (HttpStatusCode.NotImplemented, "not_implemented", message: ErrorResource.MethodNotImplemented);
         }
     }
 }
