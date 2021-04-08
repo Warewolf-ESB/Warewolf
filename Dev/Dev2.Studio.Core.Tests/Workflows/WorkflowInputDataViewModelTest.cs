@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -707,7 +707,7 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Owner("Rory McGuire")]
+        [Owner("Njabulo Nxele")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetXmlData_WithObjectAndRecordSet()
         {
@@ -746,8 +746,8 @@ namespace Dev2.Core.Tests.Workflows
                 //------------Execute Test---------------------------
                 workflowInputDataViewModel.SetXmlData();
                 //------------Assert Results-------------------------
-                Assert.AreEqual("<DataList><rec><a>bob</a></rec><Person><Age></Age><Name></Name></Person></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, "").Replace(" ", ""));
-                Assert.AreEqual("{\r\n  \"rec\": [\r\n    {\r\n      \"a\": \"bob\"\r\n    }\r\n  ],\r\n  \"Person\": {\r\n    \"Age\": \"\",\r\n    \"Name\": \"\"\r\n  }\r\n}", workflowInputDataViewModel.JsonData);
+                Assert.AreEqual("<DataList><rec><a>bob</a></rec><Person><Name></Name><Age></Age></Person></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, "").Replace(" ", ""));
+                Assert.AreEqual("{\r\n  \"rec\": [\r\n    {\r\n      \"a\": \"bob\"\r\n    }\r\n  ],\r\n  \"Person\": {\r\n    \"Name\": \"\",\r\n    \"Age\": \"\"\r\n  }\r\n}", workflowInputDataViewModel.JsonData);
             }
         }
 
