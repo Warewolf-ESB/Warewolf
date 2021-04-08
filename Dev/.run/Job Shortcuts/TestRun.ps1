@@ -20,6 +20,7 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Write-Error "This script expects to be run as Administrator. (Right click run as administrator)"
 	exit 1
 }
+$Debug = $pscmdlet.MyInvocation.BoundParameters['Debug']
 if ($PreTestRunScript -and $Coverage.IsPresent -and !($PreTestRunScript.Contains("-Coverage"))) {
 	$PreTestRunScript += " -Coverage"
 }
@@ -211,7 +212,12 @@ Remove-Item -force -recurse
 	if (!($InContainer.IsPresent)) {
 		&"$TestResultsPath\RunTests.ps1"
 	} else {
-		docker run -i --rm -v ${PWD}:C:\BuildUnderTest --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
+		if ($Debug) {
+			$VstestRunnerDebug = "1"
+		} else {
+			$VstestRunnerDebug = "0"
+		}
+		docker run -i --rm -v ${PWD}:C:\BuildUnderTest -e VSTEST_RUNNER_DEBUG=$VstestRunnerDebug --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
 	}
     if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
         Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
