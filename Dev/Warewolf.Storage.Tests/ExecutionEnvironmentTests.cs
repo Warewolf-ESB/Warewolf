@@ -116,7 +116,7 @@ namespace Warewolf.Storage.Tests
             _environment.Assign("[[v]]", "[[rec()]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("assigning an entire recordset to a variable is not defined: [[v]]", _environment.Errors.First());
+            Assert.AreEqual("assigning an entire recordset to a variable is not defined: { v }", _environment.Errors.First());
         }
 
         [TestMethod]
@@ -132,6 +132,37 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_Assign_SpecialStringScalarToVariable_NoThrows()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[name]]", "this is not a good idea: [[nonExtistingScalar.ttt{ sdfa ]", 0);
+            var errors = _environment.FetchErrors();
+            Assert.AreEqual("parse error: { name }", _environment.Errors.First());
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_Assign_SpecialStringScalarToVariable_Throws()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            Assert.ThrowsException<WarewolfExecutionEnvironmentException>(() => _environment.Assign("[[name]]", "this is not a good idea: [[nonExtistingScalar.ttt{ sdfa ]", true, 0), "parse error: { person().name }");
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_Assign_ScalarToNonExistingScalar_Throws()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            Assert.ThrowsException<WarewolfExecutionEnvironmentException>(() => _environment.Assign("[[name]]", "[[nonExtistingScalar]]", 0), "Scalar value { nonExtistingScalar } is NULL");
+        }
+
+        [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_Assign_ParseError_NoThrow()
@@ -141,7 +172,7 @@ namespace Warewolf.Storage.Tests
             _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("parse error: [[v]]", _environment.Errors.First());
+            Assert.AreEqual("parse error: { v }", _environment.Errors.First(), "Execution Environment errors should not contain special characters eg: [[v]]");
         }
 
         [TestMethod]
@@ -157,7 +188,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (WarewolfExecutionEnvironmentException e)
             {
-                Assert.AreEqual("parse error: [[v]]", e.Message);
+                Assert.AreEqual("parse error: { v }", e.Message, "Execution Environment errors should not contain special characters eg: [[v]]");
             }
         }
 
@@ -209,7 +240,7 @@ namespace Warewolf.Storage.Tests
             _environment.AssignStrict("[[v]]", "[[asdf.asdf]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("parse error: [[v]]", _environment.Errors.First());
+            Assert.AreEqual("parse error: { v }", _environment.Errors.First());
         }
 
         [TestMethod]
@@ -225,7 +256,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (WarewolfExecutionEnvironmentException e)
             {
-                Assert.AreEqual("parse error: [[v]]", e.Message);
+                Assert.AreEqual("parse error: { v }", e.Message);
             }
         }
 
@@ -269,7 +300,7 @@ namespace Warewolf.Storage.Tests
             _environment.AssignString("[[v]]", "[[asdf.asdf]]", 0);
 
             Assert.IsTrue(_environment.HasErrors());
-            Assert.AreEqual("parse error: [[v]]", _environment.Errors.First());
+            Assert.AreEqual("parse error: { v }", _environment.Errors.First());
         }
 
         [TestMethod]
@@ -285,7 +316,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (WarewolfExecutionEnvironmentException e)
             {
-                Assert.AreEqual("parse error: [[v]]", e.Message);
+                Assert.AreEqual("parse error: { v }", e.Message);
             }
         }
 
@@ -1521,7 +1552,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (Exception e)
             {
-                Assert.AreEqual("invalid variable assigned to : ", e.Message, "Should not return the value entered by the user as it might contain sensitive information");
+                Assert.AreEqual("invalid variable assigned to : {  }", e.Message, "Should not return the value entered by the user as it might contain sensitive information");
             }
         }
 
@@ -1539,7 +1570,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (Exception e)
             {
-                Assert.AreEqual("parse error: [[rec(0).a]", e.Message, "Should not return the value entered by the user as it might contain sensitive information");
+                Assert.AreEqual("parse error: { rec(0).a] }", e.Message, "Should not return the value entered by the user as it might contain sensitive information");
             }
         }
 
@@ -1780,7 +1811,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(WarewolfExecutionEnvironmentException))]
         public void ExecutionEnvironment_Eval_GivenInvalidExpression_ShouldThrowException()
         {
             var _environment = new ExecutionEnvironment();
@@ -1982,7 +2013,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (Exception e)
             {
-                Assert.AreEqual("parse error: [[@Person.Name]", e.Message);
+                Assert.AreEqual("parse error: { @Person.Name] }", e.Message);
             }
         }
 
