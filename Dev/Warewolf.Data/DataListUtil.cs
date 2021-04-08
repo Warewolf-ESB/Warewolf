@@ -22,9 +22,11 @@ namespace Warewolf.Data
     /// <summary>
     /// General DataList utility methods
     /// </summary>
-
+    //TODO: class name can be changed to WarewolfDataListUtil or merged to Dev2.Data.Util.DataListUtil as soon as this is possible
     public static class DataListUtilBase
     {
+        private const string OpeningSquareBrackets = "[[";
+        private const string ClosingSquareBrackets = "]]";
 
         public static bool IsXml(string data)
         {
@@ -72,6 +74,28 @@ namespace Warewolf.Data
             }
 
             return nonXmlData;
+        }
+
+        /// <summary>
+        /// Strips the leading and trailing brackets from value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public static string StripLeadingAndTrailingBracketsFromValue(string value)
+        {
+            var result = value;
+
+            if (result.StartsWith(OpeningSquareBrackets, StringComparison.Ordinal))
+            {
+                result = result.Substring(2, result.Length - 2);
+            }
+
+            if (result.EndsWith(ClosingSquareBrackets, StringComparison.Ordinal))
+            {
+                result = result.Substring(0, result.Length - 2);
+            }
+
+            return result;
         }
 
     }
