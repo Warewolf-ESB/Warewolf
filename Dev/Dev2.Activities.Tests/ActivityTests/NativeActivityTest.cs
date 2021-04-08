@@ -494,6 +494,62 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("DsfNativeActivity_UpdateDebugParentID")]
+        public void DsfNativeActivity_ExecuteTool_Errors_PerformsErrorHandling_ShouldThrow()
+        {
+            var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
+            {
+                ServerID = Guid.NewGuid(),
+                IsDebug = false,
+                ForEachNestingLevel = 0,
+                IsServiceTestExecution = true
+            };
+
+            var act = new TestNativeActivity(false, "bob");
+            act.IsEndedOnError = true;
+            act.OnErrorVariable = "[[Error]]";
+            dataObject.Environment.AddError("There is an error with special character: [[special.willNotParse)");
+           
+            var result = act.Execute(dataObject, 0);
+
+            var errors = dataObject.Environment.Errors;
+
+            Assert.AreEqual("There is an error with special character: [[special.willNotParse)", errors.First(), "Warewolf error cannot have special characters");
+            Assert.AreEqual("parse error: { Error }", errors.Last());
+
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("DsfNativeActivity_UpdateDebugParentID")]
+        public void DsfNativeActivity_ExecuteTool_Errors_PerformsErrorHandling_ShouldNotThrow()
+        {
+            var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
+            {
+                ServerID = Guid.NewGuid(),
+                IsDebug = false,
+                ForEachNestingLevel = 0,
+                IsServiceTestExecution = true
+            };
+
+            var act = new TestNativeActivity(false, "bob");
+            act.IsEndedOnError = true;
+            act.OnErrorVariable = "[[Error]]";
+            dataObject.Environment.AddError("There is an error with special character: { special will Parse }");
+            
+            var result = act.Execute(dataObject, 0);
+
+            var warewolfEvalResult = dataObject.Environment.Eval("[[Error]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            Assert.IsNotNull(warewolfEvalResult);
+            var errorMessage = warewolfEvalResult.Item.ToString();
+            Assert.IsTrue(dataObject.StopExecution);
+            Assert.AreEqual("There is an error with special character: { special will Parse }", errorMessage);
+
+        }
 
         [TestMethod]
         [Timeout(60000)]
