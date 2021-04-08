@@ -148,6 +148,9 @@ Remove-Item -force -recurse
 	} else {
 		$CategoryArg = ""
 		if ($ExcludeCategories -ne $null -and $ExcludeCategories -ne @()) {
+			if ($ExcludeCategories.Count -eq 1 -and $ExcludeCategories[0].Contains(",")) {
+				$ExcludeCategories = $ExcludeCategories[0] -split ","
+			}
 			$CategoryArg = "/TestCaseFilter:`"(TestCategory!="
 			$CategoryArg += $ExcludeCategories -join ")&(TestCategory!="
 			$CategoryArg += ")`""
