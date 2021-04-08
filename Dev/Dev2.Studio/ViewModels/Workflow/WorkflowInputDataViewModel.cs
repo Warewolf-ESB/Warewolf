@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -64,8 +64,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         public event Action DebugExecutionFinished;
 
 
-
-
         void OnDebugExecutionFinished()
         {
             var handler = DebugExecutionFinished;
@@ -81,7 +79,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public WorkflowInputDataViewModel(IServiceDebugInfoModel input, Guid sessionId)
         {
-
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             VerifyArgument.IsNotNull(@"input", input);
             CanDebug = true;
@@ -90,8 +87,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             DebugTo = new DebugTO
             {
                 DataList = !string.IsNullOrEmpty(input.ResourceModel.DataList)
-                               ? input.ResourceModel.DataList
-                               : @"<DataList></DataList>",
+                    ? input.ResourceModel.DataList
+                    : @"<DataList></DataList>",
                 ServiceName = input.ResourceModel.ResourceName,
                 WorkflowID = input.ResourceModel.ResourceName,
                 WorkflowXaml = string.Empty,
@@ -129,6 +126,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     _workflowInputs = new OptomizedObservableCollection<IDataListItem>();
                     _workflowInputs.CollectionChanged += (o, args) => NotifyOfPropertyChange(() => WorkflowInputCount);
                 }
+
                 return _workflowInputs;
             }
         }
@@ -139,6 +137,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 SendFinishedMessage();
             }
+
             var context = Parent as IWorkSurfaceContextViewModel;
             if (context.WorkSurfaceViewModel is IWorkflowDesignerViewModel wd)
             {
@@ -177,6 +176,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     return;
                 }
+
                 _canViewInBrowser = value;
                 NotifyOfPropertyChange(() => CanViewInBrowser);
                 ViewInBrowserCommand.RaiseCanExecuteChanged();
@@ -192,15 +192,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     return;
                 }
+
                 _canDebug = value;
                 NotifyOfPropertyChange(() => CanDebug);
                 OkCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public RelayCommand OkCommand => _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Save(), param => CanDebug));
+        public RelayCommand OkCommand =>
+            _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Save(), param => CanDebug));
 
-        public RelayCommand ViewInBrowserCommand => _viewInBrowserCommmand ?? (_viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => CanViewInBrowser));
+        public RelayCommand ViewInBrowserCommand => _viewInBrowserCommmand ?? (_viewInBrowserCommmand =
+            new RelayCommand(param => ViewInBrowser(), param => CanViewInBrowser));
 
         public RelayCommand CancelCommand => _cancelCommand ?? (_cancelCommand = new RelayCommand(param => Cancel()));
 
@@ -217,7 +220,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    Dev2Logger.Error("Invalid " + AppUsageStats.QueryStringMaxLength.ToString() + " value.", GlobalConstants.WarewolfError);
+                    Dev2Logger.Error("Invalid " + AppUsageStats.QueryStringMaxLength.ToString() + " value.",
+                        GlobalConstants.WarewolfError);
                 }
 
                 return queryStringMaxLength;
@@ -281,8 +285,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void ShowInvalidDataPopupMessage()
         {
             _popupController.Show(StringResources.DataInput_Error,
-                                  StringResources.DataInput_Error_Title,
-                                  MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
+                StringResources.DataInput_Error_Title,
+                MessageBoxButton.OK, MessageBoxImage.Error, string.Empty, false, true, false, false, false, false);
 
 
             IsInError = true;
@@ -291,9 +295,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void ShowMaximumLimitDataPopupMessage()
         {
             _popupController.Show(StringResources.DataInput_Warning,
-                                  StringResources.DataInput_Warning_Title,
+                StringResources.DataInput_Warning_Title,
                 MessageBoxButton.OK, MessageBoxImage.Warning, string.Empty, false, false, true, false, false, false);
-
         }
 
         public void ViewInBrowser(bool isEventTracking = true)
@@ -326,8 +329,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows && !item.IsObject);
             if (allScalars && WorkflowInputs.Count > 0)
             {
-                return WorkflowInputs.Aggregate(string.Empty, (current, workflowInput) => current + workflowInput.Field + @"=" + (string.IsNullOrEmpty(workflowInput.Value?.TrimEnd(' ')) ? string.Empty : (isUrlEncode == true ? System.Web.HttpUtility.UrlEncode(workflowInput.Value) : workflowInput.Value)) + @"&").TrimEnd('&');
+                return WorkflowInputs.Aggregate(string.Empty,
+                    (current, workflowInput) => current + workflowInput.Field + @"=" +
+                                                (string.IsNullOrEmpty(workflowInput.Value?.TrimEnd(' '))
+                                                    ? string.Empty
+                                                    : (isUrlEncode == true
+                                                        ? System.Web.HttpUtility.UrlEncode(workflowInput.Value)
+                                                        : workflowInput.Value)) + @"&").TrimEnd('&');
             }
+
             try
             {
                 var document = XDocument.Parse(XmlData);
@@ -409,19 +419,23 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SetInputData()
         {
-            var doc = new XmlDocument();
-            doc.PreserveWhitespace = true;
-            doc.LoadXml(DebugTo.DataList);
-            RemoveAttributes(doc);
-            DebugTo.XmlData = doc.InnerXml;
-            DebugTo.BinaryDataList = new DataListModel();
-            DebugTo.BinaryDataList.Create(DebugTo.XmlData, DebugTo.DataList);
+            if (!string.IsNullOrEmpty(DebugTo.XmlData) && DebugTo.XmlData.StartsWith("<DataList>"))
+            {
+                var doc = new XmlDocument();
+                doc.PreserveWhitespace = true;
+                doc.LoadXml(DebugTo.DataList);
+                RemoveAttributes(doc);
+                DebugTo.XmlData = doc.InnerXml;
+                DebugTo.BinaryDataList = new DataListModel();
+                DebugTo.BinaryDataList.Create(DebugTo.XmlData, DebugTo.DataList);
+            }
         }
 
         void RemoveAttributes(XmlDocument doc)
         {
             doc.Attributes?.RemoveAll();
-            foreach (XmlElement el in doc.SelectNodes(".//*")) {
+            foreach (XmlElement el in doc.SelectNodes(".//*"))
+            {
                 el.Attributes?.RemoveAll();
             }
         }
@@ -432,8 +446,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             var itemsRemoved = false;
             if (itemToRemove != null && itemToRemove.CanHaveMutipleRows)
             {
-                var numberOfRows = WorkflowInputs.Count(c => c.Recordset == itemToRemove.Recordset && c.Field == itemToRemove.Field);
-                var listToRemove = WorkflowInputs.Where(c => c.Index == numberOfRows.ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset).ToList();
+                var numberOfRows = WorkflowInputs.Count(c =>
+                    c.Recordset == itemToRemove.Recordset && c.Field == itemToRemove.Field);
+                var listToRemove = WorkflowInputs.Where(c =>
+                    c.Index == numberOfRows.ToString(CultureInfo.InvariantCulture) &&
+                    c.Recordset == itemToRemove.Recordset).ToList();
 
                 if (numberOfRows == 2)
                 {
@@ -444,18 +461,23 @@ namespace Dev2.Studio.ViewModels.Workflow
                     RemoveRows(itemToRemove, ref indexToSelect, ref itemsRemoved, listToRemove, numberOfRows);
                 }
             }
+
             return itemsRemoved;
         }
 
-        void RemoveRows(IDataListItem itemToRemove, ref int indexToSelect, ref bool itemsRemoved, List<IDataListItem> listToRemove, int numberOfRows)
+        void RemoveRows(IDataListItem itemToRemove, ref int indexToSelect, ref bool itemsRemoved,
+            List<IDataListItem> listToRemove, int numberOfRows)
         {
             if (numberOfRows > 2)
             {
-                var listToChange = WorkflowInputs.Where(c => c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
+                var listToChange = WorkflowInputs.Where(c =>
+                    c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) &&
+                    c.Recordset == itemToRemove.Recordset);
                 foreach (IDataListItem item in listToChange)
                 {
                     item.Value = string.Empty;
                 }
+
                 foreach (IDataListItem item in listToRemove)
                 {
                     WorkflowInputs.Remove(item);
@@ -465,7 +487,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void RemoveRow(IDataListItem itemToRemove, ref int indexToSelect, ref bool itemsRemoved, List<IDataListItem> listToRemove)
+        void RemoveRow(IDataListItem itemToRemove, ref int indexToSelect, ref bool itemsRemoved,
+            List<IDataListItem> listToRemove)
         {
             var firstRow = WorkflowInputs.Where(c => c.Index == @"1" && c.Recordset == itemToRemove.Recordset);
             var removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
@@ -478,6 +501,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     item.Value = string.Empty;
                 }
+
                 foreach (IDataListItem item in listToRemove)
                 {
                     WorkflowInputs.Remove(item);
@@ -494,10 +518,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var item1 = item;
                 return WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item1.Recordset));
             }
+
             return WorkflowInputs.IndexOf(itemToRemove);
         }
 
         public void SetXmlData() => SetXmlData(false);
+
         public void SetXmlData(bool includeBlank)
         {
             var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);
@@ -510,6 +536,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     xml = XDocument.Parse(@"<DataList></DataList>");
                 }
+
                 XmlData = XElement.Parse(xml.ToString(), LoadOptions.PreserveWhitespace).ToString();
             }
             catch (Exception e)
@@ -538,7 +565,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             var recsetCols = new List<IScalar>();
             foreach (var column in recordset.Columns)
             {
-                var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
+                var cols = column.Value.Where(scalar =>
+                    scalar.IODirection == enDev2ColumnArgumentDirection.Input ||
+                    scalar.IODirection == enDev2ColumnArgumentDirection.Both);
                 recsetCols.AddRange(cols);
             }
 
@@ -557,6 +586,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     addRow = true;
                 }
             }
+
             if (addRow)
             {
                 AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
@@ -586,6 +616,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             return string.IsNullOrEmpty(XmlData);
         }
+
         public bool CheckHasUnicodeInWorkflowInputData(string text)
         {
             var hasUnicode = text.ContainsUnicodeCharacter();
@@ -600,16 +631,19 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 return true;
             }
+
             return false;
         }
-       
+
         private void LogViewInBrowserAction(bool isEventTracking)
         {
-            if(isEventTracking)
+            if (isEventTracking)
             {
-                _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.ViewInBrowser);
+                _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory,
+                    TrackEventDebugOutput.ViewInBrowser);
             }
         }
+
         public bool AddBlankRow(IDataListItem selectedItem, out int indexToSelect)
         {
             indexToSelect = 1;
@@ -624,6 +658,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         recsetCols.AddRange(column.Value);
                     }
+
                     var numberOfRows = WorkflowInputs.Where(c => c.Recordset == selectedItem.Recordset);
                     var lastItem = numberOfRows.Last();
                     var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
@@ -633,6 +668,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     itemsAdded = AddBlankRowToRecordset(selectedItem, recsetCols, indexToInsertAt, indexNum);
                 }
             }
+
             return itemsAdded;
         }
 
@@ -659,11 +695,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                         });
                         indexToInsertAt++;
                     }
+
                     colName = col.Name;
                     itemsAdded = true;
-
                 }
             }
+
             return itemsAdded;
         }
 
@@ -679,9 +716,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         return selectedItem;
                     }
+
                     return WorkflowInputs[indexOfItemToGet];
                 }
             }
+
             return null;
         }
 
@@ -697,9 +736,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         return selectedItem;
                     }
+
                     return WorkflowInputs[indexOfItemToGet];
                 }
             }
+
             return null;
         }
 
@@ -713,12 +754,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             base.OnViewAttached(view, context);
         }
 
-        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel) => Create(resourceModel, Guid.Empty, DebugMode.Run);
+        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel) =>
+            Create(resourceModel, Guid.Empty, DebugMode.Run);
 
-        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel, Guid sessionId, DebugMode debugMode)
+        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel, Guid sessionId,
+            DebugMode debugMode)
         {
             VerifyArgument.IsNotNull(@"resourceModel", resourceModel);
-            var debugInfoModel = ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, debugMode);
+            var debugInfoModel =
+                ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, debugMode);
 
             var result = new WorkflowInputDataViewModel(debugInfoModel, sessionId);
             if (resourceModel?.Environment?.AuthorizationService != null)
@@ -751,7 +795,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             public void ScalarsToObject(JObject dataListObject)
             {
-                var scalars = _workflowInputDataViewModel.WorkflowInputs.Where(item => !item.CanHaveMutipleRows && !item.IsObject);
+                var scalars =
+                    _workflowInputDataViewModel.WorkflowInputs.Where(item =>
+                        !item.CanHaveMutipleRows && !item.IsObject);
 
                 foreach (var dataListItem in scalars)
                 {
@@ -761,7 +807,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             public void RecordsetsToObject(JObject dataListObject, bool includeBlank = false)
             {
-                var recordsets = _workflowInputDataViewModel.WorkflowInputs.Where(item => item.CanHaveMutipleRows && !item.IsObject);
+                var recordsets =
+                    _workflowInputDataViewModel.WorkflowInputs.Where(item => item.CanHaveMutipleRows && !item.IsObject);
 
                 var groupedRecordsets = recordsets.GroupBy(item => item.Recordset);
                 foreach (var groupedRecset in groupedRecordsets)
@@ -773,11 +820,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         AddRecordsetToObject(newArray, dataListItem, includeBlank);
                     }
+
                     dataListObject.Add(arrayName, newArray);
                 }
             }
 
-            private static void AddRecordsetToObject(JArray newArray, IGrouping<string, IDataListItem> dataListItem, bool includeBlank = false)
+            private static void AddRecordsetToObject(JArray newArray, IGrouping<string, IDataListItem> dataListItem,
+                bool includeBlank = false)
             {
                 var jObjForArray = new JObject();
                 var empty = true;
@@ -787,8 +836,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         empty = false;
                     }
+
                     jObjForArray.Add(new JProperty(listItem.Field, listItem.Value ?? string.Empty));
                 }
+
                 if (!empty || includeBlank)
                 {
                     newArray.Add(jObjForArray);
@@ -812,13 +863,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
                     {
-                        var complexObjectItemModel = DataListSingleton.ActiveDataList.ComplexObjectCollection.SingleOrDefault(model => model.Name == o.DisplayValue);
+                        var complexObjectItemModel =
+                            DataListSingleton.ActiveDataList.ComplexObjectCollection.SingleOrDefault(model =>
+                                model.Name == o.DisplayValue);
 
                         if (complexObjectItemModel != null)
                         {
                             json = complexObjectItemModel.GetJson();
                         }
                     }
+
                     AddToDataListObject(dataListObject, o, json);
                 }
             }
@@ -834,6 +888,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         value = prop.Value as JObject;
                     }
+
                     dataListObject.Add(o.Field, value);
                 }
                 catch (Exception)
