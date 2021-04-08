@@ -402,7 +402,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
 
             Assert.AreEqual( 0, result.Count);
-            Assert.AreEqual("variable [[Files(*).Name]] not found", error);
+            Assert.AreEqual("variable { Files(*).Name } not found", error, "Execution Environment errors should not contain special characters eg: [[Files(*).Name]]");
         }
 
         [TestMethod]
@@ -435,7 +435,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
 
             Assert.AreEqual(0, result.Count);
-            Assert.AreEqual("variable [[Files(*).Name]] not found", error);
+            Assert.AreEqual("variable { Files(*).Name } not found", error, "Execution Environment errors should not contain special characters eg: [[Files(*).Name]]");
         }
 
         [TestMethod]
