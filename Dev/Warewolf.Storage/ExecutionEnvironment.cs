@@ -12,6 +12,7 @@
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Communication;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -65,13 +66,15 @@ namespace Warewolf.Storage
                 {
                     if (e is NullValueInVariableException variableException && e.Message.Contains("variable not found"))
                     {
-                        throw new WarewolfExecutionEnvironmentException($"variable {variableException.VariableName} not found");
+                        throw new WarewolfExecutionEnvironmentException("variable { "+ DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(variableException.VariableName) +" } not found");
                     }
 
                     if (e is IndexOutOfRangeException || e.Message.Contains(@"index was not an int"))
                     {
                         throw;
                     }
+
+                    throw new WarewolfExecutionEnvironmentException(e.Message + "{ "+ DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) +" }");
                 }
 
                 return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
@@ -150,12 +153,17 @@ namespace Warewolf.Storage
             catch (Exception err)
             {
                 var msg = err.Message;
+                var msgWithVariableName = msg + ": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }";
+                if (err is NullValueInVariableException variableException && err.Message.Contains("Scalar value "))
+                {
+                    throw new WarewolfExecutionEnvironmentException(err.Message);
+                }
                 if (throwsifnotexists)
                 {
-                    throw new WarewolfExecutionEnvironmentException(msg + ": " + exp);
+                    throw new WarewolfExecutionEnvironmentException(msgWithVariableName);
                 }
 
-                Errors.Add(msg + ": " + exp);
+                Errors.Add(msgWithVariableName);
             }
         }
 
@@ -179,10 +187,10 @@ namespace Warewolf.Storage
                 var msg = err.Message;
                 if (throwsifnotexists)
                 {
-                    throw new WarewolfExecutionEnvironmentException(msg + ": " + exp);
+                    throw new WarewolfExecutionEnvironmentException(msg + ": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }");
                 }
 
-                Errors.Add(msg + ": " + exp);
+                Errors.Add(msg + ": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }");
             }
         }
 
@@ -206,14 +214,14 @@ namespace Warewolf.Storage
                 var msg = err.Message;
                 if (throwsifnotexists && err.Message.Contains("parse error"))
                 {
-                    throw new WarewolfExecutionEnvironmentException(msg + ": " + exp);
+                    throw new WarewolfExecutionEnvironmentException(msg + ": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }");
                 }
                 if (throwsifnotexists && err.Message.Contains("invalid variable assigned to"))
                 {
                     throw new WarewolfExecutionEnvironmentException(msg);
                 }
                 //NOTE:This have a possibility to duplicate error add if caller is also catching exceptions and adding error, use with caution
-                Errors.Add(msg +": "+ exp); 
+                Errors.Add(msg +": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(exp) + " }"); 
             }
         }
 
@@ -227,7 +235,7 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                throw new WarewolfExecutionEnvironmentException(err.Message + ": " + values.Name);
+                throw new WarewolfExecutionEnvironmentException(err.Message + ": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(values.Name) + " }");
             }
         }
 
@@ -321,7 +329,7 @@ namespace Warewolf.Storage
                 return item.Select(WarewolfAtomToString).ToList();
             }
 
-            throw new WarewolfExecutionEnvironmentException(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
+            throw new WarewolfExecutionEnvironmentException(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(expression) + " }"));
         }
 
         private static IList<string> EvalListOfStringsHelper(DataStorage.WarewolfRecordset recSetData)
@@ -719,9 +727,9 @@ namespace Warewolf.Storage
             }
             catch (Exception err)
             {
-                var res = err.Message + ": " + value.Name;
+                var res = err.Message + ": " + "{ " + DataListUtilBase.StripLeadingAndTrailingBracketsFromValue(value.Name) + " }";
                 Errors.Add(res);
-                throw new Exception(res);
+                throw new WarewolfExecutionEnvironmentException(res);
             }
         }
 
