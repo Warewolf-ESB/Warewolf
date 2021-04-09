@@ -1,0 +1,3 @@
+mkdir "%~dp0..\..\..\..\bin\AcceptanceTesting"
+cd /d "%~dp0..\..\..\..\bin\AcceptanceTesting"
+powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -NoExit -File "%~dp0..\TestRun.ps1" -RetryRebuild -Projects Dev2.*.Tests,Warewolf.*.Tests,Warewolf.UIBindingTests.* -ExcludeProjects Dev2.Studio.Core.Tests,Dev2.Integration.Tests,Dev2.Infrastructure.Tests,Warewolf.Studio.ViewModels.Tests,Warewolf.UI.Tests,Warewolf.Web.UI.Tests,Warewolf.Auditing.Tests,Warewolf.Storage.Tests,Warewolf.Logger.Tests,Warewolf.UIBindingTests.Deploy,Warewolf.UIBindingTests.ComPluginSource -Category CannotParallelize
