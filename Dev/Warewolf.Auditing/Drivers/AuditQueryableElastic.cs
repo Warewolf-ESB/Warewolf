@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Nest;
@@ -24,8 +25,9 @@ namespace Warewolf.Auditing.Drivers
 {
     public class AuditQueryableElastic : AuditQueryable, IDisposable
     {
-        string _query;
-        readonly ElasticsearchSource _elasticsearchSource;
+        private string _query;
+        private readonly IElasticsearchSource _elasticsearchSource;
+        private readonly IElasticClient _elasticClient;
 
         public override string Query
         {
@@ -33,9 +35,16 @@ namespace Warewolf.Auditing.Drivers
             set => _query = value;
         }
 
-        public AuditQueryableElastic(string hostname,string port, string searchIndex, AuthenticationType authenticationType, string username,string password)
+        public AuditQueryableElastic(IElasticsearchSource elasticsearchSource, IElasticClient elasticClient)
         {
-            _elasticsearchSource = new ElasticsearchSource();
+            _elasticsearchSource = elasticsearchSource;
+            _elasticClient = elasticClient;
+        }
+
+        public AuditQueryableElastic(string hostname, string port, string searchIndex,
+            AuthenticationType authenticationType, string username, string password)
+            : this(new ElasticsearchSource(), null)
+        {
             _elasticsearchSource.HostName = hostname;
             _elasticsearchSource.Port = port;
             _elasticsearchSource.SearchIndex = searchIndex;
@@ -43,6 +52,7 @@ namespace Warewolf.Auditing.Drivers
             _elasticsearchSource.Password = password;
             _elasticsearchSource.AuthenticationType = authenticationType;
         }
+
         public override IEnumerable<IExecutionHistory> QueryTriggerData(Dictionary<string, StringBuilder> values)
         {
             var resourceId = GetValue<string>("ResourceId", values);
@@ -62,57 +72,61 @@ namespace Warewolf.Auditing.Drivers
                 if (results.Count > 0)
                 {
                     var queryTriggerData = ExecutionHistories(results, result);
-                    if (queryTriggerData != null) return queryTriggerData;
+                    if (queryTriggerData != null)
+                    {
+                        return queryTriggerData;
+                    }
                 }
             }
 
             return result;
         }
 
-        private static IEnumerable<IExecutionHistory> ExecutionHistories(List<object> results, List<ExecutionHistory> result)
+        private static IEnumerable<IExecutionHistory> ExecutionHistories(IEnumerable<object> results, ICollection<ExecutionHistory> result)
         {
             foreach (Dictionary<string, object> item in results)
             {
                 foreach (var entry in item)
                 {
-                    if (entry.Key == "fields")
+                    if (entry.Key != "fields")
                     {
-                        foreach (var fields in (Dictionary<string, object>)entry.Value)
-                        {
-                            var executionHistory = new ExecutionHistory();
-                            foreach (var items in (Dictionary<string, object>)fields.Value)
-                            {
-                                if (items.Value != null)
-                                {
-                                    switch (items.Key)
-                                    {
-                                        case "ResourceId":
-                                            executionHistory.ResourceId = Guid.Parse(items.Value.ToString());
-                                            break;
-                                        case "ExecutionInfo":
-                                            var executionInfo = ExecutionInfo(items);
-                                            executionHistory.ExecutionInfo = executionInfo;
-                                            break;
-                                        case "UserName":
-                                            executionHistory.UserName = items.Value.ToString();
-                                            break;
-                                        case "Exception":
-                                            executionHistory.Exception = items.Value as Exception;
-                                            break;
-                                        case "LogLevel":
-                                            LogLevel logLevel;
-                                            Enum.TryParse((string) items.Value, true, out logLevel);
-                                            executionHistory.LogLevel = logLevel;
-                                            break;
-                                        case "AuditType":
-                                            executionHistory.AuditType = items.Value.ToString();
-                                            break;
-                                    }
-                                }
-                            }
+                        continue;
+                    }
+                    foreach (var fields in (Dictionary<string, object>) entry.Value)
+                    {
+                        var executionHistory = new ExecutionHistory();
 
-                            result.Add(executionHistory);
+                        var keyValuePairs = ((Dictionary<string, object>) fields.Value)
+                            .Where(items => items.Value != null);
+
+                        foreach (var items in keyValuePairs)
+                        {
+                            switch (items.Key)
+                            {
+                                case "ResourceId":
+                                    executionHistory.ResourceId = Guid.Parse(items.Value.ToString());
+                                    break;
+                                case "ExecutionInfo":
+                                    var executionInfo = ExecutionInfo(items);
+                                    executionHistory.ExecutionInfo = executionInfo;
+                                    break;
+                                case "UserName":
+                                    executionHistory.UserName = items.Value.ToString();
+                                    break;
+                                case "Exception":
+                                    executionHistory.Exception = items.Value as Exception;
+                                    break;
+                                case "LogLevel":
+                                    Enum.TryParse((string) items.Value, true, out LogLevel logLevel);
+                                    executionHistory.LogLevel = logLevel;
+                                    break;
+                                case "AuditType":
+                                    executionHistory.AuditType = items.Value.ToString();
+                                    break;
+                            }
                         }
+
+                        result.Add(executionHistory);
                     }
                 }
             }
@@ -123,34 +137,34 @@ namespace Warewolf.Auditing.Drivers
         private static ExecutionInfo ExecutionInfo(KeyValuePair<string, object> items)
         {
             var executionInfo = new ExecutionInfo();
-            foreach (var infoItem in (Dictionary<string, object>)items.Value)
+            var keyValuePairs = ((Dictionary<string, object>) items.Value)
+                .Where(infoItem => infoItem.Value != null);
+
+            foreach (var infoItem in keyValuePairs)
             {
-                if (infoItem.Value != null)
+                switch (infoItem.Key)
                 {
-                    switch (infoItem.Key)
-                    {
-                        case "ExecutionId":
-                            executionInfo.ExecutionId = Guid.Parse(infoItem.Value.ToString());
-                            break;
-                        case "CustomTransactionID":
-                            executionInfo.CustomTransactionID = infoItem.Value.ToString();
-                            break;
-                        case "Success":
-                            executionInfo.Success = items.Value is QueueRunStatus ? (QueueRunStatus)items.Value : QueueRunStatus.Success;
-                            break;
-                        case "EndDate":
-                            executionInfo.EndDate = DateTime.Parse(infoItem.Value.ToString());
-                            break;
-                        case "Duration":
-                            executionInfo.Duration = TimeSpan.Parse(infoItem.Value.ToString());
-                            break;
-                        case "StartDate":
-                            executionInfo.StartDate = DateTime.Parse(infoItem.Value.ToString());
-                            break;
-                        case "FailureReason":
-                            executionInfo.FailureReason = infoItem.Value.ToString();
-                            break;
-                    }
+                    case "ExecutionId":
+                        executionInfo.ExecutionId = Guid.Parse(infoItem.Value.ToString());
+                        break;
+                    case "CustomTransactionID":
+                        executionInfo.CustomTransactionID = infoItem.Value.ToString();
+                        break;
+                    case "Success":
+                        executionInfo.Success = items.Value is QueueRunStatus value ? value : QueueRunStatus.Success;
+                        break;
+                    case "EndDate":
+                        executionInfo.EndDate = DateTime.Parse(infoItem.Value.ToString());
+                        break;
+                    case "Duration":
+                        executionInfo.Duration = TimeSpan.Parse(infoItem.Value.ToString());
+                        break;
+                    case "StartDate":
+                        executionInfo.StartDate = DateTime.Parse(infoItem.Value.ToString());
+                        break;
+                    case "FailureReason":
+                        executionInfo.FailureReason = infoItem.Value.ToString();
+                        break;
                 }
             }
 
@@ -174,9 +188,9 @@ namespace Warewolf.Auditing.Drivers
             var eventLevel = GetValue<string>("EventLevel", values);
             var executionId = GetValue<string>("ExecutionID", values);
 
-            var dtFormat = "yyyy-MM-ddTHH:mm:ss";
+            const string dtFormat = "yyyy-MM-ddTHH:mm:ss";
 
-            if (!string.IsNullOrEmpty(startTime) & !string.IsNullOrEmpty(endTime))
+            if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
                 if (IsUrlEncoded(startTime) & IsUrlEncoded(endTime))
                 {
@@ -197,7 +211,7 @@ namespace Warewolf.Auditing.Drivers
 
             if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
-                var dateObj = new JObject()
+                var dateObj = new JObject
                 {
                     ["gt"] = startTime,
                     ["lt"] = endTime
@@ -238,24 +252,21 @@ namespace Warewolf.Auditing.Drivers
 
             if (jArray.Count == 0)
             {
-                var match_all = new JObject
+                var matchAll = new JObject
                 {
                     ["match_all"] = new JObject()
                 };
-                _query = match_all.ToString();
+                _query = matchAll.ToString();
             }
             else
             {
-                var objMust = new JObject();
-                objMust.Add("must", jArray);
-
-                var obj = new JObject();
-                obj.Add("bool", objMust);
+                var objMust = new JObject {{"must", jArray}};
+                var obj = new JObject {{"bool", objMust}};
                 _query = obj.ToString();
             }
         }
 
-        private static IEnumerable<IAudit> AuditLogs(List<object> results, List<Audit> result)
+        private static IEnumerable<IAudit> AuditLogs(IEnumerable<object> results, ICollection<Audit> result)
         {
             try
             {
@@ -263,67 +274,67 @@ namespace Warewolf.Auditing.Drivers
                 {
                     foreach (var entry in item)
                     {
-                        if (entry.Key == "fields")
+                        if (entry.Key != "fields")
                         {
-                            foreach (var fields in (Dictionary<string, object>)entry.Value)
-                            {
-                                var auditHistory = new Audit();
-                                foreach (var items in (Dictionary<string, object>)fields.Value)
-                                {
-                                if (items.Value != null)
-                                    {
-                                        switch (items.Key)
-                                        {
-                                            case "ExecutionID":
-                                                auditHistory.ExecutionID = items.Value.ToString();
-                                                break;
-                                            case "CustomTransactionID":
-                                                auditHistory.CustomTransactionID = items.Value.ToString();
-                                                break;
-                                            case "WorkflowName":
-                                                auditHistory.WorkflowName = items.Value.ToString();
-                                                break;
-                                            case "ExecutingUser":
-                                                auditHistory.ExecutingUser = items.Value.ToString();
-                                                break;
-                                            case "Url":
-                                                auditHistory.Url = items.Value.ToString();
-                                                break;
-                                            case "Environment":
-                                                auditHistory.Environment = string.Empty;
-                                                break;
-                                            case "AuditDate":
-                                                auditHistory.AuditDate = DateTime.Parse(items.Value.ToString());
-                                                break;
-                                            case "Exception":
-                                                auditHistory.Exception = items.Value as Exception;
-                                                break;
-                                            case "AuditType":
-                                                auditHistory.AuditType = items.Value.ToString();
-                                                break;
-                                            case "LogLevel":
-                                                LogLevel logLevel;
-                                                Enum.TryParse((string) items.Value, true, out logLevel);
-                                                auditHistory.LogLevel = logLevel;
-                                                break;
-                                            case "IsSubExecution":
-                                                auditHistory.IsSubExecution = Boolean.Parse(items.Value.ToString());
-                                                break;
-                                            case "IsRemoteWorkflow":
-                                                auditHistory.IsRemoteWorkflow = Boolean.Parse(items.Value.ToString());
-                                                break;
-                                            case "ServerID":
-                                                auditHistory.ServerID = items.Value.ToString();
-                                                break;
-                                            case "ParentID":
-                                                auditHistory.ParentID = items.Value.ToString();
-                                                break;
-                                        }
-                                    }
-                                }
+                            continue;
+                        }
+                        foreach (var fields in (Dictionary<string, object>) entry.Value)
+                        {
+                            var auditHistory = new Audit();
+                            var keyValuePairs = ((Dictionary<string, object>) fields.Value)
+                                .Where(items => items.Value != null);
 
-                                result.Add(auditHistory);
+                            foreach (var items in keyValuePairs)
+                            {
+                                switch (items.Key)
+                                {
+                                    case "ExecutionID":
+                                        auditHistory.ExecutionID = items.Value.ToString();
+                                        break;
+                                    case "CustomTransactionID":
+                                        auditHistory.CustomTransactionID = items.Value.ToString();
+                                        break;
+                                    case "WorkflowName":
+                                        auditHistory.WorkflowName = items.Value.ToString();
+                                        break;
+                                    case "ExecutingUser":
+                                        auditHistory.ExecutingUser = items.Value.ToString();
+                                        break;
+                                    case "Url":
+                                        auditHistory.Url = items.Value.ToString();
+                                        break;
+                                    case "Environment":
+                                        auditHistory.Environment = string.Empty;
+                                        break;
+                                    case "AuditDate":
+                                        auditHistory.AuditDate = DateTime.Parse(items.Value.ToString());
+                                        break;
+                                    case "Exception":
+                                        auditHistory.Exception = items.Value as Exception;
+                                        break;
+                                    case "AuditType":
+                                        auditHistory.AuditType = items.Value.ToString();
+                                        break;
+                                    case "LogLevel":
+                                        Enum.TryParse((string) items.Value, true, out LogLevel logLevel);
+                                        auditHistory.LogLevel = logLevel;
+                                        break;
+                                    case "IsSubExecution":
+                                        auditHistory.IsSubExecution = bool.Parse(items.Value.ToString());
+                                        break;
+                                    case "IsRemoteWorkflow":
+                                        auditHistory.IsRemoteWorkflow = bool.Parse(items.Value.ToString());
+                                        break;
+                                    case "ServerID":
+                                        auditHistory.ServerID = items.Value.ToString();
+                                        break;
+                                    case "ParentID":
+                                        auditHistory.ParentID = items.Value.ToString();
+                                        break;
+                                }
                             }
+
+                            result.Add(auditHistory);
                         }
                     }
                 }
@@ -338,6 +349,15 @@ namespace Warewolf.Auditing.Drivers
 
         private IEnumerable<object> ExecuteDatabase()
         {
+            var client = _elasticClient ?? Client();
+            var search = new SearchDescriptor<object>().Query(q => q.Raw(_query));
+            var logEvents = client.Search<object>(search);
+            var sources = logEvents.HitsMetadata?.Hits.Select(h => h.Source);
+            return sources;
+        }
+
+        private ElasticClient Client()
+        {
             var uri = new Uri(_elasticsearchSource.HostName + ":" + _elasticsearchSource.Port);
             var settings = new ConnectionSettings(uri)
                 .RequestTimeout(TimeSpan.FromMinutes(2))
@@ -347,24 +367,16 @@ namespace Warewolf.Auditing.Drivers
                 settings.BasicAuthentication(_elasticsearchSource.Username, _elasticsearchSource.Password);
             }
 
-            var client = new ElasticClient(settings);
-            var result = client.Ping();
+            var elasticClient = new ElasticClient(settings);
+            var result = elasticClient.Ping();
             var isValid = result.IsValid;
             if (!isValid)
             {
                 throw result.OriginalException;
             }
-            else
-            {
-                var search = new SearchDescriptor<object>()
-                    .Query(q =>
-                        q.Raw(_query));
-                var logEvents = client.Search<object>(search);
-                var sources = logEvents.HitsMetadata?.Hits.Select(h => h.Source);
-                return sources;
-            }
+            return elasticClient;
         }
-     
+
         public void Dispose()
         {
             _elasticsearchSource.Dispose();
