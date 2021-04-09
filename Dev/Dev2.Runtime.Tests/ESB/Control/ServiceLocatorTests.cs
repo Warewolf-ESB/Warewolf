@@ -18,7 +18,8 @@ namespace Dev2.Tests.Runtime.ESB.Control
 {
     [TestClass]
     [TestCategory("Runtime ESB")]
-    [DoNotParallelize]//CustomContainer.Register is not threadsafe
+    [DoNotParallelize]
+    [TestCategory("CannotParallelize")]//CustomContainer.Register is not threadsafe
     public class ServiceLocatorTests
     {
         [ClassInitialize]
@@ -138,6 +139,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void FindService_GivenServiceName_InCache_ShouldReturnFromCache()
         {
             //---------------Set up test pack-------------------

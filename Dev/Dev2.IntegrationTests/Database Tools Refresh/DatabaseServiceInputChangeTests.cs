@@ -1,4 +1,4 @@
-﻿using Caliburn.Micro;
+using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Core.InputRegion;
@@ -106,6 +106,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Load Tests")]
         public void Change_sql_source_verify_Empty_Inputs()
         {
             _containerOps = new Depends(Depends.ContainerType.MSSQL, true);

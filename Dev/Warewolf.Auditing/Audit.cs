@@ -212,7 +212,7 @@ namespace Warewolf.Auditing
             User = dsfDataObject.ExecutingUser?.Identity?.Name;
             ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
             ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
-            Environment = dsfDataObject.Environment.ToJson();
+            Environment = string.Empty;
             VersionNumber = dsfDataObject.VersionNumber.ToString();
             AuditDate = DateTime.Now;
             StartDateTime = DateTime.Now;

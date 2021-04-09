@@ -1,5 +1,4 @@
-﻿@StudioTestFrameworkWithUtilityTools
-Feature: StudioTestFrameworkWithUtilityTools
+﻿Feature: StudioTestFrameworkWithUtilityTools
 	In order to test workflows that contain utility tools in warewolf 
 	As a user
 	I want to create, edit, delete and update tests in a test window
@@ -41,6 +40,7 @@ Background: Setup for workflows for tests
 			| Test3    | Windows            | false | false       | false       | true        | false      |
 			| Test4    | Windows            | false | false       | true        | false       | false      |
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Random
 	Given I have a workflow "RandomTestWF"
 	And "RandomTestWF" contains Random "TestRandoms" as
@@ -62,6 +62,7 @@ Scenario: Test WF with Random
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RandomTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Aggregate Calculate
 	Given I have a workflow "AggrCalculateTestWF"
 	And "AggrCalculateTestWF" contains an Assign "values1" as
@@ -87,6 +88,7 @@ Scenario: Test WF with Aggregate Calculate
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "AggrCalculateTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with WebRequest
 	Given I depend on a valid HTTP web server
 	And I have a workflow "WebRequestTestWF"
@@ -109,6 +111,7 @@ Scenario: Test WF with WebRequest
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "WebRequestTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithRabbitMQTools
 Scenario: Test WF with RabbitMq Publish
 	Given I have a workflow "RabbitMqPubTestWF"
 	And "RabbitMqPubTestWF" contains RabbitMQPublish "DsfPublishRabbitMQActivity" into "[[result]]"
@@ -127,7 +130,8 @@ Scenario: Test WF with RabbitMq Publish
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqPubTestWF" is deleted as cleanup
-	
+
+@StudioTestFrameworkWithRabbitMQTools
 Scenario: Test WF with RabbitMq Consume
 	Given I have a workflow "RabbitMqConsumeTestFailWF"
 	And "RabbitMqConsumeTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into "[[result]]"
@@ -147,6 +151,7 @@ Scenario: Test WF with RabbitMq Consume
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeTestFailWF" is deleted as cleanup
 
+@StudioTestFrameworkWithRabbitMQTools
 Scenario: Test WF with RabbitMq Consume object result
 	Given I have a workflow "RabbitMqConsumeObjectTestFailWF"
 	And "RabbitMqConsumeObjectTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into ""
@@ -168,6 +173,7 @@ Scenario: Test WF with RabbitMq Consume object result
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeObjectTestFailWF" is deleted as cleanup
 
+@StudioTestFrameworkWithRabbitMQTools
 Scenario: Test WF with RabbitMq Consume object Array result 
 	Given I have a workflow "RabbitMqConsumeObjectResultTestFailWF"
 	And "RabbitMqConsumeObjectResultTestFailWF" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3"		
@@ -190,7 +196,8 @@ Scenario: Test WF with RabbitMq Consume object Array result
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeObjectResultTestFailWF" is deleted as cleanup
-	
+
+@StudioTestFrameworkWithRabbitMQTools
 Scenario: Test WF with RabbitMq Consume and count Recordset
 	Given I have a workflow "RabbitMqConsumeAndCountTestFailWF"
 	And "RabbitMqConsumeAndCountTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into "[[msgRec().msgs]]" 
@@ -212,6 +219,7 @@ Scenario: Test WF with RabbitMq Consume and count Recordset
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeAndCountTestFailWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Calculate
 	Given I have a workflow "CalculateTestWF"
 	And "CalculateTestWF" contains an Assign "values1" as
@@ -235,6 +243,7 @@ And I add StepOutputs as
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CalculateTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Calculate outputs with no variable
 	Given I have a workflow "CalculateTestWF"
 	And "CalculateTestWF" contains an Assign "values1" as
@@ -256,9 +265,9 @@ Scenario: Test WF with Calculate outputs with no variable
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	Then workflow "CalculateTestWF" is deleted as cleanup	
+	Then workflow "CalculateTestWF" is deleted as cleanup
 
-#WOLF-2280
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Calculate No outPuts
 	Given I have a workflow "CalculateTestNoOutputsWF"
 	And "CalculateTestNoOutputsWF" contains an Assign "values1" as
@@ -279,6 +288,7 @@ Scenario: Test WF with Calculate No outPuts
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CalculateTestNoOutputsWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Xpath
 	Given I have a workflow "XPathTestWF"
 	And "XPathTestWF" contains XPath \"XPathTest" with source "//XPATH-EXAMPLE/CUSTOMER[@id='2' or @type='C']/text()"
@@ -298,6 +308,7 @@ And I add StepOutputs as
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "XPathTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with SysInfo
 	Given I have a workflow "SysInfoTestWF"
 	And "SysInfoTestWF" contains Gather System Info "System info" as
@@ -319,6 +330,7 @@ And I add StepOutputs as
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "SysInfoTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with FormatNumber
 	Given I have a workflow "FormatNumberTestWF"
 	And "FormatNumberTestWF" contains Format Number "Fnumber" as 
@@ -340,6 +352,7 @@ And I add StepOutputs as
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "FormatNumberTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Count Record
 	Given I have a workflow "CountRecTestWF"
 	And "CountRecTestWF&2Delete" contains an Assign "countrecordval1" as
@@ -364,7 +377,8 @@ Scenario: Test WF with Count Record
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "CountRecTestWF" is deleted as cleanup
 
-Scenario: Test WF with Lenght
+@StudioTestFrameworkWithUtilityTools
+Scenario: Test WF with Length
 	Given I have a workflow "LenghtTestWF"
 	And "LenghtTestWF" contains an Assign "Rec To Convert" as
 	  | variable    | value |
@@ -387,6 +401,7 @@ And I add StepOutputs as
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "LenghtTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Find Records
 	Given I have a workflow "FindRecTestWF"
 	 And "FindRecTestWF" contains an Assign "Record" as
@@ -413,6 +428,7 @@ Scenario: Test WF with Find Records
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "FindRecTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Delete Records
 	Given I have a workflow "DeleteRecTestWF"
 	And "DeleteRecTestWF" contains an Assign "Assign to delete" as
@@ -437,6 +453,7 @@ Scenario: Test WF with Delete Records
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "DeleteRecTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Unique Record
 	Given I have a workflow "UniqueTestWF"
 	 And "UniqueTestWF" contains an Assign "Records" as
@@ -471,6 +488,7 @@ Scenario: Test WF with Unique Record
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "UniqueTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with Sort
 	Given I have a workflow "SortTestWF"
 	And "SortTestWF" contains an Assign "sortval5" as
@@ -497,6 +515,7 @@ Scenario: Test WF with Sort
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "SortTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with DateTime
 	Given I have a workflow "DateTimeTestWF"
 	And "DateTimeTestWF" contains Date and Time "AddDate" as
@@ -518,6 +537,7 @@ Scenario: Test WF with DateTime
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "DateTimeTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Test WF with DateTimeDiff
 	Given I have a workflow "DateTimeDiffTestWF"	 	  
 	And "DateTimeDiffTestWF" contains Date and Time Difference "DateTimedif" as
@@ -539,6 +559,7 @@ Scenario: Test WF with DateTimeDiff
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "DateTimeDiffTestWF" is deleted as cleanup
 
+@StudioTestFrameworkWithUtilityTools
 Scenario: Run a passing Test with RabbitMq Object return
 	Given the test builder is open with existing service "RabbitTestWf"	
 	And Tab Header is "RabbitTestWf - Tests"

@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,6 +9,8 @@ namespace Dev2.Common.Tests.Wrappers
     public class TimerWrapperTests
     {
         [TestMethod]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void TimerWrapper_Construct()
         {
             var callCount = 0;

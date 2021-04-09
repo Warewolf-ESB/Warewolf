@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,8 +20,12 @@ using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using Dev2.Activities;
+using Warewolf.Common.NetStandard20;
+using Warewolf.Execution;
 using Warewolf.Interfaces.Auditing;
 using Warewolf.OS;
+using Warewolf.Streams;
 using Warewolf.Triggers;
 using WarewolfCOMIPC.Client;
 
@@ -29,6 +33,7 @@ namespace Dev2.Server.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class ServerLifecycleManagerServiceTests
     {
         [TestMethod]
@@ -146,10 +151,16 @@ namespace Dev2.Server.Tests
             var mockHangfireServerMonitorWithRestart = new HangfireServerMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
 
             var items = new List<IServerLifecycleWorker> {mockServerLifeCycleWorker.Object};
 
             EnvironmentVariables.IsServerOnline = true;
+
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
@@ -158,6 +169,11 @@ namespace Dev2.Server.Tests
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -174,6 +190,8 @@ namespace Dev2.Server.Tests
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -190,6 +208,12 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
+
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
+            mockSystemInformation.Verify(o => o.GetWareWolfVersion(), Times.Once);
+            mockExecutionLoggerFactory.Verify(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object), Times.Once);
+            mockExecutionLogPublisher.Verify(o => o.Info("Warewolf Server Started Version: 1.1.1.1"), Times.Once);
+
             mockServerLifeCycleWorker.Verify();
         }
 
@@ -197,6 +221,7 @@ namespace Dev2.Server.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ServerLifecycleManager))]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ServerLifecycleManager_WebSocketPool_IsOpen_False()
         {
             //------------------------Arrange------------------------
@@ -286,11 +311,17 @@ namespace Dev2.Server.Tests
             var mockHangfireServerMonitorWithRestart = new HangfireServerMonitorWithRestart(new Mock<ChildProcessTrackerWrapper>().Object, new Mock<ProcessWrapperFactory>().Object);
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
 
             var items = new List<IServerLifecycleWorker> {mockServerLifeCycleWorker.Object};
 
             EnvironmentVariables.IsServerOnline = true;
             Config.Persistence.Enable = true;
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
+
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] {new AssemblyName {Name = "testAssemblyName"}});
@@ -298,6 +329,11 @@ namespace Dev2.Server.Tests
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -315,6 +351,8 @@ namespace Dev2.Server.Tests
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -331,7 +369,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading test catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
-
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockQueueProcessMonitor.Verify(o => o.Start(), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
@@ -470,10 +508,16 @@ namespace Dev2.Server.Tests
             
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
 
             var items = new List<IServerLifecycleWorker> { mockServerLifeCycleWorker.Object };
 
             EnvironmentVariables.IsServerOnline = true;
+
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
@@ -482,6 +526,11 @@ namespace Dev2.Server.Tests
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -498,6 +547,8 @@ namespace Dev2.Server.Tests
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -519,6 +570,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("hangfire server exited"), Times.Once); //we might need to use the write like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 
@@ -546,10 +598,16 @@ namespace Dev2.Server.Tests
 
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
 
             var items = new List<IServerLifecycleWorker> { mockServerLifeCycleWorker.Object };
 
             EnvironmentVariables.IsServerOnline = true;
+
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
@@ -558,6 +616,11 @@ namespace Dev2.Server.Tests
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -574,6 +637,8 @@ namespace Dev2.Server.Tests
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -591,6 +656,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("hangfire server exited"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 
@@ -618,10 +684,16 @@ namespace Dev2.Server.Tests
 
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
 
             var items = new List<IServerLifecycleWorker> { mockServerLifeCycleWorker.Object };
 
             EnvironmentVariables.IsServerOnline = true;
+
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
@@ -630,6 +702,11 @@ namespace Dev2.Server.Tests
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -646,6 +723,8 @@ namespace Dev2.Server.Tests
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -664,6 +743,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("logging service exited"), Times.Once); //we might need to use the write like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 
@@ -691,10 +771,16 @@ namespace Dev2.Server.Tests
 
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
 
             var items = new List<IServerLifecycleWorker> { mockServerLifeCycleWorker.Object };
 
             EnvironmentVariables.IsServerOnline = true;
+
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
@@ -703,6 +789,11 @@ namespace Dev2.Server.Tests
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -719,6 +810,8 @@ namespace Dev2.Server.Tests
                 LoggingServiceMonitor = mockLoggingServiceMonitorWithRestart,
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -736,6 +829,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine("logging service exited"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 
@@ -769,10 +863,16 @@ namespace Dev2.Server.Tests
 
             var mockWebSocketPool = new Mock<IWebSocketPool>();
             var mockWebSocketWrapper = new Mock<IWebSocketWrapper>();
+            var mockSystemInformation = new Mock<IGetSystemInformation>();
+            var mockExecutionLoggerFactory = new Mock<ExecutionLogger.IExecutionLoggerFactory>();
+            var mockExecutionLogPublisher = new Mock<IExecutionLogPublisher>();
 
             var items = new List<IServerLifecycleWorker> { mockServerLifeCycleWorker.Object };
 
             EnvironmentVariables.IsServerOnline = true;
+
+            mockIpcClient.Setup(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()))
+                .Returns(mockIpcClient.Object);
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             mockServerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
@@ -781,6 +881,11 @@ namespace Dev2.Server.Tests
 
             mockWebSocketWrapper.Setup(o => o.IsOpen()).Returns(true);
             mockWebSocketPool.Setup(o => o.Acquire(It.IsAny<string>())).Returns(mockWebSocketWrapper.Object);
+
+            mockSystemInformation.Setup(o => o.GetWareWolfVersion()).Returns("1.1.1.1");
+            mockExecutionLogPublisher.Setup(o => o.Info("Warewolf Server Started Version: 1.1.1.1")).Verifiable();
+            mockExecutionLoggerFactory.Setup(o => o.New(It.IsAny<ISerializer>(), mockWebSocketPool.Object))
+                .Returns(mockExecutionLogPublisher.Object);
 
             //------------------------Act----------------------------
             var config = new StartupConfiguration
@@ -798,6 +903,8 @@ namespace Dev2.Server.Tests
                 HangfireServerMonitor = mockHangfireServerMonitorWithRestart,
                 QueueWorkerMonitor = mockQueueWorkerMonitorWithRestart,
                 WebSocketPool = mockWebSocketPool.Object,
+                SystemInformationHelper = mockSystemInformation.Object,
+                LoggerFactory = mockExecutionLoggerFactory.Object
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -815,6 +922,7 @@ namespace Dev2.Server.Tests
             mockWriter.Verify(o => o.Write("Loading triggers catalog...  "), Times.Once);
             mockWriter.Verify(o => o.Write("Exiting with exitcode 0"), Times.Once);
             mockWriter.Verify(o => o.WriteLine($"queue process died: {expectedResourceName}({expectedId})"), Times.Never); //we might need to add a Hangfire Server starting... and (done) for started or Loading like the above, inverstigate.
+            mockIpcClient.Verify(o => o.GetIpcExecutor(It.IsAny<INamedPipeClientStreamWrapper>()), Times.Once);
             mockServerLifeCycleWorker.Verify();
         }
 

@@ -23,14 +23,17 @@ using HangfireServer;
 using Warewolf.Auditing;
 using Warewolf.Driver.Resume;
 using Warewolf.Execution;
+using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.HangfireServer.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class ResumptionAttributeTests
     {
         string currentuserprincipal = WindowsIdentity.GetCurrent().Name;
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ResumptionAttribute))]
@@ -70,7 +73,11 @@ namespace Warewolf.HangfireServer.Tests
             mockResumptionFactory.Setup(o => o.New()).Returns(mockResumption.Object).Verifiable();
 
             var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
-            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
+            var audit = new Audit
+            {
+                AuditDate = DateTime.Now
+            };
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object), audit);
 
             mockResumptionFactory.Verify(o => o.New(), Times.Once);
             mockResumption.Verify(o => o.Connect(mockLogger.Object), Times.Once);
@@ -113,8 +120,11 @@ namespace Warewolf.HangfireServer.Tests
             mockResumptionFactory.Setup(o => o.New()).Returns(mockResumption.Object).Verifiable();
 
             var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
-            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
-
+            var audit = new Audit
+            {
+                AuditDate = DateTime.Now
+            };
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object), audit);
             mockResumptionFactory.Verify(o => o.New(), Times.Once);
             mockResumption.Verify(o => o.Connect(mockLogger.Object), Times.Once);
             mockLogger.Verify(o => o.LogResumedExecution(It.IsAny<Audit>()), Times.Never);
@@ -163,7 +173,148 @@ namespace Warewolf.HangfireServer.Tests
             mockResumptionFactory.Setup(o => o.New()).Returns(mockResumption.Object).Verifiable();
 
             var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
-            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object));
+            var audit = new Audit
+            {
+                AuditDate = DateTime.Now
+            };
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object), audit);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ResumptionAttribute))]
+        public void ResumptionAttribute_LogResumption_Environment_in_Audit_IsBlank()
+        {
+            var workflowId = Guid.NewGuid().ToString();
+            const string environment = "this should be nothing";
+            const string versionNumber = "0";
+            var startActivityId = Guid.NewGuid().ToString();
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder(workflowId)},
+                {"environment", new StringBuilder(environment)},
+                {"startActivityId", new StringBuilder(versionNumber)},
+                {"versionNumber", new StringBuilder(startActivityId)},
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
+            };
+
+            var jobId = Guid.NewGuid().ToString();
+            var performContext = new PerformContextMock(jobId, values);
+            var auditDate = DateTime.Now;
+            var initAudit = new Audit
+            {
+                AuditDate = auditDate,
+            };
+            var audit = initAudit;
+            audit.WorkflowID = workflowId;
+            audit.Environment = string.Empty;
+            audit.AuditDate = auditDate;
+            audit.VersionNumber = versionNumber;
+            audit.NextActivityId = startActivityId;
+            audit.AuditType = "LogResumeExecutionState";
+            audit.LogLevel = LogLevel.Info;
+            audit.ExecutingUser = currentuserprincipal;
+
+            var mockLogger = new Mock<IExecutionLogPublisher>();
+            mockLogger.Setup(o => o.LogResumedExecution(audit)).Verifiable();
+
+            var executeMessage = new ExecuteMessage
+            {
+                Message = new StringBuilder("Execution Completed."),
+                HasError = false
+            };
+
+            var mockResumption = new Mock<IResumption>();
+            mockResumption.Setup(o => o.Connect(mockLogger.Object)).Returns(true);
+            mockResumption.Setup(o => o.Resume(values)).Returns(executeMessage);
+
+            var mockResumptionFactory = new Mock<IResumptionFactory>();
+            mockResumptionFactory.Setup(o => o.New()).Returns(mockResumption.Object).Verifiable();
+
+            var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object), initAudit);
+
+            mockResumptionFactory.Verify(o => o.New(), Times.Once);
+            mockResumption.Verify(o => o.Connect(mockLogger.Object), Times.Once);
+            mockLogger.Verify(o => o.LogResumedExecution(audit), Times.Once);
+            mockResumption.Verify(o => o.Resume(values), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ResumptionAttribute))]
+        public void ResumptionAttribute_LogResumption_Environment_in_Audit_IsNotBlank_Fails()
+        {
+            var workflowId = Guid.NewGuid().ToString();
+            const string environment = "this should be nothing";
+            const string versionNumber = "0";
+            var startActivityId = Guid.NewGuid().ToString();
+
+            var values = new Dictionary<string, StringBuilder>
+            {
+                {"resourceID", new StringBuilder(workflowId)},
+                {"environment", new StringBuilder(environment)},
+                {"startActivityId", new StringBuilder(versionNumber)},
+                {"versionNumber", new StringBuilder(startActivityId)},
+                {"currentuserprincipal", new StringBuilder(currentuserprincipal)}
+            };
+
+            var jobId = Guid.NewGuid().ToString();
+            var performContext = new PerformContextMock(jobId, values);
+            var auditDate = DateTime.Now;
+            var initAudit = new Audit
+            {
+                AuditDate = auditDate,
+            };
+
+            var auditWithOverWrittenEnvironment = initAudit;
+            auditWithOverWrittenEnvironment.WorkflowID = workflowId;
+            auditWithOverWrittenEnvironment.Environment = String.Empty;
+            auditWithOverWrittenEnvironment.AuditDate = auditDate;
+            auditWithOverWrittenEnvironment.VersionNumber = versionNumber;
+            auditWithOverWrittenEnvironment.NextActivityId = startActivityId;
+            auditWithOverWrittenEnvironment.AuditType = "LogResumeExecutionState";
+            auditWithOverWrittenEnvironment.LogLevel = LogLevel.Info;
+            auditWithOverWrittenEnvironment.ExecutingUser = currentuserprincipal;
+
+            var auditValidation = new Audit
+            {
+                WorkflowID = workflowId,
+                Environment = environment,
+                AuditDate = auditDate,
+                VersionNumber = versionNumber,
+                NextActivityId = startActivityId,
+                AuditType = "LogResumeExecutionState",
+                LogLevel = LogLevel.Info,
+                ExecutingUser = currentuserprincipal
+            };
+
+            var mockLogger = new Mock<IExecutionLogPublisher>();
+            mockLogger.Setup(o => o.LogResumedExecution(auditWithOverWrittenEnvironment)).Verifiable();
+
+            var executeMessage = new ExecuteMessage
+            {
+                Message = new StringBuilder("Execution Completed."),
+                HasError = false
+            };
+
+            var mockResumption = new Mock<IResumption>();
+            mockResumption.Setup(o => o.Connect(mockLogger.Object)).Returns(true);
+            mockResumption.Setup(o => o.Resume(values)).Returns(executeMessage);
+
+            var mockResumptionFactory = new Mock<IResumptionFactory>();
+            mockResumptionFactory.Setup(o => o.New()).Returns(mockResumption.Object).Verifiable();
+
+            var resumptionAttribute = new ResumptionAttribute(mockLogger.Object, mockResumptionFactory.Object);
+            resumptionAttribute.OnPerformResume(new PerformingContext(performContext.Object), initAudit);
+
+            mockResumptionFactory.Verify(o => o.New(), Times.Once);
+            mockResumption.Verify(o => o.Connect(mockLogger.Object), Times.Once);
+
+            mockLogger.Verify(o => o.LogResumedExecution(auditWithOverWrittenEnvironment), Times.Once);
+            mockLogger.Verify(o => o.LogResumedExecution(auditValidation), Times.Never);
+            mockResumption.Verify(o => o.Resume(values), Times.Once);
         }
 
         class PerformContextMock

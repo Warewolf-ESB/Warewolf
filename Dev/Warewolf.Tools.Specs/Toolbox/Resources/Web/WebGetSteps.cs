@@ -31,6 +31,7 @@ using TechTalk.SpecFlow;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using System.Threading.Tasks;
 using Dev2;
+using Dev2.Activities.Designers2.WebGet;
 using Dev2.Common;
 using Warewolf.UnitTestAttributes;
 
@@ -134,7 +135,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
             mockServiceModel.Setup(model => model.EditSource(It.IsAny<IWebServiceSource>())).Verifiable();
             mockServiceInputViewModel.SetupAllProperties();
             mockServiceModel.Setup(model => model.TestService(It.IsAny<IWebService>())).Returns(testResult);
-            var viewModel = new WebServiceGetViewModel(modelItem, mockServiceModel.Object);
+            var viewModel = new WebGetActivityViewModel(modelItem, mockServiceModel.Object);
 
             _scenarioContext.Add("viewModel", viewModel);
             _scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
@@ -267,9 +268,9 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
             GetViewModel().SourceRegion.EditSourceCommand.Execute(null);
         }
 
-        WebServiceGetViewModel GetViewModel()
+        WebGetActivityViewModel GetViewModel()
         {
-            return _scenarioContext.Get<WebServiceGetViewModel>("viewModel");
+            return _scenarioContext.Get<WebGetActivityViewModel>("viewModel");
         }
         Mock<IWebServiceModel> GetServiceModel()
         {

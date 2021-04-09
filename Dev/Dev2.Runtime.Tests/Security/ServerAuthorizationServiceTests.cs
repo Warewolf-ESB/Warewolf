@@ -26,6 +26,7 @@ namespace Dev2.Tests.Runtime.Security
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class ServerAuthorizationServiceTests
     {
         [TestMethod]
@@ -161,6 +162,7 @@ namespace Dev2.Tests.Runtime.Security
         [Owner("Travis Frisinger")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedNoResultsPendingAndHubConnect_AuthorizationCalculatedAndNotCachedIsFalse()
         {
             //------------Setup for test--------------------------
