@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,9 +11,7 @@
 
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
-using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
@@ -21,9 +19,11 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.DynamicServices;
 using Warewolf.Auditing;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -245,7 +245,19 @@ namespace Dev2.Runtime.ESB.Control
                     {
                         executionContainer.InstanceInputDefinition = _inputDefs;
                         executionContainer.InstanceOutputDefinition = _outputDefs;
-                        executionContainer.Execute(out var invokeErrors, update);
+                        ErrorResultTO invokeErrors;
+                        if (_dataObject.StartActivityId != Guid.Empty)
+                        {
+                            var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, _dataObject.ResourceID, "");
+                            var sa = dynamicService.Actions.FirstOrDefault();
+
+                            var container = CustomContainer.Get<IResumableExecutionContainerFactory>().New(_dataObject.StartActivityId, sa, (DsfDataObject)_dataObject);
+                            container.Execute(out invokeErrors, update);
+                        }
+                        else
+                        {
+                            executionContainer.Execute(out invokeErrors, update);
+                        }
 
                         var env = _environmentOutputMappingManager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(_dataObject, _outputDefs, update, handleErrors, _errors);
 

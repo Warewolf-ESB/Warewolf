@@ -126,6 +126,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void WfExecutionContainer_OnConstruction_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
@@ -158,6 +160,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void WfExecutionContainer_ExecuteNode_CheckWhenDataObjectStopExecutionIsTrue_ShouldNotEmptyExecutionExceptionInDataObject()
         {
             //--------------Arrange------------------------------
@@ -211,7 +214,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(WfExecutionContainer))]
-        [DoNotParallelize]//CustomContainer.Register is not threadsafe
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]//CustomContainer.Register is not threadsafe
         public void WfExecutionContainer_LogStopExecutionState()
         {
             var serviceAction = new ServiceAction();
@@ -263,6 +267,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogActivityExecuteStateAndLogExecuteCompleteState()
         {
             //--------------Arrange------------------------------
@@ -311,6 +316,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [Owner("Devaji Chotaliya")]
         [TestCategory(nameof(WfExecutionContainer))]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void WfExecutionContainer_ExecuteNode_WhenSeverSettings_EnableDetailedLogging_IsTrue_ShouldRunLogExecuteException()
         {
             //--------------Arrange------------------------------

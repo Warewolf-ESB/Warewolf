@@ -17,6 +17,7 @@ namespace Warewolf.MergeParser.Tests
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class ParseServiceForDifferencesTests
     {
         [TestMethod]

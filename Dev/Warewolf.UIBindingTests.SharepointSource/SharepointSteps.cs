@@ -250,8 +250,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [Given(@"I type Password")]
         public void GivenITypePassword()
         {
-            var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
+            var password = "I73573r0";
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
             manageSharepointServerSource.EnterPassword(password);
             var viewModel = ScenarioContext.Current.Get<SharepointServerSourceViewModel>("viewModel");
@@ -295,15 +294,13 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IServer>();
 
-            var username = @"dev2\IntegrationTester";
-            var password = TestEnvironmentVariables.GetVar(username);
             var sharePointServiceSourceDefinition = new SharePointServiceSourceDefinition
             {
                 Name = "Test",
                 Server = $"http://{Depends.SharepointBackupServer}",
                 AuthenticationType = AuthenticationType.Windows,
                 UserName = "IntegrationTester",
-                Password = password
+                Password = "I73573r0"
             };
             mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(sharePointServiceSourceDefinition);

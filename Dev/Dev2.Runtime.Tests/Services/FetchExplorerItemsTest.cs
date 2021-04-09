@@ -30,6 +30,7 @@ namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class FetchExplorerItemsTest
     {
         [TestInitialize]
@@ -149,6 +150,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("FetchExplorerItems_HandlesType")]
         [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void FetchExplorerItems_ExecuteReloadTrueWithExecutionManager_ExpectCallsStartAndStopRefresh()
         {
             //------------Setup for test--------------------------

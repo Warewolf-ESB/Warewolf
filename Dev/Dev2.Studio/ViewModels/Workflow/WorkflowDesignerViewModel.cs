@@ -1586,7 +1586,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SubscribeToDebugSelectionChanged();
                 SetPermission(ResourceModel.UserPermissions);
                 ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
-                UpdateErrorIconWithCorrectMessage();
             }
         }
 
@@ -1649,7 +1648,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SubscribeToDebugSelectionChanged();
                 SetPermission(ResourceModel.UserPermissions);
                 ViewModelUtils.RaiseCanExecuteChanged(_debugOutputViewModel?.AddNewTestCommand);
-                UpdateErrorIconWithCorrectMessage();
             }
         }
 
@@ -2064,7 +2062,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             if ((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
             {
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
-                UpdateErrorIconWithCorrectMessage();
 
                 // If we are opening from server skip this check, it cannot have "real" changes!
                 if (!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
@@ -2107,26 +2104,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                 _firstWorkflowChange = false;
-            }
-        }
-
-        void UpdateErrorIconWithCorrectMessage()
-        {
-            var validationIcon = DesignerView?.FindChild<Border>(border => border.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase));
-            if (validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
-            {
-                validationIcon.ToolTip = Warewolf.Studio.Resources.Languages.Tooltips.StartNodeNotConnectedToolTip;
-
-                //It should be called once when there is first tool dragged or start node link get deleted
-                if (!IsStartNodeErrorMessageSet)
-                {
-                    IsStartNodeErrorMessageSet = true;
-                    if (_applicationTracker != null)
-                    {
-                        _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
-                                                        Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.StartNodeNotConnected);
-                    }
-                }
             }
         }
 

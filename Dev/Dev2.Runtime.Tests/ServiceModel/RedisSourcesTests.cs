@@ -10,10 +10,13 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Data.ServiceModel;
 using Dev2.Infrastructure.Tests;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Tests.Runtime.ServiceModel
@@ -114,8 +117,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(RedisSources))]
+        [DoNotParallelize]
+        [TestCategory("CannotParallelize")]
         public void RedisSources_Test_With_ValidHost_AuthenticationType_Password_Expected_ValidValidationResult()
         {
+            CustomContainer.Register(new Mock<IWarewolfPerformanceCounterLocater>().Object);
+            CustomContainer.Register(new Mock<IResourceCatalog>().Object);
             var dependency = new Depends(Depends.ContainerType.Redis);
             var source = new RedisSource
             {
@@ -133,14 +140,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
             catch (Exception e)
             {
-                if (e.Message.Contains("could not connect to redis Instance"))
-                {
-                    Assert.Inconclusive(e.Message);
-                }
-                else
-                {
-                    throw;
-                }
+                Assert.IsFalse(e.Message.Contains("could not connect to redis Instance"), e.Message);
             }
         }
 

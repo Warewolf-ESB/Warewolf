@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -261,7 +261,7 @@ namespace Dev2.DynamicServices
         public Guid ResourceID { get; set; }
 
         public IWarewolfResource Resource { get; set; }
-
+        public Guid StartActivityId { get; set; }
 
 
         public int NumberOfSteps { get; set; }

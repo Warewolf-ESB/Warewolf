@@ -35,6 +35,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass]
     [TestCategory("Runtime Hosting")]
     [DoNotParallelize]
+    [TestCategory("CannotParallelize")]
     public class WebSourcesTests
     {
         const string postData =
