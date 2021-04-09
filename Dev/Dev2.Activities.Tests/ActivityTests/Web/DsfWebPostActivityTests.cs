@@ -740,7 +740,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 };
                 //-----------------------Act-----------------------------
                 //-----------------------Assert--------------------------
-                Assert.ThrowsException<Exception>(()=> dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0), "variable [[NotExistVariable]] not found");
+                Assert.ThrowsException<WarewolfExecutionEnvironmentException>(()=> dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0), "variable { NotExistVariable } not found");
             }
         }
 

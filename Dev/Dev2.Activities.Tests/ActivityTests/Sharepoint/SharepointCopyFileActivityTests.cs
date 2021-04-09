@@ -164,7 +164,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //------------Assert Result--------------------------
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
             
-            Assert.AreEqual("variable [[Files(*).Name]] not found", error);
+            Assert.AreEqual("variable { Files(*).Name } not found", error);
         }
 
         [TestMethod]
@@ -368,7 +368,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //------------Assert Result--------------------------
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
 
-            Assert.AreEqual("variable [[Files(*).Name]] not found", error);
+            Assert.AreEqual("variable { Files(*).Name } not found", error);
         }
 
         [TestMethod]
