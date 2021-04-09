@@ -148,6 +148,9 @@ Remove-Item -force -recurse
 	} else {
 		$CategoryArg = ""
 		if ($ExcludeCategories -ne $null -and $ExcludeCategories -ne @()) {
+			if ($ExcludeCategories.Count -eq 1 -and $ExcludeCategories[0].Contains(",")) {
+				$ExcludeCategories = $ExcludeCategories[0] -split ","
+			}
 			$CategoryArg = "/TestCaseFilter:`"(TestCategory!="
 			$CategoryArg += $ExcludeCategories -join ")&(TestCategory!="
 			$CategoryArg += ")`""
@@ -208,7 +211,7 @@ Remove-Item -force -recurse
 	if (!($InContainer.IsPresent)) {
 		&"$TestResultsPath\RunTests.ps1"
 	} else {
-		docker run -i --rm -v ${PWD}:C:\BuildUnderTest --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" -P registry.gitlab.com/warewolf/vstest
+		docker run -i --rm -v ${PWD}:C:\BuildUnderTest --entrypoint="powershell -Command Set-Location .\BuildUnderTest;&.\TestResults\RunTests.ps1" registry.gitlab.com/warewolf/vstest
 	}
     if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
         Copy-Item "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx" "$TestResultsPath" -Force -Recurse
