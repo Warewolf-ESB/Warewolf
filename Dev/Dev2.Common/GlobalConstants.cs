@@ -308,7 +308,13 @@ namespace Dev2.Common
         public static readonly string _DECISION_STACK = "Dev2DecisionStack";
         public static readonly string _DATATABLE = "DataTable";
         public static readonly string _XML_Inputs_Only = "XML only Inputs";
-        
+
+        public const string INTERNAL_SERVER_ERROR = "internal_server_error";
+        public const string BAD_REQUEST = "bad_request";
+        public const string NOT_IMPLEMENTED = "not_implemented";
+        public const string USER_UNAUTHORIZED = "user_unauthorized";
+        public const string USER_FORBIDDEN = "user_forbidden";
+
         public static readonly string ServicesDirectory = "Services";
 
         public static readonly string SourcesDirectory = "Sources";
