@@ -3858,5 +3858,21 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("AuthenticationError", resourceCulture);
             }
         }
+
+        public static string AuthorizationDeniedForThisUser
+        { 
+            get 
+            {
+                return ResourceManager.GetString("AuthorizationDeniedForThisUser", resourceCulture); 
+            } 
+        }
+
+        public static string AuthorizationDeniedForThisRequest
+        {
+            get
+            {
+                return ResourceManager.GetString("AuthorizationDeniedForThisRequest", resourceCulture);
+            }
+        }
     }
 }

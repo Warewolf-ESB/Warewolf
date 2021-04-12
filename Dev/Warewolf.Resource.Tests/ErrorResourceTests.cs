@@ -428,6 +428,8 @@ namespace Warewolf.Resource.Tests
             Assert.AreEqual("'XML' is not a valid expression", ErrorResource.XPathXmlInvalidExpressionErrorTest);
             Assert.AreEqual("'XML' Cannot be null", ErrorResource.XPathXmlNotNullErrorTest);
             Assert.AreEqual("'XML' - Recordset index -1 is not greater than zero", ErrorResource.XPathXmlRecordsetIndexErrorTest);
+            Assert.AreEqual("Authorization has been denied for this request.", ErrorResource.AuthorizationDeniedForThisRequest);
+            Assert.AreEqual("Authorization has been denied for this user.", ErrorResource.AuthorizationDeniedForThisUser);
 
         }
     }

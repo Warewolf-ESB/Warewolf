@@ -14,6 +14,7 @@ using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Net;
 using Warewolf.Storage;
 
 namespace Dev2.Runtime.WebServer.Tests
@@ -135,6 +136,33 @@ namespace Dev2.Runtime.WebServer.Tests
             var sut = ExecuteExceptionPayload.Calculate(mockDataObject.Object);
 
             Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 500,\r\n    \"Title\": \"internal_server_error\",\r\n    \"Message\": \"test error message\"\r\n  }\r\n}", sut);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void ExecuteExceptionPayload_CreateErrorResponse_Given_EmmitionTytesOpenAPI_ShouldDefaltToJSON()
+        {
+            var sut = ExecuteExceptionPayload.CreateErrorResponse(EmitionTypes.OPENAPI, HttpStatusCode.BadRequest, "test_title", "test_message");
+
+            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 400,\r\n    \"Title\": \"test_title\",\r\n    \"Message\": \"test_message\"\r\n  }\r\n}", sut);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void ExecuteExceptionPayload_CreateErrorResponse_Given_EmmitionTytesJSON_ShouldReturnJSON()
+        {
+            var sut = ExecuteExceptionPayload.CreateErrorResponse(EmitionTypes.JSON, HttpStatusCode.BadRequest, "test_title", "test_message");
+
+            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 400,\r\n    \"Title\": \"test_title\",\r\n    \"Message\": \"test_message\"\r\n  }\r\n}", sut);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void ExecuteExceptionPayload_CreateErrorResponse_Given_EmmitionTytesTRX_ShouldToXML()
+        {
+            var sut = ExecuteExceptionPayload.CreateErrorResponse(EmitionTypes.TRX, HttpStatusCode.Forbidden, "test_title", "test_message");
+
+            Assert.AreEqual("<Error>\r\n  <Status>403</Status>\r\n  <Title>test_title</Title>\r\n  <Message>test_message</Message>\r\n</Error>", sut);
         }
     }
 }

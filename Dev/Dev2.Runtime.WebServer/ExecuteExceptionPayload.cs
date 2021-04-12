@@ -9,6 +9,7 @@
 */
 
 
+using Dev2.Common;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Web;
@@ -22,6 +23,7 @@ namespace Dev2.Runtime.WebServer
 
     public class ExecuteExceptionPayload
     {
+        
         private ExecuteExceptionPayload()
         {
         }
@@ -45,29 +47,20 @@ namespace Dev2.Runtime.WebServer
                     case EmitionTypes.TRX:
                     case EmitionTypes.XML:
                         {
-                            return Scrubber.Scrub(warewolfErrors.SerializeToXml(), ScrubType.Xml);
+                            return warewolfErrors.ToXML();
                         }
                     default: 
                     case EmitionTypes.OPENAPI:
                     case EmitionTypes.CoverJson:
                     case EmitionTypes.JSON:
                         {
-                            return JsonConvert.SerializeObject(new { Error = warewolfErrors }, Formatting.Indented);
+                            return warewolfErrors.ToJSON();
                         }
                 }
             }
 
             return string.Empty;
         }
-
-        public class Error
-        {
-            public int Status { get; set; }
-            public string Title { get; set; }
-            public string Message { get; set; }
-
-        }
-
 
         private static (HttpStatusCode statusCode, string tittle, string message) GetResponseMessage(IDSFDataObject dataObject)
         {
@@ -76,14 +69,59 @@ namespace Dev2.Runtime.WebServer
             var hasException = exception != null;
             if (hasException)
             {
-                return (HttpStatusCode.InternalServerError, "internal_server_error", message: exception.Message);
+                return (HttpStatusCode.InternalServerError, GlobalConstants.INTERNAL_SERVER_ERROR, message: exception.Message);
             }
             else if (!hasException && env.HasErrors())
             {
-                return (HttpStatusCode.BadRequest, "bad_request", message: env.FetchErrors());
+                return (HttpStatusCode.BadRequest, GlobalConstants.BAD_REQUEST, message: env.FetchErrors());
             }
 
-            return (HttpStatusCode.NotImplemented, "not_implemented", message: ErrorResource.MethodNotImplemented);
+            return (HttpStatusCode.NotImplemented, GlobalConstants.NOT_IMPLEMENTED, message: ErrorResource.MethodNotImplemented);
+        }
+
+        public static string CreateErrorResponse(EmitionTypes emissionType,  HttpStatusCode statusCode, string title, string message)
+        {
+            switch (emissionType)
+            {
+                case EmitionTypes.XML:
+                case EmitionTypes.TRX:
+                    return new Error
+                    {
+                        Status = (int)statusCode,
+                        Title = title,
+                        Message = message
+                    }.ToXML();
+                default:
+                case EmitionTypes.JSON:
+                case EmitionTypes.OPENAPI:
+                case EmitionTypes.TEST:
+                case EmitionTypes.Cover:
+                case EmitionTypes.CoverJson:
+                    return new Error
+                    {
+                        Status = (int)statusCode,
+                        Title = title,
+                        Message = message
+                    }.ToJSON();
+            }
+        }
+    }
+
+    public class Error
+    {
+        public int Status { get; set; }
+        public string Title { get; set; }
+        public string Message { get; set; }
+
+        internal string ToJSON(Formatting indent = Formatting.Indented)
+        {
+            return JsonConvert.SerializeObject(new { Error = this }, indent);
+        }
+
+        internal string ToXML(bool scrub = true)
+        {
+            var xml = this.SerializeToXml();
+            return scrub ? Scrubber.Scrub(xml, ScrubType.Xml) : xml;
         }
     }
 }

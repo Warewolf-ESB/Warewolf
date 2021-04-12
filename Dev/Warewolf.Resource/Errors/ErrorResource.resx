@@ -1397,4 +1397,10 @@ Please contact your Windows System Administrator.</value>
   <data name="AuthenticationError" xml:space="preserve">
     <value>Authentication Error resuming. User {0} is not authorized to execute the workflow.</value>
   </data>
+  <data name="AuthorizationDeniedForThisUser" xml:space="preserve">
+    <value>Authorization has been denied for this user.</value>
+  </data>
+  <data name="AuthorizationDeniedForThisRequest" xml:space="preserve">
+    <value>Authorization has been denied for this request.</value>
+  </data>
 </root>
