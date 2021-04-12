@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,11 +13,15 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Web.Http.Controllers;
+using Dev2.Common;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
+using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Tests.Runtime.WebServer.Security
 {
@@ -48,9 +52,9 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            
+
             new AuthorizeWebAttribute(null);
-            
+
 
             //------------Assert Results-------------------------
         }
@@ -72,11 +76,51 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AuthorizeWebAttribute))]
+        public void AuthorizeWebAttribute_OnAuthorization_GivenUserIsNotAuthenticated_ShouldReturn401JSON()
+        {
+            //------------Setup for test--------------------------
+            var provider = new Mock<IAuthorizationService>();
+            var attribute = new AuthorizeWebAttribute(provider.Object);
+
+            var httpActionContext = CreateActionContext(false, "http://localhost:8080/Examples/Workflow_One.json");
+
+            //------------Execute Test---------------------------
+            attribute.OnAuthorization(httpActionContext);
+            //------------Assert Results-------------------------
+            var result = httpActionContext.Response;
+            Assert.IsFalse(result.IsSuccessStatusCode);
+            var responseMessage = result.Content.ReadAsStringAsync().Result;
+            Assert.AreEqual("{\r\n  \"Error\": {\r\n    \"Status\": 401,\r\n    \"Title\": \"user_unauthorized\",\r\n    \"Message\": \"Authorization has been denied for this user.\"\r\n  }\r\n}", responseMessage);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(AuthorizeWebAttribute))]
+        public void AuthorizeWebAttribute_OnAuthorization_GivenServicedIsNotAuthenticated_ShouldReturn403XML()
+        {
+            //------------Setup for test--------------------------
+            var provider = new Mock<IAuthorizationService>();
+            var attribute = new AuthorizeWebAttribute(provider.Object);
+
+            var httpActionContext = CreateActionContext(true, "http://localhost:8080/Examples/Workflow_One.xml");
+
+            //------------Execute Test---------------------------
+            attribute.OnAuthorization(httpActionContext);
+            //------------Assert Results-------------------------
+            var result = httpActionContext.Response;
+            Assert.IsFalse(result.IsSuccessStatusCode);
+            var responseMessage = result.Content.ReadAsStringAsync().Result;
+            Assert.AreEqual("<Error>\r\n  <Status>403</Status>\r\n  <Title>user_forbidden</Title>\r\n  <Message>Authorization has been denied for this request.</Message>\r\n</Error>", responseMessage);
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_UserIsNotAuthenticated_ResponseIsUnauthorized()
         {
-            Verify_OnAuthorization_Response(false, null, false, HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+            Verify_OnAuthorization_Response(false, null, false, HttpStatusCode.Unauthorized, GlobalConstants.USER_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisUser);
         }
 
         [TestMethod]
@@ -84,7 +128,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_UserIsAuthenticatedAndNotAuthorized_ResponseIsAccessDenied()
         {
-            Verify_OnAuthorization_Response(true, null, false, HttpStatusCode.Forbidden, "Access has been denied for this request.");
+            Verify_OnAuthorization_Response(true, null, false, HttpStatusCode.Forbidden, GlobalConstants.USER_FORBIDDEN, ErrorResource.AuthorizationDeniedForThisRequest);
         }
 
         [TestMethod]
@@ -92,7 +136,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_UserIsAuthenticatedAndAuthorized_ResponseIsNull()
         {
-            Verify_OnAuthorization_Response(true, null, true, HttpStatusCode.OK, null);
+            Verify_OnAuthorization_Response(true, null, true, HttpStatusCode.OK, string.Empty, null);
         }
 
         [TestMethod]
@@ -102,7 +146,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Verify_OnAuthorization_Response(true, "ping", true, HttpStatusCode.OK, null);
+            Verify_OnAuthorization_Response(true, "ping", true, HttpStatusCode.OK, string.Empty, null);
             //------------Assert Results-------------------------
         }
 
@@ -113,7 +157,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Verify_OnAuthorization_Response(false, "ping", true, HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+            Verify_OnAuthorization_Response(false, "ping", true, HttpStatusCode.Unauthorized, GlobalConstants.USER_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisUser);
             //------------Assert Results-------------------------
         }
 
@@ -124,7 +168,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Verify_OnAuthorization_Response(false, "pingme", true, HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+            Verify_OnAuthorization_Response(false, "pingme", true, HttpStatusCode.Unauthorized, GlobalConstants.USER_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisUser);
             //------------Assert Results-------------------------
         }
 
@@ -135,11 +179,11 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Verify_OnAuthorization_Response(true, "pingme", true, HttpStatusCode.Forbidden, null);
+            Verify_OnAuthorization_Response(true, "pingme", true, HttpStatusCode.Forbidden, GlobalConstants.USER_FORBIDDEN, null);
             //------------Assert Results-------------------------
         }
 
-        static void Verify_OnAuthorization_Response(bool isAuthenticated, string actionName, bool isAuthorized, HttpStatusCode expectedStatusCode, string expectedMessage)
+        static void Verify_OnAuthorization_Response(bool isAuthenticated, string actionName, bool isAuthorized, HttpStatusCode expectedStatusCode, string title, string expectedMessage, EmitionTypes emitionTypes = EmitionTypes.JSON)
         {
             //------------Setup for test--------------------------
             var authorizationProvider = new Mock<IAuthorizationService>();
@@ -152,18 +196,26 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             attribute.OnAuthorization(actionContext);
 
             //------------Assert Results-------------------------
-            if(isAuthorized && isAuthenticated)
+            if (isAuthorized && isAuthenticated)
             {
                 Assert.IsNull(actionContext.Response);
             }
             else
             {
                 Assert.AreEqual(expectedStatusCode, actionContext.Response.StatusCode);
-                Assert.AreEqual(expectedStatusCode.ToString(), actionContext.Response.ReasonPhrase);
-
-                var task = actionContext.Response.Content.ReadAsStringAsync();
-                task.Wait();
-                Assert.AreEqual(string.Format("{{\"Message\":\"{0}\"}}", expectedMessage), task.Result);
+                
+                var errorObject = new Error
+                {
+                    Status = (int)expectedStatusCode,
+                    Title = title,
+                    Message = expectedMessage
+                };
+                var actualResponse = actionContext.Response.Content.ReadAsStringAsync().Result;
+                if (emitionTypes.Equals(EmitionTypes.XML))
+                {
+                    Assert.AreEqual(errorObject.ToXML(), actualResponse);
+                }
+                Assert.AreEqual(errorObject.ToJSON(), actualResponse);
             }
         }
 
