@@ -39,6 +39,7 @@ using Dev2.Threading;
 using Dev2.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ServiceStack.Common.Extensions;
 using Warewolf.Studio.Resources.Languages;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -425,9 +426,48 @@ namespace Dev2.Studio.ViewModels.Workflow
                 doc.PreserveWhitespace = true;
                 doc.LoadXml(DebugTo.DataList);
                 RemoveAttributes(doc);
+
+                //find previous element values
+                var prevDoc = new XmlDocument();
+                prevDoc.PreserveWhitespace = true;
+                prevDoc.LoadXml(DebugTo.XmlData);
+
+                PopulateWithPreviousValues(doc.SelectNodes(".//*"), prevDoc.SelectNodes(".//*"));
+
                 DebugTo.XmlData = doc.InnerXml;
                 DebugTo.BinaryDataList = new DataListModel();
                 DebugTo.BinaryDataList.Create(DebugTo.XmlData, DebugTo.DataList);
+            }
+        }
+
+        void PopulateWithPreviousValues(XmlNodeList nodeList, XmlNodeList prevNodeList)
+        {
+            foreach (XmlElement el in nodeList)
+            {
+                if (el.Name != "DataList" && el.ParentNode?.Name != "DataList")
+                {
+                    foreach (XmlElement prevEl in prevNodeList)
+                    {
+                        if (prevEl.Name != "DataList" && prevEl.ParentNode?.Name != "DataList")
+                        {
+                            if (el.Name == prevEl.Name)
+                            {
+                                if (!string.IsNullOrEmpty(el.InnerXml))
+                                {
+                                    if (el.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement) &&
+                                        prevEl.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement))
+                                    {
+                                        PopulateWithPreviousValues(el.ChildNodes, prevEl.ChildNodes);
+                                    }
+                                }
+                                else
+                                {
+                                    el.InnerXml = prevEl.InnerText;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
