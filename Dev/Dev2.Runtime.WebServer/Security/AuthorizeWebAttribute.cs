@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,9 +16,13 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Security
 {
@@ -56,14 +60,14 @@ namespace Dev2.Runtime.WebServer.Security
 
             if (!user.IsAuthenticated())
             {
-                actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                actionContext.CalculateResponseMessage(HttpStatusCode.Unauthorized, GlobalConstants.USER_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisUser);
                 return;
             }
 
             var authorizationRequest = GetAuthorizationRequest(actionContext);
             if (!Service.IsAuthorized(authorizationRequest))
             {
-                actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
+                actionContext.CalculateResponseMessage(HttpStatusCode.Forbidden, GlobalConstants.USER_FORBIDDEN, ErrorResource.AuthorizationDeniedForThisRequest);
             }
         }
 
