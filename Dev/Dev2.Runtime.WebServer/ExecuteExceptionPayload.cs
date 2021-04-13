@@ -113,12 +113,12 @@ namespace Dev2.Runtime.WebServer
         public string Title { get; set; }
         public string Message { get; set; }
 
-        internal string ToJSON(Formatting indent = Formatting.Indented)
+        public string ToJSON(Formatting indent = Formatting.Indented)
         {
             return JsonConvert.SerializeObject(new { Error = this }, indent);
         }
 
-        internal string ToXML(bool scrub = true)
+        public string ToXML(bool scrub = true)
         {
             var xml = this.SerializeToXml();
             return scrub ? Scrubber.Scrub(xml, ScrubType.Xml) : xml;

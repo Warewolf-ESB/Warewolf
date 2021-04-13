@@ -10,9 +10,7 @@
 
 using System;
 using System.Linq;
-using System.Net;
 using System.Reflection;
-using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Controllers;
 using Dev2.Runtime.WebServer.Hubs;
 using Dev2.Runtime.WebServer.Security;
@@ -42,102 +40,6 @@ namespace Dev2.Tests.Runtime.WebServer.Security
                 var context = AuthorizeWebAttributeTests.CreateActionContext(true, actionName);
                 return context.GetAuthorizationRequest();
             });
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(AuthorizationRequestHelper))]
-        public void AuthorizationRequestHelper_CalculateResponseMessage_HttpActionContext_GivenJSONURI_ShouldReturnJSON()
-        {
-            var sut = AuthorizeWebAttributeTests.CreateActionContext(true, "http://localhost:3241/help/wolf-tools/redis.json");
-            sut.CalculateResponseMessage(HttpStatusCode.Unauthorized, "test_title", "test_message");
-
-            var result = sut.Response.Content.ReadAsStringAsync().Result;
-            var expected = new Error
-            {
-                Status = (int)HttpStatusCode.Unauthorized,
-                Title = "test_title",
-                Message = "test_message"
-            };
-            Assert.AreEqual(expected.ToJSON(), result);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(AuthorizationRequestHelper))]
-        public void AuthorizationRequestHelper_CalculateResponseMessage_HttpActionContext_GivenXMLURI_ShouldReturnXML()
-        {
-            var sut = AuthorizeWebAttributeTests.CreateActionContext(true, "http://localhost:3241/help/wolf-tools/gates.xml");
-            sut.CalculateResponseMessage(HttpStatusCode.Unauthorized, "test_title", "test_message");
-
-            var result = sut.Response.Content.ReadAsStringAsync().Result;
-            var expected = new Error
-            {
-                Status = (int)HttpStatusCode.Unauthorized,
-                Title = "test_title",
-                Message = "test_message"
-            };
-            Assert.AreEqual(expected.ToXML(), result);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(AuthorizationRequestHelper))]
-        public void AuthorizationRequestHelper_CalculateResponseMessage_HttpActionContext_GivenTRXURI_ShouldReturnXML()
-        {
-            var sut = AuthorizeWebAttributeTests.CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx?name=elastic");
-            sut.CalculateResponseMessage(HttpStatusCode.Unauthorized, "test_title", "test_message");
-
-            var result = sut.Response.Content.ReadAsStringAsync().Result;
-            var expected = new Error
-            {
-                Status = (int)HttpStatusCode.Unauthorized,
-                Title = "test_title",
-                Message = "test_message"
-            };
-            Assert.AreEqual(expected.ToXML(), result);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(AuthorizationRequestHelper))]
-        public void AuthorizationRequestHelper_GetEmitionType_GivenAnyOther_ShouldDefaultToJSON()
-        {
-            var uri = new Uri("htttps://localhost:3241/help/wolf/workflows.unknown-ext");
-            var result = AuthorizationRequestHelper.GetEmitionType(uri);
-
-            Assert.AreEqual(Web.EmitionTypes.JSON, result);
-
-            result = uri.GetEmitionType();
-            Assert.AreEqual(Web.EmitionTypes.JSON, result);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(AuthorizationRequestHelper))]
-        public void AuthorizationRequestHelper_GetEmitionType_GivenXMLExt_ShouldReturnXML()
-        {
-            var uri = new Uri("htttps://localhost:3241/help/wolf/workflows.xml");
-            var result = AuthorizationRequestHelper.GetEmitionType(uri);
-
-            Assert.AreEqual(Web.EmitionTypes.XML, result);
-
-            result = uri.GetEmitionType();
-            Assert.AreEqual(Web.EmitionTypes.XML, result);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(AuthorizationRequestHelper))]
-        public void AuthorizationRequestHelper_GetEmitionType_GivenTRXExt_ShouldReturnXML()
-        {
-            var uri = new Uri("htttps://localhost:3241/help/wolf/workflows.trx");
-            var result = AuthorizationRequestHelper.GetEmitionType(uri);
-
-            Assert.AreEqual(Web.EmitionTypes.XML, result);
-
-            result = uri.GetEmitionType();
-            Assert.AreEqual(Web.EmitionTypes.XML, result);
         }
 
         [TestMethod]

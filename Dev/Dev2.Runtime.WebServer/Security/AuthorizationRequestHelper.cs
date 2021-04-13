@@ -18,6 +18,7 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using Dev2.Runtime.WebServer.Extentions;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Security
@@ -44,36 +45,10 @@ namespace Dev2.Runtime.WebServer.Security
             QueryString = request.QueryString
         };
 
-        public static EmitionTypes GetEmitionType(this Uri uri)
-        {
-            var isXml = uri.AbsolutePath.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase);
-            var isTrx = uri.AbsolutePath.EndsWith(".trx", StringComparison.InvariantCultureIgnoreCase);
-            if (isXml || isTrx)
-            {
-                return EmitionTypes.XML;
-            }
-            return EmitionTypes.JSON;
-        }
-
-
         static WebServerRequestType GetRequestType(this IHubIncomingInvokerContext context) => ParseRequestType(context.MethodDescriptor.Hub.Name, context.MethodDescriptor.Name);
 
         static WebServerRequestType GetRequestType(this HttpActionContext context) => ParseRequestType("Web", context.ActionDescriptor.ActionName);
         
-        public static void CalculateResponseMessage(this HttpActionContext context, HttpStatusCode statusCode, string title, string message)
-        {
-            var emitionType = context.Request.RequestUri.GetEmitionType();
-            var msg = ExecuteExceptionPayload.CreateErrorResponse(emitionType, statusCode, title, message);
-            var content = emitionType == Web.EmitionTypes.XML || emitionType == Web.EmitionTypes.TRX
-                ? new StringContent(msg, System.Text.Encoding.UTF8, "application/xml")
-                : new StringContent(msg, System.Text.Encoding.UTF8, "application/json");
-
-            context.Response = new HttpResponseMessage(statusCode)
-            {
-                Content = content
-            };
-        }
-
         static WebServerRequestType ParseRequestType(string source, string actionName)
         {
             Enum.TryParse(source + actionName, true, out WebServerRequestType requestType);
