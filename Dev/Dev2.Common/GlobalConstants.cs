@@ -1,7 +1,7 @@
 #pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -313,6 +313,7 @@ namespace Dev2.Common
         public const string BAD_REQUEST = "bad_request";
         public const string NOT_IMPLEMENTED = "not_implemented";
         public const string USER_UNAUTHORIZED = "user_unauthorized";
+        public const string TOKEN_UNAUTHORIZED = "token_unauthorized";
         public const string USER_FORBIDDEN = "user_forbidden";
 
         public static readonly string ServicesDirectory = "Services";

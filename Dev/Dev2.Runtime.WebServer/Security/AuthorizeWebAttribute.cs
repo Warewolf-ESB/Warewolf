@@ -19,6 +19,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.WebServer.Extentions;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -60,14 +61,14 @@ namespace Dev2.Runtime.WebServer.Security
 
             if (!user.IsAuthenticated())
             {
-                actionContext.CalculateResponseMessage(HttpStatusCode.Unauthorized, GlobalConstants.USER_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisUser);
+                actionContext.CreateWarewolfErrorResponse(HttpStatusCode.Unauthorized, GlobalConstants.USER_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisUser);
                 return;
             }
 
             var authorizationRequest = GetAuthorizationRequest(actionContext);
             if (!Service.IsAuthorized(authorizationRequest))
             {
-                actionContext.CalculateResponseMessage(HttpStatusCode.Forbidden, GlobalConstants.USER_FORBIDDEN, ErrorResource.AuthorizationDeniedForThisRequest);
+                actionContext.CreateWarewolfErrorResponse(HttpStatusCode.Forbidden, GlobalConstants.USER_FORBIDDEN, ErrorResource.AuthorizationDeniedForThisRequest);
             }
         }
 
