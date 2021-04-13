@@ -1924,8 +1924,8 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             //------------Assert Results-------------------------
-            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=&scalar2=&wid=00000000-0000-0000-0000-000000000000", workflowLink);
-            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=&scalar2=", displayWorkflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=1&scalar2=2&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=1&scalar2=2", displayWorkflowLink);
             workflowInputDataViewModel.WorkflowInputs[0].Value = "";
             workflowInputDataViewModel.WorkflowInputs[1].Value = "";
             workflowInputDataViewModel.DoSaveActions();

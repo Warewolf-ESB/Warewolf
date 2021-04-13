@@ -444,11 +444,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             foreach (XmlElement el in nodeList)
             {
-                if (el.Name != "DataList" && el.ParentNode?.Name != "DataList")
+                if (el.Name != "DataList")
                 {
                     foreach (XmlElement prevEl in prevNodeList)
                     {
-                        if (prevEl.Name != "DataList" && prevEl.ParentNode?.Name != "DataList")
+                        if (prevEl.Name != "DataList")
                         {
                             if (el.Name == prevEl.Name)
                             {
