@@ -3874,5 +3874,13 @@ namespace Warewolf.Resource.Errors {
                 return ResourceManager.GetString("AuthorizationDeniedForThisRequest", resourceCulture);
             }
         }
+
+        public static string AuthorizationDeniedForThisToken
+        {
+            get
+            {
+                return ResourceManager.GetString("AuthorizationDeniedForThisToken", resourceCulture);
+            }
+        }
     }
 }

@@ -430,6 +430,8 @@ namespace Warewolf.Resource.Tests
             Assert.AreEqual("'XML' - Recordset index -1 is not greater than zero", ErrorResource.XPathXmlRecordsetIndexErrorTest);
             Assert.AreEqual("Authorization has been denied for this request.", ErrorResource.AuthorizationDeniedForThisRequest);
             Assert.AreEqual("Authorization has been denied for this user.", ErrorResource.AuthorizationDeniedForThisUser);
+            Assert.AreEqual("Authorization has been denied for this token.", ErrorResource.AuthorizationDeniedForThisToken);
+            Assert.AreEqual("Invalid Authentication Token or invalid permissions to Execute resource {0}.", ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
 
         }
     }

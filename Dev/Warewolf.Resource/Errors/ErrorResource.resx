@@ -1338,7 +1338,7 @@ Please contact your Windows System Administrator.</value>
     <value>User: {0} requires View and Execute permissions to Execute resource {1}.</value>
   </data>
   <data name="TokenNotAuthorizedToExecuteOuterWorkflowException" xml:space="preserve">
-    <value>Invalid Authentication Token or invalid permissions to Execute resource {1}.</value>
+    <value>Invalid Authentication Token or invalid permissions to Execute resource {0}.</value>
   </data>
   <data name="InternalServerError" xml:space="preserve">
     <value>Internal Server Error.</value>
@@ -1402,5 +1402,8 @@ Please contact your Windows System Administrator.</value>
   </data>
   <data name="AuthorizationDeniedForThisRequest" xml:space="preserve">
     <value>Authorization has been denied for this request.</value>
+  </data>
+  <data name="AuthorizationDeniedForThisToken" xml:space="preserve">
+    <value>Authorization has been denied for this token.</value>
   </data>
 </root>

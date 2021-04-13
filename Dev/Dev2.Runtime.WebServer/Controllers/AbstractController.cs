@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,11 +13,12 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
-using System.Web;
 using System.Web.Http;
 using Dev2.Common;
+using Dev2.Runtime.WebServer.Extentions;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Services.Security;
+using Warewolf.Resource.Errors;
 using Warewolf.Security;
 
 namespace Dev2.Runtime.WebServer.Controllers
@@ -35,15 +36,14 @@ namespace Dev2.Runtime.WebServer.Controllers
                 {
                     if (!TryOverrideByToken(ref user))
                     {
-                        throw new HttpException((int)HttpStatusCode.Unauthorized,
-                            Warewolf.Resource.Errors.ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException);
+                        return Request.CreateWarewolfErrorResponse(HttpStatusCode.Unauthorized, GlobalConstants.TOKEN_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisToken);
                     }
                 }
                 else
                 {
                     if (!IsAuthenticated())
                     {
-                        return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                        return Request.CreateWarewolfErrorResponse(HttpStatusCode.Unauthorized, GlobalConstants.USER_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisUser);
                     }
                 }
 
@@ -52,11 +52,9 @@ namespace Dev2.Runtime.WebServer.Controllers
                 handler.ProcessRequest(context);
                 return context.ResponseMessage;
             }
-            catch (HttpException e)
+            catch (Exception e)
             {
-                var response  = Request.CreateResponse((HttpStatusCode)e.GetHttpCode());
-                response.ReasonPhrase = e.Message;
-                return response;
+                return Request.CreateWarewolfErrorResponse(HttpStatusCode.InternalServerError, GlobalConstants.INTERNAL_SERVER_ERROR, e.Message);
             }
         }
 
@@ -84,7 +82,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             if (!IsAuthenticated())
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                return Request.CreateWarewolfErrorResponse(HttpStatusCode.Unauthorized, GlobalConstants.USER_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisUser);
             }
 
             var context = new WebServerContext(Request) {Request = {User = User}};
