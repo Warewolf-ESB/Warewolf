@@ -19,7 +19,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
-using Dev2.Runtime.WebServer.Extentions;
+using Dev2.Runtime.WebServer;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

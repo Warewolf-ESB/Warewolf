@@ -18,7 +18,7 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
-using Dev2.Runtime.WebServer.Extentions;
+using Dev2.Runtime.WebServer;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Security

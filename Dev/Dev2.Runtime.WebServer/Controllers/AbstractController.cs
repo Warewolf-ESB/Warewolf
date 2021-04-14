@@ -15,7 +15,6 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Web.Http;
 using Dev2.Common;
-using Dev2.Runtime.WebServer.Extentions;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;

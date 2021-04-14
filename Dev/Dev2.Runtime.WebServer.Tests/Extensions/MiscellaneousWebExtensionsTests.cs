@@ -9,7 +9,6 @@
 */
 
 
-using Dev2.Runtime.WebServer.Extentions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -18,7 +17,7 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Web.Http.Controllers;
 
-namespace Dev2.Runtime.WebServer.Tests.Extensions
+namespace Dev2.Runtime.WebServer.Tests
 {
     [TestClass]
     public class MiscellaneousWebExtensionsTests
