@@ -22,7 +22,7 @@ using Dev2.PathOperations;
 
 namespace Dev2.Session
 {
-    class Dev2StudioSessionBroker : IDev2StudioSessionBroker
+    public class Dev2StudioSessionBroker : IDev2StudioSessionBroker
     {
         const string SavePath = @"Warewolf\DebugData\PersistSettings.dat";
         static readonly object SettingsLock = new object();
@@ -35,6 +35,18 @@ namespace Dev2.Session
         IActivityIOOperationsEndPoint _debugOptsEndPoint;
         IActivityIOPath _debugPath;
 
+        private static Dev2StudioSessionBroker instance = null;
+
+        public static Dev2StudioSessionBroker GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new Dev2StudioSessionBroker();
+            }
+
+            return instance;
+        }
+
         public DebugTO InitDebugSession(DebugTO to)
         {
             lock (SettingsLock)
@@ -43,28 +55,31 @@ namespace Dev2.Session
                 if (to.BaseSaveDirectory != null)
                 {
                     BootstrapPersistence(to.BaseSaveDirectory);
-                    InitPersistSettings();
+                    InitPersistSettings(to);
                 }
                 else
                 {
                     if (to.BaseSaveDirectory == null && _debugPersistSettings.Count == 0)
                     {
                         BootstrapPersistence(_rootPath);
-                        InitPersistSettings();
+                        InitPersistSettings(to);
                     }
                 }
+
                 if (to.BaseSaveDirectory == null)
                 {
                     to.BaseSaveDirectory = _rootPath;
                 }
+
                 to.DataListHash = to.DataList != null ? to.DataList.GetHashCode() : -1;
 
                 PersistBinaryDataList(to);
             }
+
             return to;
         }
 
-        void InitPersistSettings()
+        void InitPersistSettings(DebugTO to)
         {
             if (!_debugOptsEndPoint.PathExist(_debugPath))
             {
@@ -73,7 +88,7 @@ namespace Dev2.Session
             }
             else
             {
-                FetchFromDisk();
+                FetchFromDisk(to);
             }
         }
 
@@ -91,6 +106,7 @@ namespace Dev2.Session
                 {
                     to.XmlData = to.RememberInputs ? to.XmlData : "<DataList></DataList>";
                 }
+
                 to.BinaryDataList = new DataListModel();
                 to.BinaryDataList.Create(to.XmlData, to.DataList);
             }
@@ -108,6 +124,7 @@ namespace Dev2.Session
                 {
                     to.DataListHash = to.DataList.GetHashCode();
                 }
+
                 to.Error = string.Empty;
 
                 if (to.RememberInputs)
@@ -133,6 +150,7 @@ namespace Dev2.Session
                         settingList.Add(that);
                     }
                 }
+
                 using (Stream s = File.Open(_debugPersistPath, FileMode.Truncate))
                 {
                     var bf = new XmlSerializer(typeof(List<SaveDebugTO>));
@@ -142,7 +160,6 @@ namespace Dev2.Session
 
             return to;
         }
-        protected const string RootTag = "DataList";
 
         void BootstrapPersistence(string baseDir)
         {
@@ -155,7 +172,9 @@ namespace Dev2.Session
                         _rootPath = baseDir;
                     }
 
-                    _debugPersistPath = _rootPath.EndsWith("\\", StringComparison.Ordinal) ? _rootPath + SavePath : _rootPath + "\\" + SavePath;
+                    _debugPersistPath = _rootPath.EndsWith("\\", StringComparison.Ordinal)
+                        ? _rootPath + SavePath
+                        : _rootPath + "\\" + SavePath;
 
                     _debugPath = ActivityIOFactory.CreatePathFromString(_debugPersistPath, "", "");
                     _debugOptsEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(_debugPath);
@@ -163,7 +182,7 @@ namespace Dev2.Session
             }
         }
 
-        void FetchFromDisk()
+        void FetchFromDisk(DebugTO to)
         {
             var filesToCleanup = new List<string>();
             using (var s = _debugOptsEndPoint.Get(_debugPath, filesToCleanup))
@@ -174,10 +193,8 @@ namespace Dev2.Session
 
                     try
                     {
-                        var settings = (List<SaveDebugTO>)bf.Deserialize(s);
-                        _debugPersistSettings.Values.ToList().ForEach(a => a.CleanUp());
-                        _debugPersistSettings.Clear();
-                        PersistSettings(settings);
+                        var settings = (List<SaveDebugTO>) bf.Deserialize(s);
+                        PersistSettings(settings.FirstOrDefault(se => se.ServiceName == to.ServiceName));
                     }
                     catch (Exception e)
                     {
@@ -195,16 +212,13 @@ namespace Dev2.Session
             }
         }
 
-        void PersistSettings(List<SaveDebugTO> settings)
+        void PersistSettings(SaveDebugTO workflow)
         {
-            foreach (var dto in settings)
+            if (!string.IsNullOrEmpty(workflow?.ServiceName))
             {
-                if (!string.IsNullOrEmpty(dto.ServiceName))
-                {
-                    var tmp = new DebugTO();
-                    tmp.CopyFromSaveDebugTO(dto);
-                    _debugPersistSettings[dto.WorkflowID] = tmp;
-                }
+                var tmp = new DebugTO();
+                tmp.CopyFromSaveDebugTO(workflow);
+                _debugPersistSettings[workflow.WorkflowID] = tmp;
             }
         }
 
