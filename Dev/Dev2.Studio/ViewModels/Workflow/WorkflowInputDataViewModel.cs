@@ -423,16 +423,25 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (!string.IsNullOrEmpty(DebugTo.XmlData) && DebugTo.XmlData.StartsWith("<DataList>"))
             {
                 var doc = new XmlDocument();
-                doc.PreserveWhitespace = true;
+                doc.PreserveWhitespace = false;
                 doc.LoadXml(DebugTo.DataList);
                 RemoveAttributes(doc);
 
                 //find previous element values
                 var prevDoc = new XmlDocument();
-                prevDoc.PreserveWhitespace = true;
+                prevDoc.PreserveWhitespace = false;
                 prevDoc.LoadXml(DebugTo.XmlData);
 
-                PopulateWithPreviousValues(doc.SelectNodes(".//*"), prevDoc.SelectNodes(".//*"));
+                try
+                {
+                    PopulateWithPreviousValues(doc.SelectNodes(".//*").ToList<XmlElement>(),
+                        prevDoc.SelectNodes(".//*").ToList<XmlElement>());
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error(ex.Message, ex, "");
+                }
+
 
                 DebugTo.XmlData = doc.InnerXml;
                 DebugTo.BinaryDataList = new DataListModel();
@@ -440,24 +449,37 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void PopulateWithPreviousValues(XmlNodeList nodeList, XmlNodeList prevNodeList)
+        void PopulateWithPreviousValues(List<XmlElement> nodeList, List<XmlElement> prevNodeList)
         {
-            foreach (XmlElement el in nodeList)
+            //get all duplicated recordset elements
+            var recordSetElements =
+                prevNodeList.GroupBy(n => n.Name).Where(grp => grp.Count() > 1).Select(grp => grp.Key);
+            var recordSetElementsProcessed = new List<string>();
+
+            foreach (var el in nodeList)
             {
                 if (el.Name != "DataList")
                 {
-                    foreach (XmlElement prevEl in prevNodeList)
+                    foreach (var prevEl in prevNodeList)
                     {
                         if (prevEl.Name != "DataList")
                         {
                             if (el.Name == prevEl.Name)
                             {
-                                if (!string.IsNullOrEmpty(el.InnerXml))
+                                //process duplicated recordset elements
+                                if (recordSetElements.Contains(el.Name) &&
+                                    !recordSetElementsProcessed.Contains(el.Name))
+                                {
+                                    ProcessDuplicatedRecordsetElements(el, prevNodeList);
+                                    recordSetElementsProcessed.Add(el.Name);
+                                }
+                                else if (!string.IsNullOrEmpty(el.InnerXml))
                                 {
                                     if (el.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement) &&
                                         prevEl.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement))
                                     {
-                                        PopulateWithPreviousValues(el.ChildNodes, prevEl.ChildNodes);
+                                        PopulateWithPreviousValues(el.ChildNodes.ToList<XmlElement>(),
+                                            prevEl.ChildNodes.ToList<XmlElement>());
                                     }
                                 }
                                 else
@@ -469,6 +491,30 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
+        }
+
+        void ProcessDuplicatedRecordsetElements(XmlElement el, List<XmlElement> prevNodeList)
+        {
+            var parentNode = el.ParentNode;
+            parentNode.RemoveChild(el);
+            prevNodeList.Where(n => n.Name == el.Name).ForEach(node =>
+            {
+                XmlElement newNode = el.OwnerDocument.CreateElement(el.Name);
+
+                newNode.InnerXml = el.InnerXml;
+                if (newNode.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement) &&
+                    node.ChildNodes.First()?.GetType() == typeof(System.Xml.XmlElement))
+                {
+                    PopulateWithPreviousValues(newNode.ChildNodes.ToList<XmlElement>(),
+                        node.ChildNodes.ToList<XmlElement>());
+                }
+                else
+                {
+                    newNode.InnerXml = node.InnerText;
+                }
+
+                parentNode.InsertAfter(newNode, parentNode.LastChild);
+            });
         }
 
         void RemoveAttributes(XmlDocument doc)
