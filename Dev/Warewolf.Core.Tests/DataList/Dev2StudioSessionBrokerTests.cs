@@ -43,7 +43,16 @@ namespace Dev2.Tests.DataList
         public void Dev2StudioSessionBroker_InitSessionWithNoDataAndNullBaseDirectory()
         {
             var to = new DebugTO();
-            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var rootFolder = Guid.NewGuid().ToString();
+            if (Path.GetTempPath() != "C:\\WINDOWS\\TEMP")
+            {
+                rootFolder = Path.GetTempPath() + rootFolder;
+            }
+            else
+            {
+                rootFolder = "C:\\WINDOWS\\system32\\config\\systemprofile\\AppData\\Local\\TEMP" + rootFolder;
+            }
+
             var broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = null;
