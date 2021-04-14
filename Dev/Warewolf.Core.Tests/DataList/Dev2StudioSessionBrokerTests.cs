@@ -42,6 +42,7 @@ namespace Dev2.Tests.DataList
         [TestCategory("CannotParallelize")]
         public void Dev2StudioSessionBroker_InitSessionWithNoDataBaseDirectoryIsNull()
         {
+            var serviceName = "DummyService" + Guid.NewGuid();
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             var broker = Dev2StudioSessionFactory.CreateBroker();
@@ -49,8 +50,8 @@ namespace Dev2.Tests.DataList
             to.BaseSaveDirectory = null;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
             to.XmlData = "<DataList><scalar1>s1</scalar1><rs><f1/>f1Value<f2/>f2Value</rs></DataList>";
-            to.ServiceName = "DummyService";
-            to.WorkflowID = "DummyService";
+            to.ServiceName = serviceName;
+            to.WorkflowID = serviceName;
             broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
 
@@ -63,6 +64,7 @@ namespace Dev2.Tests.DataList
         [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBroker_InitSessionWithNoDataBaseDirectoryIsNullStillInitialises()
         {
+            var serviceName = "DummyService" + Guid.NewGuid();
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             var broker = Dev2StudioSessionFactory.CreateBroker();
@@ -70,8 +72,8 @@ namespace Dev2.Tests.DataList
             to.BaseSaveDirectory = null;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
             to.XmlData = "<DataList><scalar1>s1</scalar1><rs><f1/>f1Value<f2/>f2Value</rs></DataList>";
-            to.ServiceName = "DummyService";
-            to.WorkflowID = "DummyService";
+            to.ServiceName = serviceName;
+            to.WorkflowID = serviceName;
             broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
             to.BaseSaveDirectory = null;
@@ -92,6 +94,7 @@ namespace Dev2.Tests.DataList
         [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBroker_InitSessionWithSingleScalar()
         {
+            var serviceName = "DummyService" + Guid.NewGuid();
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             var broker = Dev2StudioSessionFactory.CreateBroker();
@@ -99,8 +102,8 @@ namespace Dev2.Tests.DataList
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
             to.XmlData = "<DataList><scalar1>s1</scalar1></DataList>";
-            to.ServiceName = "DummyService";
-            to.WorkflowID = "DummyService";
+            to.ServiceName = serviceName;
+            to.WorkflowID = serviceName;
             broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
 
@@ -117,6 +120,7 @@ namespace Dev2.Tests.DataList
         [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBroker_PersistSessionWithSavedData_ExpectSavedData()
         {
+            var serviceName = "DummyService" + Guid.NewGuid();
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             var broker = Dev2StudioSessionFactory.CreateBroker();
@@ -124,8 +128,8 @@ namespace Dev2.Tests.DataList
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
             to.XmlData = "<DataList><scalar1>s1</scalar1><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>";
-            to.ServiceName = "DummyService";
-            to.WorkflowID = "DummyService";
+            to.ServiceName = serviceName;
+            to.WorkflowID = serviceName;
             to = broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
 
@@ -141,6 +145,7 @@ namespace Dev2.Tests.DataList
         [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBroker_PersistSessionWithSavedData_ChangedDataList_ExpectPreviousXmlData()
         {
+            var serviceName = "DummyService" + Guid.NewGuid();
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             var broker = Dev2StudioSessionFactory.CreateBroker();
@@ -148,8 +153,8 @@ namespace Dev2.Tests.DataList
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
             to.XmlData = "<DataList><scalar1>s1</scalar1><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>";
-            to.ServiceName = "DummyService";
-            to.WorkflowID = "DummyService";
+            to.ServiceName = serviceName;
+            to.WorkflowID = serviceName;
             to = broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
 
@@ -163,6 +168,7 @@ namespace Dev2.Tests.DataList
         [TestCategory(nameof(Dev2StudioSessionBroker))]
         public void Dev2StudioSessionBrokerNotPersistSessionWithSavedData_ExpectEmptyDataList()
         {
+            var serviceName = "DummyService" + Guid.NewGuid();
             var to = new DebugTO();
             var broker = Dev2StudioSessionFactory.CreateBroker();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();
@@ -170,8 +176,8 @@ namespace Dev2.Tests.DataList
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
             to.XmlData = "";
-            to.ServiceName = "DummyService";
-            to.WorkflowID = "DummyService";
+            to.ServiceName = serviceName;
+            to.WorkflowID = serviceName;
             to = broker.InitDebugSession(to);
             to.XmlData = "<DataList><scalar1>s1</scalar1><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>";
             to = broker.PersistDebugSession(to);
