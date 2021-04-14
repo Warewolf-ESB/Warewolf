@@ -31,7 +31,6 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Security;
-using Dev2.Runtime.WebServer.Extentions;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Handlers

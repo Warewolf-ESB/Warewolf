@@ -15,7 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 
-namespace Dev2.Runtime.WebServer.Extentions
+namespace Dev2.Runtime.WebServer
 {
     public static class MiscellaneousWebExtensions
     {
