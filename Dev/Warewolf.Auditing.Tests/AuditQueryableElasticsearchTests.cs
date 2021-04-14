@@ -1,36 +1,30 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Common;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
-using Dev2.Common;
-using Dev2.Common.Interfaces;
-using Dev2.Interfaces;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
+using Elasticsearch.Net;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Nest;
 using Newtonsoft.Json.Linq;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
 using Warewolf.Auditing.Drivers;
-using Warewolf.Driver.Serilog;
 using Warewolf.Interfaces.Auditing;
-using Warewolf.Logging;
-using Warewolf.Storage;
-using Warewolf.Storage.Interfaces;
+using Warewolf.Triggers;
 using Warewolf.UnitTestAttributes;
+using LogLevel = Warewolf.Logging.LogLevel;
 
 namespace Warewolf.Auditing.Tests
 {
@@ -39,177 +33,33 @@ namespace Warewolf.Auditing.Tests
     [TestCategory("CannotParallelize")]
     public class AuditQueryableElasticTests
     {
-        private IAuditQueryable GetAuditQueryable(string sink)
-        {
-            if (sink == "AuditingSettingsData")
-            {
-                var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
-                var hostName = "http://" + dependency.Container.IP;
-                return new AuditQueryableElastic(hostName, dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Anonymous, "", "");
-            }
-            else
-            {
-                return new AuditQueryableSqlite();
-            }
-        }
-
         private IAuditQueryable GetAuditQueryablePasswordAuthentication()
         {
             var dependency = new Depends(Depends.ContainerType.Elasticsearch);
             var hostName = "http://" + dependency.Container.IP;
-            return new AuditQueryableElastic(hostName, dependency.Container.Port, "warewolftestlogs", Dev2.Runtime.ServiceModel.Data.AuthenticationType.Password, "WarewolfUser", "$3@R(h");
-        }
+            const string searchIndex = "warewolftestlogs";
+            const string username = "WarewolfUser";
+            const string password = "$3@R(h";
 
-        private void LoadLogsintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, LogLevel eventLevel)
-        {
-            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
-            var hostName = "http://" + dependency.Container.IP;
-            var port = dependency.Container.Port;
-            var loggerSource = new SerilogElasticsearchSource
-            {
-                Port = port,
-                HostName = hostName,
-                SearchIndex = "warewolftestlogs"
-            };
-            var uri = new Uri(hostName + ":" + port);
-            var logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(uri)
-                {
-                    AutoRegisterTemplate = true,
-                    IndexDecider = (e, o) => loggerSource.SearchIndex,
-                }))
-                .CreateLogger();
+            var mockElasticsearchSource = new Mock<IElasticsearchSource>();
+            mockElasticsearchSource.Setup(o => o.HostName).Returns(hostName);
+            mockElasticsearchSource.Setup(o => o.Port).Returns(dependency.Container.Port);
+            mockElasticsearchSource.Setup(o => o.SearchIndex).Returns(searchIndex);
+            mockElasticsearchSource.Setup(o => o.Username).Returns(username);
+            mockElasticsearchSource.Setup(o => o.Password).Returns(password);
+            mockElasticsearchSource.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Password);
 
-            var mockSeriLogConfig = new Mock<ISeriLogConfig>();
-            mockSeriLogConfig.SetupGet(o => o.Logger).Returns(logger);
-            var mockDataObject = new Mock<IDSFDataObject>();
-            using (var loggerConnection = loggerSource.NewConnection(mockSeriLogConfig.Object))
-            {
-                var loggerPublisher = loggerConnection.NewPublisher();
-                if (eventLevel == LogLevel.Error)
-                {
-                    mockDataObject = SetupDataObjectWithAssignedInputsAndError(executionId, resourceId);
-                }
-                else
-                {
-                    mockDataObject = SetupDataObjectWithAssignedInputs(executionId, resourceId);
-                }
-
-                var auditLog = new Audit(mockDataObject.Object, auditType, detail, null, null);
-                Assert.AreEqual("",auditLog.Environment);
-                mockDataObject.Verify(o => o.Environment.ToJson(), Times.Never);
-                //-------------------------Act----------------------------------
-                switch (eventLevel)
-                {
-                    case LogLevel.Debug:
-                        loggerPublisher.Debug(GlobalConstants.WarewolfLogsTemplate, auditLog);
-                        break;
-                    case LogLevel.Warn:
-                        loggerPublisher.Warn(GlobalConstants.WarewolfLogsTemplate, auditLog);
-                        break;
-                    case LogLevel.Fatal:
-                        loggerPublisher.Fatal(GlobalConstants.WarewolfLogsTemplate, auditLog);
-                        break;
-                    case LogLevel.Error:
-                        loggerPublisher.Error(GlobalConstants.WarewolfLogsTemplate, auditLog);
-                        break;
-                    default:
-                        loggerPublisher.Info(GlobalConstants.WarewolfLogsTemplate, auditLog);
-                        break;
-                }
-            }
-
-            Task.Delay(225).Wait();
-        }
-
-        private void LoadExecutionHistoryintoElastic(Guid executionId, Guid resourceId, string auditType, string detail, string eventLevel)
-        {
-            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
-            var hostName = "http://" + dependency.Container.IP;
-            var port = dependency.Container.Port;
-            var loggerSource = new SerilogElasticsearchSource
-            {
-                Port = port,
-                HostName = hostName,
-                SearchIndex = "warewolftestlogs"
-            };
-            var uri = new Uri(hostName + ":" + port);
-            var logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Sink(new ElasticsearchSink(new ElasticsearchSinkOptions(uri)
-                {
-                    AutoRegisterTemplate = true,
-                    IndexDecider = (e, o) => loggerSource.SearchIndex,
-                }))
-                .CreateLogger();
-
-            var mockSeriLogConfig = new Mock<ISeriLogConfig>();
-            mockSeriLogConfig.SetupGet(o => o.Logger).Returns(logger);
-
-            using (var loggerConnection = loggerSource.NewConnection(mockSeriLogConfig.Object))
-            {
-                var loggerPublisher = loggerConnection.NewPublisher();
-                var executionInfo = new ExecutionInfo(DateTime.Now, DateTime.Now - DateTime.UtcNow, DateTime.Today, Triggers.QueueRunStatus.Success, executionId, executionId.ToString());
-                var executionHistory = new ExecutionHistory(resourceId, "", executionInfo, "username");
-                //-------------------------Act----------------------------------
-                if (eventLevel == "Debug")
-                {
-                    loggerPublisher.Debug(GlobalConstants.WarewolfLogsTemplate, executionHistory);
-                }
-                else
-                {
-                    loggerPublisher.Info(GlobalConstants.WarewolfLogsTemplate, executionHistory);
-                }
-            }
-
-            Task.Delay(225).Wait();
-        }
-
-        Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid executionId, Guid resourceId)
-        {
-            var mockedDataObject = new Mock<IDSFDataObject>();
-            var mock = new Mock<IExecutionEnvironment>();
-            mock.Setup(o => o.ToJson()).Returns("Not an empty string");
-            mockedDataObject.Setup(o => o.Environment).Returns(mock.Object);
-            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
-            mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Test-Workflow");
-            mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);
-            mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId);
-            var principal = new Mock<IPrincipal>();
-            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
-            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
-            mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
-            return mockedDataObject;
-        }
-
-        Mock<IDSFDataObject> SetupDataObjectWithAssignedInputsAndError(Guid executionId, Guid resourceId)
-        {
-            var errors = new HashSet<string>();
-            errors.Add("Error Message");
-
-            var mockedDataObject = new Mock<IDSFDataObject>();
-            mockedDataObject.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            mockedDataObject.Setup(o => o.Environment.Errors).Returns(errors);
-            mockedDataObject.Setup(o => o.Environment.AllErrors).Returns(errors);
-            mockedDataObject.Setup(o => o.Environment.HasErrors()).Returns(true);
-            mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Test-Workflow");
-            mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);
-            mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId);
-            var principal = new Mock<IPrincipal>();
-            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
-            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
-            mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
-            return mockedDataObject;
+            return new AuditQueryableElastic(mockElasticsearchSource.Object, null);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        [ExpectedException(typeof(Elasticsearch.Net.ElasticsearchClientException))]
+        [ExpectedException(typeof(ElasticsearchClientException))]
         public void AuditQueryableElastic_Default_Constructor_Failed_InvalidSource()
         {
-            var auditQueryable = new AuditQueryableElastic("http://invalid-elastic-source", string.Empty, string.Empty, AuthenticationType.Anonymous, string.Empty, string.Empty);
+            var auditQueryable = new AuditQueryableElastic("http://invalid-elastic-source", string.Empty, string.Empty,
+                AuthenticationType.Anonymous, string.Empty, string.Empty);
             var query = new Dictionary<string, StringBuilder>();
 
             _ = auditQueryable.QueryLogData(query);
@@ -234,537 +84,218 @@ namespace Warewolf.Auditing.Tests
         }
 
         [TestMethod]
-        [Owner("Candice Daniel")]
+        [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryTriggerData_FilterBy_ResourceId()
+        public void AuditQueryableElastic_QueryTriggerData()
         {
-            //setup
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            const string searchIndex = "warewolftestlogs";
+            const string username = "";
+            const string password = "";
+
+            var mockElasticsearchSource = new Mock<IElasticsearchSource>();
+            mockElasticsearchSource.Setup(o => o.HostName).Returns(hostName);
+            mockElasticsearchSource.Setup(o => o.Port).Returns(dependency.Container.Port);
+            mockElasticsearchSource.Setup(o => o.SearchIndex).Returns(searchIndex);
+            mockElasticsearchSource.Setup(o => o.Username).Returns(username);
+            mockElasticsearchSource.Setup(o => o.Password).Returns(password);
+            mockElasticsearchSource.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Anonymous);
+
             var resourceId = Guid.NewGuid();
             var executionId = Guid.NewGuid();
-            LoadExecutionHistoryintoElastic(executionId, resourceId, "QueryTriggerData", "details", "Info");
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
+            var customTransactionId = Guid.NewGuid();
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddMinutes(5);
+            var queueRunStatus = QueueRunStatus.Success;
+
+            var executionInfo = new Dictionary<string, object>
+            {
+                {"ExecutionId", executionId},
+                {"CustomTransactionID", customTransactionId},
+                {"Success", queueRunStatus},
+                {"EndDate", endDate},
+                {"Duration", "5"},
+                {"StartDate", startDate},
+                {"FailureReason", ""},
+            };
+
+            var hits = new Dictionary<string, object>
+            {
+                {"ResourceId", resourceId},
+                {"ExecutionInfo", executionInfo},
+                {"UserName", username},
+                {"Exception", new Exception("This is an exception")},
+                {"LogLevel", LogLevel.Debug.ToString()},
+                {"AuditType", "LogAdditionalDetail"},
+            };
+
+            var values = new Dictionary<string, object>
+            {
+                {"values", hits}
+            };
+
+            var fields = new Dictionary<string, object>
+            {
+                {"fields", values}
+            };
+
+            var mockHit = new Mock<IHit<object>>();
+            mockHit.Setup(o => o.Source).Returns(fields);
+
+            var readOnlyCollection = new List<IHit<object>>
+            {
+                mockHit.Object
+            };
+
+            var mockHitsMetadata = new Mock<IHitsMetadata<object>>();
+            mockHitsMetadata.Setup(o => o.Hits).Returns(readOnlyCollection);
+
+            var mockSearchResponse = new Mock<ISearchResponse<object>>();
+            mockSearchResponse.Setup(o => o.HitsMetadata).Returns(mockHitsMetadata.Object);
+
+            var mockElasticClient = new Mock<IElasticClient>();
+            var mock = new Mock<IConnectionSettingsValues>();
+            mockElasticClient.Setup(o => o.ConnectionSettings).Returns(mock.Object);
+
+            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<ISearchRequest>()))
+                .Returns(mockSearchResponse.Object);
+
+            var auditQueryableElastic =
+                new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object);
+
             var query = new Dictionary<string, StringBuilder>
             {
                 {"ResourceId", resourceId.ToString().ToStringBuilder()}
             };
-            var result = auditQueryable.QueryTriggerData(query);
-            var jsonQuery = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["fields.Data.ResourceId"] = resourceId
-                }
-            };
-            Assert.AreEqual(jsonQuery.ToString(), auditQueryable.Query);
-            Assert.AreEqual(1, result.Count());
+
+            var queryTriggerData = auditQueryableElastic.QueryTriggerData(query);
+
+            var executionHistories = queryTriggerData.ToList();
+
+            Assert.AreEqual(1, executionHistories.Count);
+            Assert.AreEqual(resourceId, executionHistories[0].ResourceId);
+            Assert.AreEqual(username, executionHistories[0].UserName);
+            Assert.AreEqual(executionId, executionHistories[0].ExecutionInfo.ExecutionId);
+            Assert.AreEqual(queueRunStatus, executionHistories[0].ExecutionInfo.Success);
+            Assert.AreEqual(startDate.ToString(), executionHistories[0].ExecutionInfo.StartDate.ToString());
+            Assert.AreEqual(endDate.ToString(), executionHistories[0].ExecutionInfo.EndDate.ToString());
+            Assert.AreEqual("5.00:00:00", executionHistories[0].ExecutionInfo.Duration.ToString());
+
+            auditQueryableElastic.Dispose();
+
+            mockElasticsearchSource.Verify(o => o.Dispose(), Times.Once);
         }
 
         [TestMethod]
-        [Owner("Candice Daniel")]
+        [Owner("Pieter Terblanche")]
         [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_NoParameters()
+        public void AuditQueryableElastic_QueryLogData()
         {
-            //setup
-            var resourceId = Guid.NewGuid();
+            var dependency = new Depends(Depends.ContainerType.AnonymousElasticsearch);
+            var hostName = "http://" + dependency.Container.IP;
+            const string searchIndex = "warewolftestlogs";
+            const string username = "";
+            const string password = "";
+
+            var mockElasticsearchSource = new Mock<IElasticsearchSource>();
+            mockElasticsearchSource.Setup(o => o.HostName).Returns(hostName);
+            mockElasticsearchSource.Setup(o => o.Port).Returns(dependency.Container.Port);
+            mockElasticsearchSource.Setup(o => o.SearchIndex).Returns(searchIndex);
+            mockElasticsearchSource.Setup(o => o.Username).Returns(username);
+            mockElasticsearchSource.Setup(o => o.Password).Returns(password);
+            mockElasticsearchSource.Setup(o => o.AuthenticationType).Returns(AuthenticationType.Anonymous);
+
             var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Info);
-            //
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var query = new Dictionary<string, StringBuilder>();
-            var results = auditQueryable.QueryLogData(query);
-            var match_all = new JObject
+            var serverId = Guid.NewGuid();
+            var parentId = Guid.NewGuid();
+            var customTransactionId = Guid.NewGuid();
+            var auditDate = DateTime.Now;
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddMinutes(5);
+            const string workflowName = "workflowName";
+            const string executingUser = "executingUser";
+            const string url = "http:localhost.net";
+            const string environment = "environment";
+            const string auditType = "LogResumeExecutionState";
+            var logLevel = LogLevel.Debug.ToString();
+
+            var hits = new Dictionary<string, object>
             {
-                ["match_all"] = new JObject()
+                {"ExecutionID", executionId},
+                {"CustomTransactionID", customTransactionId},
+                {"WorkflowName", workflowName},
+                {"ExecutingUser", executingUser},
+                {"Url", url},
+                {"Environment", environment},
+                {"AuditDate", auditDate},
+                {"Exception", new Exception("This is an exception")},
+                {"AuditType", auditType},
+                {"LogLevel", logLevel},
+                {"IsSubExecution", false.ToString()},
+                {"IsRemoteWorkflow", false.ToString()},
+                {"ServerID", serverId},
+                {"ParentID", parentId},
             };
 
-            Assert.AreEqual(match_all.ToString(), auditQueryable.Query);
-            Assert.IsTrue(results.Any());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId_EventLevel_Debug()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            var query = new Dictionary<string, StringBuilder>
+            var values = new Dictionary<string, object>
             {
-                {"ExecutionID", executionId.ToString().ToStringBuilder()},
-                {"EventLevel", "Debug".ToStringBuilder()}
-            };
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-            Assert.IsTrue(results.Any());
-
-            var jsonQueryexecutionId = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["fields.Data.ExecutionID"] = executionId.ToString()
-                }
-            };
-            var jsonLevel = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["level"] = "Debug"
-                }
-            };
-            var jArray = new JArray();
-            jArray.Add(jsonQueryexecutionId);
-            jArray.Add(jsonLevel);
-
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_ExecutionId_EventLevel_Info()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Info);
-            //
-
-            var query = new Dictionary<string, StringBuilder>
-            {
-                {"ExecutionID", executionId.ToString().ToStringBuilder()}
+                {"values", hits}
             };
 
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-            var jArray = new JArray();
-            var json = new JObject
+            var fields = new Dictionary<string, object>
             {
-                ["match"] = new JObject
-                {
-                    ["fields.Data.ExecutionID"] = executionId.ToString()
-                }
+                {"fields", values}
             };
-            jArray.Add(json);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
 
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            Assert.IsTrue(results.Any());
-        }
+            var mockHit = new Mock<IHit<object>>();
+            mockHit.Setup(o => o.Source).Returns(fields);
 
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Debug()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
-            //
+            var readOnlyCollection = new List<IHit<object>>
+            {
+                mockHit.Object
+            };
+
+            var mockHitsMetadata = new Mock<IHitsMetadata<object>>();
+            mockHitsMetadata.Setup(o => o.Hits).Returns(readOnlyCollection);
+
+            var mockSearchResponse = new Mock<ISearchResponse<object>>();
+            mockSearchResponse.Setup(o => o.HitsMetadata).Returns(mockHitsMetadata.Object);
+
+            var mockElasticClient = new Mock<IElasticClient>();
+            var mock = new Mock<IConnectionSettingsValues>();
+            mockElasticClient.Setup(o => o.ConnectionSettings).Returns(mock.Object);
+
+            mockElasticClient.Setup(o => o.Search<object>(It.IsAny<ISearchRequest>()))
+                .Returns(mockSearchResponse.Object);
+
+            var auditQueryableElastic =
+                new AuditQueryableElastic(mockElasticsearchSource.Object, mockElasticClient.Object);
 
             var query = new Dictionary<string, StringBuilder>
             {
-                {"EventLevel", "Debug".ToStringBuilder()}
-            };
-
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-            var jArray = new JArray();
-            var json =
-                new JObject
-                {
-                    ["match"] = new JObject
-                    {
-                        ["level"] = "Debug"
-                    }
-                };
-            jArray.Add(json);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            Assert.IsTrue(results.Any());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Information()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            var query = new Dictionary<string, StringBuilder>
-            {
-                {"EventLevel", "Information".ToStringBuilder()}
-            };
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Info);
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-            Assert.IsTrue(results.Any());
-            var jArray = new JArray();
-            var json = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["level"] = "Information"
-                }
-            };
-            jArray.Add(json);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Warning()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Warn);
-            //
-            var query = new Dictionary<string, StringBuilder>
-            {
-                {"EventLevel", "Warning".ToStringBuilder()}
-            };
-
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-            var jArray = new JArray();
-            var json = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["level"] = "Warning"
-                }
-            };
-            jArray.Add(json);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            Assert.IsTrue(results.Any());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Error()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Error);
-            //
-            var query = new Dictionary<string, StringBuilder>
-            {
-                {"EventLevel", "Error".ToStringBuilder()}
-            };
-
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-
-            var jArray = new JArray();
-            var json = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["level"] = "Error"
-                }
-            };
-            jArray.Add(json);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            Assert.IsTrue(results.Any());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_EventLevel_Fatal()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Fatal);
-            //
-            var query = new Dictionary<string, StringBuilder>
-            {
-                {"EventLevel", "Fatal".ToStringBuilder()}
-            };
-
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-            var jArray = new JArray();
-            var json = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["level"] = "Fatal"
-                }
-            };
-            jArray.Add(json);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            Assert.IsTrue(results.Any());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Info);
-            //
-            var dtFormat = "yyyy-MM-ddTHH:mm:ss";
-            var StartDateTime = DateTime.Now.AddDays(-1);
-            var CompletedDateTime = DateTime.Now.AddMinutes(10);
-
-            var query = new Dictionary<string, StringBuilder>
-            {
-                {"StartDateTime", StartDateTime.ToString(dtFormat).ToStringBuilder()},
-                {"CompletedDateTime", CompletedDateTime.ToString(dtFormat).ToStringBuilder()}
-            };
-
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-            var jArray = new JArray();
-            var dateObj = new JObject()
-            {
-                ["gt"] = StartDateTime.ToString(dtFormat),
-                ["lt"] = CompletedDateTime.ToString(dtFormat)
-            };
-            var jsonQueryDateRangeFilter = new JObject
-            {
-                ["range"] = new JObject
-                {
-                    ["@timestamp"] = dateObj
-                }
-            };
-            jArray.Add(jsonQueryDateRangeFilter);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            Assert.IsTrue(results.Any());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_DateTime_EventLevel()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
-            //
-            var dtFormat = "yyyy-MM-ddTHH:mm:ss";
-            var StartDateTime = DateTime.Now.AddDays(-1);
-            var CompletedDateTime = DateTime.Now.AddMinutes(10);
-
-            var query = new Dictionary<string, StringBuilder>
-            {
+                {"StartDateTime", startDate.ToString().ToStringBuilder()},
+                {"CompletedDateTime", endDate.ToString().ToStringBuilder()},
                 {"EventLevel", "Debug".ToStringBuilder()},
-                {"StartDateTime", StartDateTime.ToString(dtFormat).ToStringBuilder()},
-                {"CompletedDateTime", CompletedDateTime.ToString(dtFormat).ToStringBuilder()}
-            };
-
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-            var jArray = new JArray();
-            var dateObj = new JObject()
-            {
-                ["gt"] = StartDateTime.ToString(dtFormat),
-                ["lt"] = CompletedDateTime.ToString(dtFormat)
-            };
-            var json = new JObject
-            {
-                ["range"] = new JObject
-                {
-                    ["@timestamp"] = dateObj
-                }
-            };
-            jArray.Add(json);
-            var jsonMatch = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["level"] = "Debug"
-                }
-            };
-            jArray.Add(jsonMatch);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-            Assert.IsTrue(results.Any());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_EventLevel_executionID()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
-
-            var dtFormat = "yyyy-MM-ddTHH:mm:ss";
-            var StartDateTime = DateTime.Now.AddDays(-1);
-            var CompletedDateTime = DateTime.Now.AddMinutes(10);
-
-            var query = new Dictionary<string, StringBuilder>
-            {
                 {"ExecutionID", executionId.ToString().ToStringBuilder()},
-                {"EventLevel", "Debug".ToStringBuilder()},
-                {"StartDateTime", StartDateTime.ToString(dtFormat).ToStringBuilder()},
-                {"CompletedDateTime", CompletedDateTime.ToString(dtFormat).ToStringBuilder()}
             };
 
-            var auditQueryable = GetAuditQueryable("AuditingSettingsData");
-            var results = auditQueryable.QueryLogData(query);
-            var jArray = new JArray();
-            var dateObj = new JObject()
-            {
-                ["gt"] = StartDateTime.ToString(dtFormat),
-                ["lt"] = CompletedDateTime.ToString(dtFormat)
-            };
-            var jsonExecutionId = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["fields.Data.ExecutionID"] = executionId.ToString()
-                }
-            };
+            var queryTriggerData = auditQueryableElastic.QueryLogData(query);
 
-            var jsonLevel = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["level"] = "Debug"
-                }
-            };
+            var audits = queryTriggerData.ToList();
 
-            var jsonDate = new JObject
-            {
-                ["range"] = new JObject
-                {
-                    ["@timestamp"] = dateObj
-                }
-            };
-            jArray.Add(jsonDate);
-            jArray.Add(jsonExecutionId);
-            jArray.Add(jsonLevel);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), auditQueryable.Query);
-
-            Assert.IsTrue(results.Any());
-        }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AuditQueryableElastic))]
-        public void AuditQueryableElastic_QueryLogData_FilterBy_DateTime_On_UrlEncoded_DateTime_EventLevel_and_executionID_Should_Not_Break()
-        {
-            //setup
-            var resourceId = Guid.NewGuid();
-            var executionId = Guid.NewGuid();
-            LoadLogsintoElastic(executionId, resourceId, "LogAdditionalDetail", "details", LogLevel.Debug);
-            //
-            var StartDateTime = "2020%2F01%2F01+01%3A40%3A18";
-            var CompletedDateTime = "2028%2F10%2F03+01%3A40%3A18";
-
-            var query = new Dictionary<string, StringBuilder>
-            {
-                {"ExecutionID", executionId.ToString().ToStringBuilder()},
-                {"EventLevel", "Debug".ToStringBuilder()},
-                {"StartDateTime", StartDateTime.ToStringBuilder()},
-                {"CompletedDateTime", CompletedDateTime.ToStringBuilder()}
-            };
-
-            var audit = GetAuditQueryable("AuditingSettingsData");
-            var results = audit.QueryLogData(query);
-            var jArray = new JArray();
-            var dateObj = new JObject()
-            {
-                ["gt"] = "2020-01-01T01:40:18",
-                ["lt"] = "2028-10-03T01:40:18"
-            };
-            var jsonExecutionId = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["fields.Data.ExecutionID"] = executionId.ToString()
-                }
-            };
-
-            var jsonLevel = new JObject
-            {
-                ["match"] = new JObject
-                {
-                    ["level"] = "Debug"
-                }
-            };
-
-            var jsonDate = new JObject
-            {
-                ["range"] = new JObject
-                {
-                    ["@timestamp"] = dateObj
-                }
-            };
-            jArray.Add(jsonDate);
-            jArray.Add(jsonExecutionId);
-            jArray.Add(jsonLevel);
-            var objMust = new JObject();
-            objMust.Add("must", jArray);
-
-            var obj = new JObject();
-            obj.Add("bool", objMust);
-            Assert.AreEqual(obj.ToString(), audit.Query);
-            Assert.IsTrue(results.Any());
+            Assert.AreEqual(1, audits.Count);
+            Assert.AreEqual(executionId.ToString(), audits[0].ExecutionID);
+            Assert.AreEqual(customTransactionId.ToString(), audits[0].CustomTransactionID);
+            Assert.AreEqual(workflowName, audits[0].WorkflowName);
+            Assert.AreEqual(executingUser, audits[0].ExecutingUser);
+            Assert.AreEqual(auditDate.ToString(), audits[0].AuditDate.ToString());
+            Assert.AreEqual(auditType, audits[0].AuditType);
+            Assert.AreEqual(logLevel, audits[0].LogLevel.ToString());
+            Assert.IsFalse(audits[0].IsSubExecution);
+            Assert.IsFalse(audits[0].IsRemoteWorkflow);
+            Assert.AreEqual(serverId.ToString(), audits[0].ServerID);
+            Assert.AreEqual(parentId.ToString(), audits[0].ParentID);
         }
     }
 }

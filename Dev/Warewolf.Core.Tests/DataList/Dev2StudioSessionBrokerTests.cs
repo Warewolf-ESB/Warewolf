@@ -40,7 +40,7 @@ namespace Dev2.Tests.DataList
         [TestCategory(nameof(Dev2StudioSessionBroker))]
         [DoNotParallelize]
         [TestCategory("CannotParallelize")]
-        public void Dev2StudioSessionBroker_InitSessionWithNoDataBaseDirectoryIsNull()
+        public void Dev2StudioSessionBroker_InitSessionWithNoDataAndNullBaseDirectory()
         {
             var to = new DebugTO();
             var rootFolder = Path.GetTempPath() + Guid.NewGuid();

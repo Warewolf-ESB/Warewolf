@@ -25,8 +25,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Activities;
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
+using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading;
+using Dev2.Activities.Specs.Scheduler;
+using Dev2.Services.Security.MoqInstallerActions;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using Warewolf.Auditing;
@@ -201,10 +207,10 @@ namespace Dev2.Activities.Specs.Composition
             var nodeTable = table.CreateSet<NodeLogTable>().ToList();
 
             var dataObject = _scenarioContext.Get<DsfDataObject>("dataObject");
-            var acctualInput = Eval(dataObject, "[[Name]]");
+            var actualInput = Eval(dataObject, "[[Name]]");
 
-            Assert.AreEqual(nodeTable[0].Key, "[[Name]]");
-            Assert.AreEqual(nodeTable[0].Value, acctualInput);
+            Assert.AreEqual(nodeTable[0].Key, "[[Name]]", dataObject.Environment.Errors.FirstOrDefault());
+            Assert.AreEqual(nodeTable[0].Value, actualInput, dataObject.Environment.Errors.FirstOrDefault());
         }
 
         private static IDev2Activity GetWFsFirstNode(IDSFDataObject dataObject)
