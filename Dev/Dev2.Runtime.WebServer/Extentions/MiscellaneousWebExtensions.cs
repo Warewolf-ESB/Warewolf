@@ -38,15 +38,15 @@ namespace Dev2.Runtime.WebServer.Extentions
                            : new StringContent(message, System.Text.Encoding.UTF8, "application/json");
         }
 
-        public static void CreateWarewolfErrorResponse(this HttpActionContext context, HttpStatusCode statusCode, string title, string message)
+        public static void CreateWarewolfErrorResponse(this HttpActionContext context, WarewolfErrorResponseArgs errorResponseArgs)
         {
-           context.Response = CreateWarewolfErrorResponse(context.Request.RequestUri, statusCode, title, message);
+           context.Response = CreateWarewolfErrorResponse(context.Request.RequestUri, errorResponseArgs);
         }
 
-        public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpRequestMessage requestMessage, HttpStatusCode statusCode, string tittle, string message) => CreateWarewolfErrorResponse(requestMessage.RequestUri, statusCode, tittle, message);
-        public static HttpResponseMessage CreateWarewolfErrorResponse(Uri uri, HttpStatusCode statusCode, string tittle, string message)
+        public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpRequestMessage requestMessage, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(requestMessage.RequestUri, errorResponseArgs);
+        public static HttpResponseMessage CreateWarewolfErrorResponse(Uri uri, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(uri.GetEmitionType(), errorResponseArgs.StatusCode, errorResponseArgs.Tittle, errorResponseArgs.Message);
+        public static HttpResponseMessage CreateWarewolfErrorResponse(EmitionTypes emitionType, HttpStatusCode statusCode, string tittle, string message)
         {
-            var emitionType = uri.GetEmitionType();
             var calculatedMessage = ExecuteExceptionPayload.CreateErrorResponse(emitionType, statusCode, tittle, message);
             var content = emitionType.GetHttpStringContent(calculatedMessage);
             return new HttpResponseMessage(statusCode)
@@ -54,7 +54,12 @@ namespace Dev2.Runtime.WebServer.Extentions
                 Content = content
             };
         }
+    }
 
-
+    public class WarewolfErrorResponseArgs
+    {
+        public HttpStatusCode StatusCode { get; set; } 
+        public string Tittle { get; set; }
+        public string Message { get; set; }
     }
 }

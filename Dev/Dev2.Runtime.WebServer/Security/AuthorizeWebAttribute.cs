@@ -61,14 +61,14 @@ namespace Dev2.Runtime.WebServer.Security
 
             if (!user.IsAuthenticated())
             {
-                actionContext.CreateWarewolfErrorResponse(HttpStatusCode.Unauthorized, GlobalConstants.USER_UNAUTHORIZED, ErrorResource.AuthorizationDeniedForThisUser);
+                actionContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Tittle = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
                 return;
             }
 
             var authorizationRequest = GetAuthorizationRequest(actionContext);
             if (!Service.IsAuthorized(authorizationRequest))
             {
-                actionContext.CreateWarewolfErrorResponse(HttpStatusCode.Forbidden, GlobalConstants.USER_FORBIDDEN, ErrorResource.AuthorizationDeniedForThisRequest);
+                actionContext.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Forbidden, Tittle = GlobalConstants.USER_FORBIDDEN, Message = ErrorResource.AuthorizationDeniedForThisRequest });
             }
         }
 
