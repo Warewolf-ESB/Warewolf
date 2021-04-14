@@ -66,6 +66,38 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
         [TestMethod]
+        [Owner("Siphamandla Dube")]
+        public void TokenRequestHandler_ProcessRequest_GiveResponseDoesNotContainUserGroups_ShouldThrow()
+        {
+            var testUri = new Uri("http://localhost:3241/help/wolf-tools/list.json");
+            var requestMessage = new HttpRequestMessage 
+            {
+                RequestUri = testUri, 
+                Content = new StringContent("this is a test message") 
+            };
+            var collection = new NameValueCollection
+            {
+                {"Name", "the_name"},
+                {"isPublic", "true"},
+                {"path", ""},
+                { "wid", "sfsf" }
+            };
+            var request = new WebServerRequest(requestMessage, collection)
+            {
+                User = new Mock<IPrincipal>().Object,
+            };
+            var context = new WebServerContext(request.Request, collection);
+
+           //------------Setup for test-------------------------
+            var handler = new TokenRequestHandler();
+
+            //------------Execute Test---------------------------
+            //TODO: this method might need to be refactored, the use of try catch is a bit abnormal
+            Assert.ThrowsException<HttpResponseException>(()=> handler.ProcessRequest(context), "Processing of the HTTP request resulted in an exception. Please see the HTTP response returned by the 'Response' property of this exception for details.");
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(TokenRequestHandler))]
         [DoNotParallelize]

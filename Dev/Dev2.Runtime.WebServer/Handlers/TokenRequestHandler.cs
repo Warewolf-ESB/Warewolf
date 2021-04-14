@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2020 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@ using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Security.Principal;
 using System.Threading;
 using System.Web.Http;
@@ -32,6 +31,8 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Warewolf;
 using Warewolf.Security;
+using Dev2.Runtime.WebServer.Extentions;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -176,13 +177,15 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var content = resp.Content;
                 if (!content.Contains("UserGroups"))
                 {
-                    ThrowInternalServerError();
+                    var dataObject = executionDto.DataObject;
+                    var emissionType = new Uri(dataObject.WebUrl).GetEmitionType();
+                    var message = string.Format(ErrorResource.TokenNotAuthorizedToExecuteOuterWorkflowException, dataObject.ServiceName);
+                    Throw(emissionType, HttpStatusCode.Unauthorized, GlobalConstants.TOKEN_UNAUTHORIZED, message);
                 }
 
                 var json = JsonConvert.DeserializeObject<UserGroupsResponse>(resp.Content);
                 var userGroups = json?.UserGroups.ToList();
-                bool hasInvalidOutputs = false;
-                hasInvalidOutputs = userGroups.Count == 0;
+                bool hasInvalidOutputs = userGroups.Count == 0;
                 foreach (var o in (userGroups))
                 {
                     if (string.IsNullOrEmpty(o.Name) || string.IsNullOrWhiteSpace(o.Name))
@@ -193,18 +196,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 return hasInvalidOutputs
-                    ? ThrowInternalServerError()
-                    : CreateEncryptedResponse(resp.Content);
+                    ? Throw(new Uri(executionDto.DataObject.WebUrl).GetEmitionType(), HttpStatusCode.BadRequest, GlobalConstants.BAD_REQUEST, "invalid login override workflow selected: outputs not valid")
+                    : CreateEncryptedResponse(new Uri(executionDto.DataObject.WebUrl).GetEmitionType(), resp.Content);
             }
 
-            private static IResponseWriter ThrowInternalServerError()
-            {
-                Dev2Logger.Warn("invalid login override workflow selected: outputs not valid", GlobalConstants.WarewolfWarn);
-
-                var response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    StatusCode = HttpStatusCode.InternalServerError
-                };
+            private static IResponseWriter Throw(EmitionTypes emitionTypes, HttpStatusCode statusCode, string title, string message)
+            {   
+                Dev2Logger.Warn(message, GlobalConstants.WarewolfWarn);
+                var response = MiscellaneousWebExtensions.CreateWarewolfErrorResponse(emitionTypes, statusCode, title, message);
                 throw new HttpResponseException(response);
             }
 
@@ -218,7 +217,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 public UserGroup[] UserGroups { get; set; }
             }
 
-            private IResponseWriter CreateEncryptedResponse(string payload)
+            private IResponseWriter CreateEncryptedResponse(EmitionTypes emitionTypes, string payload)
             {
                 var rs = new StringResponseWriterFactory();
                 if (payload.Length > 0)
@@ -228,7 +227,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     return rs.New(encryptedPayload, "application/json");
                 }
 
-                return ThrowInternalServerError();
+                return Throw(emitionTypes, HttpStatusCode.InternalServerError, GlobalConstants.INTERNAL_SERVER_ERROR, "Token Genaration Failed");
             }
         }
     }
