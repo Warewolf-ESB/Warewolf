@@ -54,7 +54,7 @@ namespace Dev2.Tests.DataList
             broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
 
-            Assert.IsTrue(rootFolder.Contains(to.BaseSaveDirectory));
+            Assert.IsTrue(rootFolder.Contains(to.BaseSaveDirectory), "\"" + rootFolder + "\" does not contain: \"" + to.BaseSaveDirectory + "\"");
             DeleteDir(rootFolder);
         }
 
