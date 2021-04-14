@@ -180,11 +180,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="StudioTestFramework\StudioTestFrameworkWithDropboxTools.feature.cs">
-      <DependentUpon>StudioTestFrameworkWithDropboxTools.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="StudioTestFramework\StudioTestFrameworkWithHTTPWebTools.feature.cs">
       <DependentUpon>StudioTestFrameworkWithHTTPWebTools.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -410,10 +405,6 @@
     <None Include="StudioTestFramework\StudioTestFrameworkWithDataTools.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StudioTestFrameworkWithDataTools.feature.cs</LastGenOutput>
-    </None>
-    <None Include="StudioTestFramework\StudioTestFrameworkWithDropboxTools.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioTestFrameworkWithDropboxTools.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithHTTPWebTools.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
