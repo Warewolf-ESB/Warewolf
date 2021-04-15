@@ -1,4 +1,4 @@
-﻿@ConnectAndLoadServer
+﻿@WorkflowExecutionLogging
 Feature: WorkflowExecutionLogging
     In order to get a detailed workflow execution log
     As a warewolf user
