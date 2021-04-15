@@ -20,16 +20,15 @@ using System.Web.Http.Controllers;
 namespace Dev2.Runtime.WebServer.Tests
 {
     [TestClass]
-    public class MiscellaneousWebExtensionsTests
+    [TestCategory(nameof(Extensions))]
+    public class ExtensionsTests
     {
-
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(MiscellaneousWebExtensions))]
-        public void MiscellaneousWebExtensions_GetEmitionType_GivenAnyOther_ShouldDefaultToJSON()
+        public void Extensions_GetEmitionType_GivenAnyOther_ShouldDefaultToJSON()
         {
             var uri = new Uri("https://localhost:3241/help/wolf/workflows.unknown-ext");
-            var result = MiscellaneousWebExtensions.GetEmitionType(uri);
+            var result = Extensions.GetEmitionType(uri);
 
             Assert.AreEqual(Web.EmitionTypes.JSON, result);
 
@@ -39,11 +38,10 @@ namespace Dev2.Runtime.WebServer.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(MiscellaneousWebExtensions))]
-        public void MiscellaneousWebExtensions_GetEmitionType_GivenXMLExt_ShouldReturnXML()
+        public void Extensions_GetEmitionType_GivenXMLExt_ShouldReturnXML()
         {
             var uri = new Uri("https://localhost:3241/help/wolf/workflows.xml");
-            var result = MiscellaneousWebExtensions.GetEmitionType(uri);
+            var result = Extensions.GetEmitionType(uri);
 
             Assert.AreEqual(Web.EmitionTypes.XML, result);
 
@@ -53,11 +51,10 @@ namespace Dev2.Runtime.WebServer.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(MiscellaneousWebExtensions))]
-        public void MiscellaneousWebExtensions_GetEmitionType_GivenTRXExt_ShouldReturnXML()
+        public void Extensions_GetEmitionType_GivenTRXExt_ShouldReturnXML()
         {
             var uri = new Uri("https://localhost:3241/help/wolf/workflows.trx");
-            var result = MiscellaneousWebExtensions.GetEmitionType(uri);
+            var result = Extensions.GetEmitionType(uri);
 
             Assert.AreEqual(Web.EmitionTypes.XML, result);
 
@@ -67,8 +64,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(MiscellaneousWebExtensions))]
-        public void MiscellaneousWebExtensions_CreateWarewolfErrorResponse_HttpActionContext_GivenJSONURI_ShouldReturnJSON()
+        public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenJSONURI_ShouldReturnJSON()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/redis.json");
             sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
@@ -85,8 +81,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(MiscellaneousWebExtensions))]
-        public void MiscellaneousWebExtensions_CreateWarewolfErrorResponse_HttpActionContext_GivenXMLURI_ShouldReturnXML()
+        public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenXMLURI_ShouldReturnXML()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/gates.xml");
             sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
@@ -103,8 +98,7 @@ namespace Dev2.Runtime.WebServer.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(MiscellaneousWebExtensions))]
-        public void MiscellaneousWebExtensions_CreateWarewolfErrorResponse_HttpActionContext_GivenTRXURI_ShouldReturnXML()
+        public void Extensions_CreateWarewolfErrorResponse_HttpActionContext_GivenTRXURI_ShouldReturnXML()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx?name=elastic");
             sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
@@ -144,7 +138,6 @@ namespace Dev2.Runtime.WebServer.Tests
             };
             return actionContext;
         }
-
 
     }
 }

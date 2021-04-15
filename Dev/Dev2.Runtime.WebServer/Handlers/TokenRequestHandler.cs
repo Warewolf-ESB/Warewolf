@@ -203,7 +203,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             private static IResponseWriter Throw(EmitionTypes emitionTypes, HttpStatusCode statusCode, string title, string message)
             {   
                 Dev2Logger.Warn(message, GlobalConstants.WarewolfWarn);
-                var response = MiscellaneousWebExtensions.CreateWarewolfErrorResponse(emitionTypes, statusCode, title, message);
+                var response = Extensions.CreateWarewolfErrorResponse(emitionTypes, statusCode, title, message);
                 throw new HttpResponseException(response);
             }
 
