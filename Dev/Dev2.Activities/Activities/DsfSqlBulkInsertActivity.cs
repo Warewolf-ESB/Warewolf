@@ -258,6 +258,7 @@ namespace Dev2.Activities
                     iteratorCollection.Names = columns;
                     allErrors.MergeErrors(errorResultTo);
                     FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
+                    //TODO: verify if there still a need for this patch with this class on refactor and test coverage boost
                     // oh no, we have an issue, bubble it out ;)
                     if (allErrors.HasErrors())
                     {
