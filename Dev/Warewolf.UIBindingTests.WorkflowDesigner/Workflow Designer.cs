@@ -1989,10 +1989,27 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             //------------Assert Results-------------------------
-            Assert.AreEqual("http://mymachinename:3142/secure/multipleInputService.json?scalar1=1&scalar2=2&wid=00000000-0000-0000-0000-000000000000", workflowLink);
-            Assert.AreEqual("http://mymachinename:3142/secure/multipleInputService.json?scalar1=1&scalar2=2", displayWorkflowLink);
-            workflowInputDataViewModel.WorkflowInputs[0].Value = "";
-            workflowInputDataViewModel.WorkflowInputs[1].Value = "";
+            Assert.AreEqual("http://mymachinename:3142/secure/multipleInputService.json?<DataList><rec><name>1</name><age>2</age></rec><rec><name></name><age>20</age></rec></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/multipleInputService.json?<DataList><rec><name>1</name><age>2</age></rec><rec><name></name><age>20</age></rec></DataList>", displayWorkflowLink);
+            workflowInputDataViewModel.WorkflowInputs[0].DisplayValue = "rec(1).name";
+            workflowInputDataViewModel.WorkflowInputs[0].Field = "name";
+            workflowInputDataViewModel.WorkflowInputs[0].Index = "1";
+            workflowInputDataViewModel.WorkflowInputs[0].Value = "1";
+
+            workflowInputDataViewModel.WorkflowInputs[1].DisplayValue = "rec(1).age";
+            workflowInputDataViewModel.WorkflowInputs[1].Field = "age";
+            workflowInputDataViewModel.WorkflowInputs[1].Index = "1";
+            workflowInputDataViewModel.WorkflowInputs[1].Value = "2";
+
+            workflowInputDataViewModel.WorkflowInputs[2].DisplayValue = "rec(2).name";
+            workflowInputDataViewModel.WorkflowInputs[2].Field = "name";
+            workflowInputDataViewModel.WorkflowInputs[2].Index = "2";
+            workflowInputDataViewModel.WorkflowInputs[2].Value = "";
+
+            workflowInputDataViewModel.WorkflowInputs[3].DisplayValue = "rec(2).age";
+            workflowInputDataViewModel.WorkflowInputs[3].Field = "age";
+            workflowInputDataViewModel.WorkflowInputs[3].Index = "2";
+            workflowInputDataViewModel.WorkflowInputs[3].Value = "20";
             workflowInputDataViewModel.DoSaveActions();
         }
 
