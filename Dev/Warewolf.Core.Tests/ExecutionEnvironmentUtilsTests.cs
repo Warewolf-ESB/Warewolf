@@ -442,30 +442,96 @@ namespace Dev2.Tests
         }
         
         [TestMethod]
-        [Owner("Njabulo Nxele")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ExecutionEnvironmentUtils))]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_EmptyURL_ExpectedException()
+        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_EmptyURL_ExpectedUriFormatException()
         {
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(
-                new List<IWarewolfResource>(), "");
+            //------------Assert Results-------------------------
+            Assert.ThrowsException<UriFormatException>(()=> ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(new List<IWarewolfResource>(), string.Empty), "Invalid URI: The URI is empty.");
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironmentUtils))]
+        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_GivenSecureUrl_And_EmptyResourceList_ShouldReturnSuccess()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var result = ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(
+                new List<IWarewolfResource>(), "http://localhost/secure/workflow-one.api");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"http://localhost/secure/workflow-one.api\",\r\n    \"description\": \"http://localhost/secure/workflow-one.api\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://localhost\"\r\n    }\r\n  ],\r\n  \"paths\": \r\n}", result);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironmentUtils))]
+        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_GivenPublicUrl_And_EmptyResourceList_ShouldReturnSuccess()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var result = ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(new List<IWarewolfResource>(), "http://localhost/public/workflow-one.api");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"http://localhost/public/workflow-one.api\",\r\n    \"description\": \"http://localhost/public/workflow-one.api\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://localhost\"\r\n    }\r\n  ],\r\n  \"paths\": \r\n}", result);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExecutionEnvironmentUtils))]
+        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_GivenBadServerUrl_ShouldReturnUriFormatException()
+        {
+            //------------Setup for test--------------------------
+            const string dataList = "<DataList>" +
+                                    "<input Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"/>" +
+                                    "</DataList>";
+            var inputPayload = new StringBuilder(dataList);
+
+            var mockWarewolfResource = new Mock<IWarewolfResource>();
+            mockWarewolfResource.Setup(o => o.FilePath)
+                .Returns(@"C:\special_folder\Warewolf\workflow-one.xml");
+            mockWarewolfResource.Setup(o => o.DataList)
+                .Returns(inputPayload);
+
+            var resources = new List<IWarewolfResource>
+            {
+                mockWarewolfResource.Object
+            };
+            //------------Execute Test---------------------------
+            Assert.ThrowsException<UriFormatException>(()=> ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(resources, "localhost/SECURe/workflow-one.api"), "Invalid URI: The format of the URI could not be determined.");
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
-        [Owner("Njabulo Nxele")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ExecutionEnvironmentUtils))]
-        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_EmptyResourceList()
+        public void ExecutionEnvironmentUtils_GetOpenAPIOutputForServiceList_GivenPublicUrl_And_NonEmptyResourceList_ShouldReturnApiInfomation()
         {
             //------------Setup for test--------------------------
+            const string dataList = "<DataList>" +
+                                    "<input Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"/>" +
+                                    "</DataList>";
+            var inputPayload = new StringBuilder(dataList);
 
+            var mockWarewolfResource = new Mock<IWarewolfResource>();
+            mockWarewolfResource.Setup(o => o.FilePath)
+                .Returns(@"C:\special_folder\\Wolf\Resources_folder\workflow-one.bite");
+            mockWarewolfResource.Setup(o => o.DataList)
+                .Returns(inputPayload);
+
+            var resources = new List<IWarewolfResource>
+            {
+                mockWarewolfResource.Object
+            };
             //------------Execute Test---------------------------
-            ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(
-                new List<IWarewolfResource>(), "http://localhost/secure");
+            var result = ExecutionEnvironmentUtils.GetOpenAPIOutputForServiceList(resources, "http://localhost/SECURe/Wolf/Resources_folder/workflow-one.api");
             //------------Assert Results-------------------------
+            Assert.AreEqual("{\r\n  \"openapi\": \"3.0.1\",\r\n  \"info\": {\r\n    \"title\": \"http://localhost/SECURe/Wolf/Resources_folder/workflow-one.api\",\r\n    \"description\": \"http://localhost/SECURe/Wolf/Resources_folder/workflow-one.api\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"servers\": [\r\n    {\r\n      \"url\": \"http://localhost\"\r\n    }\r\n  ],\r\n  \"paths\": \r\n    {\r\n      \"/SECURe/Wolf/Resources_folder/workflow-one\": {\r\n        \"get\": {\r\n          \"tags\": [\r\n            \"\"\r\n          ],\r\n          \"description\": \"\",\r\n          \"parameters\": [\r\n            {\r\n              \"name\": \"input\",\r\n              \"in\": \"query\",\r\n              \"required\": true,\r\n              \"schema\": {\r\n                \"type\": \"string\"\r\n              }\r\n            }\r\n          ],\r\n          \"responses\": {\r\n            \"200\": {\r\n              \"description\": \"Success\",\r\n              \"content\": {\r\n                \"application/json\": {\r\n                  \"schema\": {\r\n                    \"type\": \"object\",\r\n                    \"properties\": {}\r\n                  }\r\n                }\r\n              }\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }\r\n  \r\n}", result);
         }
+
     }
 }
