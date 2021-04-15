@@ -71,7 +71,7 @@ namespace Dev2.Runtime.WebServer.Tests
         public void MiscellaneousWebExtensions_CreateWarewolfErrorResponse_HttpActionContext_GivenJSONURI_ShouldReturnJSON()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/redis.json");
-            sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Tittle = "test_title", Message = "test_message" });
+            sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
 
             var result = sut.Response.Content.ReadAsStringAsync().Result;
             var expected = new Error
@@ -89,7 +89,7 @@ namespace Dev2.Runtime.WebServer.Tests
         public void MiscellaneousWebExtensions_CreateWarewolfErrorResponse_HttpActionContext_GivenXMLURI_ShouldReturnXML()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-tools/gates.xml");
-            sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Tittle = "test_title", Message = "test_message" });
+            sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
 
             var result = sut.Response.Content.ReadAsStringAsync().Result;
             var expected = new Error
@@ -107,7 +107,7 @@ namespace Dev2.Runtime.WebServer.Tests
         public void MiscellaneousWebExtensions_CreateWarewolfErrorResponse_HttpActionContext_GivenTRXURI_ShouldReturnXML()
         {
             var sut = CreateActionContext(true, "http://localhost:3241/help/wolf-configs/logger.trx?name=elastic");
-            sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Tittle = "test_title", Message = "test_message" });
+            sut.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = "test_title", Message = "test_message" });
 
             var result = sut.Response.Content.ReadAsStringAsync().Result;
             var expected = new Error

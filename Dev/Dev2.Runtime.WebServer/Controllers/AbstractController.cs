@@ -35,14 +35,14 @@ namespace Dev2.Runtime.WebServer.Controllers
                 {
                     if (!TryOverrideByToken(ref user))
                     {
-                        return Request.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Tittle = GlobalConstants.TOKEN_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisToken });
+                        return Request.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = GlobalConstants.TOKEN_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisToken });
                     }
                 }
                 else
                 {
                     if (!IsAuthenticated())
                     {
-                        return Request.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Tittle = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
+                        return Request.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
                     }
                 }
 
@@ -53,7 +53,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             }
             catch (Exception e)
             {
-                return Request.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.InternalServerError, Tittle = GlobalConstants.INTERNAL_SERVER_ERROR, Message = e.Message });
+                return Request.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.InternalServerError, Title = GlobalConstants.INTERNAL_SERVER_ERROR, Message = e.Message });
             }
         }
 
@@ -81,7 +81,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             if (!IsAuthenticated())
             {
-                return Request.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Tittle = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
+                return Request.CreateWarewolfErrorResponse(new WarewolfErrorResponseArgs { StatusCode = HttpStatusCode.Unauthorized, Title = GlobalConstants.USER_UNAUTHORIZED, Message = ErrorResource.AuthorizationDeniedForThisUser });
             }
 
             var context = new WebServerContext(Request) {Request = {User = User}};

@@ -44,7 +44,7 @@ namespace Dev2.Runtime.WebServer
         }
 
         public static HttpResponseMessage CreateWarewolfErrorResponse(this HttpRequestMessage requestMessage, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(requestMessage.RequestUri, errorResponseArgs);
-        public static HttpResponseMessage CreateWarewolfErrorResponse(Uri uri, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(uri.GetEmitionType(), errorResponseArgs.StatusCode, errorResponseArgs.Tittle, errorResponseArgs.Message);
+        public static HttpResponseMessage CreateWarewolfErrorResponse(Uri uri, WarewolfErrorResponseArgs errorResponseArgs) => CreateWarewolfErrorResponse(uri.GetEmitionType(), errorResponseArgs.StatusCode, errorResponseArgs.Title, errorResponseArgs.Message);
         public static HttpResponseMessage CreateWarewolfErrorResponse(EmitionTypes emitionType, HttpStatusCode statusCode, string tittle, string message)
         {
             var calculatedMessage = ExecuteExceptionPayload.CreateErrorResponse(emitionType, statusCode, tittle, message);
@@ -59,7 +59,7 @@ namespace Dev2.Runtime.WebServer
     public class WarewolfErrorResponseArgs
     {
         public HttpStatusCode StatusCode { get; set; } 
-        public string Tittle { get; set; }
+        public string Title { get; set; }
         public string Message { get; set; }
     }
 }

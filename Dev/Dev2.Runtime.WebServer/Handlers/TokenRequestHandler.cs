@@ -194,9 +194,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                 }
 
+                var webUrl = executionDto.WebRequestTO.WebServerUrl;
                 return hasInvalidOutputs
-                    ? Throw(new Uri(executionDto.DataObject.WebUrl).GetEmitionType(), HttpStatusCode.BadRequest, GlobalConstants.BAD_REQUEST, "invalid login override workflow selected: outputs not valid")
-                    : CreateEncryptedResponse(new Uri(executionDto.DataObject.WebUrl).GetEmitionType(), resp.Content);
+                    ? Throw(new Uri(webUrl).GetEmitionType(), HttpStatusCode.BadRequest, GlobalConstants.BAD_REQUEST, "invalid login override workflow selected: outputs not valid")
+                    : CreateEncryptedResponse(new Uri(webUrl).GetEmitionType(), resp.Content);
             }
 
             private static IResponseWriter Throw(EmitionTypes emitionTypes, HttpStatusCode statusCode, string title, string message)
