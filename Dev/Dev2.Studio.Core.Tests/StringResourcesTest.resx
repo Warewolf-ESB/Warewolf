@@ -205,9 +205,24 @@
   &lt;/Flowchart&gt;
 &lt;/Activity&gt;</value>
   </data>
+  <data name="DebugInputWindow_DataList_Multiple_Recordsets" xml:space="preserve">
+    <value>&lt;DataList&gt;&lt;rec Description="" IsEditable="True" ColumnIODirection="Input" &gt;&lt;name Description="" IsEditable="True" ColumnIODirection="Input" /&gt;&lt;age Description="" IsEditable="True" ColumnIODirection="Input" /&gt;&lt;/rec&gt;&lt;/DataList&gt;</value>
+  </data>
+  <data name="DebugInputWindow_XMLData_Multiple_Recordsets" xml:space="preserve">
+    <value>&lt;DataList&gt;
+  &lt;rec&gt;
+    &lt;name&gt;bob&lt;/name&gt;
+    &lt;age&gt;&lt;/age&gt;
+  &lt;/rec&gt;
+  &lt;rec&gt;
+    &lt;name&gt;&lt;/name&gt;
+    &lt;age&gt;20&lt;/age&gt;
+  &lt;/rec&gt;
+&lt;/DataList&gt;</value>
+  </data>
   <data name="DebugInputWindow_XMLData" xml:space="preserve">
     <value>&lt;DataList&gt;
-  &lt;scalar1&gt;ScalarData1&lt;/scalar1&gt;
+  &lt;scalar1&gt;ScalarData1&lt;/scalar1>
   &lt;scalar2&gt;ScalarData2&lt;/scalar2&gt;
   &lt;Recset&gt;
     &lt;Field1&gt;Field1Data1&lt;/Field1&gt;
