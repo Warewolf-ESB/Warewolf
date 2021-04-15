@@ -97,7 +97,6 @@
     <Compile Include="DataObjectExtensions.cs" />
     <Compile Include="ExecuteExceptionPayload.cs" />
     <Compile Include="ExecutionDto.cs" />
-    <Compile Include="Extensions\MiscellaneousWebExtensions.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
     <Compile Include="Handlers\GetOpenAPIServiceHandler.cs" />
