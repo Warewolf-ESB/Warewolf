@@ -467,7 +467,7 @@ namespace Dev2
             Uri.TryCreate(webServerUrl, UriKind.RelativeOrAbsolute, out Uri url);
             var jsonOpenAPIInfoObject = BuildJsonOpenAPIInfoObject(resource);
             var jsonOpenAPIServerObject = BuildJsonOpenAPIServerObject(url);
-            var jsonOpenAPIPathObject = BuildJsonOpenAPIPathObject(url, dataList);
+            var jsonOpenAPIPathObject = BuildJsonOpenAPIPathObject(url.PathAndQuery, dataList);
             var jsonOpenAPIObject = BuildJsonOpenAPIObject(jsonOpenAPIInfoObject, jsonOpenAPIServerObject, jsonOpenAPIPathObject);
             var resultString = GetSerializedOpenAPIObject(jsonOpenAPIObject);
             return resultString;
@@ -476,30 +476,16 @@ namespace Dev2
         public static string GetOpenAPIOutputForServiceList(IList<IWarewolfResource> resourceList,
             string webServerUrl)
         {
-            if (resourceList == null)
-            {
-                throw new ArgumentNullException(nameof(resourceList));
-            }
+            VerifyArgument.IsNotNull(nameof(resourceList), resourceList);
+            VerifyArgument.IsNotNull(nameof(webServerUrl), resourceList);
             
-            if (string.IsNullOrEmpty(webServerUrl))
-            {
-                throw new ArgumentNullException(nameof(webServerUrl));
-            }
-
             var paths = new List<JObject>();
             foreach (var resource in resourceList)
             {
-                var filePath1 = webServerUrl;
-                filePath1 = filePath1.Substring(0, filePath1.IndexOf("secure", StringComparison.Ordinal) + 6);
-
-                var filePath2 = resource.FilePath;
-                filePath2 = filePath2.Substring(filePath2.IndexOf("Resources", StringComparison.Ordinal) + 10)
-                    .Replace(".bite", ".api");
-
-                Uri.TryCreate($"{filePath1}/{filePath2}", UriKind.RelativeOrAbsolute, out Uri url);
-                paths.Add(BuildJsonOpenAPIPathObject(url, resource.DataList.ToString()));
+                var serverUri = new Uri(webServerUrl);
+                paths.Add(BuildJsonOpenAPIPathObject(serverUri.PathAndQuery, resource.DataList.ToString()));
             }
-            
+
             var info =  new JObject
             {
                 {"title", new JValue(webServerUrl)},
@@ -573,7 +559,7 @@ namespace Dev2
             return jsonOpenAPIInfoObject;
         }
 
-        static JObject BuildJsonOpenAPIPathObject(Uri path, string dataList)
+        static JObject BuildJsonOpenAPIPathObject(string pathAndQuery, string dataList)
         {
             var parametersObject = BuildParametersObject(dataList);
             var responseObject = BuildJsonOpenAPIResponsesObject(dataList);
@@ -592,7 +578,7 @@ namespace Dev2
 
             var pathObject = new JObject
             {
-                {path.AbsolutePath.Replace(".api", ""), pathGetObject}
+                {pathAndQuery.Replace(".api", ""), pathGetObject}
             };
             return pathObject;
         }
