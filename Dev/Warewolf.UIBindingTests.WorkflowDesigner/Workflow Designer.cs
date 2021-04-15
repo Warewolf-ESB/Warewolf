@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -701,7 +701,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("WorkflowDesignerModel_CopyUrlCommand")]
+        [TestCategory(nameof(WorkflowDesignerViewModel))]
         public void WorkflowDesignerViewModel_CopyUrlCommand_CanExecute()
         {
             //------------Setup for test--------------------------
@@ -751,6 +751,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
+            viewModel.UpdateWorkflowLink();
             viewModel.CopyUrlCommand.Execute(null);
             //------------Assert Results-------------------------
             var expectedCopiedText = "http://mymachinename:3142/secure/myservice.json?<DataList></DataList>";
