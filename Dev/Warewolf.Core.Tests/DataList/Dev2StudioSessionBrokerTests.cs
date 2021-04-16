@@ -44,7 +44,16 @@ namespace Dev2.Tests.DataList
         {
             var serviceName = "DummyService" + Guid.NewGuid();
             var to = new DebugTO();
-            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var rootFolder = Guid.NewGuid().ToString();
+            if (Path.GetTempPath() != "C:\\WINDOWS\\TEMP")
+            {
+                rootFolder = Path.GetTempPath() + rootFolder;
+            }
+            else
+            {
+                rootFolder = "C:\\WINDOWS\\system32\\config\\systemprofile\\AppData\\Local\\TEMP" + rootFolder;
+            }
+
             var broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = null;
@@ -55,7 +64,7 @@ namespace Dev2.Tests.DataList
             broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
 
-            Assert.IsTrue(rootFolder.Contains(to.BaseSaveDirectory));
+            Assert.IsTrue(rootFolder.Contains(to.BaseSaveDirectory), "\"" + rootFolder + "\" does not contain: \"" + to.BaseSaveDirectory + "\"");
             DeleteDir(rootFolder);
         }
 
@@ -185,6 +194,28 @@ namespace Dev2.Tests.DataList
             to = broker.InitDebugSession(to);
 
             Assert.AreEqual("<DataList></DataList>", to.XmlData);
+
+            DeleteDir(rootFolder);
+        }
+        
+        [TestMethod]
+        [Owner("Njabulo Nxele")]
+        [TestCategory(nameof(Dev2StudioSessionBroker))]
+        public void Dev2StudioSessionBroker_PersistSessionWithSavedData_RecordSet()
+        {
+            var to = new DebugTO();
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var broker = Dev2StudioSessionFactory.CreateBroker();
+            to.RememberInputs = true;
+            to.BaseSaveDirectory = rootFolder;
+            to.DataList = "<DataList><rec><name></name><age></age></rec></DataList>";
+            to.XmlData = "<DataList><rec><name>Bob</name><age></age></rec><rec><name>Bob</name><age>30</age></rec></DataList>";
+            to.ServiceName = "DummyService";
+            to.WorkflowID = "DummyService";
+            to = broker.InitDebugSession(to);
+            to = broker.PersistDebugSession(to);
+
+            Assert.AreEqual("<DataList><rec><name>Bob</name><age></age></rec><rec><name>Bob</name><age>30</age></rec></DataList>", to.XmlData);
 
             DeleteDir(rootFolder);
         }

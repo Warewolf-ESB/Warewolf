@@ -1870,7 +1870,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Njabulo Nxele")]
         [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
         public void WorkflowDesignerViewModel_LinkName_SavedDebugData_ShouldReturnUrlWithDataListUsingSavedData()
         {
@@ -1929,6 +1929,87 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=1&scalar2=2", displayWorkflowLink);
             workflowInputDataViewModel.WorkflowInputs[0].Value = "";
             workflowInputDataViewModel.WorkflowInputs[1].Value = "";
+            workflowInputDataViewModel.DoSaveActions();
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkflowDesignerViewModel))]
+        public void WorkflowDesignerViewModel_LinkName_SavedDebugData_ShouldReturnExpectedRecordset()
+        {
+            //------------Setup for test--------------------------
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
+            resourceModel.Setup(model => model.Category).Returns("multipleInputService");
+            resourceModel.Setup(model => model.ResourceName).Returns("multipleInputService");
+            resourceModel.Setup(model => model.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList_Multiple_Recordsets);
+            var workflowInputDataViewModel = WorkflowInputDataViewModel.Create(resourceModel.Object);
+            workflowInputDataViewModel.DebugTo.XmlData = StringResourcesTest.DebugInputWindow_XMLData_Multiple_Recordsets;
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            workflowInputDataViewModel.WorkflowInputs[0].Value = "1";
+            workflowInputDataViewModel.WorkflowInputs[1].Value = "2";
+            workflowInputDataViewModel.DoSaveActions();
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            resourceModel.SetupProperty(model => model.WorkflowXaml);
+
+            #endregion
+
+            //------------Assert Preconditions-------------------
+            Assert.IsNull(resourceModel.Object.WorkflowXaml);
+            //------------Execute Test---------------------------
+            var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
+            var displayWorkflowLink = viewModel.DisplayWorkflowLink;
+            //------------Assert Results-------------------------
+            Assert.AreEqual("http://mymachinename:3142/secure/multipleInputService.json?<DataList><rec><name>1</name><age>2</age></rec><rec><name></name><age>20</age></rec></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/secure/multipleInputService.json?<DataList><rec><name>1</name><age>2</age></rec><rec><name></name><age>20</age></rec></DataList>", displayWorkflowLink);
+            workflowInputDataViewModel.WorkflowInputs[0].DisplayValue = "rec(1).name";
+            workflowInputDataViewModel.WorkflowInputs[0].Field = "name";
+            workflowInputDataViewModel.WorkflowInputs[0].Index = "1";
+            workflowInputDataViewModel.WorkflowInputs[0].Value = "1";
+
+            workflowInputDataViewModel.WorkflowInputs[1].DisplayValue = "rec(1).age";
+            workflowInputDataViewModel.WorkflowInputs[1].Field = "age";
+            workflowInputDataViewModel.WorkflowInputs[1].Index = "1";
+            workflowInputDataViewModel.WorkflowInputs[1].Value = "2";
+
+            workflowInputDataViewModel.WorkflowInputs[2].DisplayValue = "rec(2).name";
+            workflowInputDataViewModel.WorkflowInputs[2].Field = "name";
+            workflowInputDataViewModel.WorkflowInputs[2].Index = "2";
+            workflowInputDataViewModel.WorkflowInputs[2].Value = "";
+
+            workflowInputDataViewModel.WorkflowInputs[3].DisplayValue = "rec(2).age";
+            workflowInputDataViewModel.WorkflowInputs[3].Field = "age";
+            workflowInputDataViewModel.WorkflowInputs[3].Index = "2";
+            workflowInputDataViewModel.WorkflowInputs[3].Value = "20";
             workflowInputDataViewModel.DoSaveActions();
         }
 
