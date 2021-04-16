@@ -66,7 +66,7 @@ namespace Warewolf.Storage.Tests
                 Assert.Fail("expected exception variable not found");
             } catch (Exception e)
             {
-                Assert.AreEqual("variable [[a]] not found", e.Message);
+                Assert.AreEqual("variable { a } not found", e.Message);
             }
         }
 
@@ -119,7 +119,7 @@ namespace Warewolf.Storage.Tests
 
             scopedEnvironment.Assign("[[a]]", "bob", 0);
 
-            _mockEnv.Verify(a => a.Assign("[[Person(*)]]", "bob", 0));
+            _mockEnv.Verify(a => a.Assign("[[Person(*)]]", "bob", false, 0));
         }
 
         [TestMethod]
@@ -132,7 +132,7 @@ namespace Warewolf.Storage.Tests
 
             scopedEnvironment.Assign("[[a]]", "bob", 1);
 
-            _mockEnv.Verify(a => a.Assign("[[Person(1)]]", "bob", 0));
+            _mockEnv.Verify(a => a.Assign("[[Person(1)]]", "bob", false, 0));
         }
 
         [TestMethod]
@@ -145,7 +145,7 @@ namespace Warewolf.Storage.Tests
 
             scopedEnvironment.Assign("[[a]]", "[[a]]", 1);
 
-            _mockEnv.Verify(a => a.Assign("[[Person(1)]]", "[[Person(1)]]", 0));
+            _mockEnv.Verify(a => a.Assign("[[Person(1)]]", "[[Person(1)]]", false, 0));
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace Warewolf.Storage.Tests
 
             scopedEnvironment.Assign("[[b]]", "bob", 0);
 
-            _mockEnv.Verify(a => a.Assign("[[b]]", "bob", 0));
+            _mockEnv.Verify(a => a.Assign("[[b]]", "bob", false, 0));
         }
 
         [TestMethod]
@@ -242,7 +242,7 @@ namespace Warewolf.Storage.Tests
             }
             catch (Exception e)
             {
-                Assert.AreEqual("parse error: [[Person(*)]]", e.Message, "Value can be sensitive and hence the value names are returned instead.");
+                Assert.AreEqual("parse error: { Person(*) }", e.Message, "Value can be sensitive and hence the value names are returned instead.");
             }
         }
 
