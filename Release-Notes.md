@@ -1,3 +1,28 @@
+16 April 2021
+================
+Enhancements
+----------------
+General
+- Performance enhancements to switching between workflows
+
+Web
+- Warewolf server variable’s error and exceptions have been adjusted to omit user value object failures as these can contain sensitive information.
+- Posting an empty body to a Warewolf server workflow that uses the body to calculate the response, will now return a more detailed failing object message with failing object name as response.
+ 
+
+Bug Fixes
+-----------
+- Debug Input objects are now saving consistently
+
+Web
+- Warewolf server variable’s errors have been adjusted to omit execution environment inner error duplicates.
+
+OpenAPI
+- OpenAPI is now no longer braking on public requests.
+
+All tools
+- On Error is no longer failing and returning an incorrect error message.
+
 30 March 2021
 ================
 Enhancements
