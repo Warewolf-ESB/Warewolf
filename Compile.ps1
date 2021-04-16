@@ -146,7 +146,11 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
             Write-Host This version is not tagged, generating new tag...
             # Get last known version
             $AllTags = git -C "$PSScriptRoot" tag -l --sort=-version:refname
-            $FullVersionString = $AllTags[0]
+			if ($AllTags[0] -ne "2.5.3l") {
+				$FullVersionString = $AllTags[0]
+			} else {
+				$FullVersionString = $AllTags[1]
+			}
             if ([string]::IsNullOrEmpty($FullVersionString)) {
                 Write-Host No local tags found in git history. 
                 exit 1

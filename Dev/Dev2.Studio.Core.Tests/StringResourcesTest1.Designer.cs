@@ -70,6 +70,15 @@ namespace Dev2.Core.Tests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;DataList&gt;&lt;rec Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;Input&quot; &gt;&lt;name Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;Input&quot; /&gt;&lt;age Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;Input&quot; /&gt;&lt;/rec&gt;&lt;/DataList&gt;.
+        /// </summary>
+        public static string DebugInputWindow_DataList_Multiple_Recordsets {
+            get {
+                return ResourceManager.GetString("DebugInputWindow_DataList_Multiple_Recordsets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;DataList&gt;&lt;scalar1 Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;Output&quot; /&gt;&lt;scalar2 Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;Output&quot; /&gt;&lt;Recset Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;None&quot; &gt;&lt;Field1 Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;None&quot; /&gt;&lt;Field2 Description=&quot;&quot; IsEditable=&quot;True&quot; ColumnIODirection=&quot;None&quot; /&gt;&lt;/Recset&gt;&lt;/DataList&gt;.
         /// </summary>
         public static string DebugInputWindow_NoInputs_XMLData {
@@ -112,6 +121,24 @@ namespace Dev2.Core.Tests {
         public static string DebugInputWindow_XMLData {
             get {
                 return ResourceManager.GetString("DebugInputWindow_XMLData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;DataList&gt;
+        ///  &lt;rec&gt;
+        ///    &lt;name&gt;bob&lt;/name&gt;
+        ///    &lt;age&gt;&lt;/age&gt;
+        ///  &lt;/rec&gt;
+        ///  &lt;rec&gt;
+        ///    &lt;name&gt;&lt;/name&gt;
+        ///    &lt;age&gt;20&lt;/age&gt;
+        ///  &lt;/rec&gt;
+        ///&lt;/DataList&gt;.
+        /// </summary>
+        public static string DebugInputWindow_XMLData_Multiple_Recordsets {
+            get {
+                return ResourceManager.GetString("DebugInputWindow_XMLData_Multiple_Recordsets", resourceCulture);
             }
         }
         

@@ -32,7 +32,7 @@ namespace Dev2.Activities.Specs.Hooks
         private static WarewolfPerformanceCounterManager _performanceCounterLocater;
         private static IPrincipal _principal;
 
-        [BeforeFeature(tags: "ConnectAndLoadServer")]
+        [BeforeFeature(tags: "WorkflowExecutionLogging")]
         private static void Setup()
         {
             ConnectAndLoadServer();

@@ -190,8 +190,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
             }
-            UpdateWorkflowInputDataViewModel(_resourceModel);
-            UpdateWorkflowLink();
+            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
