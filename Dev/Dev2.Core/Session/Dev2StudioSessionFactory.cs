@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,6 +17,6 @@ namespace Dev2.Session
         ///     Create a new studio session broker
         /// </summary>
         /// <returns></returns>
-        public static IDev2StudioSessionBroker CreateBroker() => new Dev2StudioSessionBroker();
+        public static IDev2StudioSessionBroker CreateBroker() => Dev2StudioSessionBroker.GetInstance();
     }
 }
