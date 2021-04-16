@@ -1054,8 +1054,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 //Investigate this further, but the changes on the ExectutionEnvironment.cs might have fixed the 
                 //BUG mentioned in method: DsfSqlBulkInsertActivity.DoInsertForSqlServer which removes the below code so as refactor the class
                 //StringAssert.Contains(executionErrors, "Input string was not in a correct format");
-                //Assert.IsFalse(executionErrors.Contains("Problems with Iterators for SQLBulkInsert"), "Iterator exception has been added ;(");
-                
+                Assert.IsFalse(executionErrors.Contains("Problems with Iterators for SQLBulkInsert"), "Iterator exception has been added ;(");
                 Assert.AreEqual("Variable is null", executionErrors);
             }
             else
