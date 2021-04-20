@@ -192,6 +192,7 @@ namespace Dev2.Studio.Core.DataList
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                        PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     }
                     return null;
                 }
@@ -208,6 +209,7 @@ namespace Dev2.Studio.Core.DataList
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                        PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     }
                     return AddJsonVariables(indexNestedExpression.Item.Next, objectName);
                 }
@@ -223,6 +225,7 @@ namespace Dev2.Studio.Core.DataList
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
+                        PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
                     }
                     var next = nestedNameExpression.Item.Next;
                     return AddJsonVariables(next, objectName);
