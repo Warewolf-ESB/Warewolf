@@ -57,5 +57,38 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[var]]", results.ToList()[8]);
             Assert.AreEqual("[[var2]]", results.ToList()[9]);
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2TrieSuggestionProvider))]
+        public void Dev2TrieSuggestionProvider_GetSuggestions_Should_Return_NonJsonObjects()
+        {
+            IEnumerable<string> variables = new List<string>
+            {
+                "[[var]]",
+                "[[var2]]",
+                "[[rec()]]",
+                "[[rec().var]]",
+                "[[rec().var2]]",
+                "[[@Person]]",
+                "[[@Person.Childs(*).name]]",
+                "[[@Person.Childs().name]]",
+            };
+
+            var suggestionProvider = new Dev2TrieSuggestionProvider {VariableList = new ObservableCollection<string>(variables)};
+
+            var fields = enIntellisensePartType.ScalarsOnly | enIntellisensePartType.RecordsetsOnly | enIntellisensePartType.RecordsetFields;
+            var suggestions = suggestionProvider.GetSuggestions("[", 0, false, fields);
+
+            Assert.IsNotNull(suggestions);
+
+            var results = suggestions.ToList();
+            Assert.AreEqual(5, results.ToList().Count);
+            Assert.AreEqual("[[var]]", results.ToList()[0]);
+            Assert.AreEqual("[[var2]]", results.ToList()[1]);
+            Assert.AreEqual("[[rec().var]]", results.ToList()[2]);
+            Assert.AreEqual("[[rec().var2]]", results.ToList()[3]);
+            Assert.AreEqual("[[rec()]]", results.ToList()[4]);
+        }
     }
 }
