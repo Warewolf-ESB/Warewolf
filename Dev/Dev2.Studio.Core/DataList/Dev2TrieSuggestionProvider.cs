@@ -22,7 +22,8 @@ namespace Dev2.Studio.Core.DataList
     public class Dev2TrieSuggestionProvider : ISuggestionProvider
     {
         readonly char[] _tokenisers = "!#$%^&-=_+{}|:\"?><`~<>?:'{}| [](".ToCharArray();
-        ITrie<string> PatriciaTrie { get; set; }
+        ITrie<string> PatriciaTrie { get; set; } // RecordsetsOnly, ScalarsOnly, RecordsetFields, JsonObject
+        ITrie<string> PatriciaTrieNonJsonObjects { get; set; } // RecordsetsOnly, ScalarsOnly, RecordsetFields
         ObservableCollection<string> _variableList;
 
         public ObservableCollection<string> VariableList
@@ -32,6 +33,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 _variableList = value;
                 PatriciaTrie = new SuffixTrie<string>(1);
+                PatriciaTrieNonJsonObjects = new SuffixTrie<string>(1);
                 AddScalars();
                 AddRecsets();
                 AddFields();
@@ -64,6 +66,7 @@ namespace Dev2.Studio.Core.DataList
                 foreach (var permutation in PermuteCapitalizations(name))
                 {
                     PatriciaTrie.Add(permutation, name);
+                    PatriciaTrieNonJsonObjects.Add(permutation, name);
                 }
             }
             else
@@ -74,6 +77,7 @@ namespace Dev2.Studio.Core.DataList
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item));
+                        PatriciaTrieNonJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item));
                     }
                 }
             }
@@ -90,6 +94,7 @@ namespace Dev2.Studio.Core.DataList
             foreach (var permutation in PermuteCapitalizations(name))
             {
                 PatriciaTrie.Add(permutation, name);
+                PatriciaTrieNonJsonObjects.Add(permutation, name);
             }
         }
 
@@ -244,6 +249,7 @@ namespace Dev2.Studio.Core.DataList
         {
             VariableList = new ObservableCollection<string>();
             PatriciaTrie = new PatriciaTrie<string>();
+            PatriciaTrieNonJsonObjects = new PatriciaTrie<string>();
         }
 
         public IEnumerable<string> GetSuggestions(string originalText, int caretPosition, bool tokenise, enIntellisensePartType type)
@@ -272,42 +278,40 @@ namespace Dev2.Studio.Core.DataList
             var trie = PatriciaTrie;
             switch (type)
             {
+                case enIntellisensePartType.ScalarsOnly:
+                    trie = PatriciaTrieScalars;
+                    break;
+
                 case enIntellisensePartType.RecordsetsOnly:
-                    if (originalText.Contains("(") && originalText.IndexOf("(", StringComparison.Ordinal) < caretPosition)
-                    {
-                        trie = PatriciaTrie;
-                    }
-                    else
+                    if (!originalText.Contains("(") || originalText.IndexOf("(", StringComparison.Ordinal) >= caretPosition)
                     {
                         trie = PatriciaTrieRecsets;
                     }
-
                     break;
 
-                case enIntellisensePartType.ScalarsOnly:
-                    trie = PatriciaTrieScalars;
+                case enIntellisensePartType.RecordsetFields:
+                    if (!originalText.Contains("(") || originalText.IndexOf("(", StringComparison.Ordinal) >= caretPosition)
+                    {
+                        trie = PatriciaTrieRecsetsFields;
+                    }
                     break;
 
                 case enIntellisensePartType.JsonObject:
                     trie = PatriciaTrieJsonObjects;
                     break;
 
-                case enIntellisensePartType.RecordsetFields:
-                    if (originalText.Contains("(") && originalText.IndexOf("(", StringComparison.Ordinal) < caretPosition)
-                    {
-                        trie = PatriciaTrie;
-                    }
-                    else
-                    {
-                        trie = PatriciaTrieRecsetsFields;
-                    }
-
+                case enIntellisensePartType.NonJsonObjects:
+                    trie = PatriciaTrieNonJsonObjects;
                     break;
+
                 case enIntellisensePartType.None:
+                    break;
+                case enIntellisensePartType.All:
                     break;
                 default:
                     break;
             }
+
             if (filter.EndsWith("[["))
             {
                 return trie.Retrieve("[[");
