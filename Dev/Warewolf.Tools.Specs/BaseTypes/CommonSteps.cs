@@ -351,12 +351,18 @@ namespace Dev2.Activities.Specs.BaseTypes
 			var oldFTPSDependency = "ftp://DEVOPSPDC.premier.local:1002/";
             if (location.StartsWith(oldFTPDependency))
             {
-				_dependency = new Depends(Depends.ContainerType.FTP);
+				if (_dependency == null)
+				{
+					_dependency = new Depends(Depends.ContainerType.FTP);
+				}
                 location = location.Replace(oldFTPDependency, "ftp://" + _dependency.Container.IP + ":" + _dependency.Container.Port + "/");
             }
             if (location.StartsWith(oldFTPSDependency))
             {
-				_dependency = new Depends(Depends.ContainerType.FTPS);
+				if (_dependency == null)
+				{
+					_dependency = new Depends(Depends.ContainerType.FTPS);
+				}
                 location = location.Replace(oldFTPSDependency, "ftps://" + _dependency.Container.IP + ":" + _dependency.Container.Port + "/");
             }
             return location;
