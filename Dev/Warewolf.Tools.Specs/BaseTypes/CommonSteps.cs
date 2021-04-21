@@ -347,7 +347,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         string InjectDependency(string location)
         {
-            var oldFTPDependency = "ftp://DEVOPSPDC.premier.local:1001/"
+            var oldFTPDependency = "ftp://DEVOPSPDC.premier.local:1001/";
 			var oldFTPSDependency = "ftp://DEVOPSPDC.premier.local:1002/";
             if (location.StartsWith(oldFTPDependency))
             {
