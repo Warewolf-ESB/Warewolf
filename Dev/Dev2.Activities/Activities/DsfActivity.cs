@@ -35,6 +35,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.State;
+using Warewolf.Storage;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -360,7 +361,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception err)
             {
-                dataObject.Environment.Errors.Add(err.Message);
+                dataObject.Environment.AddError(err.Message);
             }
             finally
             {
@@ -376,16 +377,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
+                    var env = dataObject.Environment;
                     foreach (var allError in allErrors.FetchErrors())
                     {
-                        dataObject.Environment.Errors.Add(allError);
+                        env.AddError(allError);
                     }
 
                     // add to datalist in variable specified
                     if (!String.IsNullOrEmpty(OnErrorVariable))
                     {
+                        //TODO: move to ErrorResultTO
+                        var errorString = env.FetchErrors();
+                        var errors = ErrorResultTO.MakeErrorResultFromDataListString(errorString, true);
                         var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                        dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
+                        if (errors.HasErrors())
+                        {
+                            foreach (var error in errors.FetchErrors())
+                            {
+                                //TODO: might need a duplicate check on the Recordset
+                                env.Assign(upsertVariable, error, update);
+                            }
+                        }
+                        else
+                        {
+                            //TODO: might need a duplicate check on the Recordset
+                            env.Assign(upsertVariable, errorString, update);
+                        }
                     }
                     DisplayAndWriteError(dataObject,serviceName, allErrors);
                 }
