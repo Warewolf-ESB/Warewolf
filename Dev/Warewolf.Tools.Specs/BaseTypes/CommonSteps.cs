@@ -49,6 +49,7 @@ namespace Dev2.Activities.Specs.BaseTypes
     public class CommonSteps : BaseActivityUnitTest
     {
         readonly ScenarioContext _scenarioContext;
+		Depends _dependency;
 
         public CommonSteps(ScenarioContext scenarioContext)
         {
@@ -337,19 +338,26 @@ namespace Dev2.Activities.Specs.BaseTypes
                 variableList = new List<Tuple<string, string>>();
                 _scenarioContext.Add("variableList", variableList);
             }
-
-            variableList.Add(new Tuple<string, string>(pathVariable, FixBrokenHostname(location)));
+			location = InjectDependency(location);
+            variableList.Add(new Tuple<string, string>(pathVariable, location));
 
             _scenarioContext.Add(SourceHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
             _scenarioContext.Add(ActualSourceHolder, location);
         }
 
-        string FixBrokenHostname(string location)
+        string InjectDependency(string location)
         {
-            var brokenHostname = "SVRPDC.premier.local";
-            if (location.Contains(brokenHostname) && location.IndexOf(brokenHostname) >= 6 && location.Substring(location.IndexOf(brokenHostname)-6,6) == "ftp://")
+            var oldFTPDependency = "ftp://DEVOPSPDC.premier.local:1001/"
+			var oldFTPSDependency = "ftp://DEVOPSPDC.premier.local:1002/";
+            if (location.StartsWith(oldFTPDependency))
             {
-                location = location.Replace(brokenHostname, Depends.GetIPAddress(brokenHostname));
+				_dependency = new Depends(Depends.ContainerType.FTP);
+                location = location.Replace(oldFTPDependency, "ftp://" + _dependency.Container.IP + ":" + _dependency.Container.Port + "/");
+            }
+            if (location.StartsWith(oldFTPSDependency))
+            {
+				_dependency = new Depends(Depends.ContainerType.FTPS);
+                location = location.Replace(oldFTPSDependency, "ftps://" + _dependency.Container.IP + ":" + _dependency.Container.Port + "/");
             }
             return location;
         }
@@ -481,8 +489,9 @@ namespace Dev2.Activities.Specs.BaseTypes
                 variableList = new List<Tuple<string, string>>();
                 _scenarioContext.Add("variableList", variableList);
             }
+			location = InjectDependency(location);
 
-            variableList.Add(new Tuple<string, string>(pathVariable, FixBrokenHostname(location)));
+            variableList.Add(new Tuple<string, string>(pathVariable, location));
 
             _scenarioContext.Add(DestinationHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
             _scenarioContext.Add(ActualDestinationHolder, location);
@@ -925,7 +934,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
                 if (columnHeader == "Source Path" || columnHeader == "Destination Path")
                 {
-                    rowValue = FixBrokenHostname(rowValue);
+                    rowValue = rowValue;
                 }
 
                 if (rowValue.Contains(" ="))
