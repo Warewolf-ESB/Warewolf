@@ -40,7 +40,9 @@ namespace Warewolf.UnitTestAttributes
             Elasticsearch = 9,
             AnonymousElasticsearch = 10,
             WebApi = 11,
-            HTTPVerbsApi = 12
+            HTTPVerbsApi = 12,
+            FTP = 13,
+            FTPS = 14
         }
 
         ContainerType _containerType;
@@ -75,6 +77,10 @@ namespace Warewolf.UnitTestAttributes
                     return "WebApi";
                 case ContainerType.HTTPVerbsApi:
                     return "HTTPVerbsApi";
+                case ContainerType.FTP:
+                    return "FTP";
+                case ContainerType.FTPS:
+                    return "FTPS";
             }
 
             throw new ArgumentOutOfRangeException();
@@ -120,6 +126,9 @@ namespace Warewolf.UnitTestAttributes
                     break;
                 case ContainerType.WebApi:
                     getUrl = "https://gitlab.com/warewolf/Web-API-connector-testing";
+                    break;
+                case ContainerType.FTP:
+                    getUrl = "https://gitlab.com/warewolf/ftp-connector-testing";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -213,6 +222,10 @@ namespace Warewolf.UnitTestAttributes
                     return "8080";
                 case ContainerType.HTTPVerbsApi:
                     return "9810";
+                case ContainerType.FTP:
+                    return "21";
+                case ContainerType.FTPS:
+                    return "1002";
             }
             throw new ArgumentOutOfRangeException();
         }
