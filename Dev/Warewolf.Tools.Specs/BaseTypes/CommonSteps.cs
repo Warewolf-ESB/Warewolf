@@ -934,7 +934,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
                 if (columnHeader == "Source Path" || columnHeader == "Destination Path")
                 {
-                    rowValue = rowValue;
+                    rowValue = InjectDependency(rowValue);
                 }
 
                 if (rowValue.Contains(" ="))
