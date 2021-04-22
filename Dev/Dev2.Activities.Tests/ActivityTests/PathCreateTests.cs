@@ -61,17 +61,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockDataObject.Setup(o => o.IsDebugMode()).Returns(true);
 
             //------------Execute Test---------------------------
-            var dsfOutputStrings = act.TestTryExecuteConcreteAction(mockDataObject.Object, out _, 0);
-            var inputs = new List<IDebugItemResult>();
-            act.GetDebugInputs(env, 0).ForEach(input =>
-            {
-                input.ResultsList.ForEach(result =>
-                {
-                    inputs.Add(result);
-                });
-            });
+            ErrorResultTO to;
+            act.TestTryExecuteConcreteAction(mockDataObject.Object, out to, 0);
+            var errors = to.FetchErrors();
             
-            Assert.AreEqual("demo", inputs.FirstOrDefault(i => i.Label == "Username")?.Value);
+            Assert.IsTrue(errors.FirstOrDefault()?.Contains("Failed to authenticate with user [ demo ]") ?? false);
         }
 
 

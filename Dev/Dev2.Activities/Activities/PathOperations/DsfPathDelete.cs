@@ -22,6 +22,7 @@ using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.PathOperations;
 using Dev2.Util;
+using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -86,6 +87,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     var result = broker.Delete(dstEndPoint);
                     outputs[0].OutputStrings.Add(result);
+                    outputs.Add(DataListFactory.CreateOutputTO($"Username [ {dstEndPoint.IOPath.Username} ]"));
                 }
                 catch(Exception e)
                 {
