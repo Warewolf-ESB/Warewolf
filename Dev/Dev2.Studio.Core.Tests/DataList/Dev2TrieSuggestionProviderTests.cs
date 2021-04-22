@@ -77,18 +77,19 @@ namespace Dev2.Core.Tests
 
             var suggestionProvider = new Dev2TrieSuggestionProvider {VariableList = new ObservableCollection<string>(variables)};
 
-            var fields = enIntellisensePartType.ScalarsOnly | enIntellisensePartType.RecordsetsOnly | enIntellisensePartType.RecordsetFields;
+            var fields = enIntellisensePartType.NonJsonObjects;
             var suggestions = suggestionProvider.GetSuggestions("[", 0, false, fields);
 
             Assert.IsNotNull(suggestions);
 
             var results = suggestions.ToList();
             Assert.AreEqual(5, results.ToList().Count);
-            Assert.AreEqual("[[var]]", results.ToList()[0]);
-            Assert.AreEqual("[[var2]]", results.ToList()[1]);
-            Assert.AreEqual("[[rec().var]]", results.ToList()[2]);
-            Assert.AreEqual("[[rec().var2]]", results.ToList()[3]);
-            Assert.AreEqual("[[rec()]]", results.ToList()[4]);
+            Assert.AreEqual("[[rec().var]]", results.ToList()[0]);
+            Assert.AreEqual("[[rec().var2]]", results.ToList()[1]);
+            Assert.AreEqual("[[rec()]]", results.ToList()[2]);
+            Assert.AreEqual("[[var]]", results.ToList()[3]);
+            Assert.AreEqual("[[var2]]", results.ToList()[4]);
+
         }
     }
 }
