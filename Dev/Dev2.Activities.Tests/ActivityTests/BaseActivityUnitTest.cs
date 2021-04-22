@@ -275,6 +275,14 @@ namespace ActivityUnitTests
                 }
                 location = "//" + _destinationDependency.Container.IP + ":" +  _destinationDependency.Container.Port + "/";
             }
+            if (location == "ftp://DEVOPSPDC.premier.local:1002")
+            {
+                if (_destinationDependency == null)
+                {
+                    _destinationDependency = new Depends(Depends.ContainerType.FTPS);
+                }
+                location = "ftps://" + _destinationDependency.Container.IP + ":" +  _destinationDependency.Container.Port;
+            }
             return location;
         }
 
